@@ -1,0 +1,251 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! "!" is the comment charcter.                                   !!!
+!!! This file contains the input parameters to run MIN3P benchmark !!!
+!!! and then compare the result to the reference benchmark.        !!!
+!!! Relative path is acceptable, command line is case-insensitive  !!!
+!!! and Data line is case-sensitive.                               !!!
+!!! At present, binary data (e.g., *.exe) cannot be compared,      !!!
+!!! these files are ignored in compare.                            !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!         The following commands are used in global              !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Set number of threads that min3p and result compare can be 
+! simultaneously ran by multi-threads.
+! Default number of threads: 1
+! Required if you want to use more than 1 threads.
+! Note: If you are testing the parallel codes, please be sure the 
+! required processor amount is 'number of threads specified here' x 
+! 'number of threads specified in the solver.cfg'.  
+NUMBER OF THREADS
+16
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!         The following commands are used in run MIN3P           !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! Run MIN3P simulation.
+! comment out the following command if MIN3P running is not necessary,
+! for example, if you only need to compare the result (already exist).
+! Required if you want to run MIN3P simulation.
+RUN MIN3P SIMULATION
+
+! Specify the extension file name for MIN3P input file, e.g, "*.dat".
+! Required only if you need to run result compare.
+EXTENSION FILE NAME OF MIN3P INPUT
+.dat
+
+! Specify the ignored files with the same extension as min3p input files
+IGNORE FILES OF MIN3P INPUT
+50
+root.dat
+restart.dat
+restart.append.dat
+aqueousphase.dat
+HYDRUS1D.DAT
+PROFILE.DAT
+phreeqc.dat
+llnl.dat
+diffh2D.dat
+phreeqc-output-tecplot.dat
+tk-ureox2.3.dat
+tk-ureox2.3-old.dat
+analytical.dat
+100-cheproo-info.dat
+master25.dat
+mizayaki.dat
+analytical-100-years.dat
+analytical-500-years.dats
+analytical-1000-years.dat
+analytical-5000-years.dat
+analytical-10000-years.dat
+phreeqc-output-tecplot.dat
+phreeqc-output-tecplot - Copy.dat
+phreeqc-output-tecplot.dat
+Analytical-TS.dat
+Analytical.dat
+ionx.head.dat
+ionx.chem.dat
+ionx.trans.dat
+analyt1 ss.dat
+bea.head.dat
+bea.trans.dat
+bea.chem.dat
+kinetics.dat
+tecfile.dat
+phast.dat
+biod.head.dat
+biod.trans.dat
+dedo.trans.dat
+dedo.chem.dat
+dedo.head.dat
+biod.chem.dat
+phast.dat
+perm1 - Copy.dat
+perm2 - Copy.dat
+diffh-3D-C - Copy.dat
+Task3.1d - Copy.dat
+ionx-2m - Copy.dat
+diff-rc-s-copy.dat
+ionx-m2m - Copy.dat
+
+! Run MIN3P simulation test.
+! Specify the MIN3P executable program path.
+! Required only if you need to run MIN3P simulation.
+MIN3P EXECUTABLE PROGRAM PATH
+..\Bins\bin-sequential\temp\MIN3P-HPC-V2.6.Temp.exe
+
+! Parallel arguments.
+! If the program runs as openmp parallel version,
+! the argements are similar as 
+! "-numofthreads_global 8 -output_runtime -input_file"
+! If the program runs as MPI parallel version,
+! please change "MIN3P EXECUTABLE PROGRAM PATH" to the mpiexec path
+! and the arguments are similar as
+! "-n 8 path\min3p_thcm.exe -output_runtime -input_file"
+!PARALLEL ARGUMENTS
+!-numofthreads_global 4 -output_runtime -input_file
+
+! Specify destination folder (MIN3P simulation result folder)
+! This folder contains all the examples that need to be run by MIN3P.
+! Required in both MIN3P simulation and result compare.
+! Please do NOT include the last slash (\) (NOT: .\..\Dest\)
+DESTINATION FOLDER
+.\..\Benchmarks_V2.6.Temp
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!       The following commands are used in result compare        !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! Run MIN3P simulation compare.
+! Comment out the following command if result compare is not necessary.
+! Required if you want to run result compare.
+RUN RESULT COMPARE
+
+! Specify the source folder (Referenced result folder)
+! This folder contains all the refenenced examples and results.
+! Required only if you need to run result compare.
+! Please do NOT include the last slash (\).
+SOURCE FOLDER
+D:\MIN3P-THCm-Benchmarks\Benchmarks_V2.5.1.875
+
+! Specify the folder to store the result compare difference.
+! The exist files in this folder will be replaced, but not deleted.
+! This folder will be created by program if not exist.
+! Required only if you need to run result compare.
+RESULT COMPARE STORE DIFFERENCE FOLDER
+.\..\Diff_Benchmarks_V2.6.Temp_vs_V2.5.1.875
+
+! Specify if you need to export the detail difference report.
+! By default, result compare only export the difference summary,
+! Indicating which file is changed.
+EXPORT RESULT DIFFERENCE DETAIL REPORT
+
+! Specify if you need to ignore the missing files in
+! destination folder (MIN3P simulation result folder),
+! by default, the missing files are considered in result compare.
+! Required only if you need to run result compare.
+! IGNORE MISSING FILES IN RESULT FOLDER
+
+! Specify if you need to ignore the missing files in
+! Referenced result folder (Source folder),
+! by default, the missing files are considered in result compare.
+! Required only if you need to run result compare.
+! IGNORE MISSING FILES IN REFERENCED RESULT FOLDER
+
+! Specify the ignored files in result compare.
+! Start with the number of ignored file extension names, 
+! and followed by extension names.
+! Required only if you need to run result compare
+IGNORE FILES IN RESULT COMPARE
+23
+.exe
+.bat
+.tmp1
+.tmp2
+.lay
+.png
+.xls
+.wmf
+.dbs
+.scc
+.zip
+.xlsx
+.xls
+.pdfs
+.zip
+.rar
+.log
+.gen
+.prt
+.docx
+.doc
+.tif
+.gif
+
+
+! Ignore lines start with specified string in special file. 
+! This commands can be repeated.
+! Start with file extension names and followed by number 
+! of ignored strings and ignored strings.
+! Required only if you need to run result compare.
+
+IGNORE LINES START IN SPECIAL FILES
+.log
+6
+#Program
+#Version
+#Commit date
+#Build date
+#Repository
+cputime  =
+
+IGNORE LINES START IN SPECIAL FILES
+.gen
+7
+#Program
+#Version
+#Commit date
+#Build date
+#Repository
+charge balance error:
+cputime  =
+
+! Mix value text compare is smarter than text compare
+! e.g., "0.2648112-313" and "0.0000000E+00" are treated the same as value compare.
+! e.g., "siderite(d)        0.000        3.4900E-04" and 
+! "siderite(d)       -0.000        3.4900E-04" are treated the same
+! Note: space is the separator of values and it is ignored in comparison.
+! Mix value text compare is more time consuming
+MIX VALUE TEXT COMPARE TOLERANCE
+1.0E-100
+
+! Mix value text compare is smarter than text compare
+! e.g., "1.234567e-20" and "1.234566e-20" are treated the same as value compare 
+! as relative error is 0.000001e-20/1.234567e-20 < 1.0e-5
+! Note: space is the separator of values and it is ignored in comparison.
+! Mix value text compare is more time consuming
+MIX VALUE TEXT COMPARE RELATIVE TOLERANCE
+1.0E-5
+
+! Set global best match compare mode, this allow the comparison in different lines.
+! By default, the program will use same line to line compare mode, this allow the 
+! comparison in the same lines. Please note that global best match compare is much 
+! more time consumer especially for the large files with bad-match lines.
+! It is suggested to use same line to line compare mode.
+! e.g., (required if use this), GLOBAL BEST MATCH COMPARE MODE
+! e.g., (not required is use this), SAME LINE COMPARE MODE
+! GLOBAL BEST MATCH COMPARE MODE
+
+! Set the difference collection mode. By default, the program will collect all the
+! differences. For large files with millions of difference, this will take a long time
+! especially when mix value text compare is invoked. 
+! It is suggested to collect the first 100 differences.
+! The following commands collect all the firtst n difference. 
+! If n = 0, it will collect all the difference.
+! e.g., DIFFERENCE COLLECTION MODE 
+!       n
+DIFFERENCE COLLECTION MODE
+100

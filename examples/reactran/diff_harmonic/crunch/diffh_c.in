@@ -1,0 +1,145 @@
+TITLE
+Test of species diffusion against Lichtner (MULTIFLO) example
+END
+ 
+DATABASE
+datacom.dbs  
+END
+ 
+RUNTIME
+time_units      days
+timestep_max    1.0e2
+timestep_init   1.0e-10
+time_tolerance  0.1
+correction_max  1.0
+debye-huckel    no
+database_sweep  no
+gimrt           true
+!!giambalvo		true
+!!gimrt_pc		ilu
+!!gimrt_pclevel	10
+!!gimrt_solver	bcgs
+!!hindmarsh		true
+lag_activity    true
+graphics        tecplot
+screen_output   100
+END
+ 
+OUTPUT
+time_units       days
+spatial_profile  100 300 1e3 1e4 1e5 1e6
+!!time_series          pH_Brtrgh.out 5
+!!time_series_print    pH  
+time_series_interval 10 
+END
+
+INITIAL_CONDITIONS
+left 1
+middle 2-5
+right 6
+END
+ 
+BOUNDARY_CONDITIONS
+X_begin   inlet        Dirichlet
+X_end     outlet       Dirichlet
+END
+ 
+TRANSPORT
+distance_units centimeters
+time_units  seconds
+fix_diffusion  3.75d-9
+!!formation_factor  1.0  
+!!cementation_exponent  1.0
+!!constant_tortuosity   1.0
+!!D_25  H+      9.311e-05
+!!D_25  Na+     1.334e-05
+!!D_25  Cl-     2.032e-05
+!!D_25  NO3-    1.902e-05
+
+!!D_25  OH-     5.273e-05
+!!D_25  NaOH(aq)	2.0e-05
+
+END
+
+Condition left
+temperature      25.0
+set_porosity     0.50
+HTO              1.0e-99 
+END
+
+Condition middle
+temperature      25.0
+set_porosity     0.04
+HTO              1.0e-99 
+END
+
+Condition right
+temperature      25.0
+set_porosity     0.50
+HTO              1.0e-99 
+END
+
+Condition inlet
+temperature      25.0
+HTO              1.0
+END
+
+Condition outlet
+temperature      25.0
+HTO              1.0e-99 
+END
+
+
+ 
+DISCRETIZATION
+distance_units centimeters
+xzones 1 0.1  4 0.2 1 0.1
+END
+
+POROSITY
+fix_porosity     0.5  
+porosity_update  false
+END
+ 
+TEMPERATURE
+set_temperature  25.0
+END
+ 
+PRIMARY_SPECIES
+HTO
+END
+ 
+!!SECONDARY_SPECIES
+!!OH-
+!!NaOH(aq)
+!!END
+ 
+FLOW
+time_units  days
+distance_units centimeters
+constant_flow  0.00
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

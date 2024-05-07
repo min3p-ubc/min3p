@@ -1,0 +1,96 @@
+! Arsenate surface complexation - example problem
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'surface complexation - example problem'
+.false.                       ;varsat_flow
+.false.                       ;steady_flow
+.false.                       ;fully_saturated
+.false.                       ;reactive_transport
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'..\..\..\database\default'
+
+'define sorption type'
+'surface-complex'
+
+'components'
+2                             ;number of components (nc-1)
+'h+1'                         ;component names
+'h3aso4'
+
+'non-aqueous components'
+1                             ;number of non-aqueous components
+'=feoh(w)'   'surface'           ;names of non-aqueous components
+
+'secondary aqueous species'
+4                             ;number of secondary aqueous species
+'oh-'                         ;names of secondary aqueous species
+'h2aso4-'
+'haso4-2'
+'aso4-3'
+
+'sorbed species'
+5                             ;number of sorbed species
+'=feoh2+(w)'                  ;names of sorbed species
+'=feo-(w)'
+'=feh2aso4(w)'
+'=fehaso4-(w)'
+'=feohaso4-3w'
+
+'done'
+
+! Section 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'activity update settings'
+'double_update'                   ;unit activity coefficients
+
+'newton iteration settings'
+1.d-4                         ;factor for num. differentiation
+1.d-9                         ;convergence tolerance
+
+'maximum ionic strength'
+4.d0                          ;max. ionic stength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'done'
+
+! Data Block 14: initial condition - local chemistry
+! ---------------------------------------------------------------------------
+!
+'initial condition - local geochemistry'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'pH-sweep from 2-14'
+
+'concentration input'
+2.0       'ph_sweep'  14.0  50  ;'h+1'
+1.0d-2    'free'                ;'h3aso4'
+
+'sorption parameter input'
+'=feoh(w)'  100.0d0  10.0d0  6.02228d0    ;surface site, mass, area, site density
+
+!'equilibrate with fixed solution composition'
+
+'end of zone'
+
+'done'

@@ -1,0 +1,532 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"phsweep_1.lbc"'
+$!VarSet |LFDSVL1| = '"pH" "h+1" "seo4-2" "oh-" "hseo4-1" "hse-1" "se-2" "h2se" "cr(oh)2+" "cr+3" "cr(oh)+2" "cr(oh)3aq" "cr(oh)4-" "cro2-" "cr3(oh)4+5" "fe+3" "feoh+2" "feoh2+" "feoh3aq" "feoh4-" "fe2(oh)2+4" "fe3(oh)4+5"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 9
+  HEIGHT = 8
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-9]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95.119
+      Y = 54.387
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.02
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.02
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 17
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 18
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 19
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 20
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 22
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 21
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 16.667
+    Y1 = 9.375
+    X2 = 88.889
+    Y2 = 84.375
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 14.0014
+    AUTOGRID = NO
+    GRSPACING = 2
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'pH [-]' 
+      }
+    AXISLINE
+      {
+      POSITION = 2.167
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    COORDSCALE = LOG
+    RANGEMIN = 1.3317429773400001E-014
+    RANGEMAX = 1.3245264270499999
+    GRSPACING = 0.2
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'C [mol L<sup>-1</sup>]' 
+      OFFSET = 8
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.004154
+      OFFSET = 3.667
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 52.0418441069
+    Y = 66.3184750975
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 40
+    COLOR = WHITE
+    }
+  TEXT = 'Fe(OH)<sub>3</sub>(aq)' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.6598421838
+    Y = 78.125
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  TEXT = 'H<sup>+' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 75.8903817445
+    Y = 78.125
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  TEXT = 'OH<sup>-' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 75.8460547614
+    Y = 64.8046008869
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  TEXT = 'Fe(OH)<sub>4</sub><sup>-' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 16.5774951241
+    Y = 91.5744603441
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  TEXT = 'Fe(tot) = 10<sup>-4</sup> mol L<sup>-1' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 21.1217743655
+    Y = 64.7996641075
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  TEXT = 'Fe<sup>3+' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 53.2191963169
+    Y = 25.0897530972
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 40
+    COLOR = WHITE
+    }
+  TEXT = 'Fe(OH)<sup>2+' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 38.3879570953
+    Y = 64.8957397934
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 40
+    COLOR = WHITE
+    }
+  TEXT = 'Fe(OH)<sub>2</sub><sup>+' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 37.8462294233
+    Y = 12.6610293427
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 40
+    COLOR = WHITE
+    }
+  TEXT = 'Fe<sub>3</sub>(OH)<sub>4</sub><sup>5+' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 32.970680375
+    Y = 73.0256558168
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 20
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 40
+    COLOR = WHITE
+    }
+  TEXT = 'Fe<sub>2</sub>(OH)<sub>2</sub><sup>4+' 
+$!ATTACHGEOM 
+  ANCHORPOS
+    {
+    X = 2.90887355255
+    Y = 1.86313180304E-007
+    }
+  ARROWHEADATTACHMENT = ATEND
+  ARROWHEADSIZE = 3
+  RAWDATA
+1
+2
+0.770166099072 0.0042908587493 
+0 0 
+$!ATTACHGEOM 
+  ANCHORPOS
+    {
+    X = 4.76427370228
+    Y = 2.68243220073E-013
+    }
+  RAWDATA
+1
+2
+0 0 
+0.2800604105 8.16832821E-013 
+$!SETSTYLEBASE CONFIG

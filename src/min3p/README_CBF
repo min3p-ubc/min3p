@@ -1,0 +1,242 @@
+December, 19th, 2018 - Celine Blitz Frayret, CIRAD
+
+The computation of the root water uptake (qroot) has been modified in the variably saturated configuration, according to Frederic Gerard (INRA) work performed in a MIN3P Dusty version dating of 2006, see equations in Mayer et al., 2012, section 3.3. The root water uptake (qroot) is computed based on the root length densities (RLD) simulated in each control volumes. The RLD can be considered :
+- either constant in time and depth (in that case they are read as constant parameters in the input *.dat file)
+- either varying along depth and time with an exponential model obtained from a study of the PhD of Amandine Germon, CIRAD
+- either varying along depth and time with a coupling to root architecture softwares RootTyp or ArchiSimple (coupling performed by Celine Blitz Frayret during an INRA non permanent position, see Gerard et al., 2017). The root architecture softwares are developped by Loic Pages, INRA (license Apache V2.0).
+
+ The integration of this work to the trunk on MIN3P-HPC is performed by Celine Blitz Frayret, CIRAD, with the help of Danyang Su, UBC.
+
+This README document first displays 1) the modifications done in the source code  : computation of the root water uptake (qroot) and updates of the root length densities used for the qroot computation and 2) the modification in the use of the new options.
+
+
+I - MODIFICATION OF THE SOURCE CODE 
+-----------------------------------
+
+I-1 - Qroot computation
+-----------------------
+
+In this initial version of February 2017, qroot is a local variable computed as followed in the subroutines jacvs.F90, mbalvs.F90, jacddvs.F90 and mbaldd.F90 :
+
+qroot = cvol x rootwat
+
+With :
+
+cvol → nodal volume
+evap → evaporation
+rootwat → root water uptake :
+
+rootwat = alpha / tree_transp_factor 
+
+With :
+
+alpha -> water stress reduction factor
+
+In the current proposed version, Frederic Gerard modified the qroot computation for variably saturated simulations (evaporation is considered) and turned this variable as a common variable for each control volume ivol. 
+
+qroot(ivol) = cvol(ivol) x (rootwat + evapo)
+
+With :
+
+evapo -> water evaporation in the current control volume, based on saturations
+ 
+rootwat = alpha x T x A x f(saturation, RLD, vol element) see eq. 33 in Mayer et al., 2011
+
+T -> transpiration
+A -> surface exposed to atmosphere
+RLD -> root length densities constant for each material zone, read in *.dat file (variable 'rootlengthdens' read in initplant.F90)
+
+The local computations of qroot have been removed from subroutines mbalvs.F90 and mbaldd.F90 (they use the common variable qroot(ivol) when needed) and a check of the qroot(ivol) computation should be done in the subroutine jacddvs.F90.
+Indeed, in jacvs.F90, the mean reserve of extractible water (rewm) is calculated just before qroot(ivol) as it is needed in the rootwat function. But in jacddvs.F90, no computation of rewm is performed before the use of rootwat in the computation of qroot(ivol).
+
+This modification is then suitable only for the variably saturated case.
+
+ - Derivatives of qroot(ivol) have also been modified in mbalvs.F90.
+
+ - When already existing, declarations of related root variables have been moved to a specific biol.F90 module from their initial modules. List of variables/parameters moved or created :
+
+-qroot : gen.F90 -> biol.F90
+-dqroot : gen.F90 -> biol.F90
+-qrootinc : gen.F90 -> biol.F90
+-BINT : biol.F90
+-BINev : biol.F90
+-puf : biol.F90
+-uptakefactor : biol.F90
+-rootlengthdens : biol.F90
+-rld : biol.F90
+-pure_evaporation : biol.F90
+-rewm : phys.F90
+-cmws : biol.F90
+-vegetation_growth : biol.F90
+-p1 : phys.F90 -> biol.F90
+-pure_evap : gen.F90 -> biol.F90
+-pet : gen.F90 -> biol.F90
+-pe_soil : gen.F90 -> biol.F90
+-canopy_int : gen.F90 -> biol.F90
+-scale_tree_growth : gen.F90 -> biol.F90
+-solar_ratio : gen.F90 -> biol.F90
+-time_soi : gen.F90 -> biol.F90
+
+List of the subroutines modified or created in this development (implementation of qroot): tprfvs, tprfdd, rew, outputvs, jacvs, gen, binmatevap, mem_mat, jacffvs, evapo, outputdd, initppvs, timeloop, mbalvs, biol , initprob, phys, mem_etr, sptldisc, initpppm, initppdd, mbaldd, rootwat, initcpgs, binmattransp, initplant, jacddvs, updtsoil, updtetp
+
+
+I-2 - Root length density update 
+--------------------------------
+
+Until now, the computation of qroot was based on constant values of root length densities (RLD) read in the *.dat input file (variable 'rootlengthdens'). To obtain more realistic simulations, a second step consists in implementing dynamic RLD, varying through the soil profile and during time. 
+
+The variation of the RLD can be choosen from the following methods :
+
+- variation throughout the profile and constant in time : in that case a *.rld input file (format x, y, z, rld(ivol)) is read at initialization in initplant.F90. This option is available only in 1D.
+
+- variation throughout the soil profile and the time : 
+
+	1) either by using an exponential model rld(ivol)=exp(a+b*sqrt(z(ivol))+c*time+d*sqrt(z(ivol))*time). This model available in 1D can be modified by entering values of paraleters a, b, c and d in the *.dat input file 
+
+	2) either throughout the soil profile and the time by a coupling to the root architecture softwares ArchiSimple or Root Typ, developped by L. Pages, INRA (license Apache 2). The coupling to ArchiSimple can be performed in 1D and 2D, and the coupling to RootTyp in 2D only.
+
+The options allowing the variation of RLD in time (by exponential model in 1D or by 'hard' coupling to root architecture softwares in 1D/2D) are implemented by a call in timeloop.F90 subroutine to the updtrootdensity.F90 subroutine. The exponential model as well as the calls to the C++ RootTyp and ArchiSimple functions are located in updtrootdensity.F90.
+The coupling to RootTyp and ArchiSimple also requiered the development of a specififc root_modu.F90 subroutine, acting as interface between the C++ and Fortran langages. The initialization of Root Typ and ArchiSimple has been done in initplant.F90 and the ending of these functions in driver_pc.F90. Note that driver_pc has also been modified to allow the passing of the directory path from fortran to C++ (read of the Root Typ and ArchiSimple specific input files).  
+
+List of the subroutines modified or created in this development (updates of RLD by coupling, exponential model or input file *.rld reading): driver_pc, gen, timeloop, biol, updtrootdensity, rootwat, iitplant, ArchiSimple, RootTyp1, root_modu.
+
+
+I-3 - Root architecture softwares license
+----------------------------------------
+Root Typ and ArchiSimple have been developped by Loic Pages, INRA french agronomic institute (loic.pages@inra.fr). ArchiSimple.cpp is protected by the french agency for the protection of programs (APP) and as well as Root Typ.cpp, it is under license Apache V2.0. The text of the license has been placed under ../project/src/min3p/license_ArchiSimple_RootTyp.txt.
+The only object files are provided :
+- 'ArchiSimple.o' and 'RootTyp1.o' for Linux (compiled with GNU compilers)
+- 'ArchiSimple.obj_D' and 'RootTyp1.obj_D' for Windows (compiled with VS2010 in Debug mode)
+- 'ArchiSimple.obj_R' and 'RootTyp1.obj_R' for Windows (compiled with VS2010 in Release mode)
+
+
+
+II - USE OF THIS NEW VERSION
+----------------------------
+
+II-1 - Modification in the input *.dat file
+-------------------------------------------
+The read of input root related parameters was previously performed in initppdd.F90 subroutine. They have been removed from this source file to be transferred in a specific subroutine 'initplant.F90' that has been created in this new version.
+
+- Root related parameters that was previously read (in initppdd.F90) as input from the *.dat file :
+
+subsection 'root water uptake' :
+satwlim
+satwfield
+satwdry
+root_length_dens
+rew0
+p1
+tree_transp_factor
+canopy_evap_factor
+
+- Root related parameters that we kept as input from *.dat file (read performed in initplant.F90) :
+
+subsection 'transpiration global parameters' in data block 17:
+rew0
+p1
+canopy_evap_factor
+
+- Root related parameters/options that have been added as input from *.dat file (read performed in initplant.F90 and initcpgs.F90) :
+
+No specific subsection :
+'read root length density from file'
+'update - internal'            
+-12.48 1.725 0.0017 0.0003961  
+'update - coupled - AS'        
+'update - coupled - RT' 
+
+subsection 'global control parameters' :
+root_uptake
+
+subsection 'correction method for water stress'
+cmws
+
+subsection 'root water uptake' in data block 17:
+h1lim
+h1field
+rootlengthdens
+
+subsection 'passive solute uptake ' in data block 17:
+uptakefactor (note that I don't know the use of this parameter in MIN3P)
+
+
+In this version, root_length_dens and tree_transp_factor are not used anymore, and satwlim, satwfield and satwdry are calculated in initplant.F90 based on soil hydraulic function parameters.
+
+The output files format has not been modified to allow postprocessing. Although the soil evaporation is also computed with the root water uptake, only root water uptake is represented in the output results (q_root).
+
+
+
+II-2 Documentation of the new options in datablock 17
+-----------------------------------------------------
+
+(1)'read root length density from file' 
+(2)'update - internal'            
+(3)-12.48 1.725 0.0017 0.0003961  
+(4)'update - coupled - AS'        
+(5)'update - coupled - RT' 
+
+subsection 'transpiration global parameters' in data block 17:
+(6)rew0
+(7)p1
+(8)canopy_evap_factor
+
+subsection 'correction method for water stress'
+(9)cmws
+
+subsection 'root water uptake' in data block 17:
+(10)h1lim
+(11)h1field
+(12)rootlengthdens
+
+
+
+(1) Allows the read of a input *.rld file in 1D or 2D, with format x,y,z,RLD(ivol). This file is read at initialization step only, RLD are then varying throughout the soil profile but constant in time. Although the format is x,y,z,rld, the x, y, z parameters are 'dummy' parameters. rld must be written following the control volumes ID. 
+
+(2) and (3) allow an update of the RLD made inside MIN3P (in updtrootdensity) with the exponential 1D model : rld(ivol)=exp(a+b*sqrt(z(ivol))+c*time+d*sqrt(z(ivol))*time). This model leading to RLD variations in depth and time is obtained from studies made at Itatinga CIRAD experimental site (Bresil) on the growing of eucalyptus trees. The model and parameters a, b, c and d has been proposed by Amandine Germon (PhD at CIRAD) from the eucalyptus studies. the line (3) allows to modify the a,b,c and d parameters.
+Lines (2) and (3) must be uncomment together for use of that option.
+
+(4) This option leads to RLD computed by ArchiSimple root architecture software (Pages et al. (2014) Calibration and evaluation of ArchiSimple, a simple model of root system architecture. Ecol. Model. 290:76-84) in 1D or 2D. The detection of the number of dimensions is made automatically by ArchiSimple. At each time step of MIN3P, updtrootdensity 'calls' ArchiSimple which computes the growth of a root and transfers back the root surface densities to MIN3P. The use of this option requieres to add specific input files of ArchiSimple in the directory of the MIN3P input files :
+
+-volrac.txt  
+-sol.txt 
+-paramAS.txt 
+
+(5) This option leads to RLD computed by RootTyp software (Pages et al. (2004) Root Typ: a generic model to depict and analyse the root system architecture. Plant and Soil. 258:103-119) in 2D. At each time step of MIN3P, updtrootdensity 'calls' RootTyp which computes the growth of a root and transfers back the root surface densities to MIN3P. The use of this option requieres to add specific input files of RootTyp in the directory of the MIN3P input files :
+
+-sol.txt 
+-paramRT.txt 
+
+Note that if of none of these options is activated, RLD are constant in the material property zones and read in (12)
+
+For the following parameters, more informations are available in Mayer et al., 2012 ('Reactive Transport Modeling in variably saturated media with MIN3P: basic model formulation and model enhancements', section 3.3 'MIN3P Soil').
+ 
+(6) rew0: relative extractable water at 50% of maximum extraction capacity (fitting parameter)
+(7) p1: fitting parameter for root water uptake function 
+(8) canopy_evap_factor (f_i): efficiency factor for canopy evaporation
+(9) cmws: correction method for water stress 
+(10) h1lim: water pressure at wilting point
+(11) h1fiel: water pressure field capacity
+(12) rootlengthdens: root length density, constant in time and depth, for each material property zone
+
+
+
+II-3 - Documentation of Root Typ and ArchiSImple softwares
+----------------------------------------------------------
+When using the coupling options to Root Typ or to ArchiSimple root architecture software, please add in the same directory of MIN3P the following input files :
+
+- sol.txt and paramRT.txt for RooTTyp
+- sol.txt, paramRT.txt and volrac.txt for ArchiSimple 
+
+More informations will be provided soon.
+
+ 
+
+
+III - LIMITATIONS OF THESE QROOT RELATIVE DEVELOPMENTS
+------------------------------------------------------
+This implementation of qroot and its updates is done in the variably saturated case only and not in the density dependant case. These developments are tested in the only sequential case (no MPI or OpenMP implementation have been validated or studied).
+
+In agreement with Mayer et al., 2012, should we indicate that the activation of the root_uptake option in datablock 1 allows the use the 'MIN3P soil' version ?
+
+

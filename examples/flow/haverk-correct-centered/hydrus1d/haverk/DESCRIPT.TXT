@@ -1,0 +1,2 @@
+Pcp_File_Version=1
+1D - drainage problem, Haverkamp et al., Soil Sci. Am. J., 41, 1977

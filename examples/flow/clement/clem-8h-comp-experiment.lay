@@ -1,0 +1,1448 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"clement_4.gsp"'
+$!VarSet |LFDSFN2| = '"clement4.gsp"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = QUARTERINCH
+  REGIONINWORKAREA
+    {
+    X1 = 0
+    Y1 = 1.654
+    X2 = 7.733
+    Y2 = 8.216
+    }
+$!RAWCOLORMAP 
+  RAWDATA
+9
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+57 57 57
+85 85 85
+113 113 113
+142 142 142
+170 170 170
+$!COLORMAP 
+  CONTOURCOLORMAP = RAWUSERDEF
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 2.5
+    }
+  WIDTH = 8
+  HEIGHT = 5.6
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 4
+  DEFNUMLEVELS = 10
+  LABELS
+    {
+    GENERATEAUTOLABELS = NO
+    ALIGNAUTOLABELS = NO
+    AUTOLABELSPACING = 33
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    MARGIN = 20
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  LEGEND
+    {
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 81.054
+      Y = 85.119
+      }
+    HEADERTEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    NUMBERTEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -1.00000001505E+030
+    RANGEMAX = 1.00000001505E+030
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.649999976158
+      CMAX = 1.77746295929
+      }
+    }
+  CONTOURLINESTYLE
+    {
+    PATTERNLENGTH = 0.5
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.164206758142
+    Y = 1.87946379185
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.211496019056
+    Y = 1.65845928367
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.274106413126
+    Y = 1.40859162807
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.413978695869
+    Y = 1.12687337399
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.873559057713
+    Y = 0.921621441841
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 1.47945795382
+    Y = 0.847145445255
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 2.05094806579
+    Y = 0.797965405807
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 2.56210637314
+    Y = 0.734398536871
+    Z = 0
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+10
+0.75
+0.850000023842
+0.949999988079
+1.04999995232
+1.14999997616
+1.25
+1.34999990463
+1.44999992847
+1.54999995232
+1.64999997616
+$!GLOBALCONTOUR  2
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALTHREEDVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!GLOBALTWODVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!BLANKING 
+  IJK
+    {
+    IMAXFRACT = 0
+    JMAXFRACT = 0
+    KMAXFRACT = 0
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    COLOR = BLACK
+    LINEPATTERN = DOTTED
+    PATTERNLENGTH = 5
+    LINETHICKNESS = 0.8
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = BLACK
+    FRAMESIZE = 1.2
+    }
+  SHADE
+    {
+    COLOR = RED
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    LINETHICKNESS = 0.15
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  AXISMODE = INDEPENDENT
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 22
+    Y1 = 10
+    X2 = 85
+    Y2 = 85
+    }
+  VIEWPORTTOPSNAPTARGET = 85
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 3
+    GRSPACING = 0.5
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      POSITION = 1.333
+      }
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2
+    GRSPACING = 0.5
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.931865721941
+  ISOVALUE2 = 1.21373146772
+  ISOVALUE3 = 1.49559721351
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!GLOBALSTREAM 
+  SHOW = NO
+  TERMLINE
+    {
+    SHOW = NO
+    }
+  STREAMTIMING
+    {
+    MARKCOLOR = WHITE
+    MARKSIZE = 1
+    DELTATIME = 1.00000001505E+030
+    ENDTIME = 1.00000001505E+030
+    }
+  RODRIBBON
+    {
+    WIDTH = 1E-030
+    NUMRODPOINTS = 4
+    MESH
+      {
+      LINETHICKNESS = 0.15
+      }
+    }
+  CELLFRACTION = 0.300000011921
+  ARROWHEADSIZE = 0.8
+  LINETHICKNESS = 0.15
+  MAXSTEPS = 800
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 46.875
+    Y = 2.55310855584
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'distance [m]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.625
+    Y = 37.9883418083
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [m]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 27.8952648475
+    Y = 92.4014058716
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Transient water table mounding - Vauclin et al. (1979)                  ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 64.9147271268
+    Y = 77.5397001877
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.1
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'solid - old /  dotted -new' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 33.407905297
+    Y = 88.26673928
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Hydraulic head contours after T = 8 hours' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  BACKGROUNDCOLOR = BLACK
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 2.5
+    }
+  WIDTH = 8
+  HEIGHT = 5.6
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 002' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 4
+  DEFNUMLEVELS = 10
+  LABELS
+    {
+    GENERATEAUTOLABELS = NO
+    ALIGNAUTOLABELS = NO
+    AUTOLABELSPACING = 33
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    MARGIN = 20
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  LEGEND
+    {
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 81.054
+      Y = 85.119
+      }
+    HEADERTEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    NUMBERTEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -1.00000001505E+030
+    RANGEMAX = 1.00000001505E+030
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.649999976158
+      CMAX = 1.77746295929
+      }
+    }
+  CONTOURLINESTYLE
+    {
+    PATTERNLENGTH = 0.5
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.164206758142
+    Y = 1.87946379185
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.211496019056
+    Y = 1.65845928367
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.274106413126
+    Y = 1.40859162807
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.413978695869
+    Y = 1.12687337399
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.873559057713
+    Y = 0.921621441841
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 1.47945795382
+    Y = 0.847145445255
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 2.05094806579
+    Y = 0.797965405807
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 2.56210637314
+    Y = 0.734398536871
+    Z = 0
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+10
+0.75
+0.850000023842
+0.949999988079
+1.04999995232
+1.14999997616
+1.25
+1.34999990463
+1.44999992847
+1.54999995232
+1.64999997616
+$!GLOBALCONTOUR  2
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALTHREEDVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!GLOBALTWODVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!BLANKING 
+  IJK
+    {
+    IMAXFRACT = 0
+    JMAXFRACT = 0
+    KMAXFRACT = 0
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    COLOR = BLACK
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = BLACK
+    FRAMESIZE = 1.2
+    }
+  SHADE
+    {
+    COLOR = RED
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    LINETHICKNESS = 0.15
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  AXISMODE = INDEPENDENT
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 22
+    Y1 = 10
+    X2 = 85
+    Y2 = 85
+    }
+  VIEWPORTTOPSNAPTARGET = 85
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 3
+    GRSPACING = 0.5
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      POSITION = 1.333
+      }
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2
+    GRSPACING = 0.5
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.931865721941
+  ISOVALUE2 = 1.21373146772
+  ISOVALUE3 = 1.49559721351
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!GLOBALSTREAM 
+  SHOW = NO
+  TERMLINE
+    {
+    SHOW = NO
+    }
+  STREAMTIMING
+    {
+    MARKCOLOR = WHITE
+    MARKSIZE = 1
+    DELTATIME = 1.00000001505E+030
+    ENDTIME = 1.00000001505E+030
+    }
+  RODRIBBON
+    {
+    WIDTH = 1E-030
+    NUMRODPOINTS = 4
+    MESH
+      {
+      LINETHICKNESS = 0.15
+      }
+    }
+  CELLFRACTION = 0.300000011921
+  ARROWHEADSIZE = 0.8
+  LINETHICKNESS = 0.15
+  MAXSTEPS = 800
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 22.7003863168
+    Y = 81.1570060802
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '1.65' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 22.6707754014
+    Y = 77.068269921
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '1.55' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 22.8355686342
+    Y = 73.064178033
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '1.45' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 22.7531720178
+    Y = 68.1179468772
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '1.35' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 23.0827584837
+    Y = 58.6965541995
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '1.25' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 23.3299483331
+    Y = 40.560373295
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '1.15' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 50.6032283775
+    Y = 12.1784278535
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '0.95' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 36.1014238826
+    Y = 12.0606604451
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '1.05' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 61.726771598
+    Y = 12.1784278535
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '0.85' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 72.3559351199
+    Y = 12.4139626705
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 8
+    }
+  TEXT = '0.75' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.503492
+    Y = 1.972758
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.708' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.207923
+    Y = 1.38708
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.258' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.21312
+    Y = 0.969913
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.158' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.205973
+    Y = 0.601793
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.092' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.206774
+    Y = 1.812438
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.569' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.504397
+    Y = 1.637379
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.402' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.501453
+    Y = 1.22019
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.162' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.502602
+    Y = 0.794832
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.102' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.793007
+    Y = 1.785406
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.39' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.79409
+    Y = 1.384588
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.146' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.795713
+    Y = 0.783361
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.055' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1.091271
+    Y = 1.373129
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.048' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1.081225
+    Y = 0.571459
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 1.061' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1.395876
+    Y = 1.62754
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 0.842' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1.406303
+    Y = 0.780936
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 0.961' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1.682646
+    Y = 0.94938
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 0.91' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 2.606015
+    Y = 1.189119
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 0.74' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1.999496
+    Y = 1.191555
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 0.839' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 2.280969
+    Y = 0.967372
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDLEFT
+  TEXT = '+ 0.8' 
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 2.31942870432
+    Y = 1.72567791338
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 8
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    }
+  ANCHOR = MIDCENTER
+  TEXT = '+ experiment data' 
+$!SETSTYLEBASE CONFIG

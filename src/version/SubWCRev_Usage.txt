@@ -1,0 +1,59 @@
+Usage: SubWCRev WorkingCopyPath [SrcVersionFile DstVersionFile] [-nmdf]
+
+Params:
+WorkingCopyPath    :   path to a Subversion working copy.
+SrcVersionFile     :   path to a template file containing keywords.
+DstVersionFile     :   path to save the resulting parsed file.
+-n                 :   if given, then SubWCRev will error if the working
+                       copy contains local modifications.
+-m                 :   if given, then SubWCRev will error if the working
+                       copy contains mixed revisions.
+-d                 :   if given, then SubWCRev will only do its job if
+                       DstVersionFile does not exist.
+
+-f                 :   if given, then SubWCRev will include the
+                       last-committed revision of folders. Default is
+                       to use only files to get the revision numbers.
+                       this only affects $WCREV$ and $WCDATE$.
+-e                 :   if given, also include dirs which are included
+                       with svn:externals, but only if they're from the
+                       same repository.
+
+-x                 :   if given, then SubWCRev will write the revisions
+                       numbers in HEX instead of decimal
+-X                 :   if given, then SubWCRev will write the revisions
+                       numbers in HEX with '0x' before them
+
+Switches must be given in a single argument, e.g. '-nm' not '-n -m'.
+
+SubWCRev reads the Subversion status of all files in a working copy
+excluding externals. If SrcVersionFile is specified, it is scanned
+for special placeholders of the form "$WCxxx$".
+SrcVersionFile is then copied to DstVersionFile but the placeholders
+are replaced with information about the working copy as follows:
+
+$WCREV$         Highest committed revision number
+$WCDATE$        Date of highest committed revision
+$WCDATE=$       Like $WCDATE$ with an added strftime format after the =
+$WCRANGE$       Update revision range
+$WCURL$         Repository URL of the working copy
+$WCNOW$         Current system date & time
+$WCNOW=$        Like $WCNOW$ with an added strftime format after the =
+$WCLOCKDATE$    Lock date for this item
+$WCLOCKDATE=$   Like $WCLOCKDATE$ with an added strftime format after the =
+$WCLOCKOWNER$   Lock owner for this item
+$WCLOCKCOMMENT$ Lock comment for this item
+
+
+The strftime format strings for $WCxxx=$ must not be longer than 1024
+characters, and must not produce output greater than 1024 characters.
+
+Placeholders of the form "$WCxxx?TrueText:FalseText$" are replaced with
+TrueText if the tested condition is true, and FalseText if false.
+
+$WCMODS$        True if local modifications found
+$WCMIXED$       True if mixed update revisions found
+$WCINSVN$       True if the item is versioned
+$WCNEEDSLOCK$   True if the svn:needs-lock property is set
+$WCISLOCKED$    True if the item is locked
+

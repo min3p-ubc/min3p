@@ -1,0 +1,716 @@
+#!MC 900
+$!VarSet |LFDSFN1| = '"infil1_3.gsp"'
+$!VarSet |LFDSFN2| = '"infil1_2.gsp"'
+$!VarSet |LFDSFN3| = '"infil1_1.gsp"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = QUARTERINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 8.55
+    Y2 = 11.05
+    }
+$!RAWCOLORMAP 
+  RAWDATA
+9
+28 28 28
+28 28 28
+57 57 57
+85 85 85
+113 113 113
+142 142 142
+170 170 170
+198 198 198
+227 227 227
+$!COLORMAP 
+  CONTOURCOLORMAP = RAWUSERDEF
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!FRAMEMODE  = XY
+$!FRAMENAME  = 'Frame 004' 
+$!DELETEXYMAPS 
+$!ACTIVEXYMAPS  =  [1]
+$!GLOBALXY 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!XYMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    ISFILLED = YES
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    AXISPOSITION = 11.92
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.0999999940395
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!XYAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    AXISPOSITION = 21.88
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!XYAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 21.875
+      Y1 = 11.918
+      X2 = 87
+      Y2 = 85.918
+      }
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  DEPXTOYRATIO = 1
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!FRAMEMODE  = XY
+$!FRAMENAME  = 'Frame 005' 
+$!DELETEXYMAPS 
+$!ACTIVEXYMAPS  =  [1]
+$!GLOBALXY 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!XYMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    ISFILLED = YES
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    AXISPOSITION = 11.92
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.0999999940395
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!XYAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    AXISPOSITION = 21.88
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!XYAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 21.875
+      Y1 = 11.918
+      X2 = 87
+      Y2 = 85.918
+      }
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  DEPXTOYRATIO = 1
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!FRAMEMODE  = XY
+$!FRAMENAME  = 'Frame 006' 
+$!DELETEXYMAPS 
+$!ACTIVEXYMAPS  =  [1]
+$!GLOBALXY 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!XYMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    ISFILLED = YES
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYAXIS 
+  XDETAIL 1
+    {
+    AXISPOSITION = 11.92
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.0999999940395
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!XYAXIS 
+  YDETAIL 1
+    {
+    AXISPOSITION = 21.88
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!XYAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 21.875
+      Y1 = 11.918
+      X2 = 87
+      Y2 = 85.918
+      }
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  DEPXTOYRATIO = 1
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 53.2987104182
+    Y = 91.2120881566
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  ANCHOR = MIDCENTER
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Infiltration into soil column \nForsyth et al. 1995' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 70.6160730293
+    Y = 14.2187910299
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 7.16 days ' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 57.1830365147
+    Y = 40.3256131505
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 4 .16 days' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 55.5039069503
+    Y = 72.5403847304
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 1.16 days' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 16.9612760835
+    Y = 39.4705019371
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [m]' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!REMOVEVAR |LFDSFN3|
+$!REMOVEVAR |LFDSFN2|
+$!REMOVEVAR |LFDSFN1|
+$!SETSTYLEBASE CONFIG

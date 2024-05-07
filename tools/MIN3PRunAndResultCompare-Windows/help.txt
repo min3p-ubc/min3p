@@ -1,0 +1,31 @@
+dedo 
+polyhal-pitz
+biomass
+amd505
+bem600disp
+bem20510e-2
+deviss139
+deviss141_r
+thor45_t
+amd505dgm1_gas_adv
+amd505dgm1_gas_adv_water_table
+Williams
+gas-decay-napl
+gas-nodecay-napl
+
+
+gsv   porosity
+mgc   mass influx
+
+
+basin 
+co2seq-water-freezing
+506-4
+
+difference cause: porosity and permeability update change
+
+
+
+
+waybrant   *_?.mac, mae,   update porosity
+CrZVI_FTC-3c

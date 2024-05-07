@@ -1,0 +1,118 @@
+! appelo.dat - Appelo and Postma pg 102 ff.
+! batch problem - kinetically controlled dissolution of calcite
+!                 reduced number of species
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Dissolution of calcite (slow) - Appelo and Postma, pg. 102 ff.'
+.false.                       ;varsat_flow
+.false.                       ;steady_flow
+.false.                       ;fully_saturated
+.false.                       ;reactive_transport
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'..\..\..\database\default'
+
+'components'
+3                             ;number of components (nc-1)
+'h+1'                         ;component names
+'co3-2'
+'ca+2'
+
+'secondary aqueous species'
+3                             ;number of secondary aqueous species
+'oh-'                         ;names of secondary aqueous species
+'hco3-'
+'h2co3aq'
+
+'minerals'
+1                             ;number of minerals
+'calcite-ch'                  ;mineral names
+
+'done'
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'finite minerals'
+.false.                       ;update mineralogical parameters
+
+'newton iteration settings'
+1.d-2                         ;factor for numerical differentiation
+1.d-6                         ;convergenc tolerance
+
+'maximum ionic strength'
+1.0d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'output time unit'
+'days'                        ;time unit (local chemistry)
+
+'done'
+
+! Data Block 16: initial condition - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'initial condition - local geochemistry'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'kinetically controlled dissolution of calcite'
+
+'kinetically controlled dissolution-precipitation reactions'
+.true.                        ;output of transient data
+1.d-5                         ;time step for local chemistry computations
+
+'concentration input'
+2.000E-03    'free'           ;h+
+1.000E-03    'free'           ;co32-
+1.000000E-11 'free'           ;ca2+
+
+'guess for ph'
+7.0
+
+'mineral input'
+1.00d-2   .true. 'geometric'  ;phim, minequil, update_type  - calcite-ch
+1.00d-7   0.1d0     0.00d0    ;phimin, scalfac, supsatm
+3.00d-5   3.00d-5   3.00d-7   ;radi, rads, radmin
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'equilibrium calculations - system ca+2, co3-2, h+1'
+
+'concentration input'
+2.000d-3     'free'           ;h+
+1.000d-3     'free'           ;co32-
+1.00d-11     'free'           ;ca2+
+
+'guess for ph'
+5.0
+
+'mineral input'
+1.00d-2   .true. 'geometric'  ;phim, minequil, update_type  - calcite-ch
+1.00d-7   0.1d0     0.00d0    ;phimin, scalfac, supsatm
+3.00d-5   3.00d-5   3.00d-7   ;radi, rads, radmin
+
+'end of zone'
+
+'done'

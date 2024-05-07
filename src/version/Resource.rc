@@ -1,0 +1,142 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+#include "winver.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "#include ""winver.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    0                       " "
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,6,2,880
+ PRODUCTVERSION 2,6,2,880
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x0L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "100904b0"
+        BEGIN
+            VALUE "CompanyName", "University of British Columbia"
+            VALUE "FileDescription", "A Model for Mineral-Water-Gas Simulation"
+            VALUE "FileVersion", "2.6.2.880"
+            VALUE "InternalName", "MIN3P"
+            VALUE "LegalCopyright", "(C) 2000 U. Mayer"
+            VALUE "OriginalFilename", "MIN3P-THCm"
+#ifdef DEBUG_WIN32
+            VALUE "ProductName", "MIN3P-HPC-WIN32D"
+#endif
+#ifdef DEBUG_X64
+            VALUE "ProductName", "MIN3P-HPC-X64D"
+#endif
+#ifdef RELEASE_WIN32
+            VALUE "ProductName", "MIN3P-HPC-WIN32"
+#endif
+#ifdef RELEASE_X64
+            VALUE "ProductName", "MIN3P-HPC-X64"
+#endif
+#ifdef DEBUG_WIN32_P
+            VALUE "ProductName", "MIN3P-HPC-WIN32D-P"
+#endif
+#ifdef DEBUG_X64_P
+            VALUE "ProductName", "MIN3P-HPC-X64D-P"
+#endif
+#ifdef RELEASE_WIN32_P
+            VALUE "ProductName", "MIN3P-HPC-WIN32-P"
+#endif
+#ifdef RELEASE_X64_P
+            VALUE "ProductName", "MIN3P-HPC-X64-P"
+#endif
+            VALUE "ProductVersion", "2.6.2.880"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x1009, 1200
+    END
+END
+
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

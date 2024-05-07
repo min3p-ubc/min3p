@@ -1,0 +1,736 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"ex11trn.sel"'
+$!VarSet |LFDSVL1| = '"time" "na+1" "k+1" "ca+2" "cl-1" "h+1" "o2(aq)" "no3-1" "V1" "V2" "V3" "V4" "V5" "V6" "V7" "V8" "V9"'
+$!VarSet |LFDSFN2| = '"ex11_1.gbt"'
+$!VarSet |LFDSVL2| = '"time" "na+1" "k+1" "ca+2" "cl-1" "h+1" "o2(aq)" "no3-1"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = 0.1817
+    Y1 = 0.1231
+    X2 = 8.28
+    Y2 = 6.241
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.5
+    Y = 0.5
+    }
+  WIDTH = 7.5
+  HEIGHT = 5.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-4]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    XYPOS
+      {
+      X = 68.418
+      Y = 86.667
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'Na' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 14
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = RED
+    LINEPATTERN = DASHED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = RED
+    SIZE = 2
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'K' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 14
+    YAXISVAR = 11
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINEPATTERN = DASHED
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = CYAN
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [3]
+  NAME = 'Ca' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 14
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINEPATTERN = DASHED
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = GREEN
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [4]
+  NAME = 'Cl' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 14
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINEPATTERN = DASHED
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLUE
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 20
+    Y1 = 18.182
+    X2 = 93.333
+    Y2 = 90.909
+    }
+  VIEWPORTTOPSNAPTARGET = 90.909
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 24
+    AUTOGRID = NO
+    GRSPACING = 4
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 4
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [hours]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 5
+        }
+      OFFSET = 6
+      }
+    AXISLINE
+      {
+      OFFSET = 0.002
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.0016000000000000001
+    AUTOGRID = NO
+    GRSPACING = 0.0002
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 4
+        }
+      NUMFORMAT
+        {
+        FORMATTING = SUPERSCRIPT
+        PRECISION = 1
+        NEGATIVEPREFIX = '' 
+        NEGATIVESUFFIX = '' 
+        ZEROPREFIX = '' 
+        ZEROSUFFIX = '' 
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Concentration [mol L<sup>-1</sup>]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 5
+        }
+      OFFSET = 15
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWLINES = NO
+  SHOWSYMBOLS = YES
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL2|' 
+$!REMOVEVAR |LFDSVL2|
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.5
+    Y = 0.5
+    }
+  WIDTH = 7.5
+  HEIGHT = 5.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-4]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 5
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    XYPOS
+      {
+      X = 21.455
+      Y = 94.159
+      }
+    ANCHORALIGNMENT = TOPLEFT
+    }
+$!LINEMAP  [1]
+  NAME = 'Na' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    LINETHICKNESS = 0.8
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'K' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    LINETHICKNESS = 0.8
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = 'Ca' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    LINETHICKNESS = 0.8
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = 'Cl' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    LINETHICKNESS = 0.8
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 20
+    Y1 = 18.182
+    X2 = 93.333
+    Y2 = 90.909
+    }
+  VIEWPORTTOPSNAPTARGET = 90.909
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 24
+    AUTOGRID = NO
+    GRSPACING = 4
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 4
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [hours]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 5
+        }
+      OFFSET = 6
+      }
+    AXISLINE
+      {
+      OFFSET = 0.002
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.0016000000000000001
+    AUTOGRID = NO
+    GRSPACING = 0.0002
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 4
+        }
+      NUMFORMAT
+        {
+        FORMATTING = SUPERSCRIPT
+        PRECISION = 1
+        NEGATIVEPREFIX = '' 
+        NEGATIVESUFFIX = '' 
+        ZEROPREFIX = '' 
+        ZEROSUFFIX = '' 
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Concentration [mol L<sup>-1</sup>]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 5
+        }
+      OFFSET = 15
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 25.4545437644
+    Y = 80.358096934
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 18
+    }
+  TEXT = 'symbols - PHREEQC\nlines - MIN3P-NWMO ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 26.7421747194
+    Y = 67.5198334789
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 16
+    }
+  TEXT = 'Na<sup>+</sup>' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 66.897727672
+    Y = 58.676660813
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 16
+    }
+  TEXT = 'K<sup>+</sup>' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 75.2766422645
+    Y = 76.3630061447
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 16
+    }
+  TEXT = 'Cl<sup>-</sup>' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 80.8098877501
+    Y = 36.8922598558
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 16
+    }
+  TEXT = 'Ca<sup>2+</sup>' 
+$!SETSTYLEBASE CONFIG

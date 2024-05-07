@@ -1,0 +1,1 @@
+This folder contains the configuration file of automatically documentation for programmer manual by Doxygen.

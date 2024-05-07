@@ -1,0 +1,171 @@
+! tranfs.dat
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Test example: 2D transient fully-saturated flow'
+.true.                        ;varsat_flow
+.false.                       ;steady_flow
+.true.                        ;fully_saturated
+.false.                       ;reactive_transport
+
+'done'
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+1                             ;number of discretization intervals in x
+11                            ;number of control volumes in x
+0. 1.0                        ;xmin,xmax
+1                             ;number of discretization intervals in y
+1                             ;number of control volumes in y
+0. 1.0                        ;ymin,ymax
+1                             ;number of discretization intervals in z
+11                            ;number of control volumes in z
+0. 1.0                        ;zmin,zmax
+
+'done'
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'days'                        ;time unit
+0.0                           ;time at start of solution
+0.02                          ;final solution time
+0.002                         ;maximum time step
+0.002                         ;minimum time step
+
+'done'
+
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'hydraulic head'              ;input unit
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+100                           ;msolvit_vs, max. number of solver iterations
+1                             ;idetail_vs, solver information level
+1.0d-7                        ;restol_vs, solver residual tolerance
+1.0d-7                        ;deltol_vs, solver update tolerance
+
+'done'
+
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'output of spatial data'
+1                             ;number of output times (spatial data)
+0.02                          ;specified output times (spatial data)
+
+'done'
+
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+1                             ;number of material property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'zone 1'
+1.0                           ;porosity
+
+'extent of zone'
+0.0 1.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+
+! zone 1
+! ---------------------------------------------------------------------------
+!
+'zone 1'
+
+'hydraulic conductivity in x-direction'
+1.16d-5                       ;K_xx
+
+'hydraulic conductivity in z-direction'
+1.16d-5                       ;K_zz
+
+'specific storage coefficient'
+1.0d-3                        ;S_s
+
+'end of zone'
+
+'done'
+
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'zone 1'
+
+'extent of zone'
+0.0 1.0  0.0 1.0  0.0 1.0
+
+'initial condition'
+2.0                           ;hydraulic head
+
+'end of zone'
+
+'done'
+
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'inflow boundary'
+
+'boundary type'
+'second' 5.79d-5               ;flux
+
+'extent of zone'
+0.49 0.51  0.0 1.0   1.0 1.0
+
+'end of zone'
+
+!
+! zone 2
+! ---------------------------------------------------------------------------
+!
+'number and name of zone'
+2
+'outflow boundary'
+
+'boundary type'
+'first' 2.0                   ;hydraulic head
+
+'extent of zone'
+0.0 0.0 0.0 0.0 0.0 0.0
+
+'end of zone'
+
+'done'

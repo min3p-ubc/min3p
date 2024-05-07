@@ -1,0 +1,7 @@
+#!MC 1000
+$!ALTERDATA 
+  EQUATION = '{Cat} = ({H+ - P}+{Na+ - P})' 
+$!ALTERDATA 
+  EQUATION = '{Ani} = ({Cl- - P}+{NO3- - P})' 
+$!ALTERDATA 
+  EQUATION = '{CBE PHREEQC} =100* ({Cat}-{Ani})/({Cat}+{Ani})' 

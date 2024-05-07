@@ -1,0 +1,4254 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"haverk_8.gsp"'
+$!VarSet |LFDSFN2| = '"haverk_7.gsp"'
+$!VarSet |LFDSFN3| = '"haverk_6.gsp"'
+$!VarSet |LFDSFN4| = '"haverk_5.gsp"'
+$!VarSet |LFDSFN5| = '"haverk_4.gsp"'
+$!VarSet |LFDSFN6| = '"haverk_3.gsp"'
+$!VarSet |LFDSFN7| = '"haverk_2.gsp"'
+$!VarSet |LFDSFN8| = '"haverk_1.gsp"'
+$!VarSet |LFDSFN9| = '"haverk_9.gsp"'
+$!VarSet |LFDSFN10| = '"haverkamp1977-1.txt" "haverkamp1977-2.txt" "haverkamp1977-3.txt" "haverkamp1977-4.txt" "haverkamp1977-5.txt" "haverkamp1977-6.txt" "haverkamp1977-7.txt" "haverkamp1977-8.txt"'
+$!VarSet |LFDSVL10| = '"x" "y" "z" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "V1" "V2" "V3"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = QUARTERINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 8.55
+    Y2 = 11.05
+    }
+$!RAWCOLORMAP 
+  RAWDATA
+9
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+57 57 57
+85 85 85
+113 113 113
+142 142 142
+$!COLORMAP 
+  CONTOURCOLORMAP = RAWUSERDEF
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 56.318
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.3 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 64.7751428571
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.2 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 74.1898691622
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.1 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.3625003882
+    Y = 39.4037142857
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [cm]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.7702648475
+    Y = 87.8528019985
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Haverkamp et al., Soil Sci. Am. J., 41, 1977' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 56.318
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.3 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 64.7751428571
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.2 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 74.1898691622
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.1 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.3625003882
+    Y = 39.4037142857
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [cm]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.7702648475
+    Y = 87.8528019985
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Haverkamp et al., Soil Sci. Am. J., 41, 1977' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN3|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 56.318
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.3 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 64.7751428571
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.2 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 74.1898691622
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.1 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.3625003882
+    Y = 39.4037142857
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [cm]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.7702648475
+    Y = 87.8528019985
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Haverkamp et al., Soil Sci. Am. J., 41, 1977' 
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN4|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN4|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 56.318
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.3 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 64.7751428571
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.2 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 74.1898691622
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.1 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.3625003882
+    Y = 39.4037142857
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [cm]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.7702648475
+    Y = 87.8528019985
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Haverkamp et al., Soil Sci. Am. J., 41, 1977' 
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN5|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN5|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 56.318
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.3 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 64.7751428571
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.2 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 74.1898691622
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.1 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.3625003882
+    Y = 39.4037142857
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [cm]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.7702648475
+    Y = 87.8528019985
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Haverkamp et al., Soil Sci. Am. J., 41, 1977' 
+### Frame Number 6 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN6|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN6|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 004' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+### Frame Number 7 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN7|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN7|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 005' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+### Frame Number 8 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN8|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN8|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 56.318
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.3 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 64.7751428571
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.2 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 74.1898691622
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.1 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.3625003882
+    Y = 39.4037142857
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [cm]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.7702648475
+    Y = 87.8528019985
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Haverkamp et al., Soil Sci. Am. J., 41, 1977' 
+### Frame Number 9 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN9|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN9|
+$!READDATASET  '|LFDSFN10|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL10|' 
+$!REMOVEVAR |LFDSVL10|
+$!REMOVEVAR |LFDSFN10|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.75
+    }
+  WIDTH = 8
+  HEIGHT = 8.25
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1,10-18]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 6
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [10]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [11]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [12]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 3
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [13]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 4
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 5
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [15]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 6
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [16]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 7
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [17]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 8
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [18]
+  NAME = '&ZN&' 
+  ASSIGN
+    {
+    ZONE = 9
+    XAXISVAR = 12
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 21.875
+    Y1 = 11.918
+    X2 = 87
+    Y2 = 85.918
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.2
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002703
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 70
+    GRSPACING = 10
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.007678
+      OFFSET = 8.875
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 36.128611557
+    Y = 91.0922591706
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Infiltration into soil column ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 70.2692910942
+    Y = 17.3767679219
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.9 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 64.7751428571
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.2 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 74.1898691622
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.1 hrs' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 15.3625003882
+    Y = 39.4037142857
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [cm]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 43.9727126806
+    Y = 3.67231269329
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'saturation [-]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 24.7702648475
+    Y = 87.8528019985
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'Haverkamp et al., Soil Sci. Am. J., 41, 1977' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.6773737111
+    Y = 38.596241689
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.5 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 56.5963789275
+    Y = 17.1435868914
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.8 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.6773737111
+    Y = 22.2735695604
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.7 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.6773737111
+    Y = 29.9685435639
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.6 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 54.4374980591
+    Y = 47.6903018749
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 0.4 hrs ' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 26.0965682868
+    Y = 80.0253117439
+    }
+  TEXT = 'line: MIN3P\nsymbol: experiment' 
+$!SETSTYLEBASE CONFIG

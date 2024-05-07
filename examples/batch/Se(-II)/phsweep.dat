@@ -1,0 +1,74 @@
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Se(-II)-speciation from pH = 0-14'
+.false.                       ;varsat_flow
+.false.                       ;steady_flow
+.false.                       ;fully_saturated
+.false.                       ;reactive_transport
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'..\..\..\database\default'
+
+'components'
+2                             ;number of components (nc-1)
+'h+1'                         ;component names
+'hse-1'
+
+'secondary aqueous species'
+3                             ;number of secondary aqueous species
+'oh-'                         ;names of secondary aqueous species
+'se-2'
+'h2se'
+
+'done'
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-2                         ;factor for numerical differentiation
+1.d-6                         ;convergenc tolerance
+
+'maximum ionic strength'
+1.0d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'output time unit'
+'days'                        ;time unit (local chemistry)
+
+'done'
+
+! Data Block 16: initial condition - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'initial condition - local geochemistry'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'pH-sweep from 0-14 '
+
+'concentration input'
+0.0        'ph_sweep' 14.0  50  ;h+1
+1.00d-4    'free'               ;seo4-2
+
+'end of zone'
+
+'done'

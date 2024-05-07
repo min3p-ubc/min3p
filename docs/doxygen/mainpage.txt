@@ -1,0 +1,71 @@
+/**
+ * @mainpage MIN3P_THCm Programmer Manual 
+ *
+ * <br/>
+ * @section INTRODUCTION
+ *
+ * The MIN3P_THCm code is developed as a multicomponent reactive transport model 
+ * for variably saturated porous media in one, two or three spatial dimensions 
+ * with the extension of heat transport, one dimensional hydromechanical coupling, 
+ * multicomponent diffusion and reactive transport in highly saline solution. 
+ * Advective-dispersive transport in the aqueous phase, as well as diffusive gas 
+ * transport can be considered. Darcy velocities are calculated internally using 
+ * a variably-saturated flow module. The model formulation is based on the global 
+ * implicit solution approach, which considers reaction and transport processes 
+ * simultaneously. This formulation enforces a global mass balance between solid, 
+ * surface, dissolved and gaseous species and thus facilitates the investigation 
+ * of the interactions of reaction and transport processes. The model can also
+ * be used as a batch model for equilibrium speciation problems, kinetic batch 
+ * problems or for the generation of pC-pH-diagrams.
+ * <br/> <br/>
+ * MIN3P-THCm is characterized by a high degree of flexibility with respect to the
+ * definition of the geochemical reaction network to facilitate the application of 
+ * the model to a wide range of hydrogeological and geochemical problems. Chemical 
+ * processes included are homogeneous reactions in the aqueous phase, such as 
+ * complexation and oxidation-reduction reactions, as well as heterogeneous reactions, 
+ * such as ion exchange, surface complexation, mineral dissolution-precipitation and 
+ * gas exchange reactions. Reactions within the aqueous phase and dissolution-precipitation 
+ * reactions can be considered as equilibrium or kinetically-controlled processes.
+ * <br/> <br/>
+ * A new, general framework for kinetically-controlled intra-aqueous and mineral
+ * dissolution-precipitation reactions was developed. All kinetically-controlled reactions 
+ * can be described as reversible or irreversible reaction processes. Different reaction
+ * mechanisms for dissolution-precipitation reactions are considered, which can be
+ * subdivided into surface- and transport-controlled reactions. This approach allows the
+ * consideration of a large number of rate expressions reported in the literature. Related
+ * reaction and rate parameters can be incorporated into the model through an
+ * accompanying database. The model is primarily designed for problems involving
+ * inorganic chemistry, but reactions involving organic chemicals can also be
+ * accommodated. Microbially-mediated reactions can be described using a multiplicative
+ * Monod approach.
+ * <br/> <br/>
+ * @section COPYRIGHT NOTICE AND USAGE LIMITATIONS 
+ *
+ * All rights are reserved. The MIN3P_THCm model and User's Guide are copyright. 
+ * The documentation, executable, source code, or any part thereof, may not be 
+ * reproduced, duplicated, translated, or distributed in any way without the 
+ * express written permission of the copyright holder. The MIN3P_THCm program 
+ * must be specifically licensed for inclusion in software distributed in any 
+ * manner, sold commercially, or used in for-profit research/consulting. 
+ * Distribution of source code is expressly forbidden.
+ * <br/> <br/>
+ * @section DISCLAIMER
+ *
+ * Although great care has been taken in preparing MIN3P-THCm and its 
+ * documentation, the author cannot be held responsible for any errors or 
+ * omissions. As such, this code is offered `as is'. The author makes no 
+ * warranty of any kind, express or implied. The author shall not be liable 
+ * for any damages arising from a failure of this program to operate in the 
+ * manner desired by the user. The author shall not be liable for any damage 
+ * to data or property which may be caused directly or indirectly by use of 
+ * this program. In no event will the author be liable for any damages, 
+ * including, but not limited to, lost profits, lost savings or other incidental 
+ * or consequential damages arising out of the use, or inability to use, 
+ * this program. Use, attempted use, and/or installation of this program shall 
+ * constitute implied acceptance of the above conditions. Authorized users 
+ * encountering problems with the code, or requiring specific implementations 
+ * not supported by this version, are encouraged to contact the author for 
+ * possible assistance.
+ * <br/> <br/>
+ @image html min3p.png
+*/

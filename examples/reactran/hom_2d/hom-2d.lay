@@ -1,0 +1,662 @@
+#!MC 700
+$!VarSet |LFDSFN1| = 'hom-2d.gst'
+$!VarSet |LFDSFN2| = 'hom-2d_1.gst'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!PRINTSETUP 
+  MONOFLOODMAP
+    {
+    BLACKSHADE = 100
+    }
+$!COLORSPECTRUM 
+  CONTOURCOLORMAP = GRAYSCALE
+  SURFACERGBMIN
+    {
+    R = 0
+    G = 0
+    B = 0
+    }
+  SURFACERGBMAX
+    {
+    R = 255
+    G = 255
+    B = 255
+    }
+$!COLORMAPCONTROL RESETTOFACTORY
+$!COLORSPECTRUM 
+  GRAYSCALE
+    {
+    CONTROLPOINT 2
+      {
+      COLORMAPFRACTION = 0.04746
+      }
+    CONTROLPOINT 3
+      {
+      COLORMAPFRACTION = 0.09493
+      }
+    CONTROLPOINT 4
+      {
+      COLORMAPFRACTION = 0.1687
+      }
+    CONTROLPOINT 5
+      {
+      COLORMAPFRACTION = 0.2493
+      }
+    CONTROLPOINT 6
+      {
+      COLORMAPFRACTION = 0.4979
+      }
+    CONTROLPOINT 7
+      {
+      COLORMAPFRACTION = 0.6652
+      }
+    CONTROLPOINT 8
+      {
+      COLORMAPFRACTION = 0.8326
+      }
+    }
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 1.45
+    Y = 0.15
+    }
+  WIDTH = 7.5
+  HEIGHT = 8.2
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!FRAMEMODE  = TWOD
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 4
+  LABELS
+    {
+    ALIGNAUTOLABELS = NO
+    LABELWITHVALUE = NO
+    AUTOLABELSPACING = 33
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    MARGIN = 20
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  LEGEND
+    {
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 60.996
+      Y = 84.903
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  FLOODCUTOFF
+    {
+    RANGEMIN = -1.00000001505E+30
+    RANGEMAX = 1.00000001505E+30
+    }
+  COLORMAPFILTER
+    {
+    REVERSESPECTRUM = YES
+    }
+  CONTOURLINESTYLE
+    {
+    PATTERNLENGTH = 0.5
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+15
+0.00125018751714
+0.00250017503276
+0.0037501626648
+0.00500014983118
+0.00625013746321
+0.00750012509525
+0.00875011272728
+0.0100001003593
+0.0112500879914
+0.0125000756234
+0.0137500623241
+0.0150000499561
+0.0162500385195
+0.0175000242889
+0.0187500119209
+$!GLOBALTHREEDVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!GLOBALTWODVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!BLANKING 
+  IJK
+    {
+    IMAXFRACT = 0
+    JMAXFRACT = 0
+    KMAXFRACT = 0
+    }
+$!GLOBALSTREAM 
+  SHOW = NO
+  TERMLINE
+    {
+    SHOW = NO
+    }
+  STREAMTIMING
+    {
+    MARKCOLOR = WHITE
+    MARKSIZE = 1
+    DELTATIME = 1.00000001505E+30
+    ENDTIME = 1.00000001505E+30
+    }
+  CELLFRACTION = 0.300000011921
+  ARROWHEADSIZE = 0.8
+  RODRIBBONWIDTH = 1E-30
+  LINETHICKNESS = 0.15
+  NUMRODPOINTS = 4
+  MAXSTEPS = 800
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = BLACK
+    FRAMESIZE = 1.2
+    }
+  SHADE
+    {
+    COLOR = RED
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.15
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X2 = 71.515
+      Y2 = 85
+      }
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  DEPXTOYRATIO = 1
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.10002000249
+    GRSPACING = 0.019999999553
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.200040004981
+    GRSPACING = 0.0499999970198
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 10.000000149
+    Y = 89.9999976158
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'reactive transport including complexation reactions                     ' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 75.7894736842
+    Y = 76.0603337612
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    LINETHICKNESS = 0.4
+    }
+  SCOPE = GLOBAL
+  TEXT = 'old: flood\nnew: lines\n' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 1.45
+    Y = 0.15
+    }
+  WIDTH = 7.5
+  HEIGHT = 8.2
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!FRAMEMODE  = TWOD
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 4
+  LABELS
+    {
+    ALIGNAUTOLABELS = NO
+    LABELWITHVALUE = NO
+    AUTOLABELSPACING = 33
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    MARGIN = 20
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  LEGEND
+    {
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 60.996
+      Y = 84.903
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  FLOODCUTOFF
+    {
+    RANGEMIN = -1.00000001505E+30
+    RANGEMAX = 1.00000001505E+30
+    }
+  CONTOURLINESTYLE
+    {
+    PATTERNLENGTH = 0.5
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+15
+0.00125018751714
+0.00250017503276
+0.0037501626648
+0.00500014983118
+0.00625013746321
+0.00750012509525
+0.00875011272728
+0.0100001003593
+0.0112500879914
+0.0125000756234
+0.0137500623241
+0.0150000499561
+0.0162500385195
+0.0175000242889
+0.0187500119209
+$!GLOBALTHREEDVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!GLOBALTWODVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!BLANKING 
+  IJK
+    {
+    IMAXFRACT = 0
+    JMAXFRACT = 0
+    KMAXFRACT = 0
+    }
+$!GLOBALSTREAM 
+  SHOW = NO
+  TERMLINE
+    {
+    SHOW = NO
+    }
+  STREAMTIMING
+    {
+    MARKCOLOR = WHITE
+    MARKSIZE = 1
+    DELTATIME = 1.00000001505E+30
+    ENDTIME = 1.00000001505E+30
+    }
+  CELLFRACTION = 0.300000011921
+  ARROWHEADSIZE = 0.8
+  RODRIBBONWIDTH = 1E-30
+  LINETHICKNESS = 0.15
+  NUMRODPOINTS = 4
+  MAXSTEPS = 800
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    COLOR = RED
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = BLACK
+    FRAMESIZE = 1.2
+    }
+  SHADE
+    {
+    COLOR = RED
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.15
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X2 = 71.515
+      Y2 = 85
+      }
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  DEPXTOYRATIO = 1
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.10002000249
+    GRSPACING = 0.019999999553
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.200040004981
+    GRSPACING = 0.0499999970198
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 10.000000149
+    Y = 89.9999976158
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    FILLCOLOR = BLACK
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'reactive transport including complexation reactions                     ' 
+$!REMOVEVAR |LFDSFN2|
+$!REMOVEVAR |LFDSFN1|
+$!SETSTYLEBASE CONFIG

@@ -1,0 +1,379 @@
+! Benchmark 1: Fick’s Law 
+!              
+!           a. Dp =1.0 * 10-9 m2/sec
+!     
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Benchmark 1: Fick Law'
+.true.                        ;varsat_flow
+.true.                        ;steady_flow
+.true.                        ;fully_saturated
+.true.                        ;reactive_transport
+
+!'multicomponent diffusion'
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+
+'database\default'
+
+'define input units'
+'mol/l'
+
+'components'
+1                           ;number of components (nc-1)
+'hto'						;THIS IS Iodide (I)
+      
+
+'done'
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+1                             ;number of discretization intervals in x
+101                           ;number of control volumes in interval
+0.0  0.1                      ;xmin,xmax     
+          
+1                             ;number of discretization intervals in y
+1                             ;number of control volumes in interval
+0.0  1.0                      ;ymin,ymax 
+     
+
+1                             ;number of discretization intervals in z
+1                             ;number of control volumes in interval
+0.0  1.0                      ;zmin,zmax 
+
+
+'done'
+
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'days'                         ;time unit
+0.0                            ;time at start of solution
+5                              ;final solution time
+1.0d0                          ;maximum time step
+1.0d-15                        ;minimum time step
+
+'done'
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-6                         ;factor for num. differentiation
+1.d-5                         ;convergence tolerance
+
+'maximum ionic strength'
+2.0d0                         ;max. ionic stength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'output time unit'
+'days'                       ;time unit (local chemistry)
+
+
+'done'
+
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'hydraulic head'              ;input unit
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+100                           ;msolvit_vs, max. number of solver iterations
+0                             ;idetail_vs, solver information level
+1.0d-6                        ;restol_vs, solver residual tolerance
+1.0d-6                        ;deltol_vs, solver update tolerance
+
+'done'
+
+! Data Block 7: control parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'control parameters - reactive transport'
+
+'spatial weighting'
+!'centered'
+'upstream'                    ;spatial weighting
+
+'activity update settings'
+'no update'
+!'time_lagged'                   ;type of activity update
+
+'tortuosity correction'
+!'assigned tau'
+'no correction'
+!'millington'
+!'archie'
+!1.0
+
+!'update porosity'
+
+'newton iteration settings'
+1.d-6                         ;increment h for numerical differentiation
+12                            ;anticipted number of Newton iterations
+100                           ;max. number of Newton iterations
+0.5d0                         ;anticipated update in log cycles
+1.0d0                         ;maximum update in log cycles
+1.0d-5                        ;convergence tolerance (global system)
+
+'solver settings'
+1                             ;incomplete factorization level
+100                           ;max. number of solver iterations
+0                             ;solver information level
+1.d-6                         ;solver residual tolerance
+1.d-6                         ;solver update tolerance
+
+'done'
+
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'output of spatial data'
+4                             ;number of output times (spatial data)
+1 2 3 4 	                  ;specified output times (spatial data)
+
+'output of transient data'
+1                             ;number of output locations (transient data)
+1                             ;time steps between output (transient data)
+50   					      ;control volume number for transient data
+
+'done'
+
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+1                             ;number of property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'background'			  
+1.0						  ;porosity
+!1.0					      ;tortuosity
+
+'extent of zone'          
+0.0 0.1  0.0 1.0 0.0 1.0
+
+'end of zone'
+
+'done'
+
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+! ---------------------------------------------------------------------------
+
+'background'
+
+'hydraulic conductivity in x-direction'
+1.0d-13                       ;K_xx 
+
+'hydraulic conductivity in y-direction'
+1.0d-13                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+1.0d-13                       ;K_zz
+
+'end of zone'
+
+'done'
+
+
+! Data Block 11: physical parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'physical parameters - reactive transport'
+
+'diffusion coefficients'
+1.0d-9                        ;aqueous phase
+
+! ---------------------------------------------------------------------------
+!
+'background'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'end of zone'
+
+'done'
+
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'entire domain'
+
+'initial condition'
+1.0
+
+'extent of zone'
+0.0 0.1 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'inflow boundary'
+
+'boundary type'
+'first'  1.0               ;hydraulic head; for advection test h=1.01
+
+'extent of zone'
+0.0 0.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'outflow boundary'
+
+'boundary type'
+'first' 1.0                  ;hydraulic head
+
+'extent of zone'
+0.1 0.1 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+! Data Block 14: initial condition - reactive transport
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+3                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'Left Domain'
+
+'concentration input'
+1.0d-100     'free'    ; THIS IS Iodide (I) 
+
+'extent of zone'          
+0.0 4.95d-2  0.0 1.0 0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+! Borehole
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+2
+'Injection'
+
+'concentration input'
+1.0d-1   'free'    ;THIS IS Iodide (I)  
+
+'extent of zone'
+4.95d-2 5.05d-2 0.0 1.0  0.0 1.0 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+3
+'Right Domain'
+
+'concentration input'
+1.0d-100     'free'    ; THIS IS Iodide (I) 
+
+'extent of zone'            
+5.05d-2 0.1 0.0 1.0 0.0 1.0 
+
+'end of zone'
+
+'done'
+
+! Data Block 16: boundary conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - reactive transport'
+2                             ;number of zones
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'right boundary'
+
+'boundary type'
+'second'
+
+!'concentration input'
+!1.0d-100     'free'    ; THIS IS Iodide (I)   
+                             
+'extent of zone'
+0.0 0.0 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'left boundary'
+
+'boundary type'
+'second'
+
+!'concentration input'
+!1.0d-100     'free'    ; THIS IS Iodide (I)   
+                             
+'extent of zone'
+0.1 0.1 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'

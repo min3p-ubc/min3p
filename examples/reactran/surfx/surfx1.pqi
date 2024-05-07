@@ -1,0 +1,66 @@
+DATABASE C:\Program Files\USGS\Phreeqc Interactive 2.8\phreeqc.dat
+TITLE Example Surfx.--Transport with surface reactions
+
+SOLUTION 1-100 #Initial condition
+        pH      8.0
+        temp    25.
+        units   mol/l
+        Fe(+3)  1.0e-10
+        S       1.0e-5
+        Zn      1.0e-7
+        Fe(+2)  1.0e-5           
+        Cu      1.0e-7
+SURFACE 1-100
+    Hfo_sOH 0.01   10     100
+    -no_edl
+END
+SOLUTION 0 #boundary
+    temp      25
+    pH        3
+    units     mol/l
+    Fe(3)     1e-010
+    S(6)      0.0025
+    Zn        0.001
+    Fe(2)     1e-005
+    Cu(2)     0.001
+end
+TRANSPORT
+    -cells                 100
+    -shifts                1600
+    -time_step             457.14 # seconds
+    -flow_direction        forward
+    -boundary_conditions   flux flux
+    -lengths               100*0.16
+    -dispersivities        100*0.01
+    -diffusion_coefficient 1e-009
+    -print_cells           100
+    -print_frequency       100
+    -punch_cells           100
+    -punch_frequency       3
+    -warnings              true
+PRINT
+    -echo_input            false
+    -eh                    false
+    -equilibrium_phases    false
+    -exchange              false
+    -gas_phase             false
+    -headings              false
+    -inverse               false
+    -kinetics              false
+    -other                 false
+    -saturation_indices    false
+    -solid_solutions       false
+    -species               false
+    -surface               false
+    -totals                false
+    -user_print            false
+    -warnings              0
+SELECTED_OUTPUT
+        -file   surfx.sel
+        -reset  false 
+#       -time       true
+#	  -ph
+USER_PUNCH
+        -head time(h) SO4_mol Cu_mol Zn_mol   Hfo_sOH   Hfo_sOH2+    Hfo_s-    Hfo_sZn+    Hfo_sCu+     PH
+10 PUNCH TOTAL_TIME/3600, TOT("S"), TOT("Cu"), TOT("Zn"), MOL("Hfo_sOH"),MOL("Hfo_sOH2+"),MOL("Hfo_sO-"),MOL("Hfo_sOZn+"),MOL("Hfo_sOCu+"),-LA("H+")
+END

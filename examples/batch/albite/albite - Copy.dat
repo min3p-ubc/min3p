@@ -1,0 +1,133 @@
+! albite.dat
+! batch test example - weathering of calcite (fast) and albite (slow)
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Batch problem - Dissolution of albite and calcite'
+.false.                       ;varsat_flow
+.false.                       ;steady_flow
+.false.                       ;fully_saturated
+.false.                       ;reactive_transport
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'..\..\..\database\default'
+
+'components'
+6                             ;number of components (nc-1)
+'ca+2'                        ;component names
+'na+1'
+'co3-2'
+'h4sio4'
+'al+3'
+'h+1'
+
+'secondary aqueous species'
+14                            ;number of secondary aqueous species
+'oh-'                         ;names of secondary aqueous species
+'hco3-'
+'h2co3aq'
+'caoh+'
+'cahco3+'
+'caco3aq'
+'h3sio4-'
+'h2sio4-2'
+'naco3-'
+'nahco3aq'
+'aloh+2'
+'al(oh)2+'
+'al(oh)3aq'
+'al(oh)4-'
+
+'minerals'
+2                             ;number of minerals (nm)
+'calcite-ch'                  ;mineral names
+'albite-ph-d'
+
+'done'
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-6                         ;factor for numerical differentiation
+1.d-4                         ;convergence tolerance
+
+'maximum ionic strength'
+0.5d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'output time unit'
+'days'                        ;time unit (local chemistry)
+
+'done'
+
+! Data Block 14: initial condition - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'initial condition - local geochemistry'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'background chemistry'
+
+'kinetically controlled dissolution-precipitation reactions'
+.true.                        ;output of transient data
+1.0d-2                        ;initial time step (local chemistry)
+
+'concentration input'
+1.69512E-05    'free'         ;ca2+
+1.00000E-06    'free'         ;na+
+2.69512E-05    'free'         ;co32-
+1.00000E-06    'free'         ;h4sio4
+1.00000E-06    'free'         ;al3+
+2.154E-04      'free'         ;h+
+
+'guess for ph'
+7.0
+
+'mineral input'
+5.00d-4   .true. 'geometric'  ;phim, minequil, update_type  - calcite-ch
+1.00d-7   0.1d0     0.00d0    ;phimin, scalfac, supsatm
+1.50d-4   1.50d-4   3.00d-7   ;radi, rads, radmin
+5.00d-1   .true. 'geometric'  ;phim, minequil, update_type  - albite-ph-d
+1.00d-7   0.1d0     0.00d0    ;phimin, scalfac, supsatm
+1.50d-4   1.50d-4   3.00d-7   ;radi, rads, radmin
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'source chemistry'
+
+'concentration input'
+1.00d-3        'free'         ;ca2+
+1.00000E-07    'free'         ;na+
+1.00d-3        'free'         ;co32-
+1.00000E-07    'free'         ;h4sio4
+1.00000E-07    'free'         ;al3+
+1.98d-3        'free'         ;h+
+
+'guess for ph'
+5.0
+
+'end of zone'
+
+'done'

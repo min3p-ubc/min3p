@@ -1,0 +1,1 @@
+This folder contains how to configure subversion(SVN) server and client for the code development. This file is moved to docs/guidelines/UserManual_MIN3P_VisualSVN.docx.

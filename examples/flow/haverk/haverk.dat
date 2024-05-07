@@ -1,0 +1,181 @@
+! haverk.dat
+! HAVERKAMP COLUMN  (HAVERKAMP ET AL, SOIL SCIENCE OF AM. J., 41,1977)
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'1D - drainage problem, Haverkamp et al., Soil Sci. Am. J., 41, 1977'
+.true.                        ;varsat_flow
+.false.                       ;steady_flow
+.false.                       ;fully_saturated
+.false.                       ;reactive_transport
+
+'done'
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+1                             ;number of discretization intervals in x
+1                             ;number of control volumes in x
+0. 1.0                        ;xmin,xmax
+1                             ;number of discretization intervals in y
+1                             ;number of control volumes in y
+0. 1.0                        ;ymin,ymax
+1                             ;number of discretization intervals in z
+71                            ;number of control volumes in z
+0.0 70.0                      ;zmin,zmax
+
+'done'
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'days'                        ;time unit
+0.0                           ;time at start of solution
+1.0                           ;final solution time
+0.1                           ;maximum time step
+0.001                         :minimum time step
+
+'done'
+
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'pressure head'               ;input unit
+
+'newton iteration settings'
+1.0d-6                        ;increment for numerical differentiation
+30                            ;maxit_vs, max. number of newton iterations
+1.0d-6                        ;tol_vs, convergence tolerance
+0.1                           ;sw_star
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+100                           ;msolvit_vs, max. number of solver iterations
+1                             ;idetail_vs, solver information level
+1.0d-7                        ;restol_vs, solver residual tolerance
+1.0d-7                        ;deltol_vs, solver update tolerance
+
+'done'
+
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'output of spatial data'
+10                            ;number of output times (spatial data)
+0.1  0.2  0.3  0.4            ;specified output times (spatial data)
+0.5  0.6  0.7  0.8
+0.9  1.0
+
+'done'
+
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+1                             ;number of material property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'silty sand'
+0.287                         ;porosity
+
+'extent of zone'
+0.0 0.0  0.0 0.0  0.0 70.0
+
+'end of zone'
+
+'done'
+
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+!
+! zone 1
+! ---------------------------------------------------------------------------
+!
+'silty sand'
+
+'hydraulic conductivity in z-direction'
+3.94d-4                       ;K_zz
+
+'specific storage coefficient'
+1.d-3                         ;S_s
+
+'soil hydraulic function parameters'
+0.261d0                       ;residual saturation
+0.03d0                        ;van genuchten - alpha
+4.4d0                         ;van genuchten - n
+0.5d0                         ;van genuchten - l
+0.0d0                         ;air entry pressure
+
+'end of zone'
+
+'done'
+
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'silty sand'
+
+'initial condition'
+-61.5                         ;pressure head
+
+'extent of zone'
+0.0 0.0  0.0 0.0  0.0 70.0
+
+'end of zone'
+
+'done'
+
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'inflow boundary'
+
+'boundary type'
+'second' 1.59d-4              ;flux
+
+'extent of zone'
+0.0 1.0  0.0 1.0  70.0 70.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'outflow boundary'
+
+'boundary type'
+'first' -61.5                 ;pressure head
+
+'extent of zone'
+0.0 0.0  0.0 0.0  0.0 0.0
+
+'end of zone'
+
+'done'

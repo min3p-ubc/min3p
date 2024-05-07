@@ -1,0 +1,1078 @@
+#!MC 700
+$!VarSet |LFDSFN1| = 'clem3d.plt'
+$!VarSet |LFDSFN2| = 'clem3d_1.gsp'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  PAPERGRIDSPACING = QUARTERINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!PRINTSETUP 
+  MONOFLOODMAP
+    {
+    BLACKSHADE = 100
+    }
+$!COLORSPECTRUM 
+  CONTOURCOLORMAP = GRAYSCALE
+  SURFACERGBMIN
+    {
+    R = 0
+    G = 0
+    B = 0
+    }
+  SURFACERGBMAX
+    {
+    R = 255
+    G = 255
+    B = 255
+    }
+$!COLORMAPCONTROL RESETTOFACTORY
+$!COLORSPECTRUM 
+  GRAYSCALE
+    {
+    CONTROLPOINT 2
+      {
+      COLORMAPFRACTION = 5.023E-06
+      }
+    CONTROLPOINT 3
+      {
+      COLORMAPFRACTION = 3.994E-05
+      }
+    CONTROLPOINT 4
+      {
+      COLORMAPFRACTION = 0.0087
+      }
+    CONTROLPOINT 5
+      {
+      COLORMAPFRACTION = 0.207
+      }
+    CONTROLPOINT 6
+      {
+      COLORMAPFRACTION = 0.4052
+      }
+    CONTROLPOINT 7
+      {
+      COLORMAPFRACTION = 0.6035
+      }
+    CONTROLPOINT 8
+      {
+      COLORMAPFRACTION = 0.8017
+      }
+    }
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 8
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!FRAMEMODE  = THREED
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 4
+  LABELS
+    {
+    GENERATEAUTOLABELS = NO
+    ALIGNAUTOLABELS = NO
+    LABELWITHVALUE = NO
+    AUTOLABELSPACING = 33
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    MARGIN = 20
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  LEGEND
+    {
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 50
+      Y = 50
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  FLOODCUTOFF
+    {
+    RANGEMIN = -1.00000001505E+30
+    RANGEMAX = 1.00000001505E+30
+    }
+  COLORMAPFILTER
+    {
+    REVERSESPECTRUM = YES
+    }
+  CONTOURLINESTYLE
+    {
+    PATTERNLENGTH = 0.5
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+15
+0.751925891096
+0.817449693556
+0.882973496016
+0.948497298476
+1.01402110094
+1.0795449034
+1.14506870586
+1.21059250832
+1.27611631078
+1.34164011324
+1.4071639157
+1.47268771816
+1.53821152062
+1.60373532308
+1.66925912554
+$!GLOBALTHREEDVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!GLOBALTWODVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!BLANKING 
+  IJK
+    {
+    IMAXFRACT = 0
+    JMAXFRACT = 0
+    KMAXFRACT = 0
+    }
+$!GLOBALSTREAM 
+  SHOW = NO
+  TERMLINE
+    {
+    SHOW = NO
+    }
+  STREAMTIMING
+    {
+    MARKCOLOR = WHITE
+    MARKSIZE = 1
+    DELTATIME = 1.00000001505E+30
+    ENDTIME = 1.00000001505E+30
+    }
+  CELLFRACTION = 0.300000011921
+  ARROWHEADSIZE = 0.8
+  RODRIBBONWIDTH = 1E-30
+  LINETHICKNESS = 0.15
+  NUMRODPOINTS = 4
+  MAXSTEPS = 800
+$!FIELD  [1]
+  MESH
+    {
+    MESHTYPE = HIDDENLINE
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = BLACK
+    FRAMESIZE = 1.2
+    }
+  SHADE
+    {
+    COLOR = RED
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.15
+    }
+  IJKMODE
+    {
+    CELLTYPE = FACEPLANES
+    JRANGE
+      {
+      MAX = 0
+      }
+    KRANGE
+      {
+      MAX = 41
+      SKIP = 10
+      }
+    }
+$!THREEDAXIS 
+  XVAR = 1
+  YVAR = 2
+  ZVAR = 3
+$!VIEW FIT
+$!THREEDAXIS 
+  GRIDAREA
+    {
+    LINETHICKNESS = 0.25
+    ISFILLED = NO
+    FILLCOLOR = BLACK
+    LABELALLSIDES = YES
+    }
+  AXISMODE = XYZDEPENDENT
+  XYDEPXTOYRATIO = 1
+  DEPXTOYRATIO = 1
+  DEPXTOZRATIO = 1
+  XEDGE = 1
+  YEDGE = 1
+  ZEDGE = 3
+  EDGEAUTORESET = NO
+  XDETAIL
+    {
+    AUTOGRID = NO
+    RANGEMIN = -0.15000000596
+    RANGEMAX = 3.15000009537
+    GRSPACING = 0.5
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.1
+        }
+      OFFSET = -2
+      LABELALIGNMENT = ALONGAXIS
+      }
+    GRIDLINES
+      {
+      SHOW = NO
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  YDETAIL
+    {
+    RANGEMIN = -0.0500000007451
+    RANGEMAX = 1.04999995232
+    GRSPACING = 0.5
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.1
+        }
+      OFFSET = -2
+      LABELALIGNMENT = ALONGAXIS
+      }
+    GRIDLINES
+      {
+      SHOW = NO
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  ZDETAIL
+    {
+    RANGEMIN = -0.10000000149
+    RANGEMAX = 2.09999990463
+    GRSPACING = 0.5
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.1
+        }
+      OFFSET = -1
+      LABELALIGNMENT = PERPENDICULARTOAXIS
+      }
+    GRIDLINES
+      {
+      SHOW = NO
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  FRAMEAXIS
+    {
+    SHOW = NO
+    SIZE = 8
+    LINETHICKNESS = 0.25
+    }
+$!GLOBALTHREED 
+  AXISSCALEFACT
+    {
+    X = 1.09999990463
+    Y = 1.09999990463
+    Z = 1.09999990463
+    }
+  ROTATEORIGIN
+    {
+    X = 1.5
+    Y = 0.5
+    Z = 1
+    }
+  PSIANGLE = 73
+  THETAANGLE = 39
+  EYEDISTANCE = 19.8
+  GEOMLIFTFRACTION = 0.015
+  SLICE
+    {
+    ORIGIN
+      {
+      X = 1.5
+      Y = 0.5
+      Z = 1
+      }
+    }
+  TRANSFORMMIN
+    {
+    X = -2.23879130408
+    Y = -3.39772102894
+    }
+  TRANSFORMMAX
+    {
+    X = 2.23879141403
+    Y = 3.42526216056
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 6.24071119022
+    Y = 22.4619565451
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.1
+    }
+  BOX
+    {
+    MARGIN = 10
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'y-distance [m]' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 57.5509786665
+    Y = 24.6017937535
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.1
+    }
+  BOX
+    {
+    MARGIN = 10
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'x-distance [m]' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 5.23738501195
+    Y = 42.3982930249
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.1
+    }
+  BOX
+    {
+    MARGIN = 10
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [m]' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 14.2857142857
+    Y = 78.125
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  TEXT = 'old version' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 10
+    Y = 90
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    LINETHICKNESS = 0.4
+    }
+  SCOPE = GLOBAL
+  TEXT = 'Infiltration and 3-dimensional transient water table mounding           ' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 10
+    Y = 90
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    LINETHICKNESS = 0.4
+    }
+  SCOPE = GLOBAL
+  TEXT = 'Infiltration and 3-dimensional transient water table mounding           ' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 5.5
+    Y = 0.24317
+    }
+  WIDTH = 5.2803
+  HEIGHT = 8.0136
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!FRAMEMODE  = THREED
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 4
+  LABELS
+    {
+    GENERATEAUTOLABELS = NO
+    ALIGNAUTOLABELS = NO
+    LABELWITHVALUE = NO
+    AUTOLABELSPACING = 33
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    MARGIN = 20
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  LEGEND
+    {
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 50
+      Y = 50
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 2.1
+      }
+    NUMFORMAT
+      {
+      PRECISION = 2
+      }
+    }
+  FLOODCUTOFF
+    {
+    RANGEMIN = -1.00000001505E+30
+    RANGEMAX = 1.00000001505E+30
+    }
+  COLORMAPFILTER
+    {
+    REVERSESPECTRUM = YES
+    }
+  CONTOURLINESTYLE
+    {
+    PATTERNLENGTH = 0.5
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+15
+0.751925891096
+0.817449693556
+0.882973496016
+0.948497298476
+1.01402110094
+1.0795449034
+1.14506870586
+1.21059250832
+1.27611631078
+1.34164011324
+1.4071639157
+1.47268771816
+1.53821152062
+1.60373532308
+1.66925912554
+$!GLOBALTHREEDVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!GLOBALTWODVECTOR 
+  REFVECTOR
+    {
+    XYPOS
+      {
+      X = 0
+      Y = 0
+      }
+    }
+$!BLANKING 
+  IJK
+    {
+    IMAXFRACT = 0
+    JMAXFRACT = 0
+    KMAXFRACT = 0
+    }
+$!GLOBALSTREAM 
+  SHOW = NO
+  TERMLINE
+    {
+    SHOW = NO
+    }
+  STREAMTIMING
+    {
+    MARKCOLOR = WHITE
+    MARKSIZE = 1
+    DELTATIME = 1.00000001505E+30
+    ENDTIME = 1.00000001505E+30
+    }
+  CELLFRACTION = 0.300000011921
+  ARROWHEADSIZE = 0.8
+  RODRIBBONWIDTH = 1E-30
+  LINETHICKNESS = 0.15
+  NUMRODPOINTS = 4
+  MAXSTEPS = 800
+$!FIELD  [1]
+  MESH
+    {
+    MESHTYPE = HIDDENLINE
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = BLACK
+    FRAMESIZE = 1.2
+    }
+  SHADE
+    {
+    COLOR = RED
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.15
+    }
+  IJKMODE
+    {
+    CELLTYPE = FACEPLANES
+    JRANGE
+      {
+      MAX = 0
+      }
+    KRANGE
+      {
+      MAX = 41
+      SKIP = 10
+      }
+    }
+$!THREEDAXIS 
+  XVAR = 1
+  YVAR = 2
+  ZVAR = 3
+$!VIEW FIT
+$!THREEDAXIS 
+  GRIDAREA
+    {
+    LINETHICKNESS = 0.25
+    ISFILLED = NO
+    FILLCOLOR = BLACK
+    LABELALLSIDES = YES
+    }
+  AXISMODE = XYZDEPENDENT
+  XYDEPXTOYRATIO = 1
+  DEPXTOYRATIO = 1
+  DEPXTOZRATIO = 1
+  XEDGE = 1
+  YEDGE = 1
+  ZEDGE = 3
+  EDGEAUTORESET = NO
+  XDETAIL
+    {
+    AUTOGRID = NO
+    RANGEMIN = -0.15000000596
+    RANGEMAX = 3.15000009537
+    GRSPACING = 0.5
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.1
+        }
+      OFFSET = -2
+      LABELALIGNMENT = ALONGAXIS
+      }
+    GRIDLINES
+      {
+      SHOW = NO
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  YDETAIL
+    {
+    RANGEMIN = -0.0500000007451
+    RANGEMAX = 1.04999995232
+    GRSPACING = 0.5
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.1
+        }
+      OFFSET = -2
+      LABELALIGNMENT = ALONGAXIS
+      }
+    GRIDLINES
+      {
+      SHOW = NO
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  ZDETAIL
+    {
+    RANGEMIN = -0.10000000149
+    RANGEMAX = 2.09999990463
+    GRSPACING = 0.5
+    LINETHICKNESS = 0.25
+    TICKLABEL
+      {
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        }
+      TEXTSHAPE
+        {
+        HEIGHT = 2.1
+        }
+      OFFSET = -1
+      LABELALIGNMENT = PERPENDICULARTOAXIS
+      }
+    GRIDLINES
+      {
+      SHOW = NO
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      }
+    MINORTICKS
+      {
+      LENGTH = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      COLOR = WHITE
+      }
+    }
+  FRAMEAXIS
+    {
+    SHOW = NO
+    SIZE = 8
+    LINETHICKNESS = 0.25
+    }
+$!GLOBALTHREED 
+  AXISSCALEFACT
+    {
+    X = 1.09999990463
+    Y = 1.09999990463
+    Z = 1.09999990463
+    }
+  ROTATEORIGIN
+    {
+    X = 1.5
+    Y = 0.5
+    Z = 1
+    }
+  PSIANGLE = 73
+  THETAANGLE = 39
+  EYEDISTANCE = 19.8
+  GEOMLIFTFRACTION = 0.015
+  SLICE
+    {
+    ORIGIN
+      {
+      X = 1.5
+      Y = 0.5
+      Z = 1
+      }
+    }
+  TRANSFORMMIN
+    {
+    X = -2.23879130408
+    Y = -3.39772102894
+    }
+  TRANSFORMMAX
+    {
+    X = 2.23879141403
+    Y = 3.39772093304
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 6.24071119022
+    Y = 22.4619565451
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.1
+    }
+  BOX
+    {
+    MARGIN = 10
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'y-distance [m]' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 57.5509786665
+    Y = 24.6017937535
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.1
+    }
+  BOX
+    {
+    MARGIN = 10
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'x-distance [m]' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 5.23738501195
+    Y = 42.3982930249
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.1
+    }
+  BOX
+    {
+    MARGIN = 10
+    }
+  ANGLE = 90
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'elevation [m]' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 18.9384500374
+    Y = 78.0770147728
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  TEXT = 'new version' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = GREEN
+  XYPOS
+    {
+    X = 0.5
+    Y = 0.75
+    }
+  WIDTH = 10
+  HEIGHT = 0.75
+$!SKETCHAXIS 
+  DEPXTOYRATIO = 1
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 13.3333333333
+    GRSPACING = 5
+    }
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.1
+    }
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  XYPOS
+    {
+    X = 1
+    Y = 0.666666666667
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = GRID
+    HEIGHT = 0.3
+    }
+  BOX
+    {
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = '3-dimensional transient water table mounding - Hydraulic head contours after T = 8 hrs.' 
+$!REMOVEVAR |LFDSFN2|
+$!REMOVEVAR |LFDSFN1|
+$!SETSTYLEBASE CONFIG

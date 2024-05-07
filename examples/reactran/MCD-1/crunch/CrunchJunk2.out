@@ -1,0 +1,5 @@
+distance_units meters                                                                                                               
+time_units  seconds                                                                                                                 
+fix_diffusion  1.0e-09                                                                                                              
+ 
+ 

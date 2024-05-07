@@ -1,0 +1,1179 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"drain12.gsp"'
+$!VarSet |LFDSFN2| = '"drain14.gsp"'
+$!VarSet |LFDSFN3| = '"drain1_3.gsp"'
+$!VarSet |LFDSFN4| = '"drain1_1.gsp"'
+$!VarSet |LFDSFN5| = '"observed.txt"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = QUARTERINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 8.55
+    Y2 = 11.05
+    }
+$!RAWCOLORMAP 
+  RAWDATA
+9
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+28 28 28
+57 57 57
+$!COLORMAP 
+  CONTOURCOLORMAP = RAWUSERDEF
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25
+    }
+  WIDTH = 8
+  HEIGHT = 10.5
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 002' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 7
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.625
+    Y1 = 11.918
+    X2 = 90.625
+    Y2 = 88.095
+    }
+  VIEWPORTTOPSNAPTARGET = 88.095
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0.050000000000000003
+    RANGEMAX = 0.34999999999999998
+    GRSPACING = 0.05
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002625
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 8.34
+      OFFSET = 2.625
+      }
+    }
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25
+    }
+  WIDTH = 8
+  HEIGHT = 10.5
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 004' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 7
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.625
+    Y1 = 11.918
+    X2 = 90.625
+    Y2 = 88.095
+    }
+  VIEWPORTTOPSNAPTARGET = 88.095
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0.050000000000000003
+    RANGEMAX = 0.34999999999999998
+    GRSPACING = 0.05
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002625
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 8.34
+      OFFSET = 2.625
+      }
+    }
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN3|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25
+    }
+  WIDTH = 8
+  HEIGHT = 10.5
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 7
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.625
+    Y1 = 11.918
+    X2 = 90.625
+    Y2 = 88.095
+    }
+  VIEWPORTTOPSNAPTARGET = 88.095
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0.050000000000000003
+    RANGEMAX = 0.34999999999999998
+    GRSPACING = 0.05
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      OFFSET = 2.8
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002625
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      COLOR = WHITE
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 8.34
+      OFFSET = 2.625
+      }
+    }
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN4|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN4|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25
+    }
+  WIDTH = 8
+  HEIGHT = 10.5
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 008' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 7
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  CURVES
+    {
+    CLAMPSPLINE = YES
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 1
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLACK
+    FILLCOLOR = BLACK
+    SIZE = 1
+    LINETHICKNESS = 0.1
+    }
+  ERRORBARS
+    {
+    COLOR = BLACK
+    SIZE = 1
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.625
+    Y1 = 11.918
+    X2 = 90.625
+    Y2 = 88.095
+    }
+  VIEWPORTTOPSNAPTARGET = 88.095
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0.050000000000000003
+    RANGEMAX = 0.34999999999999998
+    GRSPACING = 0.05
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'water content [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 3
+        }
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002625
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'elevation [m]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 3
+        }
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.006667
+      OFFSET = 2.625
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 40.1518652193
+    Y = 36.2573244202
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 100 days' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 53.125
+    Y = 57.3235949492
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 20 days' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 62.9797513041
+    Y = 67.7642980936
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 4 days' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 72.114875652
+    Y = 77.4721465709
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    SIZEUNITS = FRAME
+    HEIGHT = 2.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    }
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 't = 1 day' 
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN5|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+$!REMOVEVAR |LFDSFN5|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  BORDERTHICKNESS = 0.15
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25
+    }
+  WIDTH = 8
+  HEIGHT = 10.5
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 300
+  ASPECTRATIORESET = 5
+  BOXASPECTRATIOLIMIT = 300
+  BOXASPECTRATIORESET = 5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 008' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-4]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOWTEXT = NO
+    TEXTSHAPE
+      {
+      FONT = HELV
+      HEIGHT = 2.1
+      }
+    ROWSPACING = 1.5
+    XYPOS
+      {
+      X = 0
+      Y = 100
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '1 day' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 2
+    YAXISVAR = 1
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = DEL
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [2]
+  NAME = '4 days' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 3
+    YAXISVAR = 1
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [3]
+  NAME = '20 days' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 4
+    YAXISVAR = 1
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    SIZE = 2
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [4]
+  NAME = '100 days' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 5
+    YAXISVAR = 1
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = DIAMOND
+      }
+    COLOR = BLACK
+    FILLMODE = USESPECIFICCOLOR
+    FILLCOLOR = BLACK
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.25
+    FILLCOLOR = BLACK
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.625
+    Y1 = 11.918
+    X2 = 90.625
+    Y2 = 88.095
+    }
+  VIEWPORTTOPSNAPTARGET = 88.095
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0.050000000000000003
+    RANGEMAX = 0.34999999999999998
+    GRSPACING = 0.05
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 2
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'water content [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 3
+        }
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.002625
+      OFFSET = 0.918
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 6
+    GRSPACING = 1
+    TICKS
+      {
+      LENGTH = 1.6
+      LINETHICKNESS = 0.25
+      MINORLENGTH = 0.8
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 2.8
+        }
+      NUMFORMAT
+        {
+        FORMATTING = INTEGER
+        PRECISION = 1
+        }
+      }
+    MINORGRIDLINES
+      {
+      LINEPATTERN = SOLID
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'elevation [m]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 3
+        }
+      }
+    AXISLINE
+      {
+      LINETHICKNESS = 0.25
+      AXISALIGNMENT = WITHVIEWPORT
+      POSITION = 0.006667
+      OFFSET = 2.625
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWLINES = NO
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.3208439999
+    Y = 83.5830532936
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    HEIGHT = 15
+    }
+  ANCHOR = MIDCENTER
+  LINESPACING = 1.5
+  SCOPE = GLOBAL
+  TEXT = 'line: MIN3P-THCm\nsymbol: experiment' 
+$!SETSTYLEBASE CONFIG

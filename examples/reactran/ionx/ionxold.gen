@@ -1,0 +1,428 @@
+generic output file for dataset ionx        
+
+------------------------------------------------------------------------
+global control parameters
+------------------------------------------------------------------------
+
+Valocchi - ion exchange test problem, WRR 17(5), 1517-1527              
+
+simulation of:
+steady state saturated flow 
+and reactive transport
+
+------------------------------------------------------------------------
+geochemical system
+------------------------------------------------------------------------
+
+database: new         
+redox master variable: o2(aq)
+input units: mg/l        
+temperature =  25.00 deg C
+
+number of components:                           =          7
+
+components:
+-----------
+na+1        
+k+1         
+mg+2        
+ca+2        
+cl-1        
+h+1         
+h2o         
+
+number of aqueous complexes                     =          1
+
+aqueous complexes:
+------------------
+oh-         
+
+number of sorbed species:                       =          3
+
+sorbed species:
+---------------
+na-x(na)    
+ca-x(na)v   
+mg-x(na)v   
+
+------------------------------------------------------------------------
+spatial discretization
+------------------------------------------------------------------------
+
+number of control volumes in x-direction        =          1
+number of control volumes in y-direction        =          1
+number of control volumes in z-direction        =        101
+total number of control volumes                 =        101
+
+------------------------------------------------------------------------
+time step control - global system
+------------------------------------------------------------------------
+
+start time of simulation                        =  0.000E+00 hours       
+initial time step                               =  2.400E-07 hours       
+max. time step                                  =  5.000E+01 hours       
+min. time step                                  =  2.400E-07 hours       
+
+------------------------------------------------------------------------
+control parameters - local geochemistry
+------------------------------------------------------------------------
+
+factor for numerical differentiation            =  1.000E-04
+convergence tolerance                           =  1.000E-06
+max. ionic strength                             =  4.000E+00
+min. activity for h2o                           =  5.000E-01
+minimum reaction rate considered                =  0.000E+00
+
+------------------------------------------------------------------------
+control parameters - variably saturated flow
+------------------------------------------------------------------------
+
+input of boundary and initial conditions in terms of hydraulic head
+incomplete factorization level                  =          0
+max. number of solver iterations                =        100
+solver information level                        =          0
+solver residual tolerance                       =  1.000E-07
+solver update tolerance                         =  1.000E-07
+reverse Cuthill McKee ordering
+
+------------------------------------------------------------------------
+control parameters - reactive transport
+------------------------------------------------------------------------
+
+unity activity coefficients
+Millington-Quirk tortuosity correction
+detailed mass balance output
+upstream weighting
+factor for numerical differentiation            =  1.000E-06
+ant. number of iterations per time step         =         12
+max. number of iterations per time step         =         20
+ant. update in log cycles                       =  5.000E-01
+max. tolerable update in log cycles             =  1.000E+00
+convergence tolerance                           =  1.000E-06
+underrelaxation
+underrelaxation factor                          =  1.000E+00
+dense block matrices
+incomplete factorization level                  =          1
+max. number of solver iterations                =        100
+solver information level                        =          1
+solver residual tolerance                       =  1.000E-09
+solver update tolerance                         =  1.000E-09
+reverse Cuthill McKee ordering
+
+------------------------------------------------------------------------
+output control
+------------------------------------------------------------------------
+
+extended output of spatial data
+
+number of output times for spatial data         =          4
+specified output times for spatial data:          
+
+T =  1.000E+01 hours       
+T =  1.000E+02 hours       
+T =  1.000E+03 hours       
+T =  3.500E+03 hours       
+ 
+output of transient data:
+
+number of time steps between output of          =          1
+transient data
+number of spatial locations for output of       =          1
+transient data
+control volume numbers and spatial locations:
+
+ivol =    101, x =  0.000E+00 m, y =  0.000E+00 m, z =  1.600E+01 m
+
+output in terms of elevation
+
+cutoff mineral volume fractions
+
+------------------------------------------------------------------------
+physical parameters - porous medium
+------------------------------------------------------------------------
+
+number of material property zones               =          1
+
+material property zone 1: background
+------------------------------------------------------------------------
+porosity                                        =  2.500E-01
+
+------------------------------------------------------------------------
+physical parameters - variably saturated flow
+------------------------------------------------------------------------
+
+
+material property zone 1: background
+------------------------------------------------------------------------
+saturated hydraulic conductivity K_zz           =  1.000E-03
+
+------------------------------------------------------------------------
+physical parameters - reactive transport
+------------------------------------------------------------------------
+
+free diffusion coefficient in aqueous phase     =  1.000E-09
+free diffusion coefficient in gaseous phase     =  0.000E+00
+
+
+material property zone 1: background
+------------------------------------------------------------------------
+longitudinal dispersivity                       =  1.000E+00
+
+------------------------------------------------------------------------
+initial condition - variably saturated flow
+------------------------------------------------------------------------
+
+number of zones for initial condition           =          1
+
+for detailed output see file ionx_0.gsp
+
+------------------------------------------------------------------------
+boundary conditions - variably saturated flow
+------------------------------------------------------------------------
+
+number of boundary zones                        =          2
+
+zone 1: inflow boundary                                                         
+------------------------------------------------------------------------
+volume   boundary type   hydraulic head
+
+     1   first           1.400E+00
+
+zone 2: outflow boundary                                                        
+------------------------------------------------------------------------
+volume   boundary type   hydraulic head
+
+   101   first          -1.600E+01
+
+------------------------------------------------------------------------
+initial condition - reactive transport
+------------------------------------------------------------------------
+
+number of zones for initial condition           =          1
+
+************************************************************************
+background chemistry - aquifer                                          
+************************************************************************
+
+control parameters: 
+------------------------------------------------------------------------
+
+equilibration only for aqueous species
+
+input parameters: 
+------------------------------------------------------------------------
+
+total aqueous component concentrations:
+---------------------------------------
+component             conc.
+---------------------------
+na+1             8.6560E-02
+k+1              2.5574E-03
+mg+2             1.7934E-02
+ca+2             1.1078E-02
+cl-1             1.6078E-01
+
+fixed activities:
+------------------
+species               actv.
+---------------------------
+h+1              1.0000E-07
+
+guess for pH of solution:          pH =  7.0000
+
+sorption parameters:
+--------------------
+cation exchange capacity [meq/100g soil]            =   1.0000E+01
+dry bulk density [g/cm^3]                           =   1.8750E+00
+
+results:
+------------------------------------------------------------------------
+
+computed pH of solution:           pH =       7.0000
+ionic strength:                     I =   1.8297E-01
+
+total concentrations:
+---------------------
+species               conc.
+---------------------------
+na+1             8.6560E-02
+k+1              2.5574E-03
+mg+2             1.7934E-02
+ca+2             1.1078E-02
+cl-1             1.6078E-01
+h+1             -4.6158E-10
+
+components as species in solution:
+----------------------------------
+species               conc.          gamma
+------------------------------------------
+na+1             8.6560E-02     1.0000E+00
+k+1              2.5574E-03     1.0000E+00
+mg+2             1.7934E-02     1.0000E+00
+ca+2             1.1078E-02     1.0000E+00
+cl-1             1.6078E-01     1.0000E+00
+h+1              1.0000E-07     1.0000E+00
+h2o              1.0000E+00     1.0000E+00
+
+secondary aqueous species:
+--------------------------
+species               conc.          gamma
+------------------------------------------
+oh-              1.0046E-07     1.0000E+00
+
+sorbed species:
+---------------
+species          [meq/100g]     [moles/l bulk]
+----------------------------------------------
+na-x(na)         2.5618E+00     4.8034E-02
+ca-x(na)v        3.8808E+00     7.2765E-02
+mg-x(na)v        3.5574E+00     6.6701E-02
+
+charge balance:
+---------------
+sum of positive charge:   1.471E-01   sum of negative charge:  1.608E-01
+charge balance error:     4.428E+00 %
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =          7
+total number of time steps              =          0
+
+
+------------------------------------------------------------------------
+boundary conditions - reactive transport
+------------------------------------------------------------------------
+
+number of boundary zones                        =          2
+
+zone 1: infiltrating fluid
+------------------------------------------------------------------------
+
+control parameters: infiltrating fluid                                                      
+------------------------------------------------------------------------
+
+equilibration of aqueous species
+
+
+input parameters: infiltrating fluid                                                      
+------------------------------------------------------------------------
+
+total aqueous component concentrations:
+---------------------------------------
+component             conc.
+---------------------------
+na+1             9.3955E-03
+k+1              2.5574E-03
+mg+2             4.9358E-04
+ca+2             2.1208E-03
+cl-1             9.0260E-03
+
+fixed activities:
+------------------
+species               actv.
+---------------------------
+h+1              1.0000E-07
+
+guess for pH of solution:          pH =  7.0000
+
+results:
+------------------------------------------------------------------------
+
+computed pH of solution:           pH =       7.0000
+ionic strength:                     I =   1.5718E-02
+
+total concentrations:
+---------------------
+species               conc.
+---------------------------
+na+1             9.3955E-03
+k+1              2.5574E-03
+mg+2             4.9358E-04
+ca+2             2.1208E-03
+cl-1             9.0260E-03
+h+1             -4.6158E-10
+
+components as species in solution:
+----------------------------------
+species               conc.          gamma
+------------------------------------------
+na+1             9.3955E-03     1.0000E+00
+k+1              2.5574E-03     1.0000E+00
+mg+2             4.9358E-04     1.0000E+00
+ca+2             2.1208E-03     1.0000E+00
+cl-1             9.0260E-03     1.0000E+00
+h+1              1.0000E-07     1.0000E+00
+h2o              1.0000E+00     1.0000E+00
+
+secondary aqueous species:
+--------------------------
+species               conc.          gamma
+------------------------------------------
+oh-              1.0046E-07     1.0000E+00
+
+sorbed species:
+---------------
+species          [meq/100g]     [moles/l bulk]
+----------------------------------------------
+na-x(na)         9.1406E-01     1.7139E-02
+ca-x(na)v        8.0280E+00     1.5052E-01
+mg-x(na)v        1.0580E+00     1.9837E-02
+
+charge balance:
+---------------
+sum of positive charge:   1.718E-02   sum of negative charge:  9.026E-03
+charge balance error:     3.112E+01 %
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =          7
+total number of time steps              =          0
+
+
+extent of infiltrating fluid
+------------------------------------------------------------------------
+
+volume   boundary type
+
+     1   third       
+
+zone 2: outflow boundary
+------------------------------------------------------------------------
+
+extent of outflow boundary
+------------------------------------------------------------------------
+
+volume   boundary type
+
+   101   second      
+
+secondary aqueous species to be excluded
+----------------------------------------
+
+   # species name   diff_cxmax
+
+statistics - variably saturated flow ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =          1
+total number of solver iterations       =          1
+
+statistics - reactive transport ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =        322
+total number of solver iterations       =        322
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+number of failed time steps             =          0
+total number of time steps              =        101
+cputime  = 59.38 sec
+------------------------------------------------------------------------
+
+         ***************** normal exit ******************
+
+

@@ -1,0 +1,89 @@
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'dissolution and sorption of pce - linear isotherm'
+.false.                        ;varsat_flow
+.false.                        ;steady_flow
+.false.                        ;fully_saturated
+.false.                        ;reactive_transport
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'..\..\..\database\default'
+
+'components'
+3                             ;number of components (nc-1)
+'cl-1'                        ;component names
+'c2cl4'
+'h+1'
+
+'linear sorption'
+1                             ;number of sorbing components
+'c2cl4'                       ;component names
+
+'minerals'
+1                             ;number of minerals
+'c2cl4(r)'                    ;mineral names
+
+'done'
+
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-4                         ;factor for numerical differentiation
+1.d-6                         ;convergence tolerance
+
+'maximum ionic strength'
+5.0d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'output time unit'
+'days'                        ;time unit (local chemistry)
+
+'done'
+!
+! Data Block 14: initial conditions - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'initial condition - local geochemistry'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'sediment a'
+
+'kinetic batch simulation'
+1.0d0                     ;initial time step
+100.0d0                   ;final solution time
+
+'concentration input'
+1.0d-7     'free'            ;'cl-1'     ;component names
+1.0d-10    'free'            ;'c2cl4'
+1.0d-7     'free'            ;'h+1'
+
+'linear sorption input'
+'c2cl4'  5.0                 ;component name, distribution coefficient
+
+'mineral input'
+1.00d-2   .true.  'twothird'   ;phim, minequil, update_type  - c2cl4(r)
+1.00d-7   1.0d-9     0.00d0    ;phimin, scalfac, supsatm
+
+'end of zone'
+
+'done'

@@ -1,0 +1,503 @@
+************************************************************************
+log file for dataset drain1                                                                  
+************************************************************************
+
+
+memory requirements for variably-saturated flow simulation:
+
+estimated number of connections:                2541
+actual number of connections:                    361
+estimated number of factored connections:       1083
+memory requirement during factorization:         720
+actual number of factored connections:           361
+
+initial condition - variably saturated flow
+------------------------------------------------------------------------
+
+boundary conditions - variably saturated flow
+------------------------------------------------------------------------
+
+enter timeloop
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+timestep:     1  time: 1.000E-02 days         delt: 1.000E-02 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       6.0000D+00   6.6533D-30        1         121         120
+     2       2.4712D+01   1.2796D-30        1         121         120
+     3       2.4110D+01   1.8543D-27        1         121         120
+     4       2.0697D+01   9.6950D-31        1         121         120
+     5       2.0100D+01   4.9615D-28        1         121         120
+     6       1.6995D+01   9.4604D-31        1         121         120
+     7       1.6386D+01   2.3115D-28        1         121         120
+     8       1.3513D+01   7.4740D-31        1         121         120
+     9       1.2947D+01   2.3933D-29        1         121         120
+    10       1.0570D+01   3.3275D-31        1         121         120
+    11       1.0024D+01   1.5178D-29        1         121         120
+    12       8.0113D+00   5.8314D-31        1         121         120
+    13       7.4611D+00   1.6425D-29        1         121         120
+    14       5.7328D+00   2.5245D-31        1         121         120
+    15       5.1795D+00   1.2864D-30        1         121         120
+    16       3.7703D+00   1.4916D-31        1         121         120
+    17       3.2227D+00   4.3228D-30        1         121         120
+    18       2.1852D+00   1.9193D-31        1         121         120
+    19       1.6332D+00   7.3427D-31        1         121         120
+    20       9.8001D-01   3.7980D-33        1         121         120
+    21       4.3193D-01   1.2725D-32        1         121         120
+    22       2.0637D-01   5.3213D-33        1         121         120
+    23       1.8918D-02   2.1891D-33        1         116         120
+    24       8.2217D-04   1.3284D-34        1         121         120
+    25       2.3656D-06   7.9719D-37        1         121          31
+    26       2.9400D-11   9.0641D-42        1         121           0
+
+------------------------------------------------------------------------
+timestep:     2  time: 4.512E-02 days         delt: 3.512E-02 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       9.3882D-02   4.8325D-32        1         121         120
+     2       1.7477D-02   4.3955D-33        1         121         120
+     3       4.4076D-04   2.1265D-34        1         121         119
+     4       4.1118D-07   1.2798D-37        1           5           0
+
+------------------------------------------------------------------------
+timestep:     3  time: 1.450E-01 days         delt: 9.988E-02 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.0750D-01   3.0127D-32        1         121         120
+     2       1.9775D-02   6.7780D-33        1         121         120
+     3       4.9462D-04   6.9128D-35        1         121         117
+     4       3.8251D-07   2.8627D-38        1         121           0
+
+------------------------------------------------------------------------
+timestep:     4  time: 3.757E-01 days         delt: 2.307E-01 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.1931D-01   6.6414D-32        1         121         120
+     2       2.2942D-02   4.7046D-33        1         121         120
+     3       6.2549D-04   8.3031D-35        1         121         118
+     4       5.1749D-07   1.4647D-38        1         121           0
+
+------------------------------------------------------------------------
+timestep:     5  time: 8.604E-01 days         delt: 4.847E-01 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.3254D-01   1.4312D-31        1         121         120
+     2       2.7326D-02   1.6401D-32        1         121         120
+     3       8.3964D-04   1.0581D-34        1         121         119
+     4       8.2003D-07   2.1330D-38        1         121           0
+
+------------------------------------------------------------------------
+timestep:     6  time: 1.000E+00 days         delt: 1.396E-01 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       4.0563D-02   1.7589D-32        1         121         120
+     2       1.0143D-03   1.9817D-34        1         121         120
+     3       7.0656D-07   3.1018D-38        1         121           0
+
+write contour data, T =   1.0000E+00 days        
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+timestep:     7  time: 1.698E+00 days         delt: 6.978E-01 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.1843D-01   1.9709D-31        1         121         120
+     2       1.6246D-02   5.0797D-33        1         121         120
+     3       2.4177D-04   4.6594D-35        1         121         119
+     4       5.8368D-08   4.3311D-39        1         121           0
+
+------------------------------------------------------------------------
+timestep:     8  time: 3.488E+00 days         delt: 1.790E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.6448D-01   1.3658D-31        1         121         120
+     2       3.7654D-02   1.5371D-32        1         121         120
+     3       1.3828D-03   5.3311D-34        1         121         119
+     4       1.7805D-06   2.3092D-37        1         121          10
+     5       2.7278D-11   8.9296D-42        1         121           0
+
+------------------------------------------------------------------------
+timestep:     9  time: 4.000E+00 days         delt: 5.121E-01 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       5.2808D-02   1.9616D-32        1         121         120
+     2       1.6675D-03   3.2013D-34        1         121         120
+     3       1.6062D-06   1.4198D-37        1         121          11
+     4       1.4654D-11   7.2060D-43        1         121           0
+
+write contour data, T =   4.0000E+00 days        
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+timestep:    10  time: 6.560E+00 days         delt: 2.560E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.5480D-01   1.2717D-31        1         121         120
+     2       2.4997D-02   1.3837D-32        1         121         120
+     3       4.9048D-04   7.7375D-35        1         121         119
+     4       1.9001D-07   3.1549D-38        1         121           0
+
+------------------------------------------------------------------------
+timestep:    11  time: 1.156E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.9078D-01   1.0060D-31        1         121         120
+     2       3.8905D-02   1.0050D-31        1         121         120
+     3       1.1603D-03   7.5963D-34        1         121         120
+     4       9.8944D-07   1.1011D-37        1         119           0
+
+------------------------------------------------------------------------
+timestep:    12  time: 1.656E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.5862D-01   1.5065D-31        1         121         120
+     2       1.9597D-02   1.5562D-32        1         121         120
+     3       2.3630D-04   1.0081D-34        1         118         118
+     4       3.6458D-08   1.2389D-38        1         116           0
+
+------------------------------------------------------------------------
+timestep:    13  time: 2.000E+01 days         delt: 3.440E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.0194D-01   1.4704D-31        1         121         120
+     2       5.7224D-03   5.6708D-33        1         121         120
+     3       1.6155D-05   7.5395D-36        1         115         102
+     4       2.9169D-10   9.0327D-41        1         121           0
+
+write contour data, T =   2.0000E+01 days        
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+timestep:    14  time: 2.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.2186D-01   1.3778D-31        1         121         120
+     2       8.3638D-03   4.5264D-33        1         121         120
+     3       3.4491D-05   1.8332D-35        1         114         110
+     4       9.3370D-10   4.5066D-40        1         121           0
+
+------------------------------------------------------------------------
+timestep:    15  time: 3.000E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       1.0754D-01   1.3176D-31        1         121         120
+     2       5.7507D-03   4.2249D-33        1         120         120
+     3       1.5014D-05   6.3024D-36        1         112         103
+     4       2.4559D-10   9.1867D-41        1         121           0
+
+------------------------------------------------------------------------
+timestep:    16  time: 3.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       9.6418D-02   7.5623D-32        1         121         120
+     2       4.1928D-03   2.4182D-33        1         119         120
+     3       7.4843D-06   4.2122D-36        1         111          94
+     4       9.0962D-11   4.0803D-41        1         121           0
+
+------------------------------------------------------------------------
+timestep:    17  time: 4.000E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       8.7550D-02   1.3123D-31        1         121         120
+     2       3.1943D-03   2.3769D-33        1         118         120
+     3       4.1240D-06   4.2510D-36        1         109          78
+     4       4.1522D-11   9.0897D-42        1         121           0
+
+------------------------------------------------------------------------
+timestep:    18  time: 4.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       8.0314D-02   8.4835D-32        1         121         120
+     2       2.5175D-03   1.2692D-33        1         117         120
+     3       2.4523D-06   8.3824D-37        1         108          71
+     4       2.1645D-11   4.9287D-42        1         121           0
+
+------------------------------------------------------------------------
+timestep:    19  time: 5.000E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       7.4297D-02   4.6216D-32        1         121         120
+     2       2.0381D-03   2.0381D-33        1         116         120
+     3       1.5480D-06   5.1834D-37        1         107          57
+     4       1.2354D-11   3.4637D-42        1         121           0
+
+------------------------------------------------------------------------
+timestep:    20  time: 5.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       6.9210D-02   6.4603D-32        1         121         120
+     2       1.6860D-03   8.6919D-34        1         115         120
+     3       1.0251D-06   8.5336D-37        1         106          15
+     4       7.5347D-12   2.3078D-42        1         121           0
+
+------------------------------------------------------------------------
+timestep:    21  time: 6.000E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       6.4851D-02   2.0692D-32        1         121         120
+     2       1.4196D-03   7.4364D-34        1         114         120
+     3       7.0596D-07   2.9878D-37        1         105           0
+
+------------------------------------------------------------------------
+timestep:    22  time: 6.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       6.1070D-02   2.1283D-32        1         121         120
+     2       1.2133D-03   6.4213D-34        1         114         120
+     3       5.0225D-07   2.5226D-37        1         104           0
+
+------------------------------------------------------------------------
+timestep:    23  time: 7.000E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       5.7758D-02   5.2930D-32        1         121         120
+     2       1.0500D-03   4.6227D-34        1         113         119
+     3       3.6725D-07   3.3333D-37        1         103           0
+
+------------------------------------------------------------------------
+timestep:    24  time: 7.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       5.4829D-02   3.9841D-32        1         121         120
+     2       9.1840D-04   7.3472D-34        1         113         120
+     3       2.7488D-07   2.1744D-37        1         103           0
+
+------------------------------------------------------------------------
+timestep:    25  time: 8.000E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       5.2220D-02   2.0070D-32        1         121         120
+     2       8.1084D-04   4.9922D-34        1         112         119
+     3       2.0995D-07   1.6981D-37        1         102           0
+
+------------------------------------------------------------------------
+timestep:    26  time: 8.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       4.9879D-02   1.9615D-32        1         121         120
+     2       7.2163D-04   4.4085D-34        1         112         119
+     3       1.6317D-07   5.8915D-38        1         101           0
+
+------------------------------------------------------------------------
+timestep:    27  time: 9.000E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       4.7765D-02   2.0428D-32        1         121         120
+     2       6.4683D-04   5.8612D-34        1         111         119
+     3       1.2880D-07   5.7075D-38        1         101           0
+
+------------------------------------------------------------------------
+timestep:    28  time: 9.500E+01 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       4.5846D-02   2.0726D-32        1         121         120
+     2       5.8343D-04   4.1505D-34        1         111         118
+     3       1.0305D-07   4.7220D-38        1         101           0
+
+------------------------------------------------------------------------
+timestep:    29  time: 1.000E+02 days         delt: 5.000E+00 days        
+------------------------------------------------------------------------
+
+transient flow - variably saturated conditions
+------------------------------------------------------------------------
+
+ Newton Iteration Convergence Summary:
+ Newton       maximum      maximum     solver
+ iteration    update       residual    iterations  maxvol      nexvol
+     1       4.4095D-02   2.7177D-32        1         121         120
+     2       5.2917D-04   2.6530D-34        1         111         117
+     3       8.3447D-08   3.5612D-38        1         100           0
+
+write contour data, T =   1.0000E+02 days        
+------------------------------------------------------------------------
+
+
+statistics - variably saturated flow ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =        129
+total number of solver iterations       =        129
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+number of failed time steps             =          0
+total number of time steps              =         29
+cputime  =  0.20 sec
+------------------------------------------------------------------------
+
+         ***************** normal exit ******************
+
+

@@ -185,6 +185,8 @@
                 pos_grad, timebcvsloc
       real*8 :: rx0, ry0, rz0     !center of gradient-radius type i.c. or b.c. condition
 
+      real*8 :: time_check
+
       external checkerr, findstrg, findzone, readbloc, readzone
 
       logical, external :: freezing_adjacent_bd
@@ -213,19 +215,25 @@
       yz_plane = .false.
       b_updt_next_only = .false.
       b_updtbc_back = .false.
+      time_check = time_io
+
+      !c adjust time to avoid round-off error when time_io is very close to the next boundary condition
+      if (abs(time_io - time_bcvs) < tinytime_global) then
+        time_check = time_bcvs
+      end if
 
       if ((.not. b_interpolation_bcvs .and.                            &
-          time_io >= time_bcvs_prev .and. time_io < time_bcvs) .or.    &
+          time_check >= time_bcvs_prev .and. time_check < time_bcvs) .or.    &
           time_bcvs > tfinal/time_factor) then
         return
       end if
 
       if (.not. b_first_update_bcvs .and.                              &
-         (time_io < time_bcvs_prev .or. time_io > time_bcvs)) then        
+         (time_check < time_bcvs_prev .or. time_check > time_bcvs)) then        
         b_updtbc_back = .true.
       end if
        
-      if (time_io .ge. time_bcvs .or.                                  &
+      if (time_check .ge. time_bcvs .or.                                  &
           b_restart_update_bcvs .or. b_first_update_bcvs .or.          &
           b_updtbc_recall .or. b_updtbc_back) then
           
@@ -312,8 +320,8 @@
 !c  assign new boundary conditions for variably-saturated flow
 
         if (b_first_update_bcvs .and.                                  &
-            time_io.ge.time_bcvs_prev .and.                            &
-            time_io.le.time_bcvs) then
+            time_check.ge.time_bcvs_prev .and.                            &
+            time_check.le.time_bcvs) then
 
           b_updt_next_only = b_first_update_bcvs
           backspace(ibcvs)
@@ -321,14 +329,14 @@
           read(ibcvs,*,err=998,end=997) time_bcvs_prev,                &
               (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
 
-          do while (time_io < time_bcvs_prev)
+          do while (time_check < time_bcvs_prev)
             backspace(ibcvs)
             backspace(ibcvs)
             read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
                 (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
           end do
           
-          do while (time_io > time_bcvs)
+          do while (time_check > time_bcvs)
             read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,         &
                 (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
             !c end of file has reached
@@ -337,7 +345,7 @@
               rwork_next = rwork              
               exit
             else
-              if (time_io < time_bcvs_prev) then
+              if (time_check < time_bcvs_prev) then
                 backspace(ibcvs)
                 backspace(ibcvs)
                 read(ibcvs,*,err=998,end=997) time_bcvs_prev,          &
@@ -359,14 +367,14 @@
           read(ibcvs,*,err=998,end=997) time_bcvs_prev,                &
               (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
 
-          do while (time_io < time_bcvs_prev)
+          do while (time_check < time_bcvs_prev)
             backspace(ibcvs)
             backspace(ibcvs)
             read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
                 (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
           end do
           
-          do while (time_io > time_bcvs)
+          do while (time_check > time_bcvs)
             read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,         &
                 (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
             !c end of file has reached
@@ -375,7 +383,7 @@
               rwork_next = rwork
               exit
             else
-              if (time_io < time_bcvs_prev) then
+              if (time_check < time_bcvs_prev) then
                 backspace(ibcvs)
                 backspace(ibcvs)
                 read(ibcvs,*,err=998,end=997) time_bcvs_prev,          &
@@ -442,7 +450,7 @@
                   bcondvs(ibvs) = math_common_linear(                  &
                                        time_bcvs_prev, time_bcvs,      &
                                        bcondvs_prev(ibvs),             &
-                                       bcondvs_next(ibvs),time_io)
+                                       bcondvs_next(ibvs),time_check)
                 else
                   if (pressure_head) then
                     bcondvs(ibvs) = rwork(1,ibz)
@@ -509,7 +517,7 @@
                   bcondvs(nbvs) = math_common_linear(                  &
                                        time_bcvs_prev, time_bcvs,      &
                                        bcondvs_prev(nbvs),             &
-                                       bcondvs_next(nbvs),time_io)
+                                       bcondvs_next(nbvs),time_check)
                 else
                   bcondvs(nbvs)=rwork(1,ibz) + rwork(2,ibz)*pos_grad
                 end if
@@ -569,7 +577,7 @@
                   end if
                   bcondvs(ibvs) = math_common_linear(time_bcvs_prev, time_bcvs,&
                                        bcondvs_prev(ibvs), bcondvs_next(ibvs), &
-                                       time_io)                  
+                                       time_check)                  
                 else
                   if (b_water_freezing) then
                     if (tkel(ivol) > pressure_melt_k(ivol,r0)) then
@@ -632,7 +640,7 @@
                   end if
                   bcondvs(ibvs) = math_common_linear(time_bcvs_prev, time_bcvs,&
                                        bcondvs_prev(ibvs), bcondvs_next(ibvs), &
-                                       time_io)                  
+                                       time_check)                  
                 else
                   if (b_water_freezing) then
                     if (tkel(ivol) > pressure_melt_k(ivol,r0)) then
@@ -676,7 +684,7 @@
 
                   gradf_bvs(ibvs) = math_common_linear(time_bcvs_prev, time_bcvs,&
                                          bcondvs_prev(ibvs), bcondvs_next(ibvs), &
-                                         time_io)
+                                         time_check)
                 else
                   gradf_bvs(ibvs) = rwork(1,ibz)
                 end if
@@ -1538,12 +1546,12 @@
             btypezn = btypevs(ibvs)
             bcondvs(ibvs) = math_common_linear(time_bcvs_prev, time_bcvs,&
                                  bcondvs_prev(ibvs), bcondvs_next(ibvs), &
-                                 time_io)
+                                 time_check)
 
             if (btypezn .eq. 'free-drainage') then
               gradf_bvs(ibvs) = math_common_linear(time_bcvs_prev, time_bcvs,&
                                      bcondvs_prev(ibvs), bcondvs_next(ibvs), &
-                                     time_io)            
+                                     time_check)            
             end if
 
             if (btypezn .eq. 'first') then

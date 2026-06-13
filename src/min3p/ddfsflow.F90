@@ -1130,38 +1130,38 @@
           if (b_check_div_vs .and. iter >= 5) then
             iter_div = mod(iter,5)
             if (iter_div == 0) then
-              if (div_vs(5) > div_vs(4)*1.1d0 .and.                  &
-                  div_vs(4) > div_vs(3)*1.1d0 .and.                  &
-                  div_vs(3) > div_vs(2)*1.1d0 .and.                  &
-                  div_vs(2) > div_vs(1)*1.1d0) then
+              if (div_vs(5) > div_vs(4)*0.95d0 .and.                  &
+                  div_vs(4) > div_vs(3)*0.95d0 .and.                  &
+                  div_vs(3) > div_vs(2)*0.95d0 .and.                  &
+                  div_vs(2) > div_vs(1)*0.95d0) then
                 reduce_timestep = .true.
               end if
             else if (iter_div == 1) then
-              if (div_vs(1) > div_vs(5)*1.1d0 .and.                  &
-                  div_vs(5) > div_vs(4)*1.1d0 .and.                  &
-                  div_vs(4) > div_vs(3)*1.1d0 .and.                  &
-                  div_vs(3) > div_vs(2)*1.1d0) then
+              if (div_vs(1) > div_vs(5)*0.95d0 .and.                  &
+                  div_vs(5) > div_vs(4)*0.95d0 .and.                  &
+                  div_vs(4) > div_vs(3)*0.95d0 .and.                  &
+                  div_vs(3) > div_vs(2)*0.95d0) then
                 reduce_timestep = .true.
               end if
             else if (iter_div == 2) then
-              if (div_vs(2) > div_vs(1)*1.1d0 .and.                  &
-                  div_vs(1) > div_vs(5)*1.1d0 .and.                  &
-                  div_vs(5) > div_vs(4)*1.1d0 .and.                  &
-                  div_vs(4) > div_vs(3)*1.1d0) then
+              if (div_vs(2) > div_vs(1)*0.95d0 .and.                  &
+                  div_vs(1) > div_vs(5)*0.95d0 .and.                  &
+                  div_vs(5) > div_vs(4)*0.95d0 .and.                  &
+                  div_vs(4) > div_vs(3)*0.95d0) then
                 reduce_timestep = .true.
               end if
             else if (iter_div == 3) then
-              if (div_vs(3) > div_vs(2)*1.1d0 .and.                  &
-                  div_vs(2) > div_vs(1)*1.1d0 .and.                  &
-                  div_vs(1) > div_vs(5)*1.1d0 .and.                  &
-                  div_vs(5) > div_vs(4)*1.1d0) then
+              if (div_vs(3) > div_vs(2)*0.95d0 .and.                  &
+                  div_vs(2) > div_vs(1)*0.95d0 .and.                  &
+                  div_vs(1) > div_vs(5)*0.95d0 .and.                  &
+                  div_vs(5) > div_vs(4)*0.95d0) then
                 reduce_timestep = .true.
               end if
             else if (iter_div == 4) then
-              if (div_vs(4) > div_vs(3)*1.1d0 .and.                  &
-                  div_vs(3) > div_vs(2)*1.1d0 .and.                  &
-                  div_vs(2) > div_vs(1)*1.1d0 .and.                  &
-                  div_vs(1) > div_vs(5)*1.1d0) then
+              if (div_vs(4) > div_vs(3)*0.95d0 .and.                  &
+                  div_vs(3) > div_vs(2)*0.95d0 .and.                  &
+                  div_vs(2) > div_vs(1)*0.95d0 .and.                  &
+                  div_vs(1) > div_vs(5)*0.95d0) then
                 reduce_timestep = .true.
               end if
             end if
@@ -1185,8 +1185,8 @@
                 stop
               else
                 if (rank == 0 .and. b_enable_output .and. idetail_vs.gt.0) then
-                  write(*,*) 'reduce time step: newton iteration diverged'
-                  write(ilog,*) 'reduce time step: newton iteration diverged'
+                  write(*,*) 'Reduce time step: newton iteration diverged'
+                  write(ilog,*) 'Reduce time step: newton iteration diverged'
                 end if
               end if
             end if

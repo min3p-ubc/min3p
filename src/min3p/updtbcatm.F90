@@ -8,176 +8,167 @@
 !---------------------------------------------------------------------
 !********************************************************************!
 
-subroutine updtbcatm
+    subroutine updtbcatm
  
-use parm
-use gen
-use dens
-use file_unit, only : lun_free
+    use parm
+    use gen
+    use dens
+    use file_unit, only : lun_free
 #ifdef PETSC
-use petsc_mpi_common, only : petsc_mpi_finalize
+    use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
 
-implicit none
+    implicit none
 
-integer :: l_string
+    integer :: l_string, icount, iflag
 
-real*8 :: temp_loc, hr_loc, wind_loc, radnet_loc, rain_loc, evap_loc,  &
-          cos_function
+    logical :: flag_valid
 
-character(len=100) :: dummy
-real*8             :: rdummy, dummy1, dummy2, dummy3, rdummy_old,      &
-                      icloud_loc  
-real*8, parameter :: r86400=86400.0d0,r0=0.0d0,r1000=1.0d3,r1=1.0d0,   &
-                     rsmall=0.01d0, rtiny = 1.0d-30 
-character(len=100), parameter :: empty=' ' 
+    real*8 :: temp_loc, hr_loc, wind_loc, radnet_loc, rain_loc, evap_loc,  &
+              cos_function, time_atm_old
 
+    character(len=100) :: dummy
+    real*8             :: rdummy, dummy1, dummy2, dummy3,icloud_loc  
+    real*8, parameter :: r86400=86400.0d0,r0=0.0d0,r1000=1.0d3,r1=1.0d0,   &
+                         rsmall=0.01d0
+    character(len=100), parameter :: empty=' ' 
 
-if (read_atm.and.time_io>=time_atm) then
-       !cprovi------------------------------------------------------------------------------------------------------
-       !cprovi Time depends on time units used in the problem
-       !cprovi------------------------------------------------------------------------------------------------------   
-       read(iatm,*,err=998,end=999) rdummy,temp_loc,hr_loc,wind_loc,radnet_loc,rain_loc,icloud_loc,evap_loc 
-       
-       if (rdummy<r0) return 
-       
-       if (read_temp_atm) then
-        temp_atm=temp_loc
-       end if
-       
-       if (read_evap_rate_atm) then
-         evap_atm = evap_loc * r86400 ! kg/m2/s => kg/m2/day 
-       end if
-       
-       if (read_hr_atm) then 
-        if (hr_loc>r1) then
-         hr_loc = r1
-        else if (hr_atm<=r0) then
-         hr_loc = rsmall 
+    if (read_atm .and. time_io >= time_atm .and. &
+        time_io < tfinal/time_factor) then
+      
+      !cdsu locate the data line
+      icount = 0
+      iflag = 0
+      rdummy = time_atm
+      time_atm_old = time_atm
+      flag_valid = .false.
+      do while (time_io >= rdummy)
+        read(iatm,*,err=999,iostat=iflag) rdummy
+
+        icount = icount + 1
+
+        !c the end of file
+        if (iflag < 0) then
+          time_atm = (tfinal+delt)/time_factor
+          backspace(iatm)
+          flag_valid = .true.
+          exit
         end if
-        hr_atm=hr_loc
-      end if
-      
-      if (read_wind_atm) then       
-        wind_atm=wind_loc*r86400
-      end if
-      
-      if (read_rain_atm) then
-        !cprovi------------------------------------------------
-        !cprovi Units are in [m]
-        !cprovi------------------------------------------------       
-        rain_atm = rain_loc     
-        if (rain_atm<r0) then
-          rain_atm=r0
+
+        !c the next line is negative, meaning end of file
+        if (rdummy < r0) then
+          time_atm = (tfinal+delt)/time_factor
+          if (icount > 1) then
+            backspace(iatm)          
+            backspace(iatm)
+            flag_valid = .true.
+          end if
+          exit
         end if
-      end if       
-      
-      if (read_rad_atm) then       
-        radnet=radnet_loc*r86400/r1000        
-      end if
-      
-      if (read_cloud_atm) then       
-        icloud_atm=icloud_loc  
-        if (icloud_atm>r1) then
-            icloud_atm=r1
-        elseif(icloud_atm<r0) then
-            icloud_atm=r0
-        end if      
-      end if
-      
-      rdummy_old = rdummy
-      do while(abs(rdummy-rdummy_old) < rtiny)    
-        read(iatm,*,err=998,end=999) rdummy  
+
+        !c next time found
+        if (time_io < rdummy) then
+          time_atm = rdummy
+          backspace(iatm)
+          if (icount > 1) then
+            backspace(iatm)
+            flag_valid = .true.
+          end if
+          exit
+        end if
       end do
+
+      !cprovi------------------------------------------------------------------------------------------------------
+      !cprovi Time depends on time units used in the problem
+      !cprovi------------------------------------------------------------------------------------------------------   
+
+      if (flag_valid) then
+        read(iatm,*,err=999,end=999) rdummy,temp_loc,hr_loc,wind_loc,radnet_loc,rain_loc,icloud_loc,evap_loc 
+       
+        if (read_temp_atm) then
+         temp_atm=temp_loc
+        end if
+       
+        if (read_evap_rate_atm) then
+          evap_atm = evap_loc * r86400 ! kg/m2/s => kg/m2/day 
+        end if
+       
+        if (read_hr_atm) then 
+          if (hr_loc>r1) then
+            hr_loc = r1
+          else if (hr_atm<=r0) then
+            hr_loc = rsmall 
+          end if
+          hr_atm=hr_loc
+        end if
       
-      if (rdummy<r0) then
-        read_atm=.false.
-        read_hr_atm=.false.
-        read_temp_atm=.false.
-        read_wind_atm=.false.
-        read_rain_atm=.false.
-        read_cloud_atm=.false.
-        read_evap_rate_atm=.false. 
-        !----------------------------------
-        ! Close atmospheric parameters unit 
-        !----------------------------------
-        close(iatm)
-        call lun_free(iatm)
-        return 
-      else
-        backspace(iatm)
-        rdummy=rdummy/time_factor
+        if (read_wind_atm) then       
+          wind_atm=wind_loc*r86400
+        end if
+      
         if (read_rain_atm) then
-          !-------------------------------------
-          ! Divide the raifall event by time 
-          ! [m day-1]
-          !-------------------------------------       
-          rain_atm = rain_atm/(rdummy-time_atm)
-        end if         
-        time_atm=rdummy 
-      end if  
-
-end if       
-
-if (.not.read_temp_atm) then
-   temp_atm = cos_function(tempav_atm,dtempy_atm,dtempd_atm,temp_maxy_atm,temp_maxd_atm,time_io)
-end if
-
-if (.not.read_hr_atm) then 
-   hr_atm = cos_function(hrav_atm,dhry_atm,dhrd_atm,hr_maxy_atm,hr_maxd_atm,time_io)
-end if
-
-if (.not.read_wind_atm) then       
-  wind_atm = cos_function(windav_atm,dwindy_atm,dwindd_atm,wind_maxy_atm,wind_maxd_atm,time_io)
-end if 
-!cprovi------------------------------------------------------------------------------
-!cprovi If rainfall is greater than zero, relative humidity of the atmosphere is 1
-!cprovi------------------------------------------------------------------------------
-!if (rain_atm>r0) then
-!   hr_atm=r1
-!end if
-!cprovi------------------------------------------------------------------------------
-!cprovi Update the vapour density in the atmosphere as a function of atmospheric 
-!cprovi temperature
-!cprovi------------------------------------------------------------------------------
-call vapor_prop (densv_atm,dummy1,dummy2,dummy3,latvap_atm,temp_atm,r0,r0,hr_atm,ref_dens,1)          
-
-
-return
-
-
-998     continue
-        if(rank == 0) then
-          write(ilog,*) 'SIMULATION TERMINATED' 
-          write(ilog,*) 'error reading file ', prefix(:l_prfx)//'.atm'
-          close(ilog)
+          !cprovi------------------------------------------------
+          !cprovi Units are in [m]
+          !cprovi------------------------------------------------       
+          rain_atm = rain_loc     
+          if (rain_atm<r0) then
+            rain_atm=r0
+          end if
+          rain_atm = rain_atm/(time_atm - time_atm_old)
+        end if       
+      
+        if (read_rad_atm) then       
+          radnet=radnet_loc*r86400/r1000        
         end if
-#ifdef PETSC
-        call petsc_mpi_finalize
-#endif
-        stop
-
-999     continue
-
-!c  redefine length of section header
-
-        l_string = index(section_header,'  ')-1
-        if (l_string.eq.-1.or.l_string.gt.72) then
-           l_string=72
+      
+        if (read_cloud_atm) then       
+          icloud_atm=icloud_loc  
+          if (icloud_atm>r1) then
+            icloud_atm=r1
+          elseif(icloud_atm<r0) then
+            icloud_atm=r0
+          end if      
         end if
+      end if 
 
-        if(rank == 0) then
-          write(ilog,*) 'SIMULATION TERMINATED' 
-          write(ilog,*) 'error reading input file'
-          write(ilog,*) 'section "',section_header(:l_string),'"'
-          write(ilog,*) 'zone "', zone_name(:l_zone_name),'"'
-          close(ilog)
-        end if
-#ifdef PETSC
-        call petsc_mpi_finalize
-#endif
-        stop
+    end if       
+
+    if (.not.read_temp_atm) then
+       temp_atm = cos_function(tempav_atm,dtempy_atm,dtempd_atm,temp_maxy_atm,temp_maxd_atm,time_io)
+    end if
+
+    if (.not.read_hr_atm) then 
+       hr_atm = cos_function(hrav_atm,dhry_atm,dhrd_atm,hr_maxy_atm,hr_maxd_atm,time_io)
+    end if
+
+    if (.not.read_wind_atm) then       
+      wind_atm = cos_function(windav_atm,dwindy_atm,dwindd_atm,wind_maxy_atm,wind_maxd_atm,time_io)
+    end if 
+    !cprovi------------------------------------------------------------------------------
+    !cprovi If rainfall is greater than zero, relative humidity of the atmosphere is 1
+    !cprovi------------------------------------------------------------------------------
+    !if (rain_atm>r0) then
+    !   hr_atm=r1
+    !end if
+    !cprovi------------------------------------------------------------------------------
+    !cprovi Update the vapour density in the atmosphere as a function of atmospheric 
+    !cprovi temperature
+    !cprovi------------------------------------------------------------------------------
+    call vapor_prop (densv_atm,dummy1,dummy2,dummy3,latvap_atm,temp_atm,r0,r0,hr_atm,ref_dens,1)          
 
     return
 
-      end
+999 continue
+    if(rank == 0) then
+      write(ilog,*) 'SIMULATION TERMINATED' 
+      write(ilog,*) 'error reading file ', prefix(:l_prfx)//'.atm'
+      close(ilog)
+    end if
+#ifdef PETSC
+    call petsc_mpi_finalize
+#endif
+    stop
+
+    return
+
+    end

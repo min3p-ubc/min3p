@@ -70,8 +70,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,6,2,880
- PRODUCTVERSION 2,6,2,880
+ FILEVERSION 2,6,3,881
+ PRODUCTVERSION 2,6,3,881
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -88,7 +88,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "University of British Columbia"
             VALUE "FileDescription", "A Model for Mineral-Water-Gas Simulation"
-            VALUE "FileVersion", "2.6.2.880"
+            VALUE "FileVersion", "2.6.3.881"
             VALUE "InternalName", "MIN3P"
             VALUE "LegalCopyright", "(C) 2000 U. Mayer"
             VALUE "OriginalFilename", "MIN3P-THCm"
@@ -116,7 +116,7 @@ BEGIN
 #ifdef RELEASE_X64_P
             VALUE "ProductName", "MIN3P-HPC-X64-P"
 #endif
-            VALUE "ProductVersion", "2.6.2.880"
+            VALUE "ProductVersion", "2.6.3.881"
         END
     END
     BLOCK "VarFileInfo"

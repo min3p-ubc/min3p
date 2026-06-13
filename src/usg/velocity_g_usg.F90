@@ -246,13 +246,13 @@
       call checkerr(ierr,'velocity_g_usg-vels_neq_loc',ilog)
       call memory_monitor(sizeof(vels_neq_loc),'vels_neq_loc',.true.)
 
-      allocate(gasdiff_usg(n,nmaxconc), stat = ierr)
-      call checkerr(ierr,'velocity_g_usg-gasdiff_usg',ilog)
-      call memory_monitor(sizeof(gasdiff_usg),'gasdiff_usg',.true.)
+      allocate(gasdiff_usg_loc(n,nmaxconc), stat = ierr)
+      call checkerr(ierr,'velocity_g_usg-gasdiff_usg_loc',ilog)
+      call memory_monitor(sizeof(gasdiff_usg_loc),'gasdiff_usg_loc',.true.)
 
-      allocate(grad_gasdiff(ng,nmaxconc), stat = ierr)
-      call checkerr(ierr,'velocity_g_usg-grad_gasdiff',ilog)
-      call memory_monitor(sizeof(grad_gasdiff),'grad_gasdiff',.true.)
+      allocate(grad_gasdiff_loc(ng,nmaxconc), stat = ierr)
+      call checkerr(ierr,'velocity_g_usg-grad_gasdiff_loc',ilog)
+      call memory_monitor(sizeof(grad_gasdiff_loc),'grad_gasdiff_loc',.true.)
 
 !c    spatial weighting for the gas phase
       spt_weight = spatial_weighting

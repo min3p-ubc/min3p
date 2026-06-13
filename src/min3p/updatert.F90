@@ -665,8 +665,8 @@
         end if
         if (reduce_timestep) then
           if (rank == 0 .and. b_enable_output .and. idetail_rt.ge.2) then
-            write(*,*) 'reduce time step: newton iteration diverged'
-            write(ilog,*) 'reduce time step: newton iteration diverged'
+            write(*,*) 'Reduce time step: newton iteration diverged'
+            write(ilog,*) 'Reduce time step: newton iteration diverged'
           end if
           return
         end if

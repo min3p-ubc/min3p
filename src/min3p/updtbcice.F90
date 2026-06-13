@@ -86,6 +86,7 @@
       real*8 :: xbmin, xbmax, ybmin, ybmax, zbmin, zbmax ,factiny,     &
                 pos_grad, temp_grad, temp_slope_grad, bcond_temp,      &
                 thick_grad, thick_slope_grad, bcond_thick, rdummy
+      real*8 :: time_check
 
       character*1   :: dir_grad
       character*32  :: btypezn
@@ -102,21 +103,27 @@
       ierrcd = 0
       b_updt_next_only = .false.
       b_updtbc_back = .false.
+      time_check = time_io
+
+      !c adjust time to avoid round-off error when time_io is very close to the next boundary condition
+      if (abs(time_io - time_bcice) < tinytime_global) then
+        time_check = time_bcice
+      end if
 
       if ((.not. b_interpolation_bcice .and.                            &
-          time_io >= time_bcice_prev .and. time_io < time_bcice) .or.    &
+          time_check >= time_bcice_prev .and. time_check < time_bcice) .or. &
           time_bcice > tfinal/time_factor) then
         return
       end if
 
       !c check if the current timestep right after boundary condition update is failed
       if (.not. b_first_update_bcice .and. &
-        (time_io < time_bcice_prev .or. time_io > time_bcice)) then        
+        (time_check < time_bcice_prev .or. time_check > time_bcice)) then        
         b_updtbc_back = .true.
       end if
           
       !c check if the new boundary condition update is necessary
-      if (time_io.ge.time_bcice .or.                                   &
+      if (time_check.ge.time_bcice .or.                                &
           b_restart_update_bcice .or. b_first_update_bcice .or.        &
           b_updtbc_recall .or. b_updtbc_back) then
           
@@ -184,7 +191,7 @@
 !c        time, bcond_temp, bcond_thick, rdummy, rdummy, rdummy
       
         if (b_first_update_bcice .and.                                 &
-            time_io.ge.time_bcice_prev .and. time_io.le.time_bcice) then
+            time_check.ge.time_bcice_prev .and. time_check.le.time_bcice) then
           b_updt_next_only = b_first_update_bcice
 
           backspace(ibcice)
@@ -192,14 +199,14 @@
           read(ibcice,*,err=998,end=997) time_bcice_prev,              &
               (rwork(1:ice_fitting_parms(ibz,1)%nparms,ibz),ibz=1,nbzice)
 
-          do while (time_io < time_bcice_prev)
+          do while (time_check < time_bcice_prev)
             backspace(ibcice)
             backspace(ibcice)
             read(ibcice,*,err=998,end=997) time_bcice_prev,            &
                 (rwork(1:ice_fitting_parms(ibz,1)%nparms,ibz),ibz=1,nbzice)
           end do
           
-          do while (time_io > time_bcice)
+          do while (time_check > time_bcice)
             read(ibcice,*,err=998,iostat=iflag) time_bcice_prev,       &
                 (rwork(1:ice_fitting_parms(ibz,1)%nparms,ibz),ibz=1,nbzice)
             !c end of file has reached
@@ -208,7 +215,7 @@
               rwork_next = rwork
               exit
             else            
-              if (time_io < time_bcice_prev) then
+              if (time_check < time_bcice_prev) then
                 backspace(ibcice)
                 backspace(ibcice)
                 read(ibcice,*,err=998,end=997) time_bcice_prev,        &
@@ -230,14 +237,14 @@
           read(ibcice,*,err=998,end=997) time_bcice_prev,              &
               (rwork(1:ice_fitting_parms(ibz,1)%nparms,ibz),ibz=1,nbzice)
 
-          do while (time_io < time_bcice_prev)
+          do while (time_check < time_bcice_prev)
             backspace(ibcice)
             backspace(ibcice)
             read(ibcice,*,err=998,end=997) time_bcice_prev,            &
                 (rwork(1:ice_fitting_parms(ibz,1)%nparms,ibz),ibz=1,nbzice)
           end do
 
-          do while (time_io > time_bcice)
+          do while (time_check > time_bcice)
             read(ibcice,*,err=998,iostat=iflag) time_bcice_prev,       &
                 (rwork(1:ice_fitting_parms(ibz,1)%nparms,ibz),ibz=1,nbzice)
             !c end of file has reached
@@ -246,7 +253,7 @@
               rwork_next = rwork
               exit
             else
-              if (time_io < time_bcice_prev) then
+              if (time_check < time_bcice_prev) then
                 backspace(ibcice)
                 backspace(ibcice)
                 read(ibcice,*,err=998,end=997) time_bcice_prev,        &
@@ -344,13 +351,13 @@
                   math_common_linear(time_bcice_prev, time_bcice,              &
                                      ice_thickness_new_prev(ivol_sn),          &
                                      ice_thickness_new_next(ivol_sn),          &
-                                     time_io)
+                                     time_check)
               if (b_restart_update_bcice) then
                 ice_thickness_old(ivol_sn) =                                   &
                 math_common_linear(time_bcice_prev, time_bcice,                &
                                    ice_thickness_new_prev(ivol_sn),            &
                                    ice_thickness_new_next(ivol_sn),            &
-                                   time_io-delt_io)
+                                   time_check-delt_io)
               end if
 
               if (b_phw2ice) then
@@ -819,14 +826,14 @@
                 math_common_linear(time_bcice_prev, time_bcice,        &
                                    ice_thickness_new_prev(ivol_sn),    &
                                    ice_thickness_new_next(ivol_sn),    &
-                                   time_io)
+                                   time_check)
 
           if (b_restart_update_bcice) then
             ice_thickness_old(ivol_sn) =                               &
             math_common_linear(time_bcice_prev, time_bcice,            &
                                ice_thickness_new_prev(ivol_sn),        &
                                ice_thickness_new_next(ivol_sn),        &
-                               time_io-delt_io)
+                               time_check-delt_io)
           end if
 
           if (b_phw2ice) then

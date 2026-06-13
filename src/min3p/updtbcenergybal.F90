@@ -186,6 +186,9 @@
       real*8 :: areaf, temp0_grad, slope_grad, factiny,                &
                 bcond, xbmin, xbmax, ybmin, ybmax, zbmin, zbmax,       &
                 pos_grad, timebcheatloc, dummy
+
+      real*8 :: time_check
+
       real*8 :: rx0, ry0, rz0     !center of gradient-radius type i.c. or b.c. condition
       integer :: i, ibz, ierr, istart, iend, ivol, jvol, jvol1, jvol2, &
                  l_string, jtemp, ibheat, iflag, ierrcd
@@ -213,22 +216,28 @@
       yz_plane = .false.
       b_updt_next_only = .false.
       b_updtbc_back = .false.
+      time_check = time_io
+
+      !c adjust time to avoid round-off error when time_io is very close to the next boundary condition
+      if (abs(time_io - time_bcheat) < tinytime_global) then
+        time_check = time_bcheat
+      end if
       
       areaf = r0
       l_string = 0
 
       if ((.not. b_interpolation_bcheat .and.                          &
-          time_io >= time_bcheat_prev .and. time_io < time_bcheat) .or.&
+          time_check >= time_bcheat_prev .and. time_check < time_bcheat) .or.&
           time_bcheat > tfinal/time_factor) then
         return
       end if      
 
       if (.not. b_first_update_bcheat .and. &
-         (time_io < time_bcheat_prev .or. time_io > time_bcheat)) then        
+         (time_check < time_bcheat_prev .or. time_check > time_bcheat)) then        
         b_updtbc_back = .true.
       end if
      
-      if (time_io.ge.time_bcheat .or.                                  &
+      if (time_check.ge.time_bcheat .or.                               &
           b_restart_update_bcheat .or. b_first_update_bcheat.or.       &
           b_updtbc_recall .or. b_updtbc_back) then                                              
           
@@ -298,6 +307,7 @@
         read(itmp,*,err=999,end=999) nbzheat 
 !c  read values of new boundary conditions
 100     continue
+
 !c  allocate array for reading new boundary conditions
         allocate (rwork(2,nbzheat), stat = ierr)
         rwork=r0 
@@ -311,22 +321,23 @@
 
 !c  assign new boundary conditions for variably-saturated flow
         if (b_first_update_bcheat .and.                                &
-            time_io.ge.time_bcheat_prev .and.                          &
-            time_io.le.time_bcheat) then
+            time_check.ge.time_bcheat_prev .and.                          &
+            time_check.le.time_bcheat) then
 
           b_updt_next_only = b_first_update_bcheat
           backspace(ibcheat)
 
           read(ibcheat,*,err=998,end=997) time_bcheat_prev,            &
               (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
-          do while (time_io < time_bcheat_prev)
+
+          do while (time_check < time_bcheat_prev)
             backspace(ibcheat)
             backspace(ibcheat)
             read(ibcheat,*,err=998,end=997) time_bcheat_prev,          &
                 (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
           end do
           
-          do while (time_io > time_bcheat)
+          do while (time_check > time_bcheat)
             read(ibcheat,*,err=998,iostat=iflag) time_bcheat_prev,     &
                 (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
             !c end of file has reached
@@ -335,7 +346,7 @@
               rwork_next = rwork
               exit
             else    
-              if (time_io < time_bcheat_prev) then
+              if (time_check < time_bcheat_prev) then
                 backspace(ibcheat)
                 backspace(ibcheat)
                 read(ibcheat,*,err=998,end=997) time_bcheat_prev,      &
@@ -353,18 +364,19 @@
             rwork_next = rwork
           end if 
         else 
+
           backspace(ibcheat)
           read(ibcheat,*,err=998,end=997) time_bcheat_prev,            &
               (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
 
-          do while (time_io < time_bcheat_prev)
+          do while (time_check < time_bcheat_prev)
             backspace(ibcheat)
             backspace(ibcheat)
             read(ibcheat,*,err=998,end=997) time_bcheat_prev,          &
                 (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
           end do
     
-          do while (time_io > time_bcheat)
+          do while (time_check > time_bcheat)
             read(ibcheat,*,err=998,iostat=iflag) time_bcheat_prev,     &
                 (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
             !c end of file has reached
@@ -373,7 +385,7 @@
               rwork_next = rwork
               exit
             else    
-              if (time_io < time_bcheat_prev) then
+              if (time_check < time_bcheat_prev) then
                 backspace(ibcheat)
                 backspace(ibcheat)
                 read(ibcheat,*,err=998,end=997) time_bcheat_prev,        &
@@ -401,6 +413,7 @@
 !c  note: actually the boundary type and zone cannot be changed in the current version
         if (update_bcheat_value_only) then
 
+
           if (nbheat > 0) then
             do ibheat = 1, nbheat
               ivol = iabheat(ibheat)
@@ -412,6 +425,7 @@
               btypezn = btypeheat(ibheat)
               ibz = ivol2bzheat(ivol)
               dir_grad = bzheat_dir_grad(ibz)
+
               if (dir_grad == 'r') then
                 rx0 = bzheat_radius_center(ibz)%x
                 ry0 = bzheat_radius_center(ibz)%y
@@ -440,7 +454,7 @@
                   bcondheat(ibheat) = math_common_linear(                &
                                            time_bcheat_prev, time_bcheat,&
                                            bcondheat_prev(ibheat),       &
-                                           bcondheat_next(ibheat),time_io)
+                                           bcondheat_next(ibheat),time_check)
                 else
                   bcondheat(ibheat)= rwork(1,ibz)
                 end if
@@ -497,7 +511,7 @@
                   bcondheat(ibheat) = math_common_linear(                &
                                            time_bcheat_prev, time_bcheat,&
                                            bcondheat_prev(ibheat),       &
-                                           bcondheat_next(ibheat),time_io)
+                                           bcondheat_next(ibheat),time_check)
                 else
                   bcondheat(ibheat)= rwork(1,ibz) + rwork(2,ibz)*pos_grad
                 end if
@@ -519,7 +533,7 @@
                   bcondheat(ibheat) = math_common_linear(                &
                                            time_bcheat_prev, time_bcheat,&
                                            bcondheat_prev(ibheat),       &
-                                           bcondheat_next(ibheat),time_io)
+                                           bcondheat_next(ibheat),time_check)
                 else
                   bcondheat(ibheat) = rwork(1,ibz)
                 end if
@@ -541,7 +555,7 @@
                   bcondheat(ibheat) = math_common_linear(                &
                                            time_bcheat_prev, time_bcheat,&
                                            bcondheat_prev(ibheat),       &
-                                           bcondheat_next(ibheat),time_io)
+                                           bcondheat_next(ibheat),time_check)
                 else
                   bcondheat(ibheat) = areaf_bheat(ibheat)*rwork(1,ibz)/  &
                                       r1000*sec_per_days
@@ -556,13 +570,14 @@
                   bcondheat(ibheat) = math_common_linear(                &
                                            time_bcheat_prev, time_bcheat,&
                                            bcondheat_prev(ibheat),       &
-                                           bcondheat_next(ibheat),time_io)
+                                           bcondheat_next(ibheat),time_check)
                 else
                   bcondheat(ibheat) = rwork(1,ibz)/r1000*sec_per_days
                 end if
               end if   !(btypezn.eq.'first'.or.btypezn.eq.'second')
 
               bcondheat0(ibheat) = bcondheat(ibheat)
+
             end do
           end if
           b_first_update_bcheat = .false.
@@ -1358,7 +1373,7 @@
             bcondheat(ibheat) = math_common_linear(                    &
                                      time_bcheat_prev, time_bcheat,    &
                                      bcondheat_prev(ibheat),           &
-                                     bcondheat_next(ibheat),time_io)
+                                     bcondheat_next(ibheat),time_check)
 
             bcondheat0(ibheat) = bcondheat(ibheat)
 

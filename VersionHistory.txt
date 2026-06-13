@@ -1,0 +1,13 @@
+MIN3P Open Source Version History
+
+MIN3P source code for reactive transport modelling work. The code is based on MIN3P V2.6.2.880 version from UBC, with all licensed code removed.
+
+***New Features***
+
+***Updates***
+1. Update in divergence check. Once Newton iteration oscillate, exit Newton iteration and reduce time step before reaching the maximum number of Newton iterations. 
+
+***Bug Fixed***
+1. Fix bug in transient boundary condition update. The previous code shows one timestep lagged. All the update of transient boundary condition or transient parameters is now called before new timestep. Verification is not carried yet. 
+
+***Note***

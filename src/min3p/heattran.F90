@@ -622,8 +622,8 @@
                 stop
               else
                 if (rank == 0 .and. b_enable_output .and. idetail_heat.gt.0) then
-                  write(*,*) 'reduce time step: newton iteration diverged'
-                  write(ilog,*) 'reduce time step: newton iteration diverged'
+                  write(*,*) 'Reduce time step: newton iteration diverged'
+                  write(ilog,*) 'Reduce time step: newton iteration diverged'
                 end if
               end if
             end if

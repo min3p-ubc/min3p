@@ -30,8 +30,8 @@ Module Version
     
     Character(4) :: MajorVersionNumber = "2"            !< Major version, manually replaced
     Character(4) :: MinorVersionNumber = "6"            !< Minor version, manually replaced
-    Character(10) :: PatchVersionNumber = "2"          !< Patch number, manually replaced
-    Character(10) :: GlobalRevisionNumber = "880"   !< Global revision, automatically replaced
+    Character(10) :: PatchVersionNumber = "3"          !< Patch number, manually replaced
+    Character(10) :: GlobalRevisionNumber = "881"   !< Global revision, automatically replaced
                                                         !< It's best to manually update this value to the new revision number
                                                         !< so that user without repository info can get correct revision number.
                                                         !< For example, if the current revision number after revision update is 123, 
@@ -39,8 +39,8 @@ Module Version
                                                         !< updated automatically to 124 when user compile the code with access to repository.
                                                         !< However, if user does not have access to the repository, this value remains 123.
 
-    Character(32) :: CommitDate = "2024/02/19 14:18:30"            !< Commit date, automatically replaced
-    Character(32) :: BuildDate = "2024/02/19 14:18:30"              !< Build date, automatically replaced
+    Character(32) :: CommitDate = "2026/05/04 09:50:30"            !< Commit date, automatically replaced
+    Character(32) :: BuildDate = "2026/05/04 09:50:30"              !< Build date, automatically replaced
     Character(256) :: RepositoryURL = "https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan"         !< Repository URL, automatically replaced
     
     Character(256) :: BuildLabelVersion = ""            !< Version info in the log file, automatically configured

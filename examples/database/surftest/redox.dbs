@@ -1,0 +1,150 @@
+! **********************************************************************
+! REDOX.DBS
+! **********************************************************************
+! database file for MIN3P for kinetically controlled
+! oxidation-reduction reactions
+!
+!  fe+2/fe+3  rates from Singer and Stumm,
+!  Science, (167), 1121-1123, 1970
+!  irreversible  reaction
+!
+'fe+3'  'forward'
+4  'fe+2' 1.000  'o2(aq)' 0.250  'h+1' 1.000  'h2o' -0.500
+-8.4900  5.0000
+2
+1 1 0 -4.495  4.000
+'fe+2' 1.000 0.000  'o2(aq)' 1.000 1.d-6
+1 2 0 -11.585  0.000
+'fe+2' 1.000 0.000  'o2(aq)' 1.000 1.d-6  'h+1' -2.000 0.000
+!
+!  fe+2/fe+3  rates from Singer and Stumm, 
+!  Science, (167), 1121-1123, 1970
+!  reversible reaction
+!
+'fe+3'  'reversible'
+4  'fe+2' 1.000  'o2(aq)' 0.250  'h+1' 1.000  'h2o' -0.500
+-8.4900  0.0000
+2
+1 1 0 -4.495  4.000
+'fe+2' 1.000  'o2(aq)' 1.000
+1 2 0 -11.585  0.000
+'fe+2' 1.000  'o2(aq)' 1.000  'h+1' -2.000
+!
+!  fe+2/fe+3  rates from Singer and Stumm, 
+!  Science, (167), 1121-1123, 1970
+!  reversible reaction
+!
+'fe+3'  'forward-to-equilibrium'
+4  'fe+2' 1.000  'o2(aq)' 0.250  'h+1' 1.000  'h2o' -0.500
+-8.4900  0.0000
+2
+1 1 0 -4.495  4.000
+'fe+2' 1.000  'o2(aq)' 1.000
+1 2 0 -11.585  0.000
+'fe+2' 1.000  'o2(aq)' 1.000  'h+1' -2.000
+!
+!  uo2+2/u+4  equilibrium only
+!  equilibrium calculated based on MINTEQA2 database and data from
+!  Stumm and Morgan, 1996
+!
+'u+4'  'equilibrium'
+4  'uo2+2' 1.000  'o2(aq)' -0.500  'h2o' -1.000  'h+1' 2.000
+33.7930  0.0000
+0
+!
+!  u+4/uo2+2  equilibrium only
+!  equilibrium calculated based on MINTEQA2 database and data from
+!  Stumm and Morgan, 1996
+!
+'uo2+2'  'equilibrium'
+4  'u+4' 1.000  'o2(aq)' 0.500  'h2o' 1.000  'h+1' -2.000
+-33.7930  0.0000
+0
+!
+!  so4-2/hs-1 - equilibrium only
+!
+!
+'hs-1'  'equilibrium'
+3  'o2(aq)' -2.000  'h+1' 1.000  'so4-2' 1.000
+138.3200  0.0000
+0
+!-----------------------------------------------------------------------
+!structure of database:
+!----------------------
+!namers(ir), rtype_hom(ir)
+!ncrc  (namec(icrc) xnur(icrc); icrc=1,ncrc)
+!eqr(ir)
+!nor
+!if (rtype_hom.eq.'equilibrium'.or.
+!    rtype_hom.eq.'reversible'.or.
+!    rtype_hom.eq.'forward-to-equilibrium') then
+!  for ior = 1,nor
+!    nort, norc, norc,  rateox(ior)  bcatfac(ior)
+!    (namec(iort) ordort(iort); iort=1,nort)
+!    (namec(iorc) ordorc(iorc); iorc=1,norc)
+!    (namex(iorx) ordorx(iorx); iorx=1,norx)
+!  end for
+!else
+!  for ior = 1,nor
+!    nort, norc, norc,  rateox(ior)  bcatfac(ior)
+!    (namec(iort) ordort(iort) chomt(iort); iort=1,nort)
+!    (namec(iorc) ordorc(iorc) chomc(iorc); iorc=1,norc)
+!    (namex(iorx) ordorx(iorx) chomx(iorx); iorx=1,norx)
+!  end for
+!end if
+!------------------------------------------------------------------------
+!identification of variables:
+!----------------------------
+!           bcatfac(nr*nor)    = log_10 of bacterial catalysis factor
+!           chomc(nr*nor*nc)   = cutoff concentrations for reacting
+!                                species (components as species
+!                                in solution) [moles/l h2o]
+!           chomt(nr*nor*nc)   = cutoff concentration for reacting
+!                                species (total aqueous component
+!                                concentrations) [moles/l h2o]
+!           chomx(nr*nor*nx)   = cutoff concentration for reacting
+!                                species (aqueous complexes) [moles/l h2o]
+!           eqr(nr)            = log_10 of equilibrium constant 
+!           namec(nc)          = component names
+!           namers(nr)         = name of produced component
+!                                needs to have stoichiometric coefficient 
+!                                1 in reaction equation, this species will
+!                                be treated as a secondary unknown, if the
+!                                the reactions in this database are 
+!                                treated as equilibrium reactions 
+!                                (see problem specific input file, i.e. 
+!                                it becomes an aqueous complex). 
+!           namex(nx)          = names of aqueous complexes
+!           ncrc               = number of components with nonzero
+!                                stoichiometric coefficients in
+!                                reaction equation
+!           nor                = number of parallel
+!                                reaction paths
+!           norc               = number of reactants
+!                                (components as species in
+!                                solution)
+!           nort               = number of reactants
+!                                (total aqueous component
+!                                concentrations)
+!           norx               = number of reactants
+!                                (secondary aqueous species)
+!           ordorc(nr*nor*nc)  = reaction order
+!                                (with respect to activities of components
+!                                as species in solution)
+!           ordort(nr*nor*nc)  = reaction order
+!                                (with respect to total
+!                                aqueous component concentrations)
+!           ordorx(nr*nor*nx)  = reaction order
+!                                (with respect to activities 
+!                                of aqueous complexes)
+!           rateox(nr*nor)     = log of rate constant
+!                                (units: liter -  moles - seconds)
+!           rtype_hom(nr)      = reaction type of homogeneous
+!                                reaction in aqueous phase
+!                                'forward'
+!                                'forward-to-equilibrium'
+!                                'reversible'
+!                                'equilibrium'
+!           xnur(nr*nc)        = stoichiometric coefficient of
+!                                components in reaction equation
+!------------------------------------------------------------------------

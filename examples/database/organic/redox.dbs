@@ -1,0 +1,436 @@
+! **********************************************************************
+! REDOX.DBS
+! **********************************************************************
+! database file for MIN3P for kinetically controlled
+! intra-aqueous reactions
+!
+!  pentane/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'pentane-d'  'monod'
+0.000  0.000  0.000
+5  'pentan' -1.000  'o2(aq)' -8.000  'h2o' 1.000  'co3-2' 5.000  'h+1' 10.000
+0.0d0                            !log rate constant
+1                                !fractional order terms
+'pentan'  1.0d0
+2                                !monod and threshold terms
+'o2(aq)'  1.d-4    1.0d0
+'o2(aq)'  1.d-6    2.0d0
+0
+0
+!
+!  iso-octane/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'iso-octane-d'  'monod'
+0.000  0.000  0.000
+5  'iso-oktan' -1.000  'o2(aq)' -12.500  'h2o' 1.000  'co3-2' 8.000  'h+1' 16.000
+0.0d0                            !log rate constant
+1                                !fractional order terms
+'iso-oktan'  1.0d0
+2                                !monod and threshold terms
+'o2(aq)'     1.d-4    1.0d0
+'o2(aq)'     1.d-6    2.0d0
+0
+0
+!
+!  toluene/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'toluene-d'  'monod'
+0.000  0.000  0.000
+5  'toluol' -1.000  'o2(aq)' -9.000  'h2o' -3.000  'co3-2' 7.000  'h+1' 14.000
+0.0d0                            !log rate constant
+1                                !fractional order terms
+'toluol'  1.0d0
+2                                !monod and threshold terms
+'o2(aq)'  1.d-4    1.0d0
+'o2(aq)'  1.d-6    2.0d0
+0
+0
+!
+!  1,3,5-tmb/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'1,3,5-tmb-d'  'monod'
+0.000  0.000  0.000
+5  '1,3,5-tmb' -1.000  'o2(aq)' -12.000  'h2o' -3.000  'co3-2' 9.000  'h+1' 18.000
+0.0d0                            !log rate constant
+1                                !fractional order terms
+'1,3,5-tmb' 1.0d0
+2                                !monod and threshold terms
+'o2(aq)'    1.d-4    1.0d0
+'o2(aq)'    1.d-6    2.0d0
+0
+0
+!
+!  pce/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'pce-deg'  'monod'
+0.000  0.000  0.000
+6  'pce' -1.000  'o2(aq)' -1.000  'h2o' -4.000  'co3-2' 2.000  'h+1' 8.000  'cl-1' 4.000
+0.0d0                            !log rate constant
+0                                !fractional order terms
+4                                !monod and threshold terms
+'o2(aq)'  1.d-4    1.0d0
+'pce'     1.d-5    1.0d0
+'o2(aq)'  1.d-5    2.0d0
+'pce'     1.d-10   2.0d0
+0                                !inhibition and toxicity terms
+0
+!
+!  benzene/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'benz-deg'  'monod'
+0.000  0.000  0.000
+5  'c6h6' -1.000  'o2(aq)' -7.500  'h2o' -3.000  'co3-2' 6.000  'h+1' 12.000
+0.0d0                            !log rate constant
+0                                !fractional order terms
+4                                !monod and threshold terms
+'o2(aq)'  1.d-4    1.0d0
+'c6h6'    1.d-5    1.0d0
+'o2(aq)'  1.d-5    2.0d0
+'c6h6'    1.d-10   2.0d0
+0                                !inhibition and toxicity terms
+0
+!
+!  phenol/nitrate reduction - Monod-kinetics
+!  irreversible reaction
+!
+'c6h6o-no3-1'  'monod'
+0.000  0.000  0.000
+6  'c6h6o' -1.000 'no3-1' -14.000  'h2o' -3.000  'co3-2' 6.000  'no2-1' 14.000  'h+1' 12.000
+-9.000                            !rate constant
+0                                 !fractional order terms
+4                                 !monod  and threshold terms
+'no3-1'  1.d-4    1.0d0
+'c6h6o'  1.d-5    1.0d0
+'no3-1'  1.d-5    2.0d0
+'c6h6o'  1.d-10   2.0d0
+1                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+0
+!
+!  phenol/denitrification - Monod-kinetics
+!  irreversible reaction
+!
+'c6h6o-no3-2'  'monod'
+0.000  0.000  0.000
+6  'c6h6o' -1.000 'no3-1' -5.600  'h2o' -0.200  'co3-2' 6.000  'n2(aq)' 2.800  'h+1' 6.400
+-10.000                           !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'no3-1'  1.d-4    1.0d0
+'c6h6o'  1.d-5    1.0d0
+'no3-1'  1.d-5    2.0d0
+'c6h6o'  1.d-10   2.0d0
+1                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+0
+!
+!  phenol/sulfate reduction - Monod-kinetics
+!  irreversible reaction
+!
+'c6h6o-so4'  'monod'
+0.000  0.000  0.000
+6  'c6h6o' -1.000 'so4-2' -3.500  'h2o' -3.000  'co3-2' 6.000  'hs-1' 3.500  'h+1' 8.500
+-12.000                           !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'so4-2' 5.d-2    1.0d0
+'c6h6o' 1.d-5    1.0d0
+'so4-2' 5.d-3    2.0d0
+'c6h6o' 1.d-10   2.0d0
+3                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+'c6h6o'  1.087d-2
+0
+!
+!  phenol/fermentation - Monod-kinetics
+!  irreversible reaction
+!
+'c6h6o-ferm'  'monod'
+0.000  0.000  0.000
+5  'c6h6o' -1.000  'h2o' -6.500  'co3-2' 2.500  'ch4(aq)' 3.500  'h+1' 5.000
+-12.000                           !rate constant
+0                                 !fractional order terms
+2                                 !monod and threshold terms
+'c6h6o' 1.087d-2   1.0d0
+'c6h6o' 1.d-10     2.0d0
+3                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+'so4-2'  1.d-5
+0
+!
+!  cresol/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'c7h8o-o2'  'monod'
+0.000  0.000  0.000
+5  'c7h8o' -1.000  'o2(aq)' -8.500  'h2o' -3.000  'co3-2' 7.000  'h+1' 14.000
+-7.000                           !rate constant
+0                                !fractional order terms
+4                                !monod and threshold terms
+'o2(aq)' 1.d-4    1.0d0
+'c7h8o'  1.d-5    1.0d0
+'o2(aq)' 1.d-5    2.0d0
+'c7h8o'  1.d-10   2.0d0
+0                                !inhibition and toxicity terms
+0
+!
+!  cresol/nitrate reduction - Monod-kinetics
+!  irreversible reaction
+!
+'c7h8o-no3-1'  'monod'
+0.000  0.000  0.000
+6  'c7h8o' -1.000 'no3-1' -17.000  'h2o' -3.000  'co3-2' 7.000  'no2-1' 17.000  'h+1' 14.000
+-9.000                            !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'no3-1' 1.d-4    1.0d0
+'c7h8o' 1.d-5    1.0d0
+'no3-1' 1.d-5    2.0d0
+'c7h8o' 1.d-10   2.0d0
+1                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+0
+!
+!  cresol/denitrification - Monod-kinetics
+!  irreversible reaction
+!
+'c7h8o-no3-2'  'monod'
+0.000  0.000  0.000
+6  'c7h8o' -1.000 'no3-1' -6.800  'h2o' 0.400  'co3-2' 7.000  'n2(aq)' 3.400  'h+1' 7.200
+-10.000                           !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'no3-1' 1.d-4    1.0d0
+'c7h8o' 1.d-5    1.0d0
+'no3-1' 1.d-5    2.0d0
+'c7h8o' 1.d-10   2.0d0
+1                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+0
+!
+!  cresol/sulfate reduction - Monod-kinetics
+!  irreversible reaction
+!
+'c7h8o-so4'  'monod'
+0.000  0.000  0.000
+6  'c7h8o' -1.000 'so4-2' -4.250  'h2o' -3.000  'co3-2' 7.000  'hs-1' 4.250  'h+1' 9.750
+-12.000                           !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'so4-2' 5.d-2    1.0d0
+'c7h8o' 1.d-5    1.0d0
+'so4-2' 5.d-3    2.0d0
+'c7h8o' 1.d-10   2.0d0
+3                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+'c6h6o'  1.087d-2
+0
+!
+!  cresol/fermentation - Monod-kinetics
+!  irreversible reaction
+!
+'c7h8o-ferm'  'monod'
+0.000  0.000  0.000
+5  'c7h8o' -1.000  'h2o' 7.250  'co3-2' 2.750  'ch4(aq)' 4.250  'h+1' 5.500
+-12.000                           !rate constant
+0                                 !fractional order terms
+2                                 !monod and threshold terms
+'c7h8o' 1.087d-2   1.0d0
+'c7h8o' 1.d-10     2.0d0
+3                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+'so4-2'  1.d-5
+0
+!
+!  xylenol/aerobic oxidation - Monod-kinetics
+!  irreversible reaction
+!
+'c8h10o-o2'  'monod'
+0.000  0.000  0.000
+5  'c8h10o' -1.000  'o2(aq)' -10.000  'h2o' -3.000  'co3-2' 8.000  'h+1' 16.000
+-7.000                           !rate constant
+0                                !fractional order terms
+4                                !monod and threshold terms
+'o2(aq)'  1.d-4    1.0d0
+'c8h10o'  1.d-5    1.0d0
+'o2(aq)'  1.d-5    2.0d0
+'c8h10o'  1.d-10   2.0d0
+0                                !inhibition and toxicity terms
+0
+!
+!  xylenol/nitrate reduction - Monod-kinetics
+!  irreversible reaction
+!
+'c8h10o-no3-1'  'monod'
+0.000  0.000  0.000
+6  'c8h10o' -1.000 'no3-1' -20.000  'h2o' -3.000  'co3-2' 8.000  'no2-1' 20.000  'h+1' 16.000
+-9.000                            !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'no3-1'  1.d-4    1.0d0
+'c8h10o' 1.d-5    1.0d0
+'no3-1'  1.d-5    2.0d0
+'c8h10o' 1.d-10   2.0d0
+1                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+0
+!
+!  xylenol/denitrification - Monod-kinetics
+!  irreversible reaction
+!
+'c8h10o-no3-2'  'monod'
+0.000  0.000  0.000
+6  'c8h10o' -1.000 'no3-1' -8.000  'h2o' 1.000  'co3-2' 8.000  'n2(aq)' 4.000  'h+1' 8.000
+-10.000                           !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'no3-1'  1.d-4    1.0d0
+'c8h10o' 1.d-5    1.0d0
+'no3-1'  1.d-5    2.0d0
+'c8h10o' 1.d-10   2.0d0
+1                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+0
+!
+!  xylenol/sulfate reduction - Monod-kinetics
+!  irreversible reaction
+!
+'c8h10o-so4'  'monod'
+0.000  0.000  0.000
+6  'c8h10o' -1.000 'so4-2' -5.000  'h2o' -3.000  'co3-2' 8.000  'hs-1' 5.000  'h+1' 11.000
+-12.000                           !rate constant
+0                                 !fractional order terms
+4                                 !monod and threshold terms
+'so4-2'  5.d-2    1.0d0
+'c8h10o' 1.d-5    1.0d0
+'so4-2'  5.d-2    2.0d0
+'c8h10o' 1.d-10   2.0d0
+3                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+'c6h6o'  1.087d-2
+0
+!
+!  xylenol/fermentation - Monod-kinetics
+!  irreversible reaction
+!
+'c8h10o-ferm'  'monod'
+0.000  0.000  0.000
+5  'c8h10o' -1.000  'h2o' -8.000  'co3-2' 3.000  'ch4(aq)' 5.000  'h+1' 6.000
+-12.000                           !rate constant
+0                                 !fractional order terms
+2                                 !monod and threshold terms
+'c8h10o' 1.087d-2   1.0d0
+'c8h10o' 1.d-10     2.0d0
+3                                 !inhibition and toxicity terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+'so4-2'  1.d-5
+0
+!
+!  degradation of organics by oxygen and nitrate
+!  expressed in terms of phenol and nitrate - Monod-kinetics
+!  irreversible reaction
+!
+'c6h6o-fringe'  'monod'
+0.000  0.000  0.000
+3  'c6h6o' -1.000 'no3-1' -7.000  'co3-2' 6.000
+-9.000                            !rate constant
+0                                 !fractional order terms
+4                                 !monod  and threshold terms
+'no3-1'  1.d-4    1.0d0
+'c6h6o'  1.d-5    1.0d0
+'no3-1'  1.d-5    2.0d0
+'c6h6o'  1.d-10   2.0d0
+0
+0
+!-----------------------------------------------------------------------
+!structure of database:
+!----------------------
+!namers(ir), rtype_hom(ir)
+!ncrc  (namec(icrc) xnur(icrc); icrc=1,ncrc)
+!eqr(ir)
+!nor
+!if (rtype_hom.eq.'equilibrium'.or.
+!    rtype_hom.eq.'reversible'.or.
+!    rtype_hom.eq.'forward-to-equilibrium') then
+!  for ior = 1,nor
+!    nort, norc, norc,  rateox(ior)  bcatfac(ior)
+!    (namec(iort) ordort(iort); iort=1,nort)
+!    (namec(iorc) ordorc(iorc); iorc=1,norc)
+!    (namex(iorx) ordorx(iorx); iorx=1,norx)
+!  end for
+!else
+!  for ior = 1,nor
+!    nort, norc, norc,  rateox(ior)  bcatfac(ior)
+!    (namec(iort) ordort(iort) chomt(iort); iort=1,nort)
+!    (namec(iorc) ordorc(iorc) chomc(iorc); iorc=1,norc)
+!    (namex(iorx) ordorx(iorx) chomx(iorx); iorx=1,norx)
+!  end for
+!end if
+!------------------------------------------------------------------------
+!identification of variables:
+!----------------------------
+!           bcatfac(nr*nor)    = log_10 of bacterial catalysis factor
+!           chomc(nr*nor*nc)   = cutoff concentrations for reacting
+!                                species (components as species
+!                                in solution) [moles/l h2o]
+!           chomt(nr*nor*nc)   = cutoff concentration for reacting
+!                                species (total aqueous component
+!                                concentrations) [moles/l h2o]
+!           chomx(nr*nor*nx)   = cutoff concentration for reacting
+!                                species (aqueous complexes) [moles/l h2o]
+!           eqr(nr)            = log_10 of equilibrium constant 
+!           namec(nc)          = component names
+!           namers(nr)         = name of produced component
+!                                needs to have stoichiometric coefficient 
+!                                1 in reaction equation, this species will
+!                                be treated as a secondary unknown, if the
+!                                the reactions in this database are 
+!                                treated as equilibrium reactions 
+!                                (see problem specific input file, i.e. 
+!                                it becomes an aqueous complex). 
+!           namex(nx)          = names of aqueous complexes
+!           ncrc               = number of components with nonzero
+!                                stoichiometric coefficients in
+!                                reaction equation
+!           nor                = number of parallel
+!                                reaction paths
+!           norc               = number of reactants
+!                                (components as species in
+!                                solution)
+!           nort               = number of reactants
+!                                (total aqueous component
+!                                concentrations)
+!           norx               = number of reactants
+!                                (secondary aqueous species)
+!           ordorc(nr*nor*nc)  = reaction order
+!                                (with respect to activities of components
+!                                as species in solution)
+!           ordort(nr*nor*nc)  = reaction order
+!                                (with respect to total
+!                                aqueous component concentrations)
+!           ordorx(nr*nor*nx)  = reaction order
+!                                (with respect to activities 
+!                                of aqueous complexes)
+!           rateox(nr*nor)     = log of rate constant
+!                                (units: liter -  moles - seconds)
+!           rtype_hom(nr)      = reaction type of homogeneous
+!                                reaction in aqueous phase
+!                                'forward'
+!                                'forward-to-equilibrium'
+!                                'reversible'
+!                                'equilibrium'
+!           xnur(nr*nc)        = stoichiometric coefficient of
+!                                components in reaction equation
+!------------------------------------------------------------------------

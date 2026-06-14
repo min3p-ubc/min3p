@@ -1,4 +1,7 @@
+Github repository https://github.com/min3p-ubc/min3p
+
 MIN3P: Multicomponent Reactive Transport Code
+
 
     ------------------------------------------------
           M     M  I  N     N  333333  PPPPPP       
@@ -20,7 +23,7 @@ MIN3P: Multicomponent Reactive Transport Code
 Overview
 ------------------------------------------------------------------------------------------
 
-MIN3P (Multicomponent INteraction in 3-Phase systems) is a general-purpose reactive transport code for simulating variably saturated flow and multicomponent reactive transport in porous media. Originally developed at the University of Waterloo and the University of British Columbia, MIN3P has been continuously enhanced to address a wide range of subsurface environmental problems including contaminant migration, geochemical weathering, carbon sequestration, and acid mine drainage.
+MIN3P is a general-purpose reactive transport code for simulating variably saturated flow and multicomponent reactive transport in porous media. Originally developed at the University of Waterloo and the University of British Columbia, MIN3P has been continuously enhanced to address a wide range of subsurface environmental problems including contaminant migration, geochemical weathering, carbon sequestration, and acid mine drainage.
 
 MIN3P tightly couples fluid flow, solute transport, and geochemical reactions, enabling robust simulation of complex, non-linear processes in natural and engineered subsurface systems.
 

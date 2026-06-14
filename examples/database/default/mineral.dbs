@@ -5,143 +5,7 @@
 ! dissolution-precipitation reactions
 ! based on MINTEQA2 database entries
 ! new rate data can be added
-! WARNING : logK should be inversed regarding the reaction, but not dHr!!!!
 ! ************************************************************************
-!
-! ------------------------------------------
-!
-'pyrite-ir'
-'surface'
-119.9750  5.0200
-3  'so4-2' 2.000  'h2o' -1.000  'o2(aq)' -3.500
-'irreversible dissolution'
-'reaction heat' 336.759
-'activation energy'  15.53
-'fractional C^c' 1
-'o2(aq)' 1.000
-'hyperbolic C^c' 1
-'o2(aq)'  1.d-10  2.000
-
-!
-! ICE
-'ice'
-'surface'
-18.0    0.99
-1  'h2o'  1.0
-'reversible' -0.2700   4.0000
-!
-!
-! P-uptake
-! half saturation constant in mol L-1 H2O
-! K hyperbolic was 1.3d-2
-!
-'P-uptake'
-'surface'
-86.8536  5.0
-2  'po4-3' 1.0 'h+1' 3.0
-'irreversible precipitation'
-
-'hyperbolic T^a' 1
-'po4-3'   1.3d-2    1.000
-
-'log rate constant'  -10.000
-!'activation energy' 12.37
-! Si-uptake
-! half saturation constant in mol L-1 H2O
-! K hyperbolic was 1.3d-2
-'Si-uptake'
-'surface'
-86.8536  5.0
-1  'h4sio4' 1.0
-'irreversible precipitation'
-
-'hyperbolic T^a' 1
-'h4sio4'   1.3d-2    1.000
-
-'log rate constant'  -10.000
-!'activation energy' 12.37
-
-! K-uptake-vxrd
-! monod
-!
-'K-uptakevxrd'
-'surface'
-86.8536  5.0
-3  'k+1' 1.0 'h2o' 1.0 'h+1' -1.0
-'irreversible precipitation'
-
-'hyperbolic T^a' 1
-'k+1'   1.3d-2    1.000
-
-'log rate constant'  -10.000
-
-! Ca-uptake
-! half saturation constant in mol L-1 H2O
-!
-'Ca-uptake'
-'surface'
-86.8536  4.370
-2  'ca+2' 1.0  'cl-1' 2.0
-'irreversible precipitation'
-
-'hyperbolic T^a' 1
-'ca+2'   1.3d-2    1.000
-
-'log rate constant'  -8.000
-
-!
-! K-uptake,
-! half saturation constants in mol L-1 H2O
-!
-'K-uptake'
-'surface'
-86.8536  4.370
-2  'k+1' 1.0  'cl-1' 1.0
-'irreversible precipitation'
-
-'hyperbolic T^a' 1
-'k+1'   4.7d-5    1.000
-
-'log rate constant'
--6.522878
-
-!
-! Zn-uptake
-! half saturation constant in mol L-1 H2O
-! K hyperbolic was 1.3d-2
-!
-'Zn-uptake'
-'surface'
-86.8536  5.0
-2  'zn+2' 1.0 'ca+2' -1.0
-'irreversible precipitation'
-'hyperbolic T^a' 1
-'zn+2'   1.3d-2    1.000
-'log rate constant'  -10.000
-!
-! Zn-uptake-H
-! half saturation constant in mol L-1 H2O
-! K hyperbolic was 1.3d-2
-'Zn-uptake-H'
-'surface'
-86.8536  5.0
-2  'zn+2' 1.0 'h+1' -2.0
-'irreversible precipitation'
-'hyperbolic T^a' 1
-'zn+2'   1.3d-2    1.000
-'log rate constant'  -10.000
-!
-! Zn-uptake-Na
-! half saturation constant in mol L-1 H2O
-! K hyperbolic was 1.3d-2
-'Zn-uptake-Na'
-'surface'
-86.8536  5.0
-2  'zn+2' 1.0 'na+1' -2.0
-'irreversible precipitation'
-'hyperbolic T^a' 1
-'zn+2'   1.3d-2    1.000
-'log rate constant'  -10.000
 !
 ! uraninite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -610,141 +474,11 @@
 ! density: from Klein and Hurlbut, 1993
 ! activation energy: undefined
 !
-'#brucite'
-'surface'
-  58.3268    2.3900
- 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'reversible'  -17.5960  27.1000
-!
-! brucite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
 'brucite'
 'surface'
   58.3268    2.3900
  3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'reversible'  -17.596  27.1000
-
-'parallel reaction pathways' 2
-
-'pathway' 1
-'log rate constant' -15.0663
-'fractional C^c' 1
-'h+1' 0.5d0
-'end pathway'
-
-'pathway' 2
-'log rate constant' -15.5981
-'end pathway'
-!
-! brucite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'brucite_diss2'
-'surface'
-  58.3268    2.3900
- 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'reversible'  -17.4902  27.1000
-
-'parallel reaction pathways' 1
-
-'pathway' 1
-'exponent m' 2.0
-'log rate constant' -9.0
-'activation energy' 60.0
-'end pathway'
-!
-! brucite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'brucite3'
-'surface'
-  58.3268    2.3900
- 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'irreversible dissolution'  -17.4902  27.1000
-
-'exponent m' 2.0
-'log rate constant' -6.65d0
-'fractional C^c' 1
-'h+1' 0.15d0
-!
-! brucite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'#brucite4'
-'surface'
-  58.3268    2.3900
- 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'reversible'  -17.496  27.1000
-
-'exponent m' 2.0
-'log rate constant' -6.38d0
-'fractional C^c' 1
-'h+1' 0.2
-!
-! brucite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'#brucite4'
-'surface'
-  58.3268    2.3900
- 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'reversible'  -17.696  27.1000
-
-'exponent m' 2.0
-'log rate constant' -6.38d0
-'fractional C^c' 1
-'h+1' 0.2
-!
-! brucite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'brucite4'
-'surface'
-  58.3268    2.3900
- 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'reversible'  -17.1 27.1000
-'exponent m' 2.0
-'log rate constant' -6.38d0
-'fractional C^c' 1
-'h+1' 0.2
-! brucite_diss
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'brucite_diss'
-'surface'
-  58.3268    2.3900
- 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
-'irreversible dissolution'
-'log rate constant'  -8.86d0
-!
-! calcite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'calcitex'
-'surface'
- 100.0894    2.7100
- 2  'ca+2'    1.000  'co3-2'    1.000
-'reversible'    8.4750  2.5850
-'activation energy' 5.0
-'reaction heat' 2.585
-
+'reversible'  -16.8400  27.1000
 !
 ! calcite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -756,49 +490,6 @@
  100.0894    2.7100
  2  'ca+2'    1.000  'co3-2'    1.000
 'reversible'    8.4750  2.5850
-
-'parallel reaction pathways' 3
-
-'pathway' 1
-'log rate constant' -2.8277
-!'activation energy' 8.4
-'fractional C^c'  1
-'h+1'  1.0
-'end pathway'
-
-'pathway' 2
-'log rate constant' -9.92702
-!'activation energy' 8.4
-'end pathway'
-
-'pathway' 3
-'log rate constant' -9.6818
-!'activation energy' 8.4
-'fractional T^x'  1
-'co2(aq)'  1.0
-'end pathway'
-!
-! co2_00034_atm
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'co2_00034_atm'
-'surface'
- 1.0d-10    2.7100
- 3  'co3-2'    1.000  'h2o'    -1.000  'h+1'    2.000
-'reversible'    21.6109  2.5850
-!
-! co2_034_atm
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'co2_034_atm'
-'surface'
- 1.0d-10    2.7100
- 3  'co3-2'    1.000  'h2o'    -1.000  'h+1'    2.000
-'reversible'    19.6109  2.5850
 !
 ! celestite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -827,41 +518,11 @@
 ! density: average value from Klein and Hurlbut, 1993
 ! activation energy: undefined
 !
-'#chrysotile'
+'chrysotile'
 'surface'
  277.1349    2.5500
- 4  'h+1'   -6.000  'mg+2'    3.000  'h4sio4'    1.000  'h2o'    1.000
+ 4  'h+1'   -6.000  'mg+2'    3.000  'h4sio4'    2.000  'h2o'    1.000
 'reversible'  -32.1880  46.8000
-!
-! chrysotile2
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'chrysotile2'
-'surface'
- 277.1349    2.5500
- 2  'h4sio4'  2.0   'h2o'    0.5   
-'irreversible dissolution'
-
-'log rate constant'  -10.37d0
-'fractional C^c'  1
-'h+1'  0.19
-!
-! chrysotile1
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'chrysotile1'
-'surface'
- 277.1349    2.5500
- 3  'h+1'   -6.000  'mg+2'   3.000 'h2o'    0.5
-'irreversible dissolution'
-
-'log rate constant'  -10.02d0
-'fractional C^c'  1
-'h+1'  0.22
 !
 ! clinoenstite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -912,180 +573,11 @@
 ! density: from Klein and Hurlbut, 1993
 ! activation energy: undefined
 !
-'#dolomite'
+'dolomite'
 'surface'
  184.4108    2.8500
  3  'ca+2'    1.000  'mg+2'    1.000  'co3-2'    2.000
 'reversible'   17.0900  9.4360
-!
-! dolomite_diss
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'#dolomite_diss'
-'surface'
- 184.4108    2.8500
- 3  'ca+2'    1.000  'mg+2'    1.000  'co3-2'    2.000
-'irreversible dissolution - log K control '  18.1441  0.0 
-
-'log rate constant'  -7.657577319
-!
-! dolomite_diss
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'#dolomite_diss'
-'surface'
- 184.4108    2.8500
- 3  'ca+2'    1.000  'mg+2'    1.000  'co3-2'    2.000
-'irreversible dissolution'  18.1441  0.0 
-
-
-'parallel reaction pathways' 3
-
-'pathway' 1
-'log rate constant' -13.6934
-'fractional C^c' 1
-'h+1' 0.5
-'end pathway'
-
-'pathway' 2
-'log rate constant' -13.3763
-'fractional T^x' 1
-'co2(aq)' 0.5
-'end pathway'
-
-'pathway' 3
-'log rate constant' -25.2958
-'end pathway'
-!
-! dolomite_diss
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-! Reaction rate taken from  
-! Palandri, J. & Kharaka, Y. 
-! A compilation of rate parameters of water-mineral interaction 
-! kinetics for application to geochemical modeling. 
-! U.S. Geological Survey. Open file report 2004-1068, 2004
-! Pag 42
-!
-'dolomite_diss'
-'surface'
- 184.4108    2.8500
- 3  'ca+2'    1.000  'mg+2'    1.000  'co3-2'    2.000
-'irreversible dissolution'  18.1441  0.0 
-
-'parallel reaction pathways' 3
-
-'pathway' 1
-'log rate constant' -3.76d0
-'fractional C^c' 1
-'h+1' 0.5
-'end pathway'
-
-'pathway' 2
-'log rate constant' -5.37d0
-'fractional T^x' 1
-'co2(aq)' 0.5
-'end pathway'
-
-'pathway' 3
-'log rate constant' -8.6d0
-'end pathway'
-!
-! hydromagnesite
-!
-'hymagnesite'
-'surface'
- 467.64    2.18
- 4  'h2o'  6.000  'mg+2'    5.000  'co3-2'    4.000   'h+1'  -2.000  
-'reversible'   10.3461  9.4360
-!
-! hydromagnesite2
-!
-'hymagnesite2'
-'surface'
- 467.64    2.18
- 4  'h2o'  6.000  'mg+2'    5.000  'co3-2'    4.000   'h+1'  -2.000  
-'reversible'   8.766  9.4360
-!
-! hydrotal1
-!
-'hytalcite1'
-'surface'
- 603.98   2.06
- 4  'h2o'  17.000  'mg+2'  4.000  'h+1'  -14.000   'al+3'  2.000     
-'irreversible dissolution - log K control '   73.78  9.4360
-!
-! hydrotal2
-!
-'hytalcite2'
-'surface'
- 603.98   2.06
- 4  'co3-2'  0.500  'mg+2'  2.000  'h+1'  -6.000   'al+3'  1.000     
-'irreversible dissolution'   -1.405346  9.4360
-'log rate constant'  -10.0d0
-!
-! hydrotal3 
-! Depends pH
-!
-!
-'hytalcite3'
-'surface'
- 603.98   2.06
- 5  'co3-2'  1.000  'mg+2'  3.000  'h+1'  -8.000   'al+3'  1.000  'h2o'  8.000     
-'irreversible dissolution - log K control '   -78.061  9.4360
-'log rate constant'  -8.0d0
-'fractional C^c' 1
-'h+1' 0.5
-!
-! hydrotal3 
-! Depends pH
-!
-!
-'#hytalcite3'
-'surface'
- 603.98   2.06
- 5  'co3-2'  1.000  'mg+2'  6.000  'h+1'  -16.000   'al+3'  2.000  'h2o'  16.000     
-'reversible'   -89.231  9.4360
-'log rate constant'  -12.0d0
-'fractional C^c' 1
-'h+1' 0.2
-!
-! hydrotalcite3
-!
-'hytalcite3i'
-'surface'
- 603.98   2.06
- 5  'co3-2'  0.130  'mg+2'  0.740  'h+1'  -2.000   'al+3'  0.260  'h2o'  2.390    
-'irreversible dissolution - log K control '   -9.82  9.4360
-!
-! hydrotal3rev
-!
-'hytalcite3r'
-'surface'
- 603.98   2.06
- 5  'co3-2'  0.130  'mg+2'  0.740  'h+1'  -2.000   'al+3'  0.260  'h2o'  2.390    
-'reversible'   -9.82  9.4360
-!
-! lansfordite
-!
-'lansfordite'
-'surface'
- 174.39     1.7
- 3  'h2o'    5.000  'mg+2'   1.000  'co3-2'    1.000  
-'reversible'   5.4591  9.4360
-!
-! nesquehonite
-!
-'nesquehonite'
-'surface'
- 74.790  2.8500
- 3  'h2o'    3.000  'mg+2'    1.000  'co3-2'    1.000     
-'reversible'   5.167  9.4360
 !
 ! epsomite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -1119,9 +611,6 @@
  104.8692    4.3713
  3  'h+1'   -3.000  'fe+3'    1.000  'h2o'    3.000
 'reversible'   -4.8910  0.0000
-'activation energy' 16
-'reaction heat' 0.0000
-
 !
 ! fe3(oh)8
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -1222,27 +711,6 @@
  3  'h+1'   -3.000  'al+3'    1.000  'h2o'    3.000
 'reversible'   -8.1100  22.8000
 !
-! gibbsite-wc
-!
-'gibbsite-wc'
-'surface'
-  78.0037    2.3500
- 3  'h+1'   -3.000  'al+3'    1.000  'h2o'    3.000
-'reversible'   -7.07  -22.6700
-!Interlayer-Al
-! equilibrium constant, gram formula weight same than above but inversed for consistent
-! effects of temp on logK
-! enthalpy change from eq3/6
-! density: same than gibbsite, see above
-! activation energy: undefined
-!
-'interlayer-Al'
-'surface'
-  78.0037    2.3500
- 3  'h+1'   -3.000  'al+3'    1.000  'h2o'    3.000
-'reversible'   -8.89   -22.6700  
-!'activation energy' 25.0
-!
 ! al2o3
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
 ! density: from Klein and Hurlbut, 1993
@@ -1264,7 +732,6 @@
   86.8536    4.3700
  3  'h+1'   -3.000  'fe+3'    1.000  'h2o'    2.000
 'reversible'    1.0000  14.4800
-
 !
 ! greenalite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -1298,10 +765,6 @@
  172.1722    2.3200
  3  'ca+2'    1.000  'so4-2'    1.000  'h2o'    2.000
 'reversible'    4.5800  0.1090
-'activation energy' 14.3
-'reaction heat' 0.1090
-
-
 !
 ! halite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -1313,61 +776,6 @@
   58.4428    2.1600
  2  'na+1'    1.000  'cl-1'    1.000
 'reversible'   -1.5820  -0.9180
-!
-! halite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'halite1'
-'surface'
-  58.4428    2.1600
- 2  'na+1'    1.000  'cl-1'    1.000
-'reversible'   -1.5820  0.0d0
-!
-! leonite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'leonite'
-'surface'
-  366.69    2.201
- 4  'k+1'    2.000  'mg+2'    1.000   'so4-2'    2.000  'h2o'    4.000
-'reversible'   3.979  -0.9180
-!
-! leonhardite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'leonhardite'
-'surface'
-  470.44    2.29
- 3  'mg+2'    1.000   'so4-2'    1.000  'h2o'    4.000
-'reversible'   0.887  -0.9180
-!
-! schoenite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'schoenite'
-'surface'
-  402.72    2.028
- 4  'mg+2'    1.000   'so4-2'    2.000  'k+1'    2.000   'h2o'    6.000
-'reversible'   4.328  -0.9180
-!
-! hexahydrite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'hexahydrite'
-'surface'
- 132.580    2.1600
- 3  'mg+2'    1.000  'so4-2'    1.000  'h2o'    6.000
-'reversible'   1.6712  -0.9180
 !
 ! hematite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -1409,7 +817,7 @@
 !
 'jarositena'
 'surface'
- 478.6978    2.8423
+ 484.6978    2.8423
  5  'h+1'   -6.000  'na+1'    1.000  'fe+3'    3.000  'so4-2'    2.000  'h2o'    6.000
 'reversible'    5.2800  36.1800
 !
@@ -1420,7 +828,7 @@
 !
 'jarositek'
 'surface'
- 494.8100    3.2000
+ 500.8100    3.2000
  5  'h+1'   -6.000  'k+1'    1.000  'fe+3'    3.000  'so4-2'    2.000  'h2o'    6.000
 'reversible'    9.2100  31.2800
 !
@@ -1490,55 +898,6 @@
  2  'mg+2'    1.000  'co3-2'    1.000
 'reversible'    8.0290  6.1690
 !
-! magnesite1
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'magnesite1'
-'surface'
-  84.3214    3.1000
- 2  'mg+2'    1.000  'co3-2'    1.000
-'irreversible dissolution - log K control '    8.0290  6.1690
-'log rate constant' -7.69d0
-'fractional C^c' 1
-'h+1' 1.000
-!
-! magnesite2
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'magnesite2'
-'surface'
-  84.3214    3.1000
- 2  'mg+2'    1.000  'co3-2'    1.000
-'irreversible dissolution '    8.0290  6.1690
-'log rate constant' -7.69d0
-'fractional C^c' 1
-'h+1' 1.000
-!
-! magnesite-ch
-! Taken from Palandri and Kharaka (2004) 
-!
-'magnesite-ch'
-'surface'
-  84.3214    3.1000
- 2  'mg+2'    1.000  'co3-2'    1.000
-'irreversible dissolution '    8.0290  6.1690
-
-'parallel reaction pathways' 2
-
-'pathway' 1
-'log rate constant' -6.38d0
-'fractional C^c' 1
-'h+1' 0.589d0
-'end pathway'
-
-'pathway' 2
-'log rate constant' -9.34d0
-'end pathway'
-!
 ! magnetite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
 ! density: from Klein and Hurlbut, 1993
@@ -1570,62 +929,7 @@
 'surface'
  322.1942    1.4659
  3  'na+1'    2.000  'so4-2'    1.000  'h2o'   10.000
-'reversible'    1.1398  -18.9870
-!
-! kieserite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from EQ3/6 database
-! activation energy: undefined
-!
-'kieserite'
-'surface'
- 138.38    2.57
- 3  'mg+2'    1.000  'so4-2'    1.000  'h2o'   1.000
-'reversible'    0.267  -18.9870
-!
-! syngenite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from EQ3/6 database
-! activation energy: undefined
-!
-'syngenite'
-'surface'
- 328.42    2.58
- 4  'ca+2'    1.000  'so4-2'   2.000  'h2o'   1.000   'k+1'   2.000
-'reversible'   7.6001  -18.9870
-!
-! sylvite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from EQ3/6 database
-! activation energy: undefined
-!
-'sylvite'
-'surface'
- 74.55    1.99
- 2  'cl-1'    1.000  'k+1'   1.000
-'reversible'   -0.8459  -18.9870
-!
-! polyhalite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from EQ3/6 database
-! activation energy: undefined
-!
-'polyhalite'
-'surface'
- 602.94    2.77
- 5  'mg+2'    1.000  'so4-2'    4.000  'h2o'   2.000  'ca+2'   2.000  'k+1'   2.000
-'reversible'    14.3124  -18.9870
-!
-! pentahydrite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: from EQ3/6 database
-! activation energy: undefined
-!
-'pentahydrite'
-'surface'
- 210.45    1.49
- 3  'mg+2'    1.000  'so4-2'    1.000  'h2o'   5.000
-'reversible'    1.3872  -18.9870
+'reversible'    1.1140  -18.9870
 !
 ! natron
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -2627,50 +1931,6 @@
   97.4400    4.0000
  3  'h+1'   -1.000  'zn+2'    1.000  'hs-1'    1.000
 'reversible'   11.6180  -8.2500
-!
-! bischofite
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'bischofite'
-'surface'
-  203.30    1.56
- 3  'h2o'   6.000  'cl-1'    2.000  'mg+2'    1.000
-'reversible'   -4.3923  -8.2500
-!
-! bloedite 
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'bloedite'
-'surface'
-  334.47    2.23
- 4  'h2o'   4.000  'na+1'    2.000  'mg+2'    1.000  'so4-2'    2.000
-'reversible'   2.4777  -8.2500
-!
-! carnallite 
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'carnallite'
-'surface'
-  277.85    1.6
- 4  'h2o'   6.000  'k+1'    1.000  'mg+2'    1.000  'cl-1'    3.000
-'reversible'   -4.2721  -8.2500
-!
-! kainite 
-! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
-! density: average value from Klein and Hurlbut, 1993
-! activation energy: undefined
-!
-'kainite'
-'surface'
-  248.97    2.1
- 5  'h2o'   3.000  'k+1'    1.000  'mg+2'    1.000  'cl-1'    1.000   'so4-2'    1.000
-'reversible'   0.3114  -8.2500
 !
 ! wurtzite
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -6835,45 +6095,11 @@
 !               reaction rates and exponents from Chou et al., Chem. Geol., 78:269-282, 1989
 !               equilibrium constant from MINTEQA2
 !
-'#magnesite-ch'
+'magnesite-ch'
 'surface'
 84.3214  3.100
 2  'mg+2' 1.000  'co3-2' 1.000
 'reversible'  8.029  6.169
-
-'parallel reaction pathways' 3
-
-'pathway' 1
-'log rate constant' -4.600
-'fractional C^c' 1
-'h+1' 1.000
-'end pathway'
-
-'pathway' 2
-'log rate constant' -9.350
-'fractional C^c' 1
-'h2o' 1.000
-'end pathway'
-
-'pathway' 3
-'log rate constant' -5.220
-'fractional C^x' 1
-'h2co3aq' 1.000
-'end pathway'
-!
-! magnesite-ch: reversible reaction
-!               GFW from MINTEQA2
-!               density from Klein and Hurlbut, Manual of Mineralogy, 1993
-!               enthalpy change from MINTEQA2
-!               activation energy missing
-!               reaction rates and exponents from Chou et al., Chem. Geol., 78:269-282, 1989
-!               equilibrium constant from MINTEQA2
-!
-'#magnesite-ch'
-'surface'
-84.3214  3.100
-2  'mg+2' 1.000  'co3-2' 1.000
-'irreversible dissolution'  8.029  6.169
 
 'parallel reaction pathways' 3
 
@@ -6981,138 +6207,6 @@
 5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
 'irreversible dissolution - log K control'  -0.080  0.000
 !
-! k-feldspar-Ea:
-! dissolution to equilibrium
-! equilibrium constant and density from fge consistent with G\E9rard et al., 2001, 2002, 2003.
-! gram formula weight calculated
-! enthalpy change from fge as well and activation energy (acidic) from G\E9rard et al, 2002
-!
-'k-feldspar-Ea'
-'surface'
-278.3315  2.5700
-5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
-'irreversible dissolution - log K control'   0.9592 0.966
-
-'parallel reaction pathways' 1
-
-'pathway' 1
-'activation energy' 12.37
-'end pathway'
-
-! k-feld-diss:
-! dissolution to equilibrium
-! equilibrium constant and density from fge consistent with G\E9rard et al., 2001, 2002, 2003.
-! gram formula weight calculated
-! enthalpy change from fge as well and activation energy and so forth from G\E9rard et al, 2002
-!
-'kfeld-diss'
-'surface'
-278.3315  2.5700
-5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
-'irreversible dissolution - log K control'   0.9592 0.966
-
-'parallel reaction pathways' 2
-
-'pathway' 1
-'exponent m' 1.0
-'exponent n' 1.0
-'log rate constant' -9.6
-'activation energy' 12.37
-'fractional C^c'  1
-'h+1'  0.5
-'end pathway'
-
-'pathway' 2
-'exponent m' 1.0
-'exponent n' 1.0
-'log rate constant' -11.
-'activation energy' 8.85
-'end pathway'
-
-! k-feld-diss-ac:
-! same than above but only acidic pathway (cf. GCA draft)
-!
-'kfeld-diss-ac'
-'surface'
-278.3315  2.5700
-5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
-'irreversible dissolution - log K control'   0.9592 0.966
-
-'parallel reaction pathways' 1
-
-'pathway' 1
-'exponent m' 1.0
-'exponent n' 1.0
-'log rate constant' -13.8
-'activation energy' 6.185
-'fractional C^c'  1
-'h+1'  0.5
-'end pathway'
-
-! k-feld-diss-vxrd : logK augment\E9 atteindre des conditions loin de l'\E9quil
-! dissolution to equilibrium
-! equilibrium constant and density from fge consistent with G\E9rard et al., 2001, 2002, 2003.
-! gram formula weight calculated
-! enthalpy change from fge as well and activation energy and so forth from G\E9rard et al, 2002
-!
-'kfeld-diss-vxrd'
-'surface'
-278.3315  2.5700
-5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
-'irreversible dissolution - log K control'   0.9592  2.000
-
-'parallel reaction pathways' 2
-
-'pathway' 1
-'exponent m' 1.0
-'exponent n' 1.0
-'log rate constant' -9.6
-'activation energy' 12.37
-'fractional C^c'  1
-'h+1'  0.5
-'end pathway'
-
-'pathway' 2
-'exponent m' 1.0
-'exponent n' 1.0
-'log rate constant' -11.8
-'activation energy' 14.35
-'end pathway'
-
-!
-!K feld diss far from equilibrium, acid media Ea x 3/4 and kd ...
-! but no H+ activity term
-!
-'kfeld-feq-ac'
-'surface'
-278.3315  2.5700
-5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
-'irreversible dissolution'
-
-'log rate constant' -13.8
-'activation energy' 6.185
-!'activation energy' 3.0925
-!'activation energy' 9.28
-!'activation energy' 12.37
-! init : from litterature (acidic range)
-!
-!
-!K feld diss far from equilibrium, top soil for GCA-1
-! but no H+ activity term
-!
-'kfeld-feq-1'
-'surface'
-278.3315  2.5700
-5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
-'irreversible dissolution'
-
-'log rate constant' -13.8
-!'activation energy'  0.2474
-!'activation energy' 3.0925
-!'activation energy' 9.28
-!'activation energy' 12.37
-!
-!
 ! muscovite
 ! reversible reaction
 ! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
@@ -7136,7 +6230,6 @@
 119.9750  5.0200
 5  'fe+2' 1.000  'so4-2' 2.000  'h+1' 2.000  'h2o' -1.000  'o2(aq)' -3.500
 'reversible'  -215.2640  0.0000
-!'activation energy'  64
 !
 ! pyrite-as
 ! equilibrium constant calculated from MINTEQA2
@@ -7180,102 +6273,7 @@
 'o2(aq)' 1.000
 'shrinking core parameters'  2.41d-9  3.500
 
-!!'log rate constant'  -8.19d0
-!!''reaction heat' 336.759
-! pyrite-o2: from Willamson and Rimstidt (1994)
 !
-'pyrite-o2'
-'surface'
-119.9750  5.020
-5  'fe+2' 1.000  'so4-2' 2.000  'h+1' 2.000  'h2o' -1.000  'o2(aq)' -3.500
-'irreversible dissolution'  -215.2640  -11.300
-'sulfide mineral'
-
-'reaction heat' 336.759
-'activation energy'  15.53
-'log rate constant'  -8.19d0
-'fractional C^c' 1
-'o2(aq)'  1.0d0 
-!'h+1'    -0.11d0
-
-'pyrite-o2x'
-'surface'
-119.9750  5.020
-5  'fe+2' 1.000  'so4-2' 2.000  'h+1' 2.000  'h2o' -1.000  'o2(aq)' -3.500
-'reversible'  -215.2640  -11.300
-
-'sphalerite-o2'
-'surface'
-97.474  4.090
-3  'zn+2' 1.000  'so4-2' 1.000 'o2(aq)' -2.000
-'irreversible dissolution' 11.6180  -8.2500
-
-'activation energy' 6.46
-'log rate constant' -7.00d0
-'fractional C^c' 1
-'o2(aq)'  1.0d0
-
-'o2source-xy'
-'surface'
-32.0000    1000.000
-1  'o2(aq)'   1.000      
-'irreversible dissolution'   2.898  1.844
-'log rate constant' -8.0d0
-'no freezing rate update'
-'rate correction over saturation'
-
-'co2source-xy'
-'surface'
-41.0100    1000.000
-3   'co3-2'  1.000 'h+1'  2.000 'h2o'  -1.000
-'irreversible dissolution'   18.16  -0.530
-'log rate constant' -10.0d0
-'no freezing rate update'
-'rate correction over saturation'
-
-'chalcopyrite-o2'
-'surface'
-183.5130    4.2000
-4  'cu+2'  1.000  'fe+2' 1.000  'so4-2'  2.000   'o2(aq)' -4.000
-'irreversible dissolution'   35.2700  -35.4800
-
-'activation energy' 15.1
-'log rate constant' -7.96d0
-'fractional C^c' 1
-'o2(aq)'  1.0d0
-
-'pyrrhotite-o2'
-'surface'
-85.12  4.61
-7  'fe+2' 0.852  'ni+2' 0.004  'co+2' 0.001  'so4-2' 1.000  'h+1' 0.286  'h2o' -0.143  'o2(aq)' -1.9285
-'irreversible dissolution'  -215.2640  -11.300
-
-'log rate constant'  -7.66d0
-'activation energy'  24
-'fractional C^c' 1
-'o2(aq)'  1.0d0 
-
-! o2source-a                                                       ;phase to control po2
-!
-'o2source-a'
-'surface'
-32.0000    1000.000
-1  'o2(aq)'   1.000      
-'reversible'   3.576  1.844
-'no freezing rate update'
-'rate correction over saturation'
-
-                                                      ;phase to control pco2
-!
-'co2source'
-'surface'
-41.0100    1000.000
-3   'co3-2'  1.000 'h+1'  2.000 'h2o'  -1.000
-'reversible'   18.16  -0.530
-'no freezing rate update'
-'rate correction over saturation'
-
-
 ! pyrrhot-sc
 ! transport controlled reaction
 ! density from Klein and Hurlbut, 1993
@@ -8181,7 +7179,6 @@
 'surface'
 30.02088  1.0000
 5  'mno4-1' -1.333  'co3-2' 1.000  'mno2(aq)' 1.333  'h2o' 0.667  'h+1' 0.667
-1  0  0  0.000d0  1.d-10  1.000
 'irreversible dissolution'
 
 'fractional T^a' 1
@@ -8279,7 +7276,7 @@
 !
 'jarositek-1'
 'surface'
-494.8100  3.2000
+500.8100  3.2000
 5  'h+1' -6.000  'k+1' 1.000  'fe+3' 3.000  'so4-2' 2.000  'h2o' 6.000
 'reversible'  9.2100  31.2800
 
@@ -8356,12 +7353,12 @@
 'ch4(aq)' 1.0d-7    1.000
 
 'hyperbolic phi^m' 2
-'o2(aq)'  3.125d-6  1.000
-'o2(aq)'  1.d-10    2.000
+3.125d-6  1.000  'calcite'
+1.d-10    2.000  'calcite'
 
 'inhibition phi^m' 2
-'o2(aq)'  3.125d-6  1.000
-'o2(aq)'  1.d-10    2.000
+3.125d-6  1.000  'calcite'
+1.d-10    2.000  'calcite'
 
 'log rate constant'  -0.063
 

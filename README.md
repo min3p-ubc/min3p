@@ -1,5 +1,3 @@
-Github repository https://github.com/min3p-ubc/min3p
-
 MIN3P: Multicomponent Reactive Transport Code
 
 
@@ -35,6 +33,18 @@ Multicomponent reactive transport: Handles aqueous complexation, mineral dissolu
 Tight coupling: Flow, transport, and reaction equations solved in a fully coupled framework
 Multi-phase systems: Gas, aqueous, and solid phases considered simultaneously
 
+Contacts & Link
+------------------------------------------------------------------------------------------
+
+**MIN3P Website**: https://www.min3p.com/
+**Git Repository**: https://github.com/min3p-ubc/min3p
+
+Dr. Uli Mayer (owner, maintainer, developer)
+https://www.eoas.ubc.ca/people/ulrichmayer
+https://www.linkedin.com/in/uli-mayer-b10a5418/
+
+Dr. Danyang Su (maintainer, developer)
+https://www.linkedin.com/in/danyang-su-7916a177/
 
 Latest Developments
 ------------------------------------------------------------------------------------------
@@ -294,18 +304,4 @@ Amos, R.T., Ulrich Mayer, K., (2006). Investigating the role of gas bubble forma
 Mayer, K.U., Frind, E.O., Blowes, D.W., (2002). Multicomponent reactive transport modeling in variably-saturated porous media using a generalized formulation for kinetically controlled reactions. Water Resources Research, Vol. 38, No. 9.
 
 Mayer, K.U. (1999). A numerical model for multicomponent reactive transport in variably-saturated porous media, Ph.D. – thesis, Department of Earth Sciences, University of Waterloo, Waterloo, Ontario, Canada.
-
-
-Contacts
-------------------------------------------------------------------------------------------
-
-min3p website
-https://www.min3p.com/
-
-Dr. Uli Mayer (code owner, maintainer, developer)
-https://www.eoas.ubc.ca/people/ulrichmayer
-https://www.linkedin.com/in/uli-mayer-b10a5418/
-
-Dr. Danyang Su (code maintainer, developer)
-https://www.linkedin.com/in/danyang-su-7916a177/
 

@@ -1,0 +1,200 @@
+# PHREEQC simulation of CO₂ degassing and alkalinity change
+# Using phreeqc.dat database
+
+DATABASE /Users/danyangsu/Data/Work/Terradot/code-debug/alk-after-degas/alk-degass-batch/wateq4f-td-20251218.dat
+
+# define your solution
+SOLUTION 1
+    units         mol/L
+    temp          25.0
+    pH            6.0
+    pe            14.5943
+    density       1
+    Ca            1.02E-03
+    Mg            2.10E-03
+    Al            1.49E-05
+    Na            3.69E-05
+    K             2.23E-06
+    N(-3)         1.77E-10 as NH4+
+    Cl            1.50E-04  charge  # Charge balancer
+    S(6)          1.40E-05 as SO4
+    Si            1.95E-03 as H4SiO4
+    C(4)          5.63E-03 as CO3
+    P             3.43E-06 as PO4
+    N(5)          2.35E-05 as NO3
+    O(0)          2.28E-04 as O2
+    N(0)          5.15E-04 as N2
+    S(-2)         1.00E-20 as HS
+    Fe(2)         4.98E-17
+    Fe(3)         4.16E-08
+    Lact          1.41E-03  # Use the defined master species name
+    -water        1.0
+    -redox        Fe(2)/Fe(3) disable
+    -redox        N(-3)/N(0) disable
+    -redox        N(-3)/N(5) disable
+    -redox        N(0)/N(5) disable
+    -redox        S(-2)/S(6) disable 
+END  # This END closes the SOLUTION 1 block
+
+SOLUTION 2
+    units         mol/L
+    temp          25.0
+    pH            6.5
+    pe            14.0943
+    density       1
+    Ca            1.02E-03
+    Mg            2.10E-03
+    Al            1.49E-05
+    Na            3.69E-05
+    K             2.23E-06
+    N(-3)         1.77E-10 as NH4+
+    Cl            1.50E-04  charge  # Charge balancer
+    S(6)          1.40E-05 as SO4
+    Si            1.95E-03 as H4SiO4
+    C(4)          5.63E-03 as CO3
+    P             3.43E-06 as PO4
+    N(5)          2.35E-05 as NO3
+    O(0)          2.28E-04 as O2
+    N(0)          5.15E-04 as N2
+    S(-2)         1.00E-20 as HS
+    Fe(2)         4.98E-17
+    Fe(3)         4.16E-08
+    Lact          1.41E-03  # Use the defined master species name
+    -water        1.0
+    -redox        Fe(2)/Fe(3) disable
+    -redox        N(-3)/N(0) disable
+    -redox        N(-3)/N(5) disable
+    -redox        N(0)/N(5) disable
+    -redox        S(-2)/S(6) disable 
+END  # This END closes the SOLUTION 2 block
+
+SOLUTION 3
+    units         mol/L
+    temp          25.0
+    pH            7.0
+    pe            13.5943
+    density       1
+    Ca            1.02E-03
+    Mg            2.10E-03
+    Al            1.49E-05
+    Na            3.69E-05
+    K             2.23E-06
+    N(-3)         1.77E-10 as NH4+
+    Cl            1.50E-04  charge  # Charge balancer
+    S(6)          1.40E-05 as SO4
+    Si            1.95E-03 as H4SiO4
+    C(4)          5.63E-03 as CO3
+    P             3.43E-06 as PO4
+    N(5)          2.35E-05 as NO3
+    O(0)          2.28E-04 as O2
+    N(0)          5.15E-04 as N2
+    S(-2)         1.00E-20 as HS
+    Fe(2)         4.98E-17
+    Fe(3)         4.16E-08
+    Lact          1.41E-03  # Use the defined master species name
+    -water        1.0
+    -redox        Fe(2)/Fe(3) disable
+    -redox        N(-3)/N(0) disable
+    -redox        N(-3)/N(5) disable
+    -redox        N(0)/N(5) disable
+    -redox        S(-2)/S(6) disable 
+END  # This END closes the SOLUTION 3 block
+
+SOLUTION 4
+    units         mol/L
+    temp          25.0
+    pH            7.0
+    pe            13.5943
+    density       1
+    Ca            1.02E-03
+    Mg            2.10E-03
+    Al            1.49E-05
+    Na            3.69E-05
+    K             2.23E-06
+    N(-3)         1.77E-10 as NH4+
+    Cl            1.50E-04  charge  # Charge balancer
+    S(6)          1.40E-05 as SO4
+    Si            1.95E-03 as H4SiO4
+    C(4)          5.63E-04 as CO3
+    P             3.43E-06 as PO4
+    N(5)          2.35E-05 as NO3
+    O(0)          2.28E-04 as O2
+    N(0)          5.15E-04 as N2
+    S(-2)         1.00E-20 as HS
+    Fe(2)         4.98E-17
+    Fe(3)         4.16E-08
+    Lact          1.41E-03  # Use the defined master species name
+    -water        1.0
+    -redox        Fe(2)/Fe(3) disable
+    -redox        N(-3)/N(0) disable
+    -redox        N(-3)/N(5) disable
+    -redox        N(0)/N(5) disable
+    -redox        S(-2)/S(6) disable 
+END  # This END closes the SOLUTION 4 block
+
+SOLUTION 5
+    units         mol/L
+    temp          25.0
+    pH            8.0
+    pe            12.5943
+    density       1
+    Ca            1.02E-03
+    Mg            2.10E-03
+    Al            1.49E-05
+    Na            3.69E-05
+    K             2.23E-06
+    N(-3)         1.77E-10 as NH4+
+    Cl            1.50E-04  charge  # Charge balancer
+    S(6)          1.40E-05 as SO4
+    Si            1.95E-03 as H4SiO4
+    C(4)          5.63E-04 as CO3
+    P             3.43E-06 as PO4
+    N(5)          2.35E-05 as NO3
+    O(0)          2.28E-04 as O2
+    N(0)          5.15E-04 as N2
+    S(-2)         1.00E-20 as HS
+    Fe(2)         4.98E-17
+    Fe(3)         4.16E-08
+    Lact          1.41E-03  # Use the defined master species name
+    -water        1.0
+    -redox        Fe(2)/Fe(3) disable
+    -redox        N(-3)/N(0) disable
+    -redox        N(-3)/N(5) disable
+    -redox        N(0)/N(5) disable
+    -redox        S(-2)/S(6) disable 
+END  # This END closes the SOLUTION 5 block
+
+SOLUTION 6
+    units         mol/L
+    temp          25.0
+    pH            9.0
+    pe            11.5943
+    density       1
+    Ca            1.02E-03
+    Mg            2.10E-03
+    Al            1.49E-05
+    Na            3.69E-05
+    K             2.23E-06
+    N(-3)         1.77E-10 as NH4+
+    Cl            1.50E-04  charge  # Charge balancer
+    S(6)          1.40E-05 as SO4
+    Si            1.95E-03 as H4SiO4
+    C(4)          5.63E-04 as CO3
+    P             3.43E-06 as PO4
+    N(5)          2.35E-05 as NO3
+    O(0)          2.28E-04 as O2
+    N(0)          5.15E-04 as N2
+    S(-2)         1.00E-20 as HS
+    Fe(2)         4.98E-17
+    Fe(3)         4.16E-08
+    Lact          1.41E-03  # Use the defined master species name
+    -water        1.0
+    -redox        Fe(2)/Fe(3) disable
+    -redox        N(-3)/N(0) disable
+    -redox        N(-3)/N(5) disable
+    -redox        N(0)/N(5) disable
+    -redox        S(-2)/S(6) disable 
+END  # This END closes the SOLUTION 6 block
+
+
+

@@ -40,13 +40,13 @@ Contacts & Link
 
 **MIN3P Website**: https://www.min3p.com/
 
-Dr. Uli Mayer (owner, maintainer, developer)
+Dr. Uli Mayer (code owner, maintainer, core developer)
 
 https://www.eoas.ubc.ca/people/ulrichmayer
 
 https://www.linkedin.com/in/uli-mayer-b10a5418/
 
-Dr. Danyang Su (maintainer, developer)
+Dr. Danyang Su (code maintainer, core developer)
 
 https://www.linkedin.com/in/danyang-su-7916a177/
 

@@ -9,5 +9,6 @@ MIN3P source code for reactive transport modelling work. The code is based on MI
 
 ***Bug Fixed***
 1. Fix bug in transient boundary condition update. The previous code shows one timestep lagged. All the update of transient boundary condition or transient parameters is now called before new timestep. Verification is not carried yet. 
+2. Fix bug in reading/specifying alkalinity factor to primary and secondary species.
 
 ***Note***

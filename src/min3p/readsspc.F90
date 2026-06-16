@@ -154,7 +154,7 @@
                  nv, info_debug
       
       real*8 :: dhc, eqt, charge, dha, dhb, gfw, alkfac, xnuxt,        &
-                sec_per_days
+                sec_per_days, zbal
 
       character*72 name
       character*1024 :: strbuffer
@@ -162,6 +162,7 @@
       dimension xnuxt(100)
       logical done,found
       real*8 null
+      real*8, parameter :: r0 = 0.0d0, rsmall = 1.0d-10
       
 !c  search database for possible secondary aqueous species
 
@@ -193,22 +194,11 @@
             name = strbuffer(1:iend-1)
             strbuffer = trim(adjustl(strbuffer(iend:)))
             
-            if (compute_alkalinity) then                                 
-              read(strbuffer,*,end=999,err=9999) dhc,eqt,charge,dha,   &
-                                                 dhb,gfw,alkfac
-            else
-              read(strbuffer,*,end=999,err=9999) dhc,eqt,charge,dha,   &
-                                                 dhb,gfw
-            end if
-          else  
-              
-            if (compute_alkalinity) then                                 
-              read(ixdbs,100,end=999,err=9999) name,dhc,eqt,charge,dha, &
-                                               dhb,gfw,alkfac
-            else
-              read(ixdbs,100,end=999,err=9999) name,dhc,eqt,charge,dha, &
+            read(strbuffer,*,end=999,err=9999) dhc,eqt,charge,dha,   &
                                                dhb,gfw
-            end if
+          else
+            read(ixdbs,100,end=999,err=9999) name,dhc,eqt,charge,dha, &
+                                             dhb,gfw
           end if  
           
           
@@ -322,19 +312,9 @@
             strbuffer = trim(adjustl(strbuffer(iend:)))
 
             if (.not.multi_diff) then 
-              if (compute_alkalinity) then
-                read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,alkfac
-              else                           ! .not.compute_alkalinity
-                read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw
-              end if                         !  compute_alkalinity  
-            else
-              if (compute_alkalinity) then            
-                read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,alkfac,  &
-                                           diffcoff2                
-              else                           ! .not.compute_alkalinity           
-                read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,null,    &
-                                           diffcoff2                
-              end if                         ! compute_alakalinity  
+              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw                  !c note, alkfac is calculated internally later
+            else      
+              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,diffcoff2   !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff            
             end if                           !  .not.multi_diff
             
             read(ixdbs,'(a)',end=9998,err=9999) strbuffer
@@ -362,27 +342,11 @@
             
           else
             if (.not.multi_diff) then 
-              if (compute_alkalinity) then
-                read(ixdbs,100,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,alkfac
-              else                           ! .not.compute_alkalinity
-                read(ixdbs,100,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw
-              end if !  compute_alkalinity
+              read(ixdbs,100,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw              !c note, alkfac is calculated internally later
               read(ixdbs,101,end=9998,err=9999) nv,(namet(iv),xnuxt(iv),iv=1,nv)
-            end if !  .not.multi_diff 
-! prc ----------------------------------------------------------------------------
-! prc Reading diffusion coefficients from the "complex.dbs" database for 
-! prc each secondary aqueous species
-! prc ----------------------------------------------------------------------------
-
-            if (multi_diff) then           
-              if (compute_alkalinity) then            
-                  read(ixdbs,102,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,alkfac,&
-                       diffcoff2                
-              else       ! .not.compute_alkalinity           
-                  read(ixdbs,102,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,null,  &
-                       diffcoff2                
-              end if     ! compute_alakalinity  
-                    
+            else
+              read(ixdbs,102,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,null,  &     !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff
+                   diffcoff2                
               read(ixdbs,101,end=9998,err=9999) nv,(namet(iv),xnuxt(iv),iv=1,nv)
             end if ! multi_diff  
           end if
@@ -397,6 +361,23 @@
 !c  secondary aqueous species is found --> assign to permanent storage
  
           if (name.eq.namex(ix)) then
+
+            if (rank == 0 .and. b_enable_output_gen) then
+              if (ix == 1) then
+                write(igen,'(72a)') ('-',i=1,72)
+                write(igen,'(a)') 'secondary aqueous species database entries read:'
+              end if
+              write(igen,'(a,7(a,1pe15.6e3))')                         &
+                    trim(name),' charge ', charge,                     &
+                    ' dha ', dha, ' dhb ', dhb, ' dhc ', dhc,          &
+                    ' gfw ', gfw, ' eqt ', eqt,                        &
+                    ' diff_coeff ',diffcoff2
+              write(igen,'(a,1x,i0,100(1x,a,1x,1pe15.6e3))')           &
+                    'nv', nv, (trim(namet(iv)),xnuxt(iv),iv=1,nv)
+              if (ix == nx) then
+                write(igen,'(72a)') ('-',i=1,72)
+              end if
+            end if
  
             done = .true.
 
@@ -457,6 +438,15 @@
               dhbx(ix) = dhb
               gfwx(ix) = gfw
               if (compute_alkalinity) then
+                alkfac = r0
+                istart = iax(ix)
+                iend = iax(ix+1)-1
+                iv = 0
+                do i = istart,iend
+                  iv = iv+1
+                  ic = jax(i)
+                  alkfac = alkfac + xnuxt(iv)*alkfacc(ic)
+                end do
                 alkfacx(ix) = alkfac
               end if
 ! prc ----------------------------------------------------------------------------
@@ -545,6 +535,29 @@
           end do
         end do
         iacx(ic+1) = icount
+      end do
+
+!c  check charge balance of the secondary species  
+      if (rank == 0 .and. b_enable_output) then
+        write(igen,'(72a)') ('-',i=1,72)
+        write(igen,'(a)') 'charge balance for secondary species: assigned charge, calculated charge'
+        write(igen,'(72a)') ('-',i=1,72)
+      end if    
+      do ix = 1, nx
+        istart = iax(ix)
+        iend = iax(ix+1)-1
+        zbal = r0
+        do i = istart, iend
+          icur = jax(i)
+          zbal = zbal + xnux(i)*chargec(icur)
+        end do
+        if (rank == 0 .and. b_enable_output) then
+          if (abs(chargex(ix)-zbal) > rsmall) then
+            write(igen,'(a,2(1x,1pe15.6e3),1x,a)') namex(ix),chargex(ix),zbal,'(*)'
+          else
+            write(igen,'(a,2(1x,1pe15.6e3))') namex(ix),chargex(ix),zbal
+          end if
+        end if
       end do
 
 !c  write backup of database items to the file

@@ -28,7 +28,7 @@
 'disable space delimiter in database'
 
 'database directory'
-"..\database1\default"
+".\database1\default"
 
 'define temperature'
 25

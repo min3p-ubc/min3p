@@ -106,6 +106,7 @@ Publications
 ------------------------------------------------------------------------------------------
 
 Mining
+
 Yi, X., Su, D., Bussière, B., Mayer, K. U. (2021). Thermal-hydrological-chemical modeling of a covered waste rock pile in a permafrost region, Minerals, 11(6):565. https://doi.org/10.3390/min11060565
 
 Raymond, K. E., Seigneur, N., Su, D., Mayer, K. U. (2021). Investigating the influence of structure and heterogeneity in waste rock piles on mass loading rates – A reactive transport modeling study, Frontiers in Water 3:618418, https://doi.org/10.3389/frwa.2021.618418  
@@ -151,6 +152,7 @@ Jurjovec, J., D. W. Blowes, C. J. Ptacek, and K. U. Mayer (2004). Multicomponent
 Bain, J. G., Mayer, K. U., Blowes, D. W., Frind, E. O., Molson, J. W. H., Kahnt, R., & Jenk, U. (2001). Modelling the closure-related geochemical evolution of groundwater at a former uranium mine. Journal of Contaminant Hydrology, 52(1-4), 109-135.
 
 Deep Geologic Repositories
+
 Su, D., M., Xie, Mayer, K.U. and MacQuarrie, K.T.B. (2022). The Impact of Ice Sheet Geometry on Meltwater Ingress and Reactive Solute Transport in Sedimentary Basins, Water Resources Research, 2022, 58, e2022WR032353.
 
 Xie, M., D. Su, Mayer, K.U. and MacQuarrie, K.T.B. (2022). Reactive transport investigations of the long-term geochemical evolution of a multibarrier system including bentonite, low-alkali concrete and host rock, Applied Geochemistry, 105385 
@@ -170,6 +172,7 @@ Bea, S.A., K.U. Mayer, K.T.B. MacQuarrie (2011). Modelling Reactive Transport in
 Spiessl, S.M., K.U. Mayer and K.T.B. MacQuarrie (2009). Reactive Transport Modelling in Fractured Rock – Redox Stability Study, Technical report: NWMO TR-2009-04.
 
 Oil & Gas
+
 Forde, O.N., Mayer, K.U., Cahill, A.G., Mayer, B., Cherry, J., Parker, B. (2018). Vadose zone gas migration and surface effluxes following a controlled natural gas release into an unconfined shallow aquifer. Vadose Zone J. 17:180033.
 
 Hers, I., Jourabchi, P., Lahvis, M.A., Dahlen, P., Luo, E.H., Johnson, P., Devaull, G.E., Mayer, K.U., (2014). Evaluation of seasonal factors on petroleum hydrocarbon vapor biodegradation and intrusion potential in a cold climate. Groundw. Monit. Remediat. https://doi.org/10.1111/gwmr.12085
@@ -185,11 +188,13 @@ Maier, U., Mayer, U., Grathwohl, P., (2005). Natural attenuation of volatile hyd
 Grathwohl, P., & Maier, U. (2002). Natural Attenuation of Volatile Hydrocarbons in Unsaturated Soil Zone. Journal of Agricultural and Marine Sciences [JAMS], 7(2), 9-15.
 
 Carbon Sequestration
+
 Harrison, A.L., Dipple, G.M., Power, I.M., Mayer, K.U., (2015). Influence of surface passivation and water content on mineral reactions in unsaturated porous media: Implications for brucite carbonation and CO2 sequestration. Geochim. Cosmochim. Acta. https://doi.org/10.1016/j.gca.2014.10.020
 
 Bea, S., Wilson, S., Mayer, K., Dipple, G., Power, I., Gamazo, P. (2012). Reactive transport modeling of natural carbon sequestration in ultramafic mine tailings. Vadose Zone Journal, 11(2), 1-17.
 
 Soil & Plants
+
 Gatz-Miller, H. S., Gérard, F., Verrecchia, E. P., Su, D. and Mayer, K. U. (2022). Reactive transport modelling the oxalate-carbonate pathway of the Iroko tree; Investigation of calcium and carbon sinks and sources, Geoderma, 2022, 410, 115665.
 
 Braghiere R K, Gérard F, Evers J B, Pradal C and Pagès L (2020). Simulating the effects of water limitation on plant biomass using a 3D functional–structural plant model of shoot and root driven by soil hydraulics Ann. Bot. 126 713–28. https://academic.oup.com/aob/advance-article/doi/10.1093/aob/mcaa059/5816312
@@ -215,6 +220,7 @@ Nowack, B., Mayer, K.U., Oswald, S.E., Van Beinum, W., Appelo, C.A.J., Jacques, 
 Gérard, F., Tinsley, M., & Mayer, K. U. (2004). Preferential flow revealed by hydrologic modeling based on predicted hydraulic properties. Soil Science Society of America Journal, 68(5), 1526-1538.
 
 Permeable Reactive Barriers
+
 Bilardi, S., Amos, R.T., Blowes, D.W., Calabrò, P.S., Moraci, N., (2013). Reactive Transport Modeling of ZVI Column Experiments for Nickel Remediation. Groundw. Monit. Remediat. https://doi.org/10.1111/j.1745-6592.2012.01417.x
 
 Weber, A., Ruhl, A.S., Amos, R.T., (2013). Investigating dominant processes in ZVI permeable reactive barriers using reactive transport modeling. J. Contam. Hydrol. https://doi.org/10.1016/j.jconhyd.2013.05.001
@@ -231,34 +237,8 @@ Mayer, K. U., Blowes, D. W., Frind, E. O., (2001). Reactive transport modeling f
 
 Jeen, S.-W., Mayer, K.U., Gillham, R.W., Blowes, D.W., 2007. Reactive transport modeling of trichloroethene treatment with declining reactivity of iron. Environ. Sci. Technol. https://doi.org/10.1021/es062490m
 
-Other Applications
-Bao, Z., Haberer, C.M., Maier, U., Amos, R. T., Blowes, D. W., Grathwohl, P. (2017). Modeling controls on the chemical weathering of marine mudrocks from the Middle Jurassic in Southern Germany. Chem. Geol. https://doi.org/10.1016/j.chemgeo.2017.03.021
-
-Altenkirch, N., Zlatanovic, S., Woodward, K. B., Trauth, N., Mutz, M., Mokenthin, F. (2016). Untangling Hyporheic Residence time Distributions and Whole Stream Metabolism Using a Hydrological Process Model. https://doi.org/10.1016/j.proeng.2016.07.598
-
-Jamieson-Hanes, J.H., Amos, R.T., Blowes, D.W., (2012). Reactive transport modeling of chromium isotope fractionation during Cr(VI) reduction. Environ. Sci. Technol. https://doi.org/10.1021/es3046235
-
-Gibson, B. D., Amos, R. T., Blowes, D. W. (2011). 34S/32S Fractionation during sulfate reduction in groundwater treatment systems: Reactive transport modeling. Environmental science & technology, 45(7), 2863-2870.
-
-Marica, F., Jofré, S.A.B., Mayer, K.U., Balcom, B.J., Al, T.A., (2011). Determination of spatially-resolved porosity, tracer distributions and diffusion coefficients in porous media using MRI measurements and numerical simulations. J. Contam. Hydrol. https://doi.org/10.1016/j.jconhyd.2011.04.008
-
-Stewart, B.D., Amos, R.T., Fendorf, S., (2011). Effect of uranium(VI) speciation on simultaneous microbial reduction of uranium(VI) and iron(III). J. Environ. Qual. https://doi.org/10.2134/jeq2010.0304
-
-Stewart, B.D., Amos, R.T., Nico, P.S., Fendorf, S., (2011). Influence of uranyl speciation and iron oxides on uranium biogeochemical redox reactions. Geomicrobiol. J. https://doi.org/10.1080/01490451.2010.507646
-
-Henderson, T. (2009). Numerical modeling of density-driven chemical oxidation of chlorinated solvents, Ph.D. – thesis, Department of Earth and Ocean Sciences, the University of British Columbia, Vancouver, British Columbia, Canada.
-
-D'Affonseca, F. M., Park, S., Finkel, M. & P. Blum (2008): Quantification of Natural and Technically Enhanced NAPL Source Depletion: Analytical Models vs. Numerical Models. Groundwater Quality: Securing Groundwater Quality in Urban and Industrial Environments.- IAHS Publ. no. 324, 380-387.
-
-Henderson, T., Mayer, K. U., Parker, B., Al, T. (2009). Three-dimensional density-dependent flow and multicomponent reactive transport modeling of chlorinated solvent oxidation by potassium permanganate. Journal of Contaminant Hydrology, 106, 195-211.
-
-Maier, U., Beyer, C., Susset, B., Grathwohl, P., (2008). Modelling the dilution of solutes due to mass transfer across the capillary fringe. IAHS Publ. 324, 2008, 86–93.
-
-Henderson, T.H., Mayer, K.U., Parker, B.L., Tom, A.A.L., (2005). Numerical simulation of density-driven permanganate oxidation of trichloroethylene DNAPL in a sandy aquifer. IAHS-AISH Publ.
-
-Mayer, K. U., Benner, S. G., Frind, E. O., Thornton, S. F., Lerner, D. N., (2001). Reactive transport modeling of processes controlling the distribution and natural attenuation of phenolic compounds in a deep sandstone aquifer. Journal of Contaminant Hydrology 53 (2001) 341-363.
-
 MIN3P Code & Benchmarks
+
 Su, D., Mayer, K.U., MacQuarrie, K.T.B. (2022). Implementation of 2D/3D-Unstructured Grid Capabilities into MIN3P-THCm, NWMO Technical Report, NWMO-TR-2022-10.
 
 Su, D.; Xie, M., Mayer, K. U. and MacQuarrie, K. T. B. (2022), Simulation of diffusive solute transport in heterogeneous porous media with dipping anisotropy, Frontiers in Water, 4.
@@ -308,4 +288,34 @@ Amos, R.T., Ulrich Mayer, K., (2006). Investigating the role of gas bubble forma
 Mayer, K.U., Frind, E.O., Blowes, D.W., (2002). Multicomponent reactive transport modeling in variably-saturated porous media using a generalized formulation for kinetically controlled reactions. Water Resources Research, Vol. 38, No. 9.
 
 Mayer, K.U. (1999). A numerical model for multicomponent reactive transport in variably-saturated porous media, Ph.D. – thesis, Department of Earth Sciences, University of Waterloo, Waterloo, Ontario, Canada.
+
+Other Applications
+
+Bao, Z., Haberer, C.M., Maier, U., Amos, R. T., Blowes, D. W., Grathwohl, P. (2017). Modeling controls on the chemical weathering of marine mudrocks from the Middle Jurassic in Southern Germany. Chem. Geol. https://doi.org/10.1016/j.chemgeo.2017.03.021
+
+Altenkirch, N., Zlatanovic, S., Woodward, K. B., Trauth, N., Mutz, M., Mokenthin, F. (2016). Untangling Hyporheic Residence time Distributions and Whole Stream Metabolism Using a Hydrological Process Model. https://doi.org/10.1016/j.proeng.2016.07.598
+
+Jamieson-Hanes, J.H., Amos, R.T., Blowes, D.W., (2012). Reactive transport modeling of chromium isotope fractionation during Cr(VI) reduction. Environ. Sci. Technol. https://doi.org/10.1021/es3046235
+
+Gibson, B. D., Amos, R. T., Blowes, D. W. (2011). 34S/32S Fractionation during sulfate reduction in groundwater treatment systems: Reactive transport modeling. Environmental science & technology, 45(7), 2863-2870.
+
+Marica, F., Jofré, S.A.B., Mayer, K.U., Balcom, B.J., Al, T.A., (2011). Determination of spatially-resolved porosity, tracer distributions and diffusion coefficients in porous media using MRI measurements and numerical simulations. J. Contam. Hydrol. https://doi.org/10.1016/j.jconhyd.2011.04.008
+
+Stewart, B.D., Amos, R.T., Fendorf, S., (2011). Effect of uranium(VI) speciation on simultaneous microbial reduction of uranium(VI) and iron(III). J. Environ. Qual. https://doi.org/10.2134/jeq2010.0304
+
+Stewart, B.D., Amos, R.T., Nico, P.S., Fendorf, S., (2011). Influence of uranyl speciation and iron oxides on uranium biogeochemical redox reactions. Geomicrobiol. J. https://doi.org/10.1080/01490451.2010.507646
+
+Henderson, T. (2009). Numerical modeling of density-driven chemical oxidation of chlorinated solvents, Ph.D. – thesis, Department of Earth and Ocean Sciences, the University of British Columbia, Vancouver, British Columbia, Canada.
+
+D'Affonseca, F. M., Park, S., Finkel, M. & P. Blum (2008): Quantification of Natural and Technically Enhanced NAPL Source Depletion: Analytical Models vs. Numerical Models. Groundwater Quality: Securing Groundwater Quality in Urban and Industrial Environments.- IAHS Publ. no. 324, 380-387.
+
+Henderson, T., Mayer, K. U., Parker, B., Al, T. (2009). Three-dimensional density-dependent flow and multicomponent reactive transport modeling of chlorinated solvent oxidation by potassium permanganate. Journal of Contaminant Hydrology, 106, 195-211.
+
+Maier, U., Beyer, C., Susset, B., Grathwohl, P., (2008). Modelling the dilution of solutes due to mass transfer across the capillary fringe. IAHS Publ. 324, 2008, 86–93.
+
+Henderson, T.H., Mayer, K.U., Parker, B.L., Tom, A.A.L., (2005). Numerical simulation of density-driven permanganate oxidation of trichloroethylene DNAPL in a sandy aquifer. IAHS-AISH Publ.
+
+Mayer, K. U., Benner, S. G., Frind, E. O., Thornton, S. F., Lerner, D. N., (2001). Reactive transport modeling of processes controlling the distribution and natural attenuation of phenolic compounds in a deep sandstone aquifer. Journal of Contaminant Hydrology 53 (2001) 341-363.
+
+
 

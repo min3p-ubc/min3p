@@ -192,6 +192,7 @@ Grathwohl, P., & Maier, U. (2002). Natural Attenuation of Volatile Hydrocarbons 
 
 Carbon Sequestration
 ------------------------------------------------------------------------------------------
+Jia, M., Lapen, D. R., Su, D., Mayer, K. U., (2025), Multi-Domain Reactive Transport Modeling of GHG Emissions From Macroporous Agricultural Soils With a Focus on N2O Hotspots and Hot Moments, Water Resources Research, 61(11), e2025WR040588, https://doi.org/10.1029/2025WR040588
 
 Harrison, A.L., Dipple, G.M., Power, I.M., Mayer, K.U., (2015). Influence of surface passivation and water content on mineral reactions in unsaturated porous media: Implications for brucite carbonation and CO2 sequestration. Geochim. Cosmochim. Acta. https://doi.org/10.1016/j.gca.2014.10.020
 
@@ -245,6 +246,7 @@ Jeen, S.-W., Mayer, K.U., Gillham, R.W., Blowes, D.W., 2007. Reactive transport 
 
 MIN3P Code & Benchmarks
 ------------------------------------------------------------------------------------------
+Su, D., MacQuarrie, K.T.B., Mayer, K.U., Quadrilateral mesh-based reactive transport modeling in non-orthogonal random fracture-matrix systems, Applied Computing and Geosciences, 2026, 30, 100353 
 
 Su, D., Mayer, K.U., MacQuarrie, K.T.B. (2022). Implementation of 2D/3D-Unstructured Grid Capabilities into MIN3P-THCm, NWMO Technical Report, NWMO-TR-2022-10.
 

@@ -106,6 +106,7 @@ Publications
 ------------------------------------------------------------------------------------------
 
 Mining
+------------------------------------------------------------------------------------------
 
 Yi, X., Su, D., Bussière, B., Mayer, K. U. (2021). Thermal-hydrological-chemical modeling of a covered waste rock pile in a permafrost region, Minerals, 11(6):565. https://doi.org/10.3390/min11060565
 
@@ -152,6 +153,7 @@ Jurjovec, J., D. W. Blowes, C. J. Ptacek, and K. U. Mayer (2004). Multicomponent
 Bain, J. G., Mayer, K. U., Blowes, D. W., Frind, E. O., Molson, J. W. H., Kahnt, R., & Jenk, U. (2001). Modelling the closure-related geochemical evolution of groundwater at a former uranium mine. Journal of Contaminant Hydrology, 52(1-4), 109-135.
 
 Deep Geologic Repositories
+------------------------------------------------------------------------------------------
 
 Su, D., M., Xie, Mayer, K.U. and MacQuarrie, K.T.B. (2022). The Impact of Ice Sheet Geometry on Meltwater Ingress and Reactive Solute Transport in Sedimentary Basins, Water Resources Research, 2022, 58, e2022WR032353.
 
@@ -172,6 +174,7 @@ Bea, S.A., K.U. Mayer, K.T.B. MacQuarrie (2011). Modelling Reactive Transport in
 Spiessl, S.M., K.U. Mayer and K.T.B. MacQuarrie (2009). Reactive Transport Modelling in Fractured Rock – Redox Stability Study, Technical report: NWMO TR-2009-04.
 
 Oil & Gas
+------------------------------------------------------------------------------------------
 
 Forde, O.N., Mayer, K.U., Cahill, A.G., Mayer, B., Cherry, J., Parker, B. (2018). Vadose zone gas migration and surface effluxes following a controlled natural gas release into an unconfined shallow aquifer. Vadose Zone J. 17:180033.
 
@@ -188,12 +191,14 @@ Maier, U., Mayer, U., Grathwohl, P., (2005). Natural attenuation of volatile hyd
 Grathwohl, P., & Maier, U. (2002). Natural Attenuation of Volatile Hydrocarbons in Unsaturated Soil Zone. Journal of Agricultural and Marine Sciences [JAMS], 7(2), 9-15.
 
 Carbon Sequestration
+------------------------------------------------------------------------------------------
 
 Harrison, A.L., Dipple, G.M., Power, I.M., Mayer, K.U., (2015). Influence of surface passivation and water content on mineral reactions in unsaturated porous media: Implications for brucite carbonation and CO2 sequestration. Geochim. Cosmochim. Acta. https://doi.org/10.1016/j.gca.2014.10.020
 
 Bea, S., Wilson, S., Mayer, K., Dipple, G., Power, I., Gamazo, P. (2012). Reactive transport modeling of natural carbon sequestration in ultramafic mine tailings. Vadose Zone Journal, 11(2), 1-17.
 
 Soil & Plants
+------------------------------------------------------------------------------------------
 
 Gatz-Miller, H. S., Gérard, F., Verrecchia, E. P., Su, D. and Mayer, K. U. (2022). Reactive transport modelling the oxalate-carbonate pathway of the Iroko tree; Investigation of calcium and carbon sinks and sources, Geoderma, 2022, 410, 115665.
 
@@ -220,6 +225,7 @@ Nowack, B., Mayer, K.U., Oswald, S.E., Van Beinum, W., Appelo, C.A.J., Jacques, 
 Gérard, F., Tinsley, M., & Mayer, K. U. (2004). Preferential flow revealed by hydrologic modeling based on predicted hydraulic properties. Soil Science Society of America Journal, 68(5), 1526-1538.
 
 Permeable Reactive Barriers
+------------------------------------------------------------------------------------------
 
 Bilardi, S., Amos, R.T., Blowes, D.W., Calabrò, P.S., Moraci, N., (2013). Reactive Transport Modeling of ZVI Column Experiments for Nickel Remediation. Groundw. Monit. Remediat. https://doi.org/10.1111/j.1745-6592.2012.01417.x
 
@@ -238,6 +244,7 @@ Mayer, K. U., Blowes, D. W., Frind, E. O., (2001). Reactive transport modeling f
 Jeen, S.-W., Mayer, K.U., Gillham, R.W., Blowes, D.W., 2007. Reactive transport modeling of trichloroethene treatment with declining reactivity of iron. Environ. Sci. Technol. https://doi.org/10.1021/es062490m
 
 MIN3P Code & Benchmarks
+------------------------------------------------------------------------------------------
 
 Su, D., Mayer, K.U., MacQuarrie, K.T.B. (2022). Implementation of 2D/3D-Unstructured Grid Capabilities into MIN3P-THCm, NWMO Technical Report, NWMO-TR-2022-10.
 
@@ -290,6 +297,7 @@ Mayer, K.U., Frind, E.O., Blowes, D.W., (2002). Multicomponent reactive transpor
 Mayer, K.U. (1999). A numerical model for multicomponent reactive transport in variably-saturated porous media, Ph.D. – thesis, Department of Earth Sciences, University of Waterloo, Waterloo, Ontario, Canada.
 
 Other Applications
+------------------------------------------------------------------------------------------
 
 Bao, Z., Haberer, C.M., Maier, U., Amos, R. T., Blowes, D. W., Grathwohl, P. (2017). Modeling controls on the chemical weathering of marine mudrocks from the Middle Jurassic in Southern Germany. Chem. Geol. https://doi.org/10.1016/j.chemgeo.2017.03.021
 

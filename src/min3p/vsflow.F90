@@ -287,7 +287,11 @@
           
           if (.not. allocated(avs)) then
               allocate (avs(njavs), stat = ierr)
-              avs=0.0d0 
+            if (nngl > 1) then
+              avs = 0.0
+            else
+              avs = 1.0
+            end if
               call checkerr(ierr,'avs',ilog)
               call memory_monitor(sizeof(avs),'avs',.true.)
           end if
@@ -303,9 +307,11 @@
 
          
 !c  clear arrays
+          if (nngl > 1) then
           call zero_r8(avs,njavs,1,1)
           call zero_r8(bvs,nngl,1,1)
           call zero_r8(uvs,nngl,1,1)
+          end if
 
 !c  construct jacobian matrix and rhs vector
           prt_flow_jac = cputime()
@@ -759,8 +765,8 @@
                   stop
                 else
                   if (rank == 0 .and. b_enable_output .and. idetail_vs.gt.0) then
-                    write(*,*) 'Reduce time step: newton iteration diverged'
-                    write(ilog,*) 'Reduce time step: newton iteration diverged'
+                    write(*,*) 'reduce time step: newton iteration diverged'
+                    write(ilog,*) 'reduce time step: newton iteration diverged'
                   end if
                 end if
               end if

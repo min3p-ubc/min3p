@@ -121,7 +121,7 @@
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0,  r10 = 1.0d1,       &
      &                     enat = 2.71828182845904509d0
       
-      integer :: ic, isites, info_debug
+      integer :: ic, isites, i1, ielect, info_debug
       real*8 :: ulclim, ulcmax
       
       name = ''
@@ -175,6 +175,35 @@
           return
         end if
       end do                           !loop over components
+
+!cprovi-----------------------------------------------------------------------------
+!cprovi Update if electrostic corrections are performed
+!cprovi-----------------------------------------------------------------------------
+      if (elect_correction) then
+        i1 = nopu - nelect
+        do ielect = 1,nelect            !loop over electrostatic terms
+!c  user specified underrelaxation
+          if (under_relax_lc) then
+            ulc(i1+ielect) = srelfac_lc * ulc(i1+ielect)
+          end if
+!c  use line search, if absolute magnitude of update too large 
+!c  limit magnitude of update to one log cycle
+          if (ulc(i1+ielect)>ulclim) then    
+            ulc(i1+ielect) = ulclim
+          else if (ulc(i1+ielect)<-ulclim) then
+            ulc(i1+ielect) = -ulclim
+          end if
+!c  update ln c = ln c + delta (ln c)
+          c(i1+ielect) = dlog(c(i1+ielect)) + ulc(i1+ielect)
+!c  convert to concentrations
+          c(i1+ielect) = enat**c(i1+ielect)
+!c  determine maximum update
+          if (dabs(ulc(i1+ielect))>dabs(ulcmax)) then
+            ulcmax = ulc(i1+ielect)
+            name = namec(i1+ielect)
+          end if
+        end do                           !loop over electrostatic terms
+      end if      
 
 !c  report maximum update in log_10 cycles
 

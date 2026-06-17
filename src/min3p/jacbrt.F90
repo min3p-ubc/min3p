@@ -593,7 +593,8 @@
             call gcreact(cnew(1,ivol),c(1,ivol),cx(1,ivol),       &
                          gamma(1,ivol),gamma(nc+1,ivol),          &
                          gnew(1,ivol),sanew(ivol),sgnew(ivol),    &
-                         pornew(ivol),igen,ilog,tid,idbg,         &
+                         pornew(ivol),site_area,site_mass,        &
+                         igen,ilog,tid,idbg,                      &
                          tec_header,prefix,l_prfx,                &
                          zone_name,l_zone_name,                   &
                          mtime,i_append_sim,mtime_append)

@@ -351,7 +351,7 @@
                  bcvs_cnt, bcheat_cnt, bcice_cnt, disprt_cnt,           &
                  ice_scalfac_cnt, itsrc_idx, ierr, ierrcd, iunit_file
       
-      real*8 :: rdummy, rtemp, strion, acoff, actw, time_temp, time_rs, &
+      real*8 :: rdummy, rtemp, acoff, actw, strion, time_temp, time_rs, &
                 time_tsrc, aentry_loc
       
       integer :: tid
@@ -1147,7 +1147,7 @@
     !$omp if (nngl > numofloops_thred_restart_1)                      &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(tid, ivol, izn, ix, strion, aentry_loc, dummy)
+    !$omp private(tid, ivol, izn, ix, aentry_loc, strion, dummy)
     !$omp do schedule(static)
 #endif
       do ivol=1,nngl
@@ -1395,23 +1395,31 @@
 !c  recompute sorbed species concentrations
 
               do isb = 1,nsb_ion
-                call sorbspc(csb_ion(isb,tid),dummy,cec_g(ivol),      &
+                call sorbspc(csb_ion(isb,tid),dummy,                  &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),  &
                      cnew(1,ivol),xnusb_ion,xnusb_surf,               &
                      iasb_ion,iasb_surf,jasb_ion,                     &
                      jasb_surf,nsb_ion,nsb_surf,isb,0,                &
-                     sorption_type_ion,                               &
-                     sorption_type_surf,sorption_group,isactcexch)
+                     sorption_type_ion, sorption_type_surf,           &
+                     sorption_group,isactcexch,                       &
+                     elect_correction,name_elect_correction,nelect,   &
+                     dz_surf,totcnew(:,ivol),component_type,nlayer,   &
+                     chargesb_surf(isb),mol_frac_ads)
               end do
               
               do isb = 1,nsb_surf
-                call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),     &
+                call sorbspc(dummy,csb_surf(isb,tid),                 &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),  &
                      cnew(1,ivol),xnusb_ion,xnusb_surf,               &
                      iasb_ion,iasb_surf,jasb_ion,                     &
                      jasb_surf,nsb_ion,nsb_surf,0,isb,                &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)
+                     sorption_group,isactcexch,                       &
+                     elect_correction,name_elect_correction,nelect,   &
+                     dz_surf,totcnew(:,ivol),component_type,nlayer,   &
+                     chargesb_surf(isb),mol_frac_ads)
               end do
 
 !c  recompute total sorbed component concentrations

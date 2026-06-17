@@ -2271,5 +2271,42 @@
       integer*8 :: offset_ilbis_ijk
       integer*8 :: offset_ilbac_ijk
       integer*8 :: offset_ilbre_ijk
+
+
+!cprovi------------------------------------------------------------------
+!cprovi Variables and parameters for the electrostatic surface 
+!cprovi complexation.
+!cprovi Added by Sergio A. Bea, May 2015
+!cprovi------------------------------------------------------------------
+      logical                     :: elect_correction= .false.      ! .true. if electrostaic correction is performed
+      logical                     :: mol_frac_ads= .false.          ! .true. activity of surface complexes are evaluated as molar fractions
+      character*72                :: name_elect_correction=''       ! Name of the model for electrostatic corrections 
+      integer                     :: nelect=0                       ! Number of electrostatic terms 
+      integer                     :: nlayer=0                       ! Number of layers
+      integer                     :: ncap=0                         ! Number of constant capacitances
+      real (type_r8), allocatable :: totcharge_surf(:,:)            ! Charge balance on the surface  
+      real (type_r8), allocatable :: dtotcharge_surf(:,:)           ! Derivative of charge balance on the surface
+      real (type_r8), allocatable :: dz_surf(:,:)                   ! Net change in surface charge due to the formation of the surface species [nlayer,nsb_surf]
+      real (type_r8), allocatable :: charge_surf(:,:)               ! Net change in surface charge due to the formation of the surface species [nlayer,nsb_surf]
+      real (type_r8), allocatable :: cap_surf(:)                    ! Constant capacitance for the constant capacitance model 
+
+!cprovi------------------------------------------------------------------
+!cprovi Variables and parameters for solid solution implementation 
+!cprovi Added by Sergio A. Bea, June 2015
+!cprovi------------------------------------------------------------------
+      logical                     :: solid_solutions= .false.       ! .true. solid solutions are included in the model
+      logical, allocatable        :: chemical_zoning_ss(:)          ! .true. only reaction rates reflect the mineral proportions
+      logical, allocatable        :: non_ideal_solid_solution(:)    ! Type of solid solutions (e.g., ideal solid solutions) 
+      integer                     :: nss=0                          ! Number of solid solutions 
+      integer, allocatable        :: nmin_ss(:)                     ! Number of end-member in the solid solution [nss]
+      integer, allocatable        :: idmin_ss(:,:)                  ! Global index number of end-member in the solid solution [nss,nm]      
+      real (type_r8), allocatable :: xss(:,:,:)                     ! Molar fractions for the different end-members in the solid solution [nss,nm] 
+      real (type_r8), allocatable :: lambda_ss(:,:,:)               ! Activity coefficients for non-ideal solid solutions [nss,nm] 
+      real (type_r8), allocatable :: satm_ss(:,:)                   ! IAP/K of the solid solution [nss] 
+      real (type_r8), allocatable :: gugg0_ss(:)                    ! Guggenheim coefficient 0
+      real (type_r8), allocatable :: gugg1_ss(:)                    ! Guggenheim coefficient 1 
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
       
       end module chem

@@ -397,6 +397,21 @@
           call checkerr(ierr,'dcsb_surf',ilog) 
           call memory_monitor(sizeof(dcsb_surf),'dcsb_surf',.true.)
 
+!cprovi----------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------
+          if (elect_correction) then 
+            allocate (dz_surf(nlayer,nsb_surf), stat = ierr)
+            dz_surf=0.0d0 
+            call checkerr(ierr,'dz_surf',ilog)  
+            call memory_monitor(sizeof(dz_surf),'dz_surf',.true.)
+
+            allocate (charge_surf(nlayer,nsb_surf), stat = ierr)
+            charge_surf=0.0d0
+            call checkerr(ierr,'charge_surf',ilog) 
+            call memory_monitor(sizeof(charge_surf),'charge_surf',.true.)
+          end if
+
         
           !******ion-exchange data******
           allocate (csb_ion(nsb_ion,nthreads), stat = ierr)

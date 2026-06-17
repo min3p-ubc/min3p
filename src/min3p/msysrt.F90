@@ -852,13 +852,17 @@
 
             if (btypert(ivol).ne.'first') then
 
-              call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),       &
+              call sorbspc(dummy,csb_surf(isb,tid),                   &
+                   cnew(n-nelect+1:n,ivol),cec_g(ivol),               &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),    &
                    cnew(1,ivol),xnusb_ion,xnusb_surf,                 &
                    iasb_ion,iasb_surf,jasb_ion,                       &
                    jasb_surf,nsb_ion,nsb_surf,0,isb,                  &
                    sorption_type_ion,sorption_type_surf,              &
-                   sorption_group,isactcexch)
+                   sorption_group,isactcexch,                         &
+                   elect_correction,name_elect_correction,nelect,     &
+                   dz_surf,totcn(:,tid),component_type,nlayer,        &
+                   chargesb_surf(isb),mol_frac_ads)
 #ifdef PETSC
               if(node_idx_lg2l(ivol) > 0) then
 #endif

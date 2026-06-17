@@ -130,32 +130,44 @@
 !c external: -  
 !c ----------------------------------------------------------------------
   
-      subroutine sorbspc(csb_ion,csb_surf,cec,eqsb_ion,eqsb_surf,      &
+      subroutine sorbspc(csb_ion,csb_surf,elect_surf,cec,              &
+                         eqsb_ion,eqsb_surf,                           &
                          gammac,c,xnusb_ion,xnusb_surf,                &
                          iasb_ion,iasb_surf,jasb_ion,jasb_surf,        &
                          nsb_ion,nsb_surf,isb_ion,isb_surf,            &
                          sorption_type_ion,sorption_type_surf,         &
-                         sorption_group,isactcexch)
+                         sorption_group,isactcexch,                    &
+                         elect_correction,name_elect_correction,       &
+                         nelect,dz_surf,totc,component_type,nlayer,    &
+                         chargesb_surf,mol_frac_ads)
                                                                       
       implicit none
       
-      real*8 :: csb_ion,csb_surf,cec,eqsb_ion,eqsb_surf,gammac,c,xnusb_ion,xnusb_surf
-      integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,nsb_surf,isb_ion,isb_surf
+      real*8 :: csb_ion,csb_surf,cec,eqsb_ion,eqsb_surf,gammac,c,      &
+                xnusb_ion,xnusb_surf,elect_surf,dz_surf,totc,          &
+                chargesb_surf
+      integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,        &
+                 nsb_surf,isb_ion,isb_surf,nelect,nlayer
                                                                         
-      character*72 sorption_type_ion,sorption_type_surf,sorption_group                         
+      character*72 :: sorption_type_ion,sorption_type_surf,            &
+                      sorption_group,name_elect_correction                         
+      character*12, dimension(*) :: component_type
                                                                         
-      logical isactcexch
+      logical :: isactcexch, elect_correction, mol_frac_ads
                                                                         
-      dimension c(*),eqsb_ion(*),eqsb_surf(*),gammac(*),xnusb_ion(*),xnusb_surf(*), &
-                iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*)
+      dimension c(*),eqsb_ion(*),eqsb_surf(*),gammac(*),               &
+                xnusb_ion(*),xnusb_surf(*), iasb_ion(*),iasb_surf(*),  &
+                jasb_ion(*),jasb_surf(*),elect_surf(*),totc(*)
+      dimension dz_surf(nlayer,nsb_surf)
                                                                         
       real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0, r2 = 2.0d0, r4 = 4.0d0
+      integer, parameter :: ilayer_0 = 1, ilayer_beta = 2
 
-      logical quadratic1, quadratic2
+      logical :: quadratic1, quadratic2
       
-      integer :: i1, ic, istart, istop, iend, ksb
+      integer :: i1, ic, istart, istop, iend, ksb, ndim
       
-      real*8 :: term1, term2, term3, term4, term5
+      real*8 :: term1, term2, term3, term4, term5, cte, cloc, totloc
 
       if (isb_ion.gt.0) then
 
@@ -262,17 +274,45 @@
 !c  compute concentrations of sorbed species
 
       if (isb_surf.gt.0) then
-        
-            csb_surf = r1/eqsb_surf(isb_surf)
+        csb_surf=r1
+!cprovi----------------------------------------------------------------------
+!cprovi If electrostatic surface complexation correction is applied
+!cprovi then multiply the electrostatic term in the action mass law
+!cprovi----------------------------------------------------------------------
+        if (elect_correction) then
+          term1 = elect_surf(ilayer_0)**(-r2*dz_surf(ilayer_0,isb_surf))
+          if (name_elect_correction=='triple layer model') then
+            term1 = term1 * elect_surf(ilayer_beta)**(-r2*dz_surf(ilayer_beta,isb_surf))
+          end if
+          csb_surf = csb_surf * term1 
+        end if
+!cprovi----------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------
+        csb_surf = csb_surf/eqsb_surf(isb_surf)
 
             istart = iasb_surf(isb_surf)
             iend = iasb_surf(isb_surf+1)-1
             
             do i1 = istart,iend
               ic = jasb_surf(i1)
-              csb_surf = csb_surf * (gammac(ic)*c(ic))**xnusb_surf(i1)             
-              
+          cloc=c(ic)             
+          ! Compute the equivalent fraction 
+          if (component_type(ic)=='surface'.and.mol_frac_ads) then
+            totloc = totc(ic)
+            
+            !c to be checked later
+            write(*,*) '-> totloc is set to ic',ic,'totc',totc(ic)
+
+            cloc = cloc/totloc
+          end if
+          csb_surf = csb_surf * (gammac(ic)*cloc)**xnusb_surf(i1)       
             end do
+
+        if (mol_frac_ads) then
+          !c to be checked later, totloc is assigned to the last value in the previous loop
+          csb_surf = csb_surf * totloc    
+        end if 
 
       end if        !(sorption_group)
 

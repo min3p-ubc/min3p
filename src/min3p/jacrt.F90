@@ -760,6 +760,10 @@
       real*8 :: dummy, por_diff, por_temp, ratio, over_por     
       !c root uptake variables   !HG
       real*8 :: qrootloc
+
+      integer :: ielect, iss
+      real*8 :: strioninc
+      real*8 :: area_surf
      
 !cdsu-------------------------------------------------------------------
 !cdsu---------------------Gas transport variables-----------------------
@@ -860,6 +864,9 @@
       real*8    :: ludecomp(ng,ng,ncon), fmat(ng,ncon)
       real*8    :: gpivol_ivol, gpivol_jvol, gdens_ivol, gdens_jvol,   &
                    gvisc_ivol, gvisc_jvol
+
+!c solid solutions
+      real*8 :: dummyvec(nm)
       
 !c root respiration variables:
       real*8 :: rootresp_current, rootresp_max, dresprate,      &
@@ -989,10 +996,10 @@
     !$omp grad_cgg_totcnew, grad_cgg_totviscnew, grad_cgg_electro,    &
     !$omp grad_cgg_totgnew,                                           &
 #endif
-    !$omp tid, i1, i2, iaq, ibl, ic, icon, idiag, iend,               &
+    !$omp tid, i1, i2, iaq, ibl, ic, icon, idiag, iend, iss,          &
     !$omp ig, im, im2, ir, irow, isb, istart, isym, ivol, ivol_gbl,   &
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
-    !$omp delta_totviscnew, delta_electromignew,                      &
+    !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &
     !$omp qrootloc, rootresp, rootresp_current, rootresp_max,         &   !!Root uptake and
     !$omp dresprate, drootresp, rootdens,                             &   !!respiration
     !$omp densgij, dg, dgpivol, dmdens_i, ddens_i, gij,  gmfracij,    &   !!Gas advection and dgm model
@@ -1008,7 +1015,7 @@
     !$omp dissvol, drtinc, dtota, dtotcflux, dtotgflux, dtotor,       &
     !$omp gflux, gstor, totcflux, totgflux, totor, totrateg,          &
     !$omp totsb_ion, totsb_surf, por_temp, ratio,                     &
-    !$omp over_por, por_diff, dissvol1)                                   !!if pore_clogging 
+    !$omp over_por, por_diff, dissvol1, dummyvec)                         !!if pore_clogging 
 #endif
       
 !cprovi-----------------------------------------------------------
@@ -1324,12 +1331,16 @@
           
           if(nsb_surf.gt.0) then
             do isb = 1,nsb_surf 
-              call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),       &
-                   eqsb_ion(:,tid),eqsb_surf(:,tid),                  &
+              call sorbspc(dummy,csb_surf(isb,tid),                   &
+                   cnew(n-nelect+1:n,ivol),                           &
+                   cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),      &
                    gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf,   &
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,     &
                    nsb_surf,0,isb,sorption_type_ion,                  &
-                   sorption_type_surf,sorption_group,isactcexch)
+                   sorption_type_surf,sorption_group,isactcexch,      &
+                   elect_correction,name_elect_correction,nelect,     &
+                   dz_surf,totcnew(:,ivol),component_type,nlayer,     &
+                   chargesb_surf(isb),mol_frac_ads)
             end do
           end if
 
@@ -1442,6 +1453,29 @@
                          pornew(ivol),delt,im,tid)            
 
           end do             !loop over minerals
+
+!cprovi-------------------------------------------------------------------------------
+!cprovi Compute the reaction rates for solid solutions
+!cprovi-------------------------------------------------------------------------------
+          if (solid_solutions) then 
+            ! Compute the reaction rates for the solid solution 
+            call ratess(ratemdp(1,ivol),area(1,ivol),cnew(1,ivol),     &
+                        cx(1,ivol),gamma(1,ivol),gamma(nc+1,ivol),     &
+                        cmold(1,ivol),cmcmin(:,tid),delt,iter_rt)  
+            do iss = 1, nss     
+              do i1 = 1, nmin_ss(iss)  
+                im = idmin_ss(iss,i1)
+                if (dabs(ratemdp(im,ivol))<tinyrate) then
+                  ratemdp(im,ivol) = r0
+                end if
+                dissvol = ratemdp(im,ivol)*delt
+                !------------------------------------
+                if ((cmnew(im,ivol)+dissvol)<(r1+small)*cmcmin(im,tid)) then
+                  ratemdp(im,ivol) = -(cmnew(im,ivol)-cmcmin(im,tid))/delt
+                end if
+              end do
+            end do    
+          end if ! Solid solutions 
         
 !c  total source/sink terms towards total aqueous component
 !c  concentrations due to mineral dissolution precipitation 
@@ -1747,15 +1781,42 @@
         if (nsb_ion.gt.0.or.nsb_surf.gt.0) then
             
           if (sorption_group.eq.'surface-complexation'.or.(nsb_surf.gt.0.and. &
-              sorption_group.eq.'surface-complex and ion-exchange')) then  
-              do ic=1,n            
+            sorption_group.eq.'surface-complex and ion-exchange')) then  
+            do ic=1,n
+              totsb_surf(ic) = cvol(ivol)/delt *                            &
+                         (pornew(ivol)*sanew(ivol)*totsnew_surf(ic,ivol) -  &
+                          porold(ivol)*saold(ivol)*totsold_surf(ic,ivol))
+            end do
 
-                  totsb_surf(ic) = cvol(ivol)/delt                            &
-                           * (pornew(ivol)*sanew(ivol)*totsnew_surf(ic,ivol) -  &
-                            porold(ivol)*saold(ivol)*totsold_surf(ic,ivol))
-
-        
+!cprovi--------------------------------------------------------------------------------------------------------
+!cprovi If electrostaic correction is performed, an additional equation for charge balance is included 
+!cprovi--------------------------------------------------------------------------------------------------------
+            if (elect_correction) then
+              area_surf=site_area(1)*site_mass(1)
+              do isb = 1,nsb_surf 
+                call sorbspc(dummy,csb_surf(isb,tid),cnew(n-nelect+1:n,ivol),    &
+                             cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),       &
+                             gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf,    &
+                             iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,      &
+                             nsb_surf,0,isb,sorption_type_ion,                   &
+                             sorption_type_surf,sorption_group,isactcexch,       &
+                             elect_correction,name_elect_correction,nelect,      &
+                             dz_surf,totcnew(:,ivol),component_type,nlayer,      &
+                             chargesb_surf(isb),mol_frac_ads)
               end do
+!cprovi-------------------------------------------------------------------------
+!cprovi Compute the surface charge balance if the electrostatic correction is 
+!cprovi carried out (Only if the number of surface complexes is > 0.
+!cprovi-------------------------------------------------------------------------
+              call totchargesorb(totcharge_surf(n-nelect+1:n,tid),sionnew(ivol),    &
+                      cnew(n-nelect+1:n,ivol),csb_surf(:,tid),charge_surf,nsb_surf, &
+                      tkel(ivol),area_surf,cap_surf,name_elect_correction,          &
+                      nlayer,nelect,ncap)
+              do ielect = 1, nelect          
+                totcharge_surf(n-nelect+ielect,tid) = cvol(ivol)*pornew(ivol)*      &
+                          sanew(ivol)*totcharge_surf(n-nelect+ielect,tid)
+              end do
+            end if 
           else
             totsb_surf = r0
           end if
@@ -2690,9 +2751,10 @@
                      rootresp(ic),totgasdecay(ic),b_use_gas_decay,    &
                      totaqdecay(ic),b_use_aq_decay,                   &
                      totsorptiondecay(ic),b_use_sorption_decay,       &
-                     totaq_ngi(ic,tid),b_use_ngi,           &
-                     redox_equil,noncompetitive_sorption,             &
-                     component_type(ic),brt(irow))
+                     totaq_ngi(ic,tid),b_use_ngi,redox_equil,         &
+                     noncompetitive_sorption,component_type(ic),      &
+                     totcharge_surf(ic,tid),elect_correction,         &
+                     brt(irow))
 #ifdef DEBUG
           if(info_debug > 20) then
               if(ivol_gbl == ivol_track .or. ivol_track == 0) then
@@ -2970,23 +3032,60 @@
             
             if(nsb_surf.gt.0) then
               do isb = 1,nsb_surf  
-                call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),     &
+                call sorbspc(dummy,csb_surf(isb,tid),                 &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
                      gamma(1,ivol),cnew(1,ivol),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,0,isb,       &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)
-                call sorbspc(dummy,dcsb_surf(isb,tid),cec_g(ivol),    &
+                     sorption_group,isactcexch,elect_correction,      &
+                     name_elect_correction,nelect,dz_surf,            &
+                     totcnew(:,ivol),component_type,nlayer,           &
+                     chargesb_surf(isb),mol_frac_ads)
+
+                call sorbspc(dummy,dcsb_surf(isb,tid),                &
+                     cinc(n-nelect+1:n,tid),cec_g(ivol),              &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
                      gamma(1,ivol), cinc(:,tid),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,0,isb,       &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)                
-                dcsb_surf(isb,tid) =                                  &
-                    (dcsb_surf(isb,tid) - csb_surf(isb,tid))/drtinc
+                     sorption_group,isactcexch,elect_correction,      &
+                     name_elect_correction,nelect,dz_surf,            &
+                     totcnew(:,ivol),component_type,nlayer,           &
+                     chargesb_surf(isb),mol_frac_ads)
               end do
+
+!cprovi----------------------------------------------------------------------------------          
+!cprovi Compute the derivarive of electric charge balance with respect to primary species
+!cprovi for electrostatic surface complexation
+!cprovi----------------------------------------------------------------------------------
+              if (elect_correction) then  
+                area_surf = site_area(1)*site_mass(1)
+                call ionstr(cinc(:,tid),cxinc(:,tid),strioninc,chargec,chargex, &
+                            nc-1-nelect,nx,namec)
+                call totchargesorb(dtotcharge_surf(n-nelect+1:n,tid),strioninc,        &
+                        cinc(n-nelect+1:n,tid),dcsb_surf(:,tid),charge_surf,nsb_surf,  &
+                        tkel(ivol),area_surf,cap_surf,name_elect_correction,           &
+                        nlayer,nelect,ncap)
+                   
+                do ielect=1,nelect  
+                  dtotcharge_surf(n-nelect+ielect,tid) = cvol(ivol)*pornew(ivol)*      &
+                             sanew(ivol)*dtotcharge_surf(n-nelect+ielect,tid)
+                  dtotcharge_surf(n-nelect+ielect,tid) =                               &
+                            (dtotcharge_surf(n-nelect+ielect,tid)-                     &
+                             totcharge_surf(n-nelect+ielect,tid))/drtinc
+                end do
+              end if  
+
+!cprovi----------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------          
+!cprovi----------------------------------------------------------------------------------              
+              do isb = 1,nsb_surf                
+                dcsb_surf(isb,tid) = (dcsb_surf(isb,tid) - csb_surf(isb,tid))/drtinc
+              end do
+
             end if
 
 !c  compute derivatives of of total sorbed component concentrations
@@ -3205,6 +3304,36 @@
               end if              
 
             end do
+
+!cprovi----------------------------------------------------------------------------------------
+!cprovi Modify the derivatives of the mineral reaction rates if solid solutions are calculated
+!cprovi Note that the derivatives of reaction rates for pure phases were previously stored 
+!cprovi in the vector 
+!cprovi----------------------------------------------------------------------------------------
+            if (solid_solutions) then                         
+              call ratess(dratedp(1,tid),area(1,ivol),cinc(1,tid),cxinc(1,tid),         &
+                          gamma(1,ivol),gamma(nc+1,ivol),cmold(1,ivol),cmcmin(:,tid),   &
+                          delt,iter_rt)  
+              call ratess(dummyvec,area(1,ivol),cnew(1,ivol),cx(1,ivol),                &
+                          gamma(1,ivol),gamma(nc+1,ivol),cmold(1,ivol),cmcmin(:,tid),   &
+                          delt,iter_rt)
+              do iss = 1, nss 
+                do i1 = 1, nmin_ss(iss)  
+                  im=idmin_ss(iss,i1)  
+                  dratedp(im,tid)=(dratedp(im,tid)-ratemdp(im,ivol))/drtinc
+                  dissvol = ratemdp(im,ivol)*delt
+
+                  if ((cmnew(im,ivol)+dissvol)<(r1+small)*cmcmin(im,tid) .or.           &
+                    dabs(ratemdp(im,ivol))<tinyrate) then    
+                    dratedp(im,tid) = r0
+                  end if
+                end do              
+              end do 
+              
+            end if  ! Solid solutions      
+!cprovi----------------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------------  
 
 !c  derivatives of total source/sink terms due to dissolution/
 !c  precipitation reactions
@@ -3993,7 +4122,13 @@
 !c  --------------------------------------------------------------------
 
 !c  - storage and flux terms
-              if (component_type(ibl).eq.'aqueous') then
+              if (component_type(ibl).eq.'electro' .and. elect_correction) then
+!cprovi---------------------------------------------------------------------------
+!cprovi Store the derivative of charge balance on the surface with respect to 
+!cprovi primary species. All species affects the charge balance on the surface.
+!cprovi---------------------------------------------------------------------------
+                art(i2) = cnew(jbl,ivol)*dtotcharge_surf(ibl,tid)               
+              else if (component_type(ibl).eq.'aqueous') then
                 art(i2) = art(i2) + cnew(jbl,ivol) * dcstor           &
      &                            + cnew(jbl,ivol) * dtotcflux(ibl)
 

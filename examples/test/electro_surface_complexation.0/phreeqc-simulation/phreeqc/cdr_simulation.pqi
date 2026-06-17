@@ -1,0 +1,120 @@
+#DATABASE C:\Program Files (x86)\USGS\Phreeqc Interactive 3.7.3-15968\database\phreeqc.dat
+DATABASE /Users/danyangsu/Soft/PHREEQC/phreeqc-3.8.6-17100/database/phreeqc.dat
+#DATABASE /Users/dsu/Documents/phreeqc/database/phreeqc.dat
+TITLE Example Surfx.--Transport with surface reactions
+
+SOLUTION 1-100 #Initial condition
+        pH      5.0
+        temp    25.
+        units   mol/l
+	  Ca   3.024091e-06
+	  Mg   2.592822e-06
+	  Al   7.078120e-04 
+	  Cl   5.764213e-05 charge  
+	  Na   5.455072e-05  
+	  K    7.470527e-07 
+	  Si   1.948121e-03 
+	  C(4) 1.093516e-03 
+	  P    4.562911e-04 
+	  S(6) 2.642802e-04
+
+SURFACE 1-100
+    -no_edl
+    -sites_units density
+    Hfo_wOH   0.8813   10   100
+    Hfo_sOH   0.02203
+    -equilibrate 1
+END
+SOLUTION 0 #boundary
+    temp      25
+    pH        7.4901
+    units     mol/l
+    Ca 9.656380e-06 
+    Mg 2.455288e-03 
+    Al 4.342844e-05 
+    Cl 3.018145e-05  charge
+    Na 2.760470e-05 
+    K  2.996218e-06 
+    Si 2.080579e-03 
+    C(4) 3.584924e-03 
+    P    7.885317e-05 
+    S(6) 2.614867e-05 
+end
+TRANSPORT
+    -cells                 100
+    -shifts                1600
+    -time_step             457.14
+    -flow_direction        forward
+    -boundary_conditions   flux flux
+    -lengths               100*0.16
+    -dispersivities        100*0.01
+    -diffusion_coefficient 1e-009
+    -print_cells           100    #1-100  #100 
+    -print_frequency       1      #100    #1   
+    -punch_cells           100    #1-100  #100  
+    -punch_frequency       1      #100    #1    
+    -warnings              true
+
+PRINT
+    -echo_input            false
+    -eh                    false
+    -equilibrium_phases    false
+    -exchange              false
+    -gas_phase             false
+    -headings              false
+    -inverse               false
+    -kinetics              false
+    -other                 false
+    -saturation_indices    false
+    -solid_solutions       false
+    -species               false
+    -surface               false
+    -totals                false
+    -user_print            false
+    -warnings              0
+
+SELECTED_OUTPUT
+    -file      surfx_edl.sel
+    -reset     false
+    -time      true
+    -distance  true
+    -solution  true
+    -pH        true
+
+USER_PUNCH
+    -headings "time_h" "so4-2" "co3-2" "ca+2" "mg+2" "po4-3" "h4sio4" "cl-1" "na+1" \
+    "=feoh2+(w)" "=feoh(w)" "=feh3sio4(w)" "=fehco3(w)" "=feh2sio4-w" "=fehpo4-(w)" \
+    "=feopo4-2(w)" "=feco3-(w)" "=feo-(w)" "=fehsio4-2(w)" "=feh2po4(w)" "=feohso4-2(w)" \
+    "=feso4-(w)" "=feomg+(w)" "=feoca+(w)" "=feoh(s)" "=feohca+2(s)" "=feo-(s)" "=feoh2+(s)" \
+    "ionic_strength" "charge_balance[%]"
+    10 PUNCH TOTAL_TIME/3600
+    90 PUNCH TOT("S")
+    100 PUNCH TOT("C(4)") 
+    110 PUNCH TOT("Ca")
+    120 PUNCH TOT("Mg") 
+    130 PUNCH TOT("P")
+    140 PUNCH TOT("Si")
+    150 PUNCH TOT("Cl") 
+    160 PUNCH TOT("Na")
+    170 PUNCH MOL("Hfo_wOH2+")       
+    180 PUNCH MOL("Hfo_wOH")         
+    190 PUNCH MOL("Hfo_wH3SiO4")     
+    200 PUNCH MOL("Hfo_wHCO3")       
+    210 PUNCH MOL("Hfo_wH2SiO4-")    
+    220 PUNCH MOL("Hfo_wHPO4-")      
+    230 PUNCH MOL("Hfo_wPO4-2")      
+    240 PUNCH MOL("Hfo_wCO3-")       
+    250 PUNCH MOL("Hfo_wO-")         
+    260 PUNCH MOL("Hfo_wHSiO4-2")    
+    270 PUNCH MOL("Hfo_wH2PO4")      
+    280 PUNCH MOL("Hfo_wOHSO4-2")    
+    290 PUNCH MOL("Hfo_wSO4-")       
+    300 PUNCH MOL("Hfo_wOMg+")       
+    310 PUNCH MOL("Hfo_wOCa+")       
+    320 PUNCH MOL("Hfo_sOH")         
+    330 PUNCH MOL("Hfo_sOHCa+2")     
+    340 PUNCH MOL("Hfo_sO-")         
+    350 PUNCH MOL("Hfo_sOH2+")
+    360 PUNCH MU
+    370 PUNCH PERCENT_ERROR
+END

@@ -2975,11 +2975,26 @@
         return
       end if
 
+!cdsu fixed bug on 2023-06-24. 
+!cdsu First, compress total aqueous component concentration vector in case of
+!cdsu equilibrium reactions should be placed before data output.
+!cdsu Second, updating totc (totcnew) here causes slightly different 
+!cdsu totc (totcnew) value. This error can be accumulated, resulting in different 
+!cdsu final results when transient output is used. Actually the three functions
+!cdsu (updtsvap, totconc, comptotc) are not required since the total concentration
+!cdsu have already been updated before tprfrtlc. 
+
 !c  update secondary variables before print-out
-      call updtsvap(c,cx,gammac,gammax,strion,tid)
+!c      call updtsvap(c,cx,gammac,gammax,strion,tid)
   
 !c  total aqueous component concentrations  
-      call totconc(c,cx,totc)
+!c      call totconc(c,cx,totc)
+
+!c  compress total aqueous component concentration vector in case of
+!c  equilibrium reactions.
+!c      if (redox_equil.and.nr.gt.0) then
+!c        call comptotc(totc) 
+!c      end if
 
       !c  print out results of current time step
 
@@ -3335,13 +3350,16 @@
       
         if (nsb_surf.gt.0) then
           do isb = 1,nsb_surf
-            call sorbspc(dummy,csb_surf(isb,tid),cec_l,                &
-                 eqsb_ion(:,tid),eqsb_surf(:,tid),                     &
+            call sorbspc(dummy,csb_surf(isb,tid),c(nc-nelect:nc-1),    &
+                 cec_l,eqsb_ion(:,tid),eqsb_surf(:,tid),               &
                  gammac,c,xnusb_ion,xnusb_surf,                        &
                  iasb_ion,iasb_surf,jasb_ion,jasb_surf,                &
                  nsb_ion,nsb_surf,0,isb,                               &
                  sorption_type_ion,sorption_type_surf,                 &
-                 sorption_group,isactcexch)
+                 sorption_group,isactcexch,                            &
+                 elect_correction,name_elect_correction,nelect,        &
+                 dz_surf,totc,component_type,nlayer,                   &
+                 chargesb_surf(isb),mol_frac_ads)
           end do
         end if
 
@@ -3711,12 +3729,6 @@
         end if
       end if
       
-!c  compress total aqueous component concentration vector in case of
-!c  equilibrium reactions.
-      if (redox_equil.and.nr.gt.0) then
-        call comptotc(totc) 
-      end if
-
       call memory_monitor(-sizeof(nametemp),'nametemp',.false.)
       call memory_monitor(-sizeof(l_nametemp),'l_nametemp',.false.)
       call memory_monitor(-sizeof(valuetemp),'valuetemp',.false.)

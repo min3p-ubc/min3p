@@ -149,7 +149,8 @@
 !c                       (composition of surface sites)
 !c ----------------------------------------------------------------------
  
-      subroutine surfcomp(cnew,gammac,sw,por,ilog,tid)
+      subroutine surfcomp(cnew,gammac,sw,por,strion,sitearea,sitemass, &
+                          ilog,tid)
  
       use parm
       use chem
@@ -162,7 +163,7 @@
  
       implicit none
       
-      real*8 :: cnew, gammac, sw, por
+      real*8 :: cnew, gammac, sw, por, strion, sitearea, sitemass
       
       integer :: ilog, tid
       
@@ -176,7 +177,7 @@
 
       character*72 zone_name 
 
-      dimension cnew(*),gammac(*)
+      dimension cnew(*), gammac(*), sitearea(*), sitemass(*)
 
       !real*8 :: alc_bk(nc-1,nc-1), blc_bk(nc-1), rnorm
       
@@ -217,13 +218,14 @@
         do while (not_converged) 
 
           if (iter_lc(tid).lt.maxit_lc) then
+!c Set to zero the jacobian and residual  
 
             iter_lc(tid) = iter_lc(tid)+1
             ittot_lc(tid) = ittot_lc(tid)+1
 
 !c  construct Jacobian matrix and rhs-vector 
 
-            call jacsurf(cnew,gammac,sw,por,tid)
+            call jacsurf(cnew,gammac,sw,por,strion,sitearea,sitemass,tid)
 
 !c  solve for update
 !c  linear solver type of local chemistry, 0 - Gaussian (default), 1 - QR, 2 - SVD

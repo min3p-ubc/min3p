@@ -221,15 +221,17 @@
       
       integer :: i, i1, i2, i3, ii, ic, ic2, icount, icur, ireac,      &
                  istart, istop, istart2, istop2, next, ix, ig, im, imx,&
-                 isites, isb
+                 isites, isb, ilayer
 
-      real*8 :: ph, pe, eh, alk_carb, alk_noncarb, alk_tot,            &
-                alk_carb_mg, alk_noncarb_mg, alk_tot_mg, totsitec,     &
-                satlog, zbal, zpos, zneg, gammatemp
-      real*8, external :: satindex
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r100 = 100.0d0
+      real*8 :: ph, pe, eh, alk_carb, alk_noncarb, alk_tot,             &
+                alk_carb_mg, alk_noncarb_mg, alk_tot_mg, totsitec,      &
+                satindex, satlog, zbal, zpos, zneg, gammatemp, exp_psi, &
+                charge_0, charge_beta
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r2 = 2.0d0,          &
+                           r100 = 100.0d0, faradayloc=96493.0d0,        &
+                           rgasloc = 8.314d0      
 
-      external alkcalc, cbalance, concsort, rstatlc, totconc
+      external alkcalc, cbalance, concsort, rstatlc, satindex, totconc 
 
       logical found
 
@@ -299,6 +301,85 @@
         write(igen,'(a,f12.4,a)')                                     &
      &  'computed Eh of solution:           Eh = ',eh,' mV'
       end if
+
+!cprovi------------------------------------------------------------------------  
+!cprovi Write if the activity 
+!cprovi------------------------------------------------------------------------  
+      if (nsb_surf>0) then
+         write(igen,'(a)')                                                     &
+                  '------------------------------------------------------------' 
+         if (mol_frac_ads) then
+           write(igen,'(a)')                                                 &
+                  'Activities of surface complexes are evaluated as molar fractions' 
+         else
+           write(igen,'(a)')                                                 &
+                  'Activities of surface complexes are evaluated as molarities' 
+         end if
+         write(igen,'(a)')                                                     &
+                  '------------------------------------------------------------'
+      end if 
+!cprovi------------------------------------------------------------------------      
+!cprovi Write the electrostatic potential for the electrostatic surface 
+!cprovi complexation model. 
+!cprovi------------------------------------------------------------------------
+      if (nsb_surf>0 .and. elect_correction) then
+        charge_0 = r0
+        charge_beta = r0
+        do isb = 1, nsb_surf
+          charge_0 = charge_0 + dz_surf(1,isb)*csb_surf(isb,tid)
+
+          if (name_elect_correction=='triple layer model') then
+            charge_beta = charge_beta + dz_surf(2,isb)*csb_surf(isb,tid)
+          end if
+        end do
+        write(igen,'(a)')                                                      &
+              '------------------------------------------------------------'
+        write(igen,'(a,1pe15.6e3)')                                            &
+             'surface charge layer 0                = ', charge_0
+        
+        if (name_elect_correction=='triple layer model') then
+          write(igen,'(a)')                                                    &
+                '------------------------------------------------------------'
+          write(igen,'(a,1pe15.6e3)')                                          &
+                'surface charge layer beta             = ', charge_beta
+        end if
+        
+        write(igen,'(a)')                                                      &
+              '------------------------------------------------------------' 
+        write(igen,'(a,a30)')                                                  &
+              'Electrostatic correction is calculated = ',name_elect_correction 
+        write(igen,'(a)')                                                      &
+              '------------------------------------------------------------' 
+        ilayer=0
+        do ic = 1, nc-1
+          if (component_type(ic) == 'electro') then   
+            ilayer=ilayer+1
+            exp_psi=c(ic)**(-r2)
+            if (ilayer==1) then
+              write(igen,'(a)') '0 Layer' 
+            else if (ilayer==2) then
+              write(igen,'(a)') 'Beta Layer' 
+            else
+              write(igen,'(a)') 'Diffuse Layer' 
+            end if
+            write(igen,'(a)')                                                  &
+                  '------------------------------------------------------------' 
+            write(igen,'(a,1pe15.6e3)')                                        &
+                 'exp(-F*psi/RT)                        = ', exp_psi                  
+            exp_psi=dlog(exp_psi)
+            write(igen,'(a,1pe15.6e3)')                                        &
+                  '-F*psi/RT                             = ', exp_psi
+            exp_psi=-exp_psi*rgasloc*tempks/faradayloc
+            write(igen,'(a,1pe15.6e3)')                                        &
+                  'psi [V]                               = ', exp_psi
+            write(igen,'(a)')                                                  &
+                  '------------------------------------------------------------' 
+          end if 
+        end do
+      end if
+!cprovi------------------------------------------------------------------------
+!cprovi------------------------------------------------------------------------
+!cprovi------------------------------------------------------------------------
 
 !c  ionic strength
 

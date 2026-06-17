@@ -179,16 +179,18 @@
       
       integer :: isdbs,ipsp,ilog,idbg,igen
       
-      integer :: i, ic, icount, icur, isb, istart, iend, iv, isites,   &
-                 info_debug, l_name, nv
+      integer :: i, i1, ic, icount, icur, isb, istart, iend, iv,       &
+                 isites, info_debug, l_name, nv
       
-      real*8 :: dhc, eqt, charge, gfw, xnusbt
+      real*8 :: dhc, eqt, charge, gfw, xnusbt, dz_change
 
       character*72 name
       character*1024 :: strbuffer
       character*1, parameter :: strspace = ' '
       dimension xnusbt(100)
-      logical done,found
+      logical done,found,be_in_beta_layer
+      integer, parameter :: ilayer_0=1, ilayer_beta=2
+      real*8, parameter :: r0=0.0d0
 
 !c  search database for possible sorbed species
 
@@ -653,6 +655,68 @@
         rewind(isdbs)
  
       end do                   !end - loop over species
+      
+!cprovi-------------------------------------------------------------------------------
+!cprovi Compute the net change in surface charge for electrostatic correction
+!cprovi Because the thermodynamic databse is only read once, we use another loop
+!cprovi over number of sorbed species 
+!cprovi The net change in surface charge is computed as the difference between the 
+!cprovi sorbed primary species and the charge of the surface complex. 
+!cprovi-------------------------------------------------------------------------------
+      if (elect_correction) then
+        do isb = 1,nsb_surf
+          istart = iasb_surf(isb)
+          iend = iasb_surf(isb+1)-1
+!cprovi----------------------------------------------------------------------------------------------
+!cprovi Diffuse layer and constant capacitance models
+!cprovi----------------------------------------------------------------------------------------------
+          if (name_elect_correction=='diffuse layer model'.or.      &
+              name_elect_correction=='constant capacitance model') then     
+            do i1 = istart,iend
+              ic = jasb_surf(i1)
+              if (namec(ic)=='h+1') then                          ! layer 0
+                dz_surf(ilayer_0,isb) = dz_surf(ilayer_0,isb) +        &
+                                        chargec(ic)*xnusb_surf(i1)
+              else if (namec(ic)/='h+1' .and.                          &
+                       namec(ic)/='h2o' .and.                          &
+                       namec(ic)/='e-1' .and.                          &
+                       component_type(ic)/='surface') then        ! layer beta
+                dz_surf(ilayer_0,isb) = dz_surf(ilayer_0,isb) +        &
+                                        chargec(ic)*xnusb_surf(i1)
+              end if                                         
+            end do
+            charge_surf(ilayer_0,isb) = chargesb_surf(isb)
+!cprovi----------------------------------------------------------------------------------------------
+!cprovi Triple layer model
+!cprovi----------------------------------------------------------------------------------------------
+          else   ! Triple layer model
+            be_in_beta_layer=.false.
+            dz_change=r0
+            do i1 = istart,iend
+              ic = jasb_surf(i1)
+              if (namec(ic)=='h+1') then   
+                dz_change = chargec(ic)*xnusb_surf(i1)
+                dz_surf(ilayer_0,isb) = dz_change
+              else if (namec(ic)/='h+1'.and.                 &
+                       namec(ic)/='h2o'.and.                 &
+                       namec(ic)/='e-1'.and.                 &
+                       component_type(ic)/='surface') then                      ! layer beta
+                be_in_beta_layer=.true.
+                dz_change = chargec(ic)*xnusb_surf(i1)
+                dz_surf(ilayer_beta,isb) = dz_change
+              end if              
+            end do    
+            if (be_in_beta_layer) then
+              charge_surf(ilayer_beta,isb) =  chargesb_surf(isb)
+            else
+              charge_surf(ilayer_0,isb) =  chargesb_surf(isb)
+            end if
+          end if        
+        end do
+      end if 
+!cprovi-------------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------------
       
       end if                   !end, sorbed species of surface-complex
 

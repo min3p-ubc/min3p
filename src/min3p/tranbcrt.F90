@@ -585,7 +585,8 @@
 !c  compute concentration distribution at boundary
 
             call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),     &
-                       cgc,sac,sgc,porc,igen,ilog,tid,idbg,tec_header, &
+                       cgc,sac,sgc,porc,site_area,site_mass,           &
+                       igen,ilog,tid,idbg,tec_header,                  &
                        prefix,l_prfx,zone_name,l_zone_name,            &
                        mtime,i_append_sim,mtime_append)
 

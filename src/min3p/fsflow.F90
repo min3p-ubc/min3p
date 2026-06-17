@@ -198,28 +198,37 @@
 !c  allocate memory for solver
       
       if (.not. allocated(avs)) then
-          allocate (avs(njavs), stat = ierr)
+        allocate (avs(njavs), stat = ierr)
+        if (nngl > 1) then
           avs = 0.0
-          call checkerr(ierr,'avs',ilog)
-          call memory_monitor(sizeof(avs),'avs',.true.)
+        else
+          avs = 1.0
+        end if
+        call checkerr(ierr,'avs',ilog)
+        call memory_monitor(sizeof(avs),'avs',.true.)
       end if
       
       if (i_solver_type_flow == 0) then
-          if (.not. allocated(afvs)) then
-              allocate (afvs(njafvs), stat = ierr)
-              afvs=0.0d0 
-              call checkerr(ierr,'afvs',ilog)
-              call memory_monitor(sizeof(afvs),'afvs',.true.)
+        if (.not. allocated(afvs)) then
+          allocate (afvs(njafvs), stat = ierr)
+          if (nngl > 1) then
+            afvs = 0.0d0
+          else
+            afvs = 1.0d0
           end if
+          call checkerr(ierr,'afvs',ilog)
+          call memory_monitor(sizeof(afvs),'afvs',.true.)
+        end if
       end if
 
 !c  clear arrays
   
-      call zero_r8(avs,njavs,1,1)
-  
-      call zero_r8(bvs,nngl,1,1)
-  
-      call zero_r8(uvs,nngl,1,1)
+      if (nngl > 1) then
+        call zero_r8(avs,njavs,1,1)  
+        call zero_r8(bvs,nngl,1,1)  
+        call zero_r8(uvs,nngl,1,1)
+      end if
+      
 
 !c  assemble matrix and rhs-vector
       prt_flow_jac = cputime()
@@ -698,8 +707,8 @@
               stop
             else
               if (rank == 0 .and. b_enable_output .and. idetail_vs.gt.0) then
-                write(*,*) 'Reduce time step: newton iteration diverged'
-                write(ilog,*) 'Reduce time step: newton iteration diverged'
+                write(*,*) 'reduce time step: newton iteration diverged'
+                write(ilog,*) 'reduce time step: newton iteration diverged'
               end if
             end if
           end if

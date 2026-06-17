@@ -242,6 +242,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/fluxfs.o\
 	$(SRC)min3p/dtotcong.o\
 	$(SRC)min3p/satfpres_app.o\
+	$(SRC)min3p/totchargesorb.o\
 	$(SRC)min3p/rhsrt.o\
 	$(SRC)min3p/icnvrt.o\
 	$(SRC)min3p/findstrg.o\
@@ -468,6 +469,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/nexttime.o\
 	$(SRC)min3p/mem_nsb.o\
 	$(SRC)min3p/mbaldd.o\
+	$(SRC)min3p/ratess.o\
 	$(SRC)min3p/jaclc.o\
 	$(SRC)min3p/jacddfs.o\
 	$(SRC)usg/infcrt_g_usg.o\

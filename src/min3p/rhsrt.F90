@@ -103,9 +103,9 @@
                        totgasdecay,b_use_gas_decay,                   &
                        totaqdecay,b_use_aq_decay,                     &
                        totsorptiondecay,b_use_sorption_decay,         &
-                       totaq_ngi,b_use_ngi,                 &
-                       redox_equil,noncompetitive_sorption,           &
-                       component_type,b)
+                       totaq_ngi,b_use_ngi,redox_equil,               &
+                       noncompetitive_sorption,component_type,        &
+                       totcharge_surf,elect_correction,b)
       
       implicit none
       
@@ -113,12 +113,22 @@
       real*8 :: astor, cstor, gstor, totaq, totsb_ion, totsb_surf,     &
                 totor, totdp, totcflux, totgflux, totrateg,            &
                 rootresp, totgasdecay, totaqdecay, totsorptiondecay,   &
-                totaq_ngi, b
+                totaq_ngi, totcharge_surf, b
 
       logical b_use_gas_decay, b_use_sorption_decay, redox_equil,      &
-              noncompetitive_sorption, b_use_aq_decay,                 &
-              b_use_ngi
+              noncompetitive_sorption, b_use_aq_decay, b_use_ngi,      &
+              elect_correction
       character*12 component_type
+
+!cprovi-------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------
+      if (elect_correction) then
+        if (component_type.eq.'electro') then
+          b = - totcharge_surf
+          return 
+        end if
+      end if
 
 !c  storage and flux terms for components
 

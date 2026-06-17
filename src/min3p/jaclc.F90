@@ -368,7 +368,7 @@
 !c           updtsvap  = update secondary variables in aqueous phase
 !c ----------------------------------------------------------------------
  
-      subroutine jaclc(cnew,cx,gammac,gammax,sw,sa,por,tid)
+      subroutine jaclc(cnew,cx,gammac,gammax,sw,sa,por,sitearea,sitemass,tid)
       
       use parm
       use chem
@@ -379,7 +379,7 @@
 #endif 
       implicit none
       
-      real*8 :: cnew, cx, gammac, gammax, sw, sa, por
+      real*8 :: cnew, cx, gammac, gammax, sw, sa, por, sitearea, sitemass
       
       integer :: tid 
       
@@ -390,16 +390,24 @@
                dratemin_new, dtotconc, rateint, rateint_new,         &
                ratemin, ratemin_new, totint, updtsvap
 
-      dimension cnew(*),cx(*),gammac(*),gammax(*)
+      dimension cnew(*),cx(*),gammac(*),gammax(*), sitearea(*), sitemass(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       
       !local variable
-      integer :: ic, ix, ir, isb, iaq, im, ibl, jbl, info_debug
-      real*8 :: dissvol, drtinc
+      integer :: ic, ix, ir, isb, iaq, im, ibl, jbl, info_debug, ielect, i1, iss
+      real*8 :: dissvol, drtinc, area, mass, massmin, strion, strioninc 
       logical analyt_deriv_lc
      
       analyt_deriv_lc = .false.
+
+!c  initialize alc and blc to zero
+      alc(:,:,tid) = r0
+      blc(:,tid) = r0
+     
+      if (nsb_surf>0) then
+        area=sitearea(1)*sitemass(1)
+      end if 
 
 !c  construct rhs vector,
 !c  first iteration
@@ -473,11 +481,15 @@
       if (nsb_ion.gt.0 .and. explicit_surface_ion) then
           
           do isb = 1,nsb_ion 
-              call sorbspc(csb_ion(isb,tid),dummy,cec(tid),           &
+              call sorbspc(csb_ion(isb,tid),dummy,                    &
+              cnew(nopu-nelect+1:nopu),cec(tid),                      &
               eqsb_ion(:,tid),eqsb_surf(:,tid),gammac,cnew,           &
               xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,       &
               jasb_surf,nsb_ion,nsb_surf,isb,0,sorption_type_ion,     &
-              sorption_type_surf,sorption_group,isactcexch)
+              sorption_type_surf,sorption_group,isactcexch,           &
+              elect_correction,name_elect_correction,                 &
+              nelect,dz_surf,totco(:,tid),component_type,             &
+              nlayer,chargesb_surf(isb),mol_frac_ads)
           end do          
 
 !c  compute total sorbed concentrations
@@ -502,14 +514,33 @@
 !c  initially empty or during transient simulations
 
       if (nsb_surf.gt.0 .and. explicit_surface_surf) then
-
+!c compute the sorbed concentrations
         do isb = 1,nsb_surf 
-            call sorbspc(dummy,csb_surf(isb,tid),cec(tid),            &
-                 eqsb_ion(:,tid),eqsb_surf(:,tid),gammac,cnew,        &
-                 xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,    &
-                 jasb_surf,nsb_ion,nsb_surf,0,isb,sorption_type_ion,  &
-                 sorption_type_surf,sorption_group,isactcexch)
+            call sorbspc(dummy,csb_surf(isb,tid),                      &
+                 cnew(nopu-nelect+1:nopu),cec(tid),                    &
+                 eqsb_ion(:,tid),eqsb_surf(:,tid),gammac,cnew,         &
+                 xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,     &
+                 jasb_surf,nsb_ion,nsb_surf,0,isb,sorption_type_ion,   &
+                 sorption_type_surf,sorption_group,isactcexch,         &
+                 elect_correction,name_elect_correction,               &
+                 nelect,dz_surf,totco(:,tid),component_type,           &
+               nlayer,chargesb_surf(isb),mol_frac_ads)
         end do
+
+!cprovi-------------------------------------------------------------------------
+!cprovi Compute the surface charge balance if the electrostatic correction is 
+!cprovi carried out
+!cprovi-------------------------------------------------------------------------
+        if (elect_correction) then
+            call ionstr(cnew,cx,strion,chargec,chargex,nc-1,nx,namec)
+            call totchargesorb(totcharge_surf(i1+1:nopu,tid),strion,       &
+                    cnew(nopu-nelect+1:nopu),csb_surf(:,tid),charge_surf,  &
+                    nsb_surf,tempks,area,cap_surf,name_elect_correction,   &
+                    nlayer,nelect,ncap)
+        end if 
+!cprovi-------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------
 
 !c  compute total sorbed concentrations
 
@@ -594,6 +625,36 @@
             end if
 
           end do
+
+!cprovi-------------------------------------------------------------------------------
+!cprovi Compute the reaction rates for solid solutions
+!cprovi-------------------------------------------------------------------------------
+          if (solid_solutions) then 
+          
+            ! Compute the reaction rates for the solid solution 
+            call ratess(ratedp(:,tid),areac,cnew,cx,gammac,gammax,      &
+                        cmcold(:,tid),cmcmin(:,tid),delt_lc(tid),       &
+                        iter_lc(tid))  
+            do iss = 1, nss
+              do i1 = 1, nmin_ss(iss)  
+                im=idmin_ss(iss,i1)  
+                !------------------------------------
+                ! Temporal
+                !------------------------------------
+                mass = cmcnew(im,tid)
+                massmin = cmcmin(im,tid)
+                dissvol = ratedp(im,tid)*delt_lc(tid)
+                if ((mass+dissvol)<massmin) then
+                  ratedp(im,tid) = - (cmcnew(im,tid)-cmcmin(im,tid))/   &
+                                      delt_lc(tid)
+                end if
+              end do 
+            end do 
+          
+          end if ! Solid solutions 
+!cprovi-------------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------------------          
  
 !cmx  set mineral reaction rate to 0.0 in clogged cv
           if (pore_clogging) then
@@ -618,26 +679,34 @@
         end if
 
       end if             !(nm.gt.0)
- 
+!cprovi-----------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------
+!cprovi Build system of equations (i.e., jacobian matrix and residual)
+!cprovi-----------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------
 !c  put 0 on rhs, if free species concentration is fixed
  
       do ibl = 1,nopu               !loop over rows
 
         if (ctype(ibl).ne.'fixed') then
-
+!c----------------------------------------------------------------------
 !c  contributions from aqueous phase
-
+!c----------------------------------------------------------------------
           blc(ibl,tid) = - sw*por*(totcn(ibl,tid)-totco(ibl,tid))/    &
                          delt_lc(tid)
-
-!c  contributions from sorbed phase
-
+!c----------------------------------------------------------------------
+!c  contributions from exchanged phase
+!c----------------------------------------------------------------------
           if (nsb_ion.gt.0.and.explicit_surface_ion) then
             blc(ibl,tid) = blc(ibl,tid) - sw*por*                     &
      &                     (totcsn_ion(ibl,tid)-totcso_ion(ibl))/     &
      &                     delt_lc(tid)
           end if
-          
+!c----------------------------------------------------------------------
+!c  contributions from sorbed phase         
+!c----------------------------------------------------------------------
           if (nsb_surf.gt.0.and.explicit_surface_surf) then
             blc(ibl,tid) = blc(ibl,tid)-sw*por*                       &
      &                     (totcsn_surf(ibl,tid)-totcso_surf(ibl))/   &
@@ -664,11 +733,28 @@
 
          end if                        !ctype
 
+!cprovi----------------------------------------------------------------------
+!cprovi If the component is electrostatic, then store the electris charge 
+!cprovi balance on the surface in the residual
+!cprovi----------------------------------------------------------------------
+         if (component_type(ibl)=='electro') then
+           if (explicit_surface_surf) then
+             blc(ibl,tid) = - sw*por*totcharge_surf(ibl,tid)   
+           else 
+             blc(ibl,tid) = r0 
+           end if
+         end if 
+!cprovi----------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------
+
       end do                           !loop over rows
 
 !c  construct jacobian matrix
 !c  assign current component species concentrations to work array
- 
+!cprovi--------------------------------------------------------------------
+!cprovi--------------------------------------------------------------------
+!cprovi--------------------------------------------------------------------
       do ic = 1,nc
         cinc(ic,tid) = cnew(ic)
       end do
@@ -724,14 +810,18 @@
         if (nsb_ion.gt.0 .and. explicit_surface_ion) then
 
           do isb = 1,nsb_ion
-            call sorbspc(dcsb_ion(isb,tid),dummy,cec(tid),            &
+            call sorbspc(dcsb_ion(isb,tid),dummy,                     &
+                         cnew(nopu-nelect+1:nopu),cec(tid),           &
                          eqsb_ion(:,tid),eqsb_surf(:,tid),            &
                          gammac,cinc(:,tid),                          &
                          xnusb_ion,xnusb_surf,                        &
                          iasb_ion, iasb_surf,jasb_ion,                &
                          jasb_surf,nsb_ion,nsb_surf,isb,0,            &
                          sorption_type_ion, sorption_type_surf,       &
-                         sorption_group,isactcexch)
+                         sorption_group,isactcexch,                   &
+                         elect_correction,name_elect_correction,      &
+                         nelect,dz_surf,totco(:,tid),component_type,  &
+                         nlayer,chargesb_surf(isb),mol_frac_ads)
             
 !c  compute derivatives of concentrations of sorbed species
             dcsb_ion(isb,tid) =                                       &
@@ -762,16 +852,43 @@
         if (nsb_surf.gt.0 .and. explicit_surface_surf) then
           
           do isb = 1,nsb_surf
-            call sorbspc(dummy,dcsb_surf(isb,tid),cec(tid),           &
+            call sorbspc(dummy,dcsb_surf(isb,tid),                    &
+                         cinc(nopu-nelect+1:nopu,tid),cec(tid),       &
                          eqsb_ion(:,tid),eqsb_surf(:,tid),            &
                          gammac,cinc(:,tid),                          &
                          xnusb_ion,xnusb_surf,                        &
                          iasb_ion,iasb_surf,jasb_ion,                 &
                          jasb_surf,nsb_ion,nsb_surf,0,isb,            &
                          sorption_type_ion, sorption_type_surf,       &
-                         sorption_group,isactcexch)
-            
+                         sorption_group,isactcexch,                   &
+                         elect_correction,name_elect_correction,      &
+                         nelect,dz_surf,totco(:,tid),component_type,  &
+                         nlayer,chargesb_surf(isb),mol_frac_ads)            
+          end do
+
+!cprovi----------------------------------------------------------------------------------          
+!cprovi----------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------
+          if (elect_correction) then          
+            call ionstr(cinc(:,tid),cxinc(:,tid),strioninc,chargec,chargex,    &
+                        nc-1,nx,namec)
+            call totchargesorb(dtotcharge_surf(nopu-nelect+1:nopu,tid),        &
+                               strioninc,cinc(nopu-nelect+1:nopu,tid),         &
+                               dcsb_surf(:,tid),charge_surf,nsb_surf,          &
+                               tempks,area,cap_surf,name_elect_correction,     &
+                               nlayer,nelect,ncap)         
+            do ielect=1,nelect    
+              dtotcharge_surf(nopu-nelect+ielect,tid)=                         &
+                             (dtotcharge_surf(nopu-nelect+ielect,tid)-         &
+                              totcharge_surf(nopu-nelect+ielect,tid))/drtinc
+            end do
+          end if  
+!cprovi----------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------          
+!cprovi---------------------------------------------------------------------------------- 
+
 !c  compute derivatives of concentrations of sorbed species
+          do isb = 1,nsb_surf
             dcsb_surf(isb,tid) = (dcsb_surf(isb,tid) -                &
                                  csb_surf(isb,tid))/drtinc
           end do    
@@ -865,6 +982,40 @@
 
           end do
 
+!cprovi----------------------------------------------------------------------------------------
+!cprovi Modify the derivatives of the mineral reaction rates if solid solutions are calculated
+!cprovi Note that the derivatives of reaction rates for pure phases were previously stored 
+!cprovi in the vector 
+!cprovi----------------------------------------------------------------------------------------
+          if (solid_solutions) then 
+
+            call ratess(dratedp(:,tid),areac,cinc(:,tid),cxinc(ix,tid),&
+                        gammac,gammax,cmcold(:,tid),cmcmin(im,tid),&
+                        delt_lc(tid),iter_lc(tid))  
+            
+            do iss = 1, nss
+              do i1 = 1, nmin_ss(iss)  
+                im=idmin_ss(iss,i1)  
+                dratedp(im,tid)=(dratedp(im,tid)-ratedp(im,tid))/drtinc
+                !------------------------------------
+                ! Temporal
+                !------------------------------------
+                mass = cmcnew(im,tid)
+                massmin = cmcmin(im,tid)
+                dissvol = ratedp(im,tid)*delt_lc(tid)
+                !------------------------------------                    
+                if ((mass+dissvol)<massmin) then
+                  dratedp(im,tid) = r0
+                end if 
+              end do 
+                    
+            end do 
+            
+          end if  ! Solid solutions 
+!cprovi----------------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------------
+
 !cmx  set mineral reaction rate to 0.0 in clogged cv
           if (pore_clogging) then
               if (por <= por_thresh_min) then
@@ -937,8 +1088,8 @@
 !c  put 1 on diagonal for component type 'fixed' 
 
           elseif (ctype(ibl).eq.'fixed'.and.                          &
-     &            ctype(jbl).eq.'fixed'.and.                          &
-     &            ibl.eq.jbl) then
+                  ctype(jbl).eq.'fixed'.and.                          &
+                  ibl.eq.jbl) then
    
             alc(ibl,jbl,tid) = r1
    
@@ -947,13 +1098,25 @@
 !c  'fixed'
 
           elseif (ctype(ibl).ne.'fixed'.and.                          &
-     &            ctype(jbl).eq.'fixed'.or.                           &
-     &            ctype(ibl).eq.'fixed'.and.                          &
-     &            ctype(jbl).ne.'fixed') then
+                  ctype(jbl).eq.'fixed'.or.                           &
+                  ctype(ibl).eq.'fixed'.and.                          &
+                  ctype(jbl).ne.'fixed') then
    
             alc(ibl,jbl,tid) = r0
    
           end if                          !end - ctype
+
+          if (component_type(ibl)=='electro') then
+            if (explicit_surface_surf) then   
+              alc(ibl,jbl,tid) =  cnew(jbl)*sw*por*dtotcharge_surf(ibl,tid)
+            else     
+              if (ibl.eq.jbl) then
+                alc(ibl,jbl,tid) = r1
+              else
+                alc(ibl,jbl,tid) = r0
+              end if
+            end if
+          end if 
 
         end do                            !end - loop over rows
  

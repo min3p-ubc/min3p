@@ -429,7 +429,11 @@
       if (.not.heat_transport .or. decoupled_type_vs_heat > 1) then
         if(.not. allocated(avs)) then
           allocate (avs(njavs), stat = ierr)
-          avs = 0.0d0
+          if (nngl > 1) then
+            avs = 0.0
+          else
+            avs = 1.0
+          end if
           call checkerr(ierr,'avs',ilog)
           call memory_monitor(sizeof(avs),'avs',.true.)
         end if
@@ -1424,8 +1428,8 @@
                   stop
                 else
                   if (rank == 0 .and. b_enable_output .and. idetail_vs.gt.0) then
-                    write(*,*) 'Reduce time step: newton iteration diverged'
-                    write(ilog,*) 'Reduce time step: newton iteration diverged'
+                    write(*,*) 'reduce time step: newton iteration diverged'
+                    write(ilog,*) 'reduce time step: newton iteration diverged'
                   end if
                 end if
               end if

@@ -238,7 +238,11 @@
       if (.not.heat_transport .or. decoupled_type_vs_heat > 1) then
         if(.not. allocated(avs)) then
           allocate (avs(njavs), stat = ierr)
-          avs = 0.0d0
+          if (nngl > 1) then
+            avs = 0.0
+          else
+            avs = 1.0
+          end if
           call checkerr(ierr,'avs',ilog)
           call memory_monitor(sizeof(avs),'avs',.true.)
         end if
@@ -728,9 +732,11 @@
           end if
 !c  clear arrays
  
-          call zero_r8(avs, size(avs, 1), 1, 1) 
-          call zero_r8(bvs, size(bvs, 1), 1, 1) 
-          call zero_r8(uvs, size(uvs, 1), 1, 1)
+          if (nngl > 1) then
+            call zero_r8(avs, size(avs, 1), 1, 1) 
+            call zero_r8(bvs, size(bvs, 1), 1, 1) 
+            call zero_r8(uvs, size(uvs, 1), 1, 1)
+          end if
  
           if (i_solver_type_flow == 0) then
             call zero_r8(afvs, size(afvs, 1), 1, 1)

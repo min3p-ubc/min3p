@@ -132,6 +132,15 @@
           cnew(ic) = cold(ic)
         end if
 
+!cprovi-----------------------------------------------------------------------------
+!cprovi If the component is an electrostatic term, then initialize it with 1
+!cprovi-----------------------------------------------------------------------------
+        if (elect_correction.and.component_type(ic)=='electro') then
+          cnew(ic) = 1.0d0
+          cold(ic) = 1.0d0
+        end if
+
+
 !c  assign fixed free species activities and concentrations
 
         if (ctype(ic).eq.'fixed') then

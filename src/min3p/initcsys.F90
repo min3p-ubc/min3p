@@ -345,12 +345,12 @@
       character*72 :: subsection, name, string, pair, dummy      
       character*1024 :: strbuffer      
 
-      real*8, parameter :: r1 = 1.0d0, r86400 = 86400d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r86400 = 86400d0
       
       integer :: l_string, l_string2, ic, idummy, ir, ix, ig, ierrcd,  &
                  ilinear, ianc, isb, nss_counter, jsb, itemp, isites,  &
                  im, iaq, ierr, imx, i1, nmp, im2, i, ipts, npts,      &
-                 istat, idbs, idbs_in, ntemp,                          &
+                 istat, idbs, idbs_in, ntemp, ilayer, icount, iss,     &
                  ingi, ingre, inge, ingnce, ingnpre, bitngre
       real*8 :: alpha, rhalftime, rdummy
 
@@ -820,9 +820,78 @@
 
         end if               !(subsection)
 
+!cprovi------------------------------------------------------------------
+!cprovi Check if electrostatic correction must be carried out
+!cprovi in the surface complexation model
+!cprovi Only if non-aqueous components are defined by the user
+!cprovi------------------------------------------------------------------
+        nelect = 0
+        if (nna > 0) then 
+          subsection = 'use molar fractions for surface complexes'        
+          call findstrg(subsection,itmp,found_subsection)
+          if (found_subsection) then            
+            mol_frac_ads = .true.
+          else
+            mol_frac_ads = .false.
+          end if
+
+          subsection = 'use electrostatic correction'        
+          call findstrg(subsection,itmp,found_subsection)
+          if (found_subsection) then
+            elect_correction = .true. 
+            ierrcd = 63
+            read(itmp,*,err=999,end=999) name_elect_correction 
+            !cprovi---------------------------------------------------------------
+            !cprovi Allocate vector to store the electrostatic potential
+            !cprovi for the surface complexation model
+            !cprovi The number of unknowns depends on the surface electrostatic
+            !cprovi model.
+            !cprovi 
+            !cprovi---------------------------------------------------------------
+            if (name_elect_correction=='triple layer model') then
+              !nelect = 3*nna
+              nelect = 3
+              nlayer = 2
+              ncap = 2
+            else if (name_elect_correction=='diffuse layer model') then
+              !nelect = nna
+              nelect = 1
+              nlayer = 1
+              ncap = 0
+            else if(name_elect_correction=='constant capacitance model') then
+              !nelect = nna
+              nelect = 1
+              nlayer = 1
+              ncap = 1                    
+            else  ! if the electrostatic model is not recognized...
+              goto 999 
+            end if 
+!c ----------------------------------------------------------------------
+!c Read the constant capacitances        
+!c ----------------------------------------------------------------------
+            if (name_elect_correction=='constant capacitance model'.or.&
+                name_elect_correction=='triple layer model') then 
+              allocate (cap_surf(nlayer), stat = ierr)
+              cap_surf = r1 
+              call checkerr(ierr,'cap_surf',ilog)
+              ! Read the constant capacitance
+              do ilayer = 1, nlayer
+                ierrcd = 64
+                read(itmp,*,err=999,end=999) cap_surf(ilayer)
+              end do
+            else
+              !c the following is just to avoid passing uninitialized array
+              allocate (cap_surf(1), stat = ierr)
+              cap_surf = r1 
+              call checkerr(ierr,'cap_surf',ilog)
+            end if
+              
+          end if
+        end if
+
 !c  number of components including biomass and surface compelxation sites
 
-        n = n+nbio+nna
+        n = n+nbio+nna+nelect
 
 
 !c  number of components including h2o
@@ -854,7 +923,7 @@
         idummy = idummy   !avoid error messages
 
         ierrcd = 11
-        do ic=1,n-nbio-nna
+        do ic=1,n-nbio-nna-nelect
           read(itmp,*,err=999,end=999) namec(ic)
         end do
 
@@ -871,7 +940,7 @@
           idummy = idummy   !avoid error messages
 
           ierrcd = 13
-          do ic=n-nbio-nna+1,n-nna
+          do ic=n-nbio-nna-nelect+1,n-nna-nelect
             read(itmp,*,err=999,end=999) namec(ic)
             component_type(ic) = 'biomass'
           end do
@@ -890,7 +959,7 @@
           ierrcd = 14
           read(itmp,*,err=999,end=999) idummy
 
-          do ic=n-nna+1,n
+          do ic=n-nna-nelect+1,n-nelect
 
             ierrcd = 15
             read(itmp,*,err=999,end=999) namec(ic), component_type(ic)
@@ -915,7 +984,7 @@
           ierrcd = 16
           read(itmp,*,err=999,end=999) idummy
 
-          do ic=n-nna+1,n
+          do ic=n-nna-nelect+1,n-nelect
 
             ierrcd = 17
             read(itmp,*,err=999,end=999) namec(ic), component_type(ic)
@@ -927,6 +996,27 @@
           end do
 
         end if
+
+!cprovi-----------------------------------------------------------------------------
+!cprovi Assign the name of the electrostatic component
+!cprovi-----------------------------------------------------------------------------
+        if (elect_correction) then
+          icount=0
+          do ic=n-nelect+1,n
+            icount=icount+1
+            if (icount==1) then
+              namec(ic) = 'exp_psi_0'
+            else if (icount==2) then
+              namec(ic) = 'exp_psi_b'
+            else
+              namec(ic) = 'exp_psi_d'
+            end if 
+            component_type(ic) = 'electro'
+          end do
+        end if
+!cprovi-----------------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------------
         
 !c ----------------------------------------------------------------------
 !c  read number of redox couples
@@ -1915,6 +2005,111 @@
           end do
  
         end if              !(found_subsection)
+
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c read the number of solid solutions, and the solid solution 
+!c information 
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+        if (nm > 0) then    
+          subsection = 'solid solutions'
+
+          call findstrg(subsection,itmp,found_subsection)
+          solid_solutions=.false. 
+          if (found_subsection) then
+            solid_solutions = .true. 
+            ierrcd = 65
+            read(itmp,*,err=999,end=999) nss
+ 
+!c  allocate memory for one-dimensional arrays of size nm and
+            allocate (nmin_ss(nss), stat = ierr)
+            nmin_ss=0 
+            call checkerr(ierr,'nmin_ss',ilog)
+
+            allocate (non_ideal_solid_solution(nss), stat = ierr)
+            non_ideal_solid_solution=.false. 
+            call checkerr(ierr,'non_ideal_solid_solution',ilog)
+
+            allocate (idmin_ss(nss,nm), stat = ierr)
+            idmin_ss=0 
+            call checkerr(ierr,'idmin_ss',ilog)
+
+            allocate (xss(nss,nm,nthreads), stat = ierr)
+            xss=r0 
+            call checkerr(ierr,'xss',ilog)
+
+            allocate (satm_ss(nss,nthreads), stat = ierr)
+            satm_ss=r0 
+            call checkerr(ierr,'satm_ss',ilog)
+
+            allocate (gugg0_ss(nss), stat = ierr)
+            gugg0_ss=r0  
+            call checkerr(ierr,'gugg0_ss',ilog)
+
+            allocate (gugg1_ss(nss), stat = ierr)            
+            gugg1_ss=r0 
+            call checkerr(ierr,'gugg1_ss',ilog)
+
+            allocate (lambda_ss(nss,nm,nthreads), stat = ierr)
+            lambda_ss=r1 
+            call checkerr(ierr,'lambda_ss',ilog)
+
+            allocate (chemical_zoning_ss(nss), stat = ierr)
+            chemical_zoning_ss=.false.  
+            call checkerr(ierr,'chemical_zoning_ss',ilog)
+ 
+            do iss = 1,nss
+              ierrcd = 66
+              read(itmp,*,err=999,end=999) nmin_ss(iss), dummy,        &
+                   chemical_zoning_ss(iss), gugg0_ss(iss), gugg1_ss(iss) 
+              if (dummy == 'ideal') then
+                non_ideal_solid_solution(iss) = .false.   
+              else
+                non_ideal_solid_solution(iss) = .true.
+                if (nmin_ss(iss) /= 2) then
+                  if (rank == 0) then
+                    write(ilog,*) 'SIMULATION TERMINATED'
+                    write(ilog,*) 'error reading input file'
+                    write(ilog,*) 'subsection "',subsection(:l_string)
+                    write(ilog,*) 'Two end-member must be defined for non-ideal solid solutions'
+                    write(ilog,*) 'Guggenheim series expansion'
+                    close(ilog)
+                  end if
+                  stop 
+                end if 
+              end if
+              do im2 = 1,nmin_ss(iss)
+                ierrcd = 67
+                read(itmp,*,err=999,end=999) name
+                found=.false. 
+                do im = 1,nm
+                  if (name == namem(im)) then
+                    found=.true.   
+                    idmin_ss(iss,im2)=im 
+                    exit 
+                  end if
+                end do
+                if (.not.found) then
+                  if (rank == 0) then
+                    write(ilog,*) 'SIMULATION TERMINATED'
+                    write(ilog,*) 'error reading input file'
+                    write(ilog,*) 'subsection "',subsection(:l_string), '" missing'
+                    write(ilog,*) 'end-member not found in the mineral list'
+                    close(ilog)
+                  end if
+                  stop 
+                end if
+              end do 
+            end do
+                
+          end if              !(found_subsection)
+        end if                  !solid solutions  
+!c ----------------------------------------------------------------------        
+!c ----------------------------------------------------------------------        
+!c ----------------------------------------------------------------------
         
         if (nm > 0) then
           subsection = 'mineral water removal coefficient'

@@ -1,0 +1,212 @@
+module donnan_solver
+  implicit none
+  private
+  public :: solve_donnan_potential
+
+  ! Double precision kind
+  integer, parameter :: dp = selected_real_kind(15, 300)
+
+contains
+
+  !--------------------------------------------------------------------
+  ! Solve for Donnan potential psi_D from:
+  !
+  !   Qs + VD * F * sum_i [ z_i * alpha_i * cb_i *
+  !                        exp( -(z_i*F*psi)/(R*T) ) ] = 0
+  !
+  ! Inputs:
+  !   Qs       : surface charge [mol charge or equivalent/F-consistent charge basis]
+  !   VD       : Donnan volume [L, m^3, etc. consistent with cb_i units]
+  !   F        : Faraday constant
+  !   R        : gas constant
+  !   T        : temperature [K]
+  !   z(:)     : species charges
+  !   alpha(:) : enrichment factors
+  !   cb(:)    : bulk concentrations
+  !
+  ! Optional:
+  !   psi0     : initial guess
+  !   tol      : convergence tolerance on residual
+  !   maxit    : max iterations
+  !
+  ! Returns:
+  !   psi      : Donnan potential
+  !
+  ! Notes:
+  !   - z, alpha, cb must have same size
+  !   - Newton uses exact derivative
+  !   - If Newton steps leave the bracket, bisection is used
+  !--------------------------------------------------------------------
+  function solve_donnan_potential(Qs, VD, F, R, T, z, alpha, cb, psi0, tol, maxit) result(psi)
+    implicit none
+
+    real(dp), intent(in) :: Qs, VD, F, R, T
+    real(dp), intent(in) :: z(:), alpha(:), cb(:)
+    real(dp), intent(in), optional :: psi0, tol
+    integer,  intent(in), optional :: maxit
+
+    real(dp) :: psi
+    real(dp) :: fval, dfdpsi
+    real(dp) :: psi_lo, psi_hi, f_lo, f_hi
+    real(dp) :: psi_trial, psi_new
+    real(dp) :: my_tol
+    integer  :: my_maxit, iter
+    logical  :: bracket_found
+
+    if (size(z) /= size(alpha) .or. size(z) /= size(cb)) then
+       error stop "solve_donnan_potential: z, alpha, cb must have same size"
+    end if
+
+    my_tol   = 1.0d-12
+    if (present(tol)) my_tol = tol
+
+    my_maxit = 100
+    if (present(maxit)) my_maxit = maxit
+
+    if (present(psi0)) then
+       psi = psi0
+    else
+       psi = 0.0_dp
+    end if
+
+    !--------------------------------------------------------------
+    ! Step 1: bracket the root
+    !--------------------------------------------------------------
+    psi_lo = -1.0_dp
+    psi_hi =  1.0_dp
+
+    call donnan_residual(Qs, VD, F, R, T, z, alpha, cb, psi_lo, f_lo, dfdpsi)
+    call donnan_residual(Qs, VD, F, R, T, z, alpha, cb, psi_hi, f_hi, dfdpsi)
+
+    bracket_found = .false.
+    do iter = 1, 60
+       if (f_lo * f_hi <= 0.0_dp) then
+          bracket_found = .true.
+          exit
+       end if
+       psi_lo = 2.0_dp * psi_lo
+       psi_hi = 2.0_dp * psi_hi
+       call donnan_residual(Qs, VD, F, R, T, z, alpha, cb, psi_lo, f_lo, dfdpsi)
+       call donnan_residual(Qs, VD, F, R, T, z, alpha, cb, psi_hi, f_hi, dfdpsi)
+    end do
+
+    if (.not. bracket_found) then
+       error stop "solve_donnan_potential: failed to bracket root"
+    end if
+
+    ! If initial guess is outside bracket, reset to midpoint
+    if (psi < min(psi_lo, psi_hi) .or. psi > max(psi_lo, psi_hi)) then
+       psi = 0.5_dp * (psi_lo + psi_hi)
+    end if
+
+    !--------------------------------------------------------------
+    ! Step 2: safeguarded Newton iteration
+    !--------------------------------------------------------------
+    do iter = 1, my_maxit
+
+       call donnan_residual(Qs, VD, F, R, T, z, alpha, cb, psi, fval, dfdpsi)
+
+       if (abs(fval) < my_tol) return
+
+       ! Newton trial step
+       if (abs(dfdpsi) > 1.0d-30) then
+          psi_trial = psi - fval / dfdpsi
+       else
+          psi_trial = 0.5_dp * (psi_lo + psi_hi)
+       end if
+
+       ! Safeguard: if Newton goes outside bracket, use bisection
+       if (psi_trial <= min(psi_lo, psi_hi) .or. psi_trial >= max(psi_lo, psi_hi)) then
+          psi_new = 0.5_dp * (psi_lo + psi_hi)
+       else
+          psi_new = psi_trial
+       end if
+
+       call donnan_residual(Qs, VD, F, R, T, z, alpha, cb, psi_new, fval, dfdpsi)
+
+       ! Update bracket
+       if (f_lo * fval <= 0.0_dp) then
+          psi_hi = psi_new
+          f_hi   = fval
+       else
+          psi_lo = psi_new
+          f_lo   = fval
+       end if
+
+       ! Convergence in psi
+       if (abs(psi_new - psi) < my_tol) then
+          psi = psi_new
+          return
+       end if
+
+       psi = psi_new
+    end do
+
+    error stop "solve_donnan_potential: Newton iteration did not converge"
+  end function solve_donnan_potential
+
+
+  !--------------------------------------------------------------------
+  ! Residual and derivative:
+  !
+  !   f(psi) = Qs + VD*F*sum_i z_i*alpha_i*cb_i*exp(-z_i*F*psi/(R*T))
+  !
+  !   df/dpsi = -VD*F^2/(R*T) * sum_i z_i^2*alpha_i*cb_i*exp(-z_i*F*psi/(R*T))
+  !--------------------------------------------------------------------
+  subroutine donnan_residual(Qs, VD, F, R, T, z, alpha, cb, psi, fval, dfdpsi)
+    implicit none
+
+    real(dp), intent(in)  :: Qs, VD, F, R, T, psi
+    real(dp), intent(in)  :: z(:), alpha(:), cb(:)
+    real(dp), intent(out) :: fval, dfdpsi
+
+    integer  :: i, n
+    real(dp) :: expo, sum1, sum2
+
+    n = size(z)
+    sum1 = 0.0_dp
+    sum2 = 0.0_dp
+
+    do i = 1, n
+       expo = exp( -(z(i) * F * psi) / (R * T) )
+       sum1 = sum1 + z(i)       * alpha(i) * cb(i) * expo
+       sum2 = sum2 + z(i)*z(i)  * alpha(i) * cb(i) * expo
+    end do
+
+    fval   = Qs + VD * F * sum1
+    dfdpsi = -VD * F * F / (R * T) * sum2
+  end subroutine donnan_residual
+
+end module donnan_solver
+
+!--------------------------------------------------------------------
+! Example to call donnan solver
+!--------------------------------------------------------------------
+program test_donnan
+  use donnan_solver
+  implicit none
+
+  integer, parameter :: dp = selected_real_kind(15, 300)
+  real(dp) :: psi
+  real(dp), parameter :: F = 96485.33212_dp
+  real(dp), parameter :: R = 8.314462618_dp
+  real(dp), parameter :: T = 298.15_dp
+  real(dp) :: Qs, VD
+  real(dp), allocatable :: z(:), alpha(:), cb(:)
+
+  allocate(z(3), alpha(3), cb(3))
+
+  ! Example ions: Na+, Cl-, Ca2+
+  z     = [ 1.0_dp, -1.0_dp, 2.0_dp ]
+  alpha = [ 1.0_dp,  1.0_dp, 1.0_dp ]
+  cb    = [ 0.01_dp, 0.01_dp, 0.002_dp ]
+
+  Qs = -1.0e-4_dp
+  VD = 1.0e-3_dp
+
+  psi = solve_donnan_potential(Qs, VD, F, R, T, z, alpha, cb, psi0=0.0_dp, tol=1.0e-10_dp)
+
+  write(*,'(A,1PE16.8)') 'Donnan potential psi_D = ', psi
+
+  deallocate(z, alpha, cb)
+end program test_donnan

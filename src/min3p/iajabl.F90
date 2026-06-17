@@ -377,8 +377,26 @@
                         icur_sorbs(ncur_sorbs) = ic
                     end if
                 end if
-              end do              
-            end do
+              end do  
+              !cprovi---------------------------------------------------------------
+              !cprovi It is because electrostatic terms affect the sorbed species
+              !cprovi if electrostatic correction is chosen 
+              !cprovi---------------------------------------------------------------
+              if (elect_correction) then
+                 i1 = n-nelect
+                 do i2 = 1, nelect
+                     if ((i1+i2).eq.ibl) then
+                       if(all(icur_sorbs(1:n) /= ibl,1)) then                    
+                          ncur_sorbs = ncur_sorbs + 1
+                          icur_sorbs(ncur_sorbs) = i1+i2
+                       end if
+                     end if
+                 end do
+               end if 
+              !cprovi---------------------------------------------------------------
+              !cprovi---------------------------------------------------------------
+              !cprovi---------------------------------------------------------------
+            end do            
           end if
 
         end do

@@ -388,6 +388,7 @@
 		<File RelativePath="..\..\min3p\ratemin.F90"/>
 		<File RelativePath="..\..\min3p\ratemin_new.F90"/>
 		<File RelativePath="..\..\min3p\rateredx.F90"/>
+		<File RelativePath="..\..\min3p\ratess.F90"/>
 		<File RelativePath="..\..\min3p\reactran.F90"/>
 		<File RelativePath="..\..\min3p\reactran_2.F90"/>
 		<File RelativePath="..\..\dgm\read_tau.F90"/>
@@ -464,6 +465,7 @@
 		<File RelativePath="..\..\min3p\storvs.F90"/>
 		<File RelativePath="..\..\min3p\surf_tens_prop.F90"/>
 		<File RelativePath="..\..\min3p\surfcomp.F90"/>
+		<File RelativePath="..\..\min3p\totchargesorb.F90"/>
 		<File RelativePath="..\..\min3p\tcorr.F90"/>
 		<File RelativePath="..\..\min3p\timeloop.F90"/>
 		<File RelativePath="..\..\min3p\tortuosity_vap.F90"/>

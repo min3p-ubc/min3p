@@ -244,6 +244,7 @@
 		<File RelativePath="..\..\min3p\initopgs.F90"/>
 		<File RelativePath="..\..\min3p\pitzer\initpitzer_pc.F90"/>
 		<File RelativePath="..\..\min3p\initplant.F90"/>
+		<File RelativePath="..\..\min3p\initppplant.F90"/>
 		<File RelativePath="..\..\min3p\initppdd.F90"/>
 		<File RelativePath="..\..\min3p\initppenergybal.F90"/>
 		<File RelativePath="..\..\min3p\initpppm.F90"/>

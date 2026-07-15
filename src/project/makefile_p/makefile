@@ -16,7 +16,7 @@ with-intel-after2018 =
 with-gcc = true
 with-pgi =
 
-with-git-info = true
+with-repo-info = true
 with-build-info = true
 
 with-lis = 
@@ -81,8 +81,8 @@ FFLAGS := $(FFLAGS) -qoverride-limits
 CXXFLAGS := $(CXXFLAGS) -qoverride-limits
 endif
 
-########## Git Version and build options ###########
-ifdef with-git-info
+########## Repository Version and build options ###########
+ifdef with-repo-info
 GIT_VERSION := $(shell git describe --dirty --always --tags)
 FPPFLAGS := $(FPPFLAGS) -DGITVERSION=\"$(GIT_VERSION)\"
 
@@ -695,6 +695,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/pitzer/closepitzer.o\
 	$(SRC)min3p/mem_etr.o\
 	$(SRC)min3p/initplant.o\
+	$(SRC)min3p/initppplant.o\
 	$(SRC)min3p/rew.o\
 	$(SRC)min3p/evapo.o\
 	$(SRC)min3p/updtetp.o\

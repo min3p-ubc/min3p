@@ -132,12 +132,12 @@
 
           end if
 
-          tpot = pet - pe_soil - canopy_int * canopy_evap_factor 
+          tpot = pet - pe_soil - canopy_int * canopy_evap_factor(1) 
 
           if (tpot .lt. r0) then
             
             tpot = r0
-            
+
           end if
 
         else
@@ -146,22 +146,22 @@
 
             pe_soil = pet*solar_ratio  ! get potential evaporation from potential evapotranspiration (m/s)
           
-            tpot = pet-pe_soil-canopy_int*canopy_evap_factor  ! get potential transpiration (m/s) from energy balance 
-            
+            tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)  ! get potential transpiration (m/s) from energy balance 
+
             pe_soil = pe_soil*toparea*solar_ratio*sec_per_days  !potential evaporation scaled up according to solar ratio (surface effect) and converted in m3/s
           
             tpot = tpot*toparea*(1-solar_ratio)*sec_per_days  !potential transpiration scaled up according to solar ratio (surface effect) and converted in m3/s
-            
+
           else !growing vegetation=>scale_tree_growth taken into account for splitting between evapo and transpiration as well as surface area variations.
             
             pe_soil = pet*(1-scale_tree_growth)  ! get potential evaporation from potential evapotranspiration (m/s)
             
-            tpot = pet-pe_soil-canopy_int*canopy_evap_factor  ! get potential transpiration (m/s) from energy balance
-          
+            tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)  ! get potential transpiration (m/s) from energy balance
+
             pe_soil = pe_soil*toparea*(1-scale_tree_growth)*sec_per_days  !potential evaporation scaled up according to scale_tree_growth (surface effect) and converted in m3/s*
           
             tpot = tpot*toparea*scale_tree_growth*sec_per_days  !potential transpiration scaled up according to scale_tree_growth (surface effect) and converted in m3/s
-          
+
           endif
           
         end if

@@ -93,8 +93,8 @@
 !c                      obsolete for simulation
 !c           inittemp = define temperature field and compute
 !c                      temperature-dependent constants
-!c         initplant= plant transpiration and passive/rejective 
-!c            uptake for variably saturated flow ! CBF
+!c           initplant= plant transpiration and passive/rejective 
+!c                      uptake for variably saturated flow ! CBF
 !c           mem_rt   = allocate memory for reactive transport 
 !c                      simulation
 !c           mem_vs   = allocate memory for variably-saturated
@@ -104,15 +104,15 @@
 !c           mem_hmcd = allocate memory for hybrid
 !c                      multicomponent diffusion model
 !c           mem_etr  = allocate memory for evapo-transpiration
-!c            parameters ! CBF
+!c                      parameters ! CBF
 !c           weed     = determine seondary aqueous species, which 
 !c                      are obsolete for simulation
 !c           binmattransp = assign binary values to matrix localizing
-!c            control volume subjected to transpiration 
-!c            (rld based) ! CBF
+!c                          control volume subjected to transpiration 
+!c                          (rld based) ! CBF
 !c           binmatevap = assign binary values to matrix localizing
-!c            control volume subjected to evaporation
-!c            (h1dry based) ! CBF
+!c                        control volume subjected to evaporation
+!c                        h1dry based) ! CBF
 !c ----------------------------------------------------------------------
  
       subroutine initprob
@@ -570,6 +570,7 @@
 
           if (root_uptake) then
             call initplant
+            call initppplant
 !c CBF build binary matrix for transpiration
 #ifdef ARCHISIMPLE
             call binmattransp

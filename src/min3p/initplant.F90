@@ -120,7 +120,7 @@
 !c                                parameters
 !c           solar_ratio        = ratio between the solar energy at the forest floor
 !c                                and this above tree canopy
-!c           uptakefactor(nzn)  = passive uptake factor (by zone)  
+!c           uptakefactor(nzn)  = passive solute uptake factor (by zone)  
 !c           p1                 = fitting parameter for root water    * +
 !c                                uptake function
 !c
@@ -175,16 +175,23 @@
 !c                       temporary file
 !c           satfpres  = compute saturation from pressure
 !c ----------------------------------------------------------------------
-
     subroutine initplant
  
+#ifdef PETSC
+#include <petscversion.h>
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 8)
+#include <petsc/finclude/petscsys.h>
+      use petscsys
+#endif
+#endif
+
       use parm
       use gen
       use phys
       use biol
       use chem
       use file_unit, only : lun_get, lun_free !CBF : fct to assign isoi number when opening *.soi file
-      use file_utility, only : check_rewind_status
+      use file_utility, only : rewind_first_record, check_rewind_status
       use module_binary_mpiio, only : binary_file_open,               &
                                       tecplot_binary_write_header,    &
                                       tecplot_binary_write_variable,  &
@@ -196,14 +203,6 @@
 #endif
 
 #ifdef PETSC
-#include <petscversion.h>
-#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 8)
-#include <petsc/finclude/petscsys.h>
-      use petscsys
-#endif
-#endif
-
-#ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
 
@@ -212,6 +211,7 @@
 #endif
 
       implicit none
+
 #ifdef PETSC
 #if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 6 && PETSC_VERSION_MINOR < 8)
 #include <petsc/finclude/petscsys.h>
@@ -225,11 +225,9 @@
 #endif
 
       external :: findstrg, readbloc, checkerr
-      external :: mem_etr_rwu, mem_etr_brf
-
       logical :: found_section, found_subsection
       integer :: rand_seed_archi, rand_seed_roottyp  !DSU
-      character*2048 :: strbuffer
+      character*4096 :: strbuffer
       character*72 :: subsection
       character*1 :: cdummy,temppy*15
       character(len=pos) :: directory ! CBF RLD
@@ -239,10 +237,7 @@
       integer :: nvarsirupcm
       character*72, allocatable :: tec_variables(:)
       logical :: b_rewind_valid
-      
-      integer :: n_invalid, n_invalid_gbl
 
-      real*8 :: rdummy, sumrld, sumrld_gbl, coeff
 
       real*8, external :: satfpres
 
@@ -250,14 +245,10 @@
       real*8 :: rootUpscFact_x, rootUpscFact_y, rootUpscFact_z
 
 !c  leaf recycling related variables
-      integer :: ircm, idx, itz, irwu, ibrf
-      integer,allocatable :: rcm_distri_idx(:)
-      real*8 :: dist, dist_min, dist_max , rld_loc     
+      integer :: ircm, idx, itz
       character(256), allocatable :: str_c(:), str_m(:)
-      real*8, allocatable :: rcm_r(:)
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, tiny = 1.0d-10,     &
-                           verytiny = 1.0d-300, r86400=86400.0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r1000 = 1.0d3
 
 !c  set defaults
       inside_rld = .false.
@@ -268,7 +259,6 @@
 
       root_uptake_legacy = .false.
 
-      sumrld= r0 ! FG, 5 (initialisation)
       coupled_as = .false. ! CBF RLD
       coupled_rt = .false. ! CBF RLD
 
@@ -278,6 +268,10 @@
       rew0 = 0.0d0
       p1 = 0.0d0
       canopy_evap_factor = 0.0d0
+
+      itype_rootuptk_water = 0
+      itype_rootuptk_solut = 0
+      itype_root_resp = 0
 
       ierrcd = 0
     
@@ -333,7 +327,6 @@
 !c
 !c  Growing vegetation switch
 !c
-       
         subsection = 'growing vegetation'
         call findstrg(subsection,itmp,found_subsection)
         
@@ -346,273 +339,7 @@
           if (b_enable_output .and. b_enable_output_gen) then
             write(igen,*) 'steady vegetation'
           end if
-        endif!growing above ground or not
-
-
-!c  call subroutine to store in memory the evapo-transpiration parameters
-!c  (from wm version)
-!c  move mem_etr outside of initplant as some variables in mem_etr are required for root_uptake
-!c  module only while others are required for general variably satuarted flow
-
-        !call mem_etr
-
-!c Whatever the rld treatment, vector rld(nngl) will be used so initialize it : CBF RLD
-!c This variable has already been initialized to zero in mem_etr, not necessary to do again : DSU
-
-        !do ivol = 1, nngl
-        !  rld(ivol)=0
-        !enddo
-
-!c
-!c  read root length density from file ! CBF RLD ------------------------------------------------
-        rootlengthdens_field = .false.
-        rld_update_skip = 0
-
-        subsection = 'read root length density from file'
-
-        call findstrg(subsection,itmp,found_subsection)
-
-        if (found_subsection) then
-
-          rootlengthdens_field = .true.
-
-          subsection = 'update root length density from file'
-          call findstrg(subsection,itmp,rld_field_update)
-          if (rld_field_update) then
-            read(itmp,*,err=996,end=996) rld_update_num
-            if (rld_update_num > 0) then
-              allocate(rld_update_time(rld_update_num), stat = ierr)
-              call checkerr(ierr,'rld_update_time',ilog)
-              call memory_monitor(sizeof(rld_update_time),'rld_update_time',.true.)
-
-              do i = 1, rld_update_num
-                read(itmp,*,err=996,end=996) rld_update_time(i)                
-              end do
-              rld_update_time = rld_update_time*time_factor
-              rld_update_index = 1
-            else
-              rld_field_update = .false.
-            end if
-          end if
-
-!c  open file containing root length density distribution, input directory specified as file read in this case !FG feb 2016
-!c  DSU, please use system available file unit instead of fixed value to avoid conflict.
-          irld = lun_get()
-          open(irld,file=prefix(:l_prfx)//'.rld',status='unknown',form='formatted')
-
-          if(rank == 0 .and. b_enable_output) then
-            write(ilog,'(a/)') 'read root length density from file'
-          end if
-
-!c  ignore first 3 lines (tecplot head)
-          read(irld,*,err=998,end=998) cdummy
-          read(irld,*,err=998,end=998) cdummy
-          read(irld,*,err=998,end=998) cdummy
-
-#ifdef USG
-          if (discretization_type > 0) then
-            do ivolgbl = 1,nngbl
-#ifdef PETSC
-              if (ibits(usg_mesh_ordering,0,2) == 3) then
-                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-              else
-                ivol = node_idx_g2lg(ivolgbl)
-              end if
-#else
-              if (ibits(usg_mesh_ordering,0,2) == 3) then
-                ivol = node_idx_g2g_invord(ivolgbl)
-              else
-                ivol = ivolgbl
-              end if
-#endif
-              if (ivol > 0) then
-                read(irld,*,err=998,end=998) rdummy, rdummy, rdummy, rld(ivol)
-              else
-                read(irld,*,err=998,end=998) rdummy
-              end if
-            end do
-          end if
-#endif
-          if (discretization_type == 0) then
-            nskip = 0
-            do ivol = 1,nngl
-#ifdef PETSC
-              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                read(irld,*,end=998,err=998) rdummy
-              end do
-              nskip = node_idx_lg2g(ivol)
-#endif
-              read(irld,*,err=998,end=998) rdummy, rdummy, rdummy, rld(ivol)
-            end do
-          end if
-
-          if (.not. rld_field_update) then
-          close(irld) !CBF RLD
-          call lun_free(irld)
-          end if
-
-        endif !end reading rld from external file
-
-!c
-!c  read root water uptake parameters from file
-!c
-        rootwateruptake_field = .false.
-        subsection = 'read root water uptake parameters from file'
-
-        call findstrg(subsection,itmp,rootwateruptake_field)
-
-        if (rootwateruptake_field .neqv. soilhydrfunc_field) then
-          ierrcd = -1
-          goto 999
-        end if
-
-!c  check, both soil hydraulic function parameters and root water uptake parameters 
-!c  should use same format, either read from file, or read from zone.
-        
-!c  Allocate memory space for control volume based variables.
-!c  To make it easier for the output of root water uptake parameters, allocate memory for these arrays.
-!c  If no output of these parameters are required, then the memory can be allocated only if rootwateruptake_field is activated. 
-        call mem_etr_rwu
-
-        if (rootwateruptake_field) then
-
-          passive_uptake = .true.
-
-!c  DSU, please use system available file unit instead of fixed value to avoid conflict.
-          irwu = lun_get()
-          open(irwu,file=prefix(:l_prfx)//'.rwu',status='unknown',form='formatted')
-
-          if(rank == 0 .and. b_enable_output) then
-            write(ilog,'(a/)') 'read root water uptake from file'
-          end if
-
-!c  ignore first 3 lines (tecplot head)
-          read(irwu,*,err=998,end=998) cdummy
-          read(irwu,*,err=998,end=998) cdummy
-          read(irwu,*,err=998,end=998) cdummy
-
-#ifdef USG
-          if (discretization_type > 0) then
-            do ivolgbl = 1,nngbl
-#ifdef PETSC
-              if (ibits(usg_mesh_ordering,0,2) == 3) then
-                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-              else
-                ivol = node_idx_g2lg(ivolgbl)
-              end if
-#else
-              if (ibits(usg_mesh_ordering,0,2) == 3) then
-                ivol = node_idx_g2g_invord(ivolgbl)
-              else
-                ivol = ivolgbl
-              end if
-#endif
-              if (ivol > 0) then
-                read(irwu,*,err=998,end=998) rdummy, rdummy, rdummy,       &
-                    h1lim_vol(ivol), h1field_vol(ivol), h1opt_vol(ivol),   &
-                    rld_loc, uptakefactor_vol(ivol)
-                if (.not.rootlengthdens_field) then
-                  rld(ivol) = rld_loc
-                end if
-              else
-                read(irwu,*,err=998,end=998) rdummy
-              end if
-            end do
-          end if
-#endif
-          if (discretization_type == 0) then
-            nskip = 0
-            do ivol = 1,nngl
-#ifdef PETSC
-              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                  read(irwu,*,end=998,err=998) rdummy
-              end do
-              nskip = node_idx_lg2g(ivol)
-#endif
-              read(irwu,*,err=998,end=998) rdummy, rdummy, rdummy,         &
-                   h1lim_vol(ivol), h1field_vol(ivol), h1opt_vol(ivol),    &
-                   rld_loc, uptakefactor_vol(ivol)
-              if (.not.rootlengthdens_field) then
-                rld(ivol) = rld_loc
-              end if
-            end do
-          end if
-
-          close(irwu)
-          call lun_free(irwu)
-
-        endif !end reading rwu from external file
-
-!c
-!c  read Battaglia reduction function from file
-!c
-        battaglia_field = .false.
-        subsection = 'read battaglia reduction function from file'
-
-        call findstrg(subsection,itmp,battaglia_field)
-
-        if (battaglia_field) then
-
-!c  allocate memory space for control volume based variables.
-          call mem_etr_brf
-
-!c  DSU, please use system available file unit instead of fixed value to avoid conflict.
-          ibrf = lun_get()
-          open(ibrf,file=prefix(:l_prfx)//'.brf',status='unknown',form='formatted')
-
-          if(rank == 0 .and. b_enable_output) then
-            write(ilog,'(/a/)') 'read battaglia reduction function from file'
-          end if
-
-!c  ignore first 3 lines (tecplot head)
-          read(ibrf,*,err=998,end=998) cdummy
-          read(ibrf,*,err=998,end=998) cdummy
-          read(ibrf,*,err=998,end=998) cdummy
-
-#ifdef USG
-          if (discretization_type > 0) then
-            do ivolgbl = 1,nngbl
-#ifdef PETSC
-              if (ibits(usg_mesh_ordering,0,2) == 3) then
-                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-              else
-                ivol = node_idx_g2lg(ivolgbl)
-              end if
-#else
-              if (ibits(usg_mesh_ordering,0,2) == 3) then
-                ivol = node_idx_g2g_invord(ivolgbl)
-              else
-                ivol = ivolgbl
-              end if
-#endif
-              if (ivol > 0) then
-                read(ibrf,*,err=998,end=998) rdummy, rdummy, rdummy,       &
-                    rew0_vol(ivol), p1_vol(ivol)
-                    
-              else
-                read(ibrf,*,err=998,end=998) rdummy
-              end if
-            end do
-          end if
-#endif
-          if (discretization_type == 0) then
-            nskip = 0
-            do ivol = 1,nngl
-#ifdef PETSC
-              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                read(ibrf,*,end=998,err=998) rdummy
-              end do
-              nskip = node_idx_lg2g(ivol)
-#endif
-              read(ibrf,*,err=998,end=998) rdummy, rdummy, rdummy,     &
-                   rew0_vol(ivol), p1_vol(ivol)
-            end do
-          end if
-
-          close(ibrf)
-          call lun_free(ibrf)
-
-        endif !end reading brf from external file
+        end if    !growing above ground or not
 
 !FG - read crop factor involved in the energy balance (ETP= TP + EP + cropfactor x I), which is used to calculate potential transpiration
 !     from potential evapotranspiration, potential evaporation, and interception, which are given in .soi file.
@@ -625,12 +352,12 @@
         end if
 
         if (found_subsection) then          
-          read(itmp,*,err=998,end=998) canopy_evap_factor
+          read(itmp,*,err=998,end=998) canopy_evap_factor(1)
         else
-          canopy_evap_factor = r0
+          canopy_evap_factor(1) = r0
         end if  
         if (b_enable_output .and. b_enable_output_gen) then
-          write(igen,*) 'Crop factor', canopy_evap_factor
+          write(igen,*) 'Crop factor', canopy_evap_factor(1)
         end if     
 
 !c
@@ -662,6 +389,7 @@
 
           if(.not. found_subsection) then
             subsection = 'root upscale factor - AS'
+            call makelowercase(subsection)
             call findstrg(subsection,itmp,found_subsection)
           end if
 
@@ -683,6 +411,7 @@
 
 !c DSU: Random generator control. By default, srand((unsigned) time(NULL)) is used.
           subsection = 'random generator seed - AS'
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if(.not. found_subsection) then
@@ -698,7 +427,7 @@
           end if
 
           subsection = 'random generator seed - RT'
-
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if(found_subsection) then
@@ -711,6 +440,7 @@
 !c ... or update by coupling with the root architecture software 'ArchiSimple' :
 
           subsection = 'update - coupled - AS'
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if (.not. found_subsection) then
@@ -754,7 +484,7 @@
 !c ... or update by coupling with the root architecture software 'Root Typ' :
 
           subsection = 'update - coupled - RT'
-
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if(found_subsection) then
@@ -795,6 +525,16 @@
 
         endif ! if found .not.steady flow ! CBF RLD -------------------------------------------------------------
 
+!cprovi----------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------
+        subsection = 'potential evaporation in mm per day'
+        pet_in_mm_day = .false. 
+        call findstrg(subsection,itmp,found_subsection)
+        if (found_subsection) then 
+          pet_in_mm_day = .true.
+        end if 
+
 !c
 !c Read correction method for water stress
 !c
@@ -824,7 +564,7 @@
           ierrcd = 2
           read(itmp,*,err=999,end=999) rew0(1) ! CBF for 1st material property zone
           read(itmp,*,err=999,end=999) p1(1)
-          read(itmp,*,err=999,end=999) canopy_evap_factor
+          read(itmp,*,err=999,end=999) canopy_evap_factor(1)
 
           rew0(:) = rew0(1)
           p1(:) = p1(1)
@@ -835,7 +575,7 @@
                   'fitting parameter rew0(1):          ',' = ',rew0(1),&
                   'fitting parameter p1(1):            ',' = ',p1(1),  &
                   'canopy evaporation factor:          ',' = ',        &
-                   canopy_evap_factor
+                   canopy_evap_factor(1)
           end if
         end if
 
@@ -1100,7 +840,7 @@
 
           end if
 
-!c  total solute uptake by component-mineral recycle, including passive uptake and root respiration
+!c  total solute uptake by component-mineral recycle, including passive solute uptake and root respiration
           if (nrcm_tz > 0 .and. b_enable_output .and. rank == 0) then
             !c total root uptake related code
             irupcm = lun_get()
@@ -1144,14 +884,14 @@
                 if (rcmpair_c(ic)) then
                   ivar = ivar+1
                   tec_variables(ivar) = trim(namec(ic))//              &
-                      " current cycle [mol/elapsed time]" 
+                      " current cycle [mol]" 
                 end if
               end do
               do ic = 1, nc-1
                 if (rcmpair_c(ic)) then
                   ivar = ivar+1
                   tec_variables(ivar) = trim(namec(ic))//              &
-                      " total cycles [mol/elapsed time]" 
+                      " accumulative cycles [mol]" 
                 end if
               end do
 
@@ -1159,18 +899,18 @@
                 if (rcmpair_m(im)) then
                   ivar = ivar+1
                   tec_variables(ivar) = trim(namem(im))//              &
-                      " current cycle [mol/elapsed time]" 
+                      " current cycle [mol]" 
                 end if
               end do
               do im = 1, nm
                 if (rcmpair_m(im)) then
                   ivar = ivar+1
                   tec_variables(ivar) = trim(namem(im))//              &
-                      " total cycles [mol/elapsed time]" 
+                      " accumulative cycles [mol]" 
                 end if
               end do
               
-              strbuffer = 'total recyclable root uptake - selected species'
+              strbuffer = 'recyclable root uptake - selected species'
               
               offset_irupcm = 0  
               call tecplot_binary_write_header(PETSC_COMM_SELF,        &
@@ -1198,40 +938,40 @@
                 do ic = 1,nc-1
                   if(rcmpair_c(ic)) then
                     strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                                ' current cycle [mol/elapsed time]"'
+                                ' current cycle [mol]"'
                   end if
                 end do
                  
                 do ic = 1,nc-1
                   if(rcmpair_c(ic)) then
                     strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                                ' total cycles [mol/elapsed time]"'
+                                ' accumulative cycles [mol]"'
                   end if
                 end do
 
                 do im = 1,nm
                   if(rcmpair_m(im)) then
                     strbuffer = trim(strbuffer)//', "'//trim(namem(im))//&
-                                ' current cycle [mol/elapsed time]"'
+                                ' current cycle [mol]"'
                   end if
                 end do
                  
                 do im = 1,nm
                   if(rcmpair_m(im)) then
                     strbuffer = trim(strbuffer)//', "'//trim(namem(im))//&
-                                ' total cycles [mol/elapsed time]"'
+                                ' accumulative cycles [mol]"'
                   end if
                 end do
 
                 write(irupcm,'(a)') trim(strbuffer)
                 write(irupcm,'(2a)')                                   &
-                   'zone t = "total recyclable root uptake - ',        &
+                   'zone t = "recyclable root uptake - ',              &
                    'selected species", f=point'
               end if
             end if
 
             write(ifls,'(/a/72a/)')                                    &
-                  'total recyclable root uptake - selected species',   &
+                  'recyclable root uptake - selected species',         &
                   ('-',i=1,72)
             write(ifls,'(a/)') prefix(:l_prfx)//'_o.rupcm'
 
@@ -1244,10 +984,10 @@
                 ivar = ivar + 1
                 if (ivar.lt.9) then
                   write(ifls,'(i1,8x,a30,2x,a)') ivar,namec(ic)//      &
-                        ' current cycle','mol/elapsed time'
+                        ' current cycle','mol'
                 else
                   write(ifls,'(i2,7x,a30,2x,a)') ivar,namec(ic)//      &
-                        ' current cycle','mol/elapsed time'
+                        ' current cycle','mol'
                 end if
               end if
             end do
@@ -1257,10 +997,10 @@
                 ivar = ivar + 1
                 if (ivar.lt.9) then
                   write(ifls,'(i1,8x,a30,2x,a)') ivar,namec(ic)//      &
-                        ' total cycles','mol/elapsed time'
+                        ' accumulative cycles','mol'
                 else
                   write(ifls,'(i2,7x,a30,2x,a)') ivar,namec(ic)//      &
-                        ' total cycles','mol/elapsed time'
+                        ' accumulative cycles','mol'
                 end if
               end if
             end do
@@ -1270,10 +1010,10 @@
                 ivar = ivar + 1
                 if (ivar.lt.9) then
                   write(ifls,'(i1,8x,a30,2x,a)') ivar,namem(im)//      &
-                        ' current cycle','mol/elapsed time'
+                        ' current cycle','mol'
                 else
                   write(ifls,'(i2,7x,a30,2x,a)') ivar,namem(im)//      &
-                        ' current cycle','mol/elapsed time'
+                        ' current cycle','mol'
                 end if
               end if
             end do
@@ -1283,10 +1023,10 @@
                 ivar = ivar + 1
                 if (ivar.lt.9) then
                   write(ifls,'(i1,8x,a30,2x,a)') ivar,namem(im)//      &
-                        ' total cycles','mol/elapsed time'
+                        ' accumulative cycles','mol'
                 else
                   write(ifls,'(i2,7x,a30,2x,a)') ivar,namem(im)//      &
-                        ' total cycles','mol/elapsed time'
+                        ' accumulative cycles','mol'
                 end if
               end if
             end do 
@@ -1295,476 +1035,22 @@
 
         end if
    
-!c  read material properties for material property zones from input file
-               
-        do izn = 1,nzn                !loop over property zones
-
-!c  assign defaults for physical parameters for variably saturated flow
-
-          spstor(izn) = r0
-
-!c  search for entry for material property zone in input file
-
-          zone_name = mprop_name(izn)
-
-          if (b_enable_output .and. b_enable_output_gen) then
-            write(igen,'(/a,i0,a,1x,a)') 'material property zone ',  &
-                  izn,':',trim(zone_name)
-            write(igen,'(72a)')('-',i=1,72)  
-          end if     
-    
-! CBF :  assign the value p1 and rew0 of mat. prop. zone 1 to the other material property zones
-
-          if(izn.gt.1)then
-            rew0(izn)=rew0(1)
-            p1(izn)=p1(1)
-          endif
-
-!c  define length of name of material property zone
-
-          l_zone_name = index(zone_name,' ')-1
-          if (l_zone_name.lt.0.or.l_zone_name.gt.72) then
-            l_zone_name = 72
-          end if
-
-!c  search temporary data file for current material property zone
-!c  and write to scratch file
-
-          call readbloc (itmp,icnv,zone_name,found_subsection,.true.)
-
-!c  read material properties
-
-          if (found_subsection) then
-
-!cdsu zone based Battaglia's function parameters
-            if (.not. battaglia_field) then
-              subsection = 'battaglia reduction function'
-              call findstrg(subsection,itmp,found_subsection)
-
-              if (found_subsection) then
-                ierrcd = 10
-                read(icnv,*,err=999,end=999) rew0(izn) ! CBF for 1st material property zone
-                read(icnv,*,err=999,end=999) p1(izn)
-              else
-                rew0(izn)=rew0(1)
-                p1(izn)=p1(1)
-              end if
-
-              if (b_enable_output .and. b_enable_output_gen) then
-                write(igen, '(/a/,3(a,18x,a,1pe15.6e3/))')                 &
-                      'Battaglia reduction function parameters',           &
-                      'fitting parameter rew0(1):        ',' = ',rew0(izn),&
-                      'fitting parameter p1(1):          ',' = ',p1(izn)
-              end if
-            end if
-            
-
-            if (.not. rootwateruptake_field) then
-!c  read parameters for root water uptake
-            
-              subsection = 'root water uptake'
-
-              call findstrg(subsection,icnv,found_subsection)
-
-              if (found_subsection) then
-
-                !c input updated here, third parameter hlopt is added
-                ierrcd = 11
-                read(icnv,*,err=999,end=999) h1lim(izn)   !water pressure wilting point
-                read(icnv,*,err=999,end=999) h1field(izn) !water pressure field capacity
-                read(icnv,*,err=999,end=999) h1opt(izn)   !optimal aqueous pressure, FG June 2021 set as array - also used in Feddes
-
-                if (b_enable_output .and. b_enable_output_gen) then   !FG JUne 2021
-                  write(igen,*) 'Water pressure at wilting point',h1lim(izn)
-                  write(igen,*) 'Water pressure at field capacity',h1field(izn)
-                  write(igen,*) 'Optimal water pressure',h1opt(izn)
-                endif
-
-!read input file root length density
-                if (.not.rootlengthdens_field .and. .not.rootwateruptake_field) then
-                  ierrcd = 12
-                  read(icnv,*,err=999,end=999) rootlengthdens(izn)
-                  if (b_enable_output .and. b_enable_output_gen) then
-                    write(igen,*) 'root length density',rootlengthdens(izn)
-                  end if
-                end if
-
-
-!c  calculate water saturation at wilting point, field capacity, and air-dry
-      
-!c  satwlim always greater  than sat residual
-                satwlim(izn)=satfpres(swr(izn),aentry(izn),h1lim(izn),     &
-                             spalpha(izn),spbeta(izn),spgamma(izn))
-                satwlim(izn)= max(satwlim(izn)+tiny,swr(izn))
-
-                satwopt(izn)=satfpres(swr(izn),aentry(izn),h1opt(izn),     & !FG June 2021 - satwopt, h1opt(izn)   
-                             spalpha(izn),spbeta(izn),spgamma(izn))
-
-!c  satfield lesser or equal to 1
-                satwfield(izn)=satfpres(swr(izn),aentry(izn),h1field(izn), &
-                               spalpha(izn),spbeta(izn),spgamma(izn))
-                satwfield(izn) = min(satwfield(izn),1.0)
-
-!c  satwdry always greater than sat residual
-                if (h1dry(izn).gt.r0) then!FG calculate satdry if any
-                  satwdry(izn)=satfpres(swr(izn),aentry(izn),h1dry(izn),   & !FG 07-2017 calculate satdry
-                               spalpha(izn),spbeta(izn),spgamma(izn))
-                else !set to dummy (0) value if h1dry set to 0 in this layer, as unused in this case
-                  satwdry(izn) = 0.0
-                endif
-                satwdry(izn) = max(satwdry(izn)+tiny,swr(izn))
-
-!c  avoid inconsistent values of sat field (>) sat lim
-                if (satwlim(izn).gt.satwfield(izn)) then
-                  if (rank == 0) then
-                    write(ilog,*) 'SIMULATION TERMINATED'
-                    write(ilog,*) 'error reading input file'
-                    write(ilog,*) 'psifield > psilim'
-                    write(ilog,*) 'in property zone number : ',izn
-                    close(ilog)
-                  end if
-#ifdef PETSC
-                  call petsc_mpi_finalize
-#endif
-                  stop
-                endif
-
-!cdsu----------------------------------------------------------
-!cdsu Convert to node based root water uptake parameters.
-!cdsu----------------------------------------------------------
-                do ivol = 1, nngl
-                  if (mpropvs(ivol) == izn) then
-                    satwlim_vol(ivol) = satwlim(izn)
-                    satwfield_vol(ivol) = satwfield(izn)
-                    satwopt_vol(ivol) = satwopt(izn)
-
-                    h1lim_vol(ivol) = h1lim(izn)
-                    h1field_vol(ivol) = h1field(izn)
-                    h1opt_vol(ivol) = h1opt(izn)
-                  end if
-                end do
-
-                if (b_enable_output .and. b_enable_output_gen) then
-                  write(igen,'(/a/,7(a,18x,a,1pe15.6e3/),a,18x,a,1pe15.6e3)')     &
-                        'root uptake parameters:',                               &
-                        'saturation at wilting point: ',' = ',satwlim(izn),      &
-                        'saturation at field capacity:',' = ',satwfield(izn),    &
-                        'air-dry water saturation:',' = ',satwdry(izn)
-                end if            
-
-              else ! if not found_subsection 'root water uptake'
-
-                if (rank == 0) then
-                  write(ilog,*) 'SIMULATION TERMINATED'
-                  write(ilog,*) 'error reading input file'
-                  write(ilog,*) 'section "',trim(section_header),'"'
-                  write(ilog,*) 'subsection "',trim(subsection),'" missing'
-                  close(ilog)
-                end if
-#ifdef PETSC
-                call petsc_mpi_finalize
-#endif
-                stop
-
-              endif
-
-            end if
-
-
-            if (.not. rootwateruptake_field) then
-!c  read parameters for passive solute uptake
-
-              subsection = 'passive solute uptake'
-
-              call findstrg(subsection,icnv,found_subsection)
-
-              if (found_subsection) then
-                passive_uptake = .true.
-                ierrcd = 13
-                read(icnv,*,err=999,end=999) uptakefactor(izn)
-                if (uptakefactor(izn).gt.r1 .or. uptakefactor(izn).lt.r0) then
-                  uptakefactor(izn) = r1
-                end if
-  
-                if (b_enable_output .and. b_enable_output_gen) then
-                   write(igen,*) 'passive solute uptake factor',uptakefactor(izn)
-                end if              
-              else
-                passive_uptake = .false. 
-              
-                if (b_enable_output .and. b_enable_output_gen) then
-                  write(igen,*) 'passive solute uptake is not considered'
-                end if 
-
-                !c DSU, passive solute uptake is not used, program should NOT be terminated
-                !if (rank == 0 .and. b_enable_output) then
-                !  write(ilog,*) 'SIMULATION TERMINATED'
-                !  write(ilog,*) 'passive uptake with transpiration'
-                !  write(ilog,*) 'passive uptake factor must be set'
-                !end if              
-              end if
-
-              if (b_enable_output .and. b_enable_output_gen) then
-                write(igen,'(/a,18x,l1)')                                      &
-                      'passive solute uptake            = ', passive_uptake
-              end if
-            end if
-
-!c root respiration related..
-        
-            subsection = 'root respiration and exudation of aqueous phase'
-
-            call findstrg(subsection,icnv,found_subsection)
-
-            if (found_subsection) then
-              ierrcd = 14
-              do ic = 1, n
-                read(icnv,*,err=999,end=999) resprate(ic,izn)
-                resprate(ic,izn) = resprate(ic,izn)*r86400
-              end do
-            end if
-            
-            if (b_enable_output .and. b_enable_output_gen) then
-              write(igen,'(/a)')'root respiration and exudation - aqueous phase:'
-              write(igen,'(a)')'--------------------------------------'
-              write(igen,'(a)')'species               rate.'
-              write(igen,'(a)')'---------------------------'
-
-              do ic=1,nc-1
-                if (component_type(ic).eq.'aqueous') then
-                  write(igen,'(a20,1pe15.6e3,1x,a)')namec(ic),         &
-                        resprate(ic,izn),'mol/(meter root length* day)'
-                end if
-              end do
-            end if            
-
-!c  specified minimum aqueous concentration to activate solute uptake.
-            subsection = 'minimum aqueous concentration for root respiration'
-
-            call findstrg(subsection,icnv,found_subsection)
-
-            if (found_subsection) then
-              ierrcd = 15
-              do ic = 1, n
-                read(icnv,*,err=999,end=999) totc_uptake_min(ic,izn)
-              end do
-            end if
-
-            if (b_enable_output .and. b_enable_output_gen) then
-              write(igen,'(/a)')'minimum aqueous concentration for root respiration:'
-              write(igen,'(a)')'--------------------------------------'
-              write(igen,'(a)')'species               conc.'
-              write(igen,'(a)')'---------------------------'
-
-              do ic=1,nc-1
-                if (component_type(ic).eq.'aqueous') then
-                  write(igen,'(a20,1pe15.6e3,1x,a)')namec(ic),         &
-                        totc_uptake_min(ic,izn),'mol/L water'
-                end if
-              end do
-            end if
-
-!c  coefficient of recycled component to mineral, which represents how much component 
-!c  is recycled as specific mineral
-            if (nrcm > 0) then
-              allocate(rcm_r(nrcm), stat = ierr)
-              rcm_r = 0.0d0
-              call checkerr(ierr,'rcm_r',ilog)
-              call memory_monitor(sizeof(rcm_r),'rcm_r',.true.)
-
-              subsection = 'return component to mineral coefficients'
-              call findstrg(subsection,icnv,found_subsection)
-
-              if (found_subsection) then
-                ierrcd = 16
-                do ircm = 1, nrcm
-                  read(icnv,*,err=999,end=999) rcm_r(ircm)
-                end do
-
-                do idx = 1, nrcm
-                  rcm_distri_coeff(idx,izn) = rcm_r(rcm_distri_idx(idx))
-                end do
-              else
-                if (rank == 0) then
-                  write(*,*) 'Error: return component to mineral coefficients are missing'
-                  write(ilog,*) 'Error: return component to mineral coefficients are missing'
-                end if
-                ierrcd = 17
-                goto 999
-              end if
-
-              call memory_monitor(-sizeof(rcm_r),'rcm_r',.true.)
-              deallocate(rcm_r)
-
-              !c output to gen file
-              if (b_enable_output .and. b_enable_output_gen) then
-                write(igen, '(/a,14x,a,i0/)')                              &
-                      'number of recyclable specie pairs:      ',' = ',nrcm
-                if (nrcm > 0) then
-                  write(igen, '(2a)')                                      &
-                        "#  aqueous component   mineral         ",         &
-                        "distri. coeff.   stoichio. coeff."
-                  write(igen,'(72a)')('-',i=1,72)
-                end if          
-
-                do ic = 1, nc-1
-                  istart = iarcm(ic)+1
-                  iend = iarcm(ic+1)
-                  do ircm = istart, iend
-                    write(igen,'(i0,6x,a12,4x,a12,2(2x,1pe15.6e3))') ircm, &
-                          namec(ic),namem(jarcm(ircm)),                    &
-                          rcm_distri_coeff(ircm,izn), rcm_xnum_coeff(ircm)
-                  end do
-                end do
-              end if
-            
-!c  read return zones
-              subsection = 'return zones: box'
-              call findstrg(subsection,icnv,found_subsection)
-              if (found_subsection) then
-                rcm_zone_type(izn) = 1
-                ierrcd = 18
-                do itz = 1, nrcm_tz
-                  read(icnv,*,err=999,end=999) rcm_zone(:,itz,izn)
-                end do
-              end if
-  
-              if (rcm_zone_type(izn) == 0) then
-                subsection = 'return zones: cylinder'
-                call findstrg(subsection,icnv,found_subsection)
-                if (found_subsection) then
-                  rcm_zone_type(izn) = 2
-                  ierrcd = 19
-                  do itz = 1, nrcm_tz
-                    read(icnv,*,err=999,end=999) rcm_zone(:,itz,izn)
-                  end do
-                end if
-              end if 
-            
-              if (rcm_zone_type(izn) == 0) then
-                if (rank == 0) then
-                  write(*,*) 'Error: return zone is missing'
-                  write(ilog,*) 'Error: return zone is missing'
-                end if
-                ierrcd = 20
-                goto 999
-              end if  
-            end if
-!c  conversion of time units for computation in days
-
-          elseif (.not.found_subsection) then
-
-            if (rank == 0) then
-
-              l_string = index(subsection,' ')-1
-
-              if (l_string.eq.-1.or.l_string.gt.72) then
-                l_string=72
-              end if
-
-              write(ilog,*) 'SIMULATION TERMINATED'
-              write(ilog,*) 'error reading section "',    &
-     &               section_header(:l_string),'" ',    &
-     &              'in input file'
-
-              write(ilog,*) 'entry for material property zone "',    &
-     &               zone_name(:l_zone_name),'" missing'
-
-              write(ilog,*) 'error may also be caused by missing or ',    &
-     &              'mispelled keyword for nodal property ',    &
-     &              'zone input'
-              
-              close(ilog)
-              !stop  !c DSU, stop should be placed outside of rank, otherwise, only the master processor is terminated in the parallel version
-
-            endif ! rank==0
-
-#ifdef PETSC
-            call petsc_mpi_finalize
-#endif
-            stop
-            
-          end if   !(found_subsection)
-
-        end do                            !loop over property zones
-
-!cdsu output mineral return zone information
-
-        if (b_enable_output .and. b_enable_output_gen) then
-          write(igen, '(/a,14x,a,i0/)')                                &
-                'number of return time and zone series:  ',' = ',      &
-                nrcm_tz
-          do itz = 1, nrcm_tz
-
-            rcm_flag_cvol = 0
-
-            do izn = 1, nzn
-              if (rcm_zone_type(izn) == 1) then
-                do ivol = 1, nngl
-                  if (xg(ivol) >= rcm_zone(1,itz,izn) .and.            &
-                      xg(ivol) <= rcm_zone(2,itz,izn) .and.            &
-                      yg(ivol) >= rcm_zone(3,itz,izn) .and.            &
-                      yg(ivol) <= rcm_zone(4,itz,izn) .and.            &
-                      zg(ivol) >= rcm_zone(5,itz,izn) .and.            &
-                      zg(ivol) <= rcm_zone(6,itz,izn)) then
-                    if (flag_overlap_rcm) then
-                      rcm_flag_cvol(ivol) = ibset(rcm_flag_cvol(ivol),izn-1)
-                    else
-                      rcm_flag_cvol(ivol) = 2**(izn-1)
-                    end if                        
-                  end if
-                end do
-              else if (rcm_zone_type(izn) == 2) then
-                do ivol = 1, nngl
-                  if (zg(ivol) >= rcm_zone(3,itz,izn) .and.            &
-                      zg(ivol) <= rcm_zone(4,itz,izn)) then
-                    dist = (xg(ivol)-rcm_zone(1,itz,izn))**2+          &
-                           (yg(ivol)-rcm_zone(2,itz,izn))**2
-                    dist_min = rcm_zone(5,itz,izn)**2
-                    dist_max = rcm_zone(6,itz,izn)**2
-                    if (dist >= dist_min .and. dist <= dist_max) then
-                      if (flag_overlap_rcm) then
-                        rcm_flag_cvol(ivol) = ibset(rcm_flag_cvol(ivol),izn-1)
-                      else
-                        rcm_flag_cvol(ivol) = 2**(izn-1)
-                      end if
-                    end if
-                  end if
-                end do
-              end if
-            end do
-
-
-            write(igen, '(/a,i0)')                                     &
-                  'return time and zone serie: ', itz
-            write(igen,'(72a)')('-',i=1,72)
-
-            do izn = 1, nzn
-              write(igen, '(/a,14x,a,i0/)')                            &
-                    'mineral return zone:                    ',' = ',  &
-                    izn
-              write(igen,'(72a)')('-',i=1,72)
-              write(igen,'(a)')  'volume'
-
-              do ivol = 1, nngl
-                if (ibits(rcm_flag_cvol(ivol),izn-1,1) > 0) then
-                    write(igen,'(i0)') ivol                     
-                end if
-              end do
-
-            end do
-          end do
-        end if
-
 !c  open file containing time dependent parameters for root water 
 !c  uptake and physical evaporation and read/calculate initial values
 
         isoi = lun_get()
 
         open(isoi,file=prefix(:l_prfx)//'.soi',err=997, status='old')
+
+        !cdsu skip comment line and rewind to the first record
+        call rewind_first_record(isoi)
     
         read(isoi,*,err=998,end=998) time_soi,pet,canopy_int,         &
-     &                               solar_ratio,scale_tree_growth
+                                     solar_ratio,scale_tree_growth
+
+        if (pet_in_mm_day) then
+          pet = pet/r1000/sec_per_days
+        end if
 
 !FG June 2021 - calculate pe_soil and potential transpiration (tpot)
 !FG August 2021 - variable + conversions in m3/s (toparea)
@@ -1790,7 +1076,7 @@
 
           end if   
 
-          tpot = pet - pe_soil - canopy_int * canopy_evap_factor 
+          tpot = pet - pe_soil - canopy_int * canopy_evap_factor(1) 
 
           if (tpot .lt. r0) then
             
@@ -1804,123 +1090,25 @@
           
             pe_soil = pet*solar_ratio! get potential evaporation from potential evapotranspiration (m/s)
             
-            tpot = pet-pe_soil-canopy_int*canopy_evap_factor! get potential transpiration (m/s) from energy balance 
-              
+            tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)! get potential transpiration (m/s) from energy balance 
+
             pe_soil = pe_soil*toparea*solar_ratio*sec_per_days!potential evaporation scaled up according to solar ratio (surface effect) and converted in m3/s
             
             tpot = tpot*toparea*(1-solar_ratio)*sec_per_days!potential transpiration scaled up according to solar ratio (surface effect) and converted in m3/s
-              
+
           else !growing vegetation=>scale_tree_growth taken into account for splitting between evapo and transpiration as well as surface area variations.
               
             pe_soil = pet*(1-scale_tree_growth)! get potential evaporation from potential evapotranspiration (m/s)
               
-            tpot = pet-pe_soil-canopy_int*canopy_evap_factor! get potential transpiration (m/s) from energy balance
-            
+            tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)! get potential transpiration (m/s) from energy balance
+
             pe_soil = pe_soil*toparea*(1-scale_tree_growth)*sec_per_days!potential evaporation scaled up according to solar ratio (surface effect) and converted in m3/s*
             
             tpot = tpot*toparea*scale_tree_growth*sec_per_days!potential transpiration scaled up according to solar ratio (surface effect) and converted in m3/s 
-            
+
           endif
 
         end if
-
-!c  calculate water saturation at wilting point, field capacity, and air-dry
-        if (rootwateruptake_field) then
-          n_invalid = 0          
-#ifdef OPENMP
-    !$omp parallel                                                    &
-    !$omp if (nngl > numofloops_thred_global)                         &
-    !$omp num_threads(numofthreads_global)                            &
-    !$omp default(shared)                                             &
-    !$omp private (ivol)                                              &
-    !$omp reduction(+:n_invalid)
-    !$omp do schedule(static)
-#endif    
-          do ivol = 1, nngl
-            satwlim_vol(ivol) = satfpres(swr_vol(ivol),aentry_vol(ivol),       &
-                                        h1lim_vol(ivol),spalpha_vol(ivol),     &
-                                        spbeta_vol(ivol),spgamma_vol(ivol))
-            satwlim_vol(ivol) = max(satwlim_vol(ivol)+tiny,swr_vol(ivol))
-  
-            satwopt_vol(ivol) = satfpres(swr_vol(ivol),aentry_vol(ivol),       &
-                                        h1opt_vol(ivol),spalpha_vol(ivol),     &
-                                        spbeta_vol(ivol),spgamma_vol(ivol))
-  
-            satwfield_vol(ivol) = satfpres(swr_vol(ivol),aentry_vol(ivol),     &
-                                           h1field_vol(ivol),spalpha_vol(ivol),&
-                                           spbeta_vol(ivol),spgamma_vol(ivol))
-            satwfield_vol(ivol) = min(satwfield_vol(ivol),r1)
-  
-            if (h1dry_vol(ivol).gt.r0) then
-              satwdry_vol(ivol) = satfpres(swr_vol(ivol),aentry_vol(ivol),     &
-                                          h1dry_vol(ivol),spalpha_vol(ivol),   &
-                                          spbeta_vol(ivol),spgamma_vol(ivol))
-            else !set to dummy (0) value if h1dry set to 0 in this layer, as unused in this case
-              satwdry_vol(ivol) = r0
-            endif
-            satwdry_vol(ivol) = max(satwdry_vol(ivol)+tiny,swr_vol(ivol))
-
-            if (satwlim_vol(ivol).gt.satwfield_vol(ivol)) then
-              n_invalid = n_invalid + 1
-            end if
-          end do
-#ifdef OPENMP
-    !$omp end do
-    !$omp end parallel
-#endif
-
-#ifdef PETSC        
-          call MPI_Allreduce(n_invalid, n_invalid_gbl, 1, MPI_INTEGER4,&
-                             MPI_SUM,Petsc_Comm_World,ierrcode)
-          CHKERRQ(ierrcode)
-          n_invalid = n_invalid_gbl
-#endif
-          if (n_invalid > 0) then
-            if (rank == 0) then
-              write(ilog,*) 'SIMULATION TERMINATED'
-              write(ilog,*) 'error reading input file'
-              write(ilog,*) 'psifield > psilim'
-              write(ilog,*) 'number of control volumes : ',n_invalid
-              close(ilog)
-            end if
-#ifdef PETSC
-            call petsc_mpi_finalize
-#endif
-            stop
-          end if
-        end if
-
-!c
-!c assign zone-defined root length density to each control volume
-!c
-        if (.not.rootlengthdens_field .and. .not.rootwateruptake_field) then
-          do ivol=1,nngl
-            izn=mpropvs(ivol)
-            rld(ivol)=rootlengthdens(izn)
-          enddo
-        endif
-
-!calculate if (initial) rld = 0 (to check if no root, in rootwat function) 
-        do ivol = 1, nngl
-!c  skip ghost nodes
-#ifdef PETSC
-          if (node_idx_lg2l(ivol) < 0) then
-            cycle
-          end if 
-#endif
-          sumrld = sumrld + rld(ivol)
-        enddo
-
-#ifdef PETSC
-        call MPI_Allreduce(sumrld, sumrld_gbl,1,MPI_REAL8,             & 
-                   MPI_SUM, Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        sumrld = sumrld_gbl
-#endif   
-
-        if (sumrld <= verytiny) then
-          rootdensitynill =.true.
-        endif
        
       end if  !found datablock 17 correct heading or not
           

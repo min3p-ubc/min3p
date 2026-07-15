@@ -1708,17 +1708,7 @@
                   close(irld)
                   call lun_free(irld)
                 end if
-              else
-                if (rank == 0 .and. b_enable_output) then
-                  write(*,'(/1x,a/)') 'RLD NOT UPDATED, PREVIOUSLY READ FROM *.rld FILE'
-                  write(ilog,'(/1x,a/)') 'RLD NOT UPDATED, PREVIOUSLY READ FROM *.rld FILE'
-                end if
               end if
-            else
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(/1x,a/)') 'RLD NOT UPDATED, INITIALLY READ FROM *.dat FILE : '
-                write(ilog,'(/1x,a/)') 'RLD NOT UPDATED, INITIALLY READ FROM *.dat FILE : '
-              endif
             end if
           endif
         end if

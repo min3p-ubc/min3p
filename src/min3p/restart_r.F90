@@ -548,7 +548,6 @@
       end if
 
 !cdsu set the time index to update root density
-#ifdef ARCHISIMPLE
       if (root_uptake .and. rld_field_update) then
         time_temp = time_io*time_factor
 
@@ -556,6 +555,7 @@
         do i = 1, rld_update_num
           if (time_temp >= rld_update_time(i)) then
             !c update root length density
+            rld_update_skip = i-1
             call updtrootdensity_ext
           else
             rld_update_index = i
@@ -563,7 +563,6 @@
           end if
         end do
       end if
-#endif
 
 !cdsu  set the time index of component-mineral recycle
       if ((passive_uptake .or. root_uptake) .and. nrcm_tz > 0) then

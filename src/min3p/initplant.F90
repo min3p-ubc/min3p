@@ -366,6 +366,7 @@
 !c
 !c  read root length density from file ! CBF RLD ------------------------------------------------
         rootlengthdens_field = .false.
+        rld_update_skip = 0
 
         subsection = 'read root length density from file'
 
@@ -437,7 +438,7 @@
             do ivol = 1,nngl
 #ifdef PETSC
               do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                  read(irld,*,end=998,err=998) rdummy
+                read(irld,*,end=998,err=998) rdummy
               end do
               nskip = node_idx_lg2g(ivol)
 #endif

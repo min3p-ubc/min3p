@@ -140,7 +140,9 @@
 !c DSU update root density from file
       integer :: irld
       logical :: rld_field_update
-      integer :: rld_update_num, rld_update_index
+      integer :: rld_update_num
+      integer :: rld_update_index
+      integer :: rld_update_skip
       real(type_r8), allocatable :: rld_update_time(:)
 
 ! HG addition for passive solute uptake function 7 Feb 2019

@@ -350,7 +350,7 @@
 !cdsu
       subroutine updtrootdensity_ext
 
-        use biol, only : irld, rld
+        use biol, only : irld, rld, rld_update_skip
         use gen, only : ilog, rank, nngbl, nngl, discretization_type,  &
                         node_idx_g2lg, node_idx_lg2g,                  &
                         usg_mesh_ordering, node_idx_g2g_invord
@@ -401,6 +401,19 @@
         ! 1.000000E-01
         ! ...
         !
+
+        if (rld_update_skip > 0) then
+          do iskip = 1, rld_update_skip
+            do while (.true.)
+              read(irld,*,err=998,end=998) strbuffer
+              call makelowercase(strbuffer)
+              if (index(strbuffer,'zone') > 0) then
+                exit
+              end if
+            end do
+          end do
+        end if
+        rld_update_skip = 0
 
         do while (.true.)
           read(irld,*,err=998,end=998) strbuffer

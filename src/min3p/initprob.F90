@@ -569,9 +569,9 @@
           call mem_etr
 
           if (root_uptake) then
-#ifdef ARCHISIMPLE
             call initplant
 !c CBF build binary matrix for transpiration
+#ifdef ARCHISIMPLE
             call binmattransp
 #endif
           end if

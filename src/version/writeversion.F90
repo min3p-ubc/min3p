@@ -26,8 +26,8 @@ implicit none
 
       BuildLabelVersion = trim(MajorVersionNumber)//'.'//              &
                           trim(MinorVersionNumber)//'.'//              &
-                          trim(PatchVersionNumber)//'.'//            &
-                          trim(GlobalRevisionNumber)
+                          trim(PatchVersionNumber)//'('//              &
+                          trim(GlobalRevisionNumber)//')'
                           
 
 !> Platform information   
@@ -111,9 +111,9 @@ implicit none
 
       write(iunit, "(3a)") trim(adjustl(strcomment)), "Version     : ",trim(BuildLabelVersion)
 
-      write(iunit, "(3a)") trim(adjustl(strcomment)), "Commit date : ", trim(CommitDate)
+      write(iunit, "(3a)") trim(adjustl(strcomment)), "Commit time : ", trim(CommitTime)
 
-      write(iunit, "(3a)") trim(adjustl(strcomment)), "Build date  : ", trim(BuildDate)
+      write(iunit, "(3a)") trim(adjustl(strcomment)), "Build time  : ", trim(BuildTime)
 
       write(iunit, "(3a)") trim(adjustl(strcomment)), "Repository  : ", trim(RepositoryURL)
 

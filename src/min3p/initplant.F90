@@ -175,7 +175,7 @@
 !c                       temporary file
 !c           satfpres  = compute saturation from pressure
 !c ----------------------------------------------------------------------
-#ifdef ARCHISIMPLE 
+
     subroutine initplant
  
       use parm
@@ -655,6 +655,7 @@
           end if
 
 !c DSU: Root upscale factor for ArchiSimple code
+#ifdef ARCHISIMPLE
           subsection = 'root upscale factor - archisimple'
           call findstrg(subsection,itmp,found_subsection)
 
@@ -775,6 +776,7 @@
             call INIT_ROOTTYP(directory,rand_seed_roottyp,pos,xmax(nxx),ymax(nyy),zmax(nzz)) ! CBF RLD : transfer the in/out directory path and its length to RT
 
           endif
+#endif
 
 !c
 !c  Growing aerial switch
@@ -1971,4 +1973,3 @@
 
 1000  return
       end
-#endif

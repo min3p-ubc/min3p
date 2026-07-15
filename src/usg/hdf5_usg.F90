@@ -143,14 +143,14 @@ module hdf5_usg
     call h5awrite_f(attr_id, atype_id, attr_data, data_dims, hdf5_ierr)
     call h5aclose_f(attr_id, hdf5_ierr)
 
-    aname = "Commit date"
-    attr_data(1) = trim(CommitDate)
+    aname = "Commit time"
+    attr_data(1) = trim(CommitTime)
     call h5acreate_f(file_id, aname, atype_id, aspace_id, attr_id, hdf5_ierr)
     call h5awrite_f(attr_id, atype_id, attr_data, data_dims, hdf5_ierr)
     call h5aclose_f(attr_id, hdf5_ierr)
 
-    aname = "Build date"
-    attr_data(1) = trim(BuildDate)
+    aname = "Build time"
+    attr_data(1) = trim(BuildTime)
     call h5acreate_f(file_id, aname, atype_id, aspace_id, attr_id, hdf5_ierr)
     call h5awrite_f(attr_id, atype_id, attr_data, data_dims, hdf5_ierr)
     call h5aclose_f(attr_id, hdf5_ierr)

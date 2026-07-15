@@ -500,8 +500,6 @@
       implicit_surface_surf = .false.
       explicit_surface_surf = .false.
       
-      b_fluxd_bcond_zn = .false.
-
 !c  read number of boundary zones
 
       ierrcd = 1
@@ -873,42 +871,34 @@
          
 !c  define if diffusive flux is applied for third or mixed boundary condition
 !c  for mixed boundary condition, diffusive flux is a default
+
+          b_fluxd_bcond_zn = .false.
+
           if (btypezn.eq.'mixed' .or. btypezn.eq.'mixed-evap') then
             b_fluxd_bcond_zn = .true.
           end if
 
+          subsection = 'include diffusive flux for boundary condition'
+          call findstrg(subsection,icnv,found_subsection)
+          if (found_subsection) then
+            b_fluxd_bcond_zn = .true.
+          end if
+
+          subsection = 'exclude diffusive flux for boundary condition'
+          call findstrg(subsection,icnv,found_subsection)
+          if (found_subsection) then
+            b_fluxd_bcond_zn = .false.
+          end if
+
           subsection = 'include diffusive flux for third/mixed boundary condition'
+
           call findstrg(subsection,icnv,found_subsection)
           if (found_subsection) then
             b_fluxd_bcond_zn = .true.
           end if
 
           subsection = 'exclude diffusive flux for third/mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .false.
-          end if
 
-          !c the following keywords are deprecated
-          subsection = 'include diffusive flux for mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'include diffusive flux from mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection) 
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'exclude diffusive flux for mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .false.
-          end if
-
-          subsection = 'exclude diffusive flux from mixed boundary condition'
           call findstrg(subsection,icnv,found_subsection)
           if (found_subsection) then
             b_fluxd_bcond_zn = .false.

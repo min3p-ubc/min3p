@@ -17,6 +17,9 @@ with-intel =
 with-intel-after2018 =
 with-pgi = 
 
+with-git-info = true
+with-build-info = true
+
 with-lis =
 with-metis =
 with-cgal = 
@@ -110,6 +113,27 @@ FFLAGS := $(FFLAGS) -openmp
 endif
 endif
 
+endif
+
+########## Git Version and build options ###########
+ifdef with-git-info
+GIT_VERSION := $(shell git describe --dirty --always --tags)
+FPPFLAGS := $(FPPFLAGS) -DGITVERSION=\"$(GIT_VERSION)\"
+
+GIT_COMMITTIME := $(shell git log -1 --format=%cd --date=format-local:"%Y-%m-%dT%T%z")
+FPPFLAGS := $(FPPFLAGS) -DGITCOMMITTIME=\"$(GIT_COMMITTIME)\"
+
+GIT_REPURL := $(shell git config --get remote.origin.url)
+FPPFLAGS := $(FPPFLAGS) -DGITREPURL=\"$(GIT_REPURL)\"
+
+GIT_BRANCH := $(shell git branch --show-current)
+FPPFLAGS := $(FPPFLAGS) -DGITBRANCH=\"$(GIT_BRANCH)\"
+endif
+
+ifdef with-build-info
+# Get the build time stamp
+BUILD_TIME=$(shell date +"%Y-%m-%dT%T%z")
+FPPFLAGS := $(FPPFLAGS) -DBUILDTIME=\"$(BUILD_TIME)\"
 endif
 
 ################## LIS options #####################

@@ -5,49 +5,49 @@
 		<Platform Name="x64"/>
 	</Platforms>
 	<Configurations>
-		<Configuration Name="Debug|Win32" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_WIN32" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\$(ProjectName)_win32d.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Debug" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_WIN32"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
-			<Tool Name="VFCustomBuildTool"/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Debug|Win32">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_WIN32;DEBUG;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-win32d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Debug" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_WIN32"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Release|Win32" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" OmitFramePointers="false" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE_WIN32" EnableRecursion="true"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\$(ProjectName)_win32.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Release" SubSystem="subSystemConsole"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_WIN32"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
-			<Tool Name="VFCustomBuildTool"/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Release|Win32">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" OmitFramePointers="false" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE_WIN32;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-win32-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Release" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_WIN32"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Debug|x64" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_X64;DEBUG;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-x64d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_X64"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
-			<Tool Name="VFCustomBuildTool"/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Debug|x64" TargetName="min3p-td-x64d-seq">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_X64;DEBUG;INTEL;USG;MEMORY_MONITOR;" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-x64d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_X64"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Release|x64" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE;RELEASE_X64;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true" FloatingPointModel="source"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-x64-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" SubSystem="subSystemConsole"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_X64"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
-			<Tool Name="VFCustomBuildTool"/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Release|x64">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE;RELEASE_X64;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true" FloatingPointModel="source"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-x64-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_X64"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
 	</Configurations>
 	<Files>

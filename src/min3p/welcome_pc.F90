@@ -57,7 +57,7 @@
       use file_utility, only : replacecharacter
       use Version, only : MajorVersionNumber, MinorVersionNumber,       &
                           PatchVersionNumber, GlobalRevisionNumber,      &
-                          BuildDate
+                          BuildTime
       use solver, only : solver_get_args
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_barrier
@@ -93,7 +93,7 @@
       if(rank == 0) then
         write(*,3) trim(MajorVersionNumber), trim(MinorVersionNumber),     &
                    trim(PatchVersionNumber), trim(GlobalRevisionNumber),   &
-                   BuildDate(1:10)
+                   BuildTime(1:10)
       end if
 
 !2       format (/,'    ------------------------------------------------'   &

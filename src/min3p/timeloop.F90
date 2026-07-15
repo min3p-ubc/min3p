@@ -2466,7 +2466,7 @@
                       c_diff=c_update(ic,ivol)-cnew(ic,ivol)
                       c_tol=c_update(ic,ivol)*bubreact_tol                   
 
-                      if (dabs(c_diff).gt.tol_rt)then
+                      if (dabs(c_diff).gt.bubreact_tol)then
                         ibubreact_tol=ibubreact_tol+1
                       end if
                     end do 
@@ -2540,7 +2540,7 @@
                     if (uvsnew(ivol).ge.aentry_loc) then    ! if saturated
                       uvs_diff=sanew_b(ivol)-sanew(ivol)
                       uvs_tol=sanew_b(ivol)*bubflow_tol
-                      if (dabs(uvs_diff).gt.tol_vs)then
+                      if (dabs(uvs_diff).gt.bubflow_tol)then
                          ibubflow_tol=ibubflow_tol+1
                       end if 
                     end if
@@ -2575,7 +2575,7 @@
                     if (uvsnew(ivol).ge.aentry_loc) then    ! if saturated
                       uvs_diff=uvsnew_b(ivol)-uvsnew(ivol)
                       uvs_tol=uvsnew_b(ivol)*bubflow_tol
-                      if (dabs(uvs_diff).gt.tol_vs)then
+                      if (dabs(uvs_diff).gt.bubflow_tol)then
                          ibubflow_tol=ibubflow_tol+1
                       end if 
                     end if
@@ -2599,8 +2599,8 @@
               else if (rank == 0 .and. b_enable_output .and. .not.     &
                 ((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
                 if (ibubflow_tol.gt.0) then                 
-                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
-                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
+                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - A",ibub
+                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - A",ibub
                 end if
               end if
               
@@ -2715,25 +2715,15 @@
                   do ic=1,nc-1
                     c_diff=c_update(ic,ivol)-cnew(ic,ivol)
                     c_tol=c_update(ic,ivol)*bubreact_tol
-                    if (dabs(c_diff).gt.tol_rt)then
-                      ibubreact_tol=ibubreact_tol+1
-              
-!c    if (ibub.gt.10) then
-!c      write(ilog,'(a,i6,a14,4(1pe15.6e3))') 'bub',ivol,namec(ic),        &
-!c            c_update(ic,ivol),cnew(ic,ivol),c_diff,c_tol
-!c      write(ilog,'(a,1x,l2)')'unsaturated', unsaturated(ivol)
-!c    end if
+                    if (dabs(c_diff).gt.bubreact_tol)then
+                      ibubreact_tol=ibubreact_tol+1              
                     end if
                   end do 
+
                   uvs_diff=uvsnew_b(ivol)-uvsnew(ivol)
                   uvs_tol=uvsnew_b(ivol)*bubflow_tol
-                  if (dabs(uvs_diff).gt.tol_vs)then
+                  if (dabs(uvs_diff).gt.bubflow_tol)then
                      ibubflow_tol=ibubflow_tol+1
-!c    if (ibub.gt.10) then
-!c      write(ilog,'(a,i6,4(1pe15.6e3))')'flow',ivol, uvsnew_b(ivol),      &
-!c            uvsnew(ivol),uvs_diff,uvs_tol
-!c      write(ilog,'(a,1x,l2)')'unsaturated', unsaturated(ivol)
-!c    end if
                   end if
                 end do
 #ifdef OPENMP
@@ -2766,8 +2756,8 @@
                   write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for reactive transport",ibub
                 end if
                 if (ibubflow_tol.gt.0) then
-                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
-                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
+                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - B",ibub
+                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - B",ibub
                 end if
               end if
 

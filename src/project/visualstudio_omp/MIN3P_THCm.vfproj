@@ -2,52 +2,51 @@
 <VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{AC1D4039-3857-49B0-B662-B3CD96AC31BB}">
 	<Platforms>
 		<Platform Name="Win32"/>
-		<Platform Name="x64"/>
-	</Platforms>
+		<Platform Name="x64"/></Platforms>
 	<Configurations>
-		<Configuration Name="Debug|Win32" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" PreprocessorDefinitions="DEBUG_WIN32;WINDOWS;PARDISO;OPENMP;SCHEDULE_STATIC;SOLVER_CFG_LOCAL" EnableRecursion="true" OpenMP="OpenMPParallelCode" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\$(ProjectName)_win32d_p.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Debug" GenerateDebugInformation="true" SubSystem="subSystemConsole" StackReserveSize="512000000" StackCommitSize="256000000" LargeAddressAware="addrAwareLarge" AdditionalDependencies="mkl_intel_c.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_WIN32_P"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
-			<Tool Name="VFCustomBuildTool"/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Debug|Win32">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" PreprocessorDefinitions="DEBUG;DEBUG_WIN32;INTEL;WINDOWS;PARDISO;LIS_NO;OPENMP;USG;MEMORY_MONITOR;SCHEDULE_STATIC" EnableRecursion="true" OpenMP="OpenMPParallelCode" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-win32d-omp.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Debug" GenerateDebugInformation="true" SubSystem="subSystemConsole" StackReserveSize="512000000" StackCommitSize="256000000" LargeAddressAware="addrAwareLarge" AdditionalDependencies="mkl_intel_c.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_WIN32_P"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Release|Win32" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" Preprocess="preprocessYes" PreprocessorDefinitions="RELEASE_WIN32;WINDOWS;PARDISO;OPENMP;SCHEDULE_STATIC" EnableRecursion="true" OpenMP="OpenMPParallelCode"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\$(ProjectName)_win32_p.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Release" SubSystem="subSystemConsole" StackReserveSize="512000000" StackCommitSize="256000000" LargeAddressAware="addrAwareLarge" AdditionalDependencies="mkl_intel_c.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_WIN32_P"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
-			<Tool Name="VFCustomBuildTool"/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Release|Win32">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" Preprocess="preprocessYes" PreprocessorDefinitions="RELEASE_WIN32;WINDOWS;INTEL;PARDISO;LIS_NO;OPENMP;USG;MEMORY_MONITOR;SCHEDULE_STATIC;SOLVER_CFG_BENCHMARK" EnableRecursion="true" OpenMP="OpenMPParallelCode"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-win32-omp.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Release" SubSystem="subSystemConsole" StackReserveSize="512000000" StackCommitSize="256000000" LargeAddressAware="addrAwareLarge" AdditionalDependencies="mkl_intel_c.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_WIN32_P"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Debug|x64" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="DEBUG;DEBUG_X64;INTEL;WINDOWS;PARDISO;LIS_NO;OPENMP;USG;MEMORY_MONITOR;SCHEDULE_STATIC" EnableRecursion="true" OpenMP="OpenMPParallelCode" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-x64d-omp.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" GenerateDebugInformation="true" SubSystem="subSystemConsole" StackReserveSize="512000000" StackCommitSize="256000000" LargeAddressAware="addrAwareLarge" AdditionalDependencies="mkl_intel_lp64.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_X64_P"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
-			<Tool Name="VFCustomBuildTool" Description=""/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Debug|x64" TargetName="min3p-td-x64d-omp">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_X64;DEBUG;INTEL;USG;MEMORY_MONITOR;" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-x64d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_X64"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool" Description=""/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Release|x64" UseCompiler="ifortCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="RELEASE_X64;WINDOWS;INTEL;PARDISO;LIS_NO;OPENMP;USG;MEMORY_MONITOR;SCHEDULE_STATIC;SOLVER_CFG_BENCHMARK" EnableRecursion="true" OpenMP="OpenMPParallelCode" FloatingPointModel="source"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-x64-omp.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" SubSystem="subSystemConsole" StackReserveSize="512000000" StackCommitSize="256000000" LargeAddressAware="addrAwareLarge" AdditionalDependencies="mkl_intel_lp64.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib"/>
-			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_X64_P"/>
-			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
-			<Tool Name="VFCustomBuildTool"/>
-			<Tool Name="VFPreLinkEventTool"/>
-			<Tool Name="VFPreBuildEventTool"/>
-			<Tool Name="VFPostBuildEventTool"/>
-			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		<Configuration Name="Release|x64">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="RELEASE_X64;WINDOWS;INTEL;PARDISO;LIS_NO;OPENMP;USG;MEMORY_MONITOR;SCHEDULE_STATIC;SOLVER_CFG_BENCHMARK" EnableRecursion="true" OpenMP="OpenMPParallelCode" FloatingPointModel="source"/>
+				<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-x64-omp.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" SubSystem="subSystemConsole" StackReserveSize="512000000" StackCommitSize="256000000" LargeAddressAware="addrAwareLarge" AdditionalDependencies="mkl_intel_lp64.lib mkl_intel_thread.lib mkl_core.lib libiomp5md.lib"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_X64_P"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="..\..\version\pre_build_win.bat"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
 	</Configurations>
 	<Files>

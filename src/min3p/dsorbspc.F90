@@ -4,7 +4,7 @@
 !> $Revision: 675 $
 !> $Author: dsu $
 !> $Date: 2019-01-22 10:29:22 -0800 (Tue, 22 Jan 2019) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/dsorbspc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/dsorbspc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

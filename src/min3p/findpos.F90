@@ -4,7 +4,7 @@
 !> $Revision: 184 $
 !> $Author: dsu $
 !> $Date: 2014-04-17 22:50:19 -0700 (Thu, 17 Apr 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/findpos.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/findpos.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

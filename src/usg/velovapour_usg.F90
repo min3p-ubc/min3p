@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/velovapour_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/usg/velovapour_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

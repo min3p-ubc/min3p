@@ -4,7 +4,7 @@
 !> $Revision: 608 $
 !> $Author: dsu $
 !> $Date: 2018-09-11 11:26:48 -0700 (Tue, 11 Sep 2018) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/iajart_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/usg/iajart_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

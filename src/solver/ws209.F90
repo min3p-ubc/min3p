@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/solver/ws209.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/solver/ws209.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

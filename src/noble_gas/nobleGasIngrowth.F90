@@ -4,7 +4,7 @@
 !> $Revision: 873 $
 !> $Author: dsu $
 !> $Date: 2023-12-12 11:14:04 -0800 (Tue, 12 Dec 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/noble_gas/nobleGasIngrowth.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/noble_gas/nobleGasIngrowth.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

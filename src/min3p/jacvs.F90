@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/jacvs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/jacvs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

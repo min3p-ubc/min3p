@@ -4,7 +4,7 @@
 !> $Revision: 878 $
 !> $Author: dsu $
 !> $Date: 2024-02-14 20:08:49 -0800 (Wed, 14 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/usg_face_utility.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/usg/usg_face_utility.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

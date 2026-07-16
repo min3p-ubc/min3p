@@ -4,7 +4,7 @@
 !> $Revision: 177 $
 !> $Author: dsu $
 !> $Date: 2014-04-10 14:28:52 -0700 (Thu, 10 Apr 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/zero_i4.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/zero_i4.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

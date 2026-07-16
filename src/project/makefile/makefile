@@ -292,6 +292,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/gen.o\
 	$(SRC)min3p/pressure_melt_k.o\
 	$(SRC)min3p/biol.o\
+	$(SRC)min3p/soluteUptakeFunc.o\
 	$(SRC)usg/fluxvs_usg.o\
 	$(SRC)usg/fluxdd_usg.o\
 	$(SRC)usg/fluxfs_usg.o\
@@ -675,6 +676,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/cputime_pc.o\
 	$(SRC)min3p/pitzer/closepitzer.o\
 	$(SRC)min3p/mem_etr.o\
+	$(SRC)min3p/updtRootParams.o\
 	$(SRC)min3p/initplant.o\
 	$(SRC)min3p/initppplant.o\
 	$(SRC)min3p/rew.o\

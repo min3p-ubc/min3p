@@ -63,6 +63,7 @@
       use gen
       use chem
       use file_unit, only : lun_get
+      use file_utility, only : rewind_first_record
 
       implicit none
       
@@ -78,6 +79,9 @@
 !c  open file containing temperature data
 
       open(item,file=prefix(:l_prfx)//'.tem',status='old')
+
+      !cdsu skip comment line and rewind to the first record
+      call rewind_first_record(item)
  
 !c  read time interval, number of data points and associated depths
 !c  and allocate memory

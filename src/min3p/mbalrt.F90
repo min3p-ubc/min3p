@@ -644,8 +644,8 @@
       integer :: tid
 
       !c root uptake variables HG
-      real*8 :: qrootloc
-      real*8, external :: rootwat
+      real*8 :: qrootloc, totuptake
+      real*8, external :: rootwat, soluteUptakeFunc
 
       real*8, external :: pressure_melt_k
      
@@ -2780,19 +2780,33 @@
           end if
 #endif
           izn = mpropvs(ivol)
-          if (btypert(ivol).ne.'first' .and. rld(ivol) >rverysmall) then 
+          if (btypert(ivol).ne.'first') then
             !c root uptake, positive means source and negative means sink here
-            qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)*conv3
-            if (rootwateruptake_field) then
-              qrootloc = qrootloc*uptakefactor_vol(ivol)
-            else
-              qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
-            end if            
-
-            do ic = 1,n     
-              rootdiff(ic) = rootdiff(ic) + qrootloc*totcnew(ic,ivol) 
-              rootdiff_zn(ic,izn) = rootdiff_zn(ic,izn) + qrootloc*totcnew(ic,ivol)
-            end do 
+            if (rld(ivol) > rverysmall) then
+              izn = mpropvs(ivol)
+              if (itype_rootuptk_solut == 1) then
+                qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)*conv3
+                if (rootwateruptake_field) then
+                  qrootloc = qrootloc*uptakefactor_vol(ivol)
+                else
+                  qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
+                end if
+         
+                do ic = 1,n     
+                  rootdiff(ic) = rootdiff(ic) + qrootloc*totcnew(ic,ivol) 
+                  rootdiff_zn(ic,izn) = rootdiff_zn(ic,izn) + qrootloc*totcnew(ic,ivol)
+                end do 
+              else if (itype_rootuptk_solut == 2) then
+                qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+                do ic = 1,n
+                  totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
+                                               rld(ivol),sanew(ivol),pornew(ivol), &
+                                               ic,izn)
+                  rootdiff(ic) = rootdiff(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
+                  rootdiff_zn(ic,izn) = rootdiff_zn(ic,izn) + conv3*cvol(ivol)*totuptake   !*delt
+                end do
+              end if
+            end if
           end if   
         end do 
 #ifdef OPENMP
@@ -2800,41 +2814,43 @@
 #endif  
       end if
 
-      if (root_uptake) then 
+      if (root_uptake) then
+        if (itype_root_resp == 1) then
 #ifdef OPENMP
     !$omp do schedule(static) reduction(+:rootresp,rootresp_zn)
 #endif 
-        do ivol = 1,nngl 
+          do ivol = 1,nngl 
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
+            if(node_idx_lg2l(ivol) < 0) then
               cycle
-          end if
+            end if
 #endif
-          if (rld(ivol) >rverysmall) then
-            izn = mpropvs(ivol)
-            do ic = 1,n    
-              !c absorption or exudation by root
-              !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
-              if (resprate(ic,izn) < 0) then        !exudation by root
-                rootresp_allowed = - cvol(ivol)*rld(ivol)*resprate(ic,izn)
-                rootresp(ic) = rootresp(ic) + rootresp_allowed
-                rootresp_zn(ic,izn) = rootresp_zn(ic,izn) + rootresp_allowed
-              else                              !respiration by root 
-                rootresp_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)             !mol/day
-                rootresp_max = (totcnew(ic,ivol)-                          &
-                                max(rverysmall,totc_uptake_min(ic,izn)))*  &
-                                conv3*cvol(ivol)*pornew(ivol)*sanew(ivol)/delt   !mol/day
-                rootresp_allowed = - min(rootresp_current,max(rootresp_max,r0))
+            if (rld(ivol) >rverysmall) then
+              izn = mpropvs(ivol)
+              do ic = 1,n    
+                !c absorption or exudation by root
+                !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
+                if (resprate(ic,izn) < 0) then        !exudation by root
+                  rootresp_allowed = - cvol(ivol)*rld(ivol)*resprate(ic,izn)
+                  rootresp(ic) = rootresp(ic) + rootresp_allowed
+                  rootresp_zn(ic,izn) = rootresp_zn(ic,izn) + rootresp_allowed
+                else                              !respiration by root 
+                  rootresp_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)             !mol/day
+                  rootresp_max = (totcnew(ic,ivol)-                          &
+                                  max(rverysmall,totc_uptake_min(ic,izn)))*  &
+                                  conv3*cvol(ivol)*pornew(ivol)*sanew(ivol)/delt   !mol/day
+                  rootresp_allowed = - min(rootresp_current,max(rootresp_max,r0))
 
-                rootresp(ic) = rootresp(ic) + rootresp_allowed   !mol/day
-                rootresp_zn(ic,izn) = rootresp_zn(ic,izn) + rootresp_allowed
-              end if
-            end do 
-          end if   
-        end do  
+                  rootresp(ic) = rootresp(ic) + rootresp_allowed   !mol/day
+                  rootresp_zn(ic,izn) = rootresp_zn(ic,izn) + rootresp_allowed
+                end if
+              end do 
+            end if   
+          end do  
 #ifdef OPENMP
     !$omp end do
 #endif
+        end if
       end if
 
 #ifdef OPENMP

@@ -251,7 +251,8 @@
 
       external rhsvs, soilparm, soilparm_perm
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r2 = 2.0d0, r3 = 3.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r2 = 2.0d0, r3 = 3.0d0, &
+                           rverysmall = 1.0d-30
       
       if(ittot_vs == 1) then
         info_debug = 0
@@ -1276,7 +1277,11 @@
 !c  DSU this part is missing in FG & CBF's version
 
         if (root_uptake) then
-          transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+          if (rld(ivol) > rverysmall) then
+            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+          else
+            transp = r0
+          end if
         else
           transp = r0
         end if
@@ -1500,7 +1505,11 @@
 !c  DSU this part is missing in FG & CBF's version
 
         if (root_uptake) then
-          transp = cvol(ivol)*rootwat(sainc,ivol,rsum_vprop_inc)
+          if (rld(ivol) > rverysmall) then
+            transp = cvol(ivol)*rootwat(sainc,ivol,rsum_vprop_inc)
+          else
+            transp = r0
+          end if
         else
           transp = r0
         end if

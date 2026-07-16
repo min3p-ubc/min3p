@@ -69,6 +69,7 @@
 		<File RelativePath="..\..\min3p\binmatevap.F90"/>
 		<File RelativePath="..\..\min3p\binmattransp.F90"/>
 		<File RelativePath="..\..\min3p\biol.F90"/>
+		<File RelativePath="..\..\min3p\soluteUptakeFunc.F90"/>
 		<File RelativePath="..\..\min3p\boundary_func.F90"/>
 		<File RelativePath="..\..\min3p\bulkconc.F90"/>
 		<File RelativePath="..\..\min3p\bunsen.F90"/>
@@ -315,6 +316,7 @@
 		<File RelativePath="..\..\min3p\mem_bbls.F90"/>
 		<File RelativePath="..\..\min3p\mem_dd.F90"/>
 		<File RelativePath="..\..\min3p\mem_etr.F90"/>
+		<File RelativePath="..\..\min3p\updtRootParams.F90"/>
 		<File RelativePath="..\..\min3p\mem_evap.F90"/>
 		<File RelativePath="..\..\min3p\mem_heat.F90"/>
 		<File RelativePath="..\..\min3p\mem_hmcd.F90"/>

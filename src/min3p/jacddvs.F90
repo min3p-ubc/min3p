@@ -216,7 +216,7 @@
       external rhsvs, soilprdd
 
       real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1=1.0d0,        &
-                           r2 = 2.0d0, r3 = 3.0d0
+                           r2 = 2.0d0, r3 = 3.0d0, rverysmall = 1.0d-30
 
 #ifdef USG
       integer :: i2, icell, idvol, kvol, ncell, ndvol, nrelp
@@ -781,10 +781,11 @@
 !c  DSU qroot computation here
 !c  DSU compute mean reserve of extractible water : correction method for water stress = 2
 
+        transp = r0
         if (root_uptake) then
-          transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
-        else
-          transp = r0
+          if (rld(ivol) > rverysmall) then
+            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+          end if
         end if
 
         soilevapo = r0
@@ -997,10 +998,11 @@
 !c  DSU this part is missing in FG & CBF's version
 !c  DSU need further modification if it's different from variably saturated flow
 
+        transp = r0
         if (root_uptake) then
-          transp = cvol(ivol)*rootwat(sainc,ivol,rsum_vprop_inc)
-        else
-          transp = r0
+          if (rld(ivol) > rverysmall) then
+            transp = cvol(ivol)*rootwat(sainc,ivol,rsum_vprop_inc)
+          end if
         end if
 
         soilevapo = r0

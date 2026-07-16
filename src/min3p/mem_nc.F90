@@ -472,6 +472,17 @@
         dtotcharge_surf = 0.0d0
         call checkerr(ierr,'dtotcharge_surf',ilog)
         call memory_monitor(sizeof(dtotcharge_surf),'dtotcharge_surf',.true.)
+      else
+        !c this is used to avoid memory 
+        allocate (totcharge_surf(0,0), stat = ierr)
+        totcharge_surf = 0.0d0
+        call checkerr(ierr,'totcharge_surf',ilog)
+        call memory_monitor(sizeof(totcharge_surf),'totcharge_surf',.true.)
+
+        allocate (dtotcharge_surf(0,0), stat = ierr)
+        dtotcharge_surf = 0.0d0
+        call checkerr(ierr,'dtotcharge_surf',ilog)
+        call memory_monitor(sizeof(dtotcharge_surf),'dtotcharge_surf',.true.)
       end if
 
       !allocate (totcso(nc-1), stat = ierr)

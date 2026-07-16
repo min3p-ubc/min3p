@@ -34,7 +34,7 @@
 !c  floor and this above tree canopy
 !c           time_soi           = next read time for soil specific
 !c                                 parameters
-!c           uptakefactor(nzn)  = passive solute uptake factor (by zone)
+!c           uptakefactor(nzn)  = passive uptake factor (by zone)
 !c           p1(nzn)            = fitting parameter for root water
 !c                                  uptake function
 !c     time_rld= time at which RLD are updated ! CBF RLD
@@ -106,14 +106,9 @@
       real (type_r8), allocatable :: uptakefactor(:)
      
       real (type_r8), allocatable :: resprate(:,:)           !units mol/(root length * time)
-      
-      logical, allocatable :: resprate_charge(:)             !maintain charge balance or not.
 
 !cdsu minimum aqueous concentration required to activate solute uptake
-!cdsu R = k x ([TotC]/([TotC]+hk))^hn
       real (type_r8), allocatable :: totc_uptake_min(:,:)    !units mol/(L water) 
-      real (type_r8), allocatable :: totc_uptake_hk(:,:)     !hyperbolic inhibition term, units mol/(L water)
-      real (type_r8), allocatable :: totc_uptake_hn(:,:)     !order of hyperbolic function, units [-]
 
       integer :: cmws
 

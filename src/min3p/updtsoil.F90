@@ -71,6 +71,7 @@
       use parm
       use gen
       use phys
+      use biol
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -86,13 +87,17 @@
 
 !c  read next dataset for soil specific parameters
  
-        read(isoi,*,err=998,end=997) time_soi, pet, pe_soil,          &
-     &                               canopy_int
+        read(isoi,*,err=998,end=997) time_soi, pet, pe_soil, canopy_int
+
+        if (pet_in_mm_day) then
+          pet = pet/r1000/sec_per_days
+        end if
+
         pet = pet*sec_per_days
         pe_soil = pe_soil*sec_per_days
         canopy_int = canopy_int*sec_per_days
-        qroot_tot_max = tree_trans_factor(1) * pet                    &
-     &                - canopy_int/canopy_evap_factor(1)
+        qroot_tot_max = tree_trans_factor(1) * pet -                   &
+                        canopy_int/canopy_evap_factor(1)
       
         return
 

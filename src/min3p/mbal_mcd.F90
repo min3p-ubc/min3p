@@ -532,7 +532,7 @@
 #endif
 
       integer :: i1, ibrt, ic, ivol, istart, iend, imb, jvol,irecord,  &
-                 idim, tid
+                 idim, izn, tid
       
       real*8 :: totvsflux, bdyinfrt_da, diff_eff, diff_loc
       real*8, external :: bulkconc, bdryflux, fluxd 
@@ -540,7 +540,7 @@
       real*8 :: rdummys(17)
       
 !c root water uptake varaibles (HG 28 Mar 2019)
-      real*8 :: rootdiff(n)
+      real*8 :: rootdiff(n), totuptake
       real*8 :: qrootloc, roottmp, trtmp
       
 #ifdef PETSC
@@ -550,7 +550,7 @@
       external acoff, comptotc, msysrt, zero_r8
       
 !c root water uptake mass balance addition (HG 28 Mar 2019)
-      real*8, external :: rootwat
+      real*8, external :: rootwat, soluteUptakeFunc
 
       real*8, external :: pressure_melt_k
 
@@ -591,7 +591,7 @@
 #endif
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0,r100 = 100.0d0,      &
-                           conv3 = 1.0d3
+                           conv3 = 1.0d3, rverysmall = 1.0d-30
       
       integer :: nvarsimcd
       
@@ -665,7 +665,7 @@
     !$omp grad_cgg_totcnew, grad_cgg_totviscnew, grad_cgg_electro,    &
     !$omp grad_cgg_totgnew,                                           &
 #endif
-    !$omp i1, ibrt, ic, iend, istart, ivol, jvol, idim, tid,          &
+    !$omp i1, ibrt, ic, iend, istart, ivol, jvol, idim, izn, tid,     &
     !$omp delta_totviscnew, delta_electromignew,                      &
     !$omp qrootloc, so_av, diff_eff, diff_loc, bdyinfrt_da,           &                                         
     !$omp totcflux, totvsflux)                                        &
@@ -886,8 +886,8 @@
 
 !c  total mass fluxes across Cauchy type boundary control volumes
 
-          elseif (btypert(ivol).eq.'third' .or.            &
-                  btypert(ivol).eq.'third-evap') then
+          else if (btypert(ivol).eq.'third' .or.            &
+                   btypert(ivol).eq.'third-evap') then
             if (b_fluxd_bcond(ivol)) then      
               diff_eff = r0
               diff_loc = r0
@@ -961,13 +961,13 @@
                 end if
               end do
 
-          end if
+            end if
 
 !cbdy-end
 
 !c  total mass fluxes across mixed type boundary control volumes
 
-        elseif (btypert(ivol).eq.'mixed' .or. btypert(ivol).eq.'mixed-evap') then
+          elseif (btypert(ivol).eq.'mixed' .or. btypert(ivol).eq.'mixed-evap') then
               
             diff_eff = r0
             diff_loc = r0
@@ -1033,20 +1033,31 @@
 
 !c mass flux due to root water uptake and solute uptake (HG 28 Mar 2019)
           if (passive_uptake) then 
-            do ivol = 1,nngl 
-              if (btypert(ivol).ne.'first') then 
-                !c root uptake, positive means source and negative means sink here
-                qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
-                if (rootwateruptake_field) then
-                  qrootloc = qrootloc*uptakefactor_vol(ivol)
-                else
-                  qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
+            if (btypert(ivol).ne.'first') then                
+              !c root uptake, positive means source and negative means sink here                
+              if (rld(ivol) > rverysmall) then
+                izn = mpropvs(ivol)
+                if (itype_rootuptk_solut == 1) then
+                  qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+                  if (rootwateruptake_field) then
+                    qrootloc = qrootloc*uptakefactor_vol(ivol)
+                  else
+                    qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
+                  end if
+                  do ic = 1,n    
+                    rootdiff(ic) = rootdiff(ic) + conv3 * qrootloc * totcnew(ic,ivol)
+                  end do
+                else if (itype_rootuptk_solut == 2) then
+                  qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+                  do ic = 1,n
+                    totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
+                                                 rld(ivol),sanew(ivol),pornew(ivol), &
+                                                 ic,izn)
+                    rootdiff(ic) = rootdiff(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
+                  end do
                 end if
-                do ic = 1,n    
-                  rootdiff(ic) = rootdiff(ic) + conv3 * qrootloc * totcnew(ic,ivol)
-                end do 
-              end if   
-            end do     
+              end if
+            end if
           end if 
 
         end if                !boundary type (transport) 
@@ -1200,7 +1211,7 @@
 
         totcfluxout(ic) = totcfluxout(ic) + cfluxout(ic)*delt
         
-        if(passive_uptake) then    ! HG passive uptake 28 Mar 2019
+        if(passive_uptake .and. itype_rootuptk_solut == 1) then    ! HG passive uptake 28 Mar 2019
           totrootdiff(ic) = totrootdiff(ic) + rootdiff(ic)*delt
         end if
         

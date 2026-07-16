@@ -211,7 +211,8 @@
       checkerr
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, eps=1.0d-300,       &
-              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5
+              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5,              &
+              rverysmall = 1.0d-30
 
       real*8, allocatable  :: ddens_dvi(:), totc(:), s_ice(:), s_water(:)
 
@@ -1224,7 +1225,11 @@
               !c total root water uptake
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1258,7 +1263,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1284,7 +1293,11 @@
             if (b_output_binary) then
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1303,7 +1316,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1739,7 +1756,11 @@
             if (b_output_binary) then
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1771,7 +1792,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1796,7 +1821,11 @@
             if (b_output_binary) then
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1815,7 +1844,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if

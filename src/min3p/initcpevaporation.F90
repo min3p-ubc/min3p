@@ -156,6 +156,7 @@
       use dens
       use chem
       use file_unit, only : lun_get
+      use file_utility, only : rewind_first_record
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -629,24 +630,22 @@
 !cprovi------------------------------------------------      
 !cprovi Open atmospheric parameters from file      
 !cprovi------------------------------------------------      
-      if (read_atm) then
-      
-         time_atm=r0
-         !iatm = 52 
+      if (read_atm) then      
+         time_atm = time_io_ini
          iatm = lun_get()
-         open(iatm,file=prefix(:l_prfx)//'.atm',      & 
-     &        status='old',access='sequential',       &
-     &        err=997) 
-         read (iatm,*)
-         read (iatm,*)
-         read (iatm,*)
+         open(iatm,file=prefix(:l_prfx)//'.atm',status='old',          &
+              access='sequential',err=997) 
+        !read (iatm,*)
+        !read (iatm,*)
+        !read (iatm,*)
 
+        !cdsu skip comment line and rewind to the first record
+        call rewind_first_record(iatm)
       end if  
 !cprovi-------------------------------------------------------------
 !cprovi Update atmospheric boundary conditions
 !cprovi-------------------------------------------------------------       
       call updtbcatm
-
 
       goto 1000
 
@@ -683,10 +682,7 @@
 #ifdef PETSC
       call petsc_mpi_finalize
 #endif
-      stop
-      
-      
-            
+      stop            
 
 1000  return
       end

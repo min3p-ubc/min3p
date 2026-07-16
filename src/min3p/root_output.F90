@@ -56,7 +56,7 @@ contains
 #endif
 #endif
 
-      integer :: i, iunit, l_sufx, ic, ig, ivol, ivol_l, nvars, ivar
+      integer :: i, iunit, l_sufx, ic, ig, ivol, nvars, ivar
       
       real*8 :: zout
       real*8, external :: zoutput
@@ -193,8 +193,7 @@ contains
           cycle  
         end if
 #endif
-        ivol_l = ivol_l + 1
-        
+       
 !c  assign depth coordinate in terms of depth or elevation
         zout = zoutput(depth_output,zg(ivol),elevmax)
         

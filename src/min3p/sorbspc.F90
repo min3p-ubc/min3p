@@ -291,24 +291,20 @@
 !cprovi----------------------------------------------------------------------
         csb_surf = csb_surf/eqsb_surf(isb_surf)
 
-            istart = iasb_surf(isb_surf)
-            iend = iasb_surf(isb_surf+1)-1
+        istart = iasb_surf(isb_surf)
+        iend = iasb_surf(isb_surf+1)-1
             
-            do i1 = istart,iend
-              ic = jasb_surf(i1)
+        do i1 = istart,iend
+          ic = jasb_surf(i1) 
           cloc=c(ic)             
           ! Compute the equivalent fraction 
           if (component_type(ic)=='surface'.and.mol_frac_ads) then
             totloc = totc(ic)
-            
-            !c to be checked later
-            write(*,*) '-> totloc is set to ic',ic,'totc',totc(ic)
-
             cloc = cloc/totloc
           end if
           csb_surf = csb_surf * (gammac(ic)*cloc)**xnusb_surf(i1)       
-            end do
-
+        end do
+        
         if (mol_frac_ads) then
           !c to be checked later, totloc is assigned to the last value in the previous loop
           csb_surf = csb_surf * totloc    

@@ -216,7 +216,7 @@
 
 
       real*8, parameter :: r0 = 0.0d0, r2 = 2.0d0, r3 = 3.0d0,         &
-                           r100 = 100.0d0, rsmall = 1.0d-100
+                           r100 = 100.0d0, rverysmall = 1.0d-30
       
       integer :: nvarsimvs
       
@@ -555,8 +555,10 @@
               cycle
           end if
 #endif
-          qroot_tot_act = qroot_tot_act + cvol(ivol)*                  &
-                          rootwat(sanew,ivol,rsum_vprop)
+          if (rld(ivol) > rverysmall) then
+            qroot_tot_act = qroot_tot_act + cvol(ivol)*                &
+                            rootwat(sanew,ivol,rsum_vprop)
+          end if
           
           if (soilhydrfunc_field) then
             if (h1dry_vol(ivol).gt.r0) then
@@ -669,8 +671,8 @@
       rdummy1 = (totinflux-totoutflux-totvsstor-qroot_tot_act)
       rdummy2 = abs(totinflux) + abs(totoutflux)
 
-      if (rdummy2 < rsmall) then
-        if(rdummy1 < rsmall) then
+      if (rdummy2 < rverysmall) then
+        if(rdummy1 < rverysmall) then
           relbalance_vs = 0.0d0
         else
           relbalance_vs = 1.0d100

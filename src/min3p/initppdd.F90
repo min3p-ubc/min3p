@@ -222,7 +222,8 @@
       use bbls
       use file_unit, only : lun_get, lun_free
       use file_utility, only : findnextline, readnextline,             &
-                               read_vtk_data_from_file
+                               read_vtk_data_from_file,                &
+                               rewind_first_record
       use geometry
       use biol
 
@@ -1883,6 +1884,10 @@
           !c Othereise, open soi file and read required parameters.
           isoi =  lun_get()
           open(isoi,file=prefix(:l_prfx)//'.soi', err=997, status='old')
+
+          !cdsu skip comment line and rewind to the first record
+          call rewind_first_record(isoi)
+
           read(isoi,*,err=998,end=998) time_soi,pet,canopy_int,        &
                                        solar_ratio,scale_tree_growth
                                                                               

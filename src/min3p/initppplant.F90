@@ -36,6 +36,7 @@
       use biol
       use chem
       use file_unit, only : lun_get, lun_free !CBF : fct to assign isoi number when opening *.soi file
+      use file_utility, only : rewind_first_record
       
 #ifdef OPENMP
       use omp_lib 
@@ -63,9 +64,9 @@
                  idx, istart, iend, ierrcode, ierr, nshift, ierrcd
 
       real*8, external :: satfpres
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rsmall = 1.0d-20,   &
-                           tiny = 1.0d-10, verytiny = 1.0d-300,        &
-                           r86400=86400.0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r1000 = 1.0d3,      &
+                           rsmall = 1.0d-20,tiny = 1.0d-10,            &
+                           verytiny = 1.0d-300, r86400=86400.0
 
       integer :: n_invalid, n_invalid_gbl
       real*8 :: rdummy, sumrld, sumrld_gbl, coeff
@@ -165,7 +166,6 @@
           read(irld,*,err=998,end=998) cdummy
           read(irld,*,err=998,end=998) cdummy
           read(irld,*,err=998,end=998) cdummy
-
 #ifdef USG
           if (discretization_type > 0) then
             do ivolgbl = 1,nngbl
@@ -224,6 +224,7 @@
         if (rootwateruptake_field) then
 
           passive_uptake = .true.
+          itype_rootuptk_solut = 1
 
           irwu = lun_get()
           open(irwu,file=prefix(:l_prfx)//'.rwu',status='unknown',form='formatted')
@@ -358,6 +359,37 @@
 
         end if !end of reading brf from external file
 
+!cprovi------------------------------------------------------------------
+!cprovi Read transient root length density from file
+!cprovi Only if root length density field is not read
+!cprovi------------------------------------------------------------------
+!cdsu ported from Sergio's version, 2024-03-22
+        rootparam_trans = .false. 
+        if (.not.rootlengthdens_field) then
+            subsection = 'transient root parameters'
+            call findstrg(subsection,itmp,found_subsection)
+            if (found_subsection) then 
+              rootparam_trans = .true.
+            end if
+
+            !cprovi------------------------------------------------      
+            !cprovi Open transient root length density file   
+            !cprovi------------------------------------------------      
+            if (rootparam_trans) then
+                time_root = time_io_ini
+                itransroot = lun_get()
+                open(itransroot,file=prefix(:l_prfx)//'.transroot',  & 
+                     status='old',access='sequential',err=996) 
+                !read (itransroot,*)   !skip the first three lines, suppose to be tecplot head
+                !read (itransroot,*)   !skip the first three lines, suppose to be tecplot head
+                !read (itransroot,*)   !skip the first three lines, suppose to be tecplot head
+
+              !cdsu skip comment line and rewind to the first record
+              call rewind_first_record(itransroot)
+            end if    
+            call updtRootParams
+        end if
+
 !c  read material properties for material property zones from input file
                
         do izn = 1, nzn                !loop over property zones
@@ -394,6 +426,8 @@
               end if
 
               if (found_subsection) then
+
+                itype_rootuptk_water = 0
 
                 !c input updated here, third parameter hlopt is added
                 ierrcd = 2
@@ -471,7 +505,7 @@
                 end do
 
                 if (b_enable_output .and. b_enable_output_gen) then
-                  write(igen,'(/a/,7(a,18x,a,1pe15.6e3/),a,18x,a,1pe15.6e3)')     &
+                  write(igen,'(/a/,7(a,18x,a,1pe15.6e3/),a,18x,a,1pe15.6e3)')    &
                         'root uptake parameters:',                               &
                         'saturation at wilting point: ',' = ',satwlim(izn),      &
                         'saturation at field capacity:',' = ',satwfield(izn),    &
@@ -479,22 +513,67 @@
                 end if            
 
               else ! if not found_subsection 'root water uptake'
-
-                if (rank == 0) then
-                  write(ilog,*) 'SIMULATION TERMINATED'
-                  write(ilog,*) 'error reading input file'
-                  write(ilog,*) 'section "',trim(section_header),'"'
-                  write(ilog,*) 'subsection "',trim(subsection),'" missing'
-                  close(ilog)
-                end if
+!cdsu----------------------------------------------------------
+!cdsu  the following root water uptake parameters are ported from sergio's version.
+!cdsu  NOTE: the format is different with keyword renamed to avoid conflicting, 2024-03-22
+!cdsu----------------------------------------------------------
+                subsection = 'water uptake parameters'
+                call findstrg(subsection,icnv,found_subsection)
+                if (found_subsection) then
+                  itype_rootuptk_water = 1
+                  read(icnv,*,err=999,end=999) satwlim(izn)
+                  read(icnv,*,err=999,end=999) satwfield(izn)
+                  read(icnv,*,err=999,end=999) satwdry(izn)
+                  read(icnv,*,err=999,end=999) rootlengthdens(izn)
+                  read(icnv,*,err=999,end=999) rew0(izn)
+                  read(icnv,*,err=999,end=999) p1(izn)
+                  read(icnv,*,err=999,end=999) tree_trans_factor(izn)
+                  read(icnv,*,err=999,end=999) canopy_evap_factor(izn)
+                else
+                  if (rank == 0) then
+                    write(ilog,*) 'SIMULATION TERMINATED'
+                    write(ilog,*) 'error reading input file'
+                    write(ilog,*) 'section "',trim(section_header),'"'
+                    write(ilog,*) 'subsection "',trim(subsection),'" missing'
+                    close(ilog)
+                  end if
 #ifdef PETSC
-                call petsc_mpi_finalize
+                  call petsc_mpi_finalize
 #endif
-                stop
-
+                  stop
+                end if
               endif
-
             end if
+
+!cprovi------------------------------------------------------------------
+!cprovi------------------------------------------------------------------
+            if (reactive_transport) then
+              subsection = 'solute uptake parameters'
+              call findstrg(subsection,itmp,found_subsection)
+              if (found_subsection) then
+                passive_uptake = .true.
+                itype_rootuptk_solut = 2          
+                do ic = 1, n
+                  if (component_type(ic).eq.'aqueous') then
+                    read(itmp,*,err=999,end=999) fac_uptake(ic,izn),       & ! [-]
+                                                 fm_uptake(ic,izn),        & ! [mol/m2/s]
+                                                 km_uptake(ic,izn),        & ! [mol/lw]
+                                                 order1_uptake(ic,izn),    & ! [m/s]
+                                                 tot_min_uptake(ic,izn),   & ! [mol/lw]
+                                                 exudation_rate(ic,izn),   & ! mol/m2/s
+                                                 fchargebal_coeff(ic,izn)    ! [-]  
+                    if (fac_uptake(ic,izn)>r1) then
+                      fac_uptake(ic,izn)=r1
+                    elseif (fac_uptake(ic,izn)<r0) then
+                      fac_uptake(ic,izn)=r0
+                    end if
+                    fm_uptake(ic,izn) = fm_uptake(ic,izn)*sec_per_days               ! [mol/m2/s] => [mol/m2/day]
+                    order1_uptake(ic,izn) = order1_uptake(ic,izn)*r1000*sec_per_days ! [m3_w/m2/s] => [lw/m2/day]
+                    exudation_rate(ic,izn) = exudation_rate(ic,izn)*sec_per_days     ! [mol/m2/s] => [mol/m2/day]
+                  end if
+                end do
+              end if
+            end if  
 
 !cdsu zone based Battaglia's function parameters
             if (.not. battaglia_field) then
@@ -527,6 +606,7 @@
 
               if (found_subsection) then
                 passive_uptake = .true.
+                itype_rootuptk_solut = 1
                 ierrcd = 13
                 read(icnv,*,err=999,end=999) uptakefactor(izn)
                 if (uptakefactor(izn).gt.r1 .or. uptakefactor(izn).lt.r0) then
@@ -564,6 +644,7 @@
             call findstrg(subsection,icnv,found_subsection)
 
             if (found_subsection) then
+              itype_root_resp = 1
               ierrcd = 14
               do ic = 1, n
                 read(icnv,*,err=999,end=999) resprate(ic,izn)

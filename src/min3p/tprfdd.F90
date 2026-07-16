@@ -133,7 +133,7 @@
 
       real*8, external :: rootwat, evapo, pressure_melt_k
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rverysmall = 1.0d-30
       
       integer :: nvarsigbp
 #ifdef PETSC
@@ -226,7 +226,11 @@
 
 !FG june 2021 - calculate water uptake (rootwat) and evaporation (evapo), in m3/days
           if (root_uptake) then
-            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            if (rld(ivol) > rverysmall) then
+              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            else
+              transp = r0
+            end if
           else ! to allow for phys. evaporation only
             transp = r0
           end if
@@ -334,7 +338,11 @@
 
 !FG june 2021 - calculate water uptake (rootwat) and evaporation (evapo), in m3/days
           if (root_uptake) then
-            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            if (rld(ivol) > rverysmall) then
+              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            else
+              transp = r0
+            end if
           else ! to allow for phys. evaporation only
             transp = r0
           end if

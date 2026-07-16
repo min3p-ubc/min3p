@@ -189,7 +189,8 @@
       
       type(point) :: grad
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rm1 = -1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rm1 = -1.0d0,       &
+                           rverysmall = 1.0d-30
 
       character*5 :: suffix
       character*256 :: strbuffer
@@ -648,7 +649,11 @@
           if (b_output_binary) then
             do inode = 1, num_nodes
               if (root_uptake) then
-                transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                if (rld(inode) > rverysmall) then
+                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                else
+                  transp = r0
+                end if
               else
                 transp = r0
               end if
@@ -679,7 +684,11 @@
             write(igsp,'(a)') "LOOKUP_TABLE default"
             do inode = 1, num_nodes
               if (root_uptake) then
-                transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                if (rld(inode) > rverysmall) then
+                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                else
+                  transp = r0
+                end if
               else
                 transp = r0
               end if
@@ -704,7 +713,11 @@
           if (b_output_binary) then
             do inode = 1, num_nodes
               if (root_uptake) then
-                transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                if (rld(inode) > rverysmall) then
+                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                else
+                  transp = r0
+                end if
               else
                 transp = r0
               end if
@@ -722,7 +735,11 @@
             write(igsp,'(a)') "SCALARS rootwat double"
             write(igsp,'(a)') "LOOKUP_TABLE default"
             do inode = 1, num_nodes
-              transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+              if (rld(inode) > rverysmall) then
+                transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+              else
+                transp = r0
+              end if
               write(igsp,ascii_fmt) transp
             end do
           end if

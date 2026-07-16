@@ -199,7 +199,7 @@
 
       external velocity
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rverysmall = 1.0d-30
 
       character*5 suffix      
       character*2048 strbuffer
@@ -874,7 +874,11 @@
 
 !c  compute root water uptake for current control volume
           if (root_uptake) then
-            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            if (rld(ivol) > rverysmall) then
+              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            else
+              transp = r0
+            end if
           else
             transp = r0
           end if

@@ -1660,88 +1660,35 @@
         time_io = time/time_factor
         delt_io = delt/time_factor
         
-!cprovi----------------------------------------------------
-!cprovi Update atmospheric parameters  
-!cprovi----------------------------------------------------       
-        if (evaporation .and. variably_saturated .and. .not.tran_steady_flow) then
-           call updtbcatm
-        end if 
+!cdsu Update boundary condition here because temperature and uvsnew is reset to 
+!cdsu the value of old timestep, which is not consistent with the updated 
+!cdsu boundary condition. Only flow and heat boundary condition is required.
+!cdsu fix bug here by Danyang Su on May 22, 2020 
+        if (b_updtbc_recall) then
 
 !cdsu update boundary conditions for variably saturated flow      
-        if (update_bcvs .and. .not.tran_steady_flow) then
-          if (density_dependence) then
-            call updtbcdd
-          else 
-            call updtbcvs
+          if (update_bcvs .and. .not.tran_steady_flow) then
+            if (density_dependence) then
+              call updtbcdd
+            else 
+              call updtbcvs
+            end if
           end if
-        end if
 
 !cdsu update boundary conditions for heat transport 
-        if (update_bcheat .and. .not.tran_steady_flow) then
-          call updtbcenergybal
-        end if
+          if (update_bcheat .and. .not.tran_steady_flow) then
+            call updtbcenergybal
+          end if
 
 !c update transient dispersivity
-        if (reactive_transport .and. update_disprt .and.             &
-            .not. tran_steady_flow) then
-          call updtdisprt
-        end if
-
-!c CBF RLD 
-!c FG July 2017 - root density update (see previous comment on an alternative position for this call,
-!c FG set from Feb 2015).
-        if (root_uptake .and. .not.tran_steady_flow) then
-          if ((coupled_as).or.(coupled_rt).or.(inside_rld)) then
-            call updtrootdensity
-          else
-            if(rootlengthdens_field)then
-              if (rld_field_update .and. b_rld_update) then
-                !c update root length density
-                call updtrootdensity_ext
-                if (b_enable_output .and. rank == 0) then
-                  write(*,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
-                  write(ilog,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
-                end if
-
-                rld_update_index = rld_update_index + 1
-                if (rld_update_index > rld_update_num) then
-                  close(irld)
-                  call lun_free(irld)
-                end if
-              end if
-            end if
-          endif
-        end if
-
-!c  update etp and canopy dependent parameters    !CBF
-        if ((root_uptake .or. pure_evap) .and. .not.tran_steady_flow) then
-#ifdef ARCHISIMPLE
-          call updtetp
-#endif
-        end if
-
-
-!c  update temperature field
-        if (temp_field .and. .not.tran_steady_flow) then  
-          call readtemp
-
-          if (update_temp) then
-            call intpolt
+          if (reactive_transport .and. update_disprt .and.             &
+              .not. tran_steady_flow) then
+            call updtdisprt
           end if
+
+          b_updtbc_recall = .false.
         end if
 
-!c  update noble gas ingrowth related variables
-        if (b_use_ngi) then
-          !c this function only updates the concentration of radioelements 
-          !c that are used to generate noble gas
-          !call update_ngi_conc
-
-          !c this function updates the concentration of all radioelements 
-          !c that are specified in the input file
-          call update_ngi_conc_all
-        end if
-
-        b_updtbc_recall = .false.
 
 !cprovi----------------------------------------------------
 !cprovi Ice sheet loading/unloding is computed
@@ -2530,6 +2477,7 @@
                     if (uvsnew(ivol).ge.aentry_loc) then    ! if saturated
                       uvs_diff=sanew_b(ivol)-sanew(ivol)
                       uvs_tol=sanew_b(ivol)*bubflow_tol
+
                       if (dabs(uvs_diff).gt.bubflow_tol)then
                          ibubflow_tol=ibubflow_tol+1
                       end if 
@@ -2708,7 +2656,7 @@
                     if (dabs(c_diff).gt.bubreact_tol)then
                       ibubreact_tol=ibubreact_tol+1              
                     end if
-                  end do 
+                  end do
 
                   uvs_diff=uvsnew_b(ivol)-uvsnew(ivol)
                   uvs_tol=uvsnew_b(ivol)*bubflow_tol
@@ -3422,6 +3370,99 @@
           call restart_w
         end if
 
+!cprovi----------------------------------------------------
+!cprovi Update atmospheric parameters  
+!cprovi----------------------------------------------------       
+        if (evaporation .and. variably_saturated .and. .not.tran_steady_flow) then
+          call updtbcatm
+        end if  
+
+!cprovi----------------------------------------------------
+!cprovi Update root length density zones  
+!cprovi----------------------------------------------------       
+        if (rootparam_trans .and. variably_saturated .and. .not.tran_steady_flow) then
+          call updtRootParams
+        end if  
+
+!cprovi----------------------------------------------------
+!cprovi update boundary conditions for variably 
+!cprovi saturated flow
+!cprovi----------------------------------------------------        
+        if (update_bcvs .and. .not.tran_steady_flow) then
+          if (density_dependence) then
+            call updtbcdd
+          else 
+            call updtbcvs
+          end if
+        end if
+
+!cprovi----------------------------------------------------
+!cprovi update boundary conditions for heat transport 
+!cprovi----------------------------------------------------        
+        if (update_bcheat .and. .not.tran_steady_flow) then
+          call updtbcenergybal
+        end if        
+
+!c update transient dispersivity
+        if (reactive_transport .and. update_disprt .and.               &
+            .not. tran_steady_flow) then
+          call updtdisprt
+        end if
+
+!c CBF RLD 
+!c FG July 2017 - root density update (see previous comment on an alternative position for this call,
+!c FG set from Feb 2015).
+        if (root_uptake .and. .not.tran_steady_flow) then
+
+          if (coupled_as.or.coupled_rt.or.inside_rld.or.rootparam_trans) then
+            call updtrootdensity
+          else
+            if(rootlengthdens_field)then
+              if (rld_field_update .and. b_rld_update) then
+                !c update root length density
+                call updtrootdensity_ext
+                if (b_enable_output .and. rank == 0) then
+                  write(*,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
+                  write(ilog,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
+                end if
+
+                rld_update_index = rld_update_index + 1
+                if (rld_update_index > rld_update_num) then
+                  close(irld)
+                  call lun_free(irld)
+                end if
+              end if
+            end if
+          endif
+        end if
+
+!c  update etp and canopy dependent parameters    !CBF
+        if ((root_uptake .or. pure_evap) .and. .not.tran_steady_flow) then
+#ifdef ARCHISIMPLE
+          call updtetp
+#endif
+        end if
+
+
+!c  update temperature field
+        if (temp_field .and. .not.tran_steady_flow) then  
+          call readtemp
+
+          if (update_temp) then
+            call intpolt
+          end if
+        end if
+
+!c  update noble gas ingrowth related variables
+        if (b_use_ngi) then
+          !c this function only updates the concentration of radioelements 
+          !c that are used to generate noble gas
+          !call update_ngi_conc
+
+          !c this function updates the concentration of all radioelements 
+          !c that are specified in the input file
+          call update_ngi_conc_all
+        end if
 
 !cdsu ------------------------------------------------------------------------
 !cdsu move boundary condition update of reactive tranport here

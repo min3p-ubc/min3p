@@ -759,7 +759,7 @@
       real*8 :: dissvol, dissvol1
       real*8 :: dummy, por_diff, por_temp, ratio, over_por     
       !c root uptake variables   !HG
-      real*8 :: qrootloc
+      real*8 :: qrootloc, zbal, zpos, zneg, zpos_inc, zneg_inc
 
       integer :: ielect, iss
       real*8 :: strioninc
@@ -889,7 +889,7 @@
                totredx, updtsvap
 
       !c root uptake variables !HG
-      real*8, external :: rootwat
+      real*8, external :: rootwat, soluteUptakeFunc
 
       real*8, external :: pressure_melt_k   
   
@@ -1002,6 +1002,7 @@
     !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &
     !$omp qrootloc, rootresp, rootresp_current, rootresp_max,         &   !!Root uptake and
     !$omp dresprate, drootresp, rootdens,                             &   !!respiration
+    !$omp zbal, zpos, zneg, zpos_inc, zneg_inc,                       &
     !$omp densgij, dg, dgpivol, dmdens_i, ddens_i, gij,  gmfracij,    &   !!Gas advection and dgm model
     !$omp gpivol_ivol, gpivol_jvol, gdens_ivol, gdens_jvol,           &
     !$omp gvisc_ivol, gvisc_jvol,                                     &
@@ -1667,11 +1668,16 @@
 
         if (passive_uptake) then
           if (rld(ivol)>rverysmall) then
-            qrootloc = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
-            if (rootwateruptake_field) then
-              qrootloc = qrootloc*uptakefactor_vol(ivol)
-            else
-              qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
+            if (itype_rootuptk_solut == 1) then
+              qrootloc = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              if (rootwateruptake_field) then
+                qrootloc = qrootloc*uptakefactor_vol(ivol)
+              else
+                qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
+              end if
+            else if (itype_rootuptk_solut == 2) then
+              qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+              call cbalance(cnew(:,ivol),cx(:,ivol),zbal,zpos,zneg)
             end if
 
 #ifdef DEBUG
@@ -1781,42 +1787,43 @@
         if (nsb_ion.gt.0.or.nsb_surf.gt.0) then
             
           if (sorption_group.eq.'surface-complexation'.or.(nsb_surf.gt.0.and. &
-            sorption_group.eq.'surface-complex and ion-exchange')) then  
-            do ic=1,n
-              totsb_surf(ic) = cvol(ivol)/delt *                            &
-                         (pornew(ivol)*sanew(ivol)*totsnew_surf(ic,ivol) -  &
-                          porold(ivol)*saold(ivol)*totsold_surf(ic,ivol))
-            end do
+              sorption_group.eq.'surface-complex and ion-exchange')) then  
+              do ic=1,n
+                totsb_surf(ic) = cvol(ivol)/delt *                            &
+                           (pornew(ivol)*sanew(ivol)*totsnew_surf(ic,ivol) -  &
+                            porold(ivol)*saold(ivol)*totsold_surf(ic,ivol))
+              end do
 
 !cprovi--------------------------------------------------------------------------------------------------------
 !cprovi If electrostaic correction is performed, an additional equation for charge balance is included 
 !cprovi--------------------------------------------------------------------------------------------------------
-            if (elect_correction) then
-              area_surf=site_area(1)*site_mass(1)
-              do isb = 1,nsb_surf 
-                call sorbspc(dummy,csb_surf(isb,tid),cnew(n-nelect+1:n,ivol),    &
-                             cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),       &
-                             gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf,    &
-                             iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,      &
-                             nsb_surf,0,isb,sorption_type_ion,                   &
-                             sorption_type_surf,sorption_group,isactcexch,       &
-                             elect_correction,name_elect_correction,nelect,      &
-                             dz_surf,totcnew(:,ivol),component_type,nlayer,      &
-                             chargesb_surf(isb),mol_frac_ads)
-              end do
+              if (elect_correction) then
+                area_surf=site_area(1)*site_mass(1)
+                do isb = 1,nsb_surf 
+                  call sorbspc(dummy,csb_surf(isb,tid),cnew(n-nelect+1:n,ivol),    &
+                               cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),       &
+                               gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf,    &
+                               iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,      &
+                               nsb_surf,0,isb,sorption_type_ion,                   &
+                               sorption_type_surf,sorption_group,isactcexch,       &
+                               elect_correction,name_elect_correction,nelect,      &
+                               dz_surf,totcnew(:,ivol),component_type,nlayer,      &
+                               chargesb_surf(isb),mol_frac_ads)
+                end do
 !cprovi-------------------------------------------------------------------------
 !cprovi Compute the surface charge balance if the electrostatic correction is 
 !cprovi carried out (Only if the number of surface complexes is > 0.
 !cprovi-------------------------------------------------------------------------
-              call totchargesorb(totcharge_surf(n-nelect+1:n,tid),sionnew(ivol),    &
-                      cnew(n-nelect+1:n,ivol),csb_surf(:,tid),charge_surf,nsb_surf, &
-                      tkel(ivol),area_surf,cap_surf,name_elect_correction,          &
-                      nlayer,nelect,ncap)
-              do ielect = 1, nelect          
-                totcharge_surf(n-nelect+ielect,tid) = cvol(ivol)*pornew(ivol)*      &
-                          sanew(ivol)*totcharge_surf(n-nelect+ielect,tid)
-              end do
-            end if 
+                call totchargesorb(totcharge_surf(n-nelect+1:n,tid),sionnew(ivol),    &
+                        cnew(n-nelect+1:n,ivol),csb_surf(:,tid),charge_surf,nsb_surf, &
+                        tkel(ivol),area_surf,cap_surf,name_elect_correction,          &
+                        nlayer,nelect,ncap)
+                do ielect = 1, nelect          
+                  totcharge_surf(n-nelect+ielect,tid) = cvol(ivol)*pornew(ivol)*      &
+                            sanew(ivol)*totcharge_surf(n-nelect+ielect,tid)
+                end do
+              end if 
+
           else
             totsb_surf = r0
           end if
@@ -2023,23 +2030,25 @@
         end if
 
 !c  calculate root related respiration
+        rootresp = r0
         if (root_uptake) then
-          do ic = 1, n
-            !c absorption or exudation by root
-            !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
-            if (resprate(ic,izn) < r0) then    !exudation by root
-              rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-            else                          !respiration by root 
-              rootresp_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3         !mol/day
-              rootresp_max = (totcnew(ic,ivol)-                        &
-                              max(rverysmall,totc_uptake_min(ic,izn)))*&
-                              cvol(ivol)*pornew(ivol)*sanew(ivol)/delt               !mol/day
-              rootresp(ic) = min(rootresp_current,max(rootresp_max,r0))
+          if (itype_root_resp == 1) then
+            if (rld(ivol) > rverysmall) then
+              do ic = 1, n
+                !c absorption or exudation by root
+                !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
+                if (resprate(ic,izn) < r0) then    !exudation by root
+                  rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
+                else                          !respiration by root 
+                  rootresp_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3         !mol/day
+                  rootresp_max = (totcnew(ic,ivol)-                        &
+                                  max(rverysmall,totc_uptake_min(ic,izn)))*&
+                                  cvol(ivol)*pornew(ivol)*sanew(ivol)/delt               !mol/day
+                  rootresp(ic) = min(rootresp_current,max(rootresp_max,r0))
+                end if
+              end do
             end if
-
-          end do
-        else
-          rootresp = r0
+          end if
         end if
  
 !c  compute fluxes between current control volume and adjacent
@@ -2052,14 +2061,27 @@
         end do
 
 !c add root water uptake term 7 Feb 2019 HG (written by DSU)
-
+!cprovi---------------------------------------------------------------------
+!cprovi Passive and active solute uptake
+!cprovi---------------------------------------------------------------------
         if (passive_uptake) then 
           if (rld(ivol)>rverysmall) then 
-            do ic = 1,n             
-              totcflux(ic) = totcflux(ic) + totcnew(ic,ivol) * qrootloc  
-            end do  
+            if (itype_rootuptk_solut == 1) then
+              do ic = 1,n             
+                totcflux(ic) = totcflux(ic) + totcnew(ic,ivol) * qrootloc  
+              end do  
+            else if (itype_rootuptk_solut == 2) then
+              do ic = 1,n             
+                totcflux(ic) = cvol(ivol)*soluteUptakeFunc(qrootloc,     &
+                               totcnew(ic,ivol),zpos,zneg,rld(ivol),     &
+                               sanew(ivol),pornew(ivol),ic,izn)  
+              end do
+            end if
           end if
-        end if    
+        end if 
+
+
+
         
         if (ng.gt.0) then
           do ic=1,n
@@ -3322,7 +3344,7 @@
                   im=idmin_ss(iss,i1)  
                   dratedp(im,tid)=(dratedp(im,tid)-ratemdp(im,ivol))/drtinc
                   dissvol = ratemdp(im,ivol)*delt
-
+                 
                   if ((cmnew(im,ivol)+dissvol)<(r1+small)*cmcmin(im,tid) .or.           &
                     dabs(ratemdp(im,ivol))<tinyrate) then    
                     dratedp(im,tid) = r0
@@ -3333,7 +3355,8 @@
             end if  ! Solid solutions      
 !cprovi----------------------------------------------------------------------------------------
 !cprovi----------------------------------------------------------------------------------------
-!cprovi----------------------------------------------------------------------------------------  
+!cprovi----------------------------------------------------------------------------------------        
+ 
 
 !c  derivatives of total source/sink terms due to dissolution/
 !c  precipitation reactions
@@ -3366,24 +3389,35 @@
           end do                       !influx (aqueous phase)
 
 !c calculate derivative of respiration (HG)
-          if (root_uptake) then 
-            !c derivative of respiration depends on the formula
-            !c if respiration rate is not related to solute concentration, 
-            !c as shown below, then derivative is zero
-            !c rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-            !c drootresp(ic) = d(rootresp)/d(cnew) = r0
-            drootresp = r0
-          else
-            drootresp = r0
+          drootresp = r0
+          if (root_uptake) then
+            if (itype_root_resp == 1) then 
+              if (rld(ivol) > rverysmall) then              
+                !c derivative of respiration depends on the formula
+                !c if respiration rate is not related to solute concentration, 
+                !c as shown below, then derivative is zero
+                !c rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
+                !c drootresp(ic) = d(rootresp)/d(cnew) = r0
+              end if
+            end if
           end if 
               
 !croot - add derivative of root water uptake term (HG)
 
           if (passive_uptake) then
-            if (rld(ivol)>rverysmall) then
-              do ic = 1,n     
-                dtotcflux(ic) = dtotcflux(ic) - dtotc(ic,tid) * qrootloc 
-              end do 
+            if (rld(ivol) > rverysmall) then
+              if (itype_rootuptk_solut == 1) then
+                do ic = 1,n     
+                  dtotcflux(ic) = dtotcflux(ic) - dtotc(ic,tid) * qrootloc 
+                end do 
+              else if (itype_rootuptk_solut == 2) then
+                !c this part is commented in sergio's version
+                !do ic = 1,n  
+                !  dtotcflux(ic) = cvol(ivol)*soluteUptakeFunc(         &
+                !                  qrootloc,dtotc(ic,tid),rld(ivol),    &
+                !                  ic,izn)
+                !end do   
+              end if
             end if
           end if 
 
@@ -4095,9 +4129,23 @@
      &                          pornew(ivol))
               end if
     
-!cprovi------------------------------------------------------------------------
-!cprovi------------------------------------------------------------------------
-!cprovi------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------  
+!cprovi root - add derivative of root water uptake term
+!cprovi-------------------------------------------------------------------
+              if (passive_uptake .and. itype_rootuptk_solut == 2) then
+                if (rld(ivol) > rverysmall) then
+                  !qrooloc is already calculated, no need to recalculated here
+                  !qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+                  call cbalance(cinc(:,tid),cxinc(:,tid),zbal,zpos_inc,zneg_inc)
+                  call cbalance(cnew(:,ivol),cx(:,ivol),zbal,zpos,zneg)
+                  zpos=(zpos_inc-zpos)/drtinc
+                  zneg=(zneg_inc-zneg)/drtinc
+                  dcstor = dcstor + cvol(ivol)*soluteUptakeFunc(       &
+                                    qrootloc,dtotc(ibl,tid),zpos,zneg, &
+                                    rld(ivol),sanew(ivol),pornew(ivol),&
+                                    ibl,izn)
+                end if
+              end if 
 
 !c  compute derivatives of storage terms for gaseous phase
 
@@ -4122,6 +4170,7 @@
 !c  --------------------------------------------------------------------
 
 !c  - storage and flux terms
+              
               if (component_type(ibl).eq.'electro' .and. elect_correction) then
 !cprovi---------------------------------------------------------------------------
 !cprovi Store the derivative of charge balance on the surface with respect to 

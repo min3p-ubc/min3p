@@ -223,7 +223,8 @@
       real*8, external :: pressure_melt_k
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, eps=1.0d-300,       &
-              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5                        
+              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5,              &
+              rverysmall = 1.0d-30                        
                                                                        
       real*8, allocatable  :: ddens_dvi(:)
       real*8, allocatable  :: totc(:)
@@ -1404,7 +1405,11 @@
 
 !c  compute root water uptake for current control volume
             if (root_uptake) then
-              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              if (rld(ivol) > rverysmall) then
+                transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              else
+                transp = r0
+              end if
             else
               transp = r0
             end if
@@ -2175,7 +2180,11 @@
 
 !c  compute root water uptake for current control volume
             if (root_uptake) then
-              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              if (rld(ivol) > rverysmall) then
+                transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              else
+                transp = r0
+              end if
             else
               transp = r0
             end if

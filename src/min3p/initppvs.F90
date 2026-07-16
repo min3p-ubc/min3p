@@ -242,7 +242,8 @@
       use writeversion
       use file_unit, only : lun_get, lun_free
       use file_utility, only : findnextline, readnextline,             &
-                               read_vtk_data_from_file
+                               read_vtk_data_from_file,                &
+                               rewind_first_record
       use geometry
 
       use biol
@@ -1764,6 +1765,10 @@
           isoi =  lun_get()
           ierrcd = 51
           open(isoi,file=prefix(:l_prfx)//'.soi', err=997, status='old')
+
+          !cdsu skip comment line and rewind to the first record
+          call rewind_first_record(isoi)
+
           read(isoi,*,err=998,end=998) time_soi,pet,canopy_int,        &
                                        solar_ratio,scale_tree_growth
           pe_soil = pet*toparea*sec_per_days             !FG August 2021 - converted in m3/s here now, and not in evap and rootwat functions

@@ -91,17 +91,17 @@
 !c                                - old time level [moles/l bulk]]
 !c           cculabsbal(n)      = accumulative absolute mass balance  + +
 !c                                error for dissolved species 
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cmculabsbal(n)     = accumulative absolute mass balance  + +
 !c                                error for minerals 
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cculrelbal(n)      = accumulative relative mass balance  + +
 !c                                error for dissolved species [%]
 !c           cmculrelbal(n)     = accumulative relative mass balance  + +
 !c                                for minerals [%]
 !c           gculabsbal(ng)     = accumulative absolute mass balance  + +
 !c                                error for gaseous species
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           gculrelbal(ng)     = accumulative relative mass balance  + +
 !c                                error for gaseous species [%]
 !c           cvol(nn)           = nodal volumes                       + -
@@ -117,12 +117,12 @@
 !c           cfluxout(n)        = mass loss due to outflow in water   * *
 !c                                phase in terms of total aqueous
 !c                                component concentrations
-!c           contaqtot(naq)     = contribution of intra-aqueous       + +
-!c                                kinetic reactions to mass balance
-!c                                [moles/elapsed time]
-!c           contmintot(nm)     = contribution of dissolution-        + +
-!c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c           contaqtot(naq)     = accumulative contribution of        + +
+!c                                intra-aqueous kinetic reactions to
+!c                                 mass balance[moles]
+!c           contmintot(nm)     = accumulative contribution of        + +
+!c                                dissolution-precipitation reactions 
+!c                                to mass balance [moles]
 !c           gfluxtbdy(ng)      = mass flux across boundary           * *
 !c                                (gaseous phase)
 !c           gfluxin(n)         = mass gain due to inflow in air      * *
@@ -237,10 +237,11 @@
 !c                                aqueous component concentrations
 !c                                due to dissolution-precipitation 
 !c                                reactions
-!c           totdpdiffp(ndr*nm) = individual contribution of parallel + +
-!c                                reaction pathways of dissolution-
+!c           totdpdiffp(ndr*nm) = accumulative individual             + +
+!c                                contribution of parallel reaction 
+!c                                pathways of dissolution-
 !c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c                                balance [moles]
 !c           totgdegas(nc)      = total mass loss from aquoeus phase  + +
 !c                                due to degassing
 !c           totgdiff(nc)       = total source/sink to total          + +
@@ -712,9 +713,9 @@
 #endif
 
 !c  root respiration variables:
-      real*8 :: rootdiff(n), rootresp(n), rootuptake(n)
-      real*8 :: rootdiff_zn(n,nzn), rootresp_zn(n,nzn),                &
-                rootuptake_zn(n,nzn), totrcm_temp(nm,nzn)
+      real*8 :: rootprup(n), rootarup(n), rootrup(n)
+      real*8 :: rootprup_zn(n,nzn), rootarup_zn(n,nzn),                &
+                rootrotrup_zn(n,nzn), totrcm_temp(nm,nzn)
 
 !c  dilution index
       real*8 :: p_dix, totcstor_dix(n), tot_dix(n)
@@ -732,7 +733,7 @@
       real*8 :: totrcm_temp_gbl(nm,nzn)
 #endif
 
-      real*8 :: rootresp_current, rootresp_max, rootresp_allowed,      &
+      real*8 :: rootarup_current, rootarup_max, rootarup_allowed,      &
                 rootdens, delt_rcm, valid_rup
 
       external comptotc, msysrt, rateredx, totconcg, zero_r8      
@@ -741,7 +742,7 @@
 
       real*8, parameter :: r0 = 0.0d0,r1=1.0d0,r100 = 100.0d0,         &
                            conv3 = 1.0d3,rverysmall = 1.0d-30,         &
-                           rsmallarea = 1.0d-8,                        &
+                           rsmallarea = 1.0d-8,r_1 = -1.0d0,           &
                            enat = 2.71828182845904509d0
 
 !cprovi----------------------------------------------------------------------
@@ -782,8 +783,8 @@
       integer*4 :: ipvt(ng)
       real*8 :: so_av, gflux_ic, gflux_ig, cinfrt
       
-      integer :: nvarsimrt, nvarsiresp, nvarsirup, nvarsirupcm,        &
-                 nvarsidix, nvarsispm
+      integer :: nvarsimrt, nvarsiarup, nvarsirup, nvarsirupcm,        &
+                 nvarsidix, nvarsispm, nvarsiprup
       
       external molconc, rategas, rategasd, rateint, rateint_new,       &
                ratemin, ratemin_new, tcorr, totint, totredx,           &
@@ -833,8 +834,8 @@
         sbdiff = r0
       end if 
 
-      rootdiff = r0
-      rootdiff_zn = r0
+      rootprup = r0
+      rootprup_zn = r0
   
       if (nm.gt.0) then
         dpdiff = r0
@@ -2615,8 +2616,8 @@
       
 !c root respiration related code
 !c DO NOT put this initialization inside parallel loop
-      rootresp = r0
-      rootresp_zn = r0
+      rootarup = r0
+      rootarup_zn = r0
 
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -2624,7 +2625,7 @@
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
     !$omp private (ic, ivol, izn,                                     &
-    !$omp qrootloc, rootresp_current, rootresp_max, rootresp_allowed)
+    !$omp qrootloc, rootarup_current, rootarup_max, rootarup_allowed)
 #endif
       
 !c  total source-sink term due to sorption reactions
@@ -2771,7 +2772,7 @@
 !croot - passive solute uptake !HG
       if (passive_uptake) then
 #ifdef OPENMP
-    !$omp do schedule(static) reduction(+:rootdiff, rootdiff_zn)
+    !$omp do schedule(static) reduction(+:rootprup, rootprup_zn)
 #endif 
         do ivol = 1,nngl 
 #ifdef PETSC
@@ -2793,8 +2794,8 @@
                 end if
          
                 do ic = 1,n     
-                  rootdiff(ic) = rootdiff(ic) + qrootloc*totcnew(ic,ivol) 
-                  rootdiff_zn(ic,izn) = rootdiff_zn(ic,izn) + qrootloc*totcnew(ic,ivol)
+                  rootprup(ic) = rootprup(ic) + qrootloc*totcnew(ic,ivol) 
+                  rootprup_zn(ic,izn) = rootprup_zn(ic,izn) + qrootloc*totcnew(ic,ivol)
                 end do 
               else if (itype_rootuptk_solut == 2) then
                 qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
@@ -2802,8 +2803,8 @@
                   totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
                                                rld(ivol),sanew(ivol),pornew(ivol), &
                                                ic,izn)
-                  rootdiff(ic) = rootdiff(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
-                  rootdiff_zn(ic,izn) = rootdiff_zn(ic,izn) + conv3*cvol(ivol)*totuptake   !*delt
+                  rootprup(ic) = rootprup(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
+                  rootprup_zn(ic,izn) = rootprup_zn(ic,izn) + conv3*cvol(ivol)*totuptake   !*delt
                 end do
               end if
             end if
@@ -2817,7 +2818,7 @@
       if (root_uptake) then
         if (itype_root_resp == 1) then
 #ifdef OPENMP
-    !$omp do schedule(static) reduction(+:rootresp,rootresp_zn)
+    !$omp do schedule(static) reduction(+:rootarup,rootarup_zn)
 #endif 
           do ivol = 1,nngl 
 #ifdef PETSC
@@ -2827,22 +2828,22 @@
 #endif
             if (rld(ivol) >rverysmall) then
               izn = mpropvs(ivol)
-              do ic = 1,n    
+              do ic = 1,nc-1    
                 !c absorption or exudation by root
                 !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
                 if (resprate(ic,izn) < 0) then        !exudation by root
-                  rootresp_allowed = - cvol(ivol)*rld(ivol)*resprate(ic,izn)
-                  rootresp(ic) = rootresp(ic) + rootresp_allowed
-                  rootresp_zn(ic,izn) = rootresp_zn(ic,izn) + rootresp_allowed
+                  rootarup_allowed = - cvol(ivol)*rld(ivol)*resprate(ic,izn)
+                  rootarup(ic) = rootarup(ic) + rootarup_allowed
+                  rootarup_zn(ic,izn) = rootarup_zn(ic,izn) + rootarup_allowed
                 else                              !respiration by root 
-                  rootresp_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)             !mol/day
-                  rootresp_max = (totcnew(ic,ivol)-                          &
+                  rootarup_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)             !mol/day
+                  rootarup_max = (totcnew(ic,ivol)-                          &
                                   max(rverysmall,totc_uptake_min(ic,izn)))*  &
                                   conv3*cvol(ivol)*pornew(ivol)*sanew(ivol)/delt   !mol/day
-                  rootresp_allowed = - min(rootresp_current,max(rootresp_max,r0))
+                  rootarup_allowed = - min(rootarup_current,max(rootarup_max,r0))
 
-                  rootresp(ic) = rootresp(ic) + rootresp_allowed   !mol/day
-                  rootresp_zn(ic,izn) = rootresp_zn(ic,izn) + rootresp_allowed
+                  rootarup(ic) = rootarup(ic) + rootarup_allowed   !mol/day
+                  rootarup_zn(ic,izn) = rootarup_zn(ic,izn) + rootarup_allowed
                 end if
               end do 
             end if   
@@ -2869,55 +2870,53 @@
       dpdiff(1:n) = mpireduce_n(1:n)  
 
       if (passive_uptake) then
-        call MPI_Allreduce(rootdiff,mpireduce_n,n,MPI_REAL8,MPI_SUM,   &
+        call MPI_Allreduce(rootprup,mpireduce_n,n,MPI_REAL8,MPI_SUM,   &
                            Petsc_Comm_World,ierrcode)
         CHKERRQ(ierrcode)
-        rootdiff(1:n) = mpireduce_n(1:n) 
+        rootprup(1:n) = mpireduce_n(1:n) 
 
         do izn = 1, nzn
-          call MPI_Allreduce(rootdiff_zn(:,izn),mpireduce_n,n,         &
+          call MPI_Allreduce(rootprup_zn(:,izn),mpireduce_n,n,         &
                             MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
           CHKERRQ(ierrcode)
-          rootdiff_zn(1:n,izn) = mpireduce_n(1:n)
+          rootprup_zn(1:n,izn) = mpireduce_n(1:n)
         end do
       end if
 
       if (root_uptake) then
-        call MPI_Allreduce(rootresp,mpireduce_n,n,MPI_REAL8,MPI_SUM,   &
+        call MPI_Allreduce(rootarup,mpireduce_n,n,MPI_REAL8,MPI_SUM,   &
                            Petsc_Comm_World,ierrcode)
         CHKERRQ(ierrcode)
-        rootresp(1:n) = mpireduce_n(1:n)
+        rootarup(1:n) = mpireduce_n(1:n)
         
         do izn = 1, nzn
-          call MPI_Allreduce(rootresp_zn(:,izn),mpireduce_n,n,         &
+          call MPI_Allreduce(rootarup_zn(:,izn),mpireduce_n,n,         &
                              MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
           CHKERRQ(ierrcode)
-          rootresp_zn(1:n,izn) = mpireduce_n(1:n)
+          rootarup_zn(1:n,izn) = mpireduce_n(1:n)
         end do
       end if
 #endif
 
-!c  total root respiration uptake over time
+!c  total active solute uptake, including root respiration and exudation over time
       if (root_uptake) then
-        totrootresp(1:nc-1) = totrootresp(1:nc-1) + rootresp(1:nc-1)*delt
-      end if
 
-!c root respiration and uptake
-      if (root_uptake) then
+        totrootarup(1:nc-1) = totrootarup(1:nc-1) + rootarup(1:nc-1)*delt
+
         if(rank == 0 .and. b_enable_output .and.                       &
            .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
       
           if (b_output_trans_binary) then
-            nvarsiresp = 2*(nc-1)+1
-            realbuffer_gb(1:nvarsiresp) = (/time_io,rootresp(1:nc-1),  &
-                                            totrootresp(1:nc-1)/)
+            nvarsiarup = 2*(nc-1)+1
+            realbuffer_gb(1:nvarsiarup) = (/time_io,rootarup(1:nc-1)*r_1,  &
+                                            totrootarup(1:nc-1)*r_1/)
 
-            call binary_write_data(iresp_mpi, 1,                       &
-                         (/mtime/),offset_iresp_ijk,.true.)
-            call binary_write_data(iresp_mpi, nvarsiresp,              &
-                         realbuffer_gb,offset_iresp,.true.) 
+            call binary_write_data(iarup_mpi, 1,                       &
+                         (/mtime/),offset_iarup_ijk,.true.)
+            call binary_write_data(iarup_mpi, nvarsiarup,              &
+                         realbuffer_gb,offset_iarup,.true.) 
 
-            offset_iresp = offset_iresp + nvarsiresp*nfloatbit
+            offset_iarup = offset_iarup + nvarsiarup*nfloatbit
 
           else
             !c read accumulative absolute mass balance error at the restart point
@@ -2925,43 +2924,93 @@
             !c will not output until the second restart point is reached
 
             if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(iresp,irecord)
+              call reposition_file(iarup,irecord)
 
               if (irecord > 0) then
                 !c locate to the restart time and get previous results
-                call reposition_file(iresp,irecord,time_io_rs)
-                read(iresp,*,end=10,err=10) rdummys(1:2*nc-1)
+                call reposition_file(iarup,irecord,time_io_rs)
+                read(iarup,*,end=10,err=10) rdummys(1:2*nc-1)
                 !c reposition to the line to append results
-                call reposition_file(iresp,irecord)
+                call reposition_file(iarup,irecord)
 
                 !c summation for accumulative root respiration uptke
-                totrootresp(1:nc-1) = totrootresp(1:nc-1) + rdummys(nc+1:2*nc-1)
+                totrootarup(1:nc-1) = totrootarup(1:nc-1) + rdummys(nc+1:2*nc-1)*r_1
               end if
 10            continue
             end if
 
             if (i_append_sim < 1 .or.                                  &
                (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(iresp,ascii_fmt) time_io,rootresp(1:nc-1),         &
-                                     totrootresp(1:nc-1)
+              write(iarup,ascii_fmt) time_io,rootarup(1:nc-1)*r_1,     &
+                                     totrootarup(1:nc-1)*r_1
             end if
           end if
         end if
       end if
 
-!c  total solute uptake by passive uptake and respiration
-      if (root_uptake .or. passive_uptake) then
-        rootuptake(1:nc-1) = -(rootdiff(1:nc-1) + rootresp(1:nc-1))
+!c  passive solute uptake
+      if (passive_uptake) then
 
-        totrootuptake(1:nc-1) = totrootuptake(1:nc-1) + rootuptake(1:nc-1)*delt
+        totrootprup(1:nc-1) = totrootprup(1:nc-1) + rootprup(1:nc-1)*delt
+
+        if(rank == 0 .and. b_enable_output .and.                       &
+           .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+      
+          if (b_output_trans_binary) then
+            nvarsiprup = 2*(nc-1)+1
+            realbuffer_gb(1:nvarsiprup) = (/time_io,rootprup(1:nc-1)*r_1,  &
+                                          totrootprup(1:nc-1)*r_1/)
+
+            call binary_write_data(iprup_mpi, 1,                       &
+                         (/mtime/),offset_iprup_ijk,.true.)
+            call binary_write_data(iprup_mpi, nvarsiprup,              &
+                         realbuffer_gb,offset_iprup,.true.) 
+
+            offset_iprup = offset_iprup + nvarsiprup*nfloatbit
+
+          else
+            !c read accumulative absolute mass balance error at the restart point
+            !c For legacy mode, previous mass balance is read at restart point but
+            !c will not output until the second restart point is reached
+
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(iprup,irecord)
+
+              if (irecord > 0) then
+                !c locate to the restart time and get previous results
+                call reposition_file(iprup,irecord,time_io_rs)
+                read(iprup,*,end=11,err=11) rdummys(1:2*nc-1)
+                !c reposition to the line to append results
+                call reposition_file(iprup,irecord)
+
+                !c summation for accumulative total root uptake
+                totrootprup(1:nc-1) = totrootprup(1:nc-1) + rdummys(nc+1:2*nc-1)*r_1
+              end if
+11            continue
+            end if
+
+            if (i_append_sim < 1 .or.                                  &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(iprup,ascii_fmt) time_io,rootprup(1:nc-1)*r_1,     &
+                                     totrootprup(1:nc-1)*r_1
+            end if
+          end if
+        end if 
+      end if     
+
+!c  total solute uptake by passive solute uptake and active solute uptake
+      if (root_uptake .or. passive_uptake) then
+
+        rootrup(1:nc-1) = rootprup(1:nc-1) + rootarup(1:nc-1)
+        totrootrup(1:nc-1) = totrootprup(1:nc-1) + totrootarup(1:nc-1)
 
         if(rank == 0 .and. b_enable_output .and.                       &
            .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
       
           if (b_output_trans_binary) then
             nvarsirup = 2*(nc-1)+1
-            realbuffer_gb(1:nvarsirup) = (/time_io,rootuptake(1:nc-1), &
-                                          totrootuptake(1:nc-1)/)
+            realbuffer_gb(1:nvarsirup) = (/time_io,rootrup(1:nc-1)*r_1, &
+                                          totrootrup(1:nc-1)*r_1/)
 
             call binary_write_data(irup_mpi, 1,                        &
                          (/mtime/),offset_irup_ijk,.true.)
@@ -2986,16 +3035,16 @@
                 call reposition_file(irup,irecord)
 
                 !c summation for accumulative total root uptake
-                totrootuptake(1:nc-1) = totrootuptake(1:nc-1) +        &
-                                        rdummys(nc+1:2*nc-1)
+                totrootrup(1:nc-1) = totrootrup(1:nc-1) +        &
+                                     rdummys(nc+1:2*nc-1)
               end if
 12            continue
             end if
 
             if (i_append_sim < 1 .or.                                  &
                (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(irup,ascii_fmt) time_io,rootuptake(1:nc-1),        &
-                                    totrootuptake(1:nc-1)
+              write(irup,ascii_fmt) time_io,rootrup(1:nc-1)*r_1,    &
+                                    totrootrup(1:nc-1)*r_1
             end if
           end if
         end if
@@ -3013,7 +3062,7 @@
                 if (exclude_return_uptake .and. ircm_stage == 2) then
                   valid_rup = r0
                 else
-                  valid_rup = -(rootdiff_zn(ic,izn) + rootresp_zn(ic,izn))
+                  valid_rup = -(rootprup_zn(ic,izn) + rootarup_zn(ic,izn))
                 end if
 
                 totrcm_c_tz(ivar) = totrcm_c_tz(ivar) + valid_rup*delt
@@ -3191,11 +3240,6 @@
         totdpdiff(ic) = totdpdiff(ic) + dpdiff(ic)*delt
         totsbdiff(ic) = totsbdiff(ic) + sbdiff(ic)*delt
         totngidiff(ic) = totngidiff(ic) + ngidiff(ic)*delt
-
-        if(passive_uptake) then
-          ! passive uptake change HG
-          totrootdiff(ic) = totrootdiff(ic) + rootdiff(ic)*delt
-        end if
         
         if (ng.gt.0) then ! for lattice run time error thh 4/12/05
           totgdiff(ic) = totgdiff(ic) + gdiff(ic)*delt
@@ -3231,7 +3275,7 @@
       
         if (b_output_trans_binary) then
           if (ng .gt. 0 .and. gas_advection) then
-            nvarsimrt = 33
+            nvarsimrt = 35
             realbuffer_gb(1:nvarsimrt) = (/time_io,cfluxin(ic),         &
                                       cfluxout(ic),cstordiff(ic),       &
                                       ordiff(ic),intradiff(ic),         &
@@ -3239,8 +3283,8 @@
                                       gfluxin(ic),gfluxout(ic),         &
                                       gafluxin(ic),gafluxout(ic),       &
                                       gstordiff(ic),gdegas(ic),         &
-                                      sbdiff(ic),rootdiff(ic),          &
-                                      ngidiff(ic),                      &
+                                      sbdiff(ic),rootprup(ic),          &
+                                      rootarup(ic),ngidiff(ic),         &
                                       totcfluxin(ic),totcfluxout(ic),   &
                                       totcstordiff(ic),totordiff(ic),   &
                                       totintradiff(ic),totdpdiff(ic),   &
@@ -3248,24 +3292,26 @@
                                       totgfluxout(ic),totgafluxin(ic),  &
                                       totgafluxout(ic),totgstordiff(ic),&
                                       totgdegas(ic),totsbdiff(ic),      &
-                                      totrootdiff(ic),totngidiff(ic)/)
+                                      totrootprup(ic),totrootarup(ic),  &
+                                      totngidiff(ic)/)
           else
-            nvarsimrt = 29
+            nvarsimrt = 31
             realbuffer_gb(1:nvarsimrt) = (/time_io,cfluxin(ic),        &
                                       cfluxout(ic),cstordiff(ic),      &
                                       ordiff(ic),intradiff(ic),        &
                                       dpdiff(ic),gdiff(ic),            &
                                       gfluxin(ic),gfluxout(ic),        &
                                       gstordiff(ic),gdegas(ic),        &
-                                      sbdiff(ic),rootdiff(ic),         &
-                                      ngidiff(ic),                     &
+                                      sbdiff(ic),rootprup(ic),         &
+                                      rootarup(ic),ngidiff(ic),        &
                                       totcfluxin(ic),totcfluxout(ic),  &
                                       totcstordiff(ic),totordiff(ic),  &
                                       totintradiff(ic),totdpdiff(ic),  &
                                       totgdiff(ic),totgfluxin(ic),     &
                                       totgfluxout(ic),totgstordiff(ic),&
                                       totgdegas(ic),totsbdiff(ic),     &
-                                      totrootdiff(ic),totngidiff(ic)/)
+                                      totrootprup(ic),totrootarup(ic), &
+                                      totngidiff(ic)/)
 
           end if
 
@@ -3291,22 +3337,23 @@
                 !c reposition to the line to append results
                 call reposition_file(imrt,irecord)
 
-                totcfluxin(ic) = totcfluxin(ic) + rdummys(18)
-                totcfluxout(ic) = totcfluxout(ic) + rdummys(19)
-                totcstordiff(ic) = totcstordiff(ic) + rdummys(20)
-                totordiff(ic) = totordiff(ic) + rdummys(21)
-                totintradiff(ic) = totintradiff(ic) + rdummys(22)
-                totdpdiff(ic) = totdpdiff(ic) + rdummys(23)
-                totgdiff(ic) = totgdiff(ic) + rdummys(24)
-                totgfluxin(ic) = totgfluxin(ic) + rdummys(25)
-                totgfluxout(ic) = totgfluxout(ic) + rdummys(26)
-                totgafluxin(ic) = totgafluxin(ic) + rdummys(27)
-                totgafluxout(ic) = totgafluxout(ic) + rdummys(28)
-                totgstordiff(ic) = totgstordiff(ic) + rdummys(29)
-                totgdegas(ic) = totgdegas(ic) + rdummys(30)
-                totsbdiff(ic) = totsbdiff(ic) + rdummys(31)
-                totrootdiff(ic) = totrootdiff(ic) + rdummys(32)
-                totngidiff(ic) = totngidiff(ic) + rdummys(33)
+                totcfluxin(ic) = totcfluxin(ic) + rdummys(19)
+                totcfluxout(ic) = totcfluxout(ic) + rdummys(20)
+                totcstordiff(ic) = totcstordiff(ic) + rdummys(21)
+                totordiff(ic) = totordiff(ic) + rdummys(22)
+                totintradiff(ic) = totintradiff(ic) + rdummys(23)
+                totdpdiff(ic) = totdpdiff(ic) + rdummys(24)
+                totgdiff(ic) = totgdiff(ic) + rdummys(25)
+                totgfluxin(ic) = totgfluxin(ic) + rdummys(26)
+                totgfluxout(ic) = totgfluxout(ic) + rdummys(27)
+                totgafluxin(ic) = totgafluxin(ic) + rdummys(28)
+                totgafluxout(ic) = totgafluxout(ic) + rdummys(29)
+                totgstordiff(ic) = totgstordiff(ic) + rdummys(30)
+                totgdegas(ic) = totgdegas(ic) + rdummys(31)
+                totsbdiff(ic) = totsbdiff(ic) + rdummys(32)
+                !totrootprup(ic) = totrootprup(ic) + rdummys(33)         !already included in reading prefix_o.prup
+                !totrootarup(ic) = totrootarup(ic) + rdummys(33)         !already included in reading prefix_o.arup
+                totngidiff(ic) = totngidiff(ic) + rdummys(35)
               end if
 18            continue
             end if
@@ -3320,8 +3367,8 @@
                                       gfluxin(ic),gfluxout(ic),         &
                                       gafluxin(ic),gafluxout(ic),       &
                                       gstordiff(ic),gdegas(ic),         &
-                                      sbdiff(ic),rootdiff(ic),          &
-                                      ngidiff(ic),                      &
+                                      sbdiff(ic),rootprup(ic),          &
+                                      rootarup(ic),ngidiff(ic),         &
                                       totcfluxin(ic),totcfluxout(ic),   &
                                       totcstordiff(ic),totordiff(ic),   &
                                       totintradiff(ic),totdpdiff(ic),   &
@@ -3329,7 +3376,8 @@
                                       totgfluxout(ic),totgafluxin(ic),  &
                                       totgafluxout(ic),totgstordiff(ic),&
                                       totgdegas(ic),totsbdiff(ic),      &
-                                      totrootdiff(ic),totngidiff(ic)
+                                      totrootprup(ic),totrootarup(ic),  &
+                                      totngidiff(ic)
             end if
           else
             !c read accumulative absolute mass balance error at the restart point
@@ -3346,20 +3394,21 @@
                 !c reposition to the line to append results
                 call reposition_file(imrt,irecord)
 
-                totcfluxin(ic) = totcfluxin(ic) + rdummys(16)
-                totcfluxout(ic) = totcfluxout(ic) + rdummys(17)
-                totcstordiff(ic) = totcstordiff(ic) + rdummys(18)
-                totordiff(ic) = totordiff(ic) + rdummys(19)
-                totintradiff(ic) = totintradiff(ic) + rdummys(20)
-                totdpdiff(ic) = totdpdiff(ic) + rdummys(21)
-                totgdiff(ic) = totgdiff(ic) + rdummys(22)
-                totgfluxin(ic) = totgfluxin(ic) + rdummys(23)
-                totgfluxout(ic) = totgfluxout(ic) + rdummys(24)
-                totgstordiff(ic) = totgstordiff(ic) + rdummys(25)
-                totgdegas(ic) = totgdegas(ic) + rdummys(26)
-                totsbdiff(ic) = totsbdiff(ic) + rdummys(27)
-                totrootdiff(ic) = totrootdiff(ic) + rdummys(28)
-                totngidiff(ic) = totngidiff(ic) + rdummys(29)
+                totcfluxin(ic) = totcfluxin(ic) + rdummys(17)
+                totcfluxout(ic) = totcfluxout(ic) + rdummys(18)
+                totcstordiff(ic) = totcstordiff(ic) + rdummys(19)
+                totordiff(ic) = totordiff(ic) + rdummys(20)
+                totintradiff(ic) = totintradiff(ic) + rdummys(21)
+                totdpdiff(ic) = totdpdiff(ic) + rdummys(22)
+                totgdiff(ic) = totgdiff(ic) + rdummys(23)
+                totgfluxin(ic) = totgfluxin(ic) + rdummys(24)
+                totgfluxout(ic) = totgfluxout(ic) + rdummys(25)
+                totgstordiff(ic) = totgstordiff(ic) + rdummys(26)
+                totgdegas(ic) = totgdegas(ic) + rdummys(27)
+                totsbdiff(ic) = totsbdiff(ic) + rdummys(28)
+                !totrootprup(ic) = totrootprup(ic) + rdummys(29)        !already included in reading prefix_o.prup
+                !totrootarup(ic) = totrootarup(ic) + rdummys(30)        !already included in reading prefix_o.arup
+                totngidiff(ic) = totngidiff(ic) + rdummys(31)
               end if
 20            continue
             end if
@@ -3372,15 +3421,16 @@
                                       dpdiff(ic),gdiff(ic),            &
                                       gfluxin(ic),gfluxout(ic),        &
                                       gstordiff(ic),gdegas(ic),        &
-                                      sbdiff(ic),rootdiff(ic),         &
-                                      ngidiff(ic),                     &                                      
+                                      sbdiff(ic),rootprup(ic),         &
+                                      rootarup(ic),ngidiff(ic),        &                                      
                                       totcfluxin(ic),totcfluxout(ic),  &
                                       totcstordiff(ic),totordiff(ic),  &
                                       totintradiff(ic),totdpdiff(ic),  &
                                       totgdiff(ic),totgfluxin(ic),     &
                                       totgfluxout(ic),totgstordiff(ic),&
                                       totgdegas(ic),totsbdiff(ic),     &
-                                      totrootdiff(ic),totngidiff(ic)
+                                      totrootprup(ic),totrootarup(ic), &
+                                      totngidiff(ic)
             end if
           end if
         end if
@@ -3398,7 +3448,7 @@
         absbalance = (cfluxin(ic) - cfluxout(ic)                      &
                    - cstordiff(ic) + dpdiff(ic) + ordiff(ic)          &
                    + intradiff(ic) + gdiff(ic) + sbdiff(ic)           &
-                   + rootdiff(ic)  + rootresp(ic)                     &
+                   + rootprup(ic)  + rootarup(ic)                     &
                    + ngidiff(ic)) * delt
         relbalance = dabs(absbalance)/tmass(ic)*r100
         cculabsbal(ic) = cculabsbal(ic) + absbalance

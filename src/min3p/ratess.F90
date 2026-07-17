@@ -57,9 +57,9 @@ real*8, intent(in) :: cnew_loc(:)
 real*8, intent(in) :: cx_loc(:)                 
 real*8, intent(in) :: gammac_loc(:)             
 real*8, intent(in) :: gammax_loc(:)             
-real*8, intent(in) :: delt_loc                      ! Time increment
 real*8, intent(in) :: cmold_loc(:)                  ! Previous mineral concentrations
-real*8, intent(in) :: cmin_loc(:)                   ! 
+real*8, intent(in) :: cmin_loc(:)
+real*8, intent(in) :: delt_loc                      ! Time increment
 integer, intent(in) :: iter_rt_loc                  ! Iteration level for reactive transport
 
       

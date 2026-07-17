@@ -65,7 +65,7 @@
       tot_loc = tot_j - tot_min_uptake(ic,izn)
     end if
     !cprovi------------------------------------------------------------------------------
-    !cprovi Compute the passive uptake
+    !cprovi Compute the passive solute uptake
     !cprovi It depends on transpiration rate  
     !cprovi------------------------------------------------------------------------------
     tot_pass_uptk_j = qroot_j * tot_j
@@ -80,7 +80,7 @@
     root_dens = root_length_dens_j / r1000          ! m2/L_b
     
     !cprovi------------------------------------------------------------------------------
-    !cprovi Compute the active uptake  
+    !cprovi Compute the active solute uptake  
     !cprovi------------------------------------------------------------------------------
     tot_act_uptk_j = fm_uptake(ic,izn)/(km_uptake(ic,izn) + tot_loc)
     tot_act_uptk_j = tot_act_uptk_j + order1_uptake(ic,izn)

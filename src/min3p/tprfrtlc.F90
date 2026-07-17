@@ -2975,26 +2975,20 @@
         return
       end if
 
-!cdsu fixed bug on 2023-06-24. 
-!cdsu First, compress total aqueous component concentration vector in case of
-!cdsu equilibrium reactions should be placed before data output.
-!cdsu Second, updating totc (totcnew) here causes slightly different 
+!cdsu Fixed bug that introduced in Revison 865. 
+!cdsu Updtsvap and totconc are rquired when redox components are considered
+!cdsu since totcnew is the compressed concentration vector. The number of unknowns is reduced 
+!cdsu due to redox equilibrium reactions.
+
+!cdsu Updating totc (totcnew) here causes slightly different 
 !cdsu totc (totcnew) value. This error can be accumulated, resulting in different 
-!cdsu final results when transient output is used. Actually the three functions
-!cdsu (updtsvap, totconc, comptotc) are not required since the total concentration
-!cdsu have already been updated before tprfrtlc. 
+!cdsu final results when transient output is used. 
 
 !c  update secondary variables before print-out
-!c      call updtsvap(c,cx,gammac,gammax,strion,tid)
+      call updtsvap(c,cx,gammac,gammax,strion,tid)
   
 !c  total aqueous component concentrations  
-!c      call totconc(c,cx,totc)
-
-!c  compress total aqueous component concentration vector in case of
-!c  equilibrium reactions.
-!c      if (redox_equil.and.nr.gt.0) then
-!c        call comptotc(totc) 
-!c      end if
+      call totconc(c,cx,totc)
 
       !c  print out results of current time step
 
@@ -3728,7 +3722,13 @@
         
         end if
       end if
-      
+
+!c  compress total aqueous component concentration vector in case of
+!c  equilibrium reactions.
+      if (redox_equil.and.nr.gt.0) then
+        call comptotc(totc) 
+      end if
+
       call memory_monitor(-sizeof(nametemp),'nametemp',.false.)
       call memory_monitor(-sizeof(l_nametemp),'l_nametemp',.false.)
       call memory_monitor(-sizeof(valuetemp),'valuetemp',.false.)

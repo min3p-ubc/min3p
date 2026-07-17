@@ -170,8 +170,8 @@
       character*256 :: strfilename
       character*2048 :: strbuffer
       
-      integer*4 :: nvarsimvs, nvarsimrt, nvarsiresp, nvarsirup,        &
-                   nvarsidix, nvarsispm, ilun, nlun
+      integer*4 :: nvarsimvs, nvarsimrt, nvarsiarup, nvarsirup,        &
+                   nvarsidix, nvarsispm, nvarsiprup, ilun, nlun
       character*72, allocatable :: tec_variables(:)
       logical :: b_rewind_valid
 
@@ -641,18 +641,18 @@
                 write(ifls,'(2a)') '3        total outflow                   ',&
                                    'kg/day'
                 write(ifls,'(2a)') '4        total accumulative inflow       ',&
-                                   'kg/elapsed time'
+                                   'kg'
                 write(ifls,'(2a)') '5        total accumulative outflow      ',&
-                                   'kg/elapsed time'
+                                   'kg'
               else
                 write(ifls,'(2a)') '2        total inflow                    ',&
                                    'm^3/day'
                 write(ifls,'(2a)') '3        total outflow                   ',&
                                    'm^3/day'
                 write(ifls,'(2a)') '2        total accumulative inflow       ',&
-                                   'm^3/elapsed time'
+                                   'm^3'
                 write(ifls,'(2a)') '3        total accumulative outflow      ',&
-                                   'm^3/elapsed time'
+                                   'm^3'
               end if
             end if
           end do
@@ -665,31 +665,33 @@
 !c  mass balance - reactive transport
 
       if (mass_balance_rt) then
+
+!c  solute uptake by active root uptake
         if (root_uptake) then
-          !c root respiration related code
-          iresp = lun_get()
+          !c active root uptake related code
+          iarup = lun_get()
           if (b_enable_output .and. b_output_trans_binary) then
-            iresp_mpi = 0
-            offset_iresp = 0
-            offset_iresp_ijk = 0
+            iarup_mpi = 0
+            offset_iarup = 0
+            offset_iarup_ijk = 0
           end if
 
           if (b_enable_output) then
             if (b_output_trans_binary) then
 #ifndef PETSC
-              if (iresp_mpi < 10) then
-                iresp_mpi = lun_get()
+              if (iarup_mpi < 10) then
+                iarup_mpi = lun_get()
               end if
 #endif
-              call binary_file_open(PETSC_COMM_SELF,iresp_mpi,             &
-                                    prefix(:l_prfx)//'_o.resp',.true.)
+              call binary_file_open(PETSC_COMM_SELF,iarup_mpi,             &
+                                    prefix(:l_prfx)//'_o.arup',.true.)
             else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.resp')
+              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.arup')
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(iresp,file=prefix(:l_prfx)//'_o.resp',status='unknown', &
+                open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
                      form='formatted',position='rewind')
               else
-                open(iresp,file=prefix(:l_prfx)//'_o.resp',status='unknown', &
+                open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
                      form='formatted')
               end if
             end if
@@ -697,70 +699,70 @@
 !c  version information
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(iresp, "#")
+                call writeversion2file(iarup, "#")
               end if
             end if
           
           
             if (b_output_trans_binary) then
-              nvarsiresp = 2*(nc-1)+1
+              nvarsiarup = 2*(nc-1)+1
               tec_variables(1) = "time"
               do ic = 1, nc-1
                 tec_variables(ic+1) = trim(namec(ic))//                &
-                    " respiration [mol/day]" 
+                    " solute uptake [mol/day]" 
               end do
               do ic = 1, nc-1
                 tec_variables(nc+ic) = trim(namec(ic))//               &
-                    " total respiration [mol/elapsed time]" 
+                    " accumulative solute uptake [mol]" 
               end do
             
-              strbuffer = 'root respiration - selected species'
+              strbuffer = 'active solute uptake - selected species'
             
-              offset_iresp = 0  
+              offset_iarup = 0  
               call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           iresp_mpi, "#!TDV102",'dataset '//          &
-                           prefix(:l_prfx),offset_iresp,.true.,        &
+                           iarup_mpi, "#!TDV102",'dataset '//          &
+                           prefix(:l_prfx),offset_iarup,.true.,        &
                            .true.)  
   
               call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           iresp_mpi, nvarsiresp,                      &
-                           tec_variables(1:nvarsiresp), offset_iresp,  &
+                           iarup_mpi, nvarsiarup,                      &
+                           tec_variables(1:nvarsiarup), offset_iarup,  &
                            .true.,.true.)               
 
               call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           iresp_mpi,trim(strbuffer),                  &
-                           offset_iresp, 1, 1, 1, .true.,.true.,       &
+                           iarup_mpi,trim(strbuffer),                  &
+                           offset_iarup, 1, 1, 1, .true.,.true.,       &
                            b_output_multizone)
-              offset_iresp_ijk = offset_iresp - 5*4
+              offset_iarup_ijk = offset_iarup - 5*4
 
               call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           iresp_mpi,nvarsiresp,0,offset_iresp,        &
+                           iarup_mpi,nvarsiarup,0,offset_iarup,        &
                            .true.,.true.,b_output_multizone) 
             else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(iresp,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(iarup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
                 strbuffer = 'variables = "time"'
 
-                do ic = 1,n
+                do ic = 1,nc-1
                   strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' respiration [mol/day]"'
+                              ' solute uptake [mol/day]"'
                 end do
                  
-                do ic = 1,n
+                do ic = 1,nc-1
                   strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' total respiration [mol/elapsed time]"'
+                              ' accumulative solute uptake [mol]"'
                 end do
 
-                write(iresp,'(a)') trim(strbuffer)
-                write(iresp,'(2a)')                                       &
-                   'zone t = "root respiration - selected species", f=point'
+                write(iarup,'(a)') trim(strbuffer)
+                write(iarup,'(2a)')                                       &
+                   'zone t = "active solute uptake - selected species", f=point'
               end if
             end if
 
-            write(ifls,'(/a/72a/)') 'root respiration - selected species',  &
+            write(ifls,'(/a/72a/)') 'active solute uptake - selected species',  &
                                     ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.resp'
+            write(ifls,'(a/)') prefix(:l_prfx)//'_o.arup'
 
             write(ifls,'(2a)')  'column   entry                           ',&
                                 'unit'
@@ -769,26 +771,150 @@
             do ic = 1,nc-1
               if (ic.lt.9) then
                 write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                                               ' respiration','mol/day'
+                      ' solute uptake','mol/day'
               else
                 write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                                               ' respiration','mol/day'
+                      ' solute uptake','mol/day'
               end if
             end do
 
             do ic = 1,nc-1
               if (ic.lt.9) then
                 write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' total respiration','mol/elapsed time'
+                      ' accumulative solute uptake','mol'
               else
                 write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' total respiration','mol/elapsed time'
+                      ' accumulative solute uptake','mol'
               end if
             end do          
           end if
         end if
 
-!c  total solute uptake by passive uptake and root respiration
+!c  solute uptake by passive solute uptake
+        if (root_uptake .or. passive_uptake) then
+          !c total passive solute uptake related code
+          iprup = lun_get()
+          if (b_enable_output .and. b_output_trans_binary) then
+            iprup_mpi = 0
+            offset_iprup = 0
+            offset_iprup_ijk = 0
+          end if
+
+          if (b_enable_output) then
+            if (b_output_trans_binary) then
+#ifndef PETSC
+              if (iprup_mpi < 10) then
+                iprup_mpi = lun_get()
+              end if
+#endif
+              call binary_file_open(PETSC_COMM_SELF,iprup_mpi,          &
+                                    prefix(:l_prfx)//'_o.prup',.true.)
+            else
+              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.prup')
+              if (b_rewind_valid .and. i_append_sim > 0) then
+                open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
+                     form='formatted',position='rewind')
+              else
+                open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
+                     form='formatted')
+              end if
+            end if
+          
+!c  version information
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+                call writeversion2file(iprup, "#")
+              end if
+            end if
+          
+          
+            if (b_output_trans_binary) then
+              nvarsiprup = 2*(nc-1)+1
+              tec_variables(1) = "time"
+              do ic = 1, nc-1
+                tec_variables(ic+1) = trim(namec(ic))//                &
+                    " solute uptake [mol/day]" 
+              end do
+              do ic = 1, nc-1
+                tec_variables(nc+ic) = trim(namec(ic))//               &
+                    " accumulative solute uptake [mol]" 
+              end do
+            
+              strbuffer = 'passive solute uptake - selected species'
+            
+              offset_iprup = 0  
+              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                           iprup_mpi, "#!TDV102",'dataset '//           &
+                           prefix(:l_prfx),offset_iprup,.true.,         &
+                           .true.)  
+  
+              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                           iprup_mpi, nvarsiprup,                        &
+                           tec_variables(1:nvarsiprup), offset_iprup,    &
+                           .true.,.true.)               
+
+              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,       &
+                           iprup_mpi,trim(strbuffer),                    &
+                           offset_iprup, 1, 1, 1, .true.,.true.,         &
+                           b_output_multizone)
+              offset_iprup_ijk = offset_iprup - 5*4
+
+              call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                           iprup_mpi,nvarsiprup,0,offset_iprup,          &
+                           .true.,.true.,b_output_multizone) 
+            else
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                write(iprup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+                strbuffer = 'variables = "time"'
+
+                do ic = 1,nc-1
+                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                              ' solute uptake [mol/day]"'
+                end do
+                 
+                do ic = 1,nc-1
+                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                              ' accumulative solute uptake [mol]"'
+                end do
+
+                write(iprup,'(a)') trim(strbuffer)
+                write(iprup,'(2a)')                                       &
+                   'zone t = "passive solute uptake - selected species", f=point'
+              end if
+            end if
+
+            write(ifls,'(/a/72a/)') 'passive solute uptake - selected species',  &
+                                    ('-',i=1,72)
+            write(ifls,'(a/)') prefix(:l_prfx)//'_o.prup'
+
+            write(ifls,'(2a)')  'column   entry                           ', &
+                                'unit'
+            write(ifls,'(2a)')  '1        time                            ', &
+                                 time_unit
+            do ic = 1,nc-1
+              if (ic.lt.9) then
+                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                      ' solute uptake','mol/day'
+              else
+                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                      ' solute uptake','mol/day'
+              end if
+            end do
+
+            do ic = 1,nc-1
+              if (ic.lt.9) then
+                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                      ' accumulative solute uptake','mol'
+              else
+                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                      ' accumulative solute uptake','mol'
+              end if
+            end do          
+          end if
+        end if
+
+!c  total solute uptake by passive solute uptake and active solute uptake
         if (root_uptake .or. passive_uptake) then
           !c total root uptake related code
           irup = lun_get()
@@ -831,14 +957,14 @@
               tec_variables(1) = "time"
               do ic = 1, nc-1
                 tec_variables(ic+1) = trim(namec(ic))//                &
-                    " root uptake [mol/day]" 
+                    " solute uptake [mol/day]" 
               end do
               do ic = 1, nc-1
                 tec_variables(nc+ic) = trim(namec(ic))//               &
-                    " total root uptake [mol/elapsed time]" 
+                    " accumulative solute uptake [mol]" 
               end do
             
-              strbuffer = 'total root uptake - selected species'
+              strbuffer = 'total solute uptake - selected species'
             
               offset_irup = 0  
               call tecplot_binary_write_header(PETSC_COMM_SELF,        &
@@ -866,23 +992,23 @@
 
                 strbuffer = 'variables = "time"'
 
-                do ic = 1,n
+                do ic = 1,nc-1
                   strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' root uptake [mol/day]"'
+                              ' solute uptake [mol/day]"'
                 end do
                  
-                do ic = 1,n
+                do ic = 1,nc-1
                   strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' total root uptake [mol/elapsed time]"'
+                              ' accumulative solute uptake [mol]"'
                 end do
 
                 write(irup,'(a)') trim(strbuffer)
-                write(irup,'(2a)')                                           &
-                   'zone t = "total root uptake - selected species", f=point'
+                write(irup,'(a)')                                            &
+                   'zone t = "accumulative total solute uptake - selected species", f=point'
               end if
             end if
 
-            write(ifls,'(/a/72a/)') 'total root uptake - selected species',  &
+            write(ifls,'(/a/72a/)') 'total solute uptake - selected species',  &
                                     ('-',i=1,72)
             write(ifls,'(a/)') prefix(:l_prfx)//'_o.rup'
 
@@ -893,20 +1019,20 @@
             do ic = 1,nc-1
               if (ic.lt.9) then
                 write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' root uptake','mol/day'
+                      ' solute uptake','mol/day'
               else
                 write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' root uptake','mol/day'
+                      ' solute uptake','mol/day'
               end if
             end do
 
             do ic = 1,nc-1
               if (ic.lt.9) then
                 write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' total root uptake','mol'
+                      ' accumulative solute uptake','mol'
               else
                 write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' total root uptake','mol'
+                      ' accumulative solute uptake','mol'
               end if
             end do          
           end if
@@ -1848,7 +1974,7 @@
           
           if (b_output_trans_binary) then
             if (ng .gt. 0 .and. gas_advection) then
-              nvarsimrt = 33
+              nvarsimrt = 35
               tec_variables(1:nvarsimrt) = [character(len=72) ::       &
               "time ["//time_unit(:l_time_unit)//"]",                  &
               "mass influx [mol/d]",                                   &
@@ -1865,37 +1991,39 @@
               "change in storage (gas phase) [mol/d]",                 &
               "mass loss - degassing [mol/d]",                         &
               "source/sink from sorbed phase [mol/d]",                 &
-              "source/sink from root uptake [mol/d]",                  &
+              "source/sink from passive solute uptake [mol/d]",        &
+              "source/sink from active solute uptake [mol/d]",         &
               "source/sink from noble gas ingrowth [mol/d]",           &
-              "total mass influx [mol/elapsed time]",                  &
-              "total mass outflux [mol/elapsed time]",                 &
-              "total change in storage [mol/elapsed time]",            &
-              "total source/sink from oxidation/reduction reactns "//  &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from intra-aqueous reactns "//        &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from mineral phase "//                &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from gas phase "//                    &
-              "[mol/elapsed time]",                                    &
-              "total mass influx by diffusion (gas phase) "//          &
-              "[mol/elapsed time]",                                    &
-              "total mass outflux by diffusion (gas phase) "//         &
-              "[mol/elapsed time]",                                    &
-              "total mass influx by advection (gas phase) "//          &
-              "[mol/elapsed time]",                                    &
-              "total mass outflux by advection (gas phase) "//         &
-              "[mol/elapsed time]",                                    &
-              "total change in storage (gas phase) "//                 &
-              "[mol/elapsed time]",                                    &
-              "total mass loss - degassing [mol/elapsed time]",        &
-              "total source/sink from sorbed phase "//                 &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from root uptake [mol/elapsed time]", &
-              "total source/sink from noble gas ingrowth "//           &
-              "[mol/elapsed time]"]
+              "accumulative mass influx [mol]",                        &
+              "accumulative mass outflux [mol]",                       &
+              "accumulative change in storage [mol]",                  &
+              "accumulative source/sink from oxidation/reduction reactns "//  &
+              "[mol]",                                                        &
+              "accumulative source/sink from intra-aqueous reactns "//        &
+              "[mol]",                                                        &
+              "accumulative source/sink from mineral phase "//                &
+              "[mol]",                                                        &
+              "accumulative source/sink from gas phase "//                    &
+              "[mol]",                                                        &
+              "accumulative mass influx by diffusion (gas phase) "//          &
+              "[mol]",                                                        &
+              "accumulative mass outflux by diffusion (gas phase) "//         &
+              "[mol]",                                                        &
+              "accumulative mass influx by advection (gas phase) "//          &
+              "[mol]",                                                        &
+              "accumulative mass outflux by advection (gas phase) "//         &
+              "[mol]",                                                        &
+              "accumulative change in storage (gas phase) "//                 &
+              "[mol]",                                                        &
+              "accumulative mass loss - degassing [mol]",                     &
+              "accumulative source/sink from sorbed phase "//                 &
+              "[mol]",                                                        &
+              "accumulative source/sink from passive solute uptake [mol]",    &
+              "accumulative source/sink from active solute uptake [mol]",     &
+              "accumulative source/sink from noble gas ingrowth "//           &
+              "[mol]"]
             else
-              nvarsimrt = 29
+              nvarsimrt = 31
               tec_variables(1:nvarsimrt) = [character(len=72) ::       &
               "time ["//time_unit(:l_time_unit)//"]",                  &
               "mass influx [mol/d]",                                   &
@@ -1910,30 +2038,32 @@
               "change in storage (gas phase) [mol/d]",                 &
               "mass loss - degassing [mol/d]",                         &
               "source/sink from sorbed phase [mol/d]",                 &
-              "source/sink from root uptake [mol/d]",                  &
+              "source/sink from passive solute uptake [mol/d]",        &
+              "source/sink from active solute uptake [mol/d]",         &
               "source/sink from noble gas ingrowth [mol/d]",           &
-              "total mass influx [mol/elapsed time]",                  &
-              "total mass outflux [mol/elapsed time]",                 &
-              "total change in storage [mol/elapsed time]",            &
-              "total source/sink from oxidation/reduction reactns "//  &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from intra-aqueous reactns "//        &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from mineral phase "//                &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from gas phase "//                    &
-              "[mol/elapsed time]",                                    &
-              "total mass influx (gas phase) "//                       &
-              "[mol/elapsed time]",                                    &
-              "total mass outflux (gas phase) [mol/elapsed time]",     &
-              "total change in storage (gas phase) "//                 &
-              "[mol/elapsed time]",                                    &
-              "total mass loss - degassing [mol/elapsed time]",        &
-              "total source/sink from sorbed phase "//                 &
-              "[mol/elapsed time]",                                    &
-              "total source/sink from root uptake [mol/elapsed time]", &
-              "total source/sink from noble gas ingrowth "//           &
-              "[mol/elapsed time]"]
+              "accumulative mass influx [mol]",                        &
+              "accumulative mass outflux [mol]",                       &
+              "accumulative change in storage [mol]",                  &
+              "accumulative source/sink from oxidation/reduction reactns "//  &
+              "[mol]",                                                        &
+              "accumulative source/sink from intra-aqueous reactns "//        &
+              "[mol]",                                                        &
+              "accumulative source/sink from mineral phase "//                &
+              "[mol]",                                                        &
+              "accumulative source/sink from gas phase "//                    &
+              "[mol]",                                                        &
+              "accumulative mass influx (gas phase) "//                       &
+              "[mol]",                                                        &
+              "accumulative mass outflux (gas phase) [mol]",                  &
+              "accumulative change in storage (gas phase) "//                 &
+              "[mol]",                                                        &
+              "accumulative mass loss - degassing [mol]",                     &
+              "accumulative source/sink from sorbed phase "//                 &
+              "[mol]",                                                        &
+              "accumulative source/sink from passive solute uptake [mol]",    &
+              "accumulative source/sink from active solute uptake [mol]",     &
+              "accumulative source/sink from noble gas ingrowth "//           &
+              "[mol]"]
             end if
 
 
@@ -1967,7 +2097,7 @@
               write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               if (ng .gt. 0 .and. gas_advection) then
-                write(imrt,'(45a)') 'variables = "time [',                 &
+                write(imrt,'(47a)') 'variables = "time [',                 &
                  time_unit(:l_time_unit),']", ',                           &
                 '"mass influx [mol/d]", ',                                 &
                 '"mass outflux [mol/d]", ',                                &
@@ -1983,37 +2113,39 @@
                 '"change in storage (gas phase) [mol/d]", ',               &
                 '"mass loss - degassing [mol/d]", ',                       &
                 '"source/sink from sorbed phase [mol/d]", ',               &
-                '"source/sink from root uptake [mol/d]",',                 &
+                '"source/sink from passive solute uptake [mol/d]",',       &
+                '"source/sink from active solute uptake [mol/d]",',        &
                 '"source/sink from noble gas ingrowth [mol/d]",',          &
-                '"total mass influx [mol/elapsed time]", ',                &
-                '"total mass outflux [mol/elapsed time]", ',               &
-                '"total change in storage [mol/elapsed time]", ',          &
-                '"total source/sink from oxidation/reduction reactns ',    &
-                '[mol/elapsed time]", ',                                   &
-                '"total source/sink from intra-aqueous reactns ',          &
-                '[mol/elapsed time]", ',                                   &
-                '"total source/sink from mineral phase ',                  &
-                '[mol/elapsed time]", ',                                   &
-                '"total source/sink from gas phase ',                      &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass influx by diffusion (gas phase) ',            &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass outflux by diffusion (gas phase) ',           &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass influx by advection (gas phase) ',            &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass outflux by advection (gas phase) ',           &
-                '[mol/elapsed time]", ',                                   &
-                '"total change in storage (gas phase) ',                   &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass loss - degassing [mol/elapsed time]", ',      &
-                '"total source/sink from sorbed phase ',                   &
-                '[mol/elapsed time]",',                                    &
-                '"total source/sink from root uptake [mol/elapsed time]",',&
-                '"total source/sink from noble gas ingrowth '//            &
-                '[mol/elapsed time]"'
+                '"accumulative mass influx [mol]", ',                      &
+                '"accumulative mass outflux [mol]", ',                     &
+                '"accumulative change in storage [mol]", ',                &
+                '"accumulative source/sink from oxidation/reduction reactns ',   &
+                '[mol]", ',                                                      &
+                '"accumulative source/sink from intra-aqueous reactns ',         &
+                '[mol]", ',                                                      &
+                '"accumulative source/sink from mineral phase ',                 &
+                '[mol]", ',                                                      &
+                '"accumulative source/sink from gas phase ',                     &
+                '[mol]", ',                                                      &
+                '"accumulative mass influx by diffusion (gas phase) ',           &
+                '[mol]", ',                                                      &
+                '"accumulative mass outflux by diffusion (gas phase) ',          &
+                '[mol]", ',                                                      &
+                '"accumulative mass influx by advection (gas phase) ',           &
+                '[mol]", ',                                                      &
+                '"accumulative mass outflux by advection (gas phase) ',          &
+                '[mol]", ',                                                      &
+                '"accumulative change in storage (gas phase) ',                  &
+                '[mol]", ',                                                      &
+                '"accumulative mass loss - degassing [mol]", ',                  &
+                '"accumulative source/sink from sorbed phase ',                  &
+                '[mol]",',                                                       &
+                '"accumulative source/sink from passive solute uptake [mol]",',  &
+                '"accumulative source/sink from active solute uptake [mol]",',   &
+                '"accumulative source/sink from noble gas ingrowth '//           &
+                '[mol]"'
               else
-                write(imrt,'(42a)') 'variables = "time [',                 &
+                write(imrt,'(44a)') 'variables = "time [',                 &
                  time_unit(:l_time_unit),']", ',                           &
                 '"mass influx [mol/d]", ',                                 &
                 '"mass outflux [mol/d]", ',                                &
@@ -2027,30 +2159,32 @@
                 '"change in storage (gas phase) [mol/d]", ',               &
                 '"mass loss - degassing [mol/d]", ',                       &
                 '"source/sink from sorbed phase [mol/d]", ',               &
-                '"source/sink from root uptake [mol/d]",',                 &
+                '"source/sink from passive solute uptake [mol/d]",',       &
+                '"source/sink from active solute uptake [mol/d]",',        &
                 '"source/sink from noble gas ingrowth [mol/d]",',          &
-                '"total mass influx [mol/elapsed time]", ',                &
-                '"total mass outflux [mol/elapsed time]", ',               &
-                '"total change in storage [mol/elapsed time]", ',          &
-                '"total source/sink from oxidation/reduction reactns ',    &
-                '[mol/elapsed time]", ',                                   &
-                '"total source/sink from intra-aqueous reactns ',          &
-                '[mol/elapsed time]", ',                                   &
-                '"total source/sink from mineral phase ',                  &
-                '[mol/elapsed time]", ',                                   &
-                '"total source/sink from gas phase ',                      &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass influx (gas phase) ',                         &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass outflux (gas phase) [mol/elapsed time]", ',   &
-                '"total change in storage (gas phase) ',                   &
-                '[mol/elapsed time]", ',                                   &
-                '"total mass loss - degassing [mol/elapsed time]", ',      &
-                '"total source/sink from sorbed phase ',                   &
-                '[mol/elapsed time]",',                                    &
-                '"total source/sink from root uptake [mol/elapsed time]",',&
-                '"total source/sink from noble gas ingrowth '//            &
-                '[mol/elapsed time]"'
+                '"accumulative mass influx [mol]", ',                      &
+                '"accumulative mass outflux [mol]", ',                     &
+                '"accumulative change in storage [mol]", ',                &
+                '"accumulative source/sink from oxidation/reduction reactns ',  &
+                '[mol]", ',                                                     &
+                '"accumulative source/sink from intra-aqueous reactns ',        &
+                '[mol]", ',                                                     &
+                '"accumulative source/sink from mineral phase ',                &
+                '[mol]", ',                                                     &
+                '"accumulative source/sink from gas phase ',                    &
+                '[mol]", ',                                                     &
+                '"accumulative mass influx (gas phase) ',                       &
+                '[mol]", ',                                                     &
+                '"accumulative mass outflux (gas phase) [mol]", ',              &
+                '"accumulative change in storage (gas phase) ',                 &
+                '[mol]", ',                                                     &
+                '"accumulative mass loss - degassing [mol]", ',                 &
+                '"accumulative source/sink from sorbed phase ',                 &
+                '[mol]",',                                                      &
+                '"accumulative source/sink from passive solute uptake [mol]",', &
+                '"accumulative source/sink from active solute uptake [mol]",',  &
+                '"accumulative source/sink from noble gas ingrowth '//          &
+                '[mol]"'
               end if
 
               write(imrt,'(3a)') 'zone t = "mass balance for component ',  &
@@ -2119,59 +2253,65 @@
                 '15     source/sink from sorbed phase               ', &
                 'mol/day'
           write(ifls,'(2a)')                                           &
-                '16     source/sink from root uptake                ', &
+                '16     source/sink from passive solute uptake      ', &
                 'mol/day'
           write(ifls,'(2a)')                                           &
-                '17     source/sink from noble gas ingrowth         ', &
+                '17     source/sink from active solute uptake       ', &
                 'mol/day'
           write(ifls,'(2a)')                                           &
-                '18     total mass influx                           ', &
-                'mol/elapsed time'
+                '18     source/sink from noble gas ingrowth         ', &
+                'mol/day'
           write(ifls,'(2a)')                                           &
-                '19     total mass outflux                          ', &
-                'mol/elapsed time'
+                '19     accumulative mass influx                    ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '20     total change in storage                     ', &
-                'mol/elapsed time'
+                '20     accumulative mass outflux                   ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '21     total source/sink from oxidation/reduction  ', &
-                'mol/elapsed time'
+                '21     accumulative change in storage              ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '22     total source/sink from intra-aqueous reactns', &
-                'mol/elapsed time'
+                '22     accumulative source/sink from oxidation/reduction  ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '23     total source/sink from mineral phase        ', &
-                'mol/elapsed time'
+                '23     accumulative source/sink from intra-aqueous reactns', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '24     total source/sink from gas phase            ', &
-                'mol/elapsed time'
+                '24     accumulative source/sink from mineral phase ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '25     total mass influx by diffusion (gas phase)  ', &
-                'mol/elapsed time'
+                '25     accumulative source/sink from gas phase     ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '26     total mass outflux by diffusion (gas phase) ', &
-                'mol/elapsed time'
+                '26     accumulative mass influx by diffusion (gas phase)  ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '27     total mass influx by advection (gas phase)  ', &
-                'mol/elapsed time'
+                '27     accumulative mass outflux by diffusion (gas phase) ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '28     total mass outflux by advection (gas phase) ', &
-                'mol/elapsed time'
+                '28     accumulative mass influx by advection (gas phase)  ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '29     total change in storage (gas phase)         ', &
-                'mol/elapsed time'
+                '29     accumulative mass outflux by advection (gas phase) ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '30     total mass loss - degassing                 ', &
-                'mol/elapsed time'
+                '30     accumulative change in storage (gas phase)         ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '31     total source/sink from sorbed phase         ', &
-                'mol/elapsed time'
+                '31     accumulative mass loss - degassing                 ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '32     total source/sink from root uptake          ', &
-                'mol/elapsed time'        
+                '32     accumulative source/sink from sorbed phase         ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '33     total source/sink from noble gas ingrowth   ', &
-                'mol/elapsed time'      
+                '33     accumulative source/sink from passive solute uptake', &
+                'mol'      
+          write(ifls,'(2a)')                                           &
+                '34     accumulative source/sink from active solute uptake ', &
+                'mol' 
+          write(ifls,'(2a)')                                           &
+                '35     accumulative source/sink from noble gas ingrowth   ', &
+                'mol'      
         else
           write(ifls,'(/2a)')                                          &
                 'column entry                                       ', &
@@ -2216,53 +2356,59 @@
                 '13     source/sink from sorbed phase               ', &
                 'mol/day'
           write(ifls,'(2a)')                                           &
-                '14     source/sink from root uptake                ', &
+                '14     source/sink from passive solute uptake      ', &
                 'mol/day'
           write(ifls,'(2a)')                                           &
-                '15     source/sink from noble gas ingrowth         ', &
+                '15     source/sink from active solute uptake       ', &
                 'mol/day'
           write(ifls,'(2a)')                                           &
-                '16     total mass influx                           ', &
-                'mol/elapsed time'
+                '16     source/sink from noble gas ingrowth         ', &
+                'mol/day'
           write(ifls,'(2a)')                                           &
-                '17     total mass outflux                          ', &
-                'mol/elapsed time'
+                '17     accumulative mass influx                    ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '18     total change in storage                     ', &
-                'mol/elapsed time'
+                '18     accumulative mass outflux                   ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '19     total source/sink from oxidation/reduction  ', &
-                'mol/elapsed time'
+                '19     accumulative change in storage              ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '20     total source/sink from intra-aqueous        ', &
-                'mol/elapsed time'
+                '20     accumulative source/sink from oxidation/reduction  ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '21     total source/sink from mineral phase        ', &
-                'mol/elapsed time'
+                '21     accumulative source/sink from intra-aqueous ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '22     total source/sink from gas phase            ', &
-                'mol/elapsed time'
+                '22     accumulative source/sink from mineral phase ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '23     total mass influx (gas phase)               ', &
-                'mol/elapsed time'
+                '23     accumulative source/sink from gas phase     ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '24     total mass outflux (gas phase)              ', &
-                'mol/elapsed time'
+                '24     accumulative mass influx (gas phase)        ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '25     total change in storage (gas phase)         ', &
-                'mol/elapsed time'
+                '25     accumulative mass outflux (gas phase)       ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '26     total mass loss - degassing                 ', &
-                'mol/elapsed time'
+                '26     accumulative change in storage (gas phase)  ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '27     total source/sink from sorbed phase         ', &
-                'mol/elapsed time'
+                '27     accumulative mass loss - degassing          ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '28     total source/sink from root uptake          ', &
-                'mol/elapsed time'
+                '28     accumulative source/sink from sorbed phase  ', &
+                'mol'
           write(ifls,'(2a)')                                           &
-                '29     total source/sink from noble gas ingrowth   ', &
-                'mol/elapsed time'
+                '29     accumulative source/sink from passive solute uptake', &
+                'mol'
+          write(ifls,'(2a)')                                           &
+                '30     accumulative source/sink from active solute uptake ', &
+                'mol'
+          write(ifls,'(2a)')                                           &
+                '31     accumulative source/sink from noble gas ingrowth   ', &
+                'mol'
         end if
 
         end if
@@ -2486,16 +2632,16 @@
                     "mass outflux by diffusion (gas phase) [mol/d]",         &
                     "mass influx by advection (gas phase) [mol/d]",          &
                     "mass outflux by advection (gas phase) [mol/d]",         &
-                    "total mass influx [mol/elapsed time]",                  &
-                    "total mass outflux [mol/elapsed time]",                 &
-                    "total mass influx by diffusion (gas phase) "//          &
-                    "[mol/elapsed time]",                                    &
-                    "total mass outflux by diffusion (gas phase) "//         &
-                    "[mol/elapsed time]",                                    &
-                    "total mass influx by advection (gas phase) "//          &
-                    "[mol/elapsed time]",                                    &
-                    "total mass outflux by advection (gas phase) "//         &
-                    "[mol/elapsed time]"]
+                    "accumulative mass influx [mol]",                        &
+                    "accumulative mass outflux [mol]",                       &
+                    "accumulative mass influx by diffusion (gas phase) "//   &
+                    "[mol]",                                                 &
+                    "accumulative mass outflux by diffusion (gas phase) "//  &
+                    "[mol]",                                                 &
+                    "accumulative mass influx by advection (gas phase) "//   &
+                    "[mol]",                                                 &
+                    "accumulative mass outflux by advection (gas phase) "//  &
+                    "[mol]"]
                   else
                     nvarsimrt = 9
                     tec_variables(1:nvarsimrt) = [character(len=72) ::       &
@@ -2504,10 +2650,10 @@
                     "mass outflux [mol/d]",                                  &
                     "mass influx (gas phase) [mol/d]",                       &
                     "mass outflux (gas phase) [mol/d]",                      &
-                    "total mass influx [mol/elapsed time]",                  &
-                    "total mass outflux [mol/elapsed time]",                 &
-                    "total mass influx (gas phase) [mol/elapsed time]",      &
-                    "total mass outflux (gas phase) [mol/elapsed time]"]
+                    "accumulative mass influx [mol]",                        &
+                    "accumulative mass outflux [mol]",                       &
+                    "accumulative mass influx (gas phase) [mol]",            &
+                    "accumulative mass outflux (gas phase) [mol]"]
                   end if
 
                   write(strbuffer,'(5a)') 'mass through specified boundary ',&
@@ -2548,16 +2694,16 @@
                       '"mass outflux by diffusion (gas phase) [mol/d]", ',     &
                       '"mass influx by advection (gas phase) [mol/d]", ',      &
                       '"mass outflux by advection (gas phase) [mol/d]", ',     &
-                      '"total mass influx [mol/elapsed time]", ',              &
-                      '"total mass outflux [mol/elapsed time]", ',             &
-                      '"total mass influx by diffusion (gas phase) ',          &
-                      '[mol/elapsed time]", ',                                 &
-                      '"total mass outflux by diffusion (gas phase) ',         &
-                      '[mol/elapsed time]", ',                                 &
-                      '"total mass influx by advection (gas phase) ',          &
-                      '[mol/elapsed time]", ',                                 &
-                      '"total mass outflux by advection (gas phase) ',         &
-                      '[mol/elapsed time]"'
+                      '"accumulative mass influx [mol]", ',                    &
+                      '"accumulative mass outflux [mol]", ',                   &
+                      '"accumulative mass influx by diffusion (gas phase) ',   &
+                      '[mol]", ',                                              &
+                      '"accumulative mass outflux by diffusion (gas phase) ',  &
+                      '[mol]", ',                                              &
+                      '"accumulative mass influx by advection (gas phase) ',   &
+                      '[mol]", ',                                              &
+                      '"accumulative mass outflux by advection (gas phase) ',  &
+                      '[mol]"'
                     else
                       write(imrt,'(11a)') 'variables = "time [',               &
                        time_unit(:l_time_unit),']", ',                         &
@@ -2565,10 +2711,10 @@
                       '"mass outflux [mol/d]", ',                              &
                       '"mass influx (gas phase) [mol/d]", ',                   &
                       '"mass outflux (gas phase) [mol/d]", ',                  &
-                      '"total mass influx [mol/elapsed time]", ',              &
-                      '"total mass outflux [mol/elapsed time]", ',             &
-                      '"total mass influx (gas phase) [mol/elapsed time]", ',  &
-                      '"total mass outflux (gas phase) [mol/elapsed time]"'
+                      '"accumulative mass influx [mol]", ',                    &
+                      '"accumulative mass outflux [mol]", ',                   &
+                      '"accumulative mass influx (gas phase) [mol]", ',        &
+                      '"accumulative mass outflux (gas phase) [mol]"'
                     end if
 
                     write(imrt,'(5a)')                                         &
@@ -2614,23 +2760,23 @@
                       '7      mass outflux by advection (gas phase)       ', &
                       'mol/day'
                 write(ifls,'(2a)')                                           &
-                      '8      total mass influx                           ', &
-                      'mol/elapsed time'
+                      '8      accumulative mass influx                    ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '9      total mass outflux                          ', &
-                      'mol/elapsed time'
+                      '9      accumulative mass outflux                   ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '10     total mass influx by diffusion (gas phase)  ', &
-                      'mol/elapsed time'
+                      '10     accumulative mass influx by diffusion (gas phase)  ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '11     total mass outflux by diffusion (gas phase) ', &
-                      'mol/elapsed time'
+                      '11     accumulative mass outflux by diffusion (gas phase) ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '12     total mass influx by advection (gas phase)  ', &
-                      'mol/elapsed time'
+                      '12     accumulative mass influx by advection (gas phase)  ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '13     total mass outflux by advection (gas phase) ', &
-                      'mol/elapsed time'
+                      '13     accumulative mass outflux by advection (gas phase) ', &
+                      'mol'
 
               else
                 write(ifls,'(/2a)')                                          &
@@ -2652,17 +2798,17 @@
                       '5      mass outflux (gas phase)                    ', &
                       'mol/day'
                 write(ifls,'(2a)')                                           &
-                      '6      total mass influx                           ', &
-                      'mol/elapsed time'
+                      '6      accumulative mass influx                    ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '7      total mass outflux                          ', &
-                      'mol/elapsed time'
+                      '7      accumulative mass outflux                   ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '8      total mass influx (gas phase)               ', &
-                      'mol/elapsed time'
+                      '8      accumulative mass influx (gas phase)        ', &
+                      'mol'
                 write(ifls,'(2a)')                                           &
-                      '9      total mass outflux (gas phase)              ', &
-                      'mol/elapsed time'
+                      '9      accumulative mass outflux (gas phase)       ', &
+                      'mol'
               end if
 
             end if
@@ -3313,14 +3459,14 @@
                   "time ["//time_unit(:l_time_unit)//"]",              &
                   "change in storage [mol/d]",                         &
                   "source/sink - aqueous phase [mol/d]",               & 
-                  "total contribution [mol/elapsed time]"]
+                  "accumulative contribution [mol]"]
               
               if (istart == istop) then
                 tec_variables(5:6) = [character(len=72) ::             &
                     "source/sink - aqueous phase "//                   &
                     "parallel reaction pathways [mol/d]",              &
-                    "total contribution "//                            &
-                    "parallel reaction pathways [mol/elapsed time]"]
+                    "accumulative contribution "//                     &
+                    "parallel reaction pathways [mol]"]
               else
                 do ireac = istart, istop
                   write(strtemp,'(i0)') ireac-istart+1
@@ -3329,9 +3475,9 @@
                   tec_variables(istart2:istop2) = [character(len=72) ::&
                     "source/sink - aqueous phase "//                   &
                     "parallel reaction pathways - "//trim(strtemp)//   &
-                    " [mol/d]", "total contribution "//                &
+                    " [mol/d]", "accumulative contribution "//         &
                     "parallel reaction pathways - "//trim(strtemp)//   &
-                    " [mol/elapsed time]"]
+                    " [mol]"]
                 end do
               end if
 
@@ -3368,14 +3514,14 @@
                             time_unit(:l_time_unit)//']", '//          &
                             '"change in storage [mol/d]", '//          &
                             '"source/sink - aqueous phase [mol/d]", '//&
-                            '"total contribution [mol/elapsed time]", '
+                            '"accumulative contribution [mol]", '
                 
                 if (istart == istop) then
                   strbuffer = trim(strbuffer)//                        &
                               '"source/sink - aqueous phase '//        &
                               'parallel reaction pathways [mol/d]", '//&
-                              '"total contribution '//                 &
-                              'parallel reaction pathways [mol/elapsed time]"'
+                              '"accumulative contribution '//          &
+                              'parallel reaction pathways [mol]"'
                 else
                   do ireac = istart, istop
                     write(strtemp,'(i0)') ireac-istart+1
@@ -3384,17 +3530,17 @@
                                   '"source/sink - aqueous phase '//    &
                                   'parallel reaction pathways - '//    &
                                   trim(strtemp)//' [mol/d]", '//       &
-                                  '"total contribution '//             &
+                                  '"accumulative contribution '//      &
                                   'parallel reaction pathways - '//    &
-                                  trim(strtemp)//' [mol/elapsed time]"'
+                                  trim(strtemp)//' [mol]"'
                     else
                       strbuffer = trim(strbuffer)//                    &
                                   '"source/sink - aqueous phase '//    &
                                   'parallel reaction pathways - '//    &
                                   trim(strtemp)//' [mol/d]", '//       &
-                                  '"total contribution '//             &
+                                  '"accumulative contribution '//      &
                                   'parallel reaction pathways - '//    &
-                                  trim(strtemp)//' [mol/elapsed time]", '
+                                  trim(strtemp)//' [mol]", '
                     end if
                   end do
                 end if

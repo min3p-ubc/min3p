@@ -99,7 +99,7 @@
  
       subroutine rhsrt(naq,ng,nm,nr,nsb_ion,nsb_surf,astor,cstor,     &
                        gstor,totaq,totsb_ion,totsb_surf,totor,totdp,  &
-                       totcflux,totgflux,totrateg,rootresp,           &
+                       totcflux,totgflux,totrateg,                    &
                        totgasdecay,b_use_gas_decay,                   &
                        totaqdecay,b_use_aq_decay,                     &
                        totsorptiondecay,b_use_sorption_decay,         &
@@ -112,7 +112,7 @@
       integer :: naq, ng, nm, nr, nsb_ion, nsb_surf
       real*8 :: astor, cstor, gstor, totaq, totsb_ion, totsb_surf,     &
                 totor, totdp, totcflux, totgflux, totrateg,            &
-                rootresp, totgasdecay, totaqdecay, totsorptiondecay,   &
+                totgasdecay, totaqdecay, totsorptiondecay,             &
                 totaq_ngi, totcharge_surf, b
 
       logical b_use_gas_decay, b_use_sorption_decay, redox_equil,      &
@@ -202,11 +202,6 @@
 
       if (nm.gt.0) then
         b = b - totdp
-      end if
-
-!c if there is no root respiration term/no root term
-      if (component_type.eq.'aqueous') then
-        b = b - rootresp
       end if
 
       return

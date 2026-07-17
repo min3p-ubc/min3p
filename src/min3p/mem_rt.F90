@@ -181,17 +181,17 @@
 !c                                - non-aqueous components [moles]
 !c           cculabsbal(n)      = accumulative absolute mass balance  * +
 !c                                error for dissolved species
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cculrelbal(n)      = accumulative relative mass balance  * +
 !c                                error for dissolved species [%]
 !c           gculabsbal(ng)     = accumulative absolute mass balance  * +
 !c                                error for gaseous species
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           gculrelbal(ng)     = accumulative relative mass balance  * +
 !c                                error for gaseous species [%]
 !c           cmculabsbal(nm)    = accumulative absolute mass balance  * +
 !c                                error for minerals
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cmculrelbal(nm)    = accumulative relative mass balance  * +
 !c                                error for minerals [%]
 !c           sbdiff(n)          = source-sink term due to phase       * +
@@ -199,16 +199,16 @@
 !c           rateaqtot(naq)     = total rate of intra-aqueous kinetic * +
 !c                                reaction in solution domain
 !c                                [moles/day]
-!c           contaqtot(naq)     = contribution of intra-aqueous       * +
-!c                                kinetic reactions to mass balance
-!c                                [moles/elapsed time]
-!c           contmintot(nm)     = contribution of dissolution-        * +
-!c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
-!c           totdpdiffp(ndr*nm) = individual contribution of parallel * +
-!c                                reaction pathways of dissolution-
-!c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c           contaqtot(naq)     = accumulative contribution of        * +
+!c                                intra-aqueous kinetic reactions to 
+!c                                mass balance[moles]
+!c           contmintot(nm)     = accumulative contribution of        * +
+!c                                dissolution-precipitation reactions 
+!c                                to mass balance [moles]
+!c           totdpdiffp(ndr*nm) = accumulative individual             * +
+!c                                contribution of parallel reaction 
+!c                                pathways of dissolution-precipitation 
+!c                                reactions to mass balance [moles]
 !c           totcfluxin(nc)     = total mass gain due to inflow in    * +
 !c                                auqueous phase in terms of total
 !c                                aqueous component concentrations
@@ -934,13 +934,6 @@
       call checkerr(ierr,'cfluxout_mig',ilog)
       call memory_monitor(sizeof(cfluxout_mig),'cfluxout_mig',.true.)
 
-      !c root respiration and uptake
-      allocate (totrootdiff(n), stat = ierr)
-      totrootdiff=0.0d0
-      call checkerr(ierr,'totrootdiff',ilog)
-      call memory_monitor(sizeof(totrootdiff),'totrootdiff',.true.)
-
-
       allocate (gfluxtbdy(ng), stat = ierr)
       gfluxtbdy=0.0d0
       call checkerr(ierr,'gfluxtbdy',ilog)
@@ -1203,15 +1196,20 @@
       call checkerr(ierr,'totgdiff',ilog)
       call memory_monitor(sizeof(totgdiff),'totgdiff',.true.)
 
-      allocate (totrootresp(nc), stat = ierr)
-      totrootresp=0.0d0
-      call checkerr(ierr,'totrootresp',ilog)
-      call memory_monitor(sizeof(totrootresp),'totrootresp',.true.)
+      allocate (totrootarup(nc), stat = ierr)
+      totrootarup=0.0d0
+      call checkerr(ierr,'totrootarup',ilog)
+      call memory_monitor(sizeof(totrootarup),'totrootarup',.true.)
 
-      allocate (totrootuptake(nc), stat = ierr)
-      totrootuptake=0.0d0
-      call checkerr(ierr,'totrootuptake',ilog)
-      call memory_monitor(sizeof(totrootuptake),'totrootuptake',.true.)
+      allocate (totrootprup(nc), stat = ierr)
+      totrootprup=0.0d0
+      call checkerr(ierr,'totrootprup',ilog)
+      call memory_monitor(sizeof(totrootprup),'totrootprup',.true.)
+
+      allocate (totrootrup(nc), stat = ierr)
+      totrootrup=0.0d0
+      call checkerr(ierr,'totrootrup',ilog)
+      call memory_monitor(sizeof(totrootrup),'totrootrup',.true.)
       
 !c    gas phase density, molar density, viscosity
 

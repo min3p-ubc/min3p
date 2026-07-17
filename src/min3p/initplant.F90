@@ -120,7 +120,7 @@
 !c                                parameters
 !c           solar_ratio        = ratio between the solar energy at the forest floor
 !c                                and this above tree canopy
-!c           uptakefactor(nzn)  = passive uptake factor (by zone)  
+!c           uptakefactor(nzn)  = passive solute uptake factor (by zone)  
 !c           p1                 = fitting parameter for root water    * +
 !c                                uptake function
 !c
@@ -227,7 +227,7 @@
       external :: findstrg, readbloc, checkerr
       logical :: found_section, found_subsection
       integer :: rand_seed_archi, rand_seed_roottyp  !DSU
-      character*4096 :: strbuffer
+      character*2048 :: strbuffer
       character*72 :: subsection
       character*1 :: cdummy,temppy*15
       character(len=pos) :: directory ! CBF RLD
@@ -389,7 +389,6 @@
 
           if(.not. found_subsection) then
             subsection = 'root upscale factor - AS'
-            call makelowercase(subsection)
             call findstrg(subsection,itmp,found_subsection)
           end if
 
@@ -411,7 +410,6 @@
 
 !c DSU: Random generator control. By default, srand((unsigned) time(NULL)) is used.
           subsection = 'random generator seed - AS'
-          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if(.not. found_subsection) then
@@ -427,7 +425,7 @@
           end if
 
           subsection = 'random generator seed - RT'
-          call makelowercase(subsection)
+
           call findstrg(subsection,itmp,found_subsection)
 
           if(found_subsection) then
@@ -440,7 +438,6 @@
 !c ... or update by coupling with the root architecture software 'ArchiSimple' :
 
           subsection = 'update - coupled - AS'
-          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if (.not. found_subsection) then
@@ -484,7 +481,7 @@
 !c ... or update by coupling with the root architecture software 'Root Typ' :
 
           subsection = 'update - coupled - RT'
-          call makelowercase(subsection)
+
           call findstrg(subsection,itmp,found_subsection)
 
           if(found_subsection) then
@@ -1091,21 +1088,21 @@
             pe_soil = pet*solar_ratio! get potential evaporation from potential evapotranspiration (m/s)
             
             tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)! get potential transpiration (m/s) from energy balance 
-              
+
             pe_soil = pe_soil*toparea*solar_ratio*sec_per_days!potential evaporation scaled up according to solar ratio (surface effect) and converted in m3/s
             
             tpot = tpot*toparea*(1-solar_ratio)*sec_per_days!potential transpiration scaled up according to solar ratio (surface effect) and converted in m3/s
-              
+
           else !growing vegetation=>scale_tree_growth taken into account for splitting between evapo and transpiration as well as surface area variations.
               
             pe_soil = pet*(1-scale_tree_growth)! get potential evaporation from potential evapotranspiration (m/s)
               
             tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)! get potential transpiration (m/s) from energy balance
-            
+
             pe_soil = pe_soil*toparea*(1-scale_tree_growth)*sec_per_days!potential evaporation scaled up according to solar ratio (surface effect) and converted in m3/s*
             
             tpot = tpot*toparea*scale_tree_growth*sec_per_days!potential transpiration scaled up according to solar ratio (surface effect) and converted in m3/s 
-            
+
           endif
 
         end if

@@ -413,15 +413,15 @@
               "outflux migration [mol/d]",                             &
               "outflux [mol/d]",                                       &
               "change in storage [mol/d]",                             &
-              "source/sink from root uptake [mol/d]",                  &
-              "total influx diffusion [mol/elapsed time]",             &
-              "total influx migration [mol/elapsed time]",             &
-              "total influx [mol/elapsed time]",                       &
-              "total outflux diffusion [mol/elapsed time]",            &
-              "total outflux migration [mol/elapsed time]",            &
-              "total outflux [mol/elapsed time]",                      &
-              "total change in storage [mol/elapsed time]",            &
-              "total source/sink from root uptake [mol/elapsed time]"] 
+              "source/sink from passive solute uptake [mol/d]",        &
+              "accumulative influx diffusion [mol]",                   &
+              "accumulative influx migration [mol]",                   &
+              "accumulative influx [mol]",                             &
+              "accumulative outflux diffusion [mol]",                  &
+              "accumulative outflux migration [mol]",                  &
+              "accumulative outflux [mol]",                            &
+              "accumulative change in storage [mol]",                  &
+              "accumulative source/sink from passive solute uptake [mol]"] 
         end if
 
         do ic = 1,n
@@ -514,16 +514,16 @@
                       '"outflux migration [mol/d]", ',                 &
                       '"outflux [mol/d]", ',                           &
                       '"change in storage [mol/d]", ',                 &
-                      '"source/sink from root uptake [mol/d]", ',      &
-                      '"total influx diffusion [mol/elapsed time]", ', &
-                      '"total influx migration [mol/elapsed time]", ', &
-                      '"total influx [mol/elapsed time]", ',           &
-                      '"total outflux diffusion [mol/elapsed time]", ',&
-                      '"total outflux migration [mol/elapsed time]", ',&
-                      '"total outflux [mol/elapsed time]", ',          &
-                      '"total change in storage [mol/elapsed time]",', &
-                      '"total source/sink from root uptake',           &
-                      ' [mol/elapsed time]"'
+                      '"source/sink from passive solute uptake [mol/d]", ',&
+                      '"accumulative influx diffusion [mol]", ',       &
+                      '"accumulative influx migration [mol]", ',       &
+                      '"accumulative influx [mol]", ',                 &
+                      '"accumulative outflux diffusion [mol]", ',      &
+                      '"accumulative outflux migration [mol]", ',      &
+                      '"accumulative outflux [mol]", ',                &
+                      '"accumulative change in storage [mol]",',       &
+                      '"accumulative source/sink from passive solute uptake', &
+                      ' [mol]"'
 
                 write(imcd,'(4a)')                                     &
                       'zone t = "mass balance for component ',         &

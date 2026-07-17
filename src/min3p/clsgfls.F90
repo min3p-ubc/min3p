@@ -282,8 +282,11 @@
 
         if (mass_balance_rt) then
           if (root_uptake) then
-            close(iresp)
-            call lun_free(iresp)
+            close(iarup)
+            call lun_free(iarup)
+
+            close(iprup)
+            call lun_free(iprup)
 
             close(irup)
             call lun_free(irup)

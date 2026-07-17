@@ -896,8 +896,9 @@
       integer (type_i4) :: imvs
       integer (type_i4) :: imvs_first
       integer (type_i4) :: imvs_last
-      integer (type_i4) :: iresp            !root respiration
-      integer (type_i4) :: irup             !root uptake, including respiration and passive uptake
+      integer (type_i4) :: iprup            !passive root uptake, solute uptake with water
+      integer (type_i4) :: iarup            !active root uptake, including respiration and exudation
+      integer (type_i4) :: irup             !total solute uptake, including passive solute uptake and active solute uptake
       integer (type_i4) :: irupcm           !recyclable root uptake for component-mineral
       integer (type_i4) :: imrt
       integer (type_i4) :: imrt_first
@@ -1596,7 +1597,6 @@
       real (type_r8), allocatable :: totgflux(:)
       real (type_r8), allocatable :: totgaflux(:)
       real (type_r8), allocatable :: totmdp(:,:)
-      real (type_r8), allocatable :: totrootdiff(:)
  
       integer (type_i4), allocatable :: i2up(:) 
 
@@ -1945,17 +1945,17 @@
 !                                - non-aqueous components [moles]
 !           cculabsbal(n)      = accumulative absolute mass balance
 !                                error for dissolved species
-!                                [moles/elapsed time]
+!                                [moles]
 !           cculrelbal(n)      = accumulative relative mass balance
 !                                error for dissolved species [%]
 !           gculabsbal(ng)     = accumulative absolute mass balance
 !                                error for gaseous species
-!                                [moles/elapsed time]
+!                                [moles]
 !           gculrelbal(ng)     = accumulative relative mass balance
 !                                error for gaseous species [%]
 !           cmculabsbal(nm)    = accumulative absolute mass balance
 !                                error for minerals 
-!                                [moles/elapsed time]
+!                                [moles]
 !           cmculrelbal(nm)    = accumulative relative mass balance
 !                                error for minerals [%]
 !           sbdiff(n)          = source-sink term due to phase
@@ -1967,18 +1967,18 @@
 !                                [moles/day]
 !           contaqtot(naq)     = contribution of intra-aqueous 
 !                                kinetic reactions to mass balance
-!                                [moles/elapsed time]
+!                                [moles]
 !           contmintot(nm)     = contribution of dissolution-
 !                                precipitation reactions to mass
-!                                balance [moles/elapsed time]
-!           totdpdiffp(ndr*nm) = individual contribution of parallel 
+!                                balance [moles]
+!           totdpdiffp(ndr*nm) = accumulative individual contribution of parallel 
 !                                reaction pathways of dissolution-
 !                                precipitation reactions to mass
-!                                balance [moles/elapsed time]
-!           totcfluxin(nc)     = total mass gain due to inflow in
+!                                balance [moles]
+!           totcfluxin(nc)     = accumulative mass gain due to inflow in
 !                                auqueous phase in terms of total 
 !                                aqueous component concentrations
-!           totcfluxout(nc)    = total mass loss due to inflow in
+!           totcfluxout(nc)    = accumulative mass loss due to inflow in
 !                                aqueous phase in terms of total 
 !                                aqueous component concentrations
 
@@ -2126,8 +2126,9 @@
 #endif
 
       !c solute uptake
-      real (type_r8), allocatable :: totrootresp(:)     !respiration uptake
-      real (type_r8), allocatable :: totrootuptake(:)   !total uptake by passive uptake and respiration
+      real (type_r8), allocatable :: totrootprup(:)     !passive solute uptake, including respiration and exudation
+      real (type_r8), allocatable :: totrootarup(:)     !active solute uptake, including respiration and exudation
+      real (type_r8), allocatable :: totrootrup(:)      !total solute uptake by passive solute uptake and active solute uptake
 
       real (type_r8), allocatable :: totrcm_c(:)        !total uptake in component-mineral recycles
       real (type_r8), allocatable :: totrcm_c_tz(:)     !total uptake in component-mineral recycles - current cycle
@@ -2952,6 +2953,8 @@
 !           isymvs(njavs)      = symmetry pointer array 
 !           lordervs(nn)       = array containing ordering
 !           invordvs(nn)       = array containing inverse ordering
+!           ivol_f(3,nn)       = array for forward control volume index in x-, y- and z-direction
+!           ivol_b(3,nn)       = array for backward control volume index in x-, y- and z-direction
 !           level_vs           = incomplete factorization level
 !           msolvit_vs         = max. number of solver iterations
 !           mnjavs             = max. number of global connections
@@ -2998,6 +3001,10 @@
       integer (type_i4), allocatable :: lordervs(:)
       integer (type_i4), allocatable :: invordvs(:)
       integer (type_i4), allocatable :: javsrec(:)
+
+
+      integer (type_i4), allocatable :: ivol_f(:,:)
+      integer (type_i4), allocatable :: ivol_b(:,:)
 
       integer (type_i4) :: mnjavs
       integer (type_i4) :: mnjafvs
@@ -3785,6 +3792,8 @@
     integer*4 :: nthreads_per_proc
     character(14) :: str_rank
 
+    logical :: flag_non_interlaced
+
 #ifndef PETSC
     integer*4 :: Petsc_Comm_World
     integer*4 :: Petsc_Comm_Self 
@@ -3904,6 +3913,9 @@
     !> MIN3P unstructured node number map before reodering
     !> to node number map after reordering, (g)->(b)
     integer(type_i4), allocatable :: node_idx_g2g_lorder(:)
+
+    !> MIN3P node rank (owner's processor ID), including ghost nodes
+    integer(type_i4), allocatable :: node_owner_rank(:)
 
     !> MIN3P local boundary nodes without ghost nodes to
     !> global node number map
@@ -4148,14 +4160,21 @@
     integer*8              :: offset_ispm
     integer*8              :: offset_ispm_ijk
 
-!c  root respiration and uptake, _o.resp
-    integer(type_i4) :: iresp_mpi
+!c  passive root uptake (solute uptake with water), _o.prup
+    integer(type_i4) :: iprup_mpi
 
-!c  offset for writing transient data e.g., _o.resp
-    integer*8 :: offset_iresp
-    integer*8 :: offset_iresp_ijk
+!c  offset for writing transient data e.g., _o.prup
+    integer*8 :: offset_iprup
+    integer*8 :: offset_iprup_ijk
 
-!c  root respiration and uptake, _o.rup
+!c  active root uptake (respiration and exudation), _o.arup
+    integer(type_i4) :: iarup_mpi
+
+!c  offset for writing transient data e.g., _o.arup
+    integer*8 :: offset_iarup
+    integer*8 :: offset_iarup_ijk
+
+!c  total root uptake (passive root uptake and active root uptake), _o.rup
     integer(type_i4) :: irup_mpi
     integer(type_i4) :: irupcm_mpi
 

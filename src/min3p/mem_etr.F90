@@ -50,7 +50,7 @@
 !c           DSU Comment - Not necessary to declare qrootinc and dqroot as global variables
 !c
 !c
-!c           uptakefactor(nzn)    = passive uptake factor (by zone)
+!c           uptakefactor(nzn)    = passive solute uptake factor (by zone)
 !c           rootlengthdens(nzn)  = root length density
 !c           rld(nngl)            = root length density  in each control volume,
 !c                                  read from external file
@@ -76,6 +76,7 @@
       use phys
       use dual
       use biol
+      use chem
       
       implicit none
 
@@ -130,37 +131,37 @@
  !cprovi 20/04/2017
  !cprovi------------------------------------------------------------
         if (reactive_transport) then
-          allocate (fm_uptake(n,nzn), stat = ierr)
+          allocate (fm_uptake(nc-1,nzn), stat = ierr)
           call checkerr(ierr,'fm_uptake',ilog)
           fm_uptake = r0
           call memory_monitor(sizeof(fm_uptake),'fm_uptake',.true.)
 
-          allocate (km_uptake(n,nzn), stat = ierr)
+          allocate (km_uptake(nc-1,nzn), stat = ierr)
           call checkerr(ierr,'km_uptake',ilog)
           km_uptake = r0
           call memory_monitor(sizeof(km_uptake),'km_uptake',.true.)
 
-          allocate (tot_min_uptake(n,nzn), stat = ierr)
+          allocate (tot_min_uptake(nc-1,nzn), stat = ierr)
           call checkerr(ierr,'tot_min_uptake',ilog)
           tot_min_uptake = r0
           call memory_monitor(sizeof(tot_min_uptake),'tot_min_uptake',.true.)
 
-          allocate (fac_uptake(n,nzn), stat = ierr)
+          allocate (fac_uptake(nc-1,nzn), stat = ierr)
           call checkerr(ierr,'fac_uptake',ilog)
           fac_uptake = r0
           call memory_monitor(sizeof(fac_uptake),'fac_uptake',.true.)
 
-          allocate (order1_uptake(n,nzn), stat = ierr)
+          allocate (order1_uptake(nc-1,nzn), stat = ierr)
           call checkerr(ierr,'order1_uptake',ilog)
           order1_uptake = r0
           call memory_monitor(sizeof(order1_uptake),'order1_uptake',.true.)
 
-          allocate (exudation_rate(n,nzn), stat = ierr)
+          allocate (exudation_rate(nc-1,nzn), stat = ierr)
           call checkerr(ierr,'exudation_rate',ilog)
           exudation_rate = r0
           call memory_monitor(sizeof(exudation_rate),'exudation_rate',.true.)
           
-          allocate (fchargebal_coeff(n,nzn), stat = ierr)
+          allocate (fchargebal_coeff(nc-1,nzn), stat = ierr)
           call checkerr(ierr,'fchargebal_coeff',ilog)
           fchargebal_coeff = r0
           call memory_monitor(sizeof(fchargebal_coeff),'fchargebal_coeff',.true.)
@@ -202,13 +203,13 @@
       !call memory_monitor(sizeof(dqroot),'dqroot',.true.)
       
       !c rate for root respiration
-      allocate(resprate(n,nzn), stat = ierr)
+      allocate(resprate(nc-1,nzn), stat = ierr)
       call checkerr(ierr,'resprate',ilog)
       resprate = r0
       call memory_monitor(sizeof(resprate),'resprate',.true.)
       
       !c specified minimum aqueous concentration to activate solute uptake.
-      allocate(totc_uptake_min(n,nzn), stat = ierr)
+      allocate(totc_uptake_min(nc-1,nzn), stat = ierr)
       call checkerr(ierr,'totc_uptake_min',ilog)
       totc_uptake_min = 0.0d0
       call memory_monitor(sizeof(totc_uptake_min),'totc_uptake_min',.true.)

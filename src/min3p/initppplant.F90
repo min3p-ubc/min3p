@@ -609,8 +609,10 @@
                 itype_rootuptk_solut = 1
                 ierrcd = 13
                 read(icnv,*,err=999,end=999) uptakefactor(izn)
-                if (uptakefactor(izn).gt.r1 .or. uptakefactor(izn).lt.r0) then
+                if (uptakefactor(izn).gt.r1) then
                   uptakefactor(izn) = r1
+                else if (uptakefactor(izn).lt.r0) then
+                  uptakefactor(izn) = r0
                 end if
   
                 if (b_enable_output .and. b_enable_output_gen) then
@@ -626,8 +628,8 @@
                 !c DSU, passive solute uptake is not used, program should NOT be terminated
                 !if (rank == 0 .and. b_enable_output) then
                 !  write(ilog,*) 'SIMULATION TERMINATED'
-                !  write(ilog,*) 'passive uptake with transpiration'
-                !  write(ilog,*) 'passive uptake factor must be set'
+                !  write(ilog,*) 'passive solute uptake with transpiration'
+                !  write(ilog,*) 'passive solute uptake factor must be set'
                 !end if              
               end if
 
@@ -646,7 +648,8 @@
             if (found_subsection) then
               itype_root_resp = 1
               ierrcd = 14
-              do ic = 1, n
+
+              do ic = 1, nc-1
                 read(icnv,*,err=999,end=999) resprate(ic,izn)
                 resprate(ic,izn) = resprate(ic,izn)*r86400
               end do

@@ -137,7 +137,7 @@
 
       theta_a = pornew(ivol)*sanew(ivol)
 
-!c FG's code divide the rootuptake by sec_per_days
+!c FG's code divide the root uptake by sec_per_days
 !c to convert to m3/day, which sounds not correct. 
 !c The default output time unit is day.
 

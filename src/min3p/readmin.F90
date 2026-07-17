@@ -452,8 +452,8 @@
 !c  define length of namemp(ireac)
 
                 l_namemp(ireac) = index(namemp(ireac),' ')-1
-                if (l_namemp(ireac).eq.-1.or.l_namemp(ireac).gt.14) then
-                  l_namemp(ireac) = 14
+                if (l_namemp(ireac).eq.-1.or.l_namemp(ireac).gt.72) then
+                  l_namemp(ireac) = 72
                 end if
 
 !c  read data

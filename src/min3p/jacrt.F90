@@ -869,8 +869,8 @@
       real*8 :: dummyvec(nm)
       
 !c root respiration variables:
-      real*8 :: rootresp_current, rootresp_max, dresprate,      &
-                rootdens, rootresp(n), drootresp(n)
+      real*8 :: rootarup_current, rootarup_max, dresprate,      &
+                rootdens, rootarup(n), drootarup(n)
       
 !c ms variables    
       real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),     &
@@ -1000,8 +1000,8 @@
     !$omp ig, im, im2, ir, irow, isb, istart, isym, ivol, ivol_gbl,   &
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
     !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &
-    !$omp qrootloc, rootresp, rootresp_current, rootresp_max,         &   !!Root uptake and
-    !$omp dresprate, drootresp, rootdens,                             &   !!respiration
+    !$omp qrootloc, rootarup, rootarup_current, rootarup_max,         &   !!Root uptake and
+    !$omp dresprate, drootarup, rootdens,                             &   !!respiration
     !$omp zbal, zpos, zneg, zpos_inc, zneg_inc,                       &
     !$omp densgij, dg, dgpivol, dmdens_i, ddens_i, gij,  gmfracij,    &   !!Gas advection and dgm model
     !$omp gpivol_ivol, gpivol_jvol, gdens_ivol, gdens_jvol,           &
@@ -1460,9 +1460,9 @@
 !cprovi-------------------------------------------------------------------------------
           if (solid_solutions) then 
             ! Compute the reaction rates for the solid solution 
-            call ratess(ratemdp(1,ivol),area(1,ivol),cnew(1,ivol),     &
-                        cx(1,ivol),gamma(1,ivol),gamma(nc+1,ivol),     &
-                        cmold(1,ivol),cmcmin(:,tid),delt,iter_rt)  
+            call ratess(ratemdp(:,ivol),area(:,ivol),cnew(:,ivol),     &
+                        cx(:,ivol),gamma(1:nc,ivol),gamma(nc+1:,ivol), &
+                        cmold(:,ivol),cmcmin(:,tid),delt,iter_rt)  
             do iss = 1, nss     
               do i1 = 1, nmin_ss(iss)  
                 im = idmin_ss(iss,i1)
@@ -1666,6 +1666,7 @@
 !c recompute root water uptake for current control volume (HG written by DSU)
 !c and correct the flux by the passive factor (HG written by DSU)
 
+        qrootloc = r0
         if (passive_uptake) then
           if (rld(ivol)>rverysmall) then
             if (itype_rootuptk_solut == 1) then
@@ -1690,6 +1691,28 @@
 #endif                       
           end if   
         end if 
+
+!c  calculate root related respiration
+        rootarup = r0
+        if (root_uptake) then
+          if (itype_root_resp == 1) then
+            if (rld(ivol) > rverysmall) then
+              do ic = 1, nc-1
+                !c absorption or exudation by root
+                !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
+                if (resprate(ic,izn) < r0) then    !exudation by root
+                  rootarup(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
+                else                          !respiration by root 
+                  rootarup_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3         !mol/day
+                  rootarup_max = (totcnew(ic,ivol)-                        &
+                                  max(rverysmall,totc_uptake_min(ic,izn)))*&
+                                  cvol(ivol)*pornew(ivol)*sanew(ivol)/delt               !mol/day
+                  rootarup(ic) = min(rootarup_current,max(rootarup_max,r0))
+                end if
+              end do
+            end if
+          end if
+        end if
 
 !c  get row pointers
 
@@ -2029,28 +2052,7 @@
           totdp(:,tid) = r0
         end if
 
-!c  calculate root related respiration
-        rootresp = r0
-        if (root_uptake) then
-          if (itype_root_resp == 1) then
-            if (rld(ivol) > rverysmall) then
-              do ic = 1, n
-                !c absorption or exudation by root
-                !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
-                if (resprate(ic,izn) < r0) then    !exudation by root
-                  rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-                else                          !respiration by root 
-                  rootresp_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3         !mol/day
-                  rootresp_max = (totcnew(ic,ivol)-                        &
-                                  max(rverysmall,totc_uptake_min(ic,izn)))*&
-                                  cvol(ivol)*pornew(ivol)*sanew(ivol)/delt               !mol/day
-                  rootresp(ic) = min(rootresp_current,max(rootresp_max,r0))
-                end if
-              end do
-            end if
-          end if
-        end if
- 
+
 !c  compute fluxes between current control volume and adjacent
 !c  control volumes and total flux into current control volume
 
@@ -2072,14 +2074,18 @@
               end do  
             else if (itype_rootuptk_solut == 2) then
               do ic = 1,n             
-                totcflux(ic) = cvol(ivol)*soluteUptakeFunc(qrootloc,     &
-                               totcnew(ic,ivol),zpos,zneg,rld(ivol),     &
-                               sanew(ivol),pornew(ivol),ic,izn)  
+                totcflux(ic) = totcflux(ic) + cvol(ivol)*              &
+                               soluteUptakeFunc(qrootloc,              &
+                                 totcnew(ic,ivol),zpos,zneg,rld(ivol), &
+                                 sanew(ivol),pornew(ivol),ic,izn)  
               end do
             end if
           end if
         end if 
 
+        if (root_uptake .or. passive_uptake) then
+          totcflux(1:n) = totcflux(1:n) + rootarup(1:n)
+        end if
 
 
         
@@ -2770,7 +2776,7 @@
                      totsb_ion(ic),totsb_surf(ic),                    &
                      totor(ic),totdp(ic,tid),                         &
                      totcflux(ic),totgflux(ic),totrateg(ic),          &
-                     rootresp(ic),totgasdecay(ic),b_use_gas_decay,    &
+                     totgasdecay(ic),b_use_gas_decay,                 &
                      totaqdecay(ic),b_use_aq_decay,                   &
                      totsorptiondecay(ic),b_use_sorption_decay,       &
                      totaq_ngi(ic,tid),b_use_ngi,redox_equil,         &
@@ -3333,11 +3339,11 @@
 !cprovi in the vector 
 !cprovi----------------------------------------------------------------------------------------
             if (solid_solutions) then                         
-              call ratess(dratedp(1,tid),area(1,ivol),cinc(1,tid),cxinc(1,tid),         &
-                          gamma(1,ivol),gamma(nc+1,ivol),cmold(1,ivol),cmcmin(:,tid),   &
+              call ratess(dratedp(:,tid),area(:,ivol),cinc(:,tid),cxinc(:,tid),         &
+                          gamma(:,ivol),gamma(nc+1:,ivol),cmold(:,ivol),cmcmin(:,tid),  &
                           delt,iter_rt)  
-              call ratess(dummyvec,area(1,ivol),cnew(1,ivol),cx(1,ivol),                &
-                          gamma(1,ivol),gamma(nc+1,ivol),cmold(1,ivol),cmcmin(:,tid),   &
+              call ratess(dummyvec,area(:,ivol),cnew(:,ivol),cx(:,ivol),                &
+                          gamma(:,ivol),gamma(nc+1:,ivol),cmold(:,ivol),cmcmin(:,tid),  &
                           delt,iter_rt)
               do iss = 1, nss 
                 do i1 = 1, nmin_ss(iss)  
@@ -3389,15 +3395,15 @@
           end do                       !influx (aqueous phase)
 
 !c calculate derivative of respiration (HG)
-          drootresp = r0
+          drootarup = r0
           if (root_uptake) then
             if (itype_root_resp == 1) then 
               if (rld(ivol) > rverysmall) then              
                 !c derivative of respiration depends on the formula
                 !c if respiration rate is not related to solute concentration, 
                 !c as shown below, then derivative is zero
-                !c rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-                !c drootresp(ic) = d(rootresp)/d(cnew) = r0
+                !c rootarup(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
+                !c drootarup(ic) = d(rootarup)/d(cnew) = r0
               end if
             end if
           end if 
@@ -4269,7 +4275,7 @@
 !c  --------------------------------------------------------------------
 !c  set derivative of respiration to Jacobian matrix (HG)
               if (root_uptake) then
-                art(i2) = art(i2) + cnew(jbl,ivol) * drootresp(ibl) 
+                art(i2) = art(i2) + cnew(jbl,ivol) * drootarup(ibl) 
               end if 
               
 !c  gaseous phase

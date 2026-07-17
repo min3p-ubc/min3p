@@ -75,17 +75,17 @@
 !c                                - old time level [moles/l bulk]]
 !c           cculabsbal(n)      = accumulative absolute mass balance  + +
 !c                                error for dissolved species 
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cmculabsbal(n)     = accumulative absolute mass balance  + +
 !c                                error for minerals 
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cculrelbal(n)      = accumulative relative mass balance  + +
 !c                                error for dissolved species [%]
 !c           cmculrelbal(n)     = accumulative relative mass balance  + +
 !c                                for minerals [%]
 !c           gculabsbal(ng)     = accumulative absolute mass balance  + +
 !c                                error for gaseous species
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           gculrelbal(ng)     = accumulative relative mass balance  + +
 !c                                error for gaseous species [%]
 !c           cvol(nn)           = nodal volumes                       + -
@@ -117,10 +117,10 @@
 !                                concentrations
 !c           contaqtot(naq)     = contribution of intra-aqueous       + +
 !c                                kinetic reactions to mass balance
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           contmintot(nm)     = contribution of dissolution-        + +
 !c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c                                balance [moles]
 !c           gfluxtbdy(ng)      = mass flux across boundary           * *
 !c                                (gaseous phase)
 !c           gfluxin(n)         = mass gain due to inflow in air      * *
@@ -235,10 +235,11 @@
 !c                                aqueous component concentrations
 !c                                due to dissolution-precipitation 
 !c                                reactions
-!c           totdpdiffp(ndr*nm) = individual contribution of parallel + +
+!c           totdpdiffp(ndr*nm) = accumulative individual             + +
+!c                                contribution of parallel
 !c                                reaction pathways of dissolution-
 !c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c                                balance [moles]
 !c           totgdegas(nc)      = total mass loss from aquoeus phase  + +
 !c                                due to degassing
 !c           totgdiff(nc)       = total source/sink to total          + +
@@ -540,7 +541,7 @@
       real*8 :: rdummys(17)
       
 !c root water uptake varaibles (HG 28 Mar 2019)
-      real*8 :: rootdiff(n), totuptake
+      real*8 :: rootprup(n), totuptake
       real*8 :: qrootloc, roottmp, trtmp
       
 #ifdef PETSC
@@ -609,7 +610,7 @@
       call zero_r8(cfluxout_mig,n,1,1)  
       call zero_r8(cfluxout,n,1,1)
       call zero_r8(cstordiff,n,1,1)
-      call zero_r8 (rootdiff,n,1,1) 
+      call zero_r8 (rootprup,n,1,1) 
 
 !c  compute total system mass at current time step
  
@@ -669,7 +670,7 @@
     !$omp delta_totviscnew, delta_electromignew,                      &
     !$omp qrootloc, so_av, diff_eff, diff_loc, bdyinfrt_da,           &                                         
     !$omp totcflux, totvsflux)                                        &
-    !$omp reduction(+:totcflux_diff, totcflux_mig, rootdiff,          &
+    !$omp reduction(+:totcflux_diff, totcflux_mig, rootprup,          &
     !$omp cfluxin_diff, cfluxin_mig, cfluxin,                         &
     !$omp cfluxout_diff, cfluxout_mig, cfluxout)
     !$omp do schedule(static)
@@ -1045,7 +1046,7 @@
                     qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
                   end if
                   do ic = 1,n    
-                    rootdiff(ic) = rootdiff(ic) + conv3 * qrootloc * totcnew(ic,ivol)
+                    rootprup(ic) = rootprup(ic) + conv3 * qrootloc * totcnew(ic,ivol)
                   end do
                 else if (itype_rootuptk_solut == 2) then
                   qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
@@ -1053,7 +1054,7 @@
                     totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
                                                  rld(ivol),sanew(ivol),pornew(ivol), &
                                                  ic,izn)
-                    rootdiff(ic) = rootdiff(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
+                    rootprup(ic) = rootprup(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
                   end do
                 end if
               end if
@@ -1125,10 +1126,10 @@
       CHKERRQ(ierrcode)
       cfluxout(1:n) = mpireduce_n(1:n) 
 
-      call MPI_Allreduce(rootdiff, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
+      call MPI_Allreduce(rootprup, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
                          Petsc_Comm_World,ierrcode)
       CHKERRQ(ierrcode)
-      rootdiff(1:n) = mpireduce_n(1:n) 
+      rootprup(1:n) = mpireduce_n(1:n) 
 #endif
  
 !c  change in storage [moles/unit time]
@@ -1211,9 +1212,11 @@
 
         totcfluxout(ic) = totcfluxout(ic) + cfluxout(ic)*delt
         
-        if(passive_uptake .and. itype_rootuptk_solut == 1) then    ! HG passive uptake 28 Mar 2019
-          totrootdiff(ic) = totrootdiff(ic) + rootdiff(ic)*delt
+        if(passive_uptake .and. itype_rootuptk_solut == 1) then    ! HG passive solute uptake 28 Mar 2019
+          totrootprup(ic) = totrootprup(ic) + rootprup(ic)*delt
         end if
+
+        !c to be further updated, active solute uptake is not included here
         
 
 !c  write results
@@ -1231,7 +1234,7 @@
                                         cfluxout_mig(ic),              &
                                         cfluxout(ic),                  &
                                         cstordiff(ic),                 &
-                                        rootdiff(ic),                  &
+                                        rootprup(ic),                  &
                                         totcfluxin_diff(ic),           &
                                         totcfluxin_mig(ic),            &
                                         totcfluxin(ic),                &
@@ -1239,7 +1242,7 @@
                                         totcfluxout_mig(ic),           &
                                         totcfluxout(ic),               &
                                         totcstordiff(ic),              &
-                                        totrootdiff(ic)/)
+                                        totrootprup(ic)/)
             call binary_write_data(imcd_mpi(imcd), 1,          &
                          (/mtime/),offset_imcd_ijk(imcd),.true.)
             call binary_write_data(imcd_mpi(imcd), nvarsimcd,  &
@@ -1269,7 +1272,7 @@
                 totcfluxout_mig(ic) = totcfluxout_mig(ic) + rdummys(14)
                 totcfluxout(ic) = totcfluxout(ic) + rdummys(15)
                 totcstordiff(ic) = totcstordiff(ic) + rdummys(16)
-                totrootdiff(ic) = totrootdiff(ic) + rdummys(17)
+                totrootprup(ic) = totrootprup(ic) + rdummys(17)
               end if
 10            continue
             end if
@@ -1284,7 +1287,7 @@
                                         cfluxout_mig(ic),              &
                                         cfluxout(ic),                  &
                                         cstordiff(ic),                 &
-                                        rootdiff(ic),                  &
+                                        rootprup(ic),                  &
                                         totcfluxin_diff(ic),           &
                                         totcfluxin_mig(ic),            &
                                         totcfluxin(ic),                &
@@ -1292,7 +1295,7 @@
                                         totcfluxout_mig(ic),           &
                                         totcfluxout(ic),               &
                                         totcstordiff(ic),              &
-                                        totrootdiff(ic)
+                                        totrootprup(ic)
             end if
           end if      
         end if

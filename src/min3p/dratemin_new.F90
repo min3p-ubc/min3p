@@ -356,7 +356,7 @@
 !c  compute difference of total dissolution/precipitation rate 
 !c  for surface controlled dissolution/precipitation reactions
 !c  (incremented - not incremented)
-!c  also for active uptake and release by roots (type = 'root') !FG August 2021
+!c  also for active solute uptake and release by roots (type = 'root') !FG August 2021
 
       if (rate_control(im).eq.'surface' .or.                           &
           rate_control(im).eq.'root') then
@@ -382,7 +382,7 @@
 !c  scale reaction rate depending on equilibrium condition except for
 !c  far from equilibrium reactions
 !c  (not incremented - incremented)
-!c  also for active uptake and release by roots (type = 'root') !FG August 2021
+!c  also for active solute uptake and release by roots (type = 'root') !FG August 2021
 
             if (reaction_type(im).eq.                                 &
                'dissolution_far_from_equilibrium') then

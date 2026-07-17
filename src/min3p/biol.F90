@@ -34,7 +34,7 @@
 !c  floor and this above tree canopy
 !c           time_soi           = next read time for soil specific
 !c                                 parameters
-!c           uptakefactor(nzn)  = passive uptake factor (by zone)
+!c           uptakefactor(nzn)  = passive solute uptake factor (by zone)
 !c           p1(nzn)            = fitting parameter for root water
 !c                                  uptake function
 !c     time_rld= time at which RLD are updated ! CBF RLD

@@ -60,8 +60,9 @@
       character*72 :: subsection
       character*1 :: cdummy
       
-      integer :: i, ic, ircm, itz, iskip, l_string, nskip, ivol, ivolgbl, izn,    &
-                 idx, istart, iend, ierrcode, ierr, nshift, ierrcd
+      integer :: i, ic, ircm, itz, iskip, l_string, nskip, ivol,       &
+                 ivolgbl, izn, idx, istart, iend, ierrcode, ierr,      &
+                 ic_h, itemp, nshift, ierrcd
 
       real*8, external :: satfpres
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r1000 = 1.0d3,      &
@@ -69,7 +70,7 @@
                            verytiny = 1.0d-300, r86400=86400.0
 
       integer :: n_invalid, n_invalid_gbl
-      real*8 :: rdummy, sumrld, sumrld_gbl, coeff
+      real*8 :: rdummy, sumrld, sumrld_gbl, coeff, resprate_h
 
 !c  leaf recycling related variables
       integer :: irwu, ibrf
@@ -554,22 +555,23 @@
                 passive_uptake = .true.
                 itype_rootuptk_solut = 2          
                 do ic = 1, n
-                  if (component_type(ic).eq.'aqueous') then
-                    read(itmp,*,err=999,end=999) fac_uptake(ic,izn),       & ! [-]
-                                                 fm_uptake(ic,izn),        & ! [mol/m2/s]
-                                                 km_uptake(ic,izn),        & ! [mol/lw]
-                                                 order1_uptake(ic,izn),    & ! [m/s]
-                                                 tot_min_uptake(ic,izn),   & ! [mol/lw]
-                                                 exudation_rate(ic,izn),   & ! mol/m2/s
-                                                 fchargebal_coeff(ic,izn)    ! [-]  
-                    if (fac_uptake(ic,izn)>r1) then
-                      fac_uptake(ic,izn)=r1
-                    elseif (fac_uptake(ic,izn)<r0) then
-                      fac_uptake(ic,izn)=r0
+                  itemp = ncorder(ic)                 !internal order
+                  if (component_type(itemp).eq.'aqueous') then
+                    read(itmp,*,err=999,end=999) fac_uptake(itemp,izn),       & ! [-]
+                                                 fm_uptake(itemp,izn),        & ! [mol/m2/s]
+                                                 km_uptake(itemp,izn),        & ! [mol/lw]
+                                                 order1_uptake(itemp,izn),    & ! [m/s]
+                                                 tot_min_uptake(itemp,izn),   & ! [mol/lw]
+                                                 exudation_rate(itemp,izn),   & ! mol/m2/s
+                                                 fchargebal_coeff(itemp,izn)    ! [-]  
+                    if (fac_uptake(itemp,izn)>r1) then
+                      fac_uptake(itemp,izn)=r1
+                    elseif (fac_uptake(itemp,izn)<r0) then
+                      fac_uptake(itemp,izn)=r0
                     end if
-                    fm_uptake(ic,izn) = fm_uptake(ic,izn)*sec_per_days               ! [mol/m2/s] => [mol/m2/day]
-                    order1_uptake(ic,izn) = order1_uptake(ic,izn)*r1000*sec_per_days ! [m3_w/m2/s] => [lw/m2/day]
-                    exudation_rate(ic,izn) = exudation_rate(ic,izn)*sec_per_days     ! [mol/m2/s] => [mol/m2/day]
+                    fm_uptake(itemp,izn) = fm_uptake(itemp,izn)*sec_per_days               ! [mol/m2/s] => [mol/m2/day]
+                    order1_uptake(itemp,izn) = order1_uptake(itemp,izn)*r1000*sec_per_days ! [m3_w/m2/s] => [lw/m2/day]
+                    exudation_rate(itemp,izn) = exudation_rate(itemp,izn)*sec_per_days     ! [mol/m2/s] => [mol/m2/day]
                   end if
                 end do
               end if
@@ -639,57 +641,114 @@
               end if
             end if
 
-!c root respiration related..
-        
-            subsection = 'root respiration and exudation of aqueous phase'
+!c  root respiration and exudation considering charge balance. 
+!c  The formulation is updated to ensure charge balance is maintained on a component basis.
+!c  i.e. if Ca2+ is taken up, 2 protons are released, if Al3+ is taken up, 3 protons are released, 
+!c  if NO3- is taken up, one proton is taken up. if H4SiO4 is taken up, no protons are taken up are are being released.
+            subsection = 'charge balance root respiration and exudation'
+            
+            call findstrg(subsection,icnv,found_subsection)
+
+            if (found_subsection) then
+              resprate_charge(izn) = .true.
+
+              itype_root_resp = 1
+              ierrcd = 14
+
+              do ic = 1, nc-1
+                itemp = ncorder(ic)                 !internal order
+                if (namec(itemp).eq.'h+1') then
+                  read(icnv,*,err=999,end=999) cdummy          !skip h+1
+                else
+                  read(icnv,*,err=999,end=999) resprate(itemp,izn)
+                  resprate(itemp,izn) = resprate(itemp,izn)*r86400
+                end if
+              end do
+
+              !c adjust respiration/edudation rate for h+1
+              ic_h = 0
+              resprate_h = r0
+              do ic = 1, nc-1
+                itemp = ncorder(ic)                 !internal order
+                if (namec(itemp).eq.'h+1') then
+                  ic_h = itemp
+                else
+                  resprate_h = resprate_h - resprate(itemp,izn)*chargec(itemp)
+                end if
+              end do
+              if (ic_h > 0) then
+                resprate(ic_h,izn) = resprate_h
+              end if
+
+            end if
+
+!c root respiration and exudation without considering charge balance.     
+            subsection = 'root respiration and exudation'
 
             call findstrg(subsection,icnv,found_subsection)
+
+            if (.not.found_subsection) then
+              subsection = 'root respiration and exudation of aqueous phase'
+              call findstrg(subsection,icnv,found_subsection)
+            end if
 
             if (found_subsection) then
               itype_root_resp = 1
               ierrcd = 14
 
               do ic = 1, nc-1
-                read(icnv,*,err=999,end=999) resprate(ic,izn)
-                resprate(ic,izn) = resprate(ic,izn)*r86400
+                itemp = ncorder(ic)                 !internal order
+                read(icnv,*,err=999,end=999) resprate(itemp,izn)
+                resprate(itemp,izn) = resprate(itemp,izn)*r86400
               end do
             end if
-            
-            if (b_enable_output .and. b_enable_output_gen) then
-              write(igen,'(/a)')'root respiration and exudation - aqueous phase:'
-              write(igen,'(a)')'--------------------------------------'
-              write(igen,'(a)')'species               rate.'
-              write(igen,'(a)')'---------------------------'
 
-              do ic=1,nc-1
+!cdsu output of respiration and exudation
+            if (b_enable_output .and. b_enable_output_gen) then
+              if (resprate_charge(izn)) then
+                write(igen,'(/a)')'charge balance root respiration and exudation:'
+              else
+                write(igen,'(/a)')'root respiration and exudation:'
+              end if
+
+              write(igen,'(a)')'--------------------------------------------'
+              write(igen,'(a)')'species               rate              unit'
+              write(igen,'(a)')'--------------------------------------------'
+
+              do ic = 1, nc-1
                 if (component_type(ic).eq.'aqueous') then
-                  write(igen,'(a20,1pe15.6e3,1x,a)')namec(ic),         &
-                        resprate(ic,izn),'mol/(meter root length* day)'
+                  write(igen,'(a20,1x,1pe15.6e3,4x,a)')namec(ic),         &
+                        resprate(ic,izn),'mol/day/meter root length'
                 end if
               end do
             end if            
 
 !c  specified minimum aqueous concentration to activate solute uptake.
-            subsection = 'minimum aqueous concentration for root respiration'
-
+            subsection = 'minimum concentration for active solute uptake'
             call findstrg(subsection,icnv,found_subsection)
+
+            if (.not.found_subsection) then
+              subsection = 'minimum aqueous concentration for root respiration'
+              call findstrg(subsection,icnv,found_subsection)
+            end if
 
             if (found_subsection) then
               ierrcd = 15
-              do ic = 1, n
-                read(icnv,*,err=999,end=999) totc_uptake_min(ic,izn)
+              do ic = 1, nc-1
+                itemp = ncorder(ic)                 !internal order
+                read(icnv,*,err=999,end=999) totc_uptake_min(itemp,izn)
               end do
             end if
 
             if (b_enable_output .and. b_enable_output_gen) then
               write(igen,'(/a)')'minimum aqueous concentration for root respiration:'
-              write(igen,'(a)')'--------------------------------------'
-              write(igen,'(a)')'species               conc.'
-              write(igen,'(a)')'---------------------------'
+              write(igen,'(a)')'--------------------------------------------'
+              write(igen,'(a)')'species                concentration    unit'
+              write(igen,'(a)')'--------------------------------------------'
 
-              do ic=1,nc-1
+              do ic = 1, nc-1
                 if (component_type(ic).eq.'aqueous') then
-                  write(igen,'(a20,1pe15.6e3,1x,a)')namec(ic),         &
+                  write(igen,'(a20,1x,1pe15.6e3,4x,a)')namec(ic),         &
                         totc_uptake_min(ic,izn),'mol/L water'
                 end if
               end do

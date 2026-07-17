@@ -207,12 +207,17 @@
       call checkerr(ierr,'resprate',ilog)
       resprate = r0
       call memory_monitor(sizeof(resprate),'resprate',.true.)
-      
+           
       !c specified minimum aqueous concentration to activate solute uptake.
       allocate(totc_uptake_min(nc-1,nzn), stat = ierr)
       call checkerr(ierr,'totc_uptake_min',ilog)
       totc_uptake_min = 0.0d0
       call memory_monitor(sizeof(totc_uptake_min),'totc_uptake_min',.true.)
+
+      allocate(resprate_charge(nzn), stat = ierr)
+      call checkerr(ierr,'resprate_charge',ilog)
+      resprate_charge = .false.
+      call memory_monitor(sizeof(resprate_charge),'resprate_charge',.true.)
 
       return
 

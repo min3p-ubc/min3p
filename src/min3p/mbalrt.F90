@@ -623,7 +623,7 @@
       
       integer :: ierr, ivol, ibrt, istart ,iend, ic, i1, i2, ibvs, izn,&
                  ix, ir, iaq, imb, ig, im, istop, ireac, jvol, irecord,&
-                 idim, ivar, ircm, ntemp, im2, izn_c, ingi
+                 idim, ivar, ircm, ntemp, im2, izn_c, ingi, ic_h
       
       real*8 :: absbalance, area_ivol, totvsflux, diff_eff, diff_loc,  &
                 bdyinfrt_da, bdyinfrt_dg, fluxvg, gasp_m, gasd_m,      &
@@ -734,8 +734,8 @@
       real*8 :: totrcm_temp_gbl(nm,nzn)
 #endif
 
-      real*8 :: rootarup_current, rootarup_max, rootarup_allowed,      &
-                rootdens, delt_rcm, valid_rup
+      real*8 :: rootarup_current, rootarup_zn_current, rootarup_max,   &
+                rootarup_allowed, rootdens, delt_rcm, valid_rup
 
       external comptotc, msysrt, rateredx, totconcg, zero_r8      
      
@@ -2630,8 +2630,9 @@
     !$omp if (nngl > numofloops_thred_mbalrt_8)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private (ic, ivol, izn,                                     &
-    !$omp qrootloc, rootarup_current, rootarup_max, rootarup_allowed)
+    !$omp private (ic, ic_h, ivol, izn,                               &
+    !$omp qrootloc, rootarup_current, rootarup_zn_current,            &
+    !$omp rootarup_max, rootarup_allowed)
 #endif
       
 !c  total source-sink term due to sorption reactions
@@ -2835,6 +2836,9 @@
             if (rld(ivol) >rverysmall) then
               izn = mpropvs(ivol)
               do ic = 1,nc-1    
+                if (namec(ic).eq.'h+1' .and. resprate_charge(izn)) then
+                  cycle
+                end if
                 !c absorption or exudation by root
                 !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
                 if (resprate(ic,izn) < 0) then        !exudation by root
@@ -2852,6 +2856,24 @@
                   rootarup_zn(ic,izn) = rootarup_zn(ic,izn) + rootarup_allowed
                 end if
               end do 
+
+!c  modify respiration rate for h+1 when charge balance in uptake is enforced
+              if (resprate_charge(izn)) then
+                ic_h = 0
+                rootarup_current = r0
+                rootarup_zn_current = r0
+                do ic = 1, nc-1
+                  if (namec(ic).eq.'h+1') then
+                    ic_h = ic
+                  else
+                    rootarup_current = rootarup_current - rootarup(ic)*chargec(ic)
+                    rootarup_zn_current = rootarup_zn_current - rootarup_zn(ic,izn)*chargec(ic)
+                  end if
+                end do
+                rootarup(ic_h) = rootarup_current
+                rootarup_zn(ic_h,izn) = rootarup_zn_current
+              end if
+
             end if   
           end do  
 #ifdef OPENMP

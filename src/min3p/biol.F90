@@ -106,6 +106,8 @@
       real (type_r8), allocatable :: uptakefactor(:)
      
       real (type_r8), allocatable :: resprate(:,:)           !units mol/(root length * time)
+      
+      logical, allocatable :: resprate_charge(:)             !maintain charge balance or not.
 
 !cdsu minimum aqueous concentration required to activate solute uptake
       real (type_r8), allocatable :: totc_uptake_min(:,:)    !units mol/(L water) 

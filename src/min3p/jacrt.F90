@@ -785,7 +785,7 @@
       integer :: i1, i2, iaq, ibl, icol, icon, ir, info_debug, ivol,   &
                  izn, izn_c, ig, isb, im, ic, ix, idiag, istart, iend, &
                  irow, isym, istop, im2, ldiag, lsym, jbl, jvol, i, j, &
-                 ingi
+                 ingi, ic_h
       real*8 :: dcstor, dgstor, drtinc, dcflux, dgflux
                   
 
@@ -996,7 +996,7 @@
     !$omp grad_cgg_totcnew, grad_cgg_totviscnew, grad_cgg_electro,    &
     !$omp grad_cgg_totgnew,                                           &
 #endif
-    !$omp tid, i1, i2, iaq, ibl, ic, icon, idiag, iend, iss,          &
+    !$omp tid, i1, i2, iaq, ibl, ic, ic_h, icon, idiag, iend, iss,    &
     !$omp ig, im, im2, ir, irow, isb, istart, isym, ivol, ivol_gbl,   &
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
     !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &
@@ -1451,7 +1451,7 @@
 !c  modify computed rates in the same manner as done in the residual
 !c  assembly, moving the related code into modrate function.
             call modrate(ratemdp(im,ivol),cmnew(im,ivol),              &
-                         pornew(ivol),delt,im,tid)            
+                         pornew(ivol),delt,im,tid)  
 
           end do             !loop over minerals
 
@@ -1710,6 +1710,21 @@
                   rootarup(ic) = min(rootarup_current,max(rootarup_max,r0))
                 end if
               end do
+
+!c  modify respiration rate for h+1 when charge balance in uptake is enforced
+              if (resprate_charge(izn)) then
+                ic_h = 0
+                rootarup_current = r0
+                do ic = 1, nc-1
+                  if (namec(ic).eq.'h+1') then
+                    ic_h = ic
+                  else
+                    rootarup_current = rootarup_current - rootarup(ic)*chargec(ic)
+                  end if
+                end do
+                rootarup(ic_h) = rootarup_current
+              end if
+
             end if
           end if
         end if

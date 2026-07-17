@@ -224,7 +224,8 @@
       !    itype = itype_in
       !end if
       
-      if (nsites > 0) then
+      !c to be checked later
+      !if (nsites > 0) then
       
           allocate (site_area(nsites), stat = ierr)
           site_area=0.0d0
@@ -262,9 +263,9 @@
           iaic=0 
           call checkerr(ierr,'iaic',ilog)
           call memory_monitor(sizeof(iaic),'iaic',.true.)
-      end if
+      !end if
       
-      if (nsites_ion >= 1) then
+      if (nsites_ion > 0) then
           allocate (cec_fraction(nsites_ion), stat = ierr)
           cec_fraction=0.0d0
           cec_fraction(1) = 1.0d0

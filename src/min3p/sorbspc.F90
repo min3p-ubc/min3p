@@ -160,114 +160,146 @@
                 jasb_ion(*),jasb_surf(*),elect_surf(*),totc(*)
       dimension dz_surf(nlayer,nsb_surf)
                                                                         
-      real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0, r2 = 2.0d0, r4 = 4.0d0
+      real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0,      &
+                           r2 = 2.0d0, r3 = 3.0d0, r4 = 4.0d0,         &
+                           rtol = 1.0d-10, pi = 3.141592653589793d0
       integer, parameter :: ilayer_0 = 1, ilayer_beta = 2
 
-      logical :: quadratic1, quadratic2
+      logical :: quadratic1, quadratic2, cubic1, cubic2
       
-      integer :: i1, ic, istart, istop, iend, ksb, ndim
+      integer :: i1, ic, istart, istop, iend, ksb, ndim, nroots, nits
       
-      real*8 :: term1, term2, term3, term4, term5, cte, cloc, totloc
+      real*8 :: term1, term2, term3, term4, term5, term6, cte, cloc, totloc
+
+      real*8 :: ra, rb, rc, rx1, rx2, fx, fdx            !c parameter for cubic equation fx=x^3+ax^2+bx+c
 
       if (isb_ion.gt.0) then
 
 !c  compute nominator
            
-            quadratic1 = .false.
-            term1 = r1/eqsb_ion(isb_ion)
-            istart = iasb_ion(isb_ion)
-            istop = iasb_ion(isb_ion+1)-1
-            do i1 = istart,istop
-              ic = jasb_ion(i1)
-          
-          
-              if (isactcexch) then
-               term1 = term1 * (gammac(ic)*c(ic))**xnusb_ion(i1)
-              else 
-               term1 = term1 * c(ic)**xnusb_ion(i1)
-              end if
-          
-              if (idnint(-xnusb_ion(i1)).eq.2) then
-                quadratic1 = .true.
-               end if
-            end do
+        quadratic1 = .false.
+        cubic1 = .false.
+        term1 = r1/eqsb_ion(isb_ion)
+        istart = iasb_ion(isb_ion)
+        istop = iasb_ion(isb_ion+1)-1
+        do i1 = istart,istop
+          ic = jasb_ion(i1)
+
+          if (isactcexch) then
+           term1 = term1 * (gammac(ic)*c(ic))**xnusb_ion(i1)
+          else 
+           term1 = term1 * c(ic)**xnusb_ion(i1)
+          end if
+        
+          if (idnint(-xnusb_ion(i1)).eq.2) then
+            quadratic1 = .true.
+          else if (idnint(-xnusb_ion(i1)).eq.3) then
+            cubic1 = .true. 
+          end if
+        end do
 
     !c  compute denominator
  
-            if (sorption_type_ion.eq.'gapon') then
+        if (sorption_type_ion.eq.'gapon') then
 
-              term2 = r0
+          term2 = r0
 
-              do ksb = 1,nsb_ion
-                term3 = r1/eqsb_ion(ksb)
-                istart = iasb_ion(ksb)
-                istop = iasb_ion(ksb+1)-1
-                do i1 = istart,istop
-                  ic = jasb_ion(i1)
-                  if (isactcexch) then
-                    term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
-                  else
-                    term3 = term3 * c(ic)**xnusb_ion(i1)
-                  end if  
-                end do
-                term2 = term2 + term3
-              end do
+          do ksb = 1,nsb_ion
+            term3 = r1/eqsb_ion(ksb)
+            istart = iasb_ion(ksb)
+            istop = iasb_ion(ksb+1)-1
+            do i1 = istart,istop
+              ic = jasb_ion(i1)
+              if (isactcexch) then
+                term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
+              else
+                term3 = term3 * c(ic)**xnusb_ion(i1)
+              end if  
+            end do
+            term2 = term2 + term3
+          end do
      
-              csb_ion = cec*term1/term2
+          csb_ion = cec*term1/term2
 
-            elseif (sorption_type_ion.eq.'gaines-thomas') then
+        elseif (sorption_type_ion.eq.'gaines-thomas') then
 
-              term4 = r0
-              term5 = r0
+          term4 = r0
+          term5 = r0
+          term6 = r0
 
-              do ksb = 1,nsb_ion
+          do ksb = 1,nsb_ion
 
-                term3 = r1/eqsb_ion(ksb)
-                quadratic2 = .false.
+            term3 = r1/eqsb_ion(ksb)
+            quadratic2 = .false.
+            cubic2 = .false.
 
-                istart = iasb_ion(ksb)
-                istop = iasb_ion(ksb+1)-1
+            istart = iasb_ion(ksb)
+            istop = iasb_ion(ksb+1)-1
 
-                do i1 = istart,istop
+            do i1 = istart,istop
 
-                  ic = jasb_ion(i1)
-                  if (idnint(-xnusb_ion(i1)).eq.2) then
-                    quadratic2 = .true.
-                  end if
-              
-                  if (isactcexch) then
-                     term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
-                  else
-                     term3 = term3 * c(ic)**xnusb_ion(i1)
-                  end if
-             
-                end do
+              ic = jasb_ion(i1)
+              if (idnint(-xnusb_ion(i1)).eq.2) then
+                quadratic2 = .true.
+              else if (idnint(-xnusb_ion(i1)).eq.3) then
+                cubic2 = .true.
+              end if
+          
+              if (isactcexch) then
+                 term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
+              else
+                 term3 = term3 * c(ic)**xnusb_ion(i1)
+              end if
+          
+            end do
 
-                if (.not.quadratic2) then
-                  term4 = term4 + term3
-                elseif (quadratic2) then
-                  term5 = term5 + term3
-                end if
+            if (cubic2) then
+              term6 = term6 + term3
+            else if (quadratic2) then
+              term5 = term5 + term3
+            else
+              term4 = term4 + term3
+            end if
 
-              end do
+          end do
  
-              if (term5.ne.0) then
-              term2 = (-term4 + (term4**r2 + r4*term5)**rhalf)/(r2*term5)
-              else
-              term2 = term4
-            end if
+          if (term6.ne.0) then            !cubic equation for tri-valent cation
+            ra = term5/term6
+            rb = term4/term6
+            rc = -r1/term6
 
-              if (quadratic1) then
-                term2 = term2**r2
+            !c use Newton-Raphson method to solve cubic equation instead, 
+            !c x_i+1 = x_i - f(x_i)/f'(x_i)
+
+            rx1 = r1
+            rx2 = r0
+            nits = 0
+            do while(.true.)              
+              rx2 = rx1
+              fx = rx1**3+ra*rx1**2+rb*rx1+rc      !c function
+              fdx = 3.0*rx1**2+2.0*ra*rx1+rb       !c derivative
+              rx1 = rx1-fx/fdx
+              nits = nits + 1
+              if (abs(fx) < rtol .or. abs(rx1-rx2) < rtol .or. nits > 100) then
+                exit                
               end if
+            end do
+            term2 = rx1
+          else if (term5.ne.0) then
+            term2 = (-term4 + (term4**r2 + r4*term5)**rhalf)/(r2*term5)
+          else
+            term2 = r1/term4  
+          end if
 
-              if (term5.ne.0) then
-                csb_ion = cec*term1*term2
-              else
-                csb_ion = cec*term1/term2
-              end if
+          if (cubic1) then
+            term2 = term2**r3
+          else if (quadratic1) then
+            term2 = term2**r2
+          end if
 
-            end if
+          csb_ion = cec*term1*term2
+
+        end if
        
       end if
 
@@ -298,14 +330,17 @@
           ic = jasb_surf(i1) 
           cloc=c(ic)             
           ! Compute the equivalent fraction 
-          if (component_type(ic)=='surface'.and.mol_frac_ads) then
-            totloc = totc(ic)
-            cloc = cloc/totloc
+          if (elect_correction.and.mol_frac_ads) then
+            if (component_type(ic)=='surface') then
+              totloc = totc(ic)
+              cloc = cloc/totloc
+            end if
           end if
+
           csb_surf = csb_surf * (gammac(ic)*cloc)**xnusb_surf(i1)       
         end do
         
-        if (mol_frac_ads) then
+        if (elect_correction.and.mol_frac_ads) then
           !c to be checked later, totloc is assigned to the last value in the previous loop
           csb_surf = csb_surf * totloc    
         end if 
@@ -336,17 +371,19 @@
                          nsb_ion,nsb_surf,isb_ion,isb_surf,                       &
                          sorption_type_ion,sorption_type_surf,                    &
                          sorption_group,isactcexch)
-      use chem, ONLY : idx_nsites_ion, nss_onIsite_ion, idx_ss2isite_ion, nsites_ion
+      use chem, only : idx_nsites_ion, nss_onIsite_ion, idx_ss2isite_ion, nsites_ion
 
       implicit none
 
       real*8 :: csb_ion,csb_surf,cec,cec_fraction,eqsb_ion,eqsb_surf,gammac,c,xnusb_ion,xnusb_surf
       integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,nsb_surf,isb_ion,isb_surf
 
-      integer :: i1, ic, istart, istop, iend, isb, itemp, ksb, nss
+      integer :: i1, ic, istart, istop, iend, isb, itemp, ksb, nss,    &
+                 nroots, nits
 
-      real*8 :: term1, term2, term3, term4, term5
-                                                                        
+      real*8 :: term1, term2, term3, term4, term5, term6
+      real*8 :: ra, rb, rc, rx1, rx2, fx, fdx            !c parameter for cubic equation x^3+ax^2+bx+c=0
+
       character*72 sorption_type_ion,sorption_type_surf,sorption_group                         
                                                                         
       logical isactcexch
@@ -354,135 +391,162 @@
       dimension c(*),eqsb_ion(*),eqsb_surf(*),gammac(*),xnusb_ion(*),xnusb_surf(*), &
                 iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*)
                                                                         
-      real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0, r2 = 2.0d0, r4 = 4.0d0
+      real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0,      &
+                           r2 = 2.0d0, r3 = 3.0d0, r4 = 4.0d0,         &
+                           rtol = 1.0d-10, pi = 3.141592653589793d0
 
-      logical quadratic1, quadratic2
+      logical quadratic1, quadratic2, cubic1, cubic2
 
       if (isb_ion.gt.0) then
 
 !c  compute nominator
            
-            quadratic1 = .false.
-            term1 = r1/eqsb_ion(isb_ion)
-            istart = iasb_ion(isb_ion)
-            istop = iasb_ion(isb_ion+1)-1
-            do i1 = istart,istop
-              ic = jasb_ion(i1)
-          
-          
-              if (isactcexch) then
-               term1 = term1 * (gammac(ic)*c(ic))**xnusb_ion(i1)
-              else 
-               term1 = term1 * c(ic)**xnusb_ion(i1)
-              end if
-          
-              if (idnint(-xnusb_ion(i1)).eq.2) then
-                quadratic1 = .true.
-               end if
-            end do
+        quadratic1 = .false.
+        cubic1 = .false.
+        term1 = r1/eqsb_ion(isb_ion)
+        istart = iasb_ion(isb_ion)
+        istop = iasb_ion(isb_ion+1)-1
+        do i1 = istart,istop
+          ic = jasb_ion(i1)
+        
+          if (isactcexch) then
+           term1 = term1 * (gammac(ic)*c(ic))**xnusb_ion(i1)
+          else 
+           term1 = term1 * c(ic)**xnusb_ion(i1)
+          end if
+        
+          if (idnint(-xnusb_ion(i1)).eq.2) then
+            quadratic1 = .true.
+          else if (idnint(-xnusb_ion(i1)).eq.3) then
+            cubic1 = .true. 
+          end if
+        end do
 
     !c  compute denominator
  
-            if (sorption_type_ion.eq.'gapon') then
+        if (sorption_type_ion.eq.'gapon') then
 
-              term2 = r0
-              itemp = idx_nsites_ion(isb_ion)
-              nss=nss_onIsite_ion(itemp)
-              if (nsites_ion .eq. 1) then
-                  nss=nsb_ion
-              end if
+          term2 = r0
+          itemp = idx_nsites_ion(isb_ion)
+          nss=nss_onIsite_ion(itemp)
+          if (nsites_ion .eq. 1) then
+            nss=nsb_ion
+          end if
+          
+          do isb = 1,nss           !nsb_ion
               
-              do isb = 1,nss           !nsb_ion
-                  
-                if (nsites_ion .eq. 1) then
-                    ksb=isb
-                else
-                    ksb = idx_ss2isite_ion(itemp, isb)
-                end if
+            if (nsites_ion .eq. 1) then
+              ksb=isb
+            else
+              ksb = idx_ss2isite_ion(itemp, isb)
+            end if
 
-!c              do ksb = 1,nsb_ion
-                term3 = r1/eqsb_ion(ksb)
-                istart = iasb_ion(ksb)
-                istop = iasb_ion(ksb+1)-1
-                do i1 = istart,istop
-                  ic = jasb_ion(i1)
-                  if (isactcexch) then
-                    term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
-                  else
-                    term3 = term3 * c(ic)**xnusb_ion(i1)
-                  end if  
-                end do
-                term2 = term2 + term3
-              end do
-            
+!c          do ksb = 1,nsb_ion
+            term3 = r1/eqsb_ion(ksb)
+            istart = iasb_ion(ksb)
+            istop = iasb_ion(ksb+1)-1
+            do i1 = istart,istop
+              ic = jasb_ion(i1)
+              if (isactcexch) then
+                term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
+              else
+                term3 = term3 * c(ic)**xnusb_ion(i1)
+              end if  
+            end do
+            term2 = term2 + term3
+          end do
      
-              csb_ion = cec*term1/term2
+          csb_ion = cec*term1/term2
 
-            elseif (sorption_type_ion.eq.'gaines-thomas') then
+        elseif (sorption_type_ion.eq.'gaines-thomas') then
 
-              term4 = r0
-              term5 = r0
-              itemp = idx_nsites_ion(isb_ion)
-              nss=nss_onIsite_ion(itemp)
-              if (nsites_ion .eq. 1) then
-                  nss=nsb_ion
+          term4 = r0
+          term5 = r0
+          term6 = r0
+          itemp = idx_nsites_ion(isb_ion)
+          nss=nss_onIsite_ion(itemp)
+          if (nsites_ion .eq. 1) then
+            nss=nsb_ion
+          end if
+          
+          do isb = 1,nss           !nsb_ion
+              
+            if (nsites_ion .eq. 1) then
+              ksb=isb
+            else
+              ksb = idx_ss2isite_ion(itemp, isb)
+            end if
+            
+            term3 = r1/eqsb_ion(ksb)
+            quadratic2 = .false.
+            cubic2 = .false.
+
+            istart = iasb_ion(ksb)
+            istop = iasb_ion(ksb+1)-1
+
+            do i1 = istart,istop
+
+              ic = jasb_ion(i1)
+              if (idnint(-xnusb_ion(i1)).eq.2) then
+                quadratic2 = .true.
+              else if (idnint(-xnusb_ion(i1)).eq.3) then
+                cubic2 = .true.
               end if
-              
-              do isb = 1,nss           !nsb_ion
-                  
-                if (nsites_ion .eq. 1) then
-                    ksb=isb
-                else
-                    ksb = idx_ss2isite_ion(itemp, isb)
-                end if
-                
-                term3 = r1/eqsb_ion(ksb)
-                quadratic2 = .false.
-
-                istart = iasb_ion(ksb)
-                istop = iasb_ion(ksb+1)-1
-
-                do i1 = istart,istop
-
-                  ic = jasb_ion(i1)
-                  if (idnint(-xnusb_ion(i1)).eq.2) then
-                    quadratic2 = .true.
-                  end if
-              
-                  if (isactcexch) then
-                     term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
-                  else
-                     term3 = term3 * c(ic)**xnusb_ion(i1)
-                  end if
-             
-                end do
-
-                if (.not.quadratic2) then
-                  term4 = term4 + term3
-                elseif (quadratic2) then
-                  term5 = term5 + term3
-                end if
-
-              end do
- 
-              if (term5.ne.0) then
-              term2 = (-term4 + (term4**r2 + r4*term5)**rhalf)/(r2*term5)
+          
+              if (isactcexch) then
+                 term3 = term3 * (gammac(ic)*c(ic))**xnusb_ion(i1)
               else
-              term2 = term4
+                 term3 = term3 * c(ic)**xnusb_ion(i1)
+              end if
+         
+            end do
+
+            if (cubic2) then
+              term6 = term6 + term3
+            else if (quadratic2) then
+              term5 = term5 + term3
+            else
+              term4 = term4 + term3
             end if
 
-              if (quadratic1) then
-                term2 = term2**r2
-              end if
+          end do
 
-              if (term5.ne.0) then
- !Cmx               csb_ion = cec*term1*term2
-                csb_ion = cec*cec_fraction*term1*term2
-              else
-                csb_ion = cec*cec_fraction*term1/term2
-              end if
+          if (term6.ne.0) then            !cubic equation for tri-valent cation
+            ra = term5/term6
+            rb = term4/term6
+            rc = -r1/term6
 
-            end if
+            !c use Newton-Raphson method to solve cubic equation instead, 
+            !c x_i+1 = x_i - f(x_i)/f'(x_i)
+
+            rx1 = r1
+            rx2 = r0
+            nits = 0
+            do while(.true.)              
+              rx2 = rx1
+              fx = rx1**3+ra*rx1**2+rb*rx1+rc      !c function
+              fdx = 3.0*rx1**2+2.0*ra*rx1+rb       !c derivative
+              rx1 = rx1-fx/fdx
+              nits = nits + 1
+              if (abs(fx) < rtol .or. abs(rx1-rx2) < rtol .or. nits > 100) then
+                exit                
+              end if
+            end do
+            term2 = rx1
+          else if (term5.ne.0) then       !quadratic equation for bi-valent cation
+            term2 = (-term4 + (term4**r2 + r4*term5)**rhalf)/(r2*term5)          
+          else
+            term2 = r1/term4
+          end if
+
+          if (cubic1) then
+            term2 = term2**r3
+          else if (quadratic1) then
+            term2 = term2**r2
+          end if
+
+          csb_ion = cec*cec_fraction*term1*term2
+        end if
        
       end if
 
@@ -490,18 +554,18 @@
 
       if (isb_surf.gt.0) then
         
-            csb_surf = r1/eqsb_surf(isb_surf)
+        csb_surf = r1/eqsb_surf(isb_surf)
 
-            istart = iasb_surf(isb_surf)
-            iend = iasb_surf(isb_surf+1)-1
+        istart = iasb_surf(isb_surf)
+        iend = iasb_surf(isb_surf+1)-1
             
-            do i1 = istart,iend
-              ic = jasb_surf(i1)
-              csb_surf = csb_surf * (gammac(ic)*c(ic))**xnusb_surf(i1)             
-              
-            end do
+        do i1 = istart,iend
+          ic = jasb_surf(i1)
+          csb_surf = csb_surf * (gammac(ic)*c(ic))**xnusb_surf(i1)
+        end do
 
       end if        !(sorption_group)
 
       return
+
       end

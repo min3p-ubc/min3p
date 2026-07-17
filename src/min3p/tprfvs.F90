@@ -183,13 +183,6 @@
       end if 
 
       if (fully_saturated) then
-
-!c to be further checked
-!c  the following code will make the results a little difference from the 
-!c  results without transient output.
-!c  update on 2021-08-17 by DSU
-
-        !hhead(ivol) = uvsnew(ivol)
         phead = uvsnew(ivol) - zg(ivol)
         
         if (b_output_trans_binary) then
@@ -221,15 +214,8 @@
           end if
         end if
                                                                        
-      elseif (variably_saturated) then
-                          
-!c to be further checked
-!c  the following code will make the results a little difference from the 
-!c  results without transient output.
-!c  update on 2021-08-17 by DSU
-
-        !hhead(ivol) = uvsnew(ivol)+zg(ivol)                            
-        !sgnew(ivol) = r1 - sanew(ivol)
+      elseif (variably_saturated) then                       
+        sgnew(ivol) = r1 - sanew(ivol)
         theta_g = pornew(ivol)*sgnew(ivol)  
         
         if (b_output_trans_binary) then

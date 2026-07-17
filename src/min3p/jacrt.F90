@@ -869,8 +869,8 @@
       real*8 :: dummyvec(nm)
       
 !c root respiration variables:
-      real*8 :: rootarup_current, rootarup_max, dresprate,      &
-                rootdens, rootarup(nc), drootarup(nc)
+      real*8 :: rootarup_current, dresprate, rootdens,          &
+                rootarup(nc), drootarup(nc)
       
 !c ms variables    
       real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),     &
@@ -999,8 +999,8 @@
     !$omp tid, i1, i2, iaq, ibl, ic, ic_h, icon, idiag, iend, iss,    &
     !$omp ig, im, im2, ir, irow, isb, istart, isym, ivol, ivol_gbl,   &
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
-    !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &
-    !$omp qrootloc, rootarup, rootarup_current, rootarup_max,         &   !!Root uptake and
+    !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &    
+    !$omp qrootloc, rootarup, rootarup_current,                       &   !!Root uptake and
     !$omp dresprate, drootarup, rootdens,                             &   !!respiration
     !$omp zbal, zpos, zneg, zpos_inc, zneg_inc,                       &
     !$omp densgij, dg, dgpivol, dmdens_i, ddens_i, gij,  gmfracij,    &   !!Gas advection and dgm model
@@ -1703,12 +1703,10 @@
                 if (resprate(ic,izn) < r0) then    !exudation by root
                   rootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)
                 else                          !respiration by root
-                  !c inhibition by hyperbolic equation [TotC]/([TotC]+[TotC_h]) 
-                  rootarup_current = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)*&             !mol/day
-                                 (totcnew(ic,ivol)/(totcnew(ic,ivol)+totc_uptake_kh(ic,izn)))
-                  rootarup_max = (totcnew(ic,ivol)-totc_uptake_min(ic,izn))*&
-                                  cvol(ivol)*pornew(ivol)*sanew(ivol)/delt
-                  rootarup(ic) = min(rootarup_current,max(rootarup_max,r0))
+                  !c inhibition by hyperbolic equation ([TotC]/([TotC]+[TotC_h]))^n
+                  rootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)*&             !mol/day
+                                 (totcnew(ic,ivol)/(totcnew(ic,ivol)+totc_uptake_hk(ic,izn)))**&
+                                 totc_uptake_hn(ic,izn)
                 end if
               end do
 
@@ -3421,12 +3419,20 @@
           drootarup = r0
           if (root_uptake) then
             if (itype_root_resp == 1) then 
-              if (rld(ivol) > rverysmall) then              
-                !c derivative of respiration depends on the formula 
-                !c d([TotC]/([TotC]+[TotC_h]) = [TotC_h]/([TotC]+[TotC_h])^2
-                drootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)/&                                
-                                (dtotc(ic,tid)+totc_uptake_kh(ic,izn))**2*&
-                                totc_uptake_kh(ic,izn)
+              if (rld(ivol) > rverysmall) then
+                if (resprate(ic,izn) > r0) then
+                  if (resprate_charge(izn) .and. namec(ic).eq.'h+1') then
+                    drootarup(ic) = r0
+                  else
+                    !c derivative of respiration depends on the formula 
+                    !c d(([TotC]/([TotC]+[TotC_h])^n) = n*[TotC_h][TotC]^(n-1)/([TotC]+[TotC_h])^(n+1))
+                    drootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)/   &                                
+                                    (totcinc(ic,tid)+totc_uptake_hk(ic,izn))**     &
+                                    (totc_uptake_hn(ic,izn)+1)*                    &
+                                    totc_uptake_hk(ic,izn)*totc_uptake_hn(ic,izn)* &
+                                    totcinc(ic,tid)**(totc_uptake_hn(ic,izn)-1)
+                  end if
+                end if
               end if
             end if
           end if 

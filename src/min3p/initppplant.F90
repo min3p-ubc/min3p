@@ -724,28 +724,49 @@
             end if            
 
 !c  specified minimum aqueous concentration to activate solute uptake.
-            subsection = 'inhibition parameter for active solute uptake'
+            subsection = 'inhibition parameters for active solute uptake'
             call findstrg(subsection,icnv,found_subsection)
 
             if (found_subsection) then
               ierrcd = 15
               do ic = 1, nc-1
                 itemp = ncorder(ic)                 !internal order
-                read(icnv,*,err=999,end=999) totc_uptake_min(itemp,izn), totc_uptake_kh(itemp,izn)
+                read(icnv,*,err=999,end=999) totc_uptake_min(itemp,izn), &
+                                             totc_uptake_hk(itemp,izn),  &
+                                             totc_uptake_hn(itemp,izn)
               end do
             end if
 
-            if (b_enable_output .and. b_enable_output_gen) then
-              write(igen,'(/a)')'inhibition parameter for active solute uptake:'
+!c  specified minimum aqueous concentration to activate solute uptake.
+!c  **********************************************
+!c  to be checked later, deprecated, to be removed
+!c  **********************************************
+            if (.not. found_subsection) then
+              subsection = 'inhibition parameter for active solute uptake'
+              call findstrg(subsection,icnv,found_subsection)
+
+              if (found_subsection) then
+                ierrcd = 15
+                do ic = 1, nc-1
+                  itemp = ncorder(ic)                 !internal order
+                  read(icnv,*,err=999,end=999) totc_uptake_min(itemp,izn), &
+                                               totc_uptake_hk(itemp,izn)
+                end do
+              end if
+            end if
+
+!c  output of inhibition parameters 
+            if (found_subsection .and. b_enable_output .and. b_enable_output_gen) then
+              write(igen,'(/a)')'inhibition parameters for active solute uptake:'
               write(igen,'(a)')'------------------------------------------------------------'
-              write(igen,'(a)')'species                concentration, inhibition coeff  unit'
+              write(igen,'(a)')'species              concentration,  inhibition coef, order'
               write(igen,'(a)')'------------------------------------------------------------'
 
               do ic = 1, nc-1
                 if (component_type(ic).eq.'aqueous') then
-                  write(igen,'(a20,1x,1pe15.6e3,4x,a)')namec(ic),         &
-                        totc_uptake_min(ic,izn),totc_uptake_kh(ic,izn),   &
-                        'mol/L water'
+                  write(igen,'(a18,3(1x,1pe15.6e3))')namec(ic),         &
+                        totc_uptake_min(ic,izn),totc_uptake_hk(ic,izn), &
+                        totc_uptake_hn(ic,izn)
                 end if
               end do
             end if

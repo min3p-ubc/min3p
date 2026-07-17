@@ -734,7 +734,7 @@
       real*8 :: totrcm_temp_gbl(nm,nzn)
 #endif
 
-      real*8 :: rootarup_current, rootarup_zn_current, rootarup_max,   &
+      real*8 :: rootarup_current, rootarup_zn_current,                &
                 rootarup_allowed, rootdens, delt_rcm, valid_rup
 
       external comptotc, msysrt, rateredx, totconcg, zero_r8      
@@ -2632,7 +2632,7 @@
     !$omp default(shared)                                             &
     !$omp private (ic, ic_h, ivol, izn,                               &
     !$omp qrootloc, rootarup_current, rootarup_zn_current,            &
-    !$omp rootarup_max, rootarup_allowed)
+    !$omp rootarup_allowed)
 #endif
       
 !c  total source-sink term due to sorption reactions
@@ -2846,12 +2846,10 @@
                   rootarup(ic) = rootarup(ic) + rootarup_allowed
                   rootarup_zn(ic,izn) = rootarup_zn(ic,izn) + rootarup_allowed
                 else                              !respiration by root 
-                  rootarup_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)*  &     !mol/day
-                                     (totcnew(ic,ivol)/(totcnew(ic,ivol)+    &
-                                      totc_uptake_kh(ic,izn)))
-                  rootarup_max = (totcnew(ic,ivol)-totc_uptake_min(ic,izn))* &
-                                  conv3*cvol(ivol)*pornew(ivol)*sanew(ivol)/delt   !mol/day
-                  rootarup_allowed = - min(rootarup_current,max(rootarup_max,r0))
+                  rootarup_allowed = - cvol(ivol)*rld(ivol)*resprate(ic,izn)*&     !mol/day
+                                      (totcnew(ic,ivol)/(totcnew(ic,ivol)+   &
+                                       totc_uptake_hk(ic,izn)))**            &
+                                       totc_uptake_hn(ic,izn)
 
                   rootarup(ic) = rootarup(ic) + rootarup_allowed   !mol/day
                   rootarup_zn(ic,izn) = rootarup_zn(ic,izn) + rootarup_allowed

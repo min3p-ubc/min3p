@@ -214,6 +214,11 @@
       totc_uptake_min = 0.0d0
       call memory_monitor(sizeof(totc_uptake_min),'totc_uptake_min',.true.)
 
+      allocate(totc_uptake_kh(nc-1,nzn), stat = ierr)
+      call checkerr(ierr,'totc_uptake_kh',ilog)
+      totc_uptake_kh = 0.0d0
+      call memory_monitor(sizeof(totc_uptake_kh),'totc_uptake_kh',.true.)
+
       allocate(resprate_charge(nzn), stat = ierr)
       call checkerr(ierr,'resprate_charge',ilog)
       resprate_charge = .false.

@@ -2846,9 +2846,10 @@
                   rootarup(ic) = rootarup(ic) + rootarup_allowed
                   rootarup_zn(ic,izn) = rootarup_zn(ic,izn) + rootarup_allowed
                 else                              !respiration by root 
-                  rootarup_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)             !mol/day
-                  rootarup_max = (totcnew(ic,ivol)-                          &
-                                  max(rverysmall,totc_uptake_min(ic,izn)))*  &
+                  rootarup_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)*  &     !mol/day
+                                     (totcnew(ic,ivol)/(totcnew(ic,ivol)+    &
+                                      totc_uptake_kh(ic,izn)))
+                  rootarup_max = (totcnew(ic,ivol)-totc_uptake_min(ic,izn))* &
                                   conv3*cvol(ivol)*pornew(ivol)*sanew(ivol)/delt   !mol/day
                   rootarup_allowed = - min(rootarup_current,max(rootarup_max,r0))
 

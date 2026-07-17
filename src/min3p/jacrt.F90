@@ -870,7 +870,7 @@
       
 !c root respiration variables:
       real*8 :: rootarup_current, rootarup_max, dresprate,      &
-                rootdens, totcres, rootarup(nc), drootarup(nc)
+                rootdens, rootarup(nc), drootarup(nc)
       
 !c ms variables    
       real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),     &
@@ -1001,7 +1001,7 @@
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
     !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &
     !$omp qrootloc, rootarup, rootarup_current, rootarup_max,         &   !!Root uptake and
-    !$omp totcres, dresprate, drootarup, rootdens,                    &   !!respiration
+    !$omp dresprate, drootarup, rootdens,                             &   !!respiration
     !$omp zbal, zpos, zneg, zpos_inc, zneg_inc,                       &
     !$omp densgij, dg, dgpivol, dmdens_i, ddens_i, gij,  gmfracij,    &   !!Gas advection and dgm model
     !$omp gpivol_ivol, gpivol_jvol, gdens_ivol, gdens_jvol,           &
@@ -1701,26 +1701,14 @@
                 !c absorption or exudation by root
                 !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
                 if (resprate(ic,izn) < r0) then    !exudation by root
-                  rootarup(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-                else                          !respiration by root 
-                  rootarup_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3         !mol/day
+                  rootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)
+                else                          !respiration by root
+                  !c inhibition by hyperbolic equation [TotC]/([TotC]+[TotC_h]) 
+                  rootarup_current = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)*&             !mol/day
+                                 (totcnew(ic,ivol)/(totcnew(ic,ivol)+totc_uptake_kh(ic,izn)))
                   rootarup_max = (totcnew(ic,ivol)-totc_uptake_min(ic,izn))*&
-                                  cvol(ivol)*pornew(ivol)*sanew(ivol)/delt               !mol/day
-                  rootarup(ic) = min(rootarup_current,max(rootarup_max,r0)) 
-                  totcres = totcnew(ic,ivol)-rootarup(ic)*delt/        &
-                            (cvol(ivol)*pornew(ivol)*sanew(ivol))
-                  !if (totcres <= totc_uptake_min(ic,izn)) then
-                  !  rootarup(ic)
-                  !end if
-
-                  !c to be checked later
-                  !if (rootarup_current > rootarup_max) then
-                  !  write(*,'(2(a,1x,i0,1x),2(a,1x),12(a,1x,e13.6,1x))') '-> root uptake limit ic',ic,&
-                  !        'ivol',ivol,'namec',trim(namec(ic)),'totcnew',totcnew(ic,ivol),'totcold',totcold(ic,ivol),&
-                  !        'totcres',totcres,'totcmin',totc_uptake_min(ic,izn),'rld',rld(ivol),'cvol',cvol(ivol),&
-                  !        'por',pornew(ivol),'sanew',sanew(ivol),'resprate',resprate(ic,izn),&
-                  !        'uptake_cal',rootarup_current,'uptake_max',rootarup_max,'uptake_act',rootarup(ic)
-                  !end if              
+                                  cvol(ivol)*pornew(ivol)*sanew(ivol)/delt
+                  rootarup(ic) = min(rootarup_current,max(rootarup_max,r0))
                 end if
               end do
 
@@ -3426,11 +3414,11 @@
           if (root_uptake) then
             if (itype_root_resp == 1) then 
               if (rld(ivol) > rverysmall) then              
-                !c derivative of respiration depends on the formula
-                !c if respiration rate is not related to solute concentration, 
-                !c then derivative is zero
-                !c rootarup(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-                !c drootarup(ic) = d(rootarup)/d(cnew) = r0
+                !c derivative of respiration depends on the formula 
+                !c d([TotC]/([TotC]+[TotC_h]) = [TotC_h]/([TotC]+[TotC_h])^2
+                drootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)/&                                
+                                (dtotc(ic,tid)+totc_uptake_kh(ic,izn))**2*&
+                                totc_uptake_kh(ic,izn)
               end if
             end if
           end if 

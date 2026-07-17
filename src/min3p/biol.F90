@@ -110,7 +110,9 @@
       logical, allocatable :: resprate_charge(:)             !maintain charge balance or not.
 
 !cdsu minimum aqueous concentration required to activate solute uptake
+!cdsu R = k x [TotC]/([TotC]+K_h)
       real (type_r8), allocatable :: totc_uptake_min(:,:)    !units mol/(L water) 
+      real (type_r8), allocatable :: totc_uptake_kh(:,:)     !hyperbolic inhibition term, units mol/(L water) 
 
       integer :: cmws
 

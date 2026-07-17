@@ -466,20 +466,15 @@
               flag_stop = .false.
               if (rank == 0) then
 #ifdef INTEL
-                istat_bool = system('mkdir '//trim(dbs_dir))
-                if (.not. istat_bool) then
-                  flag_stop = .true.
-                  write(*,*) 'Error to create database folder ',trim(dbs_dir)
-                  write(ilog,*) 'Error to create database folder ',trim(dbs_dir)
-                end if
+                istat = system('mkdir '//trim(dbs_dir))
 #else
                 call system('mkdir '//trim(dbs_dir), status=istat)
+#endif
                 if (istat /= 0) then
                   flag_stop = .true.
                   write(*,*) 'Error to create database folder ',trim(dbs_dir)
                   write(ilog,*) 'Error to create database folder ',trim(dbs_dir)
                 end if
-#endif
                 
               end if
 #ifdef PETSC
@@ -582,11 +577,8 @@
           end if
         end if
 
-
-
-
 !cprovi---------------------------------------------------
-!cproci It was added by Sergio Andr�s Bea Jofr?
+!cproci It was added by Sergio Andres Bea Jofre
 !cprovi               18/01/2009 
 !cprovi---------------------------------------------------
         subsection = 'use pitzer model' 
@@ -889,6 +881,7 @@
           end if
         end if
 
+
 !c  number of components including biomass and surface compelxation sites
 
         n = n+nbio+nna+nelect
@@ -996,7 +989,7 @@
           end do
 
         end if
-
+        
 !cprovi-----------------------------------------------------------------------------
 !cprovi Assign the name of the electrostatic component
 !cprovi-----------------------------------------------------------------------------
@@ -1017,7 +1010,6 @@
 !cprovi-----------------------------------------------------------------------------
 !cprovi-----------------------------------------------------------------------------
 !cprovi-----------------------------------------------------------------------------
-        
 !c ----------------------------------------------------------------------
 !c  read number of redox couples
   
@@ -1304,10 +1296,6 @@
           noncompetitive_sorption = .true.
           linear_sorption = .true.
 
-!c  allocate memory for non-competitive sorption reactions
-
-          call mem_nsb
-
 !c  number of components undergoing linear sorption
           ierrcd = 29
           read(itmp,*,err=999,end=999) nlinear
@@ -1496,9 +1484,13 @@
         found_ion_exchange = .false.
         multisite_ion_exchange = .false.
 
-        subsection = 'sorbed species of surface-complex'
-        
+        subsection = 'adsorption - surface complexation'
         call findstrg(subsection,itmp,found_subsection)
+        
+        if (.not.found_subsection) then
+          subsection = 'sorbed species of surface-complex'        
+          call findstrg(subsection,itmp,found_subsection)
+        end if
 
         if (found_subsection) then
             
@@ -1508,9 +1500,13 @@
           
         end if
         
-        subsection = 'sorbed species of ion-exchange'
-        
+        subsection = 'adsorption - ion exchange'
         call findstrg(subsection,itmp,found_subsection)
+        
+        if (.not.found_subsection) then
+          subsection = 'sorbed species of ion-exchange'
+          call findstrg(subsection,itmp,found_subsection)
+        end if
 
         if (found_subsection) then
             
@@ -1564,10 +1560,13 @@
           call mem_nsb
 
 !c  read names of sorbed species of surface-complex
-
-          subsection = 'sorbed species of surface-complex'
-          
+          subsection = 'adsorption - surface complexation'
           call findstrg(subsection,itmp,found_subsection)
+        
+          if (.not.found_subsection) then
+            subsection = 'sorbed species of surface-complex'        
+            call findstrg(subsection,itmp,found_subsection)
+          end if
           
           if (found_subsection) then
             ierrcd = 39
@@ -1590,10 +1589,13 @@
           end if
 
 !c  read names of sorbed species of ion-exchange
-
-        subsection = 'sorbed species of ion-exchange'
-        
+        subsection = 'adsorption - ion exchange'
         call findstrg(subsection,itmp,found_subsection)
+        
+        if (.not.found_subsection) then
+          subsection = 'sorbed species of ion-exchange'
+          call findstrg(subsection,itmp,found_subsection)
+        end if
 
         if (found_subsection) then            
           ierrcd = 41
@@ -2005,7 +2007,7 @@
           end do
  
         end if              !(found_subsection)
-
+       
 !c ----------------------------------------------------------------------
 !c ----------------------------------------------------------------------
 !c ----------------------------------------------------------------------
@@ -2110,7 +2112,6 @@
 !c ----------------------------------------------------------------------        
 !c ----------------------------------------------------------------------        
 !c ----------------------------------------------------------------------
-        
         if (nm > 0) then
           subsection = 'mineral water removal coefficient'
           call findstrg(subsection,itmp,found_subsection)
@@ -2565,7 +2566,7 @@
         write(igen,'(/72a)')('-',i=1,72)
         write(igen,'(a)') section_header(:l_string)
         write(igen,'(72a/)')('-',i=1,72)
- 
+
 !c  output database to generic output file
 
         write(igen,'(2a)') 'database: ',dbs_dir

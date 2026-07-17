@@ -136,8 +136,7 @@
                                           diff_cof_ix_jvol(ix))
           end if          
         end do
-      else if (type_averaging_De.eq.'arithmetic' .or.                  &
-               type_averaging_De.eq.'arithmetic De') then
+      else if (type_averaging_De.eq.'arithmetic') then
         do ic=1,nc          ! loop over free species 
           diff_cof_ic(ic) = rhalf*(diff_cof_ic_ivol(ic)+               &
                                    diff_cof_ic_jvol(ic))

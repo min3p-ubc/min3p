@@ -230,7 +230,7 @@ implicit none
         end if
 
 !c  assign pointer and 
-        if (b_iabvs_ice(ibvs)) then
+        if (b_iabvs_ice(ibvs) .and. bcondvs_on(ibvs)) then
          
           btypezn=btypevs(ibvs)
 

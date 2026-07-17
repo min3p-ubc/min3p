@@ -198,7 +198,7 @@
       use nobleGasIngrowth
       use mip_bubble, only : mip_mt_enable, mip_brt_num, mip_brt_idx
       use file_unit, only : lun_get, lun_free
-      use file_utility, only : read_vtk_data_from_file
+      use file_utility, only : read_vtk_data_from_file, rewind_first_record
 #ifdef OPENMP
       use omp_lib 
 #endif
@@ -410,6 +410,7 @@
 !c  read number of zones for initial condition
       ierrcd = 1
       read(itmp,*,err=999,end=999) niz
+      nzn_inirt = niz
       if (b_enable_output .and. b_enable_output_gen) then
         write(igen,'(/a,i10)')  &
      &  'number of zones for initial condition           = ',niz
@@ -1033,8 +1034,7 @@
 
 !c  compute initial condition
           call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-                     cgc,swc,sac,porc,site_area,site_mass,            &
-                     igen,ilog,tid,idbg,tec_header,                   &
+                     cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,  &
                      prefix,l_prfx,zone_name,l_zone_name,             &
                      mtime,i_append_sim,mtime_append)
 
@@ -1203,8 +1203,7 @@
 
 !c  compute initial condition
           call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),       &
-                     cgc,swc,sac,porc,site_area,site_mass,             &
-                     igen,ilog,tid,idbg,tec_header,                    &
+                     cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,   &
                      prefix,l_prfx,zone_name,l_zone_name,              &
                      mtime,i_append_sim,mtime_append)
 

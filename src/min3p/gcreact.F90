@@ -297,8 +297,7 @@
 !c ----------------------------------------------------------------------
  
       subroutine gcreact(cnew,cold,cx,gammac,gammax,gnew,sw,sa,por,     &
-                        sitearea,sitemass,igen,ilog,tid,idbg,           &
-                        tec_header,prefix,l_prfx,                       &
+                        igen,ilog,tid,idbg,tec_header,prefix,l_prfx,    &
                         zone_name,l_zone_name,mtime,i_append_sim,       &
                         mtime_append)
      
@@ -316,8 +315,7 @@
  
       implicit none
       
-      real*8 :: cnew,cold,cx,gammac,gammax,gnew,sw,sa,por,             &
-                sitearea,sitemass
+      real*8 :: cnew,cold,cx,gammac,gammax,gnew,sw,sa,por
       
       integer :: igen,ilog,tid,idbg,l_prfx,l_zone_name,mtime
       
@@ -343,8 +341,7 @@
       character*72 :: zone_name
       character*72 :: update_activity_save
 
-      dimension cnew(*),cold(*),cx(*),gammac(*),gammax(*),gnew(*),     &
-                sitearea(*),sitemass(*)
+      dimension cnew(*),cold(*),cx(*),gammac(*),gammax(*),gnew(*)
 
       !real*8 :: alc_bk(nc-1,nc-1), blc_bk(nc-1), rnorm
 
@@ -405,7 +402,7 @@
             ittot_lc(tid) = ittot_lc(tid)+1
 
 !c  construct Jacobian matrix and rhs-vector 
-            call jaclc(cnew,cx,gammac,gammax,sw,sa,por,sitearea,sitemass,tid)
+            call jaclc(cnew,cx,gammac,gammax,sw,sa,por,tid)
 
 !c  solve for update
 !c  linear solver type of local chemistry, 0 - Gaussian (default), 1 - QR, 2 - SVD
@@ -429,7 +426,7 @@
 #endif
             end if
             
-!c  update solution vector   
+!c  update solution vector 
             call updatelc(cnew,blc(:,tid),por,ilog,tid,not_converged,zone_name)
 
 !c  correct total aqueous component concentration for selected
@@ -484,8 +481,7 @@
 
         if ((nsb_ion.gt.0.and.implicit_surface_ion).or.                &
             (nsb_surf.gt.0.and.implicit_surface_surf)) then
-          call surfcomp(cnew,gammac,sw,por,sion1(tid),sitearea,sitemass, &
-                        ilog,tid)
+          call surfcomp(cnew,gammac,sw,por,sion1(tid),ilog,tid)
         end if
 
 !c  compute total sorbed component concentrations due to 

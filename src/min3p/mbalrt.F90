@@ -577,6 +577,7 @@
       use file_utility, only : reposition_file
       use mod_diffcoff, only : diffcoff
       use multidiff, only: cinfrt_mcd
+      use mimicMassDisp, only : mimicMassDisp_fileWrite
       use nobleGasIngrowth
       use biol
 
@@ -770,7 +771,9 @@
                 gvisc_jvol,       &
                 relpgi,           &
                 relpgj
-      
+
+!cdsu  mimic gas advective displacement
+      character(len=2048) :: strbuffer      
      
 !cdsu  added for dgm model
 !c dgm and s-m variables and initialization
@@ -888,6 +891,9 @@
 #endif        
       end if
 
+!c  mimic advective gas displacement
+      call mimicMassDisp_fileWrite
+
 !c  calculate mass balance for water phase in terms of total 
 !c  aqueous component concentrations [moles/unit time]
 
@@ -994,7 +1000,7 @@
 !cdsu
 !cdsu calculate influence coefficient
 !cdsu
-              if (diff_coff) then
+              if (comp_dep_diff_coff) then
                 call usg_face_utility_cinfrt_da_ic(ivol,jvol,i1,       &
                          cinfrt_da_ic_usg_loc,cinfrt_da_ic_usg_cross_loc)
               else
@@ -1028,7 +1034,7 @@
 !cprovi----------------------------------------------------------------------
 !cprovi Component dependent influence coefficient if specified
 !cprovi----------------------------------------------------------------------
-                if (diff_coff) then
+                if (comp_dep_diff_coff) then
                    cinfrt_da(i1) = cinfrt_da_ic(ic,i1)
 #ifdef USG
                    if (discretization_type > 0) then
@@ -1161,7 +1167,7 @@
 
           if (evaporation) then
             ibvs = ivol2bvs(ivol)
-            if(ibvs > 0) then
+            if(ibvs > 0  .and.bcondvs_on(ibvs)) then
               if (btypevs(ibvs)=='atmospheric') then 
                 area_ivol=bcondvs(ibvs)
                 !cprovi---------------------------------------------------
@@ -1211,7 +1217,7 @@
 !cprovi--------------------------------------------------------------------
             if (b_fluxd_bcond(ivol)) then      
               so_av=dmin1(r1, sonew(ivol))  
-              if (.not.diff_coff) then
+              if (.not.comp_dep_diff_coff) then
                 diff_eff = r0
                 diff_loc = r0
                 if (type_diff_ic_coeff == 0) then
@@ -1268,7 +1274,7 @@
                 end do
               end if
             else
-              if (diff_coff) then
+              if (comp_dep_diff_coff) then
                 bdyinfrt_da_ic(1:nc) = r0
               else
                 bdyinfrt_da = r0
@@ -1284,7 +1290,7 @@
 
                 if (component_type(ic).eq.'aqueous') then
                   if (b_fluxd_bcond(ivol)) then
-                    if (diff_coff) then
+                    if (comp_dep_diff_coff) then
                       bdyinfrt_da = bdyinfrt_da_ic(ic)
                     end if
                     totcflux(ic) = conv3 *                             & 
@@ -1309,7 +1315,7 @@
                     totcflux(ic) = conv3 * totvsflux * r0                !advective flux
                   else
                     if (b_fluxd_bcond(ivol)) then
-                      if (diff_coff) then
+                      if (comp_dep_diff_coff) then
                         bdyinfrt_da = bdyinfrt_da_ic(ic)
                       end if
                       totcflux(ic) = conv3 *                           &
@@ -1340,7 +1346,7 @@
 
             if (compute_diff) then 
               so_av=dmin1(r1, sonew(ivol))  
-              if (.not.diff_coff) then
+              if (.not.comp_dep_diff_coff) then
                 diff_eff = r0
                 diff_loc = r0
                 if (type_diff_ic_coeff == 0) then
@@ -1397,7 +1403,7 @@
                 end do
               end if
             else 
-              if (diff_coff) then
+              if (comp_dep_diff_coff) then
                  bdyinfrt_da_ic(1:nc) = r0
               else
                  bdyinfrt_da = r0
@@ -1413,7 +1419,7 @@
 !cprovi speciifed
 !cprovi--------------------------------------------------------------------
      
-              if (diff_coff) then
+              if (comp_dep_diff_coff) then
                 bdyinfrt_da = bdyinfrt_da_ic(ic)
               end if
 !cprovi--------------------------------------------------------------------            
@@ -4801,12 +4807,13 @@
                             + conv3 * cvol(ivol)/delt                  &
                             * (cmnew(im,ivol)-cmold(im,ivol))
 
-!cdsu  use combine reaction rates since cmnew is the parameter based on combined reaction
+!cdsu to be further checked, which parameter should be used here.
+              !dpdiff(im) = dpdiff(im) + conv3 * cvol(ivol)             &
+              !           * ratemdp(im,ivol)
+              
+!cdsu  use combine reaction rates since cmnew is the parameter based on combined reaction              
               dpdiff(im) = dpdiff(im) + conv3 * cvol(ivol)             &
                          * totratem(im,tid)
-
-              ! dpdiff(im) = dpdiff(im) + conv3 * cvol(ivol)             &
-              !            * ratemdp(im,ivol)
 
               istart = iamd(im)
               istop = iamd(im+1)-1

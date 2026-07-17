@@ -94,7 +94,7 @@
      &                    idbg, ilog, upstream, fully_saturated,    & 
      &                    variably_saturated, njamxc, nmax,        &
      &                    tortuosity_corr,half_cells,cinfrt_da_ic,    &
-     &                    diff_coff, nc,diff_ic,multi_diff,assigned_tau,&
+     &                    comp_dep_diff_coff, nc,diff_ic,multi_diff,assigned_tau,&
      &                    tau,type_tortuosity,marchies,            &
      &                    cinfrad,radial_coord)
       
@@ -111,7 +111,7 @@
      &        njamxc, nmax 
 
       logical half_cells, fully_saturated, variably_saturated,        &
-     &        upstream, tortuosity_corr,diff_coff,assigned_tau,        &
+     &        upstream, tortuosity_corr,comp_dep_diff_coff,assigned_tau,        &
      &        multi_diff, radial_coord
 
       real*8  diffu, disx(nzn), disy(nzn), disz(nzn),            &

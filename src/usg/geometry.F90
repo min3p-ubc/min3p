@@ -46,6 +46,58 @@ module geometry
   contains
 
   !>
+  !> unit test of geometry module
+  !>
+  subroutine geometry_unit_test()
+
+    implicit none
+
+    type(point) :: pt1, pt2
+    integer :: coord_proj
+    real*8 :: angle
+
+    coord_proj = projection_xy
+
+    pt1%x = 1
+    pt1%y = 1
+    pt1%z = 0
+    pt2%x = -1
+    pt2%y = 1
+    pt2%z = 0   
+
+    angle = geometry_angle_0to2pi(pt1,pt2,coord_proj)
+
+    write(*,'(5(a,e13.6))') '-> angle from vector(',pt1%x,',',pt1%y,   &
+          ') to vector(',pt2%x,',',pt2%y,') is ',angle
+
+    pt1%x = -1
+    pt1%y = 1
+    pt1%z = 0
+    pt2%x = 1
+    pt2%y = 1
+    pt2%z = 0   
+
+    angle = geometry_angle_0to2pi(pt1,pt2,coord_proj)
+
+    write(*,'(5(a,e13.6))') '-> angle from vector(',pt1%x,',',pt1%y,   &
+          ') to vector(',pt2%x,',',pt2%y,') is ',angle     
+
+    pt1%x = 1
+    pt1%y = 0
+    pt1%z = 0
+    pt2%x = 1
+    pt2%y = 1
+    pt2%z = 0   
+
+    angle = geometry_angle_0to2pi(pt1,pt2,coord_proj)
+
+    write(*,'(5(a,e13.6))') '-> angle from vector(',pt1%x,',',pt1%y,   &
+          ') to vector(',pt2%x,',',pt2%y,') is ',angle  
+
+
+  end subroutine geometry_unit_test
+
+  !>
   !> return vector length
   !>
   function geometry_veclength_3d(a) result(length)
@@ -397,7 +449,7 @@ module geometry
   end function geometry_volume
 
   !>
-  !> return the angle of two vector in radians
+  !> return the angle of two vector in radians, range 0-pi
   !>
   function geometry_angle(pt1, pt2) result(angle)
 
@@ -411,6 +463,46 @@ module geometry
     angle = acos(geometry_vector_cos(pt1,pt2))
 
   end function geometry_angle
+
+  !>
+  !> return the angle from vector v1 to vector v2 in counterclockwise, range 0-2pi
+  !> pt1(1,1), pt2(-1,1), return pi/2
+  !>
+  function geometry_angle_0to2pi(pt1, pt2, cell_projection) result(angle)
+
+    implicit none
+
+    type(point), intent(in) :: pt1, pt2
+    integer, intent(in) :: cell_projection
+    real*8 :: angle
+
+    real*8 :: ax, ay, bx, by
+    real*8, parameter :: r0 = 0.0d0, r2 = 2.0d0, pi=3.14159265359d0
+
+    if (cell_projection == projection_xy) then
+      ax = pt1%x
+      ay = pt1%y
+      bx = pt2%x
+      by = pt2%y
+    else if (cell_projection == projection_yz) then
+      ax = pt1%y
+      ay = pt1%z
+      bx = pt2%y
+      by = pt2%z
+    else if (cell_projection == projection_xz) then
+      ax = pt1%z
+      ay = pt1%x
+      bx = pt2%z
+      by = pt2%x
+    end if
+
+    angle = atan2(ax*by-ay*bx, ax*bx+ay*by)
+
+    if (angle < r0) then
+      angle = angle + pi*r2
+    end if
+
+  end function geometry_angle_0to2pi  
 
   !>
   !> return the cosine value of two vectors

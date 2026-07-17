@@ -98,10 +98,13 @@
 !c           jz                 = counter (neighbors in z-direction)
 !c           ix1                = pointer (grid line in x-direction)
 !c           ix2                = pointer (grid line in x-direction)
+!c           ix3                = pointer (grid line in x-direction)
 !c           iy1                = pointer (grid line in y-direction)
 !c           iy2                = pointer (grid line in y-direction)
+!c           iy3                = pointer (grid line in y-direction)
 !c           iz1                = pointer (grid line in z-direction)
 !c           iz2                = pointer (grid line in z-direction)
+!c           iz3                = pointer (grid line in z-direction)
 !c           ibk                = pointer (current control volume i
 !c                                         of node pair) 
 !c           id                 = pointer (current control volume j
@@ -142,7 +145,7 @@
 
       integer jpair(3,2), idim, idim2, idim3, jx, jy, jz,     &
              ix1, ix2, iy1, iy2, iz1, iz2, ibk, id, icount,   &       
-             ii,iisav, i, iii, ipair
+             ix3, iy3, iz3, ii,iisav, i, iii, ipair
 
       ibk = 0
       id = 0
@@ -277,27 +280,36 @@
                            if (half_cells) then
 
                               if (idim .eq. 1) then
-                                 if ((ix+nvxgls-1).eq.2) then
+                                 ix3 = ix+nvxgls-1
+                                 if (ix3.eq.2 .and. ix3.eq.nvxgbl) then
+                                   d_ij = d(idim,ibk)+d(idim,id)
+                                 else if (ix3.eq.2) then
                                    d_ij = rhalf*d(idim,ibk)+d(idim,id)
-                                 elseif ((ix+nvxgls-1).eq.nvxgbl) then
+                                 else if (ix3.eq.nvxgbl) then
                                    d_ij = d(idim,ibk)+rhalf*d(idim,id)
                                  else
                                    d_ij = rhalf*(d(idim,ibk)+d(idim,id))
                                  end if
 
                               else if (idim .eq. 2) then
-                                 if ((iy+nvygls-1).eq.2) then
+                                 iy3 = iy+nvygls-1
+                                 if (iy3.eq.2 .and. iy3.eq.nvygbl) then
+                                   d_ij = d(idim,ibk)+d(idim,id)
+                                 else if (iy3.eq.2) then
                                    d_ij = rhalf*d(idim,ibk)+d(idim,id)
-                                 elseif ((iy+nvygls-1).eq.nvygbl) then
+                                 elseif (iy3.eq.nvygbl) then
                                    d_ij = d(idim,ibk)+rhalf*d(idim,id)
                                  else
                                    d_ij = rhalf*(d(idim,ibk)+d(idim,id))
                                  end if
 
                               else if (idim .eq. 3) then
-                                 if ((iz+nvzgls-1).eq.2) then
+                                 iz3 = iz+nvzgls-1
+                                 if (iz3.eq.2 .and. iz3.eq.nvzgbl) then
+                                   d_ij = d(idim,ibk)+d(idim,id)
+                                 else if (iz3.eq.2) then
                                    d_ij = rhalf*d(idim,ibk)+d(idim,id)
-                                 elseif ((iz+nvzgls-1).eq.nvzgbl) then
+                                 elseif (iz3.eq.nvzgbl) then
                                    d_ij = d(idim,ibk)+rhalf*d(idim,id)
                                  else 
                                    d_ij = rhalf*(d(idim,ibk)+d(idim,id))

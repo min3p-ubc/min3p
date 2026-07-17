@@ -320,9 +320,13 @@
                       + dmin1( r1, sgnew(ibk) )    &
                       + dmin1( r1, sgnew(id) )
 
+                !tauav = tauav                      &
+                !      + dmin1( r1, tau(ibk) )      &
+                !      + dmin1( r1, tau(id) )
+
                 tauav = tauav                      &
-                      + dmin1( r1, tau(ibk) )      &
-                      + dmin1( r1, tau(id) )
+                     + tau(ibk) * tau_fac(ibk)     &
+                     + tau(id) * tau_fac(id)
 
                 so_av = so_av                      &
                       + dmin1( r1, sonew(ibk) )    &

@@ -135,6 +135,7 @@
       use geometry  
       use multidiff, only : mdiff_ic_tensor, mdiff_ix_tensor,          &
                             type_mdiff_ic_coeff, type_mdiff_ix_coeff
+      use file_unit, only : lun_get
       use file_utility, only : rewind_first_record
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
@@ -146,7 +147,7 @@
 
       external findstrg, readbloc, findstrginzone
 
-      logical found_section, found_subsection
+      logical found_section, found_subsection, flag_error
       character*72 subsection
       
       character*20 :: equi
@@ -773,7 +774,7 @@
 !cprovi--------------------------------------------------------
 !cprovi Read component dependent diffusion coefficients
 !cprovi--------------------------------------------------------        
-        diff_coff = .false.
+        comp_dep_diff_coff = .false.
         type_diff_ic_coeff = -1
         diff_ic_tensor = tensor_zero
 
@@ -784,7 +785,7 @@
 
         if (found_subsection) then
 
-          diff_coff = .true.
+          comp_dep_diff_coff = .true.
           type_diff_ic_coeff = 0
 
           if (b_enable_output .and. b_enable_output_gen) then
@@ -817,7 +818,7 @@
 
         if (found_subsection) then
 
-          diff_coff = .true.
+          comp_dep_diff_coff = .true.
           type_diff_ic_coeff = 1
 
           if (b_enable_output .and. b_enable_output_gen) then
@@ -857,7 +858,7 @@
 
         if (found_subsection) then
 
-          diff_coff = .true.
+          comp_dep_diff_coff = .true.
           type_diff_ic_coeff = 2
 
           if (discretization_type == 0) then

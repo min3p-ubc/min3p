@@ -165,8 +165,9 @@
 !c  calculate the diffusion tensor for the "pseudo diffusion element"
 !c  average porosity of the element
           satav = (min(r1,sgnew(ivol))+min(r1,sgnew(jvol)))*0.5d0
-          tauav = (min(r1,taugas(ivol))+min(r1,taugas(jvol)))*0.5d0
           so_av = (min(r1,sonew(ivol))+min(r1,sonew(jvol)))*0.5d0
+          !tauav = (min(r1,taugas(ivol))+min(r1,taugas(jvol)))*0.5d0
+          tauav = (taugas(ivol)*tau_fac(ivol)+taugas(jvol)*tau_fac(jvol))*0.5d0
 
           if (.not.assigned_tau_gas) then
             tauloc = tauav

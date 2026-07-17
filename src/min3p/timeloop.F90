@@ -480,7 +480,7 @@
       !Local variables
       character(256) :: str_filepath
 
-      integer :: ibubreact_tol, ibubflow_tol, ic, im, izn, irecord
+      integer :: ibubreact_tol, ibubflow_tol, ic, ig, im, izn, irecord
       integer :: iiz, niz, istart, iend, iskip
 
       real(type_r8) :: c_tol, c_diff, uvs_tol, uvs_diff, aentry_loc, rdummy
@@ -1063,7 +1063,26 @@
               end if
 
             end if
-          
+
+!c  check if the solution time exceeds the next atmospheric condition update time
+            if (read_atm .and. .not.tran_steady_flow) then
+              if (b_relax_timestep) then
+                time_check = min(time_check,time_atm*time_factor)
+              end if
+
+              if ((time+delt.gt.time_atm*time_factor .and.             &
+                   time_atm*time_factor-time > tiny_delt) .or.         &
+                  (time+delt.lt.time_atm*time_factor+tiny_delt .and.   &
+                  time+delt.gt.time_atm*time_factor-tiny_delt)) then
+                delt = time_atm*time_factor-time
+                delt = dmax1(delt, deltmin)
+              end if
+
+              if (delt_debug > 0 .and. rank == 0) then
+                write(*,*) 'delt - m: ', delt
+              end if
+            end if
+         
           end if
          
         end if          !(mtime.gt.1)
@@ -1967,8 +1986,6 @@
         
         prt_nonlinear_flow = cputime()
         
-        
-
 !c  store current densities and compute change in porosity by vertical stress 
 !c  cdsu add tds_old and densold_pitzer here, previous version only has denold here only.
         if (density_dependence) then
@@ -3438,9 +3455,7 @@
 
 !c  update etp and canopy dependent parameters    !CBF
         if ((root_uptake .or. pure_evap) .and. .not.tran_steady_flow) then
-#ifdef ARCHISIMPLE
           call updtetp
-#endif
         end if
 
 

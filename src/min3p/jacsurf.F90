@@ -191,7 +191,7 @@
 !c                       [moles/l bulk]
 !c ----------------------------------------------------------------------
  
-      subroutine jacsurf(cnew,gammac,sw,por,strion,sitearea,sitemass,tid)
+      subroutine jacsurf(cnew,gammac,sw,por,strion,tid)
  
       use parm
       use chem
@@ -202,13 +202,13 @@
  
       implicit none
       integer :: tid, ibl, ic, isb, ielect, jbl, info_debug
-      real*8 dummy, drtinc, strion, sitearea, sitemass
+      real*8 dummy, drtinc, strion
       
       external comptotc, sorbspc, totsorb, totchargesorb
       
       real*8 :: cnew, gammac, sw, por, area
 
-      dimension cnew(*),gammac(*), sitearea(*), sitemass(*)
+      dimension cnew(*),gammac(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       
@@ -216,7 +216,7 @@
       alc(:,:,tid) = r0
       blc(:,tid) = r0
 
-      area=sitearea(1)*sitemass(1)
+      area=site_area(1)*site_mass(1)
 !c  compute concentrations of sorbed species
       do isb = 1, nsb_ion
         call sorbspc(csb_ion(isb,tid),dummy,                           &

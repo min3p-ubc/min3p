@@ -124,8 +124,8 @@
                  isymm(njamxc), idbg, ilog, nzn, mprop(*)
 
       logical :: half_cells, fully_saturated, variably_saturated,     &
-                 diff_coff, harmonic_porosity, av_dens_z,             &
-                 radial_coord, isenhfactor, split_divdensv
+                 comp_dep_diff_coff, av_dens_z,radial_coord,          &
+                 isenhfactor, split_divdensv
 
       real*8 ::  pornew(nmax),tempnew(nmax),ddensvdpa(nmax),          &
                  ddensvdt(nmax),dsurftensdt(nmax),density(nmax),      &

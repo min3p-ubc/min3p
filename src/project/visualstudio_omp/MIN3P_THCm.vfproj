@@ -336,6 +336,7 @@
 		<File RelativePath="..\..\min3p\mem_rt.F90"/>
 		<File RelativePath="..\..\min3p\mem_vs.F90"/>
 		<File RelativePath="..\..\usg\metis_iface.F90"/>
+		<File RelativePath="..\..\min3p\mimicMassDisp.F90"/>
 		<File RelativePath="..\..\min3p\minmaxwd.F90"/>
 		<File RelativePath="..\..\mip_mt\mip_bubble.F90"/>
 		<File RelativePath="..\..\mip_mt\mip_math.F90"/>

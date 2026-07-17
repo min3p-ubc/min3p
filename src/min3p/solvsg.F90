@@ -56,7 +56,7 @@
 !c          gas_pressure            = gas pressure for each gas assuming all
 !c                                  gas is in aqueous phase                    - *
 !c          d_gas_pressure        = derivative of gas_pressure                - *
-!c          sum_gas_pressure        = sum of the gas pressure, equal to the total 
+!c          sum_gas_pressure      = sum of the gas pressure, equal to the total 
 !c                                  gas pressure                                - *
 !c          sum_d_gas_pressure    = total of the derivative of the gas pressure
 !c                                  for newton calculation                    - *
@@ -133,7 +133,6 @@
 
         sum_gas_pressure = sum_gas_pressure + gas_pressure
         sum_d_gas_pressure = sum_d_gas_pressure + d_gas_pressure
-
       end do 
 !c
 !c calculate new value for Sg
@@ -149,7 +148,7 @@
 
       sg_new = r1-sanew(ivol)
       sg_update = sg_new - sg_old
-
+     
       if ((dabs(sg_update).lt.gas_tol).and.                            &
           (dabs(sum_gas_pressure).lt.res_tol)) then
         converged = .true.
@@ -184,7 +183,6 @@
           sanew(ivol) = r1 - sg_old
           sg_new = sg_old
         end if
-
       end if
 
       sg_count=sg_count+1
@@ -208,7 +206,6 @@
                 'sum_gas_pressure',sum_gas_pressure,'tolerance',res_tol
           write (*,*) 'reduce timestep'
         end if
-        !pause
       end if
 
     end do

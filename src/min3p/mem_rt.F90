@@ -506,35 +506,21 @@
       call checkerr(ierr,'cmold',ilog)
       call memory_monitor(sizeof(cmold),'cmold',.true.)
 
-
-      if (nm.gt.0) then  
-        allocate (cmnew(nm,nngl), stat = ierr)
-        cmnew=0.0d0
-        call checkerr(ierr,'cmnew',ilog)
-        call memory_monitor(sizeof(cmnew),'cmnew',.true.)
-      else
-        allocate (cmnew(1,nngl), stat = ierr)
-        cmnew=0.0d0
-        call checkerr(ierr,'cmnew',ilog)
-        call memory_monitor(sizeof(cmnew),'cmnew',.true.)
-      end if
+      allocate (cmnew(nm,nngl), stat = ierr)
+      cmnew=0.0d0
+      call checkerr(ierr,'cmnew',ilog)
+      call memory_monitor(sizeof(cmnew),'cmnew',.true.)
 
       allocate (gold(ng,nngl), stat = ierr)
       gold=0.0d0
       call checkerr(ierr,'gold',ilog)
       call memory_monitor(sizeof(gold),'gold',.true.)
 
-      if (ng.gt.0) then 
-        allocate (gnew(ng,nngl), stat = ierr)
-        gnew=0.0d0
-        call checkerr(ierr,'gnew',ilog)
-        call memory_monitor(sizeof(gnew),'gnew',.true.)
-      else
-        allocate (gnew(1,nngl), stat = ierr)
-        gnew=0.0d0
-        call checkerr(ierr,'gnew',ilog)
-        call memory_monitor(sizeof(gnew),'gnew',.true.)
-      end if
+      allocate (gnew(ng,nngl), stat = ierr)
+      gnew=0.0d0
+      call checkerr(ierr,'gnew',ilog)
+      call memory_monitor(sizeof(gnew),'gnew',.true.)
+
 
       allocate (gmfrac(ng,nngl), stat = ierr)
       gmfrac=0.0d0

@@ -2153,7 +2153,7 @@
 !cdsu
 !cdsu calculate influence coefficient
 !cdsu
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               call usg_face_utility_cinfrt_da_ic(ivol,jvol,i1,         &
                        cinfrt_da_ic_usg_loc,cinfrt_da_ic_usg_cross_loc)
             else
@@ -2366,7 +2366,7 @@
 !cprovi---------------------------------------------------------------
 !cprovi Bubbles use component dependent influence coefficient if specified
 !cprovi---------------------------------------------------------------
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
              cinfrt_da(i1) = cinfrt_da_ic(ic,i1)
 #ifdef USG
               if (discretization_type > 0) then
@@ -3651,7 +3651,7 @@
 !cdsu
 !cdsu calculate influence coefficient
 !cdsu
-              if (diff_coff) then
+              if (comp_dep_diff_coff) then
                 call usg_face_utility_cinfrt_da_ic(ivol,jvol,i1,       &
                          cinfrt_da_ic_usg_loc,cinfrt_da_ic_usg_cross_loc)
               else
@@ -3687,7 +3687,7 @@
 !cprovi----------------------------------------------------------------
 !cprovi Bubbles use component dependent influence coefficient if specified
 !cprovi----------------------------------------------------------------
-                if (diff_coff) then
+                if (comp_dep_diff_coff) then
                  cinfrt_da(i1) = cinfrt_da_ic(ibl,i1)
 #ifdef USG
                  if (discretization_type > 0) then

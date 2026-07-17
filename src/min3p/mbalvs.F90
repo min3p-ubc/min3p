@@ -314,7 +314,7 @@
       do ibvs = 1,nbvs             !loop over boundary control volumes
           
         ivol = iabvs(ibvs)         !pointer to control volume
-        if (ivol < 0) then
+        if (ivol < 0 .or. .not.bcondvs_on(ibvs)) then
           cycle  
         end if
 

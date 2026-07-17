@@ -200,6 +200,7 @@
       character*1 :: cdummy
       character*256 :: strbuffer
       character*12 :: strFracFlowTypeLoc
+      real*8 :: fracFlowCoeffLoc
       real(8) :: marchieloc
       
       integer :: iskip, nskip
@@ -935,19 +936,31 @@
 
           assigned_fracture_flow_type = .true.
 
-          if (trim(strFracFlowTypeLoc) == 'darcy') then
+          if (trim(strFracFlowTypeLoc) == 'darcy law') then
             fracFlowTypeLoc = 0
           else if (trim(strFracFlowTypeLoc) == 'cubic law') then
             fracFlowTypeLoc = 1
           else
             if (rank == 0) then
               write(*,'(2a)') 'Error: unknown fracture flow type, ',   &
-                    'should be darcy or cubic law'
+                    'should be darcy law or cubic law'
               write(ilog,'(2a)') 'Error: unknown fracture flow type, ',&
-                    'should be darcy or cubic law'
+                    'should be darcy law or cubic law'
             end if
             goto 999
           end if
+
+!cdsu For cublic law flow, 
+!cdsu Q = coeff*aperture^3 => Velocity = coeff*aperture^2 (assume unit fracture width)
+          fracFlowCoeffLoc = 1.0/12.0
+          subsection = 'fracture flow coefficient'
+          call findstrg(subsection,icnv,found_subsection)
+          if (found_subsection) then
+            ierrcd = 9
+            read(icnv,*,err=999,end=999) fracFlowCoeffLoc
+          end if
+          fracFlowCoeffLoc = fracFlowCoeffLoc*sec_per_days  ! convert the unit of flow velocity from m/s to m/day
+
         end if
 
 !c  read mechanical parameters
@@ -1246,6 +1259,10 @@
 
               if (assigned_fracture_flow_type .and. .not.fracture_flow_type_field) then
                 fractureFlowType(ivol) = fracFlowTypeLoc
+              end if
+
+              if (assigned_aperture) then
+                fracFlowCoeff(ivol) = fracFlowCoeffLoc
               end if
 
 #ifdef PETSC

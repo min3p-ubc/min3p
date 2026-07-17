@@ -1296,10 +1296,10 @@
               
 !c  file header 
                 if (b_output_trans_binary) then
-                  offset_bx = 0  
+                  offset_bgr = 0  
                   call tecplot_binary_write_header(PETSC_COMM_SELF,    &
                                fibgr, "#!TDV102",'dataset '//          &
-                               prefix(:l_prfx),offset_bx,.true.,.true.)  
+                               prefix(:l_prfx),offset_bgr,.true.,.true.)  
                   
                   nvars = ng + 1
                   tec_variables(1) = indep_var(:l_indep_var)
@@ -1309,7 +1309,7 @@
                   
                   call tecplot_binary_write_variable(PETSC_COMM_SELF,  &
                                fibgr,nvars,tec_variables(1:nvars),     &
-                               offset_bx,.true.,.true.) 
+                               offset_bgr,.true.,.true.) 
                 else if (b_use_tectitle) then
                   if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                     write(fibgr,'(3a)') 'title = "dataset ',           &
@@ -1364,12 +1364,12 @@
               
                 if (b_output_trans_binary) then
                  call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,   &
-                              fibgr,trim(strbuffer),offset_bx, 1, 1, 1,&
+                              fibgr,trim(strbuffer),offset_bgr, 1, 1, 1,&
                               .true.,.true.,b_output_multizone)
-                 offset_bgr_ijk = offset_bx - 5*4
+                 offset_bgr_ijk = offset_bgr - 5*4
                  
                  call tecplot_binary_write_section(PETSC_COMM_SELF,    &
-                              fibgr,nvars,0,offset_bx,.true.,.true.,   &
+                              fibgr,nvars,0,offset_bgr,.true.,.true.,   &
                               b_output_multizone) 
                 end if
               end if
@@ -1396,10 +1396,10 @@
             
 !c  file header 
               if (b_output_trans_binary) then
-                offset_bgr = 0  
+                offset_bi = 0  
                 call tecplot_binary_write_header(PETSC_COMM_SELF,      &
                              fibi, "#!TDV102",'dataset '//             &
-                             prefix(:l_prfx),offset_bgr,.true.,.true.)  
+                             prefix(:l_prfx),offset_bi,.true.,.true.)  
     
                 nvars = nr + 1
                 tec_variables(1) = indep_var(:l_indep_var)
@@ -1818,10 +1818,10 @@
 
 !c  file header
               if (b_output_trans_binary) then
-                offset_bs = 0  
+                offset_bv = 0  
                 call tecplot_binary_write_header(PETSC_COMM_SELF,      &
                              fibv, "#!TDV102",'dataset '//             &
-                             prefix(:l_prfx),offset_bs,.true.,.true.)  
+                             prefix(:l_prfx),offset_bv,.true.,.true.)  
     
                 nvars = nm+2
                 tec_variables(1) = indep_var(:l_indep_var)
@@ -1832,7 +1832,7 @@
   
                 call tecplot_binary_write_variable(PETSC_COMM_SELF,    &
                              fibv, nvars,tec_variables(1:nvars),       &
-                             offset_bs,.true.,.true.) 
+                             offset_bv,.true.,.true.) 
               else if (b_use_tectitle) then
                 if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                   write(fibv,'(3a)') 'title = "dataset ',              &
@@ -1887,12 +1887,12 @@
             
               if (b_output_trans_binary) then
                 call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,    &
-                             fibv,trim(strbuffer),offset_bs, 1, 1, 1,  &
+                             fibv,trim(strbuffer),offset_bv, 1, 1, 1,  &
                              .true.,.true.,b_output_multizone)
-                offset_bv_ijk = offset_bs - 5*4
+                offset_bv_ijk = offset_bv - 5*4
                 
                 call tecplot_binary_write_section(PETSC_COMM_SELF,fibv,&
-                             nvars,0,offset_bs,.true.,.true.,          &
+                             nvars,0,offset_bv,.true.,.true.,          &
                              b_output_multizone)
               end if
 
@@ -1913,10 +1913,10 @@
             
 !c  file header 
               if (b_output_trans_binary) then
-                offset_bv = 0  
+                offset_bd = 0  
                 call tecplot_binary_write_header(PETSC_COMM_SELF,      &
                              fibd, "#!TDV102",'dataset '//             &
-                             prefix(:l_prfx),offset_bv,.true.,.true.)  
+                             prefix(:l_prfx),offset_bd,.true.,.true.)  
                 
                 istart = iamd(1)                                          
                 istop = iamd(nm+1)-1 
@@ -1928,7 +1928,7 @@
   
                 call tecplot_binary_write_variable(PETSC_COMM_SELF,    &
                              fibd,nvars,tec_variables(1:nvars),        &
-                             offset_bv,.true.,.true.) 
+                             offset_bd,.true.,.true.) 
               else if (b_use_tectitle) then
                 if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                   write(fibd,'(3a)') 'title = "dataset ',              &
@@ -1988,12 +1988,12 @@
             
               if (b_output_trans_binary) then
                 call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,    &
-                             fibd,trim(strbuffer),offset_bv, 1, 1, 1,  &
+                             fibd,trim(strbuffer),offset_bd, 1, 1, 1,  &
                              .true.,.true.,b_output_multizone)
-                offset_bd_ijk = offset_bv - 5*4
+                offset_bd_ijk = offset_bd - 5*4
                 
                 call tecplot_binary_write_section(PETSC_COMM_SELF,fibd,&
-                             nvars,0,offset_bv,.true.,.true.,          &
+                             nvars,0,offset_bd,.true.,.true.,          &
                              b_output_multizone) 
               end if
 
@@ -3566,8 +3566,8 @@
             call binary_write_data(fibv, 1,(/ngb_tstep/),              &
                          offset_bv_ijk,.true.)
             call binary_write_data(fibv, nvars,                        &
-                         realbuffer_gb,offset_bs,.true.) 
-            offset_bs = offset_bs + nvars*nfloatbit
+                         realbuffer_gb,offset_bv,.true.) 
+            offset_bv = offset_bv + nvars*nfloatbit
           end if
 
 !c  mineral dissolution-precipitation rates
@@ -3620,9 +3620,9 @@
             call binary_write_data(fibd, 1,(/ngb_tstep/),              &
                          offset_bd_ijk,.true.)
             call binary_write_data(fibd, nvars,                        &
-                         realbuffer_gb,offset_bv,.true.) 
+                         realbuffer_gb,offset_bd,.true.) 
 
-            offset_bv = offset_bv + nvars*nfloatbit
+            offset_bd = offset_bd + nvars*nfloatbit
 
           else
             if (mtime == mtime_append .and. i_append_sim >= 1) then

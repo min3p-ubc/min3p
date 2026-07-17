@@ -252,6 +252,8 @@
       
       integer (type_i4) :: nip              !isotope
 
+      integer (type_i4) :: nzn_inirt        !number of zones - initial condition of reactive transport
+
       integer (type_i4) :: linear_solver_lc !linear solver type of local chemistry, 0 - Gaussian (default), 1 - QR, 2 - SVD
 
       logical, allocatable :: minequil(:)
@@ -2271,7 +2273,6 @@
       integer*8 :: offset_ilbis_ijk
       integer*8 :: offset_ilbac_ijk
       integer*8 :: offset_ilbre_ijk
-
 
 !cprovi------------------------------------------------------------------
 !cprovi Variables and parameters for the electrostatic surface 

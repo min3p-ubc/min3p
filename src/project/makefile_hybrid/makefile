@@ -373,6 +373,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)phase_class/phase/m_aqueousphase.o\
 	$(SRC)phase_class/phase/m_phase.o\
 	$(SRC)min3p/chem.o\
+	$(SRC)min3p/mimicMassDisp.o\
 	$(SRC)noble_gas/nobleGasIngrowth.o\
 	$(SRC)min3p/serveParams.o\
 	$(SRC)solver/solver.o\

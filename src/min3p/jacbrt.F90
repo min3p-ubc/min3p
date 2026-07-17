@@ -593,8 +593,7 @@
             call gcreact(cnew(1,ivol),c(1,ivol),cx(1,ivol),       &
                          gamma(1,ivol),gamma(nc+1,ivol),          &
                          gnew(1,ivol),sanew(ivol),sgnew(ivol),    &
-                         pornew(ivol),site_area,site_mass,        &
-                         igen,ilog,tid,idbg,                      &
+                         pornew(ivol),igen,ilog,tid,idbg,         &
                          tec_header,prefix,l_prfx,                &
                          zone_name,l_zone_name,                   &
                          mtime,i_append_sim,mtime_append)
@@ -777,7 +776,7 @@
 !cprovi-------------------------------------------------------------------
 !cprovi Bubbles use component dependent diff coefficient if speciifed
 !cprovi-------------------------------------------------------------------
-                if (diff_coff) then
+                if (comp_dep_diff_coff) then
                   bdyinfrt_da = bdyinfrt_da_ic(jbl)
                 end if
 !cprovi-------------------------------------------------------------------
@@ -848,7 +847,7 @@
           
           if (evaporation) then
             ibvs = ivol2bvs(ivol)
-            if(ibvs > 0) then
+            if(ibvs > 0 .and. bcondvs_on(ibvs)) then
               if (btypevs(ibvs)=='atmospheric') then 
                 area_ivol=bcondvs(ibvs)
                 !cprovi---------------------------------------------------
@@ -899,7 +898,7 @@
 !cprovi for flow is different than atmospheric 
 !cprovi-------------------------------------------------------------      
 
-            if (.not.diff_coff) then
+            if (.not.comp_dep_diff_coff) then
               diff_eff = r0
               diff_loc = r0
               if (type_diff_coeff == 0) then
@@ -966,7 +965,7 @@
               end do
             end if
           else
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               bdyinfrt_da_ic(1:nc) = r0
             else
               bdyinfrt_da = r0
@@ -989,7 +988,7 @@
                 if (component_type(ic).eq.'aqueous') then
 !c  calculate boundary flux vector
                   if (b_fluxd_bcond(ivol)) then
-                    if (diff_coff) then
+                    if (comp_dep_diff_coff) then
                       bdyinfrt_da = bdyinfrt_da_ic(ic)
                     end if
                     totcflux(ic) = inoutflow*bcondrt_a(ic,ibrt)+       &
@@ -1032,7 +1031,7 @@
                     totcflux(ic) = inoutflow * r0
                   else
                     if (b_fluxd_bcond(ivol)) then
-                      if (diff_coff) then
+                      if (comp_dep_diff_coff) then
                         bdyinfrt_da = bdyinfrt_da_ic(ic)
                       end if
                       totcflux(ic) = inoutflow*totcnew(ic,ivol) +      &
@@ -1177,7 +1176,7 @@
                       dtotcflux(ibl) = r0                            !mass is retained
                     else
                       if (b_fluxd_bcond(ivol)) then
-                        if (diff_coff) then
+                        if (comp_dep_diff_coff) then
                           bdyinfrt_da = bdyinfrt_da_ic(ibl)
                         end if
                         dtotcflux(ibl) = inoutflow * dtotc(ibl,tid) +  &
@@ -1241,7 +1240,7 @@
             !cprovi--------------------------------------------------
             !cprovi Check the boundary index for flow
             !cprovi--------------------------------------------------
-            if(ibvs > 0) then
+            if(ibvs > 0 .and. bcondvs_on(ibvs)) then
               if (btypevs(ibvs)=='atmospheric') then 
                    !cprovi---------------------------------------------------
                    !cprovi If the boundary condition for flow was defined 
@@ -1285,7 +1284,7 @@
 !cprovi for flow is different than atmospheric 
 !cprovi-------------------------------------------------------------      
           if (compute_diff) then
-            if (.not.diff_coff) then
+            if (.not.comp_dep_diff_coff) then
               diff_eff = r0
               diff_loc = r0
               if (type_diff_coeff == 0) then
@@ -1341,7 +1340,7 @@
               end do
             end if
           else
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               bdyinfrt_da_ic(1:nc) = r0
             else
               bdyinfrt_da = r0
@@ -1498,7 +1497,7 @@
 !cprovi Bubbles use component dependent diff coefficient if 
 !cprovi speciifed
 !cprovi-------------------------------------------------------
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               bdyinfrt_da = bdyinfrt_da_ic(ic)
             end if
 !cprovi-------------------------------------------------------
@@ -1950,7 +1949,7 @@
 !c  - for outflux, advective component varies
                 if (inoutflow > r0) then                                 !influx
                   if (b_fluxd_bcond(ivol)) then 
-                    if (diff_coff) then
+                    if (comp_dep_diff_coff) then
                       bdyinfrt_da = bdyinfrt_da_ic(ibl)
                     end if                
                     dtotcflux(ibl) = fluxd(dtotc(ibl,tid),r0,          & !diffusive
@@ -1964,7 +1963,7 @@
                     dtotcflux(ibl) = r0
                   else
                     if (b_fluxd_bcond(ivol)) then
-                      if (diff_coff) then
+                      if (comp_dep_diff_coff) then
                         bdyinfrt_da = bdyinfrt_da_ic(ibl)
                       end if                     
                       dtotcflux(ibl) = inoutflow * dtotc(ibl,tid) +    & !advective

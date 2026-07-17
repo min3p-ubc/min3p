@@ -188,21 +188,16 @@
           cmnewm(im) = dmax1(cmoldm(im)+totratem(im,tid)*deltsv,      &
                        cmcmin(im,tid))
 
-!c  compute ratio of new and old mineral concentration
- 
+          !c compute ratio of new and old mineral concentration
           ratio = cmnewm(im)/cmoldm(im)
- 
+
 !c  update volume fractions of minerals
  
-          if (.not. pore_clogging) then
-              
+          if (.not. pore_clogging) then         
             phim(im) = ratio*phim(im)
           else
-!c            cm_init(im,ivol) = 1000.d0 * phi_init(im,ivol) *       &
-!c                               densm(im) / gfwm(im)
             phim(im) = cmnewm(im) * gfwm(im)/(densm(im)*1000.0d0)
-          end if
-       
+          end if      
 
         end if            !exclusion of dependent minerals
 

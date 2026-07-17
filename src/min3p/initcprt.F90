@@ -377,7 +377,12 @@
         subsection = 'averaging diffusion'
         averaging_diffusion=.false. 
         no_average=.false.
-        type_averaging_De='' 
+
+!cdsu
+!cdsu the default method is cell/block averaged based on pseudo element.
+!cdsu see cliqdisp for detail.
+!cdsu
+        type_averaging_De='pseudo element'
         call findstrg(subsection,itmp,found_subsection)
         
         if (.not. found_subsection) then
@@ -391,16 +396,17 @@
           if (subsection.eq.'harmonic') then
             averaging_diffusion = .true.
             type_averaging_De='harmonic'
-          elseif (subsection.eq.'arithmetic') then  ! De averaging done with por_av
+          elseif (subsection.eq.'arithmetic' .or. &
+                  subsection.eq.'arithmetic De') then
             averaging_diffusion = .true.
             type_averaging_De='arithmetic'
-          elseif (subsection.eq.'arithmetic De') then ! De averaging done with De_av
+          elseif (subsection.eq.'pseudo element') then
             averaging_diffusion = .true.
-            type_averaging_De='arithmetic De'            
+            type_averaging_De='pseudo element'
           elseif (subsection.eq.'no averaging') then
             averaging_diffusion = .false.
             type_averaging_De='no averaging'
-            no_average=.true.
+            no_average=.true.            
           else
             if (rank == 0 .and. b_enable_output) then
               write(ilog,*) 'Sapatial averaging type of diffusion coefficient not recognized'

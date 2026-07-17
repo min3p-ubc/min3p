@@ -326,6 +326,7 @@
       use bbls
       use biol
       use nobleGasIngrowth
+      use mimicMassDisp
       use mip_bubble, only : mip_mt_enable
       use multidiff, only : mdiff_ic_tensor, mdiff_ix_tensor,          &
                             type_mdiff_ic_coeff, type_mdiff_ix_coeff,  &
@@ -373,10 +374,11 @@
 #endif
 
       integer :: i, i1, ic, ilist, info_debug, ipest, ierr, ivol,      &
-                 i2, i3, ii, ireac, istart, istop, istart2, istop2,    &
+                 i2, i3, ii, ireac, istart, iend, istart2, iend2,      &
                  ic2, icur, icount, next, ivolume, nexvol, maxvol,     &
-                 n_unknown_rt, iunit, im, izn, inpl
-      real*8 :: sia_abs, ups_flow_loc, uuu, gammatemp
+                 n_unknown_rt, iunit, ig, im, izn, inpl
+      real*8 :: sia_abs, ups_flow_loc, uuu, gammatemp,                 &
+                rvoidLiter, dispMassGas, dispMassAq
       real*8, external :: satindex, cputime
       
       integer :: ifile, idummy, iskip, nskip
@@ -396,7 +398,7 @@
       !mole water to liter water, 1mole water = 0.018L
       real*8, parameter :: rwater_mole2liter =  0.018d0  
 
-      logical over_flow, b_redo_symbfac
+      logical :: over_flow, b_redo_symbfac, bflag
       
 #ifdef OPENMP
       tid = omp_get_thread_num() + 1
@@ -448,12 +450,12 @@
                        idbg, ilog, fully_saturated,                   &
                        variably_saturated, njavs, nngl,               &
                        tortuosity_corr, half_cells,time,tfinal,       &
-                       cinfrt_da_ic,diff_coff, nc,                    &
+                       cinfrt_da_ic,comp_dep_diff_coff, nc,           &
                        diff_ic, diff_ic_tensor, type_diff_ic_coeff,   &
                        assigned_tau,tau,type_tortuosity,marchies,     &
                        harmonic_porosity,delx,dely,delz,av_dens_z,    &
                        ups_flow_loc,gacc,cinfrad,radial_coord,tau_fac,&
-                       sonew) 
+                       sonew,type_averaging_De) 
 #ifdef USG
           else
             call infcrtdd_usg
@@ -474,13 +476,12 @@
                          idbg, ilog, upstream, fully_saturated,       &
                          variably_saturated, njavs, nngl,             &
                          tortuosity_corr, half_cells,cinfrt_da_ic,    &
-                         diff_coff, nc, diff_ic,                      &
+                         comp_dep_diff_coff, nc, diff_ic,             &
                          diff_ic_tensor, type_diff_ic_coeff,          &
                          assigned_tau,tau,type_tortuosity,marchies,   &
                          cinfrad,radial_coord,multi_diff,tau_fac,     &
                          harmonic_porosity, delx,dely,delz,           &
-                         type_averaging_De, xg,                       &
-                         sonew,oil_saturation)
+                         type_averaging_De, sonew,oil_saturation)
 #ifdef USG
           else
             call infcrt_a_usg
@@ -1483,8 +1484,8 @@
     !$omp if (nngl > numofloops_thred_global)                         &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private (ivol,tid,inpl,i,i1,i2,i3,ii,im,ireac,istart,istop, &
-    !$omp istart2,istop2,ic,ic2,icur,icount,next,gammatemp)
+    !$omp private (ivol,tid,inpl,i,i1,i2,i3,ii,im,ireac,istart,iend,  &
+    !$omp istart2,iend2,ic,ic2,icur,icount,next,gammatemp)
 #endif
 
 #ifdef OPENMP
@@ -1530,26 +1531,26 @@
                       satm(im,tid) = eqm(im,tid)**(-r1)
                       ireac = iamd(im)
                       istart = iam(im)
-                      istop = iam(im+1)-1
+                      iend = iam(im+1)-1
 
-                      do i1 = istart, istop ! loop through components in mineral
+                      do i1 = istart, iend ! loop through components in mineral
                         icount = 0
                         ic = jam(i1)
                         next = 0
                         do i = 1, nifrm(im)  ! loop through isotope sets
                           istart2 = next + iamdiso(im)
                           icur = iamdiso2(im) + i - 1
-                          istop2 = iamdiso(im) + jamdiso2(icur) - 1
+                          iend2 = iamdiso(im) + jamdiso2(icur) - 1
                           next = jamdiso2(icur)
                           gammatemp = r0
                           !loop through isotope compents in set
-                          do i2 = istart2, istop2
+                          do i2 = istart2, iend2
                             ii = jamdiso(i2)
                             !check to see if component is an isotope
                             if (ii.eq.ic) then
                               icount = icount + 1
                               !if so sum the isotope activities
-                              do i3 = istart2, istop2
+                              do i3 = istart2, iend2
                                   ic2 = jamdiso(i3)
                                   gammatemp = gammatemp+gamma(ic2,ivol)*cnew(ic2,ivol)
                               end do
@@ -1660,8 +1661,82 @@
         return
       end if
 
+!c  mimic advective gas displacement
+      if (nAdvGasDisp > 0) then
+        advGasDispBdMass = r0
+        advGasAqDispBdMass = r0
+#ifdef OPENMP
+    !$omp parallel                                                    &
+    !$omp if (nngl > numofloops_thred_global)                         &
+    !$omp num_threads(numofthreads_global)                            &
+    !$omp default(shared)                                             &
+    !$omp private(i, ig, ic, ivol, istart, iend, bflag,               &
+    !$omp dispMassGas, dispMassAq, rvoidLiter)                        &
+    !$omp reduction(+:advGasDispBdMass,advGasAqDispBdMass)
+    !$omp do schedule(static)
+#endif
+        do ivol = 1, nngl
+#ifdef PETSC
+          if(node_idx_lg2l(ivol) < 0) then
+            cycle
+          end if
+#endif
+          bflag = .false.
+          do ig = 1, ng
+            if (mimicAdvGasDisp(ig)) then
+              dispMassGas = gnew(ig,ivol) - advGasDispBd(ig)
+              if (dispMassGas > r0) then
+                bflag = .true.
+                rvoidLiter = cvol(ivol)*pornew(ivol)*conv3
+                advGasDispBdMass(ig) = advGasDispBdMass(ig) +            &
+                      dispMassGas*rvoidLiter*sgnew(ivol)
+                gnew(ig,ivol) = advGasDispBd(ig)              
+                istart = iaga(ig)
+                iend = iaga(ig+1)-1
+                do i = istart, iend
+                  ic = jaga(i)
+                  dispMassAq = cnew(ic,ivol) - advGasAqDispBd(ig)
+                  if (dispMassAq > r0) then
+                    cnew(ic,ivol) = advGasAqDispBd(ig)
+                    advGasAqDispBdMass(ig) = advGasAqDispBdMass(ig) +    &
+                       dispMassAq*rvoidLiter*sanew(ivol)
+                  end if
+                end do
+              end if
+            end if
+          end do
+
+          !c update total concentration for aqueous phase and gas phase
+          if (bflag) then
+            call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+            if (ng.gt.0) then
+              call totconcg(gnew(1,ivol),totgnew(1,ivol))
+            end if
+          end if
+
+        end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+
+#ifdef PETSC
+        call MPI_Allreduce(advGasDispBdMass, advGasDispBdMassGbl,      &
+             ng, MPI_REAL8, MPI_SUM, Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        advGasDispBdMass = advGasDispBdMassGbl
+    
+        call MPI_Allreduce(advGasAqDispBdMass, advGasAqDispBdMassGbl,  &
+             ng, MPI_REAL8, MPI_SUM, Petsc_Comm_World, ierrcode)
+        CHKERRQ(ierrcode)
+        advGasAqDispBdMass = advGasAqDispBdMassGbl 
+#endif   
+      end if   
+
 !c  mass balance computation for reactive transport
 !c  Parallelized , OpenMP, DSU
+
+
 
       if (mass_balance_rt .and. ngb_step == ngb_step_bk) then
         call mbalrt

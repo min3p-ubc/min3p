@@ -112,7 +112,7 @@
 !c                          (rld based) ! CBF
 !c           binmatevap = assign binary values to matrix localizing
 !c                        control volume subjected to evaporation
-!c                        h1dry based) ! CBF
+!c                        (h1dry based) ! CBF
 !c ----------------------------------------------------------------------
  
       subroutine initprob
@@ -131,6 +131,7 @@
       use chem 
       use phys 
       use bbls
+      use mimicMassDisp, only : nAdvGasDisp, mimicMassDisp_fileCreate
       use mip_bubble, only : mip_mt_enable, mip_ctrl_params,           &
                              mip_initial_cond, mip_boundary_vols
       use mip_output, only : mip_output_params
@@ -556,6 +557,11 @@
 !c  Partially parallelized, OpenMP, DSU
           call initbcrt
 
+!cdsu mimic advective gas displacement
+          if (nAdvGasDisp > 0) then
+            call mimicMassDisp_fileCreate
+          end if          
+
 !c  determine seondary aqueous species, which are obsolete 
 !c  for simulation
           if (b_enable_output) then
@@ -571,8 +577,8 @@
           if (root_uptake) then
             call initplant
             call initppplant
-!c CBF build binary matrix for transpiration
 #ifdef ARCHISIMPLE
+!c CBF build binary matrix for transpiration
             call binmattransp
 #endif
           end if

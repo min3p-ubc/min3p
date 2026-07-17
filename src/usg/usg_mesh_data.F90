@@ -145,6 +145,11 @@ module usg_mesh_data
   logical :: b_export_mesh_pflotran
 
   !>
+  !> assign coordinate if coordinates are not specified in xyz order
+  !>
+  character(len=3) :: assign_coord
+
+  !>
   !> nodes: id and coordinates of the nodes in the mesh
   !>
   type(point), allocatable :: nodes(:)
@@ -968,30 +973,106 @@ module usg_mesh_data
           nread = 1
         end if
 
-        if (b_renumber_node_id) then
-          do i = 1, num_nodes, nread
-            istart = i
-            iend = i+nread-1
-            if (iend > num_nodes) then
-              iend = num_nodes
-            end if
-            read(ivtk,*,err=999,end=999) (nodes(node_ids(iread-1))%x,  &
-                                          nodes(node_ids(iread-1))%y,  &
-                                          nodes(node_ids(iread-1))%z,  &
-                                          iread=istart,iend)
-          end do
+        if (b_renumber_node_id) then            
+          if (assign_coord == 'xyz') then
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(node_ids(iread-1))%x,&
+                                            nodes(node_ids(iread-1))%y,&
+                                            nodes(node_ids(iread-1))%z,&
+                                            iread=istart,iend)
+            end do
+          else if (assign_coord == 'xzy') then 
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(node_ids(iread-1))%x,&
+                                            nodes(node_ids(iread-1))%z,&
+                                            nodes(node_ids(iread-1))%y,&
+                                            iread=istart,iend)
+            end do
+          else if (assign_coord == 'yzx') then 
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(node_ids(iread-1))%y,&
+                                            nodes(node_ids(iread-1))%z,&
+                                            nodes(node_ids(iread-1))%x,&
+                                            iread=istart,iend)
+            end do
+          else if (assign_coord == 'zxy') then 
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(node_ids(iread-1))%z,&
+                                            nodes(node_ids(iread-1))%x,&
+                                            nodes(node_ids(iread-1))%y,&
+                                            iread=istart,iend)
+            end do
+          end if
         else
-          do i = 1, num_nodes, nread
-            istart = i
-            iend = i+nread-1
-            if (iend > num_nodes) then
-              iend = num_nodes
-            end if
-            read(ivtk,*,err=999,end=999) (nodes(iread)%x,              &
-                                           nodes(iread)%y,             &
-                                           nodes(iread)%z,             &
-                                           iread=istart,iend)
-          end do
+          if (assign_coord == 'xyz') then
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(iread)%x,            &
+                                            nodes(iread)%y,            &
+                                            nodes(iread)%z,            &
+                                            iread=istart,iend)
+            end do
+          else if (assign_coord == 'xzy') then
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(iread)%x,            &
+                                            nodes(iread)%z,            &
+                                            nodes(iread)%y,            &
+                                            iread=istart,iend)
+            end do
+          else if (assign_coord == 'yzx') then
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(iread)%y,            &
+                                            nodes(iread)%z,            &
+                                            nodes(iread)%x,            &
+                                            iread=istart,iend)
+            end do
+          else if (assign_coord == 'zxy') then
+            do i = 1, num_nodes, nread
+              istart = i
+              iend = i+nread-1
+              if (iend > num_nodes) then
+                iend = num_nodes
+              end if
+              read(ivtk,*,err=999,end=999) (nodes(iread)%z,            &
+                                            nodes(iread)%x,            &
+                                            nodes(iread)%y,            &
+                                            iread=istart,iend)
+            end do
+          end if
         end if
 
         !c set max and min nodes
@@ -1814,15 +1895,28 @@ module usg_mesh_data
       call makelowercase(strbuffer)
 
       if(index(strbuffer,'coordinates') == 1) then
-        if (b_renumber_node_id) then
-          do i = 1, num_nodes
-            read(imsh,*) nodes(node_ids(i))%x,nodes(node_ids(i))%y,    &
-                         nodes(node_ids(i))%z
-          end do
+        if (b_renumber_node_id) then          
+          if (assign_coord == 'xyz') then
+            do i = 1, num_nodes
+              read(imsh,*) nodes(node_ids(i))%x,nodes(node_ids(i))%y,  &
+                           nodes(node_ids(i))%z
+            end do
+          else if (assign_coord == 'xzy') then
+            do i = 1, num_nodes
+              read(imsh,*) nodes(node_ids(i))%x,nodes(node_ids(i))%z,  &
+                           nodes(node_ids(i))%y
+            end do
+          end if          
         else
-          do i = 1, num_nodes
-            read(imsh,*) idummy, nodes(i)%x,nodes(i)%y,nodes(i)%z
-          end do
+          if (assign_coord == 'xyz') then
+            do i = 1, num_nodes
+              read(imsh,*) idummy, nodes(i)%x,nodes(i)%y,nodes(i)%z
+            end do
+          else if (assign_coord == 'xzy') then
+            do i = 1, num_nodes
+              read(imsh,*) idummy, nodes(i)%x,nodes(i)%z,nodes(i)%y
+            end do
+          end if
         end if
         bflag = .false.
         exit
@@ -3084,7 +3178,9 @@ module usg_mesh_data
           k0 = cells(j,i)
           k1 = cells(face_node_mapping_tri(1,j),i)
           k2 = cells(face_node_mapping_tri(2,j),i)
-          CellNodeAngle(j,i) = geometry_angle(nodes(k1)-nodes(k0),nodes(k2)-nodes(k0))
+          CellNodeAngle(j,i) = geometry_angle_0to2pi(nodes(k1)-nodes(k0),  &
+                                                     nodes(k2)-nodes(k0),  &
+                                                     cell_projection)
 
           CellFaceScaledNorm(j,i) = geometry_normal(nodes(k1),nodes(k2),   &
                                                     cell_projection)
@@ -3102,10 +3198,15 @@ module usg_mesh_data
             k1 = cells(face_node_mapping_quad(1,j),i)
             k2 = cells(face_node_mapping_quad(2,1),i)
           end if
-          CellNodeAngle(j,i) = geometry_angle(nodes(k1)-nodes(k0),nodes(k2)-nodes(k0))
+          CellNodeAngle(j,i) = geometry_angle_0to2pi(nodes(k1)-nodes(k0),  &
+                                                     nodes(k2)-nodes(k0),  &
+                                                     cell_projection)
 
-          CellFaceScaledNorm(j,i) = geometry_normal(                   &
-              nodes(k1),nodes(k2),cell_projection)
+          CellFaceScaledNorm(j,i) = geometry_normal(nodes(k1),nodes(k2),   &
+                                                    cell_projection)
+        end do
+
+        do j = 1, num_nodes_per_cell       !number of faces
 
           if (CellNodeAngle(1,i)+CellNodeAngle(3,i) >                  &
               CellNodeAngle(2,i)+CellNodeAngle(4,i)) then
@@ -3971,8 +4072,9 @@ module usg_mesh_data
   !>
   subroutine usg_mesh_data_mem_rt
 
-    use gen, only : reactive_transport, diff_coff, type_diff_coeff,    &
-                    type_disp_coeff, type_diff_ic_coeff,               &
+    use gen, only : reactive_transport, comp_dep_diff_coff,            &
+                    type_diff_coeff, type_disp_coeff,                  &
+                    type_diff_ic_coeff,                                &
                     useAnisoDispCorr, useAnisoTauCorr,                 &
                     useAnisoHeatCondCorr, useAnisoHeatDispCorr,        &
                     memory_monitor, ilog, idbg, rank, b_enable_output
@@ -4037,7 +4139,7 @@ module usg_mesh_data
           call memory_monitor(sizeof(CellCvolFace_disp_mcd),'CellCvolFace_disp_mcd',.true.)
         end if
       end if
-      if (diff_coff) then
+      if (comp_dep_diff_coff) then
         if (type_disp_coeff == 2 .or. type_diff_ic_coeff == 2) then
           allocate(CellCvolFace_disp_da_ic_tensor(nc,num_edge_dvols,num_edges_per_cell,num_cells), stat = ierr)
           call checkerr(ierr,'CellCvolFace_disp_da_ic_tensor',ilog)

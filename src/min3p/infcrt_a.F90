@@ -108,19 +108,20 @@
                          idbg, ilog, upstream, fully_saturated,   &
                          variably_saturated, njamxc, nmax,        &
                          tortuosity_corr,half_cells,cinfrt_da_ic, &
-                         diff_coff, nc, diff_ic, diff_ic_tensor,  &
+                         comp_dep_diff_coff, nc,                  &
+                         diff_ic, diff_ic_tensor,                 &
                          type_diff_ic, assigned_tau,              &
                          tau,type_tortuosity,marchies,cinfrad,    &
                          radial_coord, multi_diff, tau_fac,       &
                          harmonic_porosity, delx,dely,delz,       &
-                         type_averaging_De, xg,                   &
-                         sonew,oil_saturation)
+                         type_averaging_De, sonew,oil_saturation)
 #ifdef OPENMP      
       use omp_lib 
 #endif
 
       use geometry_definition
       use geometry
+      use math_common, only : math_common_harmonic
       use mod_diffcoff, only : diffcoff      
       use gen, only :                                             &
 #ifdef OPENMP  
@@ -131,8 +132,8 @@
                       numofloops_thred_infcrt_a_3,                &
 #endif
                       b_use_fixed_flow_vel, fixed_flow_vel,       &
-                      b_use_zero_flow_vel,                        &
-                      tor_corr_a_mq, tor_corr_b_mq,               &
+                      b_use_zero_flow_vel, xg, yg, zg,            &
+                      tor_corr_a_mq, tor_corr_b_mq, cvol,         &
                       b_water_freezing, rank, b_enable_output
 
 #ifdef PETSC
@@ -155,11 +156,11 @@
                  type_diff_ic
 
       logical :: half_cells, fully_saturated, variably_saturated,      &
-                 upstream, tortuosity_corr,diff_coff,assigned_tau,     &
+                 upstream, tortuosity_corr,comp_dep_diff_coff,         &
                  radial_coord, multi_diff, harmonic_porosity,          &
-                 oil_saturation
+                 assigned_tau, oil_saturation
       
-      character(len=30) :: type_averaging_De
+      character(len=*) :: type_averaging_De, type_tortuosity
 
       real*8 :: diffu, disx(nzn), disy(nzn), disz(nzn),                &
                 frozen_diffu, tkel(nmax),                              &
@@ -170,9 +171,7 @@
                 diff_ic(nc),tau(nmax),cinfrad(njamxc),                 &
                 tau_fac(nmax), marchies(nmax), sonew(nmax)
                 
-      real*8 :: delx(nvx),dely(nvy),delz(nvz), xg(nvx)
-      
-      character(len=*) :: type_tortuosity
+      real*8 :: delx(nvx),dely(nvy),delz(nvz)
 
       type(tensor) :: diffu_tensor, diff_ic_tensor(nc)
 
@@ -196,10 +195,12 @@
                       diff_i_tensor, diff_j_tensor,                    &
                       diff_eff1_tensor, diff_eff2_tensor
 
-      integer :: ibk, ivz, ivy, ivx, ibkz, ibky,                       &
-                 ii, id, ixx, iyy, izz, iisav,                         &
-                 idim, npair(3), iface(3,12), ndim,                    &
-                 fvpair(3,12,2), ipair, idim2, idim3, irk_ibk, irk_id
+      integer :: ibk, ivz, ivy, ivx, ibkz, ibky, ii, id, ixx, iyy, izz,&
+                 iisav, idim, ndim, ipair, idim2, idim3, irk_ibk,      &
+                 irk_id, npair(3), iface(3,12), fvpair(3,12,2)
+
+
+
 
       character*1 :: iups
       real*8 :: por1, por2
@@ -272,7 +273,9 @@
 
 !c  skip if edge
 
-              if (ixx.le.0 .or. iyy.le.0 .or. izz.le.0) cycle
+              if (ixx.le.0 .or. iyy.le.0 .or. izz.le.0) then
+                cycle
+              end if
 
 !c  find -ve face in row of connected cells to ibk
 
@@ -367,7 +370,7 @@
 !    !$omp end parallel
 !#endif 
       cinfrt_da(:) = r0
-      if (diff_coff) then
+      if (comp_dep_diff_coff) then
         cinfrt_da_ic(:,:) = r0
       end if
 
@@ -401,35 +404,38 @@
           ivygbl = ivy+nvygls-1 
           do ivx = 1, nvx    !increments in x-direction                
             ivxgbl = ivx+nvxgls-1  
-            
+
+!c  pointer to current control volume
+#ifdef OPENMP
+            ivol = ((ivz-1)*nvy + ivy-1) * nvx + ivx
+#else
+            ivol = ivol+1
+#endif
+            jtemp = ia(ivol)
+           
             so_av = r0
 
 !c  find node pairs for elemental velocities as well
 !c  as influence coefficient for node pairs within dipersion element
 
-!            call cliqdisp (nvx, nvy, nvz, ivx, ivy, ivz,
-!     &                        fvpair, npair, aread, d, half_cells,
-!     &                        nmax,idbg)
-            call cliqdisp (nvx, nvy, nvz, ivx, ivy, ivz,           &
-                      fvpair, npair,aread,areax,dist,d, half_cells,&
-                      ia, ja, njamxc,                              &
-                      nmax,idbg,cinfrad,radial_coord)     
+            call cliqdisp(nvx,nvy,nvz,ivx,ivy,ivz,fvpair,npair,        &
+                          aread,areax,dist,d,half_cells,               &
+                          ia,ja,njamxc,nmax,idbg,cinfrad,radial_coord)     
 
 !c  check if fully connected "pseudo dispersion element"
 !c  was found for dimensionality of problem
 
-!CMX               if ((nvx .gt. 1 .and. npair(1) .eq. 0) .or.            &
-!CMX                   (nvy .gt. 1 .and. npair(2) .eq. 0) .or.            &
-!CMX                   (nvz .gt. 1 .and. npair(3) .eq. 0)) cycle
+!cdsu Fix bug in applying 'pseudo dipersion element'. 
+!cdsu Influence coefficient is not symmetric for symmetric problem. 
+!cdsu This is caused by the duplicated calculation on edge connection. 
+!cdsu 2024-09-05
 
             if (((nvx .gt. 1 .and. npair(1) .eq. 0) .or.          &
                 (nvy .gt. 1 .and. npair(2) .eq. 0) .or.           &
                 (nvz .gt. 1 .and. npair(3) .eq. 0)) .and.         &
-                (type_averaging_De.ne.'harmonic' .or.             &
-                (.not.harmonic_porosity)) .and.                   &
-                ((type_averaging_De.eq.'arithmetic' .and.         &
-                (harmonic_porosity)) .or.                         &
-                 trim(type_averaging_De).eq.'')) cycle
+                trim(type_averaging_De).eq.'pseudo element') then
+              cycle
+            end if
 
  !c  pointers to previous colums in x,y and z
               ivxp = ivx-1
@@ -450,10 +456,15 @@
 
               do idim = 1, 3
 
-                idim2 = idim + 1
-                idim3 = idim + 2
-                if (idim2 .gt. 3) idim2 = idim2 - 3
-                if (idim3 .gt. 3) idim3 = idim3 - 3
+              idim2 = idim + 1
+              idim3 = idim + 2
+              if (idim2 .gt. 3) then
+                idim2 = idim2 - 3
+              end if
+
+              if (idim3 .gt. 3) then
+                idim3 = idim3 - 3
+              end if
 
 !c  zero advective velocity
 
@@ -529,72 +540,98 @@
                 end if
               end do
 
-              if (b_use_fixed_flow_vel) then
-                vel(1) = fixed_flow_vel%x
-                vel(2) = fixed_flow_vel%y
-                vel(3) = fixed_flow_vel%z
-              end if
+            if (b_use_fixed_flow_vel) then
+              vel(1) = fixed_flow_vel%x
+              vel(2) = fixed_flow_vel%y
+              vel(3) = fixed_flow_vel%z
+            end if
+            
+!cdsu-------------------------------------------------------------------
+!cdsu 'pseudo element' based averaging that parameter is averaged at
+!cdsu cell-level. For example, for 2D (V1-V2-V3-VV4) cell, parameter at 
+!cdsu control volume interface V1-V2 is averaged based on all the parameters
+!cdsu at V1,V2,V3 and V4, NOT only V1 and V2.
+!cdsu-------------------------------------------------------------------
+            if (type_averaging_De.eq.'pseudo element') then
 
-!cmx-------------------------------------------------------------------
-!cmx-------------------------------------------------------------------
-!cmx     Not harmonic average in porosity and/or De
-!cmx-------------------------------------------------------------------
-!cmx-------------------------------------------------------------------
-              if (.not.harmonic_porosity .and.                       &
-                 (type_averaging_De.ne.'harmonic') .or.              &
-                 (type_averaging_De.eq.'arithmetic' .and.            &
-                 (harmonic_porosity)) .or.                           &
-                 trim(type_averaging_De).eq.'') then
+              ndim = 0
+              if (nvx .gt. 1) then
+                ndim = ndim + 1
+              end if              
+              if (nvy .gt. 1) then
+                ndim = ndim + 1
+              end if
+              if (nvz .gt. 1) then
+                ndim = ndim + 1
+              end if
 
 !c  average porosity of the element
 !c  note: each node is included in "ndim" number of node
 !c        pairs, therefore the average must be divided
 !c        by ndim as well as the number of nodes in the
 !c        element
+              porav = r0
+              do idim = 1, 3
+                do ipair = 1, npair(idim)
+                  ibk = fvpair(idim, ipair, 1)
+                  id = fvpair(idim, ipair, 2)
 
-                porav = r0
-                do idim = 1, 3
-                  do ipair = 1, npair(idim)
-                    ibk = fvpair(idim, ipair, 1)
-                    id = fvpair(idim, ipair, 2)
-                    porav = porav                    &
-                         + dmin1( r1, pornew(ibk) )  &
-                         + dmin1( r1, pornew(id) )
-                  end do
-                end do 
+                  if (harmonic_porosity) then
+                    porav = porav + r1/max(min(r1,pornew(ibk)),eps) +  &
+                                    r1/max(min(r1,pornew(id)),eps)
+                  else
+                    porav = porav + min(r1,pornew(ibk))                &
+                                  + min(r1,pornew(id))
+                  end if
+                end do
+              end do
 
-                ndim = 0
-                if (nvx .gt. 1) ndim = ndim + 1
-                if (nvy .gt. 1) ndim = ndim + 1
-                if (nvz .gt. 1) ndim = ndim + 1
+              if (harmonic_porosity) then
+                if (porav > r0) then
+                  porav = float(ndim) * r2**ndim / porav
+                else
+                  porav = r0
+                end if
+              else
                 porav = porav / float(ndim) / r2**ndim
+              end if
                
 !c  average tortuosity of the element
 !c  note: each node is included in "ndim" number of node
 !c        pairs, therefore the average must be divided
 !c        by ndim as well as the number of nodes in the
 !c        element
-                if (assigned_tau) then
-                  tauav = r0
-                  do idim = 1, 3
-                    do ipair = 1, npair(idim)
-                      ibk = fvpair(idim, ipair, 1)
-                      id = fvpair(idim, ipair, 2)
- !c                     tauav = tauav                               &
- !c                           + dmin1(r1, tau(ibk) * tau_fac(ibk))  &
- !c                           + dmin1(r1, tau(id) * tau_fac(id))
-                      tauav = tauav                               &
-                            + tau(ibk) * tau_fac(ibk)             &
-                            + tau(id) * tau_fac(id)
-                    end do
-                  end do 
+              if (assigned_tau) then
+                tauav = r0
+                do idim = 1, 3
+                  do ipair = 1, npair(idim)
+                    ibk = fvpair(idim, ipair, 1)
+                    id = fvpair(idim, ipair, 2)
 
-                  ndim = 0
-                  if (nvx .gt. 1) ndim = ndim + 1
-                  if (nvy .gt. 1) ndim = ndim + 1
-                  if (nvz .gt. 1) ndim = ndim + 1
-                  tauav = tauav / float(ndim) / r2**ndim             
-                end if   
+!c  material property
+                    irk_ibk = mprop(ibk)
+                    irk_id = mprop(id)
+
+ !c                   tauav = tauav                               &
+ !c                         + dmin1(r1, tau(ibk) * tau_fac(ibk))  &
+ !c                         + dmin1(r1, tau(id) * tau_fac(id))
+
+                    tauav = tauav                               &
+                          + tau(ibk) * tau_fac(ibk)             &
+                          + tau(id) * tau_fac(id)
+
+                    !if (abs(xg(ibk)-xg(id)) > 1.0e-5) then
+                    !  tauav = r0
+                    !  !write(*,*) '-> set tauav = 0'
+                    !  !write(*,*) '-> ibk ',ibk, ' id ',id,' xg ',xg(ibk)-xg(id)
+                    !  !stop '-> stop after setting tauav to zero'
+                    !end if
+
+                  end do
+                end do 
+
+                tauav = tauav / float(ndim) / r2**ndim             
+              end if   
 
 !c  calculate average dispersivities for the "pseudo
 !c  dispersion element"
@@ -703,53 +740,20 @@
 
 !c  calculate effective diffusion coefficient
 !c_bubbles use averaged diffusion coefficient
-                if (.not.diff_coff) then
-                  if (type_averaging_De .ne. 'arithmetic De' ) then      ! if first calculating porav, then diff_eff
-                    if (type_diffu == 0) then
-                      diff_eff = diffcoff(diffav,satav,porav,          &
-                                    tortuosity_corr,assigned_tau,      &
-                                    tauav,type_tortuosity,marchieav,   &
-                                    so_av,tor_corr_a_mq,tor_corr_b_mq)
-                    else if (type_diffu > 0) then
-                      diff_eff_tensor = diffcoff(                      &
-                                diffav_tensor,satav,porav,             &
-                                tortuosity_corr,assigned_tau,          &
-                                tauav,type_tortuosity,marchieav,       &
+              if (.not.comp_dep_diff_coff) then                
+                if (type_diffu == 0) then
+                  diff_eff = diffcoff(diffav,satav,porav,          &
+                                tortuosity_corr,assigned_tau,      &
+                                tauav,type_tortuosity,marchieav,   &
                                 so_av,tor_corr_a_mq,tor_corr_b_mq)
-                    end if
-                  else   ! if first calculating diff_eff1 and diff_eff2, then diff_eff, CMX
-!CMX Mar. 2013
-                    por1 = 0.0d0
-                    por2 = 0.0d0
-                    
-                    por1 = dmin1( r1, pornew(ibk) )
-                    por2 = dmin1( r1, pornew(id) )
+                else if (type_diffu > 0) then
+                  diff_eff_tensor = diffcoff(                      &
+                            diffav_tensor,satav,porav,             &
+                            tortuosity_corr,assigned_tau,          &
+                            tauav,type_tortuosity,marchieav,       &
+                            so_av,tor_corr_a_mq,tor_corr_b_mq)
+                end if
 
-                    if (type_diffu == 0) then
-                      diff_eff1 = diffcoff(diffav,satav,por1,            &
-                                      tortuosity_corr,assigned_tau,      &
-                                      tauav,type_tortuosity,marchieav,   &
-                                      so_av,tor_corr_a_mq,tor_corr_b_mq)
-                      diff_eff2 = diffcoff(diffav,satav,por2,            &
-                                      tortuosity_corr,assigned_tau,      &
-                                      tauav,type_tortuosity,marchieav,   &
-                                      so_av,tor_corr_a_mq,tor_corr_b_mq)
-                      diff_eff = (diff_eff1 + diff_eff2)/2
-                    else if (type_diffu > 0) then
-                      diff_eff1_tensor = diffcoff(                       &
-                                diffav_tensor,satav,por1,                &
-                                tortuosity_corr,assigned_tau,            &
-                                tauav,type_tortuosity,marchieav,         &
-                                so_av,tor_corr_a_mq,tor_corr_b_mq)
-                      diff_eff2_tensor = diffcoff(                       &
-                                diffav_tensor,satav,por2,                &
-                                tortuosity_corr,assigned_tau,            &
-                                tauav,type_tortuosity,marchieav,         &
-                                so_av,tor_corr_a_mq,tor_corr_b_mq)
-                      diff_eff_tensor = (diff_eff1_tensor +              &
-                                         diff_eff2_tensor)/2
-                    end if
-                  end if      ! if diff_ave
 ! prc -------------------------------------------------------------------
 ! prc Modified for Multicomponent diffusion
 ! prc diff_eff = r0 the diffusion coefficient will be taken out from 
@@ -899,25 +903,27 @@
 #ifdef OPENMP
     !$omp end critical
 #endif                   
-                  end do                
-                end if  
-!cmx-----------------------------------------------------------------------
-!cmx-----------------------------------------------------------------------
-!cmx-----------------------------------------------------------------------
-!cmx-----Harmonic averaging of effective diffusion-------------------------
-!cmx-------It is only valid when harmonic ---
-!cmx-----------------------------------------------------------------------           
-              else ! Harmonic averaging of effective diffusion 
-!c  average porosity of the element
-!c  note: each node is included in "ndim" number of node
-!c        pairs, therefore the average must be divided
-!c        by ndim as well as the number of nodes in the
-!c        element
-!c    changed Nov.09
-                ndim = 0
-                if (nvx .gt. 1) ndim = ndim + 1
-                if (nvy .gt. 1) ndim = ndim + 1
-                if (nvz .gt. 1) ndim = ndim + 1
+                end do                
+              end if  
+
+            else ! Harmonic and other averaging method of effective diffusion 
+!
+!cdsu 2024-08-29
+!cdsu Fix bug in calculating effective diffusion coefficient. 
+!cdsu The non-harmonic averaging method use cell/block based averaging, 
+!cdsu returning a single averaged value for the cell/block. 
+!cdsu This is not right for coefficient at the interface with different material.
+!cesu
+              ndim = 0
+              if (nvx .gt. 1) then
+                ndim = ndim + 1
+              end if
+              if (nvy .gt. 1) then
+                ndim = ndim + 1
+              end if
+              if (nvz .gt. 1) then
+                ndim = ndim + 1
+              end if
 !c  calculate average dispersivities for the "pseudo
 !c  dispersion element"
 
@@ -1009,16 +1015,6 @@
 #ifdef OPENMP
     !$omp end critical
 #endif
-
-!c  pointer to current control volume
-
-#ifdef OPENMP
-                ivol = ((ivz-1)*nvy + ivy-1) * nvx + ivx
-#else
-                ivol = ivol+1
-#endif
-!CMX March 2013  300        ivol = ibk
-                jtemp = ia(ivol)
 
 !c  assign conductivities for current control volume
 !c    changed: Nov. 09, not used for the time being
@@ -1171,13 +1167,16 @@
                       diff_j = diff_j_tensor%xx
                     end if
 
+                  if (type_averaging_De.eq.'harmonic') then
                     diff_ij = diff_i*diff_j
-
                     if(diff_ij.gt.0.0) then
                       cinfrt_da(jtemp) =  cinfrt_da(jtemp)+            &
-!CMX Mar.13                      cinfrt_da(iisav) =  cinfrt_da(iisav)+               &
-                            diff_ij*areaf/(diff_i*delx_j+ diff_j*delx_i)
+                            diff_ij*areaf/(diff_i*delx_j+diff_j*delx_i)
                     endif
+                  else
+                    cinfrt_da(jtemp) =  cinfrt_da(jtemp)+              &
+                           rhalf*(diff_i+diff_j)*areaf/(delx_i+delx_j)
+                  end if
 
                     jtemp = jtemp+1
                   end if
@@ -1245,19 +1244,19 @@
                       diff_j = diff_j_tensor%xx
                     end if
 
+                  if (type_averaging_De.eq.'harmonic') then
                     diff_ij = diff_i*diff_j
-
-                    if(diff_ij.gt.0.0) then 
-                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+               &
-!CMX Mar. 13                      cinfrt_da(isymm(iisav)) =  cinfrt_da(isymm(iisav))+               &
-                      diff_ij*areaf/(diff_i*delx_j+diff_j*delx_i)
+                    if(diff_ij.gt.0.0) then
+                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+            &
+                            diff_ij*areaf/(diff_i*delx_j+diff_j*delx_i)
                     endif
-
-                    jtemp = jtemp+1
-                    !The following cinfrt_da is not needed, DSU 
-                    !else
-                    !    cinfrt_da(isymm(iisav)) =  cinfrt_da(iisav)           !cmx Mar. 13
+                  else
+                    cinfrt_da(jtemp) =  cinfrt_da(jtemp)+              &
+                           rhalf*(diff_i+diff_j)*areaf/(delx_i+delx_j)
                   end if
+
+                  jtemp = jtemp+1
+                end if
 
                 end if                          !connections in x-direction
 
@@ -1322,12 +1321,16 @@
                       diff_j = diff_j_tensor%yy
                     end if
 
-                    diff_ij = diff_i*diff_j
-
-                    if(diff_ij.gt.0.0) then
-                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+               &
-                           diff_ij*areaf/(diff_i*dely_j+diff_j*dely_i)
-                    endif
+                    if (type_averaging_De.eq.'harmonic') then
+                      diff_ij = diff_i*diff_j
+                      if(diff_ij.gt.0.0) then
+                        cinfrt_da(jtemp) =  cinfrt_da(jtemp)+            &
+                              diff_ij*areaf/(diff_i*dely_j+diff_j*dely_i)
+                      endif
+                    else
+                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+              &
+                             rhalf*(diff_i+diff_j)*areaf/(dely_i+dely_j)
+                    end if
                     jtemp = jtemp+1
                   end if
 
@@ -1388,12 +1391,17 @@
                       diff_j = diff_j_tensor%yy
                     end if
 
-                    diff_ij = diff_i*diff_j
+                    if (type_averaging_De.eq.'harmonic') then
+                      diff_ij = diff_i*diff_j
 
-                    if(diff_ij.gt.0.0) then
-                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+               &
-                           diff_ij*areaf/(diff_i*dely_j+diff_j*dely_i)
-                    endif
+                      if(diff_ij.gt.0.0) then
+                        cinfrt_da(jtemp) =  cinfrt_da(jtemp)+            &
+                              diff_ij*areaf/(diff_i*dely_j+diff_j*dely_i)
+                      endif
+                    else
+                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+              &
+                             rhalf*(diff_i+diff_j)*areaf/(dely_i+dely_j)
+                    end if
 
                     jtemp = jtemp+1
                 
@@ -1478,13 +1486,17 @@
                     diff_j = diff_j_tensor%zz
                   end if
  
-                  diff_ij = diff_i*diff_j
-
-                  if(diff_ij.gt.0.0) then
-                    cinfrt_da(jtemp) =  cinfrt_da(jtemp)+               &
-                         diff_ij*areaf/(diff_i*delz_j+diff_j*delz_i)
-                  endif
-
+                  if (type_averaging_De.eq.'harmonic') then
+                    diff_ij = diff_i*diff_j
+                    if(diff_ij.gt.0.0) then
+                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+            &
+                            diff_ij*areaf/(diff_i*delz_j+diff_j*delz_i) 
+                    endif
+                  else
+                    cinfrt_da(jtemp) =  cinfrt_da(jtemp)+              &
+                           rhalf*(diff_i+diff_j)*areaf/(delz_i+delz_j)
+                  end if
+                  
                   jtemp = jtemp+1
                 end if
 
@@ -1515,15 +1527,13 @@
                     diffav=diffu
                     diff_j = diffcoff(diffav,satav,por_j,tortuosity_corr,    & 
                                    assigned_tau,tau_j,type_tortuosity,       &
-                                   marchieav,so_av,                          &
-                                   tor_corr_a_mq,tor_corr_b_mq)
+                                   marchieav,so_av,tor_corr_a_mq,tor_corr_b_mq)
                   else if (type_diffu > 0) then
                     diffav_tensor=diffu_tensor
                     diff_j_tensor = diffcoff(                                &
                             diffav_tensor,satav,por_j,tortuosity_corr,       & 
                             assigned_tau,tau_j,type_tortuosity,              &
-                            marchieav,so_av,                                 &
-                            tor_corr_a_mq,tor_corr_b_mq)
+                            marchieav,so_av,tor_corr_a_mq,tor_corr_b_mq)
                   end if
 
                   if (b_water_freezing) then
@@ -1561,21 +1571,23 @@
                     diff_j = diff_j_tensor%zz
                   end if
  
-                  diff_ij = diff_i*diff_j
-
-                  if(diff_ij.gt.0.0) then
-                    cinfrt_da(jtemp) =  cinfrt_da(jtemp)+               &
-                         diff_ij*areaf/(diff_i*delz_j+diff_j*delz_i)
-                  endif
+                  if (type_averaging_De.eq.'harmonic') then
+                    diff_ij = diff_i*diff_j
+                    if(diff_ij.gt.0.0) then
+                      cinfrt_da(jtemp) =  cinfrt_da(jtemp)+            &
+                            diff_ij*areaf/(diff_i*delz_j+diff_j*delz_i)
+                    endif
+                  else
+                    cinfrt_da(jtemp) =  cinfrt_da(jtemp)+              &
+                           rhalf*(diff_i+diff_j)*areaf/(delz_i+delz_j)
+                  end if
 
                   jtemp = jtemp+1
                 
                 end if
+              end if
 
-              end if                          !connections in z-direction
-           
-           
-            end if 
+            end if
            
           end do
         end do  

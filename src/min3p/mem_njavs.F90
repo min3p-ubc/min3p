@@ -334,7 +334,7 @@
         cinfrt_da_ic=r0
         call memory_monitor(sizeof(cinfrt_da_ic),'cinfrt_da_ic',.true.)
 #ifdef USG
-        if (diff_coff) then
+        if (comp_dep_diff_coff) then
           if (discretization_type > 0) then
             call memory_monitor(-sizeof(cinfrt_da_ic),'cinfrt_da_ic',.true.)
             deallocate(cinfrt_da_ic)

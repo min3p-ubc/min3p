@@ -173,11 +173,13 @@
       use parm
       use gen
       use chem
+      use biol
       use file_unit, only : lun_free
       use module_binary_mpiio, only : binary_file_close
       use mip_bubble, only : mip_mt_enable
       use nobleGasIngrowth, only : b_use_ngi, ngre_i, ingdbs
-      use biol
+      use mimicMassDisp, only : mimicMassDisp_fileClose
+
 
       implicit none
 #ifdef PETSC
@@ -498,6 +500,10 @@
             end do          
           end if
         end if
+
+!cdsu mimic advective gas displacement
+        call mimicMassDisp_fileClose
+
       end if
  
       return

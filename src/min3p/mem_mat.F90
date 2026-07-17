@@ -589,6 +589,11 @@
       call checkerr(ierr,'aperture',ilog)
       call memory_monitor(sizeof(aperture),'aperture',.true.)
 
+      allocate (fracFlowCoeff(nngl), stat = ierr)
+      fracFlowCoeff=0.0d0
+      call checkerr(ierr,'fracFlowCoeff',ilog)
+      call memory_monitor(sizeof(fracFlowCoeff),'fracFlowCoeff',.true.)
+
     end subroutine 
 
 !cdsu -----------------------------------------------------------------

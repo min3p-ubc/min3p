@@ -286,31 +286,31 @@
           !end if
           
           if (.not. allocated(avs)) then
-              allocate (avs(njavs), stat = ierr)
+            allocate (avs(njavs), stat = ierr)
             if (nngl > 1) then
               avs = 0.0
             else
               avs = 1.0
             end if
-              call checkerr(ierr,'avs',ilog)
-              call memory_monitor(sizeof(avs),'avs',.true.)
+            call checkerr(ierr,'avs',ilog)
+            call memory_monitor(sizeof(avs),'avs',.true.)
           end if
           
           if (i_solver_type_flow == 0) then
-              if (.not. allocated(afvs)) then
-                  allocate (afvs(njafvs), stat = ierr)
-                  afvs=0.0d0 
-                  call checkerr(ierr,'afvs',ilog)
-                  call memory_monitor(sizeof(afvs),'afvs',.true.)
-              end if
+            if (.not. allocated(afvs)) then
+              allocate (afvs(njafvs), stat = ierr)
+              afvs=0.0d0 
+              call checkerr(ierr,'afvs',ilog)
+              call memory_monitor(sizeof(afvs),'afvs',.true.)
+            end if
           end if      
 
          
 !c  clear arrays
           if (nngl > 1) then
-          call zero_r8(avs,njavs,1,1)
-          call zero_r8(bvs,nngl,1,1)
-          call zero_r8(uvs,nngl,1,1)
+            call zero_r8(avs,njavs,1,1)
+            call zero_r8(bvs,nngl,1,1)
+            call zero_r8(uvs,nngl,1,1)
           end if
 
 !c  construct jacobian matrix and rhs vector
@@ -921,7 +921,7 @@
 
           do ibvs = 1, nbvs          
             ivol = iabvs(ibvs)
-            if (ivol < 0) then
+            if (ivol < 0 .or. .not.bcondvs_on(ibvs)) then
               cycle  
             end if
             if ((btypevs(ibvs).eq.'second' .or. &

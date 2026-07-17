@@ -3799,7 +3799,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, itri, icell, jnode, iflag
     real*8 :: inc, val, totvol, rv
-    type(point) :: grad
+    type(point) :: grad, grad_dvols(num_edge_dvols)
 
     gradient = vector_zero
 
@@ -3886,7 +3886,14 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
-      gradient(:,:) = gradient(:,:)/totvol
+      grad_dvols = vector_zero
+      do i = 1, janumcell(jtemp)
+        grad_dvols(:) = grad_dvols(:) + gradient(:,i)
+      end do
+      
+      do i = 1, janumcell(jtemp)
+        gradient(:,i) = grad_dvols(:)/totvol
+      end do
     end if
 
   end subroutine gradient_cell_green_gauss_val1d
@@ -3909,7 +3916,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, k2, itri, icell, jnode, iflag
     real*8 :: dvals(n), totvol, rv
-    type(point) :: grad(n)
+    type(point) :: grad(n), grad_dvols(n,num_edge_dvols)
 
     gradient = vector_zero
 
@@ -4020,8 +4027,13 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
+      grad_dvols = vector_zero
       do i = 1, janumcell(jtemp)
-        gradient(:,:,i) = gradient(:,:,i)/totvol
+        grad_dvols(:,:) = grad_dvols(:,:) + gradient(:,:,i)
+      end do
+
+      do i = 1, janumcell(jtemp)
+        gradient(:,:,i) = grad_dvols(:,:)/totvol
       end do
     end if
 
@@ -4045,7 +4057,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, itri, icell, jnode, iflag
     real*8 :: val, totvol, rv, rho_g_h, delta_p
-    type(point) :: grad
+    type(point) :: grad, grad_dvols(num_edge_dvols)
     real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0
 
     gradient = vector_zero
@@ -4131,7 +4143,14 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
-      gradient(:,:) = gradient(:,:)/totvol
+      grad_dvols = vector_zero
+      do i = 1, janumcell(jtemp)
+        grad_dvols(:) = grad_dvols(:) + gradient(:,i)
+      end do
+
+      do i = 1, janumcell(jtemp)
+        gradient(:,i) = grad_dvols(:)/totvol
+      end do
     end if
 
   end subroutine gradient_dd_cell_green_gauss
@@ -4157,7 +4176,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, k2, itri, icell, jnode, iflag
     real*8 :: dvals(n), totvol, rv
-    type(point) :: grad_totc(n), grad_elec(n)
+    type(point) :: grad_totc(n), grad_elec(n), grad_dvols(n,num_edge_dvols)
     real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0
 
     external :: totdyvisc, elecmigration
@@ -4316,9 +4335,20 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
+      grad_dvols = vector_zero
       do i = 1, janumcell(jtemp)
-        gradient_totc(:,:,i) = gradient_totc(:,:,i)/totvol
-        gradient_elec(:,:,i) = gradient_elec(:,:,i)/totvol
+        grad_dvols(:,:) = grad_dvols(:,:) + gradient_totc(:,:,i)
+      end do
+      do i = 1, janumcell(jtemp)
+        gradient_totc(:,:,i) = grad_dvols(:,:)/totvol
+      end do
+
+      grad_dvols = vector_zero
+      do i = 1, janumcell(jtemp)
+        grad_dvols(:,:) = grad_dvols(:,:) + gradient_elec(:,:,i)
+      end do
+      do i = 1, janumcell(jtemp)
+        gradient_elec(:,:,i) = grad_dvols(:,:)/totvol
       end do
     end if
 

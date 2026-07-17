@@ -161,7 +161,7 @@
       do ibvs = 1,nbvs
           
         ivol = iabvs(ibvs)
-        if (ivol < 0) then
+        if (ivol < 0 .or. .not.bcondvs_on(ibvs)) then
           cycle  
         end if
         

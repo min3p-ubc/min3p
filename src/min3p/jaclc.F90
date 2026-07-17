@@ -368,7 +368,7 @@
 !c           updtsvap  = update secondary variables in aqueous phase
 !c ----------------------------------------------------------------------
  
-      subroutine jaclc(cnew,cx,gammac,gammax,sw,sa,por,sitearea,sitemass,tid)
+      subroutine jaclc(cnew,cx,gammac,gammax,sw,sa,por,tid)
       
       use parm
       use chem
@@ -379,7 +379,7 @@
 #endif 
       implicit none
       
-      real*8 :: cnew, cx, gammac, gammax, sw, sa, por, sitearea, sitemass
+      real*8 :: cnew, cx, gammac, gammax, sw, sa, por
       
       integer :: tid 
       
@@ -390,7 +390,7 @@
                dratemin_new, dtotconc, rateint, rateint_new,         &
                ratemin, ratemin_new, totint, updtsvap
 
-      dimension cnew(*),cx(*),gammac(*),gammax(*), sitearea(*), sitemass(*)
+      dimension cnew(*),cx(*),gammac(*),gammax(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       
@@ -406,7 +406,7 @@
       blc(:,tid) = r0
      
       if (nsb_surf>0) then
-        area=sitearea(1)*sitemass(1)
+        area=site_area(1)*site_mass(1)
       end if 
 !c  construct rhs vector,
 !c  first iteration

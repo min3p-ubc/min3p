@@ -53,16 +53,8 @@
 
         icount = icount + 1
 
-        !c the end of file
-        if (iflag < 0) then
-          time_root = (tfinal+delt)/time_factor
-          backspace(itransroot)
-          flag_valid = .true.
-          exit
-        end if
-
-        !c the next line is negative, meaning end of file
-        if (rdummy < r0) then
+        !c the end of file, or the next line is negative (indicates the end of file)
+        if (iflag < 0 .or. rdummy < r0) then
           time_root = (tfinal+delt)/time_factor
           if (icount > 1) then
             backspace(itransroot)

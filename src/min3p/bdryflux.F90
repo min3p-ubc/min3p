@@ -160,7 +160,9 @@
       bdryflux = r0             !initialize boundary flux
       ibvs = ivol2bvs(ivol)
       
-      if (ibvs == 0) then
+      if (ibvs <= 0) then      
+        return
+      else if (.not.bcondvs_on(ibvs)) then
         return
       end if
 

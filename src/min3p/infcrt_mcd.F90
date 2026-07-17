@@ -305,7 +305,6 @@
 
               satav = r0
               so_av = r0
-!CMX          tauav = r0
 
               do idim = 1, 3
                 do ipair = 1, npair(idim)
@@ -315,15 +314,11 @@
                   satav = satav + min(r1, sanew(ibk)) + min(r1, sanew(id))
                     
                   so_av = so_av + dmin1(r1, sonew(ibk)) + dmin1(r1, sonew(id)) 
-
-!CMX              tauav = tauav + dmin1(r1, tau_man(ibk)) + dmin1(r1, tau_man(id))
                 end do
               end do
 
               satav = satav / float(ndim) / r2**ndim
               so_av = so_av / float(ndim) / r2**ndim
-
-!CMX          tauav = tauav / float(ndim) / r2**ndim
 
 
 !c  calculate the average marchie factor

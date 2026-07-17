@@ -383,6 +383,7 @@ Program driver_pc
 #ifdef PETSC
      use solver_dd, only : solver_dd_snes_create_flow_heat,            &
                            solver_dd_snes_create_react,                &
+                           solver_dd_get_node_rank,                    &
                            solver_dd_release_flow,                     &
                            solver_dd_release_heat,                     &
                            solver_dd_release_react
@@ -755,7 +756,7 @@ Program driver_pc
                 igbi  = igbi_mpi(igb)
                 igbb  = igbb_mpi(igb)
                 igbs  = igbs_mpi(igb)
-                igbv  = igbv_mpi(igb)
+                igbv  = igbv_mpi(igb)                
                 igbd  = igbd_mpi(igb)
                 igbx  = igbx_mpi(igb)
                 igbis = igbis_mpi(igb)
@@ -840,6 +841,17 @@ Program driver_pc
         end if
 #endif
       end if
+
+#ifdef PETSC
+      !c get node ownership
+      flag_non_interlaced = .false.
+      if (i_solver_type_flow >= 2) then
+        if (heat_transport .and. decoupled_type_vs_heat <= 1) then
+          flag_non_interlaced = .true.
+        end if
+        call solver_dd_get_node_rank()
+      end if
+#endif
 
       if (varsat_flow) then
 !c  initialize iteration parameters for variably saturated flow

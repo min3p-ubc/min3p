@@ -1122,7 +1122,7 @@
 !cprovi---------------------------------------------------------------
 !cprovi For diffusion coefficients for each component 
 !cprovi---------------------------------------------------------------      
-      logical :: diff_coff      
+      logical :: comp_dep_diff_coff      
       
 !cprovi---------------------------------------------------------------
 !cprovi---------------------------------------------------------------
@@ -1362,10 +1362,11 @@
 !cprovi--------------------------------------------------------------
       real (type_r8), allocatable :: cinfrt_da_ic(:,:)
 
-!cprovi--------------------------------------------------------------      
-!cprovi--------------------------------------------------------------      
-!cprovi--------------------------------------------------------------
-      integer (type_i4), allocatable :: mpropc(:)      
+!cdsu --------------------------------------------------------------
+!cdsu material property for control volume to zone index in
+!cdsu initial condition - reactive transport
+!cdsu --------------------------------------------------------------
+      integer (type_i4), allocatable :: mpropc(:)
 ! prc ---------------------------------------------------------------
 ! defining the vectors for diffusion coefficients for primary and 
 ! secondary spices
@@ -2716,6 +2717,11 @@
 !                                           condition for variably
 !                                           saturated flow
 !                                           with same types and zones
+!
+!           update_bcvs_switch
+!                              = .true.  -> allow boundary condition
+!                                           switch.
+!
 !           b_interpolation_bcvs
 !                              = .true.  -> linear interpolation for 
 !                                           transient boundary conditions
@@ -2739,6 +2745,9 @@
       real (type_r8), allocatable :: bcondvs_prev(:)
       real (type_r8), allocatable :: bcondvs_next(:)
 
+      !c transient boundary condition switch, if .false., this turns boundary condtition to closed (default no boundary condition)     
+      logical, allocatable :: bcondvs_on(:) 
+
 
       !Boundary condition can be duplicated, use negative value for those overwritten boundary condition in jabrt, by DSU, 2018-02-02
       !This is important in parallel code as the boundary condition assignment to the nodes is not in the same order as sequential code
@@ -2756,6 +2765,7 @@
 
       logical :: update_bcvs
       logical :: update_bcvs_value_only
+      logical :: update_bcvs_switch
       logical :: b_interpolation_bcvs
       logical :: b_first_update_bcvs
 
@@ -3092,6 +3102,7 @@
       integer :: n_iwork_max
 
       logical, allocatable :: lwork(:)
+      logical, allocatable :: lwork_next(:)
       
 ! ----------------------------------------------------------------------
       integer (type_i4) :: skip_time, nskip_time    ! skip writing output in logfile
@@ -3202,8 +3213,9 @@
 !cdsu Cushman, J. H. & Tartakovsky, D. M. The Handbook of Groundwater Engineering, 2016 
 !cdsu --------------------------------------------------------
       integer :: ifrac                                !file unit of fracture aperture
-      integer, allocatable :: fractureFlowType(:)    !define fracture flow type, e.g., 0 - darcy flow, 1 - cublic law flow
-      real*8, allocatable :: aperture(:)             !aperture of fracture
+      integer, allocatable :: fractureFlowType(:)     !define fracture flow type, e.g., 0 - darcy flow, 1 - cublic law flow
+      real*8, allocatable :: aperture(:)              !aperture of fracture
+      real*8, allocatable :: fracFlowCoeff(:)         !coefficient of fracture flow, e.g., 1.0/12.0 in (Steefel and Hu 2022, WRR)
 
 
 !> Parameter for output control
@@ -4060,6 +4072,7 @@
     real*8, allocatable :: realbuffer13(:)
     real*8, allocatable :: realbuffer14(:)
     real*8, allocatable :: realbuffer15(:)
+    real*8, allocatable :: realbuffer16(:)
     real*8, allocatable :: realbuffer2d(:,:)
     real*8, allocatable :: realbuffer2d_2(:,:)
     real*8              :: realbuffer_gb(1000)

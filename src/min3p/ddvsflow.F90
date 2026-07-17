@@ -1620,7 +1620,8 @@
             end if
             if ((btypevs(ibvs).eq.'second' .or. btypevs(ibvs).eq.'point' .or. &
                  btypevs(ibvs).eq.'seepage-second') .and. &
-                 uvsnew(ivol) > tol_freezing_pond(ibvs)) then
+                 uvsnew(ivol) > tol_freezing_pond(ibvs) .and. &
+                 bcondvs_on(ibvs)) then
               bcondvs(ibvs) = r0
               b_freezing_pond = .true.
               reduce_timestep = .true.

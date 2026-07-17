@@ -317,6 +317,19 @@
         call checkerr(ierr,'rwork_next',ilog)
         call memory_monitor(sizeof(rwork_next),'rwork_next',.true.)
 
+!c  allocate array for boundary condition switch
+        if (update_bcvs_switch) then
+          allocate (lwork(nbzvs), stat = ierr)
+          lwork=.false.
+          call checkerr(ierr,'lwork',ilog)
+          call memory_monitor(sizeof(lwork),'lwork',.true.)
+
+          allocate (lwork_next(nbzvs), stat = ierr)
+          lwork_next=.false.
+          call checkerr(ierr,'lwork_next',ilog)
+          call memory_monitor(sizeof(lwork_next),'lwork_next',.true.)
+        end if
+
 !c  assign new boundary conditions for variably-saturated flow
 
         if (b_first_update_bcvs .and.                                  &
@@ -326,19 +339,37 @@
           b_updt_next_only = b_first_update_bcvs
           backspace(ibcvs)
 
-          read(ibcvs,*,err=998,end=997) time_bcvs_prev,                &
-              (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          if (update_bcvs_switch) then
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),           &
+                (lwork(ibz),ibz=1,nbzvs)
+          else
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          end if
 
           do while (time_check < time_bcvs_prev)
             backspace(ibcvs)
             backspace(ibcvs)
-            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
           end do
           
           do while (time_check > time_bcvs)
-            read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,         &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
             !c end of file has reached
             if (iflag < 0) then
               time_bcvs = (tfinal+delt)/time_factor
@@ -348,15 +379,28 @@
               if (time_check < time_bcvs_prev) then
                 backspace(ibcvs)
                 backspace(ibcvs)
-                read(ibcvs,*,err=998,end=997) time_bcvs_prev,          &
-                    (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                if (update_bcvs_switch) then
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),     &
+                      (lwork(ibz),ibz=1,nbzvs)
+                else
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                end if
                 exit
               end if
             end if
           end do          
 
-          read(ibcvs,*,err=998,iostat=iflag) time_bcvs,                &
-              (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          if (update_bcvs_switch) then
+            read(ibcvs,*,err=998,iostat=iflag) time_bcvs,              &
+                (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),      &
+                (lwork_next(ibz),ibz=1,nbzvs)
+          else
+            read(ibcvs,*,err=998,iostat=iflag) time_bcvs,              &
+                (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          end if
+
           !c end of file has reached
           if (iflag < 0) then
             time_bcvs = (tfinal+delt)/time_factor
@@ -364,19 +408,38 @@
           end if    
         else
           backspace(ibcvs)
-          read(ibcvs,*,err=998,end=997) time_bcvs_prev,                &
-              (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          if (update_bcvs_switch) then
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),           &
+                (lwork(ibz),ibz=1,nbzvs)
+          else
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          end if
 
           do while (time_check < time_bcvs_prev)
             backspace(ibcvs)
             backspace(ibcvs)
-            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
           end do
           
           do while (time_check > time_bcvs)
-            read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,         &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
+
             !c end of file has reached
             if (iflag < 0) then
               time_bcvs = (tfinal+delt)/time_factor
@@ -386,8 +449,14 @@
               if (time_check < time_bcvs_prev) then
                 backspace(ibcvs)
                 backspace(ibcvs)
-                read(ibcvs,*,err=998,end=997) time_bcvs_prev,          &
-                    (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                if (update_bcvs_switch) then
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),     &
+                      (lwork(ibz),ibz=1,nbzvs)
+                else
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                end if
                 exit
               end if
             end if
@@ -395,8 +464,15 @@
           
          
           if (b_interpolation_bcvs) then
-            read(ibcvs,*,err=998,iostat=iflag) time_bcvs,              &
-                (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs,            &
+                  (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),    &
+                  (lwork_next(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs,            &
+                  (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
+
             !c end of file has reached
             if (iflag < 0) then
               time_bcvs = (tfinal+delt)/time_factor
@@ -1440,6 +1516,12 @@
               else if (btypezn.eq.'free-drainage') then
                 gradf_bvs(nbvs) = rwork(1,ibz)
               end if     !(btypezn.eq.'first'.or.btypezn.eq.'second')
+
+              !c boundary condition switch
+              if (update_bcvs_switch) then
+                bcondvs_on(nbvs) = lwork(ibz)
+              end if
+
             end if       !(zg(ivol).gt.zbmin).and.(zg(ivol).lt.zbmax)
                          !(yg(ivol).gt.ybmin).and.(yg(ivol).lt.ybmax)
                          !(xg(ivol).gt.xbmin).and.(xg(ivol).lt.xbmax)
@@ -1457,6 +1539,17 @@
         call memory_monitor(-sizeof(rwork_next),'rwork_next',.true.)
         deallocate (rwork_next, stat = ierr)
         call checkerr(ierr,'rwork_next',ilog)
+
+!c  deallocate array for boundary condition switch
+        if (update_bcvs_switch) then
+          call memory_monitor(-sizeof(lwork),'lwork',.true.)
+          deallocate (lwork, stat = ierr)
+          call checkerr(ierr,'lwork',ilog)
+
+          call memory_monitor(-sizeof(lwork_next),'lwork_next',.true.)
+          deallocate (lwork_next, stat = ierr)
+          call checkerr(ierr,'lwork_next',ilog)
+        end if
         
 !c  array iabvs
 

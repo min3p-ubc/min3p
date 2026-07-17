@@ -188,7 +188,7 @@
                                 b_cell_based_grad_itpl,                &
                                 b_mesh_output_scale, b_anchor_coord,   &
                                 anchor_coord_old, anchor_coord_new,    &
-                                mesh_output_scale,                     &
+                                mesh_output_scale, assign_coord,       &
                                 usg_mesh_data_reorder,                 &
                                 b_reverse_cell_node,                   &
                                 b_reorder_cell_node,                   &
@@ -220,7 +220,7 @@
 
       logical found_section,found_subsection,bflag
 
-      character*72 subsection, strbuffer
+      character*72 :: subsection, strbuffer
       character*256 :: str_usg_generate_file
       
       integer :: i, j, ierr, ixx, iyy, izz, ivtk, l_string, ierrcd
@@ -357,6 +357,22 @@
         if (found_subsection) then
           ierrcd = 2
           read(itmp,*,err=999,end=999) ncon_usg_est
+        end if
+
+        assign_coord = 'xyz'
+        subsection = 'assign coordinate format'
+        call findstrg(subsection,itmp,found_subsection)
+        if (found_subsection) then
+          ierrcd = 29
+          read(itmp,*,err=999,end=999) assign_coord
+          if (assign_coord/='xyz' .and. assign_coord/='xzy' .and. &
+              assign_coord/='yzx' .and. assign_coord/='zxy') then
+            if (rank == 0) then
+              write(*,*) 'Error: coordinate format must be in xyz, xzy, yzx or zxy'
+              write(ilog,*) 'Error: coordinate format must be in xyz, xzy, yzx or zxy'
+            end if
+            goto 999
+          end if
         end if
 
         subsection = 'use legacy vtk format'
@@ -550,7 +566,18 @@
           end if
         end if
 
-        b_cell_based_grad_itpl = .true.
+        if (grad_method == grad_method_cgg) then
+          b_cell_based_grad_itpl = .false.          !default value for cell based Green-Gauss gradient reconstruction
+        else
+          b_cell_based_grad_itpl = .true.           !default value for other node based gradient reconstruction
+        end if
+
+        subsection = 'enable cell based gradient interpolation'
+        call findstrg(subsection,itmp,found_subsection)
+        if (found_subsection) then
+          b_cell_based_grad_itpl = .true.
+        end if
+
         subsection = 'disable cell based gradient interpolation'
         call findstrg(subsection,itmp,found_subsection)
         if (found_subsection) then

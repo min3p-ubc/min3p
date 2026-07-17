@@ -300,8 +300,7 @@
         end if
         call rtrvpprm(swc,sac,porc,r1,section_header)
         call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),       &
-                    cgc,swc,sac,porc,site_area,site_mass,            &
-                    igen,ilog,tid,idbg,tec_header,                   &
+                    cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,  &
                     prefix,l_prfx,zone_name,l_zone_name,             &
                     mtime,i_append_sim,mtime_append)
 
@@ -328,8 +327,8 @@
 !c  compute initial condition
           call rtrvpprm(swc,sac,porc,pornew(ivol),section_header)
           call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-                     cgc,swc,sac,porc,site_area,site_mass,            &
-                     igen,ilog,tid,idbg,tec_header,prefix,l_prfx,     &
+                     cgc,swc,sac,porc,igen,ilog,tid,idbg,             &
+                     tec_header,prefix,l_prfx,                        &
                      zone_name,l_zone_name,mtime,                     &
                      i_append_sim,mtime_append)
  
@@ -391,8 +390,7 @@
               end if
               call rtrvpprm(swc,sac,porc,r1,section_header)
               call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),   &
-                       cgc,swc,sac,porc,site_area,site_mass,           &
-                       igen,ilog,tid,idbg,tec_header,                  &
+                       cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header, &
                        prefix,l_prfx,zone_name,l_zone_name,            &
                        mtime,i_append_sim,mtime_append)
             else
@@ -416,7 +414,7 @@
                 end if
                 call rtrvpprm(swc,sac,porc,pornew(ivol),section_header)
                 call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1), &
-                             cgc,swc,sac,porc,site_area,site_mass,     &
+                             cgc,swc,sac,porc,                         &
                              igen,ilog,tid,idbg,tec_header,            &
                              prefix,l_prfx,zone_name,l_zone_name,      &
                              mtime,i_append_sim,mtime_append)

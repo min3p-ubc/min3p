@@ -357,6 +357,9 @@
       use chem
       use dens
       use phys
+      use writeversion
+      use mimicMassDisp
+      use file_utility, only : reposition_file, check_rewind_status
 #ifdef OPENMP
       use omp_lib 
 #endif
@@ -390,8 +393,8 @@
       
       integer :: tid, i, iaq, ic, ix, icount, itemp, ierr, ibz, ibrt,  &
                  ibrt_start, ibrt_stop, ig, itid, ivol, l_string,      &
-                 ibz_ice, istart, iend, jtemp, jtemp1, jtemp2,         &
-                 nbrt_usg, ierrcd
+                 ibz_ice, istart, iend, j, jtemp, jtemp1, jtemp2,      &
+                 nbrt_usg, ntemp, ierrcd
       
       real*8 :: sac, sgc, porc, xbmin, xbmax, ybmin, ybmax,            &
                 zbmin, zbmax, rtemp_scaling, areaf
@@ -406,7 +409,9 @@
       logical xy_plane,xz_plane,yz_plane,found,found_section,          &
               found_subsection
       character*32 btypezn, bctypefunc
-      character*72 subsection
+      character*72 subsection, strtemp
+      character*2048 :: strbuffer
+
 #ifdef USG
       real*8 :: ratio_flux
       integer :: icell, icell2, iface, cindex, idvol, idvol_r,         &
@@ -891,14 +896,12 @@
           end if
 
           subsection = 'include diffusive flux for third/mixed boundary condition'
-
           call findstrg(subsection,icnv,found_subsection)
           if (found_subsection) then
             b_fluxd_bcond_zn = .true.
           end if
 
           subsection = 'exclude diffusive flux for third/mixed boundary condition'
-
           call findstrg(subsection,icnv,found_subsection)
           if (found_subsection) then
             b_fluxd_bcond_zn = .false.
@@ -946,6 +949,39 @@
           end if
           
           phguess_init(ibz) = phguess
+
+!cdsu  mimic advective gas displacement to allow gas be displaced out of the domain
+!cdsu  if that is present above the concentration at the boundary.
+          subsection = 'mimic advective gas displacement'
+
+          call findstrg(subsection,icnv,found_subsection)
+
+          if (found_subsection) then
+            ierrcd = 15
+            read(icnv,*,err=999,end=999) nAdvGasDisp
+
+            if (nAdvGasDisp > 0 .and. .not.allocated(mimicAdvGasDisp)) then
+              call mimicMassDisp_mem
+            end if
+
+            do i = 1, nAdvGasDisp
+              read(icnv,*,err=999,end=999) strtemp
+              do ig = 1, ng
+                if (trim(nameg(ig)).eq.trim(strtemp)) then
+                  mimicAdvGasDisp(ig) = .true.
+                  idxAdvGasDisp(i) = ig
+                  exit
+                end if
+              end do
+            end do
+
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(/2a/)') ' warning: mimic advective gas displacement ',   &
+                         'CANNOT be applied for gases with hydrolysis'
+              write(ilog,'(/2a/)') ' warning: mimic advective gas displacement ',&
+                         'CANNOT be applied for gases with hydrolysis'
+            end if
+          end if
          
 !c_bubbles - spatial dependent intra-aqueous scaling factors
 
@@ -1094,7 +1130,7 @@
 
 !c  compute concentration distribution at boundary
           call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-                       cgc,sac,sgc,porc,site_area,site_mass,          &
+                       cgc,sac,sgc,porc,                              &
                        igen,ilog,tid,idbg,tec_header,                 &
                        prefix,l_prfx,zone_name,l_zone_name,           &
                        mtime,i_append_sim,mtime_append)
@@ -1155,6 +1191,27 @@
 
         end if
 
+!c initialize parameters for 'mimic advective gas displacement'
+        if (nAdvGasDisp > 0) then
+          do j = 1, nAdvGasDisp
+            ig = idxAdvGasDisp(j)
+            if (mimicAdvGasDisp(ig)) then
+              istart = iaga(ig)
+              iend = iaga(ig+1)-1
+              do i = istart,iend
+                ic = jaga(i)
+                advGasAqDispBd(ig) = ccnew(ic)
+                call gasconc(ccnew,gamma_l,advGasDispBd(ig),ig,tempk,tid)
+              end do
+
+              !c check the unit conversion
+              !write(*,*) '-> ig',ig,' mimicAdvGasDisp ',mimicAdvGasDisp(ig),&
+              !           ' advGasAqDispBd(mol/L water) ',advGasAqDispBd(ig),&
+              !           ' advGasDispBd(mol/L air) ',advGasDispBd(ig),&
+              !           ' advGasDispBd(atm) ',advGasDispBd(ig)*rgasatm*tempk
+            end if
+          end do
+        end if
 
 !c  assign boundary condition to control volumes located in boundary zone
 
@@ -2348,8 +2405,7 @@
 
 !c  compute concentration distribution at boundary
             call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),         &
-                         cgc,sac,sgc,porc,site_area,site_mass,             &
-                         igen,ilog,tid,idbg,tec_header,                    &
+                         cgc,sac,sgc,porc,igen,ilog,tid,idbg,tec_header,   &
                          prefix,l_prfx,zone_name,l_zone_name,              &
                          mtime,i_append_sim,mtime_append)
             call minmaxwd(cxc,totcn(:,tid))

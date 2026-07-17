@@ -209,7 +209,7 @@
             btypevs(ibvs).eq.'seepage-second') then  
           
           ivol = iabvs(ibvs)         !pointer to control volume
-          if (ivol < 0) then
+          if (ivol < 0 .or. .not.bcondvs_on(ibvs)) then
             cycle  
           end if
 

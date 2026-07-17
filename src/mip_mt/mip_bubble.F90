@@ -1754,7 +1754,7 @@ contains
 #endif
                        gnew, cnew, uvsnew, sgnew, delt, mpropvs,       &
                        mtime, rank, ilog, idbg, ivol2bvs, btypevs,     &
-                       memory_monitor
+                       bcondvs_on, memory_monitor
 
       use phys, only : aentry
       use chem, only : nameg
@@ -2506,7 +2506,7 @@ contains
                     gmass(igas) = gmass(igas) - mip_pg(igas,ivol)*mip_sg(ivol) 
                   end do
                   
-                  if(btypevs(ibvs) == 'first' .or. btypevs(ibvs) == 'seepage') then
+                  if(btypevs(ibvs) == 'first' .or. btypevs(ibvs) == 'seepage' .and. bcondvs_on(ibvs)) then
                     !c bubble collapses and releases the mass to the new invaded block  
                     !c update the concentration for the block where bubble collapses
                     !c change in gaseous phase saturation is ignored

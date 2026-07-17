@@ -1669,6 +1669,14 @@
         end if        
       end if
 
+!cdsu define if boundary condition can be switched to on and off status
+      update_bcvs_switch = .false.
+      subsection = 'switch transient boundary conditions'
+      call findstrg(subsection,itmp,found_subsection)
+      if (found_subsection) then        
+        update_bcvs_switch = .true.
+      end if
+
 !cdsu linear interpolation for boundary conditions, only if the 
 !cdsu boundary condition type remains the same
       b_interpolation_bcvs = .false.
@@ -1755,6 +1763,12 @@
       call checkerr(ierr,'bcondvs_next',ilog)
       call memory_monitor(sizeof(bcondvs_next),'bcondvs_next',.true.)
       bcondvs_next = bcondvs
+
+!c  transient boundary condition switch
+      allocate (bcondvs_on(nbvs), stat = ierr)
+      bcondvs_on = .true.
+      call checkerr(ierr,'bcondvs_on',ilog)
+      call memory_monitor(sizeof(bcondvs_on),'bcondvs_on',.true.)
 
 !c  array tol_freezing_pond
       do ibvs = 1,nbvs

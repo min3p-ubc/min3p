@@ -325,7 +325,7 @@
                  itemp, icount2, iiso, iiso2, istop, ndpm, ndscx,      &
                  idcm, ndcm, ndsta,nifr, ntsct, nprsc, nprs, idummy
       
-      real*8 :: dummy
+      real*8 :: dummy, zbal
       real*8 :: xnumt(100),ordt(100),value(100),value2(100),           &
                 alphat(100,100)
       integer :: ntsct2(100), iinum(100)
@@ -338,7 +338,7 @@
               found_keyword
                                                                
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r10 = 10.0d0,       &
-                           r86400 = 86400.0d0
+                           r86400 = 86400.0d0, rsmall = 1.0d-10
 
 !c  control parameter for debugging output
 
@@ -2911,6 +2911,31 @@
                              ' mineral is reversed'
           write(igen,'(72a)') ('-',i=1,72)
         end if
+      end if
+
+!c  check charge balance of the mineral and give error information if charge balance is not met
+      if (nm > 0) then
+        if (rank == 0 .and. b_enable_output) then
+          write(igen,'(72a)') ('-',i=1,72)
+          write(igen,'(a)') 'charge balance for minerals: calculated charge'
+          write(igen,'(72a)') ('-',i=1,72)
+        end if
+        do im = 1, nm
+          istart = iam(im)
+          iend = iam(im+1)-1
+          zbal = r0
+          do i = istart,iend
+            icur = jam(i)
+            zbal = zbal + xnum(i)*chargec(icur)
+          end do
+          if (rank == 0 .and. b_enable_output) then
+            if (abs(zbal) > rsmall) then
+              write(igen,'(a,1x,1pe15.6e3,1x,a)') namem(im),zbal,'(*)'
+            else
+              write(igen,'(a,1x,1pe15.6e3)') namem(im),zbal
+            end if
+          end if
+        end do
       end if
 
 !c  write backup of database items to the file

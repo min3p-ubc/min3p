@@ -33,7 +33,8 @@
                          rsmall=0.01d0
     character(len=100), parameter :: empty=' ' 
 
-    if (read_atm .and. time_io >= time_atm) then
+    if (read_atm .and. time_io >= time_atm .and. &
+        time_io < tfinal/time_factor) then
       
       !cdsu locate the data line
       icount = 0

@@ -1726,7 +1726,15 @@
                 end do
                 rootarup(ic_h) = rootarup_current
               end if
-              
+
+!c  compress source/sink term towards total aqueous component
+!c  concentrations due to root respiration/exudation
+!c  in case of redox equilibrium reactions                              
+
+              if (redox_equil.and.nr.gt.0) then
+                call comptotc(rootarup(1))
+              end if
+
             end if
           end if
         end if

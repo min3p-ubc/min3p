@@ -41,7 +41,8 @@
     real*8 :: rdummy
     real*8, parameter :: r0 = 0.0d0
 
-    if (rootparam_trans .and. time_io >= time_root) then
+    if (rootparam_trans .and. time_io >= time_root .and. &
+        time_io < tfinal/time_factor) then
 
       !cdsu locate the data line
       icount = 0

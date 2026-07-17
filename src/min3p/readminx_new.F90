@@ -131,7 +131,7 @@
       integer :: i, ic, icur, icount, imx, iv, istart ,iend,           &
                  info_debug, l_name, nv
       
-      real*8 :: xnumt
+      real*8 :: xnumt, zbal
 
       character*1 junk
       character*72 name
@@ -141,7 +141,7 @@
       dimension xnumt(100)
       logical comment_line,done,found,next_entry
 
-      real*8, parameter :: r0 = 0.0d0, r10 = 10.0d0  
+      real*8, parameter :: r0 = 0.0d0, r10 = 10.0d0, rsmall = 1.0d-10
 
       info_debug = 0
       l_name = 0
@@ -460,6 +460,29 @@
             write(igen,'(72a)') ('-',i=1,72)
           end if 
         end if       
+
+!c  check charge balance of the mineral and give error information if charge balance is not met
+        if (rank == 0 .and. b_enable_output) then
+          write(igen,'(72a)') ('-',i=1,72)
+          write(igen,'(a)') 'charge balance for excluded minerals: calculated charge'
+          write(igen,'(72a)') ('-',i=1,72)
+        end if
+        do imx = 1, nmx
+          istart = iamx(imx)
+          iend = iamx(imx+1)-1          
+          zbal = r0
+          do i = istart,iend
+            icur = jamx(i)
+            zbal = zbal + xnumx(i)*chargec(icur)
+          end do
+          if (rank == 0 .and. b_enable_output) then
+            if (abs(zbal) > rsmall) then
+              write(igen,'(a,1x,1pe15.6e3,1x,a)') namemx(imx),zbal,'(*)'
+            else            
+              write(igen,'(a,1x,1pe15.6e3)') namemx(imx),zbal
+            end if
+          end if
+        end do
 
       end if                     !(nmx,gt.0)
 

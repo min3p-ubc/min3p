@@ -874,37 +874,15 @@
           
           ctype_bzrt_init(1:nc-1,ibz) = ctype(1:nc-1)
          
-!c  define if diffusive flux is applied for third or mixed boundary condition
-!c  for mixed boundary condition, diffusive flux is a default
+!c  define if diffusion flux is applied for third or mixed boundary condition
+!c  for aqueous phase
 
           b_fluxd_bcond_zn = .false.
 
-          if (btypezn.eq.'mixed' .or. btypezn.eq.'mixed-evap') then
-            b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'include diffusive flux for boundary condition'
+          subsection = 'include aqueous diffusion flux at boundary'
           call findstrg(subsection,icnv,found_subsection)
           if (found_subsection) then
             b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'exclude diffusive flux for boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .false.
-          end if
-
-          subsection = 'include diffusive flux for third/mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'exclude diffusive flux for third/mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .false.
           end if
           
 !c  define guess for pH

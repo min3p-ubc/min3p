@@ -960,14 +960,15 @@
         tid = 1
 #endif
 
+        totvsflux = r0
+        totcflux(:) = r0
+
 !c  Dirichlet type boundary conditions
 
         if (btypert(ivol).eq.'first') then
 
           istart = iavs(ivol)+1 
           iend = iavs(ivol+1)-1
-
-          totcflux(:) = r0
 
           do i1 = istart,iend         !loop over local connections
 
@@ -1159,7 +1160,6 @@
         else
 
 !c  compute water flux across boundary [volume, not mass!]
-          totvsflux = r0
 
 !c  DSU, bug fixed here. Before 2020-03-11, totvsflux does not properly set
 !c  It was placed inside evaporation condition. For density dependent flow

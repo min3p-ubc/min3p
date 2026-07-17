@@ -870,7 +870,7 @@
       
 !c root respiration variables:
       real*8 :: rootarup_current, rootarup_max, dresprate,      &
-                rootdens, rootarup(nc), drootarup(nc)
+                rootdens, totcres, rootarup(nc), drootarup(nc)
       
 !c ms variables    
       real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),     &
@@ -1001,7 +1001,7 @@
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
     !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &
     !$omp qrootloc, rootarup, rootarup_current, rootarup_max,         &   !!Root uptake and
-    !$omp dresprate, drootarup, rootdens,                             &   !!respiration
+    !$omp totcres, dresprate, drootarup, rootdens,                    &   !!respiration
     !$omp zbal, zpos, zneg, zpos_inc, zneg_inc,                       &
     !$omp densgij, dg, dgpivol, dmdens_i, ddens_i, gij,  gmfracij,    &   !!Gas advection and dgm model
     !$omp gpivol_ivol, gpivol_jvol, gdens_ivol, gdens_jvol,           &
@@ -1704,12 +1704,26 @@
                   rootarup(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
                 else                          !respiration by root 
                   rootarup_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3         !mol/day
-                  rootarup_max = (totcnew(ic,ivol)-                        &
-                                  max(rverysmall,totc_uptake_min(ic,izn)))*&
+                  rootarup_max = (totcnew(ic,ivol)-totc_uptake_min(ic,izn))*&
                                   cvol(ivol)*pornew(ivol)*sanew(ivol)/delt               !mol/day
-                  rootarup(ic) = min(rootarup_current,max(rootarup_max,r0))
+                  rootarup(ic) = min(rootarup_current,max(rootarup_max,r0)) 
+                  totcres = totcnew(ic,ivol)-rootarup(ic)*delt/        &
+                            (cvol(ivol)*pornew(ivol)*sanew(ivol))
+                  !if (totcres <= totc_uptake_min(ic,izn)) then
+                  !  rootarup(ic)
+                  !end if
+
+                  !c to be checked later
+                  !if (rootarup_current > rootarup_max) then
+                  !  write(*,'(2(a,1x,i0,1x),2(a,1x),12(a,1x,e13.6,1x))') '-> root uptake limit ic',ic,&
+                  !        'ivol',ivol,'namec',trim(namec(ic)),'totcnew',totcnew(ic,ivol),'totcold',totcold(ic,ivol),&
+                  !        'totcres',totcres,'totcmin',totc_uptake_min(ic,izn),'rld',rld(ivol),'cvol',cvol(ivol),&
+                  !        'por',pornew(ivol),'sanew',sanew(ivol),'resprate',resprate(ic,izn),&
+                  !        'uptake_cal',rootarup_current,'uptake_max',rootarup_max,'uptake_act',rootarup(ic)
+                  !end if              
                 end if
               end do
+
 
 !c  modify respiration rate for h+1 when charge balance in uptake is enforced
               if (resprate_charge(izn)) then
@@ -1724,11 +1738,11 @@
                 end do
                 rootarup(ic_h) = rootarup_current
               end if
-
+              
             end if
           end if
         end if
-
+        
 !c  get row pointers
 
         idiag = iavs(ivol)           !diagonal
@@ -2098,11 +2112,9 @@
           end if
         end if 
 
-        if (root_uptake .or. passive_uptake) then
+        if (root_uptake) then
           totcflux(1:n) = totcflux(1:n) + rootarup(1:n)
         end if
-
-
         
         if (ng.gt.0) then
           do ic=1,n
@@ -3416,7 +3428,7 @@
               if (rld(ivol) > rverysmall) then              
                 !c derivative of respiration depends on the formula
                 !c if respiration rate is not related to solute concentration, 
-                !c as shown below, then derivative is zero
+                !c then derivative is zero
                 !c rootarup(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
                 !c drootarup(ic) = d(rootarup)/d(cnew) = r0
               end if
@@ -4197,7 +4209,7 @@
 !cprovi Store the derivative of charge balance on the surface with respect to 
 !cprovi primary species. All species affects the charge balance on the surface.
 !cprovi---------------------------------------------------------------------------
-                art(i2) = cnew(jbl,ivol)*dtotcharge_surf(ibl,tid)               
+                art(i2) = art(i2) + cnew(jbl,ivol)*dtotcharge_surf(ibl,tid)               
               else if (component_type(ibl).eq.'aqueous') then
                 art(i2) = art(i2) + cnew(jbl,ivol) * dcstor           &
      &                            + cnew(jbl,ivol) * dtotcflux(ibl)

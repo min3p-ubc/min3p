@@ -332,7 +332,8 @@
       character*72 name, name_irm, nametemp, nametemp1
 
       real*8, parameter :: r0 = 0.0d0, r_1 = 0.1d0, r1 = 1.0d0,        &
-                           r1000 = 1.0d+3, tiny = 1.0e-3      
+                           r1000 = 1.0d+3, tiny = 1.0e-3,              &
+                           rd_30 = 1.0d-30      
       
 #ifdef OPENMP
       tid = omp_get_thread_num() + 1
@@ -1080,7 +1081,7 @@
               ierrcd = 24
               read(icnv,*,end=999,err=999) phimin(im), areac(im),     & 
                                           supsatm(im), phinuc(im)              
-             elseif (update_type(im).eq.'exponent') then
+            elseif (update_type(im).eq.'exponent') then
                ierrcd = 25
               read(icnv,*,end=999,err=999) phimin(im), areac(im),     &
                                           expphi(im)
@@ -1109,13 +1110,13 @@
 
 !c  -> modify minimum mineral volume fraction to avoid division by zero
 
-          if (phimin(im).lt.1.0d-50) then
-            phimin(im)= 1.0d-50
-          end if
+            if (phimin(im).lt.1.0d-50) then
+              phimin(im)= 1.0d-50
+            end if
 !c  -> modify volume fraction nucleation threshold to avoid zero
-          if (phinuc(im).lt.phimin(im)) then
+            if (phinuc(im).lt.phimin(im)) then
               phinuc(im) = phimin(im)
-          end if
+            end if
           
          
 !c  -> modify level of supersaturation required for precipitation,
@@ -1411,18 +1412,18 @@
 !c  Freundlich isotherm
            
         do ic = 1,nc
-        if (isotherm_type(ic).eq.'freundlich') then
-        end if
-      end do
+          if (isotherm_type(ic).eq.'freundlich') then
+          end if
+        end do
 
 !c  Langmuir isotherm
 
         do ic = 1,nc
-        if (isotherm_type(ic).eq.'langmuir') then
-        end if
-      end do
+          if (isotherm_type(ic).eq.'langmuir') then
+          end if
+        end do
 
-    end if
+      end if
 
 !c  competitive sorption
 

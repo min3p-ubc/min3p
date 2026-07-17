@@ -102,16 +102,12 @@
       
       integer :: istart, iend, ireac, im2
 
-      real*8 :: dissvol, ratem_mod
+      real*8 :: dissvol, ratem_mod, ratem_old
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, small = 1.d-10
-      
-!c  set reaction rate to zero, if absolute value of computed rate 
-!c  very small
-      if (dabs(ratem).le.tinyrate) then
-        ratem = r0
-      end if
 
+      ratem_old = ratem
+    
 !c  use computed dissolution rate only, if sufficient mineral mass
 !c  is available, otherwise: assign reaction rate leading to 
 !c  depletion of mineral
@@ -119,7 +115,13 @@
       dissvol = ratem*delt
 
       if ((cmnewm+dissvol).lt.(r1+small)*cmcmin(im,tid)) then
-        ratem = -(cmnewm-cmcmin(im,tid))/delt
+        ratem = - (cmnewm-cmcmin(im,tid))/delt
+      end if
+
+!c  set reaction rate to zero, if absolute value of computed rate 
+!c  very small
+      if (dabs(ratem).le.tinyrate) then
+        ratem = r0
       end if
 
 !c  set parallel reaction rate to zero, if total reaction rate indicates
@@ -180,10 +182,12 @@
            
               !bug, for some simulation (concrete-clay benchmarking), ratem will be equal zero. DSU, 2013-2-8
               !fix: 1. change the default value of tinyrate from 0 to 1.0E-300; 2. Add continue (above) or change as follows.
-              if (dabs(ratem) .le. tinyrate) then
+              if (dabs(ratem) .le. tinyrate .or. dabs(ratem_old) .le. tinyrate) then
                 ratemp(ireac,tid) = r0
               else
-                ratemp(ireac,tid) = ratemp(ireac,tid) * ratem_mod/ratem
+                !c to be checked later
+                !ratemp(ireac,tid) = ratemp(ireac,tid) * (ratem_mod/ratem)
+                ratemp(ireac,tid) = ratemp(ireac,tid) * (ratem_mod/ratem_old)
               end if
             end if
 
@@ -202,6 +206,12 @@
         end if
 
       end do             !loop over parallel reactions
+
+!c  update ratem after updating parallel reaction rate
+      ratem = r0
+      do ireac = istart, iend
+        ratem = ratem + ratemp(ireac,tid)
+      end do
 
 !c  use computed dissolution rate only, if sufficient mineral mass
 !c  is available, otherwise: assign reaction rate leading to 

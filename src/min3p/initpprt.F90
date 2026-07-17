@@ -775,7 +775,7 @@
 !cprovi Read component dependent diffusion coefficients
 !cprovi--------------------------------------------------------        
         comp_dep_diff_coff = .false.
-        type_diff_ic_coeff = -1
+        type_diff_ic_coeff = 0
         diff_ic_tensor = tensor_zero
 
         subsection =                                                   &

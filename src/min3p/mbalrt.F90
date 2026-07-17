@@ -4830,12 +4830,12 @@
                             * (cmnew(im,ivol)-cmold(im,ivol))
 
 !cdsu to be further checked, which parameter should be used here.
-              !dpdiff(im) = dpdiff(im) + conv3 * cvol(ivol)             &
-              !           * ratemdp(im,ivol)
+              dpdiff(im) = dpdiff(im) + conv3 * cvol(ivol)             &
+                         * ratemdp(im,ivol)
               
 !cdsu  use combine reaction rates since cmnew is the parameter based on combined reaction              
-              dpdiff(im) = dpdiff(im) + conv3 * cvol(ivol)             &
-                         * totratem(im,tid)
+              !dpdiff(im) = dpdiff(im) + conv3 * cvol(ivol)             &
+              !           * totratem(im,tid)
 
               istart = iamd(im)
               istop = iamd(im+1)-1

@@ -820,6 +820,11 @@
 
             ratemp(ireac,tid) = aream * prodrc
 
+!c  saturation correction
+            if (b_rate_satcorr .and. satcorr_flag(im))then
+              ratemp(ireac,tid)  = ratemp(ireac,tid) * satcorr_curve(sw)
+            end if
+
 !c  sum up parallel reaction rates for surface controlled
 !c  dissolution/precipitation reactions
 
@@ -971,12 +976,17 @@
             ratemp(ireac,tid) = - aream * diffm(ireac,tid)/xnud(ireac)*&
                                   prodrc
 
+!c  saturation correction
+            if (b_rate_satcorr .and. satcorr_flag(im))then
+              ratemp(ireac,tid)  = ratemp(ireac,tid) * satcorr_curve(sw)
+            end if
+
 !c  sum up parallel rates
 
             ratem = ratem + ratemp(ireac,tid)
 
-          end do  
- 
+          end do
+          
 !c  set reaction rate to zero for all other conditions
  
         else
@@ -986,11 +996,6 @@
         end if          !(reaction_type(im))
 
       end if            !(rate_control(im))
-
-!c  saturation correction
-      if (b_rate_satcorr .and. satcorr_flag(im))then
-        ratem  = ratem * satcorr_curve(sw)
-      end if
 
       return
     end   

@@ -1365,56 +1365,55 @@
             end if              
             
             !variables for gas transport
-            if(gas_advection .or. dgm .or. maxwell) then
+            if (gas_advection .or. dgm .or. maxwell) then
                 
-                gsatijbrt = sgnew(ivol)
-                gporijbrt = pornew(ivol)*sgnew(ivol)
-                tauijbrt  = diff_eff / gporijbrt !/ diff_g
+              gsatijbrt = sgnew(ivol)
+              gporijbrt = pornew(ivol)*sgnew(ivol)
+              tauijbrt  = diff_eff / gporijbrt !/ diff_g
                 
-!c              total concentration of gas components at the boundary node
-                call totconcg(gbrt,totgnew_brt)           
+!c            total concentration of gas components at the boundary node
+              call totconcg(gbrt,totgnew_brt)           
                 
 !c-------------------------------------------------------------------------
-!c              calculate gas properties + molar fractions
+!c            calculate gas properties + molar fractions
 
-                mdens_g_ivol  = gasm(ng, gnew(1,ivol))            ! gas molar dens
-                mdens_g_brt   = gasm(ng, gbrt(1,ibrt))            ! gas molar dens               
+              mdens_g_ivol  = gasm(ng, gnew(1,ivol))            ! gas molar dens
+              mdens_g_brt   = gasm(ng, gbrt(1,ibrt))            ! gas molar dens               
 
-                do ig=1,ng
-                    gmfrac_ivol(ig) = gnew(ig,ivol) / mdens_g_ivol  ! molar fractions
-                                                                    ! gas species
-                    gmfrac_brt(ig)  = gbrt(ig,ibrt) / mdens_g_brt   ! molar fractions
-                                                                    ! gas species
-                enddo
+              do ig=1,ng
+                gmfrac_ivol(ig) = gnew(ig,ivol) / mdens_g_ivol  ! molar fractions
+                                                                ! gas species
+                gmfrac_brt(ig)  = gbrt(ig,ibrt) / mdens_g_brt   ! molar fractions
+                                                                ! gas species
+              enddo
          
-                do ic=1,n
-                    totgmfrac_ivol(ic) = totgnew(ic,ivol) /           &
-                                         mdens_g_ivol               ! gas molar frac for components
-                                                            
-                    totgmfrac_brt(ic)  = totgnew_brt(ic)  /           &
-                                         mdens_g_brt                ! gas molar frac for components
-                enddo
+              do ic=1,n
+                totgmfrac_ivol(ic) = totgnew(ic,ivol) /           &
+                                     mdens_g_ivol               ! gas molar frac for components
+                                                        
+                totgmfrac_brt(ic)  = totgnew_brt(ic)  /           &
+                                     mdens_g_brt                ! gas molar frac for components
+              enddo
       
-                !gpivol_ivol = gasp_m(mdens_g_ivol,ivol)             ! gas pressure
-                !gdens_ivol  = gasd_m(mdens_g_ivol,gmfrac_ivol)      ! gas density
-                !gvisc_ivol  = gasv(gmfrac_ivol)                     ! gas viscosity
+              !gpivol_ivol = gasp_m(mdens_g_ivol,ivol)             ! gas pressure
+              !gdens_ivol  = gasd_m(mdens_g_ivol,gmfrac_ivol)      ! gas density
+              !gvisc_ivol  = gasv(gmfrac_ivol)                     ! gas viscosity
 
-                gpivol_ivol = gpivol(ivol)                          ! gas pressure
-                gdens_ivol  = gdens(ivol)                           ! gas density
-                gvisc_ivol  = gvisc(ivol)                           ! gas viscosity
+              gpivol_ivol = gpivol(ivol)                          ! gas pressure
+              gdens_ivol  = gdens(ivol)                           ! gas density
+              gvisc_ivol  = gvisc(ivol)                           ! gas viscosity
 
-                gpivol_brt  = gasp_m(mdens_g_brt,ivol)              ! gas pressure
-                gdens_brt   = gasd_m(mdens_g_brt,gmfrac_ivol)       ! gas density
-                gvisc_brt   = gasv(gmfrac_brt)                      ! gas viscosity 
+              gpivol_brt  = gasp_m(mdens_g_brt,ivol)              ! gas pressure
+              gdens_brt   = gasd_m(mdens_g_brt,gmfrac_ivol)       ! gas density
+              gvisc_brt   = gasv(gmfrac_brt)                      ! gas viscosity 
 
 !c           decide on the upstream node
-                if (spt_weight.eq.'upstream') then
-            
-                    call giups_brt(gpivol_ivol   , gpivol_brt  ,      &
-                                   zg(ivol)      , zgbrt(ibrt) ,      &
-                                   gdens_ivol    , gdens_brt   ,      &
-                                   iupsgbrt(ibrt), gacc)
-                endif
+              if (spt_weight.eq.'upstream') then            
+                call giups_brt(gpivol_ivol   , gpivol_brt  ,      &
+                               zg(ivol)      , zgbrt(ibrt) ,      &
+                               gdens_ivol    , gdens_brt   ,      &
+                               iupsgbrt(ibrt), gacc)
+              endif
 !c-------------------------------------------------------------------------
             
 !c              calculate gas properties at interface according to weighting scheme

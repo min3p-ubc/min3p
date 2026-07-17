@@ -215,7 +215,7 @@
 !c  initialize alc and blc to zero
       alc(:,:,tid) = r0
       blc(:,tid) = r0
-      
+
       area=sitearea(1)*sitemass(1)
 !c  compute concentrations of sorbed species
       do isb = 1, nsb_ion
@@ -227,7 +227,7 @@
              sorption_type_surf,sorption_group,isactcexch,             &
              elect_correction,name_elect_correction,nelect,            &  
              dz_surf,totco(:,tid),component_type,nlayer,               &
-             chargesb_surf(isb),mol_frac_ads)
+             mol_frac_ads)
       end do
       
 !c  compute concentrations of sorbed species
@@ -240,9 +240,9 @@
              sorption_type_surf,sorption_group,isactcexch,             &
              elect_correction,name_elect_correction,nelect,            &
              dz_surf,totco(:,tid),component_type,nlayer,               &
-             chargesb_surf(isb),mol_frac_ads)
+             mol_frac_ads)
       end do
-           
+
 !cprovi-------------------------------------------------------------------------
 !cprovi Compute the surface charge balance if the electrostatic correction is 
 !cprovi carried out
@@ -288,7 +288,7 @@
 !c  contributions from sorbed phase
 
           blc(ibl,tid) = blc(ibl,tid) - sw*por*(totcsn_surf(ibl,tid))
-
+          
         elseif (component_type(ibl)=='electro') then
 !cprovi----------------------------------------------------------------------
 !cprovi If the component is electrostatic, then store the electric charge 
@@ -310,7 +310,7 @@
       do ic = 1,nopu
         cinc(ic,tid) = cnew(ic)
       end do
- 
+
       do jbl = 1,nopu                 !loop over columns
 
 !c  compute increment for numerical differentiation
@@ -334,7 +334,7 @@
                        sorption_group,isactcexch,                     &
                        elect_correction,name_elect_correction,nelect, &
                        dz_surf,totco(:,tid),component_type,nlayer,    &
-                       chargesb_surf(isb),mol_frac_ads)
+                       mol_frac_ads)
 !c  compute derivatives of concentrations of sorbed species
           dcsb_ion(isb,tid) = (dcsb_ion(isb,tid)-csb_ion(isb,tid))/drtinc
         end do
@@ -351,7 +351,7 @@
                sorption_type_surf,sorption_group,isactcexch,          &
                elect_correction,name_elect_correction,nelect,         &
                dz_surf,totco(:,tid),component_type,nlayer,            &
-               chargesb_surf(isb),mol_frac_ads)
+               mol_frac_ads)
         end do
 
 !cprovi----------------------------------------------------------------------------------          
@@ -373,8 +373,8 @@
 !cprovi----------------------------------------------------------------------------------       
         do isb = 1,nsb_surf
           dcsb_surf(isb,tid) = (dcsb_surf(isb,tid) -                  &
-                               csb_surf(isb,tid))/drtinc
-        end do
+                                csb_surf(isb,tid))/drtinc
+        end do 
 
 !c  compute total sorbed concentrations
 
@@ -413,15 +413,21 @@
 !c  off-diagonal entries
 
           elseif (component_type(ibl).eq.'surface'.and.ibl.ne.jbl) then
-            if (component_type(jbl)=='electro') then
-              alc(ibl,jbl,tid) = alc(ibl,jbl,tid) + sw*por*           &
+            if (elect_correction) then
+              if (component_type(jbl)=='electro') then
+                alc(ibl,jbl,tid) = alc(ibl,jbl,tid) + sw*por*           &
+                                   (dtotsb_surf(ibl,tid))
+                alc(ibl,jbl,tid) = cnew(jbl) * alc(ibl,jbl,tid)
+              else
+                alc(ibl,jbl,tid)=r0
+              end if
+            else
+              alc(ibl,jbl,tid) = alc(ibl,jbl,tid) + sw*por*            &
                                  (dtotsb_surf(ibl,tid))
               alc(ibl,jbl,tid) = cnew(jbl) * alc(ibl,jbl,tid)
-            else
-              alc(ibl,jbl,tid)=r0
-            end if
+          end if
 
-!c  put 1 on diagonal for component type 'fixed' 
+!c  put 1 on diagonal for component type 'fixed'
 
           else if (component_type(ibl).ne.'surface'.and.               &
                    component_type(ibl).ne.'electro'.and.ibl.eq.jbl) then
@@ -434,8 +440,8 @@
                   component_type(ibl).ne.'electro'.and.                &
                   ibl.ne.jbl) then
             alc(ibl,jbl,tid) = r0
-   
-          else if (component_type(ibl)=='electro') then 
+                               
+          else if (component_type(ibl).eq.'electro') then 
             if (component_type(jbl)=='electro'.or.component_type(jbl)=='surface') then
               alc(ibl,jbl,tid) = cnew(jbl)*sw*por*dtotcharge_surf(ibl,tid)
             else 

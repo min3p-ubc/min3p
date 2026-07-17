@@ -139,13 +139,12 @@
                          sorption_group,isactcexch,                    &
                          elect_correction,name_elect_correction,       &
                          nelect,dz_surf,totc,component_type,nlayer,    &
-                         chargesb_surf,mol_frac_ads)
+                         mol_frac_ads)
                                                                       
       implicit none
       
       real*8 :: csb_ion,csb_surf,cec,eqsb_ion,eqsb_surf,gammac,c,      &
-                xnusb_ion,xnusb_surf,elect_surf,dz_surf,totc,          &
-                chargesb_surf
+                xnusb_ion,xnusb_surf,elect_surf,dz_surf,totc
       integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,        &
                  nsb_surf,isb_ion,isb_surf,nelect,nlayer
                                                                         

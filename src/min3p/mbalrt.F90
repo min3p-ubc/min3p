@@ -713,9 +713,9 @@
 #endif
 
 !c  root respiration variables:
-      real*8 :: rootprup(n), rootarup(n), rootrup(n)
-      real*8 :: rootprup_zn(n,nzn), rootarup_zn(n,nzn),                &
-                rootrotrup_zn(n,nzn), totrcm_temp(nm,nzn)
+      real*8 :: rootprup(nc), rootarup(nc), rootrup(nc)
+      real*8 :: rootprup_zn(nc,nzn), rootarup_zn(nc,nzn),                &
+                rootrotrup_zn(nc,nzn), totrcm_temp(nm,nzn)
 
 !c  dilution index
       real*8 :: p_dix, totcstor_dix(n), tot_dix(n)

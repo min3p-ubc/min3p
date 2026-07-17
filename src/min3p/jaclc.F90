@@ -399,7 +399,7 @@
       real*8 :: dissvol, drtinc, area, mass, massmin, strion, strioninc 
       logical analyt_deriv_lc
      
-      analyt_deriv_lc = .false.
+      analyt_deriv_lc = .false.   
 
 !c  initialize alc and blc to zero
       alc(:,:,tid) = r0
@@ -408,7 +408,6 @@
       if (nsb_surf>0) then
         area=sitearea(1)*sitemass(1)
       end if 
-
 !c  construct rhs vector,
 !c  first iteration
 !c  -> initialize activity coefficients and concentrations of secondary
@@ -489,7 +488,7 @@
               sorption_type_surf,sorption_group,isactcexch,           &
               elect_correction,name_elect_correction,                 &
               nelect,dz_surf,totco(:,tid),component_type,             &
-              nlayer,chargesb_surf(isb),mol_frac_ads)
+              nlayer,mol_frac_ads)
           end do          
 
 !c  compute total sorbed concentrations
@@ -514,7 +513,7 @@
 !c  initially empty or during transient simulations
 
       if (nsb_surf.gt.0 .and. explicit_surface_surf) then
-!c compute the sorbed concentrations
+!c compute the sorbed concentrations           
         do isb = 1,nsb_surf 
             call sorbspc(dummy,csb_surf(isb,tid),                      &
                  cnew(nopu-nelect+1:nopu),cec(tid),                    &
@@ -524,9 +523,8 @@
                  sorption_type_surf,sorption_group,isactcexch,         &
                  elect_correction,name_elect_correction,               &
                  nelect,dz_surf,totco(:,tid),component_type,           &
-               nlayer,chargesb_surf(isb),mol_frac_ads)
+                 nlayer,mol_frac_ads)
         end do
-
 !cprovi-------------------------------------------------------------------------
 !cprovi Compute the surface charge balance if the electrostatic correction is 
 !cprovi carried out
@@ -541,7 +539,6 @@
 !cprovi-------------------------------------------------------------------------
 !cprovi-------------------------------------------------------------------------
 !cprovi-------------------------------------------------------------------------
-
 !c  compute total sorbed concentrations
 
         call totsorb(csb_ion(:,tid),csb_surf(:,tid),                  &
@@ -625,7 +622,7 @@
             end if
 
           end do
-
+ 
 !cprovi-------------------------------------------------------------------------------
 !cprovi Compute the reaction rates for solid solutions
 !cprovi-------------------------------------------------------------------------------
@@ -654,7 +651,7 @@
           end if ! Solid solutions 
 !cprovi-------------------------------------------------------------------------------
 !cprovi-------------------------------------------------------------------------------
-!cprovi-------------------------------------------------------------------------------          
+!cprovi-------------------------------------------------------------------------------  
  
 !cmx  set mineral reaction rate to 0.0 in clogged cv
           if (pore_clogging) then
@@ -712,15 +709,15 @@
      &                     (totcsn_surf(ibl,tid)-totcso_surf(ibl))/   &
                            delt_lc(tid)
           end if
-
+!c----------------------------------------------------------------------
 !c  contributions from intra-aqueous kinetic reactions
-
+!c----------------------------------------------------------------------
           if (naq.gt.0.and.ntstp_lc(tid).gt.0) then
             blc(ibl,tid) = blc(ibl,tid) - sw*por*totaq(ibl,tid)
           end if
-
+!c----------------------------------------------------------------------
 !c  contributions from solid phase
-
+!c----------------------------------------------------------------------
           if (nm.ne.0) then
             if (reactive_minerals.and.ntstp_lc(tid).gt.0) then
               blc(ibl,tid) = blc(ibl,tid) - totdp(ibl,tid)
@@ -732,7 +729,6 @@
            blc(ibl,tid) = r0
 
          end if                        !ctype
-
 !cprovi----------------------------------------------------------------------
 !cprovi If the component is electrostatic, then store the electris charge 
 !cprovi balance on the surface in the residual
@@ -747,7 +743,6 @@
 !cprovi----------------------------------------------------------------------
 !cprovi----------------------------------------------------------------------
 !cprovi----------------------------------------------------------------------
-
       end do                           !loop over rows
 
 !c  construct jacobian matrix
@@ -821,7 +816,7 @@
                          sorption_group,isactcexch,                   &
                          elect_correction,name_elect_correction,      &
                          nelect,dz_surf,totco(:,tid),component_type,  &
-                         nlayer,chargesb_surf(isb),mol_frac_ads)
+                         nlayer,mol_frac_ads)
             
 !c  compute derivatives of concentrations of sorbed species
             dcsb_ion(isb,tid) =                                       &
@@ -850,7 +845,6 @@
 !c  species concentrations 
 
         if (nsb_surf.gt.0 .and. explicit_surface_surf) then
-          
           do isb = 1,nsb_surf
             call sorbspc(dummy,dcsb_surf(isb,tid),                    &
                          cinc(nopu-nelect+1:nopu,tid),cec(tid),       &
@@ -863,9 +857,9 @@
                          sorption_group,isactcexch,                   &
                          elect_correction,name_elect_correction,      &
                          nelect,dz_surf,totco(:,tid),component_type,  &
-                         nlayer,chargesb_surf(isb),mol_frac_ads)            
-          end do
-
+                         nlayer,mol_frac_ads)
+            
+          end do 
 !cprovi----------------------------------------------------------------------------------          
 !cprovi----------------------------------------------------------------------------------
 !cprovi----------------------------------------------------------------------------------
@@ -886,13 +880,15 @@
 !cprovi----------------------------------------------------------------------------------
 !cprovi----------------------------------------------------------------------------------          
 !cprovi---------------------------------------------------------------------------------- 
-
 !c  compute derivatives of concentrations of sorbed species
           do isb = 1,nsb_surf
             dcsb_surf(isb,tid) = (dcsb_surf(isb,tid) -                &
                                  csb_surf(isb,tid))/drtinc
-          end do    
+          end do
 
+!cprovi----------------------------------------------------------------------------------         
+!cprovi----------------------------------------------------------------------------------         
+!cprovi---------------------------------------------------------------------------------- 
 !c  compute total sorbed concentrations
 
           call totsorb(dcsb_ion(:,tid),dcsb_surf(:,tid),              &
@@ -1105,7 +1101,6 @@
             alc(ibl,jbl,tid) = r0
    
           end if                          !end - ctype
-
           if (component_type(ibl)=='electro') then
             if (explicit_surface_surf) then   
               alc(ibl,jbl,tid) =  cnew(jbl)*sw*por*dtotcharge_surf(ibl,tid)

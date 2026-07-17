@@ -715,7 +715,7 @@
                      sorption_group,isactcexch,                       &
                      elect_correction,name_elect_correction,nelect,   &
                      dz_surf,totcnew(:,ivol),component_type,nlayer,   &
-                     chargesb_surf(isb),mol_frac_ads)
+                     mol_frac_ads)
               end do
               
               do isb = 1,nsb_surf
@@ -729,7 +729,7 @@
                      sorption_group,isactcexch,                       &
                      elect_correction,name_elect_correction,nelect,   &
                      dz_surf,totcnew(:,ivol),component_type,nlayer,   &
-                     chargesb_surf(isb),mol_frac_ads)
+                     mol_frac_ads)
               end do
 
 !c  recompute total sorbed component concentrations

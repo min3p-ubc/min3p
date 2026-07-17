@@ -862,7 +862,7 @@
                    sorption_group,isactcexch,                         &
                    elect_correction,name_elect_correction,nelect,     &
                    dz_surf,totcn(:,tid),component_type,nlayer,        &
-                   chargesb_surf(isb),mol_frac_ads)
+                   mol_frac_ads)
 #ifdef PETSC
               if(node_idx_lg2l(ivol) > 0) then
 #endif

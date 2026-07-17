@@ -3353,7 +3353,7 @@
                  sorption_group,isactcexch,                            &
                  elect_correction,name_elect_correction,nelect,        &
                  dz_surf,totc,component_type,nlayer,                   &
-                 chargesb_surf(isb),mol_frac_ads)
+                 mol_frac_ads)
           end do
         end if
 

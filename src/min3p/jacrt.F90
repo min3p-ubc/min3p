@@ -870,7 +870,7 @@
       
 !c root respiration variables:
       real*8 :: rootarup_current, rootarup_max, dresprate,      &
-                rootdens, rootarup(n), drootarup(n)
+                rootdens, rootarup(nc), drootarup(nc)
       
 !c ms variables    
       real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),     &
@@ -1341,7 +1341,7 @@
                    sorption_type_surf,sorption_group,isactcexch,      &
                    elect_correction,name_elect_correction,nelect,     &
                    dz_surf,totcnew(:,ivol),component_type,nlayer,     &
-                   chargesb_surf(isb),mol_frac_ads)
+                   mol_frac_ads)
             end do
           end if
 
@@ -1831,7 +1831,7 @@
                                sorption_type_surf,sorption_group,isactcexch,       &
                                elect_correction,name_elect_correction,nelect,      &
                                dz_surf,totcnew(:,ivol),component_type,nlayer,      &
-                               chargesb_surf(isb),mol_frac_ads)
+                               mol_frac_ads)
                 end do
 !cprovi-------------------------------------------------------------------------
 !cprovi Compute the surface charge balance if the electrostatic correction is 
@@ -3070,7 +3070,7 @@
                      sorption_group,isactcexch,elect_correction,      &
                      name_elect_correction,nelect,dz_surf,            &
                      totcnew(:,ivol),component_type,nlayer,           &
-                     chargesb_surf(isb),mol_frac_ads)
+                     mol_frac_ads)
 
                 call sorbspc(dummy,dcsb_surf(isb,tid),                &
                      cinc(n-nelect+1:n,tid),cec_g(ivol),              &
@@ -3082,7 +3082,7 @@
                      sorption_group,isactcexch,elect_correction,      &
                      name_elect_correction,nelect,dz_surf,            &
                      totcnew(:,ivol),component_type,nlayer,           &
-                     chargesb_surf(isb),mol_frac_ads)
+                     mol_frac_ads)
               end do
 
 !cprovi----------------------------------------------------------------------------------          

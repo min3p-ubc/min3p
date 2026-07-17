@@ -1820,7 +1820,7 @@
                    sorption_type_surf,sorption_group,isactcexch,      &
                    elect_correction,name_elect_correction,nelect,     &
                    dz_surf,totcnew(:,inode),component_type,nlayer,    &
-                   chargesb_surf(isb),mol_frac_ads) 
+                   mol_frac_ads) 
 
 !c  add up exchanged species and convert from [meq/100g] solid to 
 !c  [mmol/100g solid]
@@ -2874,30 +2874,30 @@
 
           if (nsb_ion.gt.0.or.nsb_surf.gt.0) then
 
-              do isb = 1,nsb_ion
-                  call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(inode),  &
-                       cec_fraction_g(idx_nsites_ion(isb),inode),      &
-                       eqsb_ion(:,tid),eqsb_surf(:,tid),               &
-                       gamma(1,inode),cnew(1,inode),xnusb_ion,xnusb_surf,&
-                       iasb_ion,iasb_surf,jasb_ion,jasb_surf,          &
-                       nsb_ion,nsb_surf,isb,0,                         &
-                       sorption_type_ion,sorption_type_surf,           &
-                       sorption_group,isactcexch)
-              end do
+            do isb = 1,nsb_ion
+              call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(inode),  &
+                   cec_fraction_g(idx_nsites_ion(isb),inode),      &
+                   eqsb_ion(:,tid),eqsb_surf(:,tid),               &
+                   gamma(1,inode),cnew(1,inode),xnusb_ion,xnusb_surf,&
+                   iasb_ion,iasb_surf,jasb_ion,jasb_surf,          &
+                   nsb_ion,nsb_surf,isb,0,                         &
+                   sorption_type_ion,sorption_type_surf,           &
+                   sorption_group,isactcexch)
+            end do
 
-              do isb = 1,nsb_surf
+            do isb = 1,nsb_surf
               call sorbspc(dummy,csb_surf(isb,tid),                  &
                    cnew(n-nelect+1:n,inode),cec_g(inode),            &
-                     eqsb_ion(:,tid),eqsb_surf(:,tid),                 &
-                     gamma(1,inode),cnew(1,inode),                     &
-                     xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,          &
-                     jasb_ion,jasb_surf,nsb_ion,                       &
-                     nsb_surf,0,isb,sorption_type_ion,                 &
+                   eqsb_ion(:,tid),eqsb_surf(:,tid),                 &
+                   gamma(1,inode),cnew(1,inode),                     &
+                   xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,          &
+                   jasb_ion,jasb_surf,nsb_ion,                       &
+                   nsb_surf,0,isb,sorption_type_ion,                 &
                    sorption_type_surf,sorption_group,isactcexch,     &
                    elect_correction,name_elect_correction,nelect,    &
                    dz_surf,totcnew(:,inode),component_type,nlayer,   &
-                   chargesb_surf(isb),mol_frac_ads)
-              end do
+                   mol_frac_ads)
+            end do
 
           end if
                                                                       

@@ -2565,7 +2565,7 @@
                    sorption_type_surf,sorption_group,isactcexch,      &
                    elect_correction,name_elect_correction,nelect,     &
                    dz_surf,totcnew(:,ivol),component_type,nlayer,     &
-                   chargesb_surf(isb),mol_frac_ads) 
+                   mol_frac_ads) 
 
 !c  add up exchanged species and convert from [meq/100g] solid to 
 !c  [mmol/100g solid]
@@ -5226,7 +5226,7 @@
                    sorption_type_surf,sorption_group,isactcexch,      &
                    elect_correction,name_elect_correction,nelect,     &
                    dz_surf,totcnew(:,ivol),component_type,nlayer,     &
-                   chargesb_surf(isb),mol_frac_ads)    
+                   mol_frac_ads)    
             end do
         
           end if

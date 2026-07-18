@@ -3514,12 +3514,7 @@
           write(ifls,'(2a)') strl36,namec(ic)
 
           imrtm2c = imrtm2c_first + ic - 1
-          if (.not.lun_available(imrtm2c)) then
-            write(*,*) 'Error: file unit is not avaiable for mmac output ',imrtm2c
-            write(ilog,*) 'Error: file unit is not avaiable for mmac output ',imrtm2c
-          else
-            call lun_set(imrtm2c)            
-          end if
+          call lun_set(imrtm2c)
 
           b_rewind_valid = check_rewind_status(trim(strl36))
           if (b_rewind_valid .and. i_append_sim > 0) then

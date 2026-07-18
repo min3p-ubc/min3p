@@ -971,17 +971,6 @@
       call checkerr(ierr,'gdiff',ilog)
       call memory_monitor(sizeof(gdiff),'gdiff',.true.)
 
-      !c mass balance of source sink of each component from mineral phases
-      allocate (dpdiff_m2c(nm,n), stat = ierr)
-      dpdiff_m2c=0.0d0
-      call checkerr(ierr,'dpdiff_m2c',ilog)
-      call memory_monitor(sizeof(dpdiff_m2c),'dpdiff_m2c',.true.)
-
-      allocate (accu_dpdiff_m2c(nm,n), stat = ierr)
-      accu_dpdiff_m2c=0.0d0
-      call checkerr(ierr,'accu_dpdiff_m2c',ilog)
-      call memory_monitor(sizeof(accu_dpdiff_m2c),'accu_dpdiff_m2c',.true.)
-
       allocate (amass(n), stat = ierr)
       amass=0.0d0
       call checkerr(ierr,'amass',ilog)
@@ -1408,6 +1397,19 @@
       totngidiff=0.0d0
       call checkerr(ierr,'totngidiff',ilog)
       call memory_monitor(sizeof(totngidiff),'totngidiff',.true.)
+
+      !c mass balance of source sink of each component from mineral phases
+      !c we use nc here since h2o is also part of reaction, though not exported
+      allocate (dpdiff_m2c(nm,nc), stat = ierr)
+      dpdiff_m2c=0.0d0
+      call checkerr(ierr,'dpdiff_m2c',ilog)
+      call memory_monitor(sizeof(dpdiff_m2c),'dpdiff_m2c',.true.)
+
+      allocate (accu_dpdiff_m2c(nm,nc), stat = ierr)
+      accu_dpdiff_m2c=0.0d0
+      call checkerr(ierr,'accu_dpdiff_m2c',ilog)
+      call memory_monitor(sizeof(accu_dpdiff_m2c),'accu_dpdiff_m2c',.true.)
+
      
       return
       end

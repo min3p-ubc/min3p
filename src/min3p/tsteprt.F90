@@ -126,10 +126,10 @@
 #endif
 #endif
 
-      integer :: ic, im, ivol, izn
+      integer :: ic, im, ivol, izn, ic_max_dt, ivol_max_dt
       real*8 :: delt_rt_red, delt_rt_inc, delt_rt_iter, delta_phi_max, &
                 delta_phi_ant, delta_phi, delta_root_uptake,           &
-                rootarup_current, rootarup_max_dt
+                rootarup_current, rootarup_max_dt, totc_max_dt
       
 #ifdef PETSC
       real*8 :: delta_phi_max_gbl, delta_root_uptake_gbl
@@ -350,55 +350,68 @@
       end if
 #endif
 
-!c  compute maximum decrease in aqueous concentration due to root respiration
+!c  compute maximum decrease in aqueous concentration due to root respiration.
+!c  this part is estimated based on the available mass from previous timestep 
+!c  without considering reaction and transport. This method underestimate the
+!c  available mass thus underestimate the maximum allowed timestep.
+!c  Skip this timestep check does not cause convergence issue so far.
+!c  DSU: 2025-03-28
       if (root_uptake) then    
-        delta_root_uptake = delt_rt   
-        if (itype_root_resp == 1) then
-#ifdef OPENMP
-    !$omp parallel                                                    &
-    !$omp if (nngl > numofloops_thred_global)                         & 
-    !$omp num_threads(numofthreads_global)                            &
-    !$omp default(shared)                                             &
-    !$omp private(ic, ivol, izn, rootarup_current, rootarup_max_dt)   &
-    !$omp reduction(min:delta_root_uptake)
-    !$omp do schedule(static)
-#endif
-          do ivol = 1, nngl
-            if (rld(ivol) > rverysmall) then
-              izn = mpropvs(ivol)
-              do ic = 1, nc-1
-                if (resprate(ic,izn) > r0) then
-                  if (resprate_charge(izn) .and. namec(ic).eq.'h+1') then
-                    !c assume there h+1 is enough
-                  else
-                    !c inhibition by hyperbolic equation ([TotC]/([TotC]+[TotC_h]))^n
-                    rootarup_current = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)*&             !mol/day
-                                   (totcnew(ic,ivol)/(totcnew(ic,ivol)+totc_uptake_hk(ic,izn)))**&
-                                   totc_uptake_hn(ic,izn)
-                    
-                    rootarup_max_dt = (totcnew(ic,ivol)-totc_uptake_min(ic,izn))*&
-                                    cvol(ivol)*pornew(ivol)*sanew(ivol)
-
-                    delta_root_uptake = min(delta_root_uptake, rootarup_max_dt/rootarup_current)
-                  end if
-                end if
-              end do
-            end if
-          end do
-#ifdef OPENMP
-    !$omp end do
-    !$omp end parallel
-#endif
-        end if
-
-#ifdef PETSC
-        call MPI_Allreduce(delta_root_uptake, delta_root_uptake_gbl,1, &
-                 MPI_REAL8, MPI_MIN, Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        delta_root_uptake = delta_root_uptake_gbl
-#endif
-
-        delt_rt = min(delt_rt, delta_root_uptake)
+        delta_root_uptake = delt_rt
+!        ic_max_dt = 0
+!        ivol_max_dt = 0
+!        if (itype_root_resp == 1) then
+!#ifdef OPENMP
+!    !$omp parallel                                                    &
+!    !$omp if (nngl > numofloops_thred_global)                         & 
+!    !$omp num_threads(numofthreads_global)                            &
+!    !$omp default(shared)                                             &
+!    !$omp private(ic, ivol, izn, rootarup_current, rootarup_max_dt)   &
+!    !$omp reduction(min:delta_root_uptake)
+!    !$omp do schedule(static)
+!#endif
+!          do ivol = 1, nngl
+!            if (rld(ivol) > rverysmall) then
+!              izn = mpropvs(ivol)
+!              do ic = 1, nc-1
+!                if (resprate(ic,izn) > r0) then
+!                  if (resprate_charge(izn) .and. namec(ic).eq.'h+1') then
+!                    !c assume there h+1 is enough
+!                  else
+!                    !c inhibition by hyperbolic equation ([TotC]/([TotC]+[TotC_h]))^n
+!                    rootarup_current = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)*&             !mol/day
+!                                   (totcnew(ic,ivol)/(totcnew(ic,ivol)+totc_uptake_hk(ic,izn)))**&
+!                                   totc_uptake_hn(ic,izn)
+!                    
+!                    rootarup_max_dt = (totcnew(ic,ivol)-totc_uptake_min(ic,izn))*&
+!                                    cvol(ivol)*pornew(ivol)*sanew(ivol)/rootarup_current
+!
+!                    if (rootarup_max_dt < delta_root_uptake) then
+!                      delta_root_uptake = rootarup_max_dt
+!                    end if
+!                  end if
+!                end if
+!              end do
+!            end if
+!          end do
+!#ifdef OPENMP
+!    !$omp end do
+!    !$omp end parallel
+!#endif
+!        end if
+!
+!#ifdef PETSC
+!        call MPI_Allreduce(delta_root_uptake, delta_root_uptake_gbl,1, &
+!                 MPI_REAL8, MPI_MIN, Petsc_Comm_World,ierrcode)
+!        CHKERRQ(ierrcode)
+!        delta_root_uptake = delta_root_uptake_gbl
+!#endif
+!
+!        delt_rt = min(delt_rt, delta_root_uptake)
+!
+!        if (delt_debug > 0 .and. rank == 0) then
+!          write(*,*) 'delt - d: ', delt_rt
+!        end if
       end if 
 
 !c  apply upper and lower bounds for new time step

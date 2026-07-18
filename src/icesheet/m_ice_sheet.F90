@@ -1586,7 +1586,8 @@ subroutine modify_for_permafrost_k_ice_sheet &
    z, &
    nthreads, &
    numofloops_thred, &
-   iserror)
+   iserror, &
+   depth)
 
 #ifdef OPENMP
    use omp_lib 
@@ -1622,6 +1623,8 @@ integer*4, intent(in)                      :: nthreads
 integer*8, intent(in)                      :: numofloops_thred
 
 logical, intent(out)                       :: iserror
+
+real*8, intent(in), optional, dimension(ncells) :: depth
  
 !-------------------------------------------------------------------------
 !
@@ -1688,10 +1691,16 @@ theta=datan(zperm/l1perm)
 do icell=1,ncells
 
   xloc=dabs(x(icell)-this%lsource)
-  !zloc=dabs(z(icell)-this%zsource)
+
+  if (present(depth)) then
+    zloc=depth(icell)
+  else
+    zloc=dabs(z(icell)-this%zsource)
+  end if
   
   theta1 = datan(zloc/xloc)
-  if(theta1<=theta .and. xloc<=l1perm .and. xloc>=l2perm ) then   !.and.zloc<=zperm
+
+  if(theta1<=theta .and. xloc<=l1perm .and. xloc>=l2perm .and.zloc<=zperm) then
     
       kxx(icell) = kxx(icell) * r10**this%logkxx
       kyy(icell) = kyy(icell) * r10**this%logkyy
@@ -1718,7 +1727,8 @@ subroutine modify_for_permafrost_temp_ice_sheet &
    x, &
    z, &
    time, &
-   iserror)
+   iserror, &
+   depth)
    
 implicit none
 !-------------------------------------------------------------------------
@@ -1739,6 +1749,8 @@ real*8, intent(in)                         :: z
 real*8, intent(in)                         :: time
 
 logical, intent(out)                       :: iserror
+
+real*8, intent(in), optional               :: depth
  
 !-------------------------------------------------------------------------
 !
@@ -1792,10 +1804,15 @@ theta=datan(zperm/l1perm)
 !%  
 !%------------------------------------------------------------
 xloc=dabs(x-this%lsource)
-!zloc=dabs(z-this%zsource)
+if (present(depth)) then
+  zloc=depth
+else
+  zloc=dabs(z-this%zsource)
+end if
+
 theta1 = datan(zloc/xloc)
   
-if(theta1<=theta .and. xloc<=l1perm .and. xloc>=l2perm) then    !.and. zloc<=zperm
+if(theta1<=theta .and. xloc<=l1perm .and. xloc>=l2perm .and. zloc<=zperm) then
   temp = this%temp
 end if 
 !%------------------------------------------------------------

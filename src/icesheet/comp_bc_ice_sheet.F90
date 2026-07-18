@@ -167,8 +167,16 @@ implicit none
             end if
 
             if (ice_sheet_type == 0) then
-              call modify_for_permafrost_ (ice_sheet,bcondheat(ibheat),&
-                              xg(ivol),zg(ivol),time_io,iserror)
+              if (discretization_type == 0) then
+                call modify_for_permafrost_ (ice_sheet,bcondheat(ibheat),&
+                                xg(ivol),zg(ivol),time_io,iserror)
+#ifdef USG
+              else if (discretization_type > 0) then 
+                call modify_for_permafrost_ (ice_sheet,bcondheat(ibheat),&
+                                xg(ivol),zg(ivol),time_io,iserror,       &
+                                zg_depth(ivol))
+#endif
+              end if
             else if (ice_sheet_type == 1) then
 #ifdef USG              
               call usg_ice_modify_permafrost_temp(ivol,bcondheat(ibheat))

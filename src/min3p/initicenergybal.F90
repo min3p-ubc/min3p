@@ -567,10 +567,11 @@
         read(itmp,*,err=999,end=999) toptemp
 
 #ifdef USG
-        if (b_use_layered_mesh) then
+        if (discretization_type > 0) then
           do ivol = 1, nngl
-            maxz = layer_nodes_top(node_to_layer_node(ivol))%z
-            tempnew(ivol) = toptemp + gradtemp * (maxz-zg(ivol))
+            !maxz = layer_nodes_top(node_to_layer_node(ivol))%z
+            !tempnew(ivol) = toptemp + gradtemp * (maxz-zg(ivol))
+            tempnew(ivol) = toptemp + gradtemp * zg_depth(ivol)
             tempold(ivol) = tempnew(ivol) 
           end do 
         else

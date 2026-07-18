@@ -1879,12 +1879,12 @@
 #endif
         end if
 
-#ifdef PETSC
         !c optimized to use one processor only, do not forget to broadcast variables
         if (rank == 0) then
           call usg_mesh_data_build(.true.)
         end if
 
+#ifdef PETSC
         !c broadcast variables required by other processors
         if (nprcs > 1) then
           if (rank > 0) then

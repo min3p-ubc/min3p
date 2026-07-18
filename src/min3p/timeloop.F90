@@ -411,7 +411,8 @@
 
 #ifdef USG
       use geometry
-      use usg_mesh_data, only : cvol_method, num_cells, CellCenter
+      use usg_mesh_data, only : cvol_method, num_cells, num_nodes,     &
+                                CellCenter, cell_zg_depth
       use usg_ice_sheet, only : usg_ice_compute_dpicedt,               &
                                 ice_thickness_new, ice_thickness_old
 #endif
@@ -1735,13 +1736,19 @@
               !Parallelized, OpenMP, DSU
               if (ice_sheet_type == 0) then
 #ifdef USG
-                if (discretization_type > 0 .and.                      &
-                    is_cell_based_perm_cond) then
-                  call modify_for_permafrost_ (ice_sheet,permx,        &
-                          permy,permz,num_cells,time_io,               &
-                          CellCenter(:)%x,CellCenter(:)%z,             &
-                          numofthreads_global, numofloops_thred_global,&
-                          iserror)
+                if (discretization_type > 0) then                  
+                  if (is_cell_based_perm_cond) then
+                      call modify_for_permafrost_ (ice_sheet,permx,        &
+                              permy,permz,num_cells,time_io,               &
+                              CellCenter(:)%x,CellCenter(:)%z,             &
+                              numofthreads_global, numofloops_thred_global,&
+                              iserror,cell_zg_depth(:))
+                  else
+                    call modify_for_permafrost_ (ice_sheet,permx,          &
+                            permy,permz,num_nodes,time_io,xg,zg,           &
+                            numofthreads_global,numofloops_thred_global,   &
+                            iserror,zg_depth)
+                  end if
                 else
 #endif
                   call modify_for_permafrost_ (ice_sheet,permx,        &

@@ -476,6 +476,11 @@ module usg_mesh_data
   !> used in 2d and 3d, cell is reduced to face in 2d
   !>
   type(point), allocatable :: CellCenter(:)
+
+  !>
+  !> depth of cell center
+  !>
+  real*8, allocatable :: cell_zg_depth(:)
   
   !>
   !> cell volume
@@ -3224,8 +3229,8 @@ module usg_mesh_data
     end if
 
     !c end of marking boundary nodes and cells
-#ifdef PETSC
     if (b_mark_boundary) then
+#ifdef PETSC
       allocate(is_boundary_node_gbl(num_nodes), stat = ierr)
       call checkerr(ierr,'is_boundary_node_gbl',ilog)
       is_boundary_node_gbl = is_boundary_node
@@ -3235,7 +3240,7 @@ module usg_mesh_data
       call checkerr(ierr,'is_boundary_cell_gbl',ilog)
       is_boundary_cell_gbl = is_boundary_cell
       call memory_monitor(sizeof(is_boundary_cell_gbl),'is_boundary_cell_gbl',.false.)
-
+#endif
       call memory_monitor(-sizeof(node_num_cells),'node_num_cells',.false.)
       call memory_monitor(-sizeof(node_cells),'node_cells',.false.)
       call memory_monitor(-sizeof(node2halfid),'node2halfid',.false.)
@@ -3258,6 +3263,7 @@ module usg_mesh_data
 
       return
     else
+#ifdef PETSC
       do i = 1, num_nodes
         if (is_boundary_node(i)) then
           j = node_idx_lg2g(i)
@@ -3275,9 +3281,9 @@ module usg_mesh_data
       end do
       call memory_monitor(-sizeof(is_boundary_cell_gbl),'is_boundary_cell_gbl',.false.)
       deallocate(is_boundary_cell_gbl)
-
-    end if
 #endif
+    end if
+
 
     !c calculate cell volumes
     allocate(cell_volumes(num_cells), stat = ierr)
@@ -3351,6 +3357,11 @@ module usg_mesh_data
     allocate(CellCenter(num_cells), stat = ierr)
     call checkerr(ierr,'CellCenter',ilog)
     call memory_monitor(sizeof(CellCenter),'CellCenter',.true.)
+
+    allocate(cell_zg_depth(num_cells), stat = ierr)
+    call checkerr(ierr,'cell_zg_depth',ilog)
+    cell_zg_depth = 0.0d0
+    call memory_monitor(sizeof(cell_zg_depth),'cell_zg_depth',.true.)
 
     if (cell_type == cell_type_tri) then
       do i = 1, num_cells                  !number of cells
@@ -6130,6 +6141,27 @@ module usg_mesh_data
     end if
 
     zg_depth = zg_depth - zg
+
+    !c set depth for cell center
+#ifdef OPENMP
+    !$omp parallel                                                     &                                                                
+    !$omp if (num_nodes > numofloops_thred_global)                     & 
+    !$omp num_threads(numofthreads_global)                             &
+    !$omp default(shared)                                              &
+    !$omp private (icell, idx)                                             
+    !$omp do schedule(static)
+#endif 
+    do icell = 1, num_cells
+      cell_zg_depth(icell) = 0.0d0
+      do idx = 1, num_nodes_per_cell
+        cell_zg_depth(icell) = cell_zg_depth(icell) + zg_depth(cells(idx,icell))
+      end do
+      cell_zg_depth(icell) = cell_zg_depth(icell)/(num_nodes_per_cell*1.0d0)
+    end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
 
   end subroutine usg_mesh_data_calculate_depth
 

@@ -33,8 +33,8 @@ Module Version
 #endif
     
     Character(4) :: MajorVersionNumber = "2"            !< Major version, manually replaced
-    Character(4) :: MinorVersionNumber = "7"            !< Minor version, manually replaced
-    Character(10) :: PatchVersionNumber = "4"           !< Patch number, manually replaced
+    Character(4) :: MinorVersionNumber = "8"            !< Minor version, manually replaced
+    Character(10) :: PatchVersionNumber = "5"           !< Patch number, manually replaced
     
 #if defined(GITVERSION)
     Character(32) :: GlobalRevisionNumber = GITVERSION

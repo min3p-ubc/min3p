@@ -356,6 +356,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/seepface.o\
 	$(SRC)min3p/readsorb.o\
 	$(SRC)min3p/ratemin_new.o\
+	$(SRC)solver/netlib_gn.o\
 	$(SRC)mip_mt/mip_math.o\
 	$(SRC)mip_mt/mip_bubble.o\
 	$(SRC)mip_mt/mip_output.o\
@@ -450,6 +451,8 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)parallel_io/dumpstring.o\
 	$(SRC)min3p/diff_grad.o\
 	$(SRC)solver/ws209.o\
+	$(SRC)solver/r8lib_module.o\
+	$(SRC)solver/qr_svd_module.o\
 	$(SRC)min3p/updtsvmp.o\
 	$(SRC)min3p/tprfdd.o\
 	$(SRC)min3p/totcona.o\

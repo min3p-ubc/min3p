@@ -356,6 +356,9 @@
 !c  available mass thus underestimate the maximum allowed timestep.
 !c  Skip this timestep check does not cause convergence issue so far.
 !c  DSU: 2025-03-28
+
+      delta_root_uptake = delt_rt
+!c to be further checked, time step limitation is activated.
       if (root_uptake) then    
         delta_root_uptake = delt_rt
 !        ic_max_dt = 0

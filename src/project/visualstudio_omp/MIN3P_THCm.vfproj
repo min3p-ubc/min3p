@@ -56,6 +56,9 @@
 		<File RelativePath="..\..\solver\solver.cfg">
 			<FileConfiguration Name="Release|x64" ExcludedFromBuild="true"/></File></Filter>
 		<Filter Name="Source Files">
+		<File RelativePath="..\..\solver\netlib_gn.F90"/>
+		<File RelativePath="..\..\solver\r8lib_module.F90"/>
+		<File RelativePath="..\..\solver\qr_svd_module.F90"/>
 		<File RelativePath="..\..\min3p\acoff.F90"/>
 		<File RelativePath="..\..\min3p\alkcalc.F90"/>
 		<File RelativePath="..\..\min3p\aratemin.F90"/>

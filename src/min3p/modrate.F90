@@ -91,7 +91,8 @@
       subroutine modrate(ratem,cmnewm,por,delt,im,tid)
  
       use chem, only: tinyrate, cmcmin, far_from_equil, satm, supsatm, &
-          ratemp, reaction_type, isofrac, nip, nm, iamp, jamp, iamd
+          ratemp, reaction_type, isofrac, nip, nm, iamp, jamp, iamd,   &
+          rate_control, dg_lim
       use gen, only : pore_clogging, por_thresh_min
 
       implicit none
@@ -119,7 +120,7 @@
         if (dlog10(satm(im,tid)).lt.supsatm(im).and.ratem.gt.r0) then
           ratem = r0
         end if
-      end if      
+      end if     
 
 !cmx  set mineral reaction rate to 0.0 in clogged cv
       if (pore_clogging) then
@@ -127,13 +128,21 @@
           ratem = r0
         end if
       end if
-      
+
+     
 !c  use computed dissolution rate only, if sufficient mineral mass
 !c  is available, otherwise: assign reaction rate leading to 
 !c  depletion of mineral
       dissvol = ratem*delt
-      if ((cmnewm+dissvol).lt.(r1+small)*cmcmin(im,tid)) then
-        ratem = -(cmnewm-cmcmin(im,tid))/delt
+
+!c  fix bug here, DSU, 2025-04-08
+!c  the ratem expression is not strict and may switch the reaction direction.
+!c  this is not right for irreversible dissolution reaction.
+      !if ((cmnewm+dissvol).lt.(r1+small)*cmcmin(im,tid)) then 
+      !  ratem = -(cmnewm-cmcmin(im,tid))/delt
+      !end if   
+      if ((cmnewm+dissvol).lt.cmcmin(im,tid)) then
+        ratem = min((cmcmin(im,tid)-cmnewm)/delt,r0)
       end if
 
 !c  loop over parallel reactions
@@ -146,9 +155,7 @@
 !c  set parallel reaction rate to zero, if absolute value of total reaction
 !c  rate very small 
         if (dabs(ratem).le.tinyrate) then
-
           ratemp(ireac,tid) = r0
-
         end if
      
 !c  use computed parrallel rate only, if sufficient mineral mass
@@ -162,7 +169,7 @@
             reaction_type(im).eq.'dissolution_far_from_equilibrium' .or. &
             reaction_type(im).eq.'dissolution_to_equilibrium') then
 
-          if ((cmnewm+dissvol).lt.(r1+small)*cmcmin(im,tid)) then
+          if ((cmnewm+dissvol).lt.cmcmin(im,tid)) then
 
 !c  modified total reaction rate
             if (isofrac(im)) then
@@ -171,7 +178,7 @@
 
             else
 
-              ratem_mod = - (cmnewm-cmcmin(im,tid))/delt
+              ratem_mod = min((cmcmin(im,tid)-cmnewm)/delt,r0)
 
 !c  scale parallel reaction rate based on modified total reaction
 !c  rate and original total reaction rate
@@ -200,6 +207,19 @@
         end if
 
       end do             !loop over parallel reactions
+
+
+!c  to be further checked
+!c  the following part cause convergence issue in some simulations
+      !if (reaction_type(im).eq.'reversible' .or.                       &
+      !    reaction_type(im).eq.'monod' .or.                            &
+      !    reaction_type(im).eq.'dissolution_far_from_equilibrium' .or. &
+      !    reaction_type(im).eq.'dissolution_to_equilibrium') then
+      !  ratem = r0
+      !  do ireac = istart, iend
+      !    ratem = ratem + ratemp(ireac,tid)
+      !  end do
+      !end if
 
 !c  use computed dissolution rate only, if sufficient mineral mass
 !c  is available, otherwise: assign reaction rate leading to 

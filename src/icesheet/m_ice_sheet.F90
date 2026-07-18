@@ -783,9 +783,11 @@ facpw = r1
 facpp = r0
 !%------------------------------------------------------------
 !% Check if the cell is corresponding to boundary
+!% DSU: this part is never called in the new code since it is 
+!% already applied to the boundary nodes only. 2025-03-22
 !%------------------------------------------------------------
-z1=dabs(z-this%zsource)
-if (z1>small) return
+!z1=dabs(z-this%zsource)
+!if (z1>small) return
 !%------------------------------------------------------------
 !%
 !%------------------------------------------------------------
@@ -953,35 +955,42 @@ ltime=this%lslope(istage)*time1 + this%lstages(1,istage)
 do i=1,nvolbc
   ivol=abs(ivolbc(i))              !boundary condition can be duplicated, use negative value for those overwritten boundary condition, by DSU, 2018-02-02   
   l1=dabs(xvol(ivol)-this%lsource)
-  z1=dabs(zvol(ivol)-this%zsource)
-  if (z1<small) then               !top surface node
+!%------------------------------------------------------------
+!% Check if the cell is corresponding to boundary
+!% DSU: this part is never called in the new code since it is 
+!% already applied to the boundary nodes only. 2025-03-22
+!%------------------------------------------------------------
+
+!c  z1=dabs(zvol(ivol)-this%zsource)
+!c  if (z1<small) then               !top surface node
 !%------------------------------------------------------------
 !%------------------------------------------------------------
 !%------------------------------------------------------------
-    if (l1>ltime.or.(l1<=ltime.and.this%isbc(istage))) then
-      !ibc = ibc + 1
-      !ivolbc1(ibc)=ivol
-      b_ivolbc_ice(i) = .true.
-      if (hastotbc) then
-        if (l1<=ltime) then
-          !totbc1(1:this%ncomp,ibc)=this%totbc
-          if (this%istotbc) then
-            totbc(1:this%ncomp,i) = this%totbc(1:this%ncomp)
-          end if
-        else 
-          !totbc1(1:this%ncomp,ibc)=totbc(1:this%ncomp,i)
-        end if        
-      end if
-    end if
-  else                             !internal node
+  if (l1>ltime.or.(l1<=ltime.and.this%isbc(istage))) then
     !ibc = ibc + 1
-    !ivolbc1(ibc)=ivol  
+    !ivolbc1(ibc)=ivol
     b_ivolbc_ice(i) = .true.
-    !if (hastotbc) then
-    !     totbc1(1:this%ncomp,ibc)=totbc(1:this%ncomp,i)      
-    !end if
+    if (hastotbc) then
+      if (l1<=ltime) then
+        !totbc1(1:this%ncomp,ibc)=this%totbc
+        if (this%istotbc) then
+          totbc(1:this%ncomp,i) = this%totbc(1:this%ncomp)
+        end if
+      else 
+        !totbc1(1:this%ncomp,ibc)=totbc(1:this%ncomp,i)
+      end if        
+    end if
   end if
+!c  else                             !internal node
+!c    !ibc = ibc + 1
+!c    !ivolbc1(ibc)=ivol  
+!c    b_ivolbc_ice(i) = .true.
+!c    !if (hastotbc) then
+!c    !     totbc1(1:this%ncomp,ibc)=totbc(1:this%ncomp,i)      
+!c    !end if
+!c  end if
 end do
+
 !%------------------------------------------------------------
 !% Set the new number of boundary conditions 
 !%------------------------------------------------------------
@@ -1679,14 +1688,11 @@ theta=datan(zperm/l1perm)
 do icell=1,ncells
 
   xloc=dabs(x(icell)-this%lsource)
-  zloc=dabs(z(icell)-this%zsource)
+  !zloc=dabs(z(icell)-this%zsource)
   
   theta1 = datan(zloc/xloc)
-  if(theta1<=theta &
-       .and.xloc<=l1perm &
-       .and.xloc>=l2perm &
-       .and.zloc<=zperm) then
-     
+  if(theta1<=theta .and. xloc<=l1perm .and. xloc>=l2perm ) then   !.and.zloc<=zperm
+    
       kxx(icell) = kxx(icell) * r10**this%logkxx
       kyy(icell) = kyy(icell) * r10**this%logkyy
       kzz(icell) = kzz(icell) * r10**this%logkzz          
@@ -1786,16 +1792,11 @@ theta=datan(zperm/l1perm)
 !%  
 !%------------------------------------------------------------
 xloc=dabs(x-this%lsource)
-zloc=dabs(z-this%zsource)
+!zloc=dabs(z-this%zsource)
 theta1 = datan(zloc/xloc)
   
-if(theta1<=theta &
-       .and.xloc<=l1perm &
-       .and.xloc>=l2perm &
-       .and.zloc<=zperm) then
-     
-       temp = this%temp
-      
+if(theta1<=theta .and. xloc<=l1perm .and. xloc>=l2perm) then    !.and. zloc<=zperm
+  temp = this%temp
 end if 
 !%------------------------------------------------------------
 return

@@ -277,7 +277,7 @@
               !write(*,*) 'updtrootdensity : RSD(',ivol,')=', RSD_coupled(ivol)
             enddo
             
-            !c DSU: to be checked later, why put rld(nngl)=0 here? 
+            !c DSU: to be further checked, why put rld(nngl)=0 here? 
             !c rld(nngl)=0 ! Au coin du domaine on met RSD = 0 sinon on a une valeur garbage de 1
           endif  ! flag 1D/2D
                     

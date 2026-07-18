@@ -410,7 +410,6 @@
               found_subsection
       character*32 btypezn, bctypefunc
       character*72 subsection, strtemp
-      character*2048 :: strbuffer
 
 #ifdef USG
       real*8 :: ratio_flux

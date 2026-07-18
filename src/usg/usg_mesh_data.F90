@@ -6086,14 +6086,18 @@ module usg_mesh_data
             else
               jvol = bd_cells_gbl(1,ibdcell)
             end if
-      
-            rtemp = (nodes(inode)%x-bd_nodes_gbl(ivol)%x)*(nodes(inode)%x-bd_nodes_gbl(jvol)%x)
-            if (rtemp <= r0) then
-              rzbd = math_common_linear(bd_nodes_gbl(ivol)%x,bd_nodes_gbl(jvol)%x,&
-                                        bd_nodes_gbl(ivol)%z,bd_nodes_gbl(jvol)%z,&
-                                        nodes(inode)%x)
-              if (rzbd > zg_depth(inode)) then
-                zg_depth(inode) = rzbd
+
+            !c unlike 3D mesh that has a condition of boundary face flag, 
+            !c for 2D mesh, make sure both ivol and jvol boundary node
+            if (ivol > 0 .and. jvol > 0) then      
+              rtemp = (nodes(inode)%x-bd_nodes_gbl(ivol)%x)*(nodes(inode)%x-bd_nodes_gbl(jvol)%x)            
+              if (rtemp <= r0) then
+                rzbd = math_common_linear(bd_nodes_gbl(ivol)%x,bd_nodes_gbl(jvol)%x,&
+                                          bd_nodes_gbl(ivol)%z,bd_nodes_gbl(jvol)%z,&
+                                          nodes(inode)%x)
+                if (rzbd > zg_depth(inode)) then
+                  zg_depth(inode) = rzbd
+                end if
               end if
             end if
           end do
@@ -6122,13 +6126,17 @@ module usg_mesh_data
               jvol = bd_cells_gbl(1,ibdcell)
             end if
       
-            rtemp = (nodes(inode)%y-bd_nodes_gbl(ivol)%y)*(nodes(inode)%y-bd_nodes_gbl(jvol)%y)
-            if (rtemp <= r0) then
-              rzbd = math_common_linear(bd_nodes_gbl(ivol)%y,bd_nodes_gbl(jvol)%y,&
-                                        bd_nodes_gbl(ivol)%z,bd_nodes_gbl(jvol)%z,&
-                                        nodes(inode)%y)
-              if (rzbd > zg_depth(inode)) then
-                zg_depth(inode) = rzbd
+            !c unlike 3D mesh that has a condition of boundary face flag, 
+            !c for 2D mesh, make sure both ivol and jvol boundary node
+            if (ivol > 0 .and. jvol > 0) then
+              rtemp = (nodes(inode)%y-bd_nodes_gbl(ivol)%y)*(nodes(inode)%y-bd_nodes_gbl(jvol)%y)
+              if (rtemp <= r0) then
+                rzbd = math_common_linear(bd_nodes_gbl(ivol)%y,bd_nodes_gbl(jvol)%y,&
+                                          bd_nodes_gbl(ivol)%z,bd_nodes_gbl(jvol)%z,&
+                                          nodes(inode)%y)
+                if (rzbd > zg_depth(inode)) then
+                  zg_depth(inode) = rzbd
+                end if
               end if
             end if
           end do

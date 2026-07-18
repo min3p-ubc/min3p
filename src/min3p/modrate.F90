@@ -129,21 +129,6 @@
         end if
       end if
 
-     
-!c  use computed dissolution rate only, if sufficient mineral mass
-!c  is available, otherwise: assign reaction rate leading to 
-!c  depletion of mineral
-      dissvol = ratem*delt
-
-!c  fix bug here, DSU, 2025-04-08
-!c  the ratem expression is not strict and may switch the reaction direction.
-!c  this is not right for irreversible dissolution reaction.
-      !if ((cmnewm+dissvol).lt.(r1+small)*cmcmin(im,tid)) then 
-      !  ratem = -(cmnewm-cmcmin(im,tid))/delt
-      !end if   
-      if ((cmnewm+dissvol).lt.cmcmin(im,tid)) then
-        ratem = min((cmcmin(im,tid)-cmnewm)/delt,r0)
-      end if
 
 !c  loop over parallel reactions
 
@@ -157,7 +142,7 @@
         if (dabs(ratem).le.tinyrate) then
           ratemp(ireac,tid) = r0
         end if
-     
+
 !c  use computed parrallel rate only, if sufficient mineral mass
 !c  is available, otherwise: assign reaction rate leading to 
 !c  depletion of mineral
@@ -208,90 +193,90 @@
 
       end do             !loop over parallel reactions
 
-
-!c  to be further checked
-!c  the following part cause convergence issue in some simulations
-      !if (reaction_type(im).eq.'reversible' .or.                       &
-      !    reaction_type(im).eq.'monod' .or.                            &
-      !    reaction_type(im).eq.'dissolution_far_from_equilibrium' .or. &
-      !    reaction_type(im).eq.'dissolution_to_equilibrium') then
-      !  ratem = r0
-      !  do ireac = istart, iend
-      !    ratem = ratem + ratemp(ireac,tid)
-      !  end do
-      !end if
-
 !c  use computed dissolution rate only, if sufficient mineral mass
 !c  is available, otherwise: assign reaction rate leading to 
 !c  depletion of mineral
-!c  Isotopes - Feb 2010 Correction - reassign rates based on combined mineralogical parameters
-!c
-!c  Bug fix on May 07, 2019, DSU
-!c  this part was added when isotope model was ported to MIN3P at revision 280.
-!c  However, this may cause significant convergence prolbem for the other cases.
-!c  Modified at revision 715 with condition added.
-
-!c  to be further checked, is the following section necessary?
-
-      !if (nip > 0) then             !Fix bug by adding condition
-      !
-      !  istart = iamp(im)
-      !  iend = iamp(im+1)-1
-      !       
-      !  dissvol = r0
-      !      
-      !  do ireac = istart,iend            
-      !    im2 = jamp(ireac)            
-      !    dissvol = dissvol + ratem(im2)*delt            
-      !  end do
-      !      
-      !  if ((cmnewm(im)+dissvol).lt.(r1+small)*cmcmin(im,tid)) then            
-      !    do ireac = istart,iend              
-      !      im2 = jamp(ireac)               
-      !      ratem(im2) = -(cmnewm(im)-cmcmin(im,tid))/delt/(iend-(istart-1))
-      !    end do
-      !  end if
-      !end if
+      dissvol = ratem*delt
+      if ((cmnewm+dissvol).lt.cmcmin(im,tid)) then
+        ratem = min((cmcmin(im,tid)-cmnewm)/delt,r0)
+      end if
 
       return
       end
 
-!cdsu  --------------------------------
-!cdsu  old subroutine before 2023-04-10
-!cdsu  --------------------------------
-
-!      subroutine modrate(ratem,cmnewm,delt,im,tid)
+!c
+!c  to be further checked
+!c  note: ratem may be modified before applying ratem_mod/ratem coefficient.
+!c        This will causes issue in modifying parallel reaction rate.
+!c  
+!      subroutine modrate_old(ratem,cmnewm,por,delt,im,tid)
 ! 
-!      use parm
-!      use chem
+!      use chem, only: tinyrate, cmcmin, far_from_equil, satm, supsatm, &
+!          ratemp, reaction_type, isofrac, nip, nm, iamp, jamp, iamd,   &
+!          rate_control, dg_lim
+!      use gen, only : pore_clogging, por_thresh_min
 !
 !      implicit none
 !      
-!      real*8 :: ratem, cmnewm, delt
+!      real*8 :: ratem, cmnewm
+!      real*8 :: por, delt
 !      integer :: im, tid
 !      
-!      integer :: istart, iend, ireac
+!      integer :: istart, iend, ireac, im2
 !
-!      real*8 :: r0, r1, small, dissvol, ratem_mod
+!      real*8 :: dissvol, ratem_mod
 !
-!      parameter (r0 = 0.0d0, r1 = 1.0d0, small = 1.d-10)
+!      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, small = 1.d-10
 !      
+!!c  set reaction rate to zero, if absolute value of computed rate 
+!!c  very small
+!      if (dabs(ratem).le.tinyrate) then
+!        ratem = r0
+!      end if
+!
+!!c  set parallel reaction rate to zero, if total reaction rate indicates
+!!c  precipitation, but specified level of supersaturation is not 
+!!c  reached
+!      if (.not.far_from_equil(im)) then
+!        if (dlog10(satm(im,tid)).lt.supsatm(im).and.ratem.gt.r0) then
+!          ratem = r0
+!        end if
+!      end if     
+!
+!!cmx  set mineral reaction rate to 0.0 in clogged cv
+!      if (pore_clogging) then
+!        if (por <= por_thresh_min) then
+!          ratem = r0
+!        end if
+!      end if
+!
+!     
+!!c  use computed dissolution rate only, if sufficient mineral mass
+!!c  is available, otherwise: assign reaction rate leading to 
+!!c  depletion of mineral
+!      dissvol = ratem*delt
+!
+!!c  fix bug here, DSU, 2025-04-08
+!!c  the ratem expression is not strict and may switch the reaction direction.
+!!c  this is not right for irreversible dissolution reaction.
+!      !if ((cmnewm+dissvol).lt.(r1+small)*cmcmin(im,tid)) then 
+!      !  ratem = -(cmnewm-cmcmin(im,tid))/delt
+!      !end if   
+!      if ((cmnewm+dissvol).lt.cmcmin(im,tid)) then
+!        ratem = min((cmcmin(im,tid)-cmnewm)/delt,r0)
+!      end if
+!
 !!c  loop over parallel reactions
 !
 !      istart = iamd(im)
 !      iend = iamd(im+1)-1
 !      
-!      !info_debug = 1
-!
 !      do ireac = istart, iend
 !
 !!c  set parallel reaction rate to zero, if absolute value of total reaction
 !!c  rate very small 
-!
 !        if (dabs(ratem).le.tinyrate) then
-!          
 !          ratemp(ireac,tid) = r0
-!
 !        end if
 !     
 !!c  use computed parrallel rate only, if sufficient mineral mass
@@ -300,46 +285,32 @@
 !
 !        dissvol = ratem*delt
 !
-!        if (reaction_type(im).eq.'reversible' .or.                     &
-!     &     reaction_type(im).eq.'monod' .or.                           &
-!     &     reaction_type(im).eq.'dissolution_far_from_equilibrium' .or.&
-!     &     (reaction_type(im).eq.'dissolution_to_equilibrium') ) then
+!        if (reaction_type(im).eq.'reversible' .or.                       &
+!            reaction_type(im).eq.'monod' .or.                            &
+!            reaction_type(im).eq.'dissolution_far_from_equilibrium' .or. &
+!            reaction_type(im).eq.'dissolution_to_equilibrium') then
 !
-!          if ((cmnewm+dissvol).lt.(r1+small)*cmcmin(im,tid)) then
+!          if ((cmnewm+dissvol).lt.cmcmin(im,tid)) then
 !
 !!c  modified total reaction rate
 !            if (isofrac(im)) then
-!                
-!              ratemp(ireac, tid) = r0  
-!                
+!
+!              ratemp(ireac, tid) = r0
+!
 !            else
 !
-!              ratem_mod = - (cmnewm-cmcmin(im,tid))/delt
+!              ratem_mod = min((cmcmin(im,tid)-cmnewm)/delt,r0)
 !
 !!c  scale parallel reaction rate based on modified total reaction
 !!c  rate and original total reaction rate
-!
-!              !ratemp(ireac,tid) = ratemp(ireac,tid) * ratem_mod/ratem   
-!            
+!           
 !              !bug, for some simulation (concrete-clay benchmarking), ratem will be equal zero. DSU, 2013-2-8
 !              !fix: 1. change the default value of tinyrate from 0 to 1.0E-300; 2. Add continue (above) or change as follows.
-!              if (dabs(ratem) .eq. r0) then
-!                  ratemp(ireac,tid) = r0
+!              if (dabs(ratem) .le. tinyrate) then
+!                ratemp(ireac,tid) = r0
 !              else
-!                  ratemp(ireac,tid) = ratemp(ireac,tid) * ratem_mod/ratem
+!                ratemp(ireac,tid) = ratemp(ireac,tid) * ratem_mod/ratem
 !              end if
-!              if (dabs(ratem) .eq. r0) then
-!                  ratemp(ireac,tid) = r0
-!              else
-!                  ratemp(ireac,tid) = ratemp(ireac,tid) * ratem_mod/ratem
-!              end if
-!              !
-!              !if (info_debug > 0) then
-!              !    if (isnan(ratemp(ireac))) then
-!              !        write(idgb, *) "modrate.F90, NaN in ratemp(",&
-!              !                    ireac,"), ratem_mod:", ratem_mod, ", ratem:", ratem    
-!              !    end if
-!              !end if
 !            end if
 !
 !          end if
@@ -351,15 +322,13 @@
 !!c  reached
 !
 !        if (.not.far_from_equil(im)) then
-!          if (dlog10(satm(im,tid)).lt.supsatm(im).and.                &
-!     &        ratem.gt.r0) then
+!          if (dlog10(satm(im,tid)).lt.supsatm(im).and.ratem.gt.r0) then
 !            ratemp(ireac,tid) = r0
 !          end if
 !        end if
 !
 !      end do             !loop over parallel reactions
-!      
-!      !info_debug = 0
 !
 !      return
 !      end
+

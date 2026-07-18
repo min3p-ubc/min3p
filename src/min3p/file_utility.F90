@@ -232,7 +232,8 @@ module file_utility
       
           if (istat > 0) then             !Error in reading  
             if (rank == 0 .and. b_enable_output) then
-              write(ilog, *) "Error in reading file."
+              write(*, *) "Error in reading file, unit: ",iunit
+              write(ilog, *) "Error in reading file, unit: ",iunit
             end if
             bflag = .false. 
             exit            

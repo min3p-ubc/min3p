@@ -1583,7 +1583,7 @@ contains
           mip_pg(igas,ivol) = gnew(igas,ivol) * mip_rgasjoule_tempks          
 
           !c total concentration of aqueous and gas phases
-          !c to be checked later
+          !c to be further checked
           !c mip_ct(igas,ivol) = totcnew(ip,ivol)          
 
           !c use concentration of aqueous from MIP
@@ -1627,7 +1627,7 @@ contains
         end do
       end if
 
-!c to be checked later, apply MIP boundary condition, hardwired here
+!c to be further checked, apply MIP boundary condition, hardwired here
 !c control volume 34, apply to third gas component
 !c cvol(34) = 0.004*0.004/rhalf = 1.6d-5 m^3
 !c porosity = 0.40
@@ -1661,7 +1661,7 @@ contains
                               mip_cw(i,ivol)*(1.0d0-mip_sg(ivol))
         end do      
   
-        !c to be checked later
+        !c to be further checked
         !write(*,*) "after  Pg=",mip_pg(:,ivol), "Pgt=",mip_pgt(ivol),    &
         !           "Cw",mip_cw(:,ivol),"CT",mip_ct(:,ivol),              &
         !           "gnew",gnew(:,ivol),"uvsnew",uvsnew(ivol),"sg",mip_sg(ivol)
@@ -2001,7 +2001,7 @@ contains
           
           !c method 3
           !c fast expansion if using this one
-          !c to be checked later, previous use max here.
+          !c to be further checked, previous use max here.
           mip_sg(ivol) = min(1.0d0,mip_xsg(mip_ngas+1,ivol))
           
           !c add to G (Connected) blocks

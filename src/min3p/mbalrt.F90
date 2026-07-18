@@ -5001,7 +5001,7 @@
           do i1 = istart, iend    ! loop through components in mineral
             ic = jam(i1)
 
-            dpdiff_m2c(im,ic) = dpdiff_m2c(im,ic) - xnum(i1)*dpdiff(im)
+            dpdiff_m2c(im,ic) = dpdiff_m2c(im,ic) - xnum(i1)*dpdiff(im)           
             accu_dpdiff_m2c(im,ic) = accu_dpdiff_m2c(im,ic) - xnum(i1)*accudpdiff(im)
           end do
         end do
@@ -5011,12 +5011,16 @@
           if (mtime == mtime_append .and. i_append_sim >= 1) then
             call reposition_file(imrtm2c,irecord)
           end if
-          if (i_append_sim < 1 .or.                                &
+          if (i_append_sim < 1 .or.                                     &
              (mtime >= mtime_append .and. i_append_sim >= 1)) then
 
-            write(imrtm2c,ascii_fmt) time_io,sum(dpdiff_m2c(:,ic)),&
-                  sum(accu_dpdiff_m2c(:,ic)),dpdiff_m2c(:,ic),     &
-                  accu_dpdiff_m2c(:,ic)
+            write(imrtm2c,ascii_fmt) time_io,                                  &
+                  sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).gt.r0),           &
+                  sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).lt.r0),           &
+                  sum(dpdiff_m2c(:,ic)), dpdiff_m2c(:,ic),                     &
+                  sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).gt.r0), &
+                  sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).lt.r0), &
+                  sum(accu_dpdiff_m2c(:,ic)), accu_dpdiff_m2c(:,ic)
           end if
         end do
  

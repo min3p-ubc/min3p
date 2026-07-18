@@ -227,7 +227,7 @@
       external :: findstrg, readbloc, checkerr
       logical :: found_section, found_subsection
       integer :: rand_seed_archi, rand_seed_roottyp  !DSU
-      character*2048 :: strbuffer
+      character*4096 :: strbuffer
       character*72 :: subsection
       character*1 :: cdummy,temppy*15
       character(len=pos) :: directory ! CBF RLD

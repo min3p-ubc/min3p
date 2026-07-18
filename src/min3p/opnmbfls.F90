@@ -144,13 +144,17 @@
       use chem
       use dens, only : density_dependence
       use file_unit, only : lun_get, lun_set, lun_available
-      use file_utility, only : check_rewind_status      
+      use file_utility, only : check_rewind_status, readnextline      
       use module_binary_mpiio, only : binary_file_open,               &
                                       tecplot_binary_write_header,    &
                                       tecplot_binary_write_variable,  &
                                       tecplot_binary_write_zoneinfo,  &
                                       tecplot_binary_write_section
       use biol
+
+#ifdef PETSC
+      use petsc_mpi_common, only : petsc_mpi_finalize
+#endif
 
       implicit none
 #ifdef PETSC
@@ -161,21 +165,23 @@
 #endif
 #endif
       
-      integer :: i, ianc, iaq, ic, im, imb, ig, isites, isb, itmsb,    &
+      integer :: i, j, ianc, iaq, ic, im, imb, ig, isites, isb, itmsb, &
                  istart, istop, istart2, istop2, ireac, ic2,           &
                  l_sufx, l_sufx2, ierr
 
       character*2 :: suffix, suffix2, strtemp
       character*9 :: strl9
       character*36 :: strl36, dix_unit
-      character*60 :: strl60
+      character*72 :: strl72
       character*256 :: strfilename
-      character*2048 :: strbuffer
+      character*2048 :: strbuffer2048
+      character*4096 :: strbuffer
       
       integer*4 :: nvarsimvs, nvarsimrt, nvarsiarup, nvarsirup,        &
-                   nvarsidix, nvarsispm, nvarsiprup, ilun, nlun
+                   nvarsidix, nvarsispm, nvarsiprup, ilun, nlun,       &
+                   iCdrOut, nCdrOut, nCdrOutKey, itemp, ntemp, idx
       character*72, allocatable :: tec_variables(:)
-      logical :: b_rewind_valid
+      logical :: b_rewind_valid, bflag
 
       external :: checkerr
 
@@ -191,7 +197,6 @@
                            nsb_surf+26), stat = ierr)
         tec_variables = ''
         call memory_monitor(sizeof(tec_variables),'tec_variables',.false.)
-
       end if
 
 !c     write(*,'(/a)') 'enter routine opnmbfls ...'
@@ -778,7 +783,8 @@
               write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             end if
-          end do          
+          end do     
+
         end if
 
 !c  solute uptake by passive solute uptake
@@ -900,7 +906,8 @@
               write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             end if
-          end do          
+          end do  
+
         end if
 
 !c  total solute uptake by passive solute uptake and active solute uptake
@@ -1022,7 +1029,8 @@
               write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             end if
-          end do          
+          end do      
+
         end if
 
 !c  output of dilution index
@@ -2159,210 +2167,210 @@
            
         if (ng .gt. 0 .and. gas_advection) then    
         
-          write(ifls,'(/2a)')                                          &
-                'column entry                                       ', &
+          write(ifls,'(/2a)')                                                   &
+                'column entry                                                ', &
                 'unit'
-          write(ifls,'(2a)')                                           &
-                '1      time                                        ', &
+          write(ifls,'(2a)')                                                    &
+                '1      time                                                 ', &
                 time_unit
-          write(ifls,'(2a)')                                           &
-                '2      mass influx                                 ', &
+          write(ifls,'(2a)')                                                    &
+                '2      mass influx                                          ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '3      mass outflux                                ', &
+          write(ifls,'(2a)')                                                    &
+                '3      mass outflux                                         ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '4      change in storage                           ', &
+          write(ifls,'(2a)')                                                    &
+                '4      change in storage                                    ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '5      source/sink from oxidation/reduction reactn ', &
+          write(ifls,'(2a)')                                                    &
+                '5      source/sink from oxidation/reduction reactn          ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '6      source/sink from intra-aqueous reactns      ', &
+          write(ifls,'(2a)')                                                    &
+                '6      source/sink from intra-aqueous reactns               ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '7      source/sink from mineral phase              ', &
+          write(ifls,'(2a)')                                                    &
+                '7      source/sink from mineral phase                       ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '8      source/sink from gas phase                  ', &
+          write(ifls,'(2a)')                                                    &
+                '8      source/sink from gas phase                           ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '9      mass influx by diffusion (gas phase)        ', &
+          write(ifls,'(2a)')                                                    &
+                '9      mass influx by diffusion (gas phase)                 ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '10     mass outflux by diffusion (gas phase)       ', &
+          write(ifls,'(2a)')                                                    &
+                '10     mass outflux by diffusion (gas phase)                ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '11     mass influx by advection (gas phase)        ', &
+          write(ifls,'(2a)')                                                    &
+                '11     mass influx by advection (gas phase)                 ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '12     mass outflux by advection (gas phase)       ', &
+          write(ifls,'(2a)')                                                    &
+                '12     mass outflux by advection (gas phase)                ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '13     change in storage (gas phase)               ', &
+          write(ifls,'(2a)')                                                    &
+                '13     change in storage (gas phase)                        ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '14     mass loss - degassing                       ', &
+          write(ifls,'(2a)')                                                    &
+                '14     mass loss - degassing                                ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '15     source/sink from sorbed phase               ', &
+          write(ifls,'(2a)')                                                    &
+                '15     source/sink from sorbed phase                        ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '16     source/sink from passive solute uptake      ', &
+          write(ifls,'(2a)')                                                    &
+                '16     source/sink from passive solute uptake               ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '17     source/sink from active solute uptake       ', &
+          write(ifls,'(2a)')                                                    &
+                '17     source/sink from active solute uptake                ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '18     source/sink from noble gas ingrowth         ', &
+          write(ifls,'(2a)')                                                    &
+                '18     source/sink from noble gas ingrowth                  ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '19     accumulative mass influx                    ', &
+          write(ifls,'(2a)')                                                    &
+                '19     accumulative mass influx                             ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '20     accumulative mass outflux                   ', &
+          write(ifls,'(2a)')                                                    &
+                '20     accumulative mass outflux                            ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '21     accumulative change in storage              ', &
+          write(ifls,'(2a)')                                                    &
+                '21     accumulative change in storage                       ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '22     accumulative source/sink from oxidation/reduction  ', &
+          write(ifls,'(2a)')                                                    &
+                '22     accumulative source/sink from oxidation/reduction    ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '23     accumulative source/sink from intra-aqueous reactns', &
+          write(ifls,'(2a)')                                                    &
+                '23     accumulative source/sink from intra-aqueous reactns  ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '24     accumulative source/sink from mineral phase ', &
+          write(ifls,'(2a)')                                                    &
+                '24     accumulative source/sink from mineral phase          ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '25     accumulative source/sink from gas phase     ', &
+          write(ifls,'(2a)')                                                    &
+                '25     accumulative source/sink from gas phase              ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '26     accumulative mass influx by diffusion (gas phase)  ', &
+          write(ifls,'(2a)')                                                    &
+                '26     accumulative mass influx by diffusion (gas phase)    ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '27     accumulative mass outflux by diffusion (gas phase) ', &
+          write(ifls,'(2a)')                                                    &
+                '27     accumulative mass outflux by diffusion (gas phase)   ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '28     accumulative mass influx by advection (gas phase)  ', &
+          write(ifls,'(2a)')                                                    &
+                '28     accumulative mass influx by advection (gas phase)    ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '29     accumulative mass outflux by advection (gas phase) ', &
+          write(ifls,'(2a)')                                                    &
+                '29     accumulative mass outflux by advection (gas phase)   ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '30     accumulative change in storage (gas phase)         ', &
+          write(ifls,'(2a)')                                                    &
+                '30     accumulative change in storage (gas phase)           ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '31     accumulative mass loss - degassing                 ', &
+          write(ifls,'(2a)')                                                    &
+                '31     accumulative mass loss - degassing                   ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '32     accumulative source/sink from sorbed phase         ', &
+          write(ifls,'(2a)')                                                    &
+                '32     accumulative source/sink from sorbed phase           ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '33     accumulative source/sink from passive solute uptake', &
+          write(ifls,'(2a)')                                                    &
+                '33     accumulative source/sink from passive solute uptake  ', &
                 'mol'      
-          write(ifls,'(2a)')                                           &
-                '34     accumulative source/sink from active solute uptake ', &
+          write(ifls,'(2a)')                                                    &
+                '34     accumulative source/sink from active solute uptake   ', &
                 'mol' 
-          write(ifls,'(2a)')                                           &
-                '35     accumulative source/sink from noble gas ingrowth   ', &
+          write(ifls,'(2a)')                                                    &
+                '35     accumulative source/sink from noble gas ingrowth     ', &
                 'mol'      
         else
-          write(ifls,'(/2a)')                                          &
-                'column entry                                       ', &
+          write(ifls,'(/2a)')                                                   &
+                'column entry                                                ', &
                 'unit'
-          write(ifls,'(2a)')                                           &
-                '1      time                                        ', &
+          write(ifls,'(2a)')                                                    &
+                '1      time                                                 ', &
                 time_unit
-          write(ifls,'(2a)')                                           &
-                '2      mass influx                                 ', &
+          write(ifls,'(2a)')                                                    &
+                '2      mass influx                                          ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '3      mass outflux                                ', &
+          write(ifls,'(2a)')                                                    &
+                '3      mass outflux                                         ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '4      change in storage                           ', &
+          write(ifls,'(2a)')                                                    &
+                '4      change in storage                                    ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '5      source/sink from oxidation/reduction reactn ', &
+          write(ifls,'(2a)')                                                    &
+                '5      source/sink from oxidation/reduction reactn          ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '6      source/sink from intra-aqueous reactns      ', &
+          write(ifls,'(2a)')                                                    &
+                '6      source/sink from intra-aqueous reactns               ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '7      source/sink from mineral phase              ', &
+          write(ifls,'(2a)')                                                    &
+                '7      source/sink from mineral phase                       ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '8      source/sink from gas phase                  ', &
+          write(ifls,'(2a)')                                                    &
+                '8      source/sink from gas phase                           ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '9      mass influx (gas phase)                     ', &
+          write(ifls,'(2a)')                                                    &
+                '9      mass influx (gas phase)                              ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '10     mass outflux (gas phase)                    ', &
+          write(ifls,'(2a)')                                                    &
+                '10     mass outflux (gas phase)                             ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '11     change in storage (gas phase)               ', &
+          write(ifls,'(2a)')                                                    &
+                '11     change in storage (gas phase)                        ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '12     mass loss - degassing                       ', &
+          write(ifls,'(2a)')                                                    &
+                '12     mass loss - degassing                                ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '13     source/sink from sorbed phase               ', &
+          write(ifls,'(2a)')                                                    &
+                '13     source/sink from sorbed phase                        ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '14     source/sink from passive solute uptake      ', &
+          write(ifls,'(2a)')                                                    &
+                '14     source/sink from passive solute uptake               ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '15     source/sink from active solute uptake       ', &
+          write(ifls,'(2a)')                                                    &
+                '15     source/sink from active solute uptake                ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '16     source/sink from noble gas ingrowth         ', &
+          write(ifls,'(2a)')                                                    &
+                '16     source/sink from noble gas ingrowth                  ', &
                 'mol/day'
-          write(ifls,'(2a)')                                           &
-                '17     accumulative mass influx                    ', &
+          write(ifls,'(2a)')                                                    &
+                '17     accumulative mass influx                             ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '18     accumulative mass outflux                   ', &
+          write(ifls,'(2a)')                                                    &
+                '18     accumulative mass outflux                            ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '19     accumulative change in storage              ', &
+          write(ifls,'(2a)')                                                    &
+                '19     accumulative change in storage                       ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '20     accumulative source/sink from oxidation/reduction  ', &
+          write(ifls,'(2a)')                                                    &
+                '20     accumulative source/sink from oxidation/reduction    ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '21     accumulative source/sink from intra-aqueous ', &
+          write(ifls,'(2a)')                                                    &
+                '21     accumulative source/sink from intra-aqueous          ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '22     accumulative source/sink from mineral phase ', &
+          write(ifls,'(2a)')                                                    &
+                '22     accumulative source/sink from mineral phase          ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '23     accumulative source/sink from gas phase     ', &
+          write(ifls,'(2a)')                                                    &
+                '23     accumulative source/sink from gas phase              ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '24     accumulative mass influx (gas phase)        ', &
+          write(ifls,'(2a)')                                                    &
+                '24     accumulative mass influx (gas phase)                 ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '25     accumulative mass outflux (gas phase)       ', &
+          write(ifls,'(2a)')                                                    &
+                '25     accumulative mass outflux (gas phase)                ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '26     accumulative change in storage (gas phase)  ', &
+          write(ifls,'(2a)')                                                    &
+                '26     accumulative change in storage (gas phase)           ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '27     accumulative mass loss - degassing          ', &
+          write(ifls,'(2a)')                                                    &
+                '27     accumulative mass loss - degassing                   ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '28     accumulative source/sink from sorbed phase  ', &
+          write(ifls,'(2a)')                                                    &
+                '28     accumulative source/sink from sorbed phase           ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '29     accumulative source/sink from passive solute uptake', &
+          write(ifls,'(2a)')                                                    &
+                '29     accumulative source/sink from passive solute uptake  ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '30     accumulative source/sink from active solute uptake ', &
+          write(ifls,'(2a)')                                                    &
+                '30     accumulative source/sink from active solute uptake   ', &
                 'mol'
-          write(ifls,'(2a)')                                           &
-                '31     accumulative source/sink from noble gas ingrowth   ', &
+          write(ifls,'(2a)')                                                    &
+                '31     accumulative source/sink from noble gas ingrowth     ', &
                 'mol'
         end if
 
@@ -2436,25 +2444,25 @@
                   trim(namec(ic)),' - reactive transport'
             
             offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
+                         imrt_mpi(imrt), "#!TDV102",'dataset '//       &
+                         prefix(:l_prfx),offset_imrt(imrt),.true.,     &
                          .true.)  
             
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt), nvarsimrt,                  &
-                         tec_variables(1:nvarsimrt),                 &
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt), nvarsimrt,                    &
+                         tec_variables(1:nvarsimrt),                   &
                          offset_imrt(imrt),.true.,.true.)               
             
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt),trim(strbuffer),             &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt),trim(strbuffer),               &
+                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
                          b_output_multizone)
             offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
             
-            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                         imrt_mpi(imrt),nvarsimrt,0,                 &
-                         offset_imrt(imrt), .true.,.true.,           &
+            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                         imrt_mpi(imrt),nvarsimrt,0,                   &
+                         offset_imrt(imrt), .true.,.true.,             &
                          b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
@@ -2499,11 +2507,11 @@
 
           do itmsb = 1, ntmsb
 
-            write(ifls,'(/3a/72a/)')                                     &
-                  'mass through specified boundary ',                    &
-                  trim(name_tmsb(itmsb)), ' - aqueous phase',            &
+            write(ifls,'(/3a/72a/)')                                   &
+                  'mass through specified boundary ',                  &
+                  trim(name_tmsb(itmsb)), ' - aqueous phase',          &
                   ('-',i=1,72)
-            write(ifls,'(2a)') 'file name                           ',   &
+            write(ifls,'(2a)') 'file name                           ', &
                                'component'
 
             if(itmsb.lt.10) then
@@ -3526,15 +3534,21 @@
 
             write(imrtm2c,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
-            strbuffer = 'variables = "time", "source/sink from all minerals [mol/d]"'//&
-                        ', "total contribution from all minerals [mol]"'
+            strbuffer = 'variables = "time", "source from all minerals [mol/d]"'//&
+                        ', "sink from all minerals [mol/d]"'//&
+                        ', "source/sink from all minerals [mol/d]"'
             do im = 1,nm
               strbuffer = trim(strbuffer)//', "source/sink from '//    &
                           trim(namem(im))//' [mol/d]"'
             end do
 
+            strbuffer = trim(strbuffer)//&
+                        ', "accumulative source from all minerals [mol]"'//&
+                        ', "accumulative sink from all minerals [mol]"'//&
+                        ', "accumulative source/sink from all minerals [mol]"'
+
             do im = 1,nm
-              strbuffer = trim(strbuffer)//', "total contribution from '// &
+              strbuffer = trim(strbuffer)//', "accumulative source/sink from '// &
                           trim(namem(im))//' [mol]"'
             end do
 
@@ -3553,28 +3567,50 @@
         !c write file information
         write(ifls,'(/2a)')                                            &
               'column   entry                                        ',&
-              '               unit'
+              '                           unit'
         write(ifls,'(3a)')                                             &
               '1        time                                         ',&
-              '               ',time_unit
+              '                           ',time_unit
         write(ifls,'(2a)')                                             &
-              '2        source/sink from all minerals                ',&
-              '               moles/day'
+              '2        source from all minerals                     ',&
+              '                           moles/day'
         write(ifls,'(2a)')                                             &
-              '3        total contribution from all minerals         ',&
-              '               moles'
+              '3        sink from all minerals                       ',&
+              '                           moles/day'
+        write(ifls,'(2a)')                                             &
+              '4        source/sink from all minerals                ',&
+              '                           moles/day'
         do im = 1, nm    
-          write(strl9,'(i0)') im+3
-          write(strl60,'(2a)') 'source/sink from ',namem(im)(1:36)
-          write(ifls,'(3a)') strl9,strl60,'moles/day'
+          write(strl9,'(i0)') im+4
+          write(strl72,'(2a)') 'source/sink from ',namem(im)(1:36)
+          write(ifls,'(3a)') strl9,strl72,'moles/day'
         end do
 
+        write(strl9,'(i0)') nm+5
+        write(strl72,'(a)') 'accumulative source from all minerals'
+        write(ifls,'(3a)') strl9,strl72,'moles'
+
+        write(strl9,'(i0)') nm+6
+        write(strl72,'(a)') 'accumulative sink from all minerals'
+        write(ifls,'(3a)') strl9,strl72,'moles'
+
+        write(strl9,'(i0)') nm+7
+        write(strl72,'(a)') 'accumulative source/sink from all minerals'
+        write(ifls,'(3a)') strl9,strl72,'moles'
+
         do im = 1, nm    
-          write(strl9,'(i0)') im+3+nm
-          write(strl60,'(2a)') 'total contribution from ',namem(im)(1:36)
-          write(ifls,'(3a)') strl9,strl60,'moles'
+          write(strl9,'(i0)') im+nm+7
+          write(strl72,'(2a)') 'accumulative source/sink from ',namem(im)(1:36)
+          write(ifls,'(3a)') strl9,strl72,'moles'
         end do
 
+      end if
+
+
+      !c release memory for temporary variables
+      if (b_output_trans_binary) then
+        call memory_monitor(-sizeof(tec_variables),'tec_variables',.false.)
+        deallocate(tec_variables)
       end if
 
       return

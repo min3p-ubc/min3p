@@ -591,7 +591,7 @@
               .not.read_spatial_master_proc .or.                       &
               is_cell_based_perm_cond) then
             open(ihyc,file=prefix(:l_prfx)//'.hyc.vtk',                &
-                 status='unknown', form='formatted')
+                 status='old', form='formatted')
           else
             call lun_free(ihyc)
             ihyc = 0
@@ -848,7 +848,7 @@
               .not.read_spatial_master_proc .or.                       &
               is_cell_based_perm_cond) then
             open(ihyc,file=prefix(:l_prfx)//'.hyc.vtk',                &
-                status='unknown', form='formatted')
+                status='old', form='formatted')
           else
             call lun_free(ihyc)
             ihyc = 0
@@ -996,7 +996,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.          &
               .not.read_spatial_master_proc) then
             open(istor,file=prefix(:l_prfx)//'.spstor.vtk',            &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(istor)
             istor = 0
@@ -1160,7 +1160,7 @@
             if ((read_spatial_master_proc .and. rank == 0) .or.        &
                 .not.read_spatial_master_proc) then
               open(ishfp,file=prefix(:l_prfx)//'.shfp.vtk',            &
-                   status='unknown',form='formatted')
+                   status='old',form='formatted')
             else
               call lun_free(ishfp)
               ishfp = 0

@@ -371,7 +371,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.        &
               .not.read_spatial_master_proc) then
             open(ipor,file=prefix(:l_prfx)//'.por.vtk',              &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(ipor)
             ipor = 0
@@ -473,7 +473,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.        &
               .not.read_spatial_master_proc) then
             open(itor,file=prefix(:l_prfx)//'.tor.vtk',              &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(itor)
             itor = 0
@@ -584,7 +584,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.        &
               .not.read_spatial_master_proc) then
             open(iaca,file=prefix(:l_prfx)//'.aca.vtk',              &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(iaca)
             iaca = 0
@@ -693,7 +693,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.        &
               .not.read_spatial_master_proc) then
             open(itor,file=prefix(:l_prfx)//'.torgas.vtk',           &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(itor)
             itor = 0
@@ -797,7 +797,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.        &
               .not.read_spatial_master_proc) then
             open(ifrac,file=prefix(:l_prfx)//'.frac.vtk',              &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(ifrac)
             ifrac = 0
@@ -1605,7 +1605,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.          &
             .not.read_spatial_master_proc) then
             open(igso,file=prefix(:l_prfx)//'.gso.vtk',                &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(igso)
             igso = 0
@@ -1722,7 +1722,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.          &
               .not.read_spatial_master_proc) then
             open(igso,file=prefix(:l_prfx)//'.gso.vtk',                &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(igso)
             igso = 0

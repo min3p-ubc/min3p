@@ -341,7 +341,7 @@
       logical found_section, found_subsection, found, bflag, flag_stop
       logical found_surface_complex, found_ion_exchange, istat_bool,  &
               multisite_ion_exchange
-      character*16 :: dbs_names(13)
+      character*16 :: dbs_names(12)
       character*72 :: subsection, name, string, pair, dummy      
       character*1024 :: strbuffer      
 
@@ -498,69 +498,122 @@
               dbs_names(3) = 'gases.dbs'
               dbs_names(4) = 'sit.dbs'
               dbs_names(5) = 'mineral.dbs'
-              dbs_names(6) = 'mineral(x).dbs'
-              dbs_names(7) = 'redox.dbs'
-              dbs_names(8) = 'redoxh2.dbs'
-              dbs_names(9) = 'redoxe.dbs'
-              dbs_names(10) = 'sorption.dbs'
-              dbs_names(11) = 'aqueousphase.dat'
-              dbs_names(12) = 'pitzer.xml'
-              dbs_names(13) = 'noblegases.dbs'
+              dbs_names(6) = 'redox.dbs'
+              dbs_names(7) = 'redoxh2.dbs'
+              dbs_names(8) = 'redoxe.dbs'
+              dbs_names(9) = 'sorption.dbs'
+              dbs_names(10) = 'aqueousphase.dat'
+              dbs_names(11) = 'pitzer.xml'
+              dbs_names(12) = 'noblegases.dbs'
 
-              do i = 1, size(dbs_names)
+              do i = 1, 12
+
+                open(idbs,file=trim(dbs_dir)//'/'//trim(dbs_names(i)), &
+                     status='unknown',form='formatted')
 
                 bflag = .true.
 
                 rewind(idbs_in)
-                do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
-                         withcomment=.true.,original=.true.))
 
-                  if (index(strbuffer,trim(dbs_names(i))//': start of') > 0) then
-
-                    bflag = .false.
-
-                    if (trim(dbs_names(i)).eq.'mineral(x).dbs') then
-                      open(idbs,file=trim(dbs_dir)//'/mineral.dbs',&
-                           status='unknown',form='formatted',access='append')
-                    else
-                      open(idbs,file=trim(dbs_dir)//'/'//trim(dbs_names(i)), &
-                           status='unknown',form='formatted')
-                    end if
-                    do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
-                             withcomment=.true., original=.true.))
-                      if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
-                        !skip writing 'end' when loop over minerals since 'end' will be
-                        !added when loop over excluded minerals.
-                        if(i < 5) then
-                          write(idbs,'(a)') 'end'
-                        else if (i > 5 .and. i < 11) then
-                          write(idbs,'(a)') "'end'"
+                !c for mineral.dbs, it includes minerals and excluded minerals
+                if (i == 5) then
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of minerals') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
                         end if
-                        exit
-                      else
-                        write(idbs,'(a)') trim(strbuffer)
-                      end if
-                    end do
-                    close(idbs)
-                  end if
-                end do
+                      end do
+                      exit
+                    end if
+                  end do
+                  write(idbs,'(a)') '!'
 
-                if (bflag) then
-                  if (i == 6) then
-                    open(idbs,file=trim(dbs_dir)//'/mineral.dbs',&
-                         status='unknown',form='formatted',access='append')
-                  else
-                    open(idbs,file=trim(dbs_dir)//'/'//trim(dbs_names(i)), &
-                         status='unknown',form='formatted')
-                  end if
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of excluded minerals') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
+
+                  write(idbs,'(a)') "'end'"
+                !c for redox.dbs, it includes redox couples and intra-aqueous kinetic reactions. 
+                else if (i >= 6 .and. i <= 8) then
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of redox couples') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
+                  write(idbs,'(a)') '!'
+
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of intra-aqueous kinetic reactions') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
+
+                  write(idbs,'(a)') "'end'"
+                  
+                else
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
                   
                   if(i < 5) then
                     write(idbs,'(a)') 'end'
-                  else if (i > 5 .and. i < 11) then
+                  else if (i >= 5 .and. i < 11) then
                     write(idbs,'(a)') "'end'"
                   end if
-                  close(idbs)
+
                 end if
+
+                close(idbs)
 
               end do
                 

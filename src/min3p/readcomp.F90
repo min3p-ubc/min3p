@@ -84,7 +84,7 @@
       use gen, only : rank, igen, b_enable_output, b_enable_output_gen,&
                       idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif 
@@ -244,7 +244,7 @@
             do while(.true.)
               if (readnextline(icdbs,strbuffer,lowercase=.false.,      &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namec(ic))) == 1) then
+                if (startWithEntireName(strbuffer,namec(ic),flagQuote=.false.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   exit
                 end if

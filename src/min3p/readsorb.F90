@@ -170,7 +170,7 @@
       use chem
       use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -655,7 +655,7 @@
         rewind(isdbs)
  
       end do                   !end - loop over species
-      
+
 !cprovi-------------------------------------------------------------------------------
 !cprovi Compute the net change in surface charge for electrostatic correction
 !cprovi Because the thermodynamic databse is only read once, we use another loop
@@ -807,7 +807,7 @@
             do while(.true.)
               if (readnextline(isdbs, strbuffer, lowercase=.false.,        &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namesb_ion(isb))) == 2) then
+                if (startWithEntireName(strbuffer,namesb_ion(isb),flagQuote = .true.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   if (readnextline(isdbs, strbuffer, lowercase=.false.,    &
                       original=.true.)) then

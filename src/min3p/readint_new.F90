@@ -237,7 +237,7 @@
       use chem
       use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -2063,7 +2063,7 @@
             do while(.true.)
               if (readnextline(irdbs,strbuffer,lowercase=.false.,          &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(nameaq(iaq))) == 2) then            !note, mineral name has quotes
+                if (startWithEntireName(strbuffer,nameaq(iaq),flagQuote=.true.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   do while(readnextline(irdbs,strbuffer,lowercase=.false., &
                            withcomment=.true.,original=.true.))

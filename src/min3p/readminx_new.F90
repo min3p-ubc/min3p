@@ -120,7 +120,7 @@
       use chem
       use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif 
@@ -459,7 +459,7 @@
                                ' excluded mineral is reversed'
             write(igen,'(72a)') ('-',i=1,72)
           end if 
-        end if       
+        end if     
 
 !c  check charge balance of the mineral and give error information if charge balance is not met
         if (rank == 0 .and. b_enable_output) then
@@ -490,13 +490,13 @@
       if (rank == 0) then
         if (.not.use_dbs_bk) then
           write(*,'(1x,a)') 'start of database backup: mineral.dbs'
-          write(idbs_bk, '(a)') '<------ mineral(x).dbs: start of excluded minerals ------>'      
+          write(idbs_bk, '(a)') '<------ mineral.dbs: start of excluded minerals ------>'      
           do imx = 1,nmx
             rewind(imdbs)
             do while(.true.)
               if (readnextline(imdbs,strbuffer,lowercase=.false.,          &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namemx(imx))) == 2) then            !note, mineral name has quotes
+                if (startWithEntireName(strbuffer,namemx(imx),flagQuote=.true.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   do while(readnextline(imdbs,strbuffer,lowercase=.false., &
                            withcomment=.true.,original=.true.))
@@ -515,7 +515,7 @@
           end do
           rewind(imdbs)
           !write(idbs_bk, '(a)') "'end'" 
-          write(idbs_bk, '(a/)') '<------ mineral(x).dbs: end of excluded minerals ------>'
+          write(idbs_bk, '(a/)') '<------ mineral.dbs: end of excluded minerals ------>'
           write(*,'(1x,a)') 'end of database backup: mineral.dbs'
         end if
       end if

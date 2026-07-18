@@ -302,6 +302,34 @@ module file_utility
         end if
     
     end function readnextline
+
+    !> check if the beginning of a string starts with the specified name.
+    !> this is used to check component name. entire name should be matched, NOT part.
+    function startWithEntireName(str,str2,flagQuote) result(matched)
+
+        implicit none
+
+        character(len=*), intent(inout) :: str
+        character(len=*), intent(in) :: str2
+        logical, intent(in) :: flagQuote
+
+        logical :: matched
+
+        matched = .false.
+
+        if (flagQuote) then
+          if (index(adjustl(str),achar(34)//trim(adjustl(str2))//achar(34)) == 1) then        !separated by space with double quote
+            matched = .true.
+          else if (index(adjustl(str),achar(39)//trim(adjustl(str2))//achar(39)) == 1) then   !separated by space with single quote
+            matched = .true.
+          end if
+        else
+          if (index(adjustl(str),trim(adjustl(str2))//achar(32)) == 1) then    !separated by space
+            matched = .true.
+          end if
+        end if
+
+    end function startWithEntireName
     
     !> replace character in string
     subroutine replacecharacter(str, stra, strb)

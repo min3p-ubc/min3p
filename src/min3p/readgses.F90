@@ -133,7 +133,7 @@
       use bbls
       use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -657,7 +657,7 @@
             do while(.true.)
               if (readnextline(igdbs,strbuffer,lowercase=.false.,      &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(nameg(ig))) == 1) then
+                if (startWithEntireName(strbuffer,nameg(ig),flagQuote=.false.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   if (readnextline(igdbs, strbuffer, lowercase=.false.,&
                       original=.true.)) then

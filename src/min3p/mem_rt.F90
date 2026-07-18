@@ -199,13 +199,13 @@
 !c           rateaqtot(naq)     = total rate of intra-aqueous kinetic * +
 !c                                reaction in solution domain
 !c                                [moles/day]
-!c           contaqtot(naq)     = accumulative contribution of        * +
+!c           accuaqtot(naq)     = accumulative contribution of        * +
 !c                                intra-aqueous kinetic reactions to 
 !c                                mass balance[moles]
-!c           contmintot(nm)     = accumulative contribution of        * +
+!c           accudpdiff(nm)     = accumulative contribution of        * +
 !c                                dissolution-precipitation reactions 
 !c                                to mass balance [moles]
-!c           totdpdiffp(ndr*nm) = accumulative individual             * +
+!c           accudpdiffp(ndr*nm) = accumulative individual             * +
 !c                                contribution of parallel reaction 
 !c                                pathways of dissolution-precipitation 
 !c                                reactions to mass balance [moles]
@@ -971,6 +971,17 @@
       call checkerr(ierr,'gdiff',ilog)
       call memory_monitor(sizeof(gdiff),'gdiff',.true.)
 
+      !c mass balance of source sink of each component from mineral phases
+      allocate (dpdiff_m2c(nm,n), stat = ierr)
+      dpdiff_m2c=0.0d0
+      call checkerr(ierr,'dpdiff_m2c',ilog)
+      call memory_monitor(sizeof(dpdiff_m2c),'dpdiff_m2c',.true.)
+
+      allocate (accu_dpdiff_m2c(nm,n), stat = ierr)
+      accu_dpdiff_m2c=0.0d0
+      call checkerr(ierr,'accu_dpdiff_m2c',ilog)
+      call memory_monitor(sizeof(accu_dpdiff_m2c),'accu_dpdiff_m2c',.true.)
+
       allocate (amass(n), stat = ierr)
       amass=0.0d0
       call checkerr(ierr,'amass',ilog)
@@ -1103,21 +1114,21 @@
       call checkerr(ierr,'rateaqtot',ilog)
       call memory_monitor(sizeof(rateaqtot),'rateaqtot',.true.)
 
-      allocate (contaqtot(naq), stat = ierr)
-      contaqtot=0.0d0
-      call checkerr(ierr,'contaqtot',ilog)
-      call memory_monitor(sizeof(contaqtot),'contaqtot',.true.)
+      allocate (accuaqtot(naq), stat = ierr)
+      accuaqtot=0.0d0
+      call checkerr(ierr,'accuaqtot',ilog)
+      call memory_monitor(sizeof(accuaqtot),'accuaqtot',.true.)
 
-      allocate (contmintot(nm), stat = ierr)
-      contmintot=0.0d0
-      call checkerr(ierr,'contmintot',ilog)
-      call memory_monitor(sizeof(contmintot),'contmintot',.true.)
+      allocate (accudpdiff(nm), stat = ierr)
+      accudpdiff=0.0d0
+      call checkerr(ierr,'accudpdiff',ilog)
+      call memory_monitor(sizeof(accudpdiff),'accudpdiff',.true.)
       
 #ifdef PETSC
-      allocate (contmintot_mpi(nm), stat = ierr)
-      contmintot_mpi=0.0d0
-      call checkerr(ierr,'contmintot_mpi',ilog)
-      call memory_monitor(sizeof(contmintot_mpi),'contmintot_mpi',.true.)
+      allocate (accudpdiff_mpi(nm), stat = ierr)
+      accudpdiff_mpi=0.0d0
+      call checkerr(ierr,'accudpdiff_mpi',ilog)
+      call memory_monitor(sizeof(accudpdiff_mpi),'accudpdiff_mpi',.true.)
 #endif
       
 
@@ -1312,10 +1323,10 @@
       call checkerr(ierr,'dpdiffp',ilog)
       call memory_monitor(sizeof(dpdiffp),'dpdiffp',.true.)
 
-      allocate (totdpdiffp(maxndr*nm), stat = ierr)
-      totdpdiffp=0.0d0
-      call checkerr(ierr,'totdpdiffp',ilog)
-      call memory_monitor(sizeof(totdpdiffp),'totdpdiffp',.true.)
+      allocate (accudpdiffp(maxndr*nm), stat = ierr)
+      accudpdiffp=0.0d0
+      call checkerr(ierr,'accudpdiffp',ilog)
+      call memory_monitor(sizeof(accudpdiffp),'accudpdiffp',.true.)
       
 !c_bubbles variables for bubble problem
 
@@ -1361,10 +1372,10 @@
       call memory_monitor(sizeof(scalfac_aq_ivol),'scalfac_aq_ivol',.true.)
       
 #ifdef PETSC
-      allocate (totdpdiffp_mpi(maxndr*nm), stat = ierr)
-      totdpdiffp_mpi=0.0d0
-      call checkerr(ierr,'totdpdiffp_mpi',ilog)
-      call memory_monitor(sizeof(totdpdiffp_mpi),'totdpdiffp_mpi',.true.)
+      allocate (accudpdiffp_mpi(maxndr*nm), stat = ierr)
+      accudpdiffp_mpi=0.0d0
+      call checkerr(ierr,'accudpdiffp_mpi',ilog)
+      call memory_monitor(sizeof(accudpdiffp_mpi),'accudpdiffp_mpi',.true.)
 #endif
       
       allocate (mpireduce_n(n), stat = ierr)

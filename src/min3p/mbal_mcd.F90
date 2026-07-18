@@ -115,10 +115,10 @@
 !                                migration in water phase in terms  
 !                                of total aqueous component 
 !                                concentrations
-!c           contaqtot(naq)     = contribution of intra-aqueous       + +
+!c           accuaqtot(naq)     = contribution of intra-aqueous       + +
 !c                                kinetic reactions to mass balance
 !c                                [moles]
-!c           contmintot(nm)     = contribution of dissolution-        + +
+!c           accudpdiff(nm)     = contribution of dissolution-        + +
 !c                                precipitation reactions to mass
 !c                                balance [moles]
 !c           gfluxtbdy(ng)      = mass flux across boundary           * *
@@ -235,7 +235,7 @@
 !c                                aqueous component concentrations
 !c                                due to dissolution-precipitation 
 !c                                reactions
-!c           totdpdiffp(ndr*nm) = accumulative individual             + +
+!c           accudpdiffp(ndr*nm) = accumulative individual             + +
 !c                                contribution of parallel
 !c                                reaction pathways of dissolution-
 !c                                precipitation reactions to mass

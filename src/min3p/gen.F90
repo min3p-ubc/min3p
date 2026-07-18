@@ -903,7 +903,10 @@
       integer (type_i4) :: irupcm           !recyclable root uptake for component-mineral
       integer (type_i4) :: imrt
       integer (type_i4) :: imrt_first
-      integer (type_i4) :: imrt_last 
+      integer (type_i4) :: imrt_last
+      integer (type_i4) :: imrtm2c
+      integer (type_i4) :: imrtm2c_first
+      integer (type_i4) :: imrtm2c_last
       integer (type_i4) :: idix
       integer (type_i4) :: ispm
       integer (type_i4) :: imcd
@@ -1967,13 +1970,13 @@
 !           rateaqtot(naq)     = total rate of intra-aqueous kinetic
 !                                reaction in solution domain
 !                                [moles/day]
-!           contaqtot(naq)     = contribution of intra-aqueous 
+!           accuaqtot(naq)     = contribution of intra-aqueous 
 !                                kinetic reactions to mass balance
 !                                [moles]
-!           contmintot(nm)     = contribution of dissolution-
+!           accudpdiff(nm)     = contribution of dissolution-
 !                                precipitation reactions to mass
 !                                balance [moles]
-!           totdpdiffp(ndr*nm) = accumulative individual contribution of parallel 
+!           accudpdiffp(ndr*nm) = accumulative individual contribution of parallel 
 !                                reaction pathways of dissolution-
 !                                precipitation reactions to mass
 !                                balance [moles]
@@ -2098,10 +2101,10 @@
       real (type_r8), allocatable :: smass_gbl(:)
       real (type_r8), allocatable :: sbdiff(:)
       real (type_r8), allocatable :: rateaqtot(:)
-      real (type_r8), allocatable :: contaqtot(:)
-      real (type_r8), allocatable :: contmintot(:)
+      real (type_r8), allocatable :: accuaqtot(:)
+      real (type_r8), allocatable :: accudpdiff(:)
 #ifdef PETSC
-      real (type_r8), allocatable :: contmintot_mpi(:)
+      real (type_r8), allocatable :: accudpdiff_mpi(:)
 #endif
       real (type_r8), allocatable :: totcfluxin(:)
       real (type_r8), allocatable :: totcfluxin_diff(:)
@@ -2122,10 +2125,14 @@
       real (type_r8), allocatable :: totgstordiff(:)
       real (type_r8), allocatable :: totsbdiff(:) 
       real (type_r8), allocatable :: dpdiffp(:)
-      real (type_r8), allocatable :: totdpdiffp(:)
+      real (type_r8), allocatable :: accudpdiffp(:)
 #ifdef PETSC
-      real (type_r8), allocatable :: totdpdiffp_mpi(:)
+      real (type_r8), allocatable :: accudpdiffp_mpi(:)
 #endif
+
+      !c mass balance of source sink of each component from mineral phases      
+      real (type_r8), allocatable :: dpdiff_m2c(:,:)
+      real (type_r8), allocatable :: accu_dpdiff_m2c(:,:)
 
       !c solute uptake
       real (type_r8), allocatable :: totrootprup(:)     !passive solute uptake, including respiration and exudation

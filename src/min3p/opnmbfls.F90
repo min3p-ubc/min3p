@@ -143,7 +143,7 @@
       use gen
       use chem
       use dens, only : density_dependence
-      use file_unit, only : lun_get, lun_set
+      use file_unit, only : lun_get, lun_set, lun_available
       use file_utility, only : check_rewind_status      
       use module_binary_mpiio, only : binary_file_open,               &
                                       tecplot_binary_write_header,    &
@@ -166,7 +166,9 @@
                  l_sufx, l_sufx2, ierr
 
       character*2 :: suffix, suffix2, strtemp
+      character*9 :: strl9
       character*36 :: strl36, dix_unit
+      character*60 :: strl60
       character*256 :: strfilename
       character*2048 :: strbuffer
       
@@ -184,7 +186,7 @@
 
       b_rewind_valid = .false.
       
-      if (b_enable_output .and. b_output_trans_binary) then
+      if (b_output_trans_binary) then
         allocate(tec_variables(nc+nmb+ng+nm+nsites+nsb_ion+            &
                            nsb_surf+26), stat = ierr)
         tec_variables = ''
@@ -218,7 +220,7 @@
         imvs = imvs_first
         call lun_set(imvs)
         
-        if (b_enable_output .and. b_output_trans_binary) then
+        if (b_output_trans_binary) then
           allocate(imvs_mpi(imvs_first:imvs_first+2+ntmsb), stat = ierr)
           call checkerr(ierr,'opnmbfls-imvs_mpi',ilog)
           imvs_mpi = 0
@@ -235,202 +237,198 @@
           call memory_monitor(sizeof(offset_imvs_ijk),'offset_imvs_ijk',.false.)
         end if
         
-        if (b_enable_output) then
             
-          if (b_output_trans_binary) then
+        if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imvs_mpi(imvs) < 10) then
-              imvs_mpi(imvs) = lun_get()
-            end if
-#endif
-            call binary_file_open(PETSC_COMM_SELF,             &
-                         imvs_mpi(imvs), prefix(:l_prfx)//'_o.mvs',    &
-                         .true.)
-          else
-            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mvs')
-            if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imvs,file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
-                   form='formatted',position='rewind')
-            else
-              open(imvs,file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
-                   form='formatted')
-            end if
+          if (imvs_mpi(imvs) < 10) then
+            imvs_mpi(imvs) = lun_get()
           end if
+#endif
+          call binary_file_open(PETSC_COMM_SELF,             &
+                       imvs_mpi(imvs), prefix(:l_prfx)//'_o.mvs',    &
+                       .true.)
+        else
+          b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mvs')
+          if (b_rewind_valid .and. i_append_sim > 0) then
+            open(imvs,file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
+                 form='formatted',position='rewind')
+          else
+            open(imvs,file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
+                 form='formatted')
+          end if
+        end if
           
 !c  version information
-          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-              call writeversion2file(imvs, "#")
-            end if
+        if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+          if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
+            call writeversion2file(imvs, "#")
           end if
-          
-          if (b_output_trans_binary) then
-            nvarsimvs = 4  
-            if (evaporation) then
-               tec_variables(1:nvarsimvs) = [character(len=72) ::      &
-                   "time", "water mass",                               &
-                   "water filled volume","vapour filled volume"]
-            else
-              tec_variables(1:nvarsimvs) =[character(len=72) ::        &
-                  "time", "water mass",                                &
-                  "water filled volume","gas filled volume"]
-            end if
-            strbuffer = "system mass - variably saturated flow"
-            
-            offset_imvs(imvs) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                         imvs_mpi(imvs), "#!TDV102",'dataset '//     &
-                         prefix(:l_prfx),offset_imvs(imvs),.true.,   &
-                         .true.)  
-            
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                         imvs_mpi(imvs), nvarsimvs,                  &
-                         tec_variables(1:nvarsimvs),                 &
-                         offset_imvs(imvs),.true.,.true.)               
-            
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                         imvs_mpi(imvs),trim(strbuffer),             &
-                         offset_imvs(imvs), 1, 1, 1, .true.,.true.,  &
-                         b_output_multizone)
-            offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4
-            
-            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                         imvs_mpi(imvs),nvarsimvs,0,                 &
-                         offset_imvs(imvs),.true.,.true.,            &
-                         b_output_multizone) 
-          else
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (evaporation) then
-
-                write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                write(imvs,'(3a)') 'variables = "time", "water mass", ', &
-                                '"water filled volume", ',               &
-                                '"vapour filled volume" '
-                write(imvs,'(2a)') 'zone t = "system mass - ',           &
-                                ' variably saturated flow", f=point'
-              else
-
-                write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                write(imvs,'(3a)') 'variables = "time", "water mass", ', &
-                                '"water filled volume", ',               &
-                                '"gas filled volume" '
-                write(imvs,'(2a)') 'zone t = "system mass - ',           &
-                                ' variably saturated flow", f=point'
-              end if
-            end if
-          end if
-          
-          write(ifls,'(a/72a/)')'system mass',('-',i=1,72)
-          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mvs'
-
-          write(ifls,'(2a)')  'column   entry                           ',&
-                              'unit'
-          write(ifls,'(2a)')  '1        time                            ',&
-                               time_unit
-          write(ifls,'(2a)')  '2        water mass                      ',&
-                              'kg'
-          write(ifls,'(2a)')  '3        water filled volume             ',&
-                              'm^3'
-          write(ifls,'(2a/)') '4        air filled volume               ',&
-                              'm^3'
         end if
+          
+        if (b_output_trans_binary) then
+          nvarsimvs = 4  
+          if (evaporation) then
+             tec_variables(1:nvarsimvs) = [character(len=72) ::      &
+                 "time", "water mass",                               &
+                 "water filled volume","vapour filled volume"]
+          else
+            tec_variables(1:nvarsimvs) =[character(len=72) ::        &
+                "time", "water mass",                                &
+                "water filled volume","gas filled volume"]
+          end if
+          strbuffer = "system mass - variably saturated flow"
+          
+          offset_imvs(imvs) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                       imvs_mpi(imvs), "#!TDV102",'dataset '//     &
+                       prefix(:l_prfx),offset_imvs(imvs),.true.,   &
+                       .true.)  
+          
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                       imvs_mpi(imvs), nvarsimvs,                  &
+                       tec_variables(1:nvarsimvs),                 &
+                       offset_imvs(imvs),.true.,.true.)               
+          
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                       imvs_mpi(imvs),trim(strbuffer),             &
+                       offset_imvs(imvs), 1, 1, 1, .true.,.true.,  &
+                       b_output_multizone)
+          offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4
+          
+          call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                       imvs_mpi(imvs),nvarsimvs,0,                 &
+                       offset_imvs(imvs),.true.,.true.,            &
+                       b_output_multizone) 
+        else
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (evaporation) then
+
+              write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imvs,'(3a)') 'variables = "time", "water mass", ', &
+                              '"water filled volume", ',               &
+                              '"vapour filled volume" '
+              write(imvs,'(2a)') 'zone t = "system mass - ',           &
+                              ' variably saturated flow", f=point'
+            else
+
+              write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imvs,'(3a)') 'variables = "time", "water mass", ', &
+                              '"water filled volume", ',               &
+                              '"gas filled volume" '
+              write(imvs,'(2a)') 'zone t = "system mass - ',           &
+                              ' variably saturated flow", f=point'
+            end if
+          end if
+        end if
+          
+        write(ifls,'(a/72a/)')'system mass',('-',i=1,72)
+        write(ifls,'(a/)') prefix(:l_prfx)//'_o.mvs'
+
+        write(ifls,'(2a)')  'column   entry                           ',&
+                            'unit'
+        write(ifls,'(2a)')  '1        time                            ',&
+                             time_unit
+        write(ifls,'(2a)')  '2        water mass                      ',&
+                            'kg'
+        write(ifls,'(2a)')  '3        water filled volume             ',&
+                            'm^3'
+        write(ifls,'(2a/)') '4        air filled volume               ',&
+                            'm^3'
 
 !c  mass balance contributions
 
         imvs = imvs+1
         call lun_set(imvs)
         
-        if (b_enable_output) then
             
-          if (b_output_trans_binary) then
+        if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imvs_mpi(imvs) < 10) then
-              imvs_mpi(imvs) = lun_get()
-            end if
-#endif
-            call binary_file_open(PETSC_COMM_SELF,                     &
-                         imvs_mpi(imvs), prefix(:l_prfx)//'_o.mvc',    &
-                         .true.)
-          else
-            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mvc')
-            if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imvs,file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
-                   form='formatted',position='rewind')
-            else
-              open(imvs,file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
-                   form='formatted')
-            end if
+          if (imvs_mpi(imvs) < 10) then
+            imvs_mpi(imvs) = lun_get()
           end if
+#endif
+          call binary_file_open(PETSC_COMM_SELF,                     &
+                       imvs_mpi(imvs), prefix(:l_prfx)//'_o.mvc',    &
+                       .true.)
+        else
+          b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mvc')
+          if (b_rewind_valid .and. i_append_sim > 0) then
+            open(imvs,file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
+                 form='formatted',position='rewind')
+          else
+            open(imvs,file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
+                 form='formatted')
+          end if
+        end if
         
 !c  version information
-          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-              call writeversion2file(imvs, "#")
-            end if
+        if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+          if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
+            call writeversion2file(imvs, "#")
           end if
+        end if
           
-          if (b_output_trans_binary) then
-            nvarsimvs = 5
-            tec_variables(1:nvarsimvs) = [character(len=72) ::         &
-                "time", "inflow", "outflow",                           &
-                "change in storage","root water uptake"]
-            strbuffer = "mass balance - variably saturated flow"
-            
-            offset_imvs(imvs) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                         imvs_mpi(imvs), "#!TDV102",'dataset '//       &
-                         prefix(:l_prfx),offset_imvs(imvs),.true.,     &
-                         .true.)                                       
-                                                                       
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                         imvs_mpi(imvs), nvarsimvs,                    &
-                         tec_variables(1:nvarsimvs),                   &
-                         offset_imvs(imvs),.true.,.true.)                 
-                                                                       
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                         imvs_mpi(imvs),trim(strbuffer),               &
-                         offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
-                         b_output_multizone)                                
-            offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4            
-                                                                       
-            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                         imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
-                         .true.,.true.,b_output_multizone) 
-          else
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-              write(imvs,'(3a)')                                         &
-                    'variables = "time", "inflow", "outflow", ',         &
-                    '"change in storage", ',                             &
-                    '"root water uptake" '
-              write(imvs,'(2a)') 'zone t = "mass balance - ',            &
-                                    ' variably saturated flow", f=point'
-            end if
+        if (b_output_trans_binary) then
+          nvarsimvs = 5
+          tec_variables(1:nvarsimvs) = [character(len=72) ::         &
+              "time", "inflow", "outflow",                           &
+              "change in storage","root water uptake"]
+          strbuffer = "mass balance - variably saturated flow"
+          
+          offset_imvs(imvs) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs), "#!TDV102",'dataset '//       &
+                       prefix(:l_prfx),offset_imvs(imvs),.true.,     &
+                       .true.)                                       
+                                                                     
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                       imvs_mpi(imvs), nvarsimvs,                    &
+                       tec_variables(1:nvarsimvs),                   &
+                       offset_imvs(imvs),.true.,.true.)                 
+                                                                     
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                       imvs_mpi(imvs),trim(strbuffer),               &
+                       offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
+                       b_output_multizone)                                
+          offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4            
+                                                                     
+          call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                       imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
+                       .true.,.true.,b_output_multizone) 
+        else
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imvs,'(3a)')                                         &
+                  'variables = "time", "inflow", "outflow", ',         &
+                  '"change in storage", ',                             &
+                  '"root water uptake" '
+            write(imvs,'(2a)') 'zone t = "mass balance - ',            &
+                                  ' variably saturated flow", f=point'
           end if
+        end if
 
-          write(ifls,'(a/72a/)')'mass balance contributions',          &
-                                ('-',i=1,72)
-          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mvc'
+        write(ifls,'(a/72a/)')'mass balance contributions',          &
+                              ('-',i=1,72)
+        write(ifls,'(a/)') prefix(:l_prfx)//'_o.mvc'
 
-          write(ifls,'(2a)')  'column   entry                           ',&
-                              'unit'
-          write(ifls,'(2a)')  '1        time                            ',&
-                               time_unit
-          if (density_dependence) then
-            write(ifls,'(2a)') '2        total inflow                    ',&
-                               'kg/day'
-            write(ifls,'(2a)') '3        total outflow                   ',&
-                               'kg/day'
-            write(ifls,'(2a/)')'4        change in storage               ',&
-                               'kg/day'
-          else
-            write(ifls,'(2a)')  '2        total inflow                    ',&
-                                'm^3/day'
-            write(ifls,'(2a)')  '3        total outflow                   ',&
-                                'm^3/day'
-            write(ifls,'(2a/)') '4        change in storage               ',&
-                                'm^3/day'
-          end if
+        write(ifls,'(2a)')  'column   entry                           ',&
+                            'unit'
+        write(ifls,'(2a)')  '1        time                            ',&
+                             time_unit
+        if (density_dependence) then
+          write(ifls,'(2a)') '2        total inflow                    ',&
+                             'kg/day'
+          write(ifls,'(2a)') '3        total outflow                   ',&
+                             'kg/day'
+          write(ifls,'(2a/)')'4        change in storage               ',&
+                             'kg/day'
+        else
+          write(ifls,'(2a)')  '2        total inflow                    ',&
+                              'm^3/day'
+          write(ifls,'(2a)')  '3        total outflow                   ',&
+                              'm^3/day'
+          write(ifls,'(2a/)') '4        change in storage               ',&
+                              'm^3/day'
         end if
 
 !c  mass balance error
@@ -438,106 +436,104 @@
         imvs = imvs+1
         call lun_set(imvs)
         
-        if (b_enable_output) then
-          if (b_output_trans_binary) then
+        if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imvs_mpi(imvs) < 10) then
-              imvs_mpi(imvs) = lun_get()
-            end if
-#endif
-            call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs),      &
-                        prefix(:l_prfx)//'_o.mve',.true.)
-          else
-
-            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mve')
-            if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imvs,file=prefix(:l_prfx)//'_o.mve',status='unknown', &
-                   form='formatted',position='rewind')
-            else
-              open(imvs,file=prefix(:l_prfx)//'_o.mve',status='unknown', &
-                   form='formatted')
-            end if
+          if (imvs_mpi(imvs) < 10) then
+            imvs_mpi(imvs) = lun_get()
           end if
+#endif
+          call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs),      &
+                      prefix(:l_prfx)//'_o.mve',.true.)
+        else
+
+          b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mve')
+          if (b_rewind_valid .and. i_append_sim > 0) then
+            open(imvs,file=prefix(:l_prfx)//'_o.mve',status='unknown', &
+                 form='formatted',position='rewind')
+          else
+            open(imvs,file=prefix(:l_prfx)//'_o.mve',status='unknown', &
+                 form='formatted')
+          end if
+        end if
         
 !c  version information
+        if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+          if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
+            call writeversion2file(imvs, "#")
+          end if
+        end if
+          
+        if (b_output_trans_binary) then
+          nvarsimvs = 5
+          tec_variables(1:nvarsimvs) = [character(len=72) :: "time", &
+                      "absolute mass balance error",                 &
+                      "relative mass balance error",                 & 
+                      "absolute cumulative mass balance error",      &
+                      "relative cumulative mass balance error"]
+          strbuffer = "mass balance error - variably saturated flow"
+          
+          offset_imvs(imvs) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs), "#!TDV102",'dataset '//       &
+                       prefix(:l_prfx),offset_imvs(imvs),.true.,     &
+                       .true.)                                       
+                                                                     
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                       imvs_mpi(imvs), nvarsimvs,                    &
+                       tec_variables(1:nvarsimvs),                   &
+                       offset_imvs(imvs),.true.,.true.)                 
+                                                                     
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                       imvs_mpi(imvs),trim(strbuffer),               &
+                       offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
+                       b_output_multizone)                                
+          offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4            
+                                                                     
+          call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                       imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
+                       .true.,.true.,b_output_multizone) 
+        else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-              call writeversion2file(imvs, "#")
-            end if
+            write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imvs,'(5a)') 'variables = "time", ',               &
+                       '"absolute mass balance error", ',            &
+                       '"relative mass balance error", ',            &
+                       '"absolute cumulative mass balance error", ', &
+                       '"relative cumulative mass balance error" '
+            write(imvs,'(2a)') 'zone t = "mass balance error - ',    &
+                               ' variably saturated flow", f=point'
           end if
+        end if
           
-          if (b_output_trans_binary) then
-            nvarsimvs = 5
-            tec_variables(1:nvarsimvs) = [character(len=72) :: "time", &
-                        "absolute mass balance error",                 &
-                        "relative mass balance error",                 & 
-                        "absolute cumulative mass balance error",      &
-                        "relative cumulative mass balance error"]
-            strbuffer = "mass balance error - variably saturated flow"
-            
-            offset_imvs(imvs) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                         imvs_mpi(imvs), "#!TDV102",'dataset '//       &
-                         prefix(:l_prfx),offset_imvs(imvs),.true.,     &
-                         .true.)                                       
-                                                                       
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                         imvs_mpi(imvs), nvarsimvs,                    &
-                         tec_variables(1:nvarsimvs),                   &
-                         offset_imvs(imvs),.true.,.true.)                 
-                                                                       
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                         imvs_mpi(imvs),trim(strbuffer),               &
-                         offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
-                         b_output_multizone)                                
-            offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4            
-                                                                       
-            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                         imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
-                         .true.,.true.,b_output_multizone) 
-          else
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-              write(imvs,'(5a)') 'variables = "time", ',               &
-                         '"absolute mass balance error", ',            &
-                         '"relative mass balance error", ',            &
-                         '"absolute cumulative mass balance error", ', &
-                         '"relative cumulative mass balance error" '
-              write(imvs,'(2a)') 'zone t = "mass balance error - ',    &
-                                 ' variably saturated flow", f=point'
-            end if
-          end if
-          
-          write(ifls,'(a/72a/)')'mass balance error',                  &
-                                ('-',i=1,72)
-          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mve'
+        write(ifls,'(a/72a/)')'mass balance error',                  &
+                              ('-',i=1,72)
+        write(ifls,'(a/)') prefix(:l_prfx)//'_o.mve'
 
-          write(ifls,'(2a)')  'column   entry                           ',&
-                              'unit'
-          write(ifls,'(2a)')  '1        time                            ',&
-                               time_unit
-          write(ifls,'(2a)')  '2        absolute mass balance error     ',&
+        write(ifls,'(2a)')  'column   entry                           ',&
+                            'unit'
+        write(ifls,'(2a)')  '1        time                            ',&
+                             time_unit
+        write(ifls,'(2a)')  '2        absolute mass balance error     ',&
+                            'm^3'
+
+        if (density_dependence) then
+          write(ifls,'(2a)')  '3        relative mass balance error     ',&
+                              '% = kg/kg in system x 100'
+          write(ifls,'(2a)')  '4        accumulative absolute mass      ',&
+                              'kg'
+          write(ifls,'(a)')   '         balance error'
+          write(ifls,'(2a)')  '5        accumulative relative mass      ',&
+                              '% = kg/kg in system x 100'
+          write(ifls,'(a)')   '         balance error'
+        else
+          write(ifls,'(2a)')  '3        relative mass balance error     ',&
+                              '% = m^3/m^3 in system x 100'
+          write(ifls,'(2a)')  '4        accumulative absolute mass      ',&
                               'm^3'
-
-          if (density_dependence) then
-            write(ifls,'(2a)')  '3        relative mass balance error     ',&
-                                '% = kg/kg in system x 100'
-            write(ifls,'(2a)')  '4        accumulative absolute mass      ',&
-                                'kg'
-            write(ifls,'(a)')   '         balance error'
-            write(ifls,'(2a)')  '5        accumulative relative mass      ',&
-                                '% = kg/kg in system x 100'
-            write(ifls,'(a)')   '         balance error'
-          else
-            write(ifls,'(2a)')  '3        relative mass balance error     ',&
-                                '% = m^3/m^3 in system x 100'
-            write(ifls,'(2a)')  '4        accumulative absolute mass      ',&
-                                'm^3'
-            write(ifls,'(a)')   '         balance error'
-            write(ifls,'(2a)')  '5        accumulative relative mass      ',&
-                                '% = m^3/m^3 in system x 100'
-            write(ifls,'(a)')   '         balance error'
-          end if
+          write(ifls,'(a)')   '         balance error'
+          write(ifls,'(2a)')  '5        accumulative relative mass      ',&
+                              '% = m^3/m^3 in system x 100'
+          write(ifls,'(a)')   '         balance error'
         end if
 
 !c  total mass through specified boundary
@@ -547,113 +543,110 @@
             imvs = imvs+1
             call lun_set(imvs)
 
-            if (b_enable_output) then
+            if(itmsb.lt.10) then
+              write(suffix,'(i1)') itmsb
+              l_sufx = 1
+            elseif (itmsb.ge.10) then
+              write(suffix,'(i2)') itmsb
+              l_sufx = 2
+            end if
 
-              if(itmsb.lt.10) then
-                write(suffix,'(i1)') itmsb
-                l_sufx = 1
-              elseif (itmsb.ge.10) then
-                write(suffix,'(i2)') itmsb
-                l_sufx = 2
-              end if
+            strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_b.mvc'
 
-              strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_b.mvc'
-
-              if (b_output_trans_binary) then
+            if (b_output_trans_binary) then
 #ifndef PETSC
-                if (imvs_mpi(imvs) < 10) then
-                  imvs_mpi(imvs) = lun_get()
-                end if
-#endif
-                call binary_file_open(PETSC_COMM_SELF,                 &
-                            imvs_mpi(imvs), trim(strfilename),.true.)
-              else
-                b_rewind_valid = check_rewind_status(trim(strfilename))
-                if (b_rewind_valid .and. i_append_sim > 0) then
-                  open(imvs,file=trim(strfilename),status='unknown',   &
-                       form='formatted',position='rewind')
-                else
-                  open(imvs,file=trim(strfilename),status='unknown',   &
-                       form='formatted')
-                end if
+              if (imvs_mpi(imvs) < 10) then
+                imvs_mpi(imvs) = lun_get()
               end if
+#endif
+              call binary_file_open(PETSC_COMM_SELF,                 &
+                          imvs_mpi(imvs), trim(strfilename),.true.)
+            else
+              b_rewind_valid = check_rewind_status(trim(strfilename))
+              if (b_rewind_valid .and. i_append_sim > 0) then
+                open(imvs,file=trim(strfilename),status='unknown',   &
+                     form='formatted',position='rewind')
+              else
+                open(imvs,file=trim(strfilename),status='unknown',   &
+                     form='formatted')
+              end if
+            end if
 
 !c  version information
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
+                call writeversion2file(imvs, "#")
+              end if
+            end if
+
+            if (b_output_trans_binary) then
+              nvarsimvs = 5
+              tec_variables(1:nvarsimvs) = [character(len=72) ::         &
+                  "time","inflow","outflow",                             &
+                  "accumulative inflow","accumulative outflow"]
+              strbuffer = "mass through specified boundary "//           &
+                          trim(name_tmsb(itmsb))//                       &
+                          " - variably saturated flow"
+
+              offset_imvs(imvs) = 0
+              call tecplot_binary_write_header(PETSC_COMM_SELF,          &
+                           imvs_mpi(imvs), "#!TDV102",'dataset '//       &
+                           prefix(:l_prfx),offset_imvs(imvs),.true.,     &
+                           .true.)
+
+              call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                           imvs_mpi(imvs), nvarsimvs,                    &
+                           tec_variables(1:nvarsimvs),                   &
+                           offset_imvs(imvs),.true.,.true.)
+
+              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                           imvs_mpi(imvs),trim(strbuffer),               &
+                           offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
+                           b_output_multizone)
+              offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4
+
+              call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                           imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
+                           .true.,.true.,b_output_multizone)
+            else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-                  call writeversion2file(imvs, "#")
-                end if
+                write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(imvs,'(2a)')                                       &
+                      'variables = "time", "inflow", "outflow", ',       &
+                      '"accumulative inflow", "accumulative outflow"'
+                write(imvs,'(3a)')                                       &
+                      'zone t = "mass through specified boundary ',      &
+                      trim(name_tmsb(itmsb)),                            &
+                      ' - variably saturated flow", f=point'
               end if
+            end if
 
-              if (b_output_trans_binary) then
-                nvarsimvs = 5
-                tec_variables(1:nvarsimvs) = [character(len=72) ::         &
-                    "time","inflow","outflow",                             &
-                    "accumulative inflow","accumulative outflow"]
-                strbuffer = "mass through specified boundary "//           &
-                            trim(name_tmsb(itmsb))//                       &
-                            " - variably saturated flow"
+            write(ifls,'(/2a/72a/)')'mass through specified boundary ',     &
+                                   trim(name_tmsb(itmsb)),('-',i=1,72)
+            write(ifls,'(a/)') trim(strfilename)
 
-                offset_imvs(imvs) = 0
-                call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                             imvs_mpi(imvs), "#!TDV102",'dataset '//       &
-                             prefix(:l_prfx),offset_imvs(imvs),.true.,     &
-                             .true.)
-
-                call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                             imvs_mpi(imvs), nvarsimvs,                    &
-                             tec_variables(1:nvarsimvs),                   &
-                             offset_imvs(imvs),.true.,.true.)
-
-                call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                             imvs_mpi(imvs),trim(strbuffer),               &
-                             offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
-                             b_output_multizone)
-                offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4
-
-                call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                             imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
-                             .true.,.true.,b_output_multizone)
-              else
-                if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                  write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                  write(imvs,'(2a)')                                       &
-                        'variables = "time", "inflow", "outflow", ',       &
-                        '"accumulative inflow", "accumulative outflow"'
-                  write(imvs,'(3a)')                                       &
-                        'zone t = "mass through specified boundary ',      &
-                        trim(name_tmsb(itmsb)),                            &
-                        ' - variably saturated flow", f=point'
-                end if
-              end if
-
-              write(ifls,'(/2a/72a/)')'mass through specified boundary ',     &
-                                     trim(name_tmsb(itmsb)),('-',i=1,72)
-              write(ifls,'(a/)') trim(strfilename)
-
-              write(ifls,'(2a)')  'column   entry                           ',&
-                                  'unit'
-              write(ifls,'(2a)')  '1        time                            ',&
-                                   time_unit
-              if (density_dependence) then
-                write(ifls,'(2a)') '2        total inflow                    ',&
-                                   'kg/day'
-                write(ifls,'(2a)') '3        total outflow                   ',&
-                                   'kg/day'
-                write(ifls,'(2a)') '4        total accumulative inflow       ',&
-                                   'kg'
-                write(ifls,'(2a)') '5        total accumulative outflow      ',&
-                                   'kg'
-              else
-                write(ifls,'(2a)') '2        total inflow                    ',&
-                                   'm^3/day'
-                write(ifls,'(2a)') '3        total outflow                   ',&
-                                   'm^3/day'
-                write(ifls,'(2a)') '2        total accumulative inflow       ',&
-                                   'm^3'
-                write(ifls,'(2a)') '3        total accumulative outflow      ',&
-                                   'm^3'
-              end if
+            write(ifls,'(2a)')  'column   entry                           ',&
+                                'unit'
+            write(ifls,'(2a)')  '1        time                            ',&
+                                 time_unit
+            if (density_dependence) then
+              write(ifls,'(2a)') '2        total inflow                    ',&
+                                 'kg/day'
+              write(ifls,'(2a)') '3        total outflow                   ',&
+                                 'kg/day'
+              write(ifls,'(2a)') '4        total accumulative inflow       ',&
+                                 'kg'
+              write(ifls,'(2a)') '5        total accumulative outflow      ',&
+                                 'kg'
+            else
+              write(ifls,'(2a)') '2        total inflow                    ',&
+                                 'm^3/day'
+              write(ifls,'(2a)') '3        total outflow                   ',&
+                                 'm^3/day'
+              write(ifls,'(2a)') '2        total accumulative inflow       ',&
+                                 'm^3'
+              write(ifls,'(2a)') '3        total accumulative outflow      ',&
+                                 'm^3'
             end if
           end do
         end if
@@ -670,372 +663,366 @@
         if (root_uptake) then
           !c active root uptake related code
           iarup = lun_get()
-          if (b_enable_output .and. b_output_trans_binary) then
+          if (b_output_trans_binary) then
             iarup_mpi = 0
             offset_iarup = 0
             offset_iarup_ijk = 0
           end if
 
-          if (b_enable_output) then
-            if (b_output_trans_binary) then
+          if (b_output_trans_binary) then
 #ifndef PETSC
-              if (iarup_mpi < 10) then
-                iarup_mpi = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,iarup_mpi,             &
-                                    prefix(:l_prfx)//'_o.arup',.true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.arup')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
-                     form='formatted',position='rewind')
-              else
-                open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
-                     form='formatted')
-              end if
+            if (iarup_mpi < 10) then
+              iarup_mpi = lun_get()
             end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,iarup_mpi,             &
+                                  prefix(:l_prfx)//'_o.arup',.true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.arup')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
+                   form='formatted',position='rewind')
+            else
+              open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
+                   form='formatted')
+            end if
+          end if
           
 !c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(iarup, "#")
-              end if
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(iarup, "#")
             end if
-          
-          
-            if (b_output_trans_binary) then
-              nvarsiarup = 2*(nc-1)+1
-              tec_variables(1) = "time"
-              do ic = 1, nc-1
-                tec_variables(ic+1) = trim(namec(ic))//                &
-                    " solute uptake [mol/day]" 
-              end do
-              do ic = 1, nc-1
-                tec_variables(nc+ic) = trim(namec(ic))//               &
-                    " accumulative solute uptake [mol]" 
-              end do
-            
-              strbuffer = 'active solute uptake - selected species'
-            
-              offset_iarup = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           iarup_mpi, "#!TDV102",'dataset '//          &
-                           prefix(:l_prfx),offset_iarup,.true.,        &
-                           .true.)  
-  
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           iarup_mpi, nvarsiarup,                      &
-                           tec_variables(1:nvarsiarup), offset_iarup,  &
-                           .true.,.true.)               
-
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           iarup_mpi,trim(strbuffer),                  &
-                           offset_iarup, 1, 1, 1, .true.,.true.,       &
-                           b_output_multizone)
-              offset_iarup_ijk = offset_iarup - 5*4
-
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           iarup_mpi,nvarsiarup,0,offset_iarup,        &
-                           .true.,.true.,b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(iarup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-
-                do ic = 1,nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' solute uptake [mol/day]"'
-                end do
-                 
-                do ic = 1,nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' accumulative solute uptake [mol]"'
-                end do
-
-                write(iarup,'(a)') trim(strbuffer)
-                write(iarup,'(2a)')                                       &
-                   'zone t = "active solute uptake - selected species", f=point'
-              end if
-            end if
-
-            write(ifls,'(/a/72a/)') 'active solute uptake - selected species',  &
-                                    ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.arup'
-
-            write(ifls,'(2a)')  'column   entry                           ',&
-                                'unit'
-            write(ifls,'(2a)')  '1        time                            ',&
-                                 time_unit
-            do ic = 1,nc-1
-              if (ic.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' solute uptake','mol/day'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' solute uptake','mol/day'
-              end if
-            end do
-
-            do ic = 1,nc-1
-              if (ic.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' accumulative solute uptake','mol'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' accumulative solute uptake','mol'
-              end if
-            end do          
           end if
+          
+          
+          if (b_output_trans_binary) then
+            nvarsiarup = 2*(nc-1)+1
+            tec_variables(1) = "time"
+            do ic = 1, nc-1
+              tec_variables(ic+1) = trim(namec(ic))//                &
+                  " solute uptake [mol/day]" 
+            end do
+            do ic = 1, nc-1
+              tec_variables(nc+ic) = trim(namec(ic))//               &
+                  " accumulative solute uptake [mol]" 
+            end do
+          
+            strbuffer = 'active solute uptake - selected species'
+            
+            offset_iarup = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         iarup_mpi, "#!TDV102",'dataset '//          &
+                         prefix(:l_prfx),offset_iarup,.true.,        &
+                         .true.)  
+  
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         iarup_mpi, nvarsiarup,                      &
+                         tec_variables(1:nvarsiarup), offset_iarup,  &
+                         .true.,.true.)               
+
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                         iarup_mpi,trim(strbuffer),                  &
+                         offset_iarup, 1, 1, 1, .true.,.true.,       &
+                         b_output_multizone)
+            offset_iarup_ijk = offset_iarup - 5*4
+
+            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                         iarup_mpi,nvarsiarup,0,offset_iarup,        &
+                         .true.,.true.,b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(iarup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+
+              do ic = 1,nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' solute uptake [mol/day]"'
+              end do
+               
+              do ic = 1,nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' accumulative solute uptake [mol]"'
+              end do
+
+              write(iarup,'(a)') trim(strbuffer)
+              write(iarup,'(2a)')                                       &
+                 'zone t = "active solute uptake - selected species", f=point'
+            end if
+          end if
+
+          write(ifls,'(/a/72a/)') 'active solute uptake - selected species',  &
+                                  ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.arup'
+
+          write(ifls,'(2a)')  'column   entry                           ',&
+                              'unit'
+          write(ifls,'(2a)')  '1        time                            ',&
+                               time_unit
+          do ic = 1,nc-1
+            if (ic.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' solute uptake','mol/day'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' solute uptake','mol/day'
+            end if
+          end do
+
+          do ic = 1,nc-1
+            if (ic.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' accumulative solute uptake','mol'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' accumulative solute uptake','mol'
+            end if
+          end do          
         end if
 
 !c  solute uptake by passive solute uptake
         if (root_uptake .or. passive_uptake) then
           !c total passive solute uptake related code
           iprup = lun_get()
-          if (b_enable_output .and. b_output_trans_binary) then
+          if (b_output_trans_binary) then
             iprup_mpi = 0
             offset_iprup = 0
             offset_iprup_ijk = 0
           end if
 
-          if (b_enable_output) then
-            if (b_output_trans_binary) then
+          if (b_output_trans_binary) then
 #ifndef PETSC
-              if (iprup_mpi < 10) then
-                iprup_mpi = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,iprup_mpi,          &
-                                    prefix(:l_prfx)//'_o.prup',.true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.prup')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
-                     form='formatted',position='rewind')
-              else
-                open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
-                     form='formatted')
-              end if
+            if (iprup_mpi < 10) then
+              iprup_mpi = lun_get()
             end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,iprup_mpi,          &
+                                  prefix(:l_prfx)//'_o.prup',.true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.prup')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
+                   form='formatted',position='rewind')
+            else
+              open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
+                   form='formatted')
+            end if
+          end if
           
 !c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(iprup, "#")
-              end if
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(iprup, "#")
             end if
-          
-          
-            if (b_output_trans_binary) then
-              nvarsiprup = 2*(nc-1)+1
-              tec_variables(1) = "time"
-              do ic = 1, nc-1
-                tec_variables(ic+1) = trim(namec(ic))//                &
-                    " solute uptake [mol/day]" 
-              end do
-              do ic = 1, nc-1
-                tec_variables(nc+ic) = trim(namec(ic))//               &
-                    " accumulative solute uptake [mol]" 
-              end do
-            
-              strbuffer = 'passive solute uptake - selected species'
-            
-              offset_iprup = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           iprup_mpi, "#!TDV102",'dataset '//           &
-                           prefix(:l_prfx),offset_iprup,.true.,         &
-                           .true.)  
-  
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           iprup_mpi, nvarsiprup,                        &
-                           tec_variables(1:nvarsiprup), offset_iprup,    &
-                           .true.,.true.)               
-
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,       &
-                           iprup_mpi,trim(strbuffer),                    &
-                           offset_iprup, 1, 1, 1, .true.,.true.,         &
-                           b_output_multizone)
-              offset_iprup_ijk = offset_iprup - 5*4
-
-              call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                           iprup_mpi,nvarsiprup,0,offset_iprup,          &
-                           .true.,.true.,b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(iprup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-
-                do ic = 1,nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' solute uptake [mol/day]"'
-                end do
-                 
-                do ic = 1,nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' accumulative solute uptake [mol]"'
-                end do
-
-                write(iprup,'(a)') trim(strbuffer)
-                write(iprup,'(2a)')                                       &
-                   'zone t = "passive solute uptake - selected species", f=point'
-              end if
-            end if
-
-            write(ifls,'(/a/72a/)') 'passive solute uptake - selected species',  &
-                                    ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.prup'
-
-            write(ifls,'(2a)')  'column   entry                           ', &
-                                'unit'
-            write(ifls,'(2a)')  '1        time                            ', &
-                                 time_unit
-            do ic = 1,nc-1
-              if (ic.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' solute uptake','mol/day'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' solute uptake','mol/day'
-              end if
-            end do
-
-            do ic = 1,nc-1
-              if (ic.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' accumulative solute uptake','mol'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' accumulative solute uptake','mol'
-              end if
-            end do          
           end if
+          
+          
+          if (b_output_trans_binary) then
+            nvarsiprup = 2*(nc-1)+1
+            tec_variables(1) = "time"
+            do ic = 1, nc-1
+              tec_variables(ic+1) = trim(namec(ic))//                &
+                  " solute uptake [mol/day]" 
+            end do
+            do ic = 1, nc-1
+              tec_variables(nc+ic) = trim(namec(ic))//               &
+                  " accumulative solute uptake [mol]" 
+            end do
+          
+            strbuffer = 'passive solute uptake - selected species'
+          
+            offset_iprup = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         iprup_mpi, "#!TDV102",'dataset '//           &
+                         prefix(:l_prfx),offset_iprup,.true.,         &
+                         .true.)  
+  
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         iprup_mpi, nvarsiprup,                        &
+                         tec_variables(1:nvarsiprup), offset_iprup,    &
+                         .true.,.true.)               
+
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,       &
+                         iprup_mpi,trim(strbuffer),                    &
+                         offset_iprup, 1, 1, 1, .true.,.true.,         &
+                         b_output_multizone)
+            offset_iprup_ijk = offset_iprup - 5*4
+
+            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                         iprup_mpi,nvarsiprup,0,offset_iprup,          &
+                         .true.,.true.,b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(iprup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+
+              do ic = 1,nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' solute uptake [mol/day]"'
+              end do
+               
+              do ic = 1,nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' accumulative solute uptake [mol]"'
+              end do
+
+              write(iprup,'(a)') trim(strbuffer)
+              write(iprup,'(2a)')                                       &
+                 'zone t = "passive solute uptake - selected species", f=point'
+            end if
+          end if
+
+          write(ifls,'(/a/72a/)') 'passive solute uptake - selected species',  &
+                                  ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.prup'
+
+          write(ifls,'(2a)')  'column   entry                           ', &
+                              'unit'
+          write(ifls,'(2a)')  '1        time                            ', &
+                               time_unit
+          do ic = 1,nc-1
+            if (ic.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' solute uptake','mol/day'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' solute uptake','mol/day'
+            end if
+          end do
+
+          do ic = 1,nc-1
+            if (ic.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' accumulative solute uptake','mol'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' accumulative solute uptake','mol'
+            end if
+          end do          
         end if
 
 !c  total solute uptake by passive solute uptake and active solute uptake
         if (root_uptake .or. passive_uptake) then
           !c total root uptake related code
           irup = lun_get()
-          if (b_enable_output .and. b_output_trans_binary) then
+          if (b_output_trans_binary) then
             irup_mpi = 0
             offset_irup = 0
             offset_irup_ijk = 0
           end if
 
-          if (b_enable_output) then
-            if (b_output_trans_binary) then
+          if (b_output_trans_binary) then
 #ifndef PETSC
-              if (irup_mpi < 10) then
-                irup_mpi = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,irup_mpi,          &
-                                    prefix(:l_prfx)//'_o.rup',.true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.rup')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(irup,file=prefix(:l_prfx)//'_o.rup',status='unknown', &
-                     form='formatted',position='rewind')
-              else
-                open(irup,file=prefix(:l_prfx)//'_o.rup',status='unknown', &
-                     form='formatted')
-              end if
+            if (irup_mpi < 10) then
+              irup_mpi = lun_get()
             end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,irup_mpi,          &
+                                  prefix(:l_prfx)//'_o.rup',.true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.rup')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(irup,file=prefix(:l_prfx)//'_o.rup',status='unknown', &
+                   form='formatted',position='rewind')
+            else
+              open(irup,file=prefix(:l_prfx)//'_o.rup',status='unknown', &
+                   form='formatted')
+            end if
+          end if
           
 !c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(irup, "#")
-              end if
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(irup, "#")
             end if
-          
-          
-            if (b_output_trans_binary) then
-              nvarsirup = 2*(nc-1)+1
-              tec_variables(1) = "time"
-              do ic = 1, nc-1
-                tec_variables(ic+1) = trim(namec(ic))//                &
-                    " solute uptake [mol/day]" 
-              end do
-              do ic = 1, nc-1
-                tec_variables(nc+ic) = trim(namec(ic))//               &
-                    " accumulative solute uptake [mol]" 
-              end do
-            
-              strbuffer = 'total solute uptake - selected species'
-            
-              offset_irup = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           irup_mpi, "#!TDV102",'dataset '//           &
-                           prefix(:l_prfx),offset_irup,.true.,         &
-                           .true.)  
-  
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           irup_mpi, nvarsirup,                        &
-                           tec_variables(1:nvarsirup), offset_irup,    &
-                           .true.,.true.)               
-
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,       &
-                           irup_mpi,trim(strbuffer),                    &
-                           offset_irup, 1, 1, 1, .true.,.true.,         &
-                           b_output_multizone)
-              offset_irup_ijk = offset_irup - 5*4
-
-              call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                           irup_mpi,nvarsirup,0,offset_irup,          &
-                           .true.,.true.,b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(irup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-
-                do ic = 1,nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' solute uptake [mol/day]"'
-                end do
-                 
-                do ic = 1,nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' accumulative solute uptake [mol]"'
-                end do
-
-                write(irup,'(a)') trim(strbuffer)
-                write(irup,'(a)')                                            &
-                   'zone t = "accumulative total solute uptake - selected species", f=point'
-              end if
-            end if
-
-            write(ifls,'(/a/72a/)') 'total solute uptake - selected species',  &
-                                    ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.rup'
-
-            write(ifls,'(2a)')  'column   entry                           ', &
-                                'unit'
-            write(ifls,'(2a)')  '1        time                            ', &
-                                 time_unit
-            do ic = 1,nc-1
-              if (ic.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' solute uptake','mol/day'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' solute uptake','mol/day'
-              end if
-            end do
-
-            do ic = 1,nc-1
-              if (ic.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' accumulative solute uptake','mol'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                      ' accumulative solute uptake','mol'
-              end if
-            end do          
           end if
+          
+          
+          if (b_output_trans_binary) then
+            nvarsirup = 2*(nc-1)+1
+            tec_variables(1) = "time"
+            do ic = 1, nc-1
+              tec_variables(ic+1) = trim(namec(ic))//                &
+                  " solute uptake [mol/day]" 
+            end do
+            do ic = 1, nc-1
+              tec_variables(nc+ic) = trim(namec(ic))//               &
+                  " accumulative solute uptake [mol]" 
+            end do
+          
+            strbuffer = 'total solute uptake - selected species'
+            
+            offset_irup = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         irup_mpi, "#!TDV102",'dataset '//           &
+                         prefix(:l_prfx),offset_irup,.true.,         &
+                         .true.)  
+  
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         irup_mpi, nvarsirup,                        &
+                         tec_variables(1:nvarsirup), offset_irup,    &
+                         .true.,.true.)               
+
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,       &
+                         irup_mpi,trim(strbuffer),                    &
+                         offset_irup, 1, 1, 1, .true.,.true.,         &
+                         b_output_multizone)
+            offset_irup_ijk = offset_irup - 5*4
+
+            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                         irup_mpi,nvarsirup,0,offset_irup,          &
+                         .true.,.true.,b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(irup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+
+              do ic = 1,nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' solute uptake [mol/day]"'
+              end do
+               
+              do ic = 1,nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' accumulative solute uptake [mol]"'
+              end do
+
+              write(irup,'(a)') trim(strbuffer)
+              write(irup,'(a)')                                            &
+                 'zone t = "accumulative total solute uptake - selected species", f=point'
+            end if
+          end if
+
+          write(ifls,'(/a/72a/)') 'total solute uptake - selected species',  &
+                                  ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.rup'
+
+          write(ifls,'(2a)')  'column   entry                           ', &
+                              'unit'
+          write(ifls,'(2a)')  '1        time                            ', &
+                               time_unit
+          do ic = 1,nc-1
+            if (ic.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' solute uptake','mol/day'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' solute uptake','mol/day'
+            end if
+          end do
+
+          do ic = 1,nc-1
+            if (ic.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' accumulative solute uptake','mol'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                    ' accumulative solute uptake','mol'
+            end if
+          end do          
         end if
 
 !c  output of dilution index
@@ -1050,266 +1037,259 @@
           end if
 
           idix = lun_get()
-          if (b_enable_output .and. b_output_trans_binary) then
+          if (b_output_trans_binary) then
             idix_mpi = 0
             offset_idix = 0
             offset_idix_ijk = 0
           end if
 
-          if (b_enable_output) then
-            if (b_output_trans_binary) then
+          if (b_output_trans_binary) then
 #ifndef PETSC
-              if (idix_mpi < 10) then
-                idix_mpi = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,idix_mpi,              &
-                                    prefix(:l_prfx)//'_o.dix',.true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.dix')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(idix,file=prefix(:l_prfx)//'_o.dix',status='unknown', &
-                     form='formatted',position='rewind')
-              else
-                open(idix,file=prefix(:l_prfx)//'_o.dix',status='unknown', &
-                     form='formatted')
-              end if
+            if (idix_mpi < 10) then
+              idix_mpi = lun_get()
             end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,idix_mpi,              &
+                                  prefix(:l_prfx)//'_o.dix',.true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.dix')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(idix,file=prefix(:l_prfx)//'_o.dix',status='unknown', &
+                   form='formatted',position='rewind')
+            else
+              open(idix,file=prefix(:l_prfx)//'_o.dix',status='unknown', &
+                   form='formatted')
+            end if
+          end if
           
 !c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(idix, "#")
-              end if
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(idix, "#")
             end if
+          end if          
           
-          
-            if (b_output_trans_binary) then
-              nvarsidix = nc
-              tec_variables(1) = "time"
-              do ic = 1, nc-1
-                tec_variables(ic+1) = trim(namec(ic))//                &
-                    " dilution index ["//trim(dix_unit)//']' 
-              end do
-            
-              strbuffer = 'dilution index - selected species'
-            
-              offset_idix = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           idix_mpi, "#!TDV102",'dataset '//           &
-                           prefix(:l_prfx),offset_idix,.true.,.true.)  
-  
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           idix_mpi, nvarsidix,                        &
-                           tec_variables(1:nvarsidix), offset_idix,    &
-                           .true.,.true.)               
-
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           idix_mpi,trim(strbuffer),                   &
-                           offset_idix, 1, 1, 1, .true.,.true.,        &
-                           b_output_multizone)
-              offset_idix_ijk = offset_idix - 5*4
-
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           idix_mpi,nvarsidix,0,offset_idix,           &
-                           .true.,.true.,b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(idix,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-
-                do ic = 1, nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' dilution index ['//trim(dix_unit)//']"'
-                end do
-                 
-
-                write(idix,'(a)') trim(strbuffer)
-                write(idix,'(2a)')                                     &
-                   'zone t = "dilution index - selected species", f=point'
-              end if
-            end if
-
-            write(ifls,'(/a/72a/)')                                    &
-                  'dilution index - selected species', ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.dix'
-
-            write(ifls,'(2a)')  'column   entry                           ',&
-                                'unit'
-            write(ifls,'(2a)')  '1        time                            ',&
-                                 time_unit
-            do ic = 1,nc-1
-              if (ic.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
-                                               ' dixiration',trim(dix_unit)
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
-                                               ' dixiration',trim(dix_unit)
-              end if
+          if (b_output_trans_binary) then
+            nvarsidix = nc
+            tec_variables(1) = "time"
+            do ic = 1, nc-1
+              tec_variables(ic+1) = trim(namec(ic))//                &
+                  " dilution index ["//trim(dix_unit)//']' 
             end do
-         
+          
+            strbuffer = 'dilution index - selected species'
+          
+            offset_idix = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         idix_mpi, "#!TDV102",'dataset '//           &
+                         prefix(:l_prfx),offset_idix,.true.,.true.)  
+  
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         idix_mpi, nvarsidix,                        &
+                         tec_variables(1:nvarsidix), offset_idix,    &
+                         .true.,.true.)               
+
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                         idix_mpi,trim(strbuffer),                   &
+                         offset_idix, 1, 1, 1, .true.,.true.,        &
+                         b_output_multizone)
+            offset_idix_ijk = offset_idix - 5*4
+
+            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                         idix_mpi,nvarsidix,0,offset_idix,           &
+                         .true.,.true.,b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(idix,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+
+              do ic = 1, nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' dilution index ['//trim(dix_unit)//']"'
+              end do
+               
+
+              write(idix,'(a)') trim(strbuffer)
+              write(idix,'(2a)')                                     &
+                 'zone t = "dilution index - selected species", f=point'
+            end if
           end if
+
+          write(ifls,'(/a/72a/)')                                    &
+                'dilution index - selected species', ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.dix'
+
+          write(ifls,'(2a)')  'column   entry                           ',&
+                              'unit'
+          write(ifls,'(2a)')  '1        time                            ',&
+                               time_unit
+          do ic = 1,nc-1
+            if (ic.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+                                             ' dixiration',trim(dix_unit)
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+                                             ' dixiration',trim(dix_unit)
+            end if
+          end do
         end if
 
 !c  output of spatial moment
         if (b_spatial_moment) then
 
           ispm = lun_get()
-          if (b_enable_output .and. b_output_trans_binary) then
+          if (b_output_trans_binary) then
             ispm_mpi = 0
             offset_ispm = 0
             offset_ispm_ijk = 0
           end if
 
-          if (b_enable_output) then
-            if (b_output_trans_binary) then
+          if (b_output_trans_binary) then
 #ifndef PETSC
-              if (ispm_mpi < 10) then
-                ispm_mpi = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,ispm_mpi,              &
-                                    prefix(:l_prfx)//'_o.spm',.true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.spm')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(ispm,file=prefix(:l_prfx)//'_o.spm',status='unknown', &
-                     form='formatted',position='rewind')
-              else
-                open(ispm,file=prefix(:l_prfx)//'_o.spm',status='unknown', &
-                     form='formatted')
-              end if
+            if (ispm_mpi < 10) then
+              ispm_mpi = lun_get()
             end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,ispm_mpi,              &
+                                  prefix(:l_prfx)//'_o.spm',.true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.spm')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(ispm,file=prefix(:l_prfx)//'_o.spm',status='unknown', &
+                   form='formatted',position='rewind')
+            else
+              open(ispm,file=prefix(:l_prfx)//'_o.spm',status='unknown', &
+                   form='formatted')
+            end if
+          end if
           
 !c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(ispm, "#")
-              end if
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(ispm, "#")
             end if
-          
-          
-            if (b_output_trans_binary) then
-              nvarsispm = 1+(nc-1)*6
-              tec_variables(1) = "time"
-              do ic = 1, nc-1
-                tec_variables((ic-1)*3+2) = trim(namec(ic))//" x_1st [m]"
-                tec_variables((ic-1)*3+3) = trim(namec(ic))//" y_1st [m]"
-                tec_variables((ic-1)*3+4) = trim(namec(ic))//" z_1st [m]"
-              end do
-
-              do ic = 1, nc-1
-                tec_variables((nc-1)*3+(ic-1)*3+2) = trim(namec(ic))//" x_2nd [m]"
-                tec_variables((nc-1)*3+(ic-1)*3+3) = trim(namec(ic))//" y_2nd [m]"
-                tec_variables((nc-1)*3+(ic-1)*3+4) = trim(namec(ic))//" z_2nd [m]"
-              end do
-            
-              strbuffer = 'spatial moment - selected species'
-            
-              offset_ispm = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           ispm_mpi, "#!TDV102",'dataset '//           &
-                           prefix(:l_prfx),offset_ispm,.true.,.true.)  
-  
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           ispm_mpi, nvarsispm,                        &
-                           tec_variables(1:nvarsispm), offset_ispm,    &
-                           .true.,.true.)               
-
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           ispm_mpi,trim(strbuffer),                   &
-                           offset_ispm, 1, 1, 1, .true.,.true.,        &
-                           b_output_multizone)
-              offset_ispm_ijk = offset_ispm - 5*4
-
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           ispm_mpi,nvarsispm,0,offset_ispm,           &
-                           .true.,.true.,b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(ispm,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-
-                do ic = 1, nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' x_1st [m]"'//', "'//trim(namec(ic))//  &
-                              ' y_1st [m]"'//', "'//trim(namec(ic))//  &
-                              ' z_1st [m]"'
-                end do
-
-                do ic = 1, nc-1
-                  strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
-                              ' x_2nd [m]"'//', "'//trim(namec(ic))//  &
-                              ' y_2nd [m]"'//', "'//trim(namec(ic))//  &
-                              ' z_2nd [m]"'
-                end do
-                 
-
-                write(ispm,'(a)') trim(strbuffer)
-                write(ispm,'(2a)')                                     &
-                   'zone t = "spatial moment - selected species", f=point'
-              end if
-            end if
-
-            write(ifls,'(/a/72a/)')                                    &
-                  'spatial moment - selected species', ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.spm'
-
-            write(ifls,'(2a)')  'column   entry                           ',&
-                                'unit'
-            write(ifls,'(2a)')  '1        time                            ',&
-                                 time_unit
-            do ic = 1,nc-1
-              if ((ic-1)*3+2 .lt. 10) then
-                write(ifls,'(i1,8x,a30,2x,a)') (ic-1)*3+2,namec(ic)//" x_1st [m]"
-              else if ((ic-1)*3+2 .lt. 100) then
-                write(ifls,'(i2,7x,a30,2x,a)') (ic-1)*3+2,namec(ic)//" x_1st [m]"
-              else
-                write(ifls,'(i3,6x,a30,2x,a)') (ic-1)*3+2,namec(ic)//" x_1st [m]"
-              end if
-              if ((ic-1)*3+3 .lt. 10) then
-                write(ifls,'(i1,8x,a30,2x,a)') (ic-1)*3+3,namec(ic)//" y_1st [m]"
-              else if ((ic-1)*3+3 .lt. 100) then
-                write(ifls,'(i2,7x,a30,2x,a)') (ic-1)*3+3,namec(ic)//" y_1st [m]"
-              else
-                write(ifls,'(i3,6x,a30,2x,a)') (ic-1)*3+3,namec(ic)//" y_1st [m]"
-              end if
-              if ((ic-1)*3+4 .lt. 10) then
-                write(ifls,'(i1,8x,a30,2x,a)') (ic-1)*3+4,namec(ic)//" z_1st [m]"
-              else if ((ic-1)*3+4 .lt. 100) then
-                write(ifls,'(i2,7x,a30,2x,a)') (ic-1)*3+4,namec(ic)//" z_1st [m]"
-              else
-                write(ifls,'(i3,6x,a30,2x,a)') (ic-1)*3+4,namec(ic)//" z_1st [m]"
-              end if
-            end do
-
-            do ic = 1,nc-1
-              if ((nc-1)*3+(ic-1)*3+2 .lt. 10) then
-                write(ifls,'(i1,8x,a30,2x,a)') (nc-1)*3+(ic-1)*3+2,namec(ic)//" x_2nd [m]"
-              else if ((nc-1)*3+(ic-1)*3+2 .lt. 100) then
-                write(ifls,'(i2,7x,a30,2x,a)') (nc-1)*3+(ic-1)*3+2,namec(ic)//" x_2nd [m]"
-              else
-                write(ifls,'(i3,6x,a30,2x,a)') (nc-1)*3+(ic-1)*3+2,namec(ic)//" x_2nd [m]"
-              end if
-              if ((nc-1)*3+(ic-1)*3+3 .lt. 10) then
-                write(ifls,'(i1,8x,a30,2x,a)') (nc-1)*3+(ic-1)*3+3,namec(ic)//" y_2nd [m]"
-              else if ((nc-1)*3+(ic-1)*3+3 .lt. 100) then
-                write(ifls,'(i2,7x,a30,2x,a)') (nc-1)*3+(ic-1)*3+3,namec(ic)//" y_2nd [m]"
-              else
-                write(ifls,'(i3,6x,a30,2x,a)') (nc-1)*3+(ic-1)*3+3,namec(ic)//" y_2nd [m]"
-              end if
-              if ((nc-1)*3+(ic-1)*3+4 .lt. 10) then
-                write(ifls,'(i1,8x,a30,2x,a)') (nc-1)*3+(ic-1)*3+4,namec(ic)//" z_2nd [m]"
-              else if ((nc-1)*3+(ic-1)*3+4 .lt. 100) then
-                write(ifls,'(i2,7x,a30,2x,a)') (nc-1)*3+(ic-1)*3+4,namec(ic)//" z_2nd [m]"
-              else
-                write(ifls,'(i3,6x,a30,2x,a)') (nc-1)*3+(ic-1)*3+4,namec(ic)//" z_2nd [m]"
-              end if
-            end do
-         
           end if
+          
+          
+          if (b_output_trans_binary) then
+            nvarsispm = 1+(nc-1)*6
+            tec_variables(1) = "time"
+            do ic = 1, nc-1
+              tec_variables((ic-1)*3+2) = trim(namec(ic))//" x_1st [m]"
+              tec_variables((ic-1)*3+3) = trim(namec(ic))//" y_1st [m]"
+              tec_variables((ic-1)*3+4) = trim(namec(ic))//" z_1st [m]"
+            end do
+
+            do ic = 1, nc-1
+              tec_variables((nc-1)*3+(ic-1)*3+2) = trim(namec(ic))//" x_2nd [m]"
+              tec_variables((nc-1)*3+(ic-1)*3+3) = trim(namec(ic))//" y_2nd [m]"
+              tec_variables((nc-1)*3+(ic-1)*3+4) = trim(namec(ic))//" z_2nd [m]"
+            end do
+          
+            strbuffer = 'spatial moment - selected species'
+          
+            offset_ispm = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         ispm_mpi, "#!TDV102",'dataset '//           &
+                         prefix(:l_prfx),offset_ispm,.true.,.true.)  
+  
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         ispm_mpi, nvarsispm,                        &
+                         tec_variables(1:nvarsispm), offset_ispm,    &
+                         .true.,.true.)               
+
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                         ispm_mpi,trim(strbuffer),                   &
+                         offset_ispm, 1, 1, 1, .true.,.true.,        &
+                         b_output_multizone)
+            offset_ispm_ijk = offset_ispm - 5*4
+
+            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                         ispm_mpi,nvarsispm,0,offset_ispm,           &
+                         .true.,.true.,b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(ispm,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+
+              do ic = 1, nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' x_1st [m]"'//', "'//trim(namec(ic))//  &
+                            ' y_1st [m]"'//', "'//trim(namec(ic))//  &
+                            ' z_1st [m]"'
+              end do
+
+              do ic = 1, nc-1
+                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//&
+                            ' x_2nd [m]"'//', "'//trim(namec(ic))//  &
+                            ' y_2nd [m]"'//', "'//trim(namec(ic))//  &
+                            ' z_2nd [m]"'
+              end do
+               
+
+              write(ispm,'(a)') trim(strbuffer)
+              write(ispm,'(2a)')                                     &
+                 'zone t = "spatial moment - selected species", f=point'
+            end if
+          end if
+
+          write(ifls,'(/a/72a/)')                                    &
+                'spatial moment - selected species', ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.spm'
+
+          write(ifls,'(2a)')  'column   entry                           ',&
+                              'unit'
+          write(ifls,'(2a)')  '1        time                            ',&
+                               time_unit
+          do ic = 1,nc-1
+            if ((ic-1)*3+2 .lt. 10) then
+              write(ifls,'(i1,8x,a30,2x,a)') (ic-1)*3+2,namec(ic)//" x_1st [m]"
+            else if ((ic-1)*3+2 .lt. 100) then
+              write(ifls,'(i2,7x,a30,2x,a)') (ic-1)*3+2,namec(ic)//" x_1st [m]"
+            else
+              write(ifls,'(i3,6x,a30,2x,a)') (ic-1)*3+2,namec(ic)//" x_1st [m]"
+            end if
+            if ((ic-1)*3+3 .lt. 10) then
+              write(ifls,'(i1,8x,a30,2x,a)') (ic-1)*3+3,namec(ic)//" y_1st [m]"
+            else if ((ic-1)*3+3 .lt. 100) then
+              write(ifls,'(i2,7x,a30,2x,a)') (ic-1)*3+3,namec(ic)//" y_1st [m]"
+            else
+              write(ifls,'(i3,6x,a30,2x,a)') (ic-1)*3+3,namec(ic)//" y_1st [m]"
+            end if
+            if ((ic-1)*3+4 .lt. 10) then
+              write(ifls,'(i1,8x,a30,2x,a)') (ic-1)*3+4,namec(ic)//" z_1st [m]"
+            else if ((ic-1)*3+4 .lt. 100) then
+              write(ifls,'(i2,7x,a30,2x,a)') (ic-1)*3+4,namec(ic)//" z_1st [m]"
+            else
+              write(ifls,'(i3,6x,a30,2x,a)') (ic-1)*3+4,namec(ic)//" z_1st [m]"
+            end if
+          end do
+
+          do ic = 1,nc-1
+            if ((nc-1)*3+(ic-1)*3+2 .lt. 10) then
+              write(ifls,'(i1,8x,a30,2x,a)') (nc-1)*3+(ic-1)*3+2,namec(ic)//" x_2nd [m]"
+            else if ((nc-1)*3+(ic-1)*3+2 .lt. 100) then
+              write(ifls,'(i2,7x,a30,2x,a)') (nc-1)*3+(ic-1)*3+2,namec(ic)//" x_2nd [m]"
+            else
+              write(ifls,'(i3,6x,a30,2x,a)') (nc-1)*3+(ic-1)*3+2,namec(ic)//" x_2nd [m]"
+            end if
+            if ((nc-1)*3+(ic-1)*3+3 .lt. 10) then
+              write(ifls,'(i1,8x,a30,2x,a)') (nc-1)*3+(ic-1)*3+3,namec(ic)//" y_2nd [m]"
+            else if ((nc-1)*3+(ic-1)*3+3 .lt. 100) then
+              write(ifls,'(i2,7x,a30,2x,a)') (nc-1)*3+(ic-1)*3+3,namec(ic)//" y_2nd [m]"
+            else
+              write(ifls,'(i3,6x,a30,2x,a)') (nc-1)*3+(ic-1)*3+3,namec(ic)//" y_2nd [m]"
+            end if
+            if ((nc-1)*3+(ic-1)*3+4 .lt. 10) then
+              write(ifls,'(i1,8x,a30,2x,a)') (nc-1)*3+(ic-1)*3+4,namec(ic)//" z_2nd [m]"
+            else if ((nc-1)*3+(ic-1)*3+4 .lt. 100) then
+              write(ifls,'(i2,7x,a30,2x,a)') (nc-1)*3+(ic-1)*3+4,namec(ic)//" z_2nd [m]"
+            else
+              write(ifls,'(i3,6x,a30,2x,a)') (nc-1)*3+(ic-1)*3+4,namec(ic)//" z_2nd [m]"
+            end if
+          end do
         end if  
 
         !imrt_first = 103
@@ -1319,18 +1299,16 @@
           call lun_set(imrt_first+ilun)
         end do
 
-        if (b_enable_output) then
-          write(ifls,'(//72a/a/72a)')               &
-     &         ('*',i=1,72),                        &
-     &         'mass balance - reactive transport', &
-     &         ('*',i=1,72)
-        end if
+        write(ifls,'(//72a/a/72a)')               &
+             ('*',i=1,72),                        &
+             'mass balance - reactive transport', &
+             ('*',i=1,72)
 
 !c  total system mass for components
 
         imrt = imrt_first
         
-        if (b_enable_output .and. b_output_trans_binary) then
+        if (b_output_trans_binary) then
           allocate(imrt_mpi(imrt_first:imrt_first+nlun-1), stat = ierr)
           call checkerr(ierr,'opnmbfls-imrt_mpi',ilog)
           imrt_mpi = 0
@@ -1347,24 +1325,307 @@
           call memory_monitor(sizeof(offset_imrt_ijk),'offset_imrt_ijk',.false.)
         end if
         
-        if (b_enable_output) then
+        if (b_output_trans_binary) then
+#ifndef PETSC
+          if (imrt_mpi(imrt) < 10) then
+            imrt_mpi(imrt) = lun_get()
+          end if
+#endif
+          call binary_file_open(PETSC_COMM_SELF,             &
+                       imrt_mpi(imrt), prefix(:l_prfx)//'_o.mas',    &
+                       .true.)
+        else
+          b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mas')
+          if (b_rewind_valid .and. i_append_sim > 0) then
+            open(imrt,file=prefix(:l_prfx)//'_o.mas',status='unknown', &
+                 form='formatted',position='rewind')
+          else
+            open(imrt,file=prefix(:l_prfx)//'_o.mas',status='unknown', &
+                 form='formatted')
+          end if
+        end if
+          
+!c  version information
+        if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+          if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+            call writeversion2file(imrt, "#")
+          end if
+        end if
+          
+          
+        if (b_output_trans_binary) then
+          nvarsimrt = nc
+          tec_variables(1) = "time"
+          do ic = 1, nc-1
+            tec_variables(ic+1) = trim(namec(ic)) 
+          end do
+          
+          strbuffer = 'system mass - aqueous phase'
+          
+          offset_imrt(imrt) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,          &
+                       imrt_mpi(imrt), "#!TDV102",'dataset '//       &
+                       prefix(:l_prfx),offset_imrt(imrt),.true.,     &
+                       .true.)  
+  
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                       imrt_mpi(imrt), nvarsimrt,                    &
+                       tec_variables(1:nvarsimrt), offset_imrt(imrt),&
+                       .true.,.true.)               
+
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                       imrt_mpi(imrt),trim(strbuffer),               &
+                       offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
+                       b_output_multizone)
+          offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+
+          call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                       imrt_mpi(imrt),nvarsimrt,0,offset_imrt(imrt), &
+                       .true.,.true.,b_output_multizone) 
+        else
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+            strbuffer = 'variables = "time"'
+            do ic = 1,nc-1
+              strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//'"'
+            end do
+
+            write(imrt,'(a)') trim(strbuffer)
+            write(imrt,'(2a)')                                       &
+                  'zone t = "system mass - aqueous phase", f=point'
+          end if
+        end if
+
+        write(ifls,'(/a/72a/)') 'system mass - aqueous phase',       &
+                                ('-',i=1,72)
+        write(ifls,'(a/)') prefix(:l_prfx)//'_o.mas'
+
+        write(ifls,'(2a)')  'column   entry                           ',&
+                            'unit'
+        write(ifls,'(2a)')  '1        time                            ',&
+                             time_unit
+        do ic = 1,nc-1
+          if (ic.lt.9) then
+            write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic),'moles'
+          else
+            write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic),'moles'
+          end if
+        end do
+
+!c  total system mass for selected species
+
+        if (nmb.gt.0) then
+
+          imrt = imrt + 1
+          
           if (b_output_trans_binary) then
 #ifndef PETSC
             if (imrt_mpi(imrt) < 10) then
               imrt_mpi(imrt) = lun_get()
             end if
 #endif
-            call binary_file_open(PETSC_COMM_SELF,             &
-                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mas',    &
+            call binary_file_open(PETSC_COMM_SELF,           &
+                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mss',  &
                          .true.)
           else
-            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mas')
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mss')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imrt,file=prefix(:l_prfx)//'_o.mas',status='unknown', &
-                   form='formatted',position='rewind')
+              open(imrt,file=prefix(:l_prfx)//'_o.mss',status='unknown', &
+                  form='formatted',position='rewind')
             else
-              open(imrt,file=prefix(:l_prfx)//'_o.mas',status='unknown', &
-                   form='formatted')
+              open(imrt,file=prefix(:l_prfx)//'_o.mss',status='unknown', &
+                  form='formatted')
+            end if
+          end if
+            
+!c  version information
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(imrt, "#")
+            end if
+          end if
+            
+          if (b_output_trans_binary) then
+            nvarsimrt = nmb+1
+            tec_variables(1) = "time"
+            do imb=1, nmb
+              tec_variables(imb+1) = trim(namemb(imb))
+            end do
+
+            strbuffer = 'system mass - selected species'
+            
+            offset_imrt(imrt) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
+                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+                         .true.)  
+            
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt), nvarsimrt,                  &
+                         tec_variables(1:nvarsimrt),                 &
+                         offset_imrt(imrt),.true.,.true.)               
+            
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt),trim(strbuffer),             &
+                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                         b_output_multizone)
+            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            
+            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                         imrt_mpi(imrt),nvarsimrt,0,                 &
+                         offset_imrt(imrt),.true.,.true.,            &
+                         b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+              do imb = 1,nmb
+                strbuffer = trim(strbuffer)//', "'//trim(namemb(imb))//'"'
+              end do
+
+              write(imrt,'(a)') trim(strbuffer)
+              write(imrt,'(2a)')                                     &
+                    'zone t = "system mass - selected species", f=point'
+            end if
+          end if
+
+          write(ifls,'(/a/72a/)') 'system mass - selected species',  &
+                                  ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mss'
+
+          write(ifls,'(2a)')'column   entry                           ',&
+                            'unit'
+          write(ifls,'(2a)')'1        time                            ',&
+                             time_unit
+          do imb = 1,nmb
+            if (imb.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') imb+1,namemb(imb),'moles'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') imb+1,namemb(imb),'moles'
+            end if
+          end do
+        end if
+
+!c  total system mass for gases
+
+        if (ng.gt.0) then
+
+          imrt = imrt + 1
+          
+          if (b_output_trans_binary) then
+#ifndef PETSC
+            if (imrt_mpi(imrt) < 10) then
+              imrt_mpi(imrt) = lun_get()
+            end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,           &
+                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mgs',  &
+                         .true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mgs')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(imrt,file=prefix(:l_prfx)//'_o.mgs',              &
+                   status='unknown',form='formatted',position='rewind')
+            else
+              open(imrt,file=prefix(:l_prfx)//'_o.mgs',              &
+                   status='unknown',form='formatted')
+            end if
+          end if
+            
+!c  version information
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(imrt, "#")
+            end if
+          end if
+          
+          if (b_output_trans_binary) then
+            nvarsimrt = ng+1
+            tec_variables(1) = "time"
+            do ig=1, ng
+              tec_variables(ig+1) = trim(nameg(ig)) 
+            end do
+
+            strbuffer = 'system mass - gaseous phase'
+            
+            offset_imrt(imrt) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
+                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+                         .true.)  
+            
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt), nvarsimrt,                  &
+                         tec_variables(1:nvarsimrt),                 &
+                         offset_imrt(imrt),.true.,.true.)               
+            
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt),trim(strbuffer),             &
+                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                         b_output_multizone)
+            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            
+            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                         imrt_mpi(imrt),nvarsimrt,0,                 &
+                         offset_imrt(imrt),.true.,.true.,            &
+                         b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+              do ig = 1,ng
+                strbuffer = trim(strbuffer)//', "'//trim(nameg(ig))//'"'
+              end do
+
+              write(imrt,'(a)') trim(strbuffer)
+              write(imrt,'(2a)')                                     &
+                    'zone t = "system mass - gaseous phase", f=point'
+            end if
+          end if
+
+          write(ifls,'(/a/72a/)') 'system mass - gaseous phase',     &
+                                  ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mgs'
+
+          write(ifls,'(2a)')'column   entry                           ',&
+                            'unit'
+          write(ifls,'(2a)')'1        time                            ',&
+                             time_unit
+          do ig = 1,ng
+            if (ig.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ig+1,nameg(ig),'moles'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') ig+1,nameg(ig),'moles'
+            end if
+          end do
+        end if               !(ng.gt.0)
+
+!c  total system mass for sorbed species
+
+        if (nsb_ion.gt.0.or.nsb_surf.gt.0.or.noncompetitive_sorption) then
+
+          imrt = imrt + 1
+              
+          if (b_output_trans_binary) then
+#ifndef PETSC
+            if (imrt_mpi(imrt) < 10) then
+              imrt_mpi(imrt) = lun_get()
+            end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,           &
+                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mss',  &
+                         .true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mss')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(imrt,file=prefix(:l_prfx)//'_o.mss',              &
+                   status='unknown',form='formatted',position='rewind')
+            else
+              open(imrt,file=prefix(:l_prfx)//'_o.mss',              &
+                   status='unknown',form='formatted')
             end if
           end if
           
@@ -1375,440 +1636,143 @@
             end if
           end if
           
-          
           if (b_output_trans_binary) then
-            nvarsimrt = nc
-            tec_variables(1) = "time"
-            do ic = 1, nc-1
-              tec_variables(ic+1) = trim(namec(ic)) 
-            end do
-            
-            strbuffer = 'system mass - aqueous phase'
-            
             offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//       &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,     &
-                         .true.)  
-  
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), nvarsimrt,                    &
-                         tec_variables(1:nvarsimrt), offset_imrt(imrt),&
-                         .true.,.true.)               
-
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt),trim(strbuffer),               &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
-                         b_output_multizone)
-            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
-
-            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                         imrt_mpi(imrt),nvarsimrt,0,offset_imrt(imrt), &
-                         .true.,.true.,b_output_multizone) 
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
+                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+                         .true.) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-              strbuffer = 'variables = "time"'
-              do ic = 1,nc-1
-                strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//'"'
-              end do
-
-              write(imrt,'(a)') trim(strbuffer)
-              write(imrt,'(2a)')                                       &
-                    'zone t = "system mass - aqueous phase", f=point'
             end if
           end if
+          
+          if (b_output_trans_binary) then
+            tec_variables(1) = "time"
+          else
+            strbuffer = 'variables = "time"'
+          end if
 
-          write(ifls,'(/a/72a/)') 'system mass - aqueous phase',       &
+          write(ifls,'(/a/72a/)') 'system mass - sorbed species',       &
                                   ('-',i=1,72)
-          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mas'
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mss'
 
-          write(ifls,'(2a)')  'column   entry                           ',&
-                              'unit'
-          write(ifls,'(2a)')  '1        time                            ',&
-                               time_unit
-          do ic = 1,nc-1
-            if (ic.lt.9) then
-              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic),'moles'
-            else
-              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic),'moles'
-            end if
-          end do
-        end if
-
-!c  total system mass for selected species
-
-        if (nmb.gt.0) then
-
-          imrt = imrt + 1
-          
-          if (b_enable_output) then
-            if (b_output_trans_binary) then
-#ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_o.mss',  &
-                           .true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mss')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_o.mss',status='unknown', &
-                    form='formatted',position='rewind')
-              else
-                open(imrt,file=prefix(:l_prfx)//'_o.mss',status='unknown', &
-                    form='formatted')
-              end if
-            end if
-            
-!c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
-              end if
-            end if
-            
-            if (b_output_trans_binary) then
-              nvarsimrt = nmb+1
-              tec_variables(1) = "time"
-              do imb=1, nmb
-                tec_variables(imb+1) = trim(namemb(imb))
-              end do
-
-              strbuffer = 'system mass - selected species'
-              
-              offset_imrt(imrt) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
-                           .true.)  
-              
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
-                           tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
-              
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
-                           b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
-              
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
-                           b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-                do imb = 1,nmb
-                  strbuffer = trim(strbuffer)//', "'//trim(namemb(imb))//'"'
-                end do
-
-                write(imrt,'(a)') trim(strbuffer)
-                write(imrt,'(2a)')                                     &
-                      'zone t = "system mass - selected species", f=point'
-              end if
-            end if
-
-            write(ifls,'(/a/72a/)') 'system mass - selected species',  &
-                                    ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.mss'
-
-            write(ifls,'(2a)')'column   entry                           ',&
-                              'unit'
-            write(ifls,'(2a)')'1        time                            ',&
-                               time_unit
-            do imb = 1,nmb
-              if (imb.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') imb+1,namemb(imb),'moles'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') imb+1,namemb(imb),'moles'
-              end if
-            end do
-          end if
-
-        end if
-
-!c  total system mass for gases
-
-        if (ng.gt.0) then
-
-          imrt = imrt + 1
-          
-          if (b_enable_output) then
-            if (b_output_trans_binary) then
-#ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_o.mgs',  &
-                           .true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mgs')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_o.mgs',              &
-                     status='unknown',form='formatted',position='rewind')
-              else
-                open(imrt,file=prefix(:l_prfx)//'_o.mgs',              &
-                     status='unknown',form='formatted')
-              end if
-            end if
-            
-!c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
-              end if
-            end if
-            
-            if (b_output_trans_binary) then
-              nvarsimrt = ng+1
-              tec_variables(1) = "time"
-              do ig=1, ng
-                tec_variables(ig+1) = trim(nameg(ig)) 
-              end do
-
-              strbuffer = 'system mass - gaseous phase'
-              
-              offset_imrt(imrt) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
-                           .true.)  
-              
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
-                           tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
-              
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
-                           b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
-              
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
-                           b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-                do ig = 1,ng
-                  strbuffer = trim(strbuffer)//', "'//trim(nameg(ig))//'"'
-                end do
-
-                write(imrt,'(a)') trim(strbuffer)
-                write(imrt,'(2a)')                                     &
-                      'zone t = "system mass - gaseous phase", f=point'
-              end if
-            end if
-
-            write(ifls,'(/a/72a/)') 'system mass - gaseous phase',     &
-                                    ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.mgs'
-
-            write(ifls,'(2a)')'column   entry                           ',&
-                              'unit'
-            write(ifls,'(2a)')'1        time                            ',&
-                               time_unit
-            do ig = 1,ng
-              if (ig.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') ig+1,nameg(ig),'moles'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') ig+1,nameg(ig),'moles'
-              end if
-            end do
-          end if
-
-        end if               !(ng.gt.0)
-
-!c  total system mass for sorbed species
-
-        if (nsb_ion.gt.0.or.nsb_surf.gt.0.or.noncompetitive_sorption) then
-
-          imrt = imrt + 1
-          
-          if (b_enable_output) then
-              
-            if (b_output_trans_binary) then
-#ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_o.mss',  &
-                           .true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mss')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_o.mss',              &
-                     status='unknown',form='formatted',position='rewind')
-              else
-                open(imrt,file=prefix(:l_prfx)//'_o.mss',              &
-                     status='unknown',form='formatted')
-              end if
-            end if
-          
-!c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
-              end if
-            end if
-            
-            if (b_output_trans_binary) then
-              offset_imrt(imrt) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
-                           .true.) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-              end if
-            end if
-            
-            if (b_output_trans_binary) then
-              tec_variables(1) = "time"
-            else
-              strbuffer = 'variables = "time"'
-            end if
-
-            write(ifls,'(/a/72a/)') 'system mass - sorbed species',       &
-                                    ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.mss'
-
-            write(ifls,'(2a)')'column   entry                           ',&
-                              'unit'
-            write(ifls,'(2a)')'1        time                            ',&
-                               time_unit
+          write(ifls,'(2a)')'column   entry                           ',&
+                            'unit'
+          write(ifls,'(2a)')'1        time                            ',&
+                             time_unit
 !c  non-competitive sorption reactions
 
-            if (noncompetitive_sorption) then
-              ianc = 0
-              nvarsimrt = nc
-              do ic = 1,nc-1
-                if (isotherm_type(ic).ne.'none') then
-                  ianc = ianc+1
-                  
-                  if (b_output_trans_binary) then
-                    tec_variables(ic+1) = trim(nameanc(ianc))   
-                  else
-                    strbuffer = trim(strbuffer)//', "'//               &
-                                trim(nameanc(ianc))//'"'
-                  end if
-
-                  if (ianc.lt.9) then
-                    write(ifls,'(i1,8x,a30,2x,a)') ianc+1,             &
-                                                   nameanc(ianc),      &
-                                                  'moles'
-                  else
-                    write(ifls,'(i2,7x,a30,2x,a)') ianc+1,             &
-                                                   nameanc(ianc),      &
-                                                  'moles'
-                  end if
+          if (noncompetitive_sorption) then
+            ianc = 0
+            nvarsimrt = nc
+            do ic = 1,nc-1
+              if (isotherm_type(ic).ne.'none') then
+                ianc = ianc+1
+                
+                if (b_output_trans_binary) then
+                  tec_variables(ic+1) = trim(nameanc(ianc))   
+                else
+                  strbuffer = trim(strbuffer)//', "'//               &
+                              trim(nameanc(ianc))//'"'
                 end if
-              end do
-            end if
-          
-          
+
+                if (ianc.lt.9) then
+                  write(ifls,'(i1,8x,a30,2x,a)') ianc+1,             &
+                                                 nameanc(ianc),      &
+                                                'moles'
+                else
+                  write(ifls,'(i2,7x,a30,2x,a)') ianc+1,             &
+                                                 nameanc(ianc),      &
+                                                'moles'
+                end if
+              end if
+            end do
+          end if
         
 !c  competitive sorption reactions
          
-            if (nsb_ion.gt.0.or.nsb_surf.gt.0) then
-              nvarsimrt = nsites+nsb_ion+nsb_surf+1
-              do isites = 1,nsites
-                ic = iaic(isites)
-                if (b_output_trans_binary) then
-                  tec_variables(isites+1) = trim(namec(ic))
-                else
-                  strbuffer = trim(strbuffer)//', "'//                 &
-                              trim(namec(ic))//'"'
-                end if
-
-                if (isites+nanc.lt.9) then
-                  write(ifls,'(i1,8x,a30,2x,a)') isites+nanc+1,        &
-                                                 namec(ic),'moles'
-                else
-                  write(ifls,'(i2,7x,a30,2x,a)') isites+nanc+1,        &
-                                                 namec(ic),'moles'
-                end if
-              end do
-              
-              do isb = 1,nsb_ion
-                if (b_output_trans_binary) then
-                  tec_variables(nsites+isb+1) = trim(namesb_ion(isb))
-                else
-                  strbuffer = trim(strbuffer)//', "'//                 &
-                              trim(namesb_ion(isb))//'"'
-                end if
-                  
-                if (isb+nsites+nanc.lt.9) then
-                  write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+1,    &
-                              namesb_ion(isb),'moles'
-                else
-                  write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+1,    &
-                              namesb_ion(isb),'moles'
-                end if
-              end do
-              
-              do isb = 1,nsb_surf 
-                if (b_output_trans_binary) then
-                  tec_variables(nsites+nsb_ion+isb+1) =                &
-                      trim(namesb_surf(isb))
-                else
-                  strbuffer = trim(strbuffer)//', "'//                 &
-                              trim(namesb_surf(isb))//'"'
-                end if
-
-                if (isb+nsites+nanc.lt.9) then
-                  write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+1,    &
-                              namesb_surf(isb),'moles'
-                else
-                  write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+1,    &
-                              namesb_surf(isb),'moles'
-                end if
-              end do
-              
-            end if         !nsb.gt.0 
-            
-            if (b_output_trans_binary) then                
-              strbuffer = 'system mass - sorbed species'  
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
-                           tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
-              
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
-                           b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
-              
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
-                           b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(a)') trim(strbuffer)
-                write(imrt,'(2a)')                                     &
-                      'zone t = "system mass - sorbed species", f=point'
+          if (nsb_ion.gt.0.or.nsb_surf.gt.0) then
+            nvarsimrt = nsites+nsb_ion+nsb_surf+1
+            do isites = 1,nsites
+              ic = iaic(isites)
+              if (b_output_trans_binary) then
+                tec_variables(isites+1) = trim(namec(ic))
+              else
+                strbuffer = trim(strbuffer)//', "'//                 &
+                            trim(namec(ic))//'"'
               end if
+
+              if (isites+nanc.lt.9) then
+                write(ifls,'(i1,8x,a30,2x,a)') isites+nanc+1,        &
+                                               namec(ic),'moles'
+              else
+                write(ifls,'(i2,7x,a30,2x,a)') isites+nanc+1,        &
+                                               namec(ic),'moles'
+              end if
+            end do
+            
+            do isb = 1,nsb_ion
+              if (b_output_trans_binary) then
+                tec_variables(nsites+isb+1) = trim(namesb_ion(isb))
+              else
+                strbuffer = trim(strbuffer)//', "'//                 &
+                            trim(namesb_ion(isb))//'"'
+              end if
+                
+              if (isb+nsites+nanc.lt.9) then
+                write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+1,    &
+                            namesb_ion(isb),'moles'
+              else
+                write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+1,    &
+                            namesb_ion(isb),'moles'
+              end if
+            end do
+            
+            do isb = 1,nsb_surf 
+              if (b_output_trans_binary) then
+                tec_variables(nsites+nsb_ion+isb+1) =                &
+                    trim(namesb_surf(isb))
+              else
+                strbuffer = trim(strbuffer)//', "'//                 &
+                            trim(namesb_surf(isb))//'"'
+              end if
+
+              if (isb+nsites+nanc.lt.9) then
+                write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+1,    &
+                            namesb_surf(isb),'moles'
+              else
+                write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+1,    &
+                            namesb_surf(isb),'moles'
+              end if
+            end do
+            
+          end if         !nsb.gt.0 
+            
+          if (b_output_trans_binary) then                
+            strbuffer = 'system mass - sorbed species'  
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt), nvarsimrt,                  &
+                         tec_variables(1:nvarsimrt),                 &
+                         offset_imrt(imrt),.true.,.true.)               
+            
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt),trim(strbuffer),             &
+                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                         b_output_multizone)
+            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            
+            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                         imrt_mpi(imrt),nvarsimrt,0,                 &
+                         offset_imrt(imrt),.true.,.true.,            &
+                         b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(imrt,'(a)') trim(strbuffer)
+              write(imrt,'(2a)')                                     &
+                    'zone t = "system mass - sorbed species", f=point'
             end if
-          
           end if
 
         end if
@@ -1819,112 +1783,106 @@
 
           imrt = imrt + 1
           
-          if (b_enable_output) then
-            if (b_output_trans_binary) then  
+          if (b_output_trans_binary) then  
 #ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_o.mms',  &
-                           .true.)
-            else
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mms')
-              if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_o.mms',              &
-                     status='unknown',form='formatted',position='rewind')
-              else
-                open(imrt,file=prefix(:l_prfx)//'_o.mms',              &
-                     status='unknown',form='formatted')
-              end if
+            if (imrt_mpi(imrt) < 10) then
+              imrt_mpi(imrt) = lun_get()
             end if
+#endif
+            call binary_file_open(PETSC_COMM_SELF,           &
+                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mms',  &
+                         .true.)
+          else
+            b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mms')
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(imrt,file=prefix(:l_prfx)//'_o.mms',              &
+                   status='unknown',form='formatted',position='rewind')
+            else
+              open(imrt,file=prefix(:l_prfx)//'_o.mms',              &
+                   status='unknown',form='formatted')
+            end if
+          end if
             
 !c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
-              end if
+          if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(imrt, "#")
             end if
+          end if
             
-            if (b_output_trans_binary) then
-              nvarsimrt = nm+1
-              tec_variables(1) = "time"
-              do im=1, nm
-                tec_variables(im+1) = trim(namem(im))  
+          if (b_output_trans_binary) then
+            nvarsimrt = nm+1
+            tec_variables(1) = "time"
+            do im=1, nm
+              tec_variables(im+1) = trim(namem(im))  
+            end do
+
+            strbuffer = 'system mass - mineral phase'
+            
+            offset_imrt(imrt) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
+                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+                         .true.)  
+            
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt), nvarsimrt,                  &
+                         tec_variables(1:nvarsimrt),                 &
+                         offset_imrt(imrt),.true.,.true.)               
+            
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                         imrt_mpi(imrt),trim(strbuffer),             &
+                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                         b_output_multizone)
+            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            
+            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                         imrt_mpi(imrt),nvarsimrt,0,                 &
+                         offset_imrt(imrt),.true.,.true.,            &
+                         b_output_multizone) 
+          else
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time"'
+              do im = 1,nm
+                strbuffer = trim(strbuffer)//', "'//trim(namem(im))//'"'
               end do
 
-              strbuffer = 'system mass - mineral phase'
-              
-              offset_imrt(imrt) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
-                           .true.)  
-              
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
-                           tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
-              
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
-                           b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
-              
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
-                           b_output_multizone) 
-            else
-              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                strbuffer = 'variables = "time"'
-                do im = 1,nm
-                  strbuffer = trim(strbuffer)//', "'//trim(namem(im))//'"'
-                end do
-
-                write(imrt,'(a)') trim(strbuffer)
-                write(imrt,'(2a)')                                     &
-                      'zone t = "system mass - mineral phase", f=point'
-              end if
+              write(imrt,'(a)') trim(strbuffer)
+              write(imrt,'(2a)')                                     &
+                    'zone t = "system mass - mineral phase", f=point'
             end if
-
-            write(ifls,'(/a/72a/)') 'system mass - mineral phase',     &
-                                    ('-',i=1,72)
-            write(ifls,'(a/)') prefix(:l_prfx)//'_o.mms'
-
-            write(ifls,'(2a)')'column   entry                           ',&
-                              'unit'
-            write(ifls,'(2a)')'1        time                            ',&
-                               time_unit
-            do im = 1,nm
-              if (im.lt.9) then
-                write(ifls,'(i1,8x,a30,2x,a)') im+1,namem(im),'moles'
-              else
-                write(ifls,'(i2,7x,a30,2x,a)') im+1,namem(im),'moles'
-              end if
-            end do
-          
           end if
+
+          write(ifls,'(/a/72a/)') 'system mass - mineral phase',     &
+                                  ('-',i=1,72)
+          write(ifls,'(a/)') prefix(:l_prfx)//'_o.mms'
+
+          write(ifls,'(2a)')'column   entry                           ',&
+                            'unit'
+          write(ifls,'(2a)')'1        time                            ',&
+                             time_unit
+          do im = 1,nm
+            if (im.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') im+1,namem(im),'moles'
+            else
+              write(ifls,'(i2,7x,a30,2x,a)') im+1,namem(im),'moles'
+            end if
+          end do
 
         end if               !(nm.gt.0)
 
 !c  contributions to mass balance - aqueous phase
-        if (b_enable_output) then
-          write(ifls,'(/a/72a/)')'mass balance - aqueous phase',       &
-                                 ('-',i=1,72)
-          write(ifls,'(2a)') 'file name                           ',   &
-                             'component'
-        end if
+        write(ifls,'(/a/72a/)')'mass balance - aqueous phase',       &
+                               ('-',i=1,72)
+        write(ifls,'(2a)') 'file name                           ',   &
+                           'component'
 
         do ic = 1,n
 
           imrt = imrt+1
 
-          if (b_enable_output) then
           !rewind(icnv)           !Deprecated, use internal convert instead. DSU
           if(ic.lt.10) then
             !write(icnv,'(i1)') ic
@@ -2197,11 +2155,8 @@
           strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mac'
           write(ifls,'(2a)') strl36,namec(ic)
 
-          end if
         end do
-
-        if (b_enable_output) then
-            
+           
         if (ng .gt. 0 .and. gas_advection) then    
         
           write(ifls,'(/2a)')                                          &
@@ -2411,22 +2366,17 @@
                 'mol'
         end if
 
-        end if
-
 !c  mass balance error - aqueous phase
 
-        if (b_enable_output) then
-          write(ifls,'(/a/72a/)')'mass balance error - aqueous phase', &
-                                 ('-',i=1,72)
-          write(ifls,'(2a)') 'file name                           ',   &
-                             'component'        
-        end if
+        write(ifls,'(/a/72a/)')'mass balance error - aqueous phase', &
+                               ('-',i=1,72)
+        write(ifls,'(2a)') 'file name                           ',   &
+                           'component'        
 
         do ic = 1,n
 
           imrt = imrt+1
 
-          if (b_enable_output) then
           !rewind(icnv)             !Deprecated, use internal convert instead. DSU
           if(ic.lt.10) then
             !write(icnv,'(i1)') ic
@@ -2527,40 +2477,34 @@
           strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mae'
           write(ifls,'(2a)') strl36,namec(ic)          
 
-          end if
-
         end do
       
-        if (b_enable_output) then
-          write(ifls,'(/2a)') 'column   entry                           ',&
-                              'unit'
-          write(ifls,'(2a)')  '1        time                            ',&
-                               time_unit
-          write(ifls,'(2a)')  '2        absolute mass balance error     ',&
-                              'moles'
-          write(ifls,'(2a)')  '3        relative mass balance error     ',&
-                              '% = moles/moles in system x 100'
-          write(ifls,'(2a)')  '4        accumulative absolute mass      ',&
-                              'moles'
-          write(ifls,'(a)')   '         balance error'                     
-          write(ifls,'(2a)')  '5        accumulative relative mass      ',&
-                              '% = moles/moles in system x 100'
-          write(ifls,'(a)')   '         balance error'
-        end if
+        write(ifls,'(/2a)') 'column   entry                           ',&
+                            'unit'
+        write(ifls,'(2a)')  '1        time                            ',&
+                             time_unit
+        write(ifls,'(2a)')  '2        absolute mass balance error     ',&
+                            'moles'
+        write(ifls,'(2a)')  '3        relative mass balance error     ',&
+                            '% = moles/moles in system x 100'
+        write(ifls,'(2a)')  '4        accumulative absolute mass      ',&
+                            'moles'
+        write(ifls,'(a)')   '         balance error'                     
+        write(ifls,'(2a)')  '5        accumulative relative mass      ',&
+                            '% = moles/moles in system x 100'
+        write(ifls,'(a)')   '         balance error'
 
 !c  total mass through specified boundary
         if (ntmsb > 0) then
 
           do itmsb = 1, ntmsb
 
-            if (b_enable_output) then
-              write(ifls,'(/3a/72a/)')                                     &
-                    'mass through specified boundary ',                    &
-                    trim(name_tmsb(itmsb)), ' - aqueous phase',            &
-                    ('-',i=1,72)
-              write(ifls,'(2a)') 'file name                           ',   &
-                                 'component'
-            end if
+            write(ifls,'(/3a/72a/)')                                     &
+                  'mass through specified boundary ',                    &
+                  trim(name_tmsb(itmsb)), ' - aqueous phase',            &
+                  ('-',i=1,72)
+            write(ifls,'(2a)') 'file name                           ',   &
+                               'component'
 
             if(itmsb.lt.10) then
               write(suffix2,'(i1)') itmsb
@@ -2574,243 +2518,237 @@
 
               imrt = imrt+1
 
-              if (b_enable_output) then
-                !rewind(icnv)           !Deprecated, use internal convert instead. DSU
-                if(ic.lt.10) then
-                  !write(icnv,'(i1)') ic
-                  !rewind(icnv)
-                  !read(icnv,'(a2)') suffix
-                  write(suffix,'(i1)') ic
-                  l_sufx = 1
-                elseif (ic.ge.10) then
-                  !write(icnv,'(i2)') ic
-                  !rewind(icnv)
-                  !read(icnv,'(a2)') suffix
-                  write(suffix,'(i2)') ic
-                  l_sufx = 2
-                end if
+              !rewind(icnv)           !Deprecated, use internal convert instead. DSU
+              if(ic.lt.10) then
+                !write(icnv,'(i1)') ic
+                !rewind(icnv)
+                !read(icnv,'(a2)') suffix
+                write(suffix,'(i1)') ic
+                l_sufx = 1
+              elseif (ic.ge.10) then
+                !write(icnv,'(i2)') ic
+                !rewind(icnv)
+                !read(icnv,'(a2)') suffix
+                write(suffix,'(i2)') ic
+                l_sufx = 2
+              end if
 
-                strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
-                              '_'//suffix2(:l_sufx2)//'_b.mac'
+              strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
+                            '_'//suffix2(:l_sufx2)//'_b.mac'
 
 !c  open file
-                if (b_output_trans_binary) then
+              if (b_output_trans_binary) then
 #ifndef PETSC
-                  if (imrt_mpi(imrt) < 10) then
-                    imrt_mpi(imrt) = lun_get()
-                  end if
-#endif
-                  call binary_file_open(PETSC_COMM_SELF,               &
-                               imrt_mpi(imrt), trim(strfilename),.true.)
-                else
-                  b_rewind_valid = check_rewind_status(trim(strfilename))
-
-                  if (b_rewind_valid .and. i_append_sim > 0) then
-                    open(imrt,file=trim(strfilename),status='unknown', &
-                         form='formatted',position='rewind')
-                  else
-                    open(imrt,file=trim(strfilename),status='unknown', &
-                         form='formatted')
-                  end if
+                if (imrt_mpi(imrt) < 10) then
+                  imrt_mpi(imrt) = lun_get()
                 end if
+#endif
+                call binary_file_open(PETSC_COMM_SELF,               &
+                             imrt_mpi(imrt), trim(strfilename),.true.)
+              else
+                b_rewind_valid = check_rewind_status(trim(strfilename))
+
+                if (b_rewind_valid .and. i_append_sim > 0) then
+                  open(imrt,file=trim(strfilename),status='unknown', &
+                       form='formatted',position='rewind')
+                else
+                  open(imrt,file=trim(strfilename),status='unknown', &
+                       form='formatted')
+                end if
+              end if
 
 !c  version information
-                if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                  if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                    call writeversion2file(imrt, "#")
-                  end if
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+                  call writeversion2file(imrt, "#")
                 end if
+              end if
 
-                if (b_output_trans_binary) then
-                  if (ng .gt. 0 .and. gas_advection) then
-                    nvarsimrt = 13
-                    tec_variables(1:nvarsimrt) = [character(len=72) ::       &
-                    "time ["//time_unit(:l_time_unit)//"]",                  &
-                    "mass influx [mol/d]",                                   &
-                    "mass outflux [mol/d]",                                  &
-                    "mass influx by diffusion (gas phase) [mol/d]",          &
-                    "mass outflux by diffusion (gas phase) [mol/d]",         &
-                    "mass influx by advection (gas phase) [mol/d]",          &
-                    "mass outflux by advection (gas phase) [mol/d]",         &
-                    "accumulative mass influx [mol]",                        &
-                    "accumulative mass outflux [mol]",                       &
-                    "accumulative mass influx by diffusion (gas phase) "//   &
-                    "[mol]",                                                 &
-                    "accumulative mass outflux by diffusion (gas phase) "//  &
-                    "[mol]",                                                 &
-                    "accumulative mass influx by advection (gas phase) "//   &
-                    "[mol]",                                                 &
-                    "accumulative mass outflux by advection (gas phase) "//  &
-                    "[mol]"]
-                  else
-                    nvarsimrt = 9
-                    tec_variables(1:nvarsimrt) = [character(len=72) ::       &
-                    "time ["//time_unit(:l_time_unit)//"]",                  &
-                    "mass influx [mol/d]",                                   &
-                    "mass outflux [mol/d]",                                  &
-                    "mass influx (gas phase) [mol/d]",                       &
-                    "mass outflux (gas phase) [mol/d]",                      &
-                    "accumulative mass influx [mol]",                        &
-                    "accumulative mass outflux [mol]",                       &
-                    "accumulative mass influx (gas phase) [mol]",            &
-                    "accumulative mass outflux (gas phase) [mol]"]
-                  end if
-
-                  write(strbuffer,'(5a)') 'mass through specified boundary ',&
-                       trim(name_tmsb(itmsb)),' for component ',             &
-                       trim(namec(ic)),' - reactive transport'
-
-                  offset_imrt(imrt) = 0
-                  call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                               imrt_mpi(imrt), "#!TDV102",'dataset '//       &
-                               prefix(:l_prfx),offset_imrt(imrt),.true.,     &
-                               .true.)
-
-                  call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                               imrt_mpi(imrt), nvarsimrt,                    &
-                               tec_variables(1:nvarsimrt),                   &
-                               offset_imrt(imrt),.true.,.true.)
-
-                  call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                               imrt_mpi(imrt),trim(strbuffer),               &
-                               offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
-                               b_output_multizone)
-                  offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
-
-                  call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                               imrt_mpi(imrt),nvarsimrt,0,offset_imrt(imrt), &
-                               .true.,.true.,b_output_multizone)
+              if (b_output_trans_binary) then
+                if (ng .gt. 0 .and. gas_advection) then
+                  nvarsimrt = 13
+                  tec_variables(1:nvarsimrt) = [character(len=72) ::       &
+                  "time ["//time_unit(:l_time_unit)//"]",                  &
+                  "mass influx [mol/d]",                                   &
+                  "mass outflux [mol/d]",                                  &
+                  "mass influx by diffusion (gas phase) [mol/d]",          &
+                  "mass outflux by diffusion (gas phase) [mol/d]",         &
+                  "mass influx by advection (gas phase) [mol/d]",          &
+                  "mass outflux by advection (gas phase) [mol/d]",         &
+                  "accumulative mass influx [mol]",                        &
+                  "accumulative mass outflux [mol]",                       &
+                  "accumulative mass influx by diffusion (gas phase) "//   &
+                  "[mol]",                                                 &
+                  "accumulative mass outflux by diffusion (gas phase) "//  &
+                  "[mol]",                                                 &
+                  "accumulative mass influx by advection (gas phase) "//   &
+                  "[mol]",                                                 &
+                  "accumulative mass outflux by advection (gas phase) "//  &
+                  "[mol]"]
                 else
-
-                  if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                    write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-                    if (ng .gt. 0 .and. gas_advection) then
-                      write(imrt,'(19a)') 'variables = "time [',               &
-                       time_unit(:l_time_unit),']", ',                         &
-                      '"mass influx [mol/d]", ',                               &
-                      '"mass outflux [mol/d]", ',                              &
-                      '"mass influx by diffusion (gas phase) [mol/d]", ',      &
-                      '"mass outflux by diffusion (gas phase) [mol/d]", ',     &
-                      '"mass influx by advection (gas phase) [mol/d]", ',      &
-                      '"mass outflux by advection (gas phase) [mol/d]", ',     &
-                      '"accumulative mass influx [mol]", ',                    &
-                      '"accumulative mass outflux [mol]", ',                   &
-                      '"accumulative mass influx by diffusion (gas phase) ',   &
-                      '[mol]", ',                                              &
-                      '"accumulative mass outflux by diffusion (gas phase) ',  &
-                      '[mol]", ',                                              &
-                      '"accumulative mass influx by advection (gas phase) ',   &
-                      '[mol]", ',                                              &
-                      '"accumulative mass outflux by advection (gas phase) ',  &
-                      '[mol]"'
-                    else
-                      write(imrt,'(11a)') 'variables = "time [',               &
-                       time_unit(:l_time_unit),']", ',                         &
-                      '"mass influx [mol/d]", ',                               &
-                      '"mass outflux [mol/d]", ',                              &
-                      '"mass influx (gas phase) [mol/d]", ',                   &
-                      '"mass outflux (gas phase) [mol/d]", ',                  &
-                      '"accumulative mass influx [mol]", ',                    &
-                      '"accumulative mass outflux [mol]", ',                   &
-                      '"accumulative mass influx (gas phase) [mol]", ',        &
-                      '"accumulative mass outflux (gas phase) [mol]"'
-                    end if
-
-                    write(imrt,'(5a)')                                         &
-                          'zone t = "mass through specified boundary ',        &
-                          trim(name_tmsb(itmsb)),' for component ',            &
-                          trim(namec(ic)),' - reactive transport", f=point'
-                  end if
+                  nvarsimrt = 9
+                  tec_variables(1:nvarsimrt) = [character(len=72) ::       &
+                  "time ["//time_unit(:l_time_unit)//"]",                  &
+                  "mass influx [mol/d]",                                   &
+                  "mass outflux [mol/d]",                                  &
+                  "mass influx (gas phase) [mol/d]",                       &
+                  "mass outflux (gas phase) [mol/d]",                      &
+                  "accumulative mass influx [mol]",                        &
+                  "accumulative mass outflux [mol]",                       &
+                  "accumulative mass influx (gas phase) [mol]",            &
+                  "accumulative mass outflux (gas phase) [mol]"]
                 end if
+
+                write(strbuffer,'(5a)') 'mass through specified boundary ',&
+                     trim(name_tmsb(itmsb)),' for component ',             &
+                     trim(namec(ic)),' - reactive transport'
+
+                offset_imrt(imrt) = 0
+                call tecplot_binary_write_header(PETSC_COMM_SELF,          &
+                             imrt_mpi(imrt), "#!TDV102",'dataset '//       &
+                             prefix(:l_prfx),offset_imrt(imrt),.true.,     &
+                             .true.)
+
+                call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                             imrt_mpi(imrt), nvarsimrt,                    &
+                             tec_variables(1:nvarsimrt),                   &
+                             offset_imrt(imrt),.true.,.true.)
+
+                call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                             imrt_mpi(imrt),trim(strbuffer),               &
+                             offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
+                             b_output_multizone)
+                offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+
+                call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                             imrt_mpi(imrt),nvarsimrt,0,offset_imrt(imrt), &
+                             .true.,.true.,b_output_multizone)
+              else
+
+                if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                  write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+                  if (ng .gt. 0 .and. gas_advection) then
+                    write(imrt,'(19a)') 'variables = "time [',               &
+                     time_unit(:l_time_unit),']", ',                         &
+                    '"mass influx [mol/d]", ',                               &
+                    '"mass outflux [mol/d]", ',                              &
+                    '"mass influx by diffusion (gas phase) [mol/d]", ',      &
+                    '"mass outflux by diffusion (gas phase) [mol/d]", ',     &
+                    '"mass influx by advection (gas phase) [mol/d]", ',      &
+                    '"mass outflux by advection (gas phase) [mol/d]", ',     &
+                    '"accumulative mass influx [mol]", ',                    &
+                    '"accumulative mass outflux [mol]", ',                   &
+                    '"accumulative mass influx by diffusion (gas phase) ',   &
+                    '[mol]", ',                                              &
+                    '"accumulative mass outflux by diffusion (gas phase) ',  &
+                    '[mol]", ',                                              &
+                    '"accumulative mass influx by advection (gas phase) ',   &
+                    '[mol]", ',                                              &
+                    '"accumulative mass outflux by advection (gas phase) ',  &
+                    '[mol]"'
+                  else
+                    write(imrt,'(11a)') 'variables = "time [',               &
+                     time_unit(:l_time_unit),']", ',                         &
+                    '"mass influx [mol/d]", ',                               &
+                    '"mass outflux [mol/d]", ',                              &
+                    '"mass influx (gas phase) [mol/d]", ',                   &
+                    '"mass outflux (gas phase) [mol/d]", ',                  &
+                    '"accumulative mass influx [mol]", ',                    &
+                    '"accumulative mass outflux [mol]", ',                   &
+                    '"accumulative mass influx (gas phase) [mol]", ',        &
+                    '"accumulative mass outflux (gas phase) [mol]"'
+                  end if
+
+                  write(imrt,'(5a)')                                         &
+                        'zone t = "mass through specified boundary ',        &
+                        trim(name_tmsb(itmsb)),' for component ',            &
+                        trim(namec(ic)),' - reactive transport", f=point'
+                end if
+              end if
 
 !c  write data to file information file
 
-                write(ifls,'(a52,a)') strfilename, namec(ic)
-
-              end if
+              write(ifls,'(a52,a)') strfilename, namec(ic)
             end do
 
-            if (b_enable_output) then
 
-              if (ng .gt. 0 .and. gas_advection) then
+            if (ng .gt. 0 .and. gas_advection) then
 
-                write(ifls,'(/2a)')                                          &
-                      'column entry                                       ', &
-                      'unit'
-                write(ifls,'(2a)')                                           &
-                      '1      time                                        ', &
-                      time_unit
-                write(ifls,'(2a)')                                           &
-                      '2      mass influx                                 ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '3      mass outflux                                ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '4      mass influx by diffusion (gas phase)        ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '5      mass outflux by diffusion (gas phase)       ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '6      mass influx by advection (gas phase)        ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '7      mass outflux by advection (gas phase)       ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '8      accumulative mass influx                    ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '9      accumulative mass outflux                   ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '10     accumulative mass influx by diffusion (gas phase)  ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '11     accumulative mass outflux by diffusion (gas phase) ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '12     accumulative mass influx by advection (gas phase)  ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '13     accumulative mass outflux by advection (gas phase) ', &
-                      'mol'
+              write(ifls,'(/2a)')                                          &
+                    'column entry                                       ', &
+                    'unit'
+              write(ifls,'(2a)')                                           &
+                    '1      time                                        ', &
+                    time_unit
+              write(ifls,'(2a)')                                           &
+                    '2      mass influx                                 ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '3      mass outflux                                ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '4      mass influx by diffusion (gas phase)        ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '5      mass outflux by diffusion (gas phase)       ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '6      mass influx by advection (gas phase)        ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '7      mass outflux by advection (gas phase)       ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '8      accumulative mass influx                    ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '9      accumulative mass outflux                   ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '10     accumulative mass influx by diffusion (gas phase)  ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '11     accumulative mass outflux by diffusion (gas phase) ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '12     accumulative mass influx by advection (gas phase)  ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '13     accumulative mass outflux by advection (gas phase) ', &
+                    'mol'
 
-              else
-                write(ifls,'(/2a)')                                          &
-                      'column entry                                       ', &
-                      'unit'
-                write(ifls,'(2a)')                                           &
-                      '1      time                                        ', &
-                      time_unit
-                write(ifls,'(2a)')                                           &
-                      '2      mass influx                                 ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '3      mass outflux                                ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '4      mass influx (gas phase)                     ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '5      mass outflux (gas phase)                    ', &
-                      'mol/day'
-                write(ifls,'(2a)')                                           &
-                      '6      accumulative mass influx                    ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '7      accumulative mass outflux                   ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '8      accumulative mass influx (gas phase)        ', &
-                      'mol'
-                write(ifls,'(2a)')                                           &
-                      '9      accumulative mass outflux (gas phase)       ', &
-                      'mol'
-              end if
-
+            else
+              write(ifls,'(/2a)')                                          &
+                    'column entry                                       ', &
+                    'unit'
+              write(ifls,'(2a)')                                           &
+                    '1      time                                        ', &
+                    time_unit
+              write(ifls,'(2a)')                                           &
+                    '2      mass influx                                 ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '3      mass outflux                                ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '4      mass influx (gas phase)                     ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '5      mass outflux (gas phase)                    ', &
+                    'mol/day'
+              write(ifls,'(2a)')                                           &
+                    '6      accumulative mass influx                    ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '7      accumulative mass outflux                   ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '8      accumulative mass influx (gas phase)        ', &
+                    'mol'
+              write(ifls,'(2a)')                                           &
+                    '9      accumulative mass outflux (gas phase)       ', &
+                    'mol'
             end if
 
           end do  ! itmsb = 1, ntmsb
@@ -2822,18 +2760,15 @@
 
         if (nmb.gt.0) then
 
-          if (b_enable_output) then
-            write(ifls,'(/a/72a/)')'mass balance - selected species',  &
-                                   ('-',i=1,72)
-            write(ifls,'(2a)') 'file name                           ', &
-                               'species'
-          end if
+          write(ifls,'(/a/72a/)')'mass balance - selected species',  &
+                                 ('-',i=1,72)
+          write(ifls,'(2a)') 'file name                           ', &
+                             'species'
 
           do imb = 1,nmb
 
             imrt = imrt+1
 
-            if (b_enable_output) then
             !rewind(icnv)              !Deprecated, use internal convert instead. DSU
             if(imb.lt.10) then
               !write(icnv,'(i1)') imb
@@ -2940,28 +2875,24 @@
                                      suffix(:l_sufx)//'.msc',          &
                                      namemb(imb)
             end if
-            
-            end if
           end do
 
-          if (b_enable_output) then
-            write(ifls,'(/a)')                                            &
-            'column   entry                           unit'
-            write(ifls,'(2a)')'1        time                            ',&
-                              time_unit
-            write(ifls,'(2a)')'2        mass influx                     ',&
-                              'moles/day'
-            write(ifls,'(2a)')'3        mass outflux                    ',&
-                              'moles/day'
-            write(ifls,'(2a)')'4        change in storage               ',&
-                              'moles/day'
-            write(ifls,'(2a)')'5        source/sink from redox reactns  ',&
-                              'moles/day'
-            write(ifls,'(2a)')'6        source/sink from mineral phase  ',&
-                              'moles/day'
-            write(ifls,'(2a)')'7        source/sink from gas phase      ',&
-                              'moles/day'
-          end if
+          write(ifls,'(/a)')                                            &
+          'column   entry                           unit'
+          write(ifls,'(2a)')'1        time                            ',&
+                            time_unit
+          write(ifls,'(2a)')'2        mass influx                     ',&
+                            'moles/day'
+          write(ifls,'(2a)')'3        mass outflux                    ',&
+                            'moles/day'
+          write(ifls,'(2a)')'4        change in storage               ',&
+                            'moles/day'
+          write(ifls,'(2a)')'5        source/sink from redox reactns  ',&
+                            'moles/day'
+          write(ifls,'(2a)')'6        source/sink from mineral phase  ',&
+                            'moles/day'
+          write(ifls,'(2a)')'7        source/sink from gas phase      ',&
+                            'moles/day'
 
         end if
 
@@ -2969,19 +2900,16 @@
 
         if (naq.gt.0) then
 
-          if (b_enable_output) then
-            write(ifls,'(/2a/72a/)')'mass balance contributions - ',   &
-                                    'intra-aqueous kinetic reactions', &
-                                    ('-',i=1,72)
-            write(ifls,'(2a)') 'file name                           ', &
-                               'reaction'
-          end if
+          write(ifls,'(/2a/72a/)')'mass balance contributions - ',   &
+                                  'intra-aqueous kinetic reactions', &
+                                  ('-',i=1,72)
+          write(ifls,'(2a)') 'file name                           ', &
+                             'reaction'
 
           do iaq = 1,naq
 
             imrt = imrt+1
 
-            if (b_enable_output) then
             !rewind(icnv)               !Deprecated, use internal convert instead. DSU
             if(iaq.lt.10) then
               !write(icnv,'(i1)') iaq
@@ -3078,19 +3006,16 @@
             strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mic'
             write(ifls,'(2a)') strl36,nameaq(iaq)
 
-            end if
           end do
 
-          if (b_enable_output) then
-            write(ifls,'(/a)')                                            &
-            'column   entry                           unit'
-            write(ifls,'(2a)')'1        time                            ',&
-                              time_unit
-            write(ifls,'(2a)')'2        total rate                      ',&
-                              'moles/day'
-            write(ifls,'(2a)')'3        total contribution              ',&
-                              'moles'
-          end if
+          write(ifls,'(/a)')                                            &
+          'column   entry                           unit'
+          write(ifls,'(2a)')'1        time                            ',&
+                            time_unit
+          write(ifls,'(2a)')'2        total rate                      ',&
+                            'moles/day'
+          write(ifls,'(2a)')'3        total contribution              ',&
+                            'moles'
 
         end if
 
@@ -3098,18 +3023,15 @@
 
         if (ng.ne.0) then
 
-          if (b_enable_output) then
-            write(ifls,'(/a/72a/)')'mass balance - gaseous phase',     &
-                                   ('-',i=1,72)
-            write(ifls,'(2a)') 'file name                           ', &
-                               'gas'
-          end if
+          write(ifls,'(/a/72a/)')'mass balance - gaseous phase',     &
+                                 ('-',i=1,72)
+          write(ifls,'(2a)') 'file name                           ', &
+                             'gas'
 
           do ig = 1,ng
 
             imrt = imrt+1
 
-            if (b_enable_output) then
             !rewind(icnv)           !Deprecated, use internal convert instead. DSU
             if(ig.lt.10) then
               !write(icnv,'(i1)') ig
@@ -3212,33 +3134,29 @@
 !c  write file information
             strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mgc'
             write(ifls,'(2a)') strl36,nameg(ig)
-
-            end if
                                                                        
           end do                !(i=1,ng)
-          
-          if (b_enable_output) then
-            write(ifls,'(/a)')                                         &
-                  'column   entry                           unit'
-            write(ifls,'(2a)')                                         &
-                  '1        time                            ',time_unit
-            write(ifls,'(a)')                                          &
-                  '2        mass influx                     mol/day'
-            write(ifls,'(a)')                                          &
-                  '3        mass outflux                    mol/day'
-            write(ifls,'(a)')                                          &
-                  '4        mass influx by gas advection    mol/day'
-            write(ifls,'(a)')                                          &
-                  '5        mass outflux by gas advection   mol/day'
-            write(ifls,'(a)')                                          &
-                  '6        mass flux across boundary   mol/day'
-            write(ifls,'(a)')                                          &
-                  '7        change in storage               mol/day'
-            write(ifls,'(a)')                                          &
-                  '8        source/sink - aqueous phase     mol/day'
-            write(ifls,'(a)')                                          &
-                  '9        mass loss - degassing           mol/day'
-          end if
+
+          write(ifls,'(/a)')                                         &
+                'column   entry                           unit'
+          write(ifls,'(2a)')                                         &
+                '1        time                            ',time_unit
+          write(ifls,'(a)')                                          &
+                '2        mass influx                     mol/day'
+          write(ifls,'(a)')                                          &
+                '3        mass outflux                    mol/day'
+          write(ifls,'(a)')                                          &
+                '4        mass influx by gas advection    mol/day'
+          write(ifls,'(a)')                                          &
+                '5        mass outflux by gas advection   mol/day'
+          write(ifls,'(a)')                                          &
+                '6        mass flux across boundary   mol/day'
+          write(ifls,'(a)')                                          &
+                '7        change in storage               mol/day'
+          write(ifls,'(a)')                                          &
+                '8        source/sink - aqueous phase     mol/day'
+          write(ifls,'(a)')                                          &
+                '9        mass loss - degassing           mol/day'
 
         end if                !(ng.ne.0)
 
@@ -3247,15 +3165,12 @@
         if (ng > 0 .and. ntmsb > 0) then
 
           do itmsb = 1, ntmsb
-
-            if (b_enable_output) then
-              write(ifls,'(/3a/72a/)')                                 &
-                    'mass through specified boundary ',                &
-                     trim(name_tmsb(itmsb)),' - gaseous phase',        &
-                    ('-',i=1,72)
-              write(ifls,'(2a)') 'file name                           ',&
-                                 'gas'
-            end if
+            write(ifls,'(/3a/72a/)')                                   &
+                  'mass through specified boundary ',                  &
+                   trim(name_tmsb(itmsb)),' - gaseous phase',          &
+                  ('-',i=1,72)
+            write(ifls,'(2a)') 'file name                           ', &
+                               'gas'
 
             if(itmsb.lt.10) then
               write(suffix2,'(i1)') itmsb
@@ -3269,121 +3184,116 @@
 
               imrt = imrt+1
 
-              if (b_enable_output) then
-                !rewind(icnv)           !Deprecated, use internal convert instead. DSU
-                if(ig.lt.10) then
-                  !write(icnv,'(i1)') ig
-                  !rewind(icnv)
-                  !read(icnv,'(a2)') suffix
-                  write(suffix,'(i1)') ig
-                  l_sufx = 1
-                elseif (ig.ge.10) then
-                  !write(icnv,'(i2)') ig
-                  !rewind(icnv)
-                  !read(icnv,'(a2)') suffix
-                  write(suffix,'(i2)') ig
-                  l_sufx = 2
-                end if
+              !rewind(icnv)           !Deprecated, use internal convert instead. DSU
+              if(ig.lt.10) then
+                !write(icnv,'(i1)') ig
+                !rewind(icnv)
+                !read(icnv,'(a2)') suffix
+                write(suffix,'(i1)') ig
+                l_sufx = 1
+              elseif (ig.ge.10) then
+                !write(icnv,'(i2)') ig
+                !rewind(icnv)
+                !read(icnv,'(a2)') suffix
+                write(suffix,'(i2)') ig
+                l_sufx = 2
+              end if
 
-                strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
-                                '_'//suffix2(:l_sufx2)//'_b.mgc'
+              strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
+                              '_'//suffix2(:l_sufx2)//'_b.mgc'
 
-                if (b_output_trans_binary) then
+              if (b_output_trans_binary) then
 #ifndef PETSC
-                  if (imrt_mpi(imrt) < 10) then
-                    imrt_mpi(imrt) = lun_get()
-                  end if
-#endif
-                  call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt),  &
-                                        trim(strfilename),.true.)
-                else
-                  b_rewind_valid = check_rewind_status(trim(strfilename))
-                  if (b_rewind_valid .and. i_append_sim > 0) then
-                    open(imrt,file=trim(strfilename),status='unknown',   &
-                         form='formatted',position='rewind')
-                  else
-                    open(imrt,file=trim(strfilename),status='unknown',   &
-                         form='formatted')
-                  end if
+                if (imrt_mpi(imrt) < 10) then
+                  imrt_mpi(imrt) = lun_get()
                 end if
+#endif
+                call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt),  &
+                                      trim(strfilename),.true.)
+              else
+                b_rewind_valid = check_rewind_status(trim(strfilename))
+                if (b_rewind_valid .and. i_append_sim > 0) then
+                  open(imrt,file=trim(strfilename),status='unknown',   &
+                       form='formatted',position='rewind')
+                else
+                  open(imrt,file=trim(strfilename),status='unknown',   &
+                       form='formatted')
+                end if
+              end if
 
 !c  version information
-                if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                  if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                    call writeversion2file(imrt, "#")
-                  end if
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+                  call writeversion2file(imrt, "#")
                 end if
-
-                if (b_output_trans_binary) then
-                  nvarsimrt = 5
-                  tec_variables(1:nvarsimrt) = [character(len=72) ::       &
-                      "time ["//time_unit(:l_time_unit)//"]",              &
-                      "mass influx [mol/d]",                               &
-                      "mass outflux [mol/d]",                              &
-                      "mass influx by gas advection [mol/d]",              &
-                      "mass outflux by gas advection [mol/d]"]
-                  write(strbuffer,'(4a)')                                  &
-                        'mass through specified boundary ',                &
-                        trim(name_tmsb(itmsb)), ' - gaseous phase for ',   &
-                        trim(nameg(ig))
-
-                  offset_imrt(imrt) = 0
-                  call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                               imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                               prefix(:l_prfx),offset_imrt(imrt),.true.,   &
-                               .true.)
-
-                  call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                               imrt_mpi(imrt), nvarsimrt,                  &
-                               tec_variables(1:nvarsimrt),                 &
-                               offset_imrt(imrt),.true.,.true.)
-
-                  call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                               imrt_mpi(imrt),trim(strbuffer),             &
-                               offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
-                               b_output_multizone)
-                  offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
-
-                  call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                               imrt_mpi(imrt),nvarsimrt,0,                 &
-                               offset_imrt(imrt),.true.,.true.,            &
-                               b_output_multizone)
-                else
-                  if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                    write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                    write(imrt,'(7a)') 'variables = "time [',              &
-                           time_unit(:l_time_unit),']", ',                 &
-                          '"mass influx [mol/d]", ',                       &
-                          '"mass outflux [mol/d]", ',                      &
-                          '"mass influx by gas advection [mol/d]", ',      &
-                          '"mass outflux by gas advection [mol/d]"'
-                    write(imrt,'(5a)')                                     &
-                          'zone t = "mass through specified boundary ',    &
-                          trim(name_tmsb(itmsb)),' - gaseous phase for ',  &
-                          trim(nameg(ig)), '", f=point'
-                  end if
-                end if
-
-                write(ifls,'(a52,a)') strfilename,nameg(ig)
-
               end if
+
+              if (b_output_trans_binary) then
+                nvarsimrt = 5
+                tec_variables(1:nvarsimrt) = [character(len=72) ::       &
+                    "time ["//time_unit(:l_time_unit)//"]",              &
+                    "mass influx [mol/d]",                               &
+                    "mass outflux [mol/d]",                              &
+                    "mass influx by gas advection [mol/d]",              &
+                    "mass outflux by gas advection [mol/d]"]
+                write(strbuffer,'(4a)')                                  &
+                      'mass through specified boundary ',                &
+                      trim(name_tmsb(itmsb)), ' - gaseous phase for ',   &
+                      trim(nameg(ig))
+
+                offset_imrt(imrt) = 0
+                call tecplot_binary_write_header(PETSC_COMM_SELF,        &
+                             imrt_mpi(imrt), "#!TDV102",'dataset '//     &
+                             prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+                             .true.)
+
+                call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
+                             imrt_mpi(imrt), nvarsimrt,                  &
+                             tec_variables(1:nvarsimrt),                 &
+                             offset_imrt(imrt),.true.,.true.)
+
+                call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
+                             imrt_mpi(imrt),trim(strbuffer),             &
+                             offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                             b_output_multizone)
+                offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+
+                call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                             imrt_mpi(imrt),nvarsimrt,0,                 &
+                             offset_imrt(imrt),.true.,.true.,            &
+                             b_output_multizone)
+              else
+                if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                  write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                  write(imrt,'(7a)') 'variables = "time [',              &
+                         time_unit(:l_time_unit),']", ',                 &
+                        '"mass influx [mol/d]", ',                       &
+                        '"mass outflux [mol/d]", ',                      &
+                        '"mass influx by gas advection [mol/d]", ',      &
+                        '"mass outflux by gas advection [mol/d]"'
+                  write(imrt,'(5a)')                                     &
+                        'zone t = "mass through specified boundary ',    &
+                        trim(name_tmsb(itmsb)),' - gaseous phase for ',  &
+                        trim(nameg(ig)), '", f=point'
+                end if
+              end if
+
+              write(ifls,'(a52,a)') strfilename,nameg(ig)
 
             end do                !(i=1,ng)
 
-            if (b_enable_output) then
-              write(ifls,'(/a)')                                         &
-                    'column   entry                           unit'
-              write(ifls,'(2a)')                                         &
-                    '1        time                            ',time_unit
-              write(ifls,'(a)')                                          &
-                    '2        mass influx                     mol/day'
-              write(ifls,'(a)')                                          &
-                    '3        mass outflux                    mol/day'
-              write(ifls,'(a)')                                          &
-                    '4        mass influx by gas advection    mol/day'
-              write(ifls,'(a)')                                          &
-                    '5        mass outflux by gas advection   mol/day'
-            end if
+            write(ifls,'(/a)')                                         &
+                  'column   entry                           unit'
+            write(ifls,'(2a)')                                         &
+                  '1        time                            ',time_unit
+            write(ifls,'(a)')                                          &
+                  '2        mass influx                     mol/day'
+            write(ifls,'(a)')                                          &
+                  '3        mass outflux                    mol/day'
+            write(ifls,'(a)')                                          &
+                  '4        mass influx by gas advection    mol/day'
+            write(ifls,'(a)')                                          &
+                  '5        mass outflux by gas advection   mol/day'
 
           end do
 
@@ -3392,13 +3302,11 @@
 !c  contributions to mass balance - mineral phase
 
         if (nm.ne.0) then
-            
-          if (b_enable_output) then
-            write(ifls,'(/a/72a/)')'mass balance - mineral phase',     &
-                                   ('-',i=1,72)
-            write(ifls,'(2a)') 'file name                           ', &
-                               'mineral'
-          end if
+
+          write(ifls,'(/a/72a/)')'mass balance - mineral phase',     &
+                                 ('-',i=1,72)
+          write(ifls,'(2a)') 'file name                           ', &
+                             'mineral'
                                                                        
           do im = 1,nm        !loop over minerals
                                                                        
@@ -3407,7 +3315,6 @@
             istart = iamd(im)
             istop = iamd(im+1)-1
                             
-            if (b_enable_output) then
             !rewind(icnv)            !Deprecated, use internal convert instead. DSU                                          
             if(im.lt.10) then                                          
               !write(icnv,'(i1)') im                                    
@@ -3555,34 +3462,123 @@
             strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmc'
             write(ifls,'(2a)') strl36,namem(im)
 
-            end if
-
           end do           !(im=1,nm)
           
-          if (b_enable_output) then
-            write(ifls,'(/a)')                                         &
-                  'column   entry                           unit'
-            write(ifls,'(2a)')                                         &
-                  '1        time                            ',time_unit
-            write(ifls,'(a)')                                          &
-                  '2        change in storage               moles/day'
-            write(ifls,'(a)')                                          &
-                  '3        source/sink - aqueous phase     moles/day'
-            write(ifls,'(a)')                                          &
-                  '4        total contribution              moles'
-            write(ifls,'(a/a)')                                        &
-                  '5 -      source/sink - aqueous phase     moles/day',&
-                  '5+Np-1   parallel reaction pathways               '
-            write(ifls,'(a/a)')                                        &
-                  '5+Np -   total contribution              moles',    &
-                  '5+2*Np-1 parallel reaction pathways               '
-          end if
+          write(ifls,'(/a)')                                         &
+                'column   entry                           unit'
+          write(ifls,'(2a)')                                         &
+                '1        time                            ',time_unit
+          write(ifls,'(a)')                                          &
+                '2        change in storage               moles/day'
+          write(ifls,'(a)')                                          &
+                '3        source/sink - aqueous phase     moles/day'
+          write(ifls,'(a)')                                          &
+                '4        total contribution              moles'
+          write(ifls,'(a/a)')                                        &
+                '5 -      source/sink - aqueous phase     moles/day',&
+                '5+Np-1   parallel reaction pathways               '
+          write(ifls,'(a/a)')                                        &
+                '5+Np -   total contribution              moles',    &
+                '5+2*Np-1 parallel reaction pathways               '
 
         end if             !(nm.gt.0)
 
 !c  pointer to last mass balance file for reactive transport
 
         imrt_last = imrt
+
+      end if
+
+!c  mass balance of source sink of each component from mineral phases
+      if (nm.gt.0) then
+
+        write(ifls,'(/a/72a/)') &
+          'mass balance - source sink of component from mineral phase',&
+          ('-',i=1,72)
+
+        write(ifls,'(2a)') 'file name                           ',     &
+                           'component'
+        
+        imrtm2c_first = lun_get()
+
+        do ic = 1, n
+          if(ic.lt.10) then                                          
+            write(suffix,'(i1)') ic
+            l_sufx = 1                                               
+          elseif (ic.ge.10) then                                     
+            write(suffix,'(i2)') ic
+            l_sufx = 2                                               
+          end if
+
+          strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmac'
+          write(ifls,'(2a)') strl36,namec(ic)
+
+          imrtm2c = imrtm2c_first + ic - 1
+          if (.not.lun_available(imrtm2c)) then
+            write(*,*) 'Error: file unit is not avaiable for mmac output ',imrtm2c
+            write(ilog,*) 'Error: file unit is not avaiable for mmac output ',imrtm2c
+          else
+            call lun_set(imrtm2c)            
+          end if
+
+          b_rewind_valid = check_rewind_status(trim(strl36))
+          if (b_rewind_valid .and. i_append_sim > 0) then
+            open(imrtm2c,file=trim(strl36),status='unknown',           &
+                 form='formatted',position='rewind')
+          else
+            open(imrtm2c,file=trim(strl36),status='unknown',           &
+                 form='formatted')
+
+            write(imrtm2c,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+            strbuffer = 'variables = "time", "source/sink from all minerals [mol/d]"'//&
+                        ', "total contribution from all minerals [mol]"'
+            do im = 1,nm
+              strbuffer = trim(strbuffer)//', "source/sink from '//    &
+                          trim(namem(im))//' [mol/d]"'
+            end do
+
+            do im = 1,nm
+              strbuffer = trim(strbuffer)//', "total contribution from '// &
+                          trim(namem(im))//' [mol]"'
+            end do
+
+            write(imrtm2c,'(a)') trim(strbuffer)
+            write(imrtm2c,'(3a)') 'zone t = "source/sink of ',         &
+                  trim(namec(ic)),' from mineral phase", f=point'
+
+            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+              call writeversion2file(imrtm2c, "#")
+            end if
+          end if
+        end do
+
+        imrtm2c_last = imrtm2c
+        
+        !c write file information
+        write(ifls,'(/2a)')                                            &
+              'column   entry                                        ',&
+              '               unit'
+        write(ifls,'(3a)')                                             &
+              '1        time                                         ',&
+              '               ',time_unit
+        write(ifls,'(2a)')                                             &
+              '2        source/sink from all minerals                ',&
+              '               moles/day'
+        write(ifls,'(2a)')                                             &
+              '3        total contribution from all minerals         ',&
+              '               moles'
+        do im = 1, nm    
+          write(strl9,'(i0)') im+3
+          write(strl60,'(2a)') 'source/sink from ',namem(im)(1:36)
+          write(ifls,'(3a)') strl9,strl60,'moles/day'
+        end do
+
+        do im = 1, nm    
+          write(strl9,'(i0)') im+3+nm
+          write(strl60,'(2a)') 'total contribution from ',namem(im)(1:36)
+          write(ifls,'(3a)') strl9,strl60,'moles'
+        end do
 
       end if
 

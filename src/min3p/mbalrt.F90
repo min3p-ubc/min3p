@@ -117,10 +117,10 @@
 !c           cfluxout(n)        = mass loss due to outflow in water   * *
 !c                                phase in terms of total aqueous
 !c                                component concentrations
-!c           contaqtot(naq)     = accumulative contribution of        + +
+!c           accuaqtot(naq)     = accumulative contribution of        + +
 !c                                intra-aqueous kinetic reactions to
 !c                                 mass balance[moles]
-!c           contmintot(nm)     = accumulative contribution of        + +
+!c           accudpdiff(nm)     = accumulative contribution of        + +
 !c                                dissolution-precipitation reactions 
 !c                                to mass balance [moles]
 !c           gfluxtbdy(ng)      = mass flux across boundary           * *
@@ -237,7 +237,7 @@
 !c                                aqueous component concentrations
 !c                                due to dissolution-precipitation 
 !c                                reactions
-!c           totdpdiffp(ndr*nm) = accumulative individual             + +
+!c           accudpdiffp(ndr*nm) = accumulative individual             + +
 !c                                contribution of parallel reaction 
 !c                                pathways of dissolution-
 !c                                precipitation reactions to mass
@@ -3940,7 +3940,7 @@
 
 !c  sum up total accumulative contribution
         do iaq = 1,naq
-          contaqtot(iaq) = contaqtot(iaq) + rateaqtot(iaq)*delt
+          accuaqtot(iaq) = accuaqtot(iaq) + rateaqtot(iaq)*delt
         end do
 
         do iaq = 1,naq
@@ -3950,7 +3950,7 @@
             if (b_output_trans_binary) then
               nvarsimrt = 3
               realbuffer_gb(1:nvarsimrt) = (/time_io, rateaqtot(iaq),  &
-                                         contaqtot(iaq)/)
+                                         accuaqtot(iaq)/)
               call binary_write_data(imrt_mpi(imrt), 1,        &
                            (/mtime/),offset_imrt_ijk(imrt),.true.)
               call binary_write_data(imrt_mpi(imrt), nvarsimrt,&
@@ -3971,7 +3971,7 @@
                   !c reposition to the line to append results
                   call reposition_file(imrt,irecord)
 
-                  contaqtot(iaq) = contaqtot(iaq) + rdummys(3)
+                  accuaqtot(iaq) = accuaqtot(iaq) + rdummys(3)
                 end if
 60              continue
               end if
@@ -3979,7 +3979,7 @@
               if (i_append_sim < 1 .or.                                &
                  (mtime >= mtime_append .and. i_append_sim >= 1)) then
                 write(imrt,ascii_fmt) time_io,rateaqtot(iaq),          &
-                                         contaqtot(iaq)
+                                         accuaqtot(iaq)
               end if
             end if
           end if
@@ -4731,8 +4731,8 @@
     !$omp default(shared)                                             &
     !$omp private (tid, ireac, istart, istop, ivol, i1, im2, izn_c,   &
     !$omp rootdens)                                                   &
-    !$omp reduction(+: contmintot, cstordiff,                         &
-    !$omp dpdiff, dpdiffp, totdpdiffp)                     
+    !$omp reduction(+: accudpdiff, cstordiff,                         &
+    !$omp dpdiff, dpdiffp, accudpdiffp)                     
 #endif
 
 !c  change in storage and total dissolved/precipitated mass
@@ -4854,13 +4854,13 @@
 #ifdef OPENMP
     !$omp barrier
 #endif
-          contmintot(im) = contmintot(im) + dpdiff(im)*delt
+          accudpdiff(im) = accudpdiff(im) + dpdiff(im)*delt
           
           istart = iamd(im)
           istop = iamd(im+1)-1
           
           do ireac = istart,istop
-            totdpdiffp(ireac) = totdpdiffp(ireac) + dpdiffp(ireac)*delt
+            accudpdiffp(ireac) = accudpdiffp(ireac) + dpdiffp(ireac)*delt
           end do
          
         end do
@@ -4869,10 +4869,10 @@
 #endif  
 
 #ifdef PETSC
-        call MPI_Allreduce(contmintot, mpireduce_nm,nm,MPI_REAL8,      &
+        call MPI_Allreduce(accudpdiff, mpireduce_nm,nm,MPI_REAL8,      &
                            MPI_SUM,Petsc_Comm_World,ierrcode)
         CHKERRQ(ierrcode)
-        contmintot_mpi(1:nm) = mpireduce_nm(1:nm) 
+        accudpdiff_mpi(1:nm) = mpireduce_nm(1:nm) 
         
         call MPI_Allreduce(cstordiff, mpireduce_nm,nm,MPI_REAL8,       &
                            MPI_SUM,Petsc_Comm_World,ierrcode)
@@ -4898,10 +4898,10 @@
             CHKERRQ(ierrcode)
             dpdiffp(ireac) = mpireduce_gbl 
             
-            call MPI_Allreduce(totdpdiffp(ireac), mpireduce_gbl,1,MPI_REAL8,MPI_SUM,     &
+            call MPI_Allreduce(accudpdiffp(ireac), mpireduce_gbl,1,MPI_REAL8,MPI_SUM,     &
                                Petsc_Comm_World,ierrcode)
             CHKERRQ(ierrcode)
-            totdpdiffp_mpi(ireac) = mpireduce_gbl
+            accudpdiffp_mpi(ireac) = mpireduce_gbl
 #endif              
           end do
        
@@ -4922,13 +4922,13 @@
               nvarsimrt = 2*(istop-istart+1)+4
 #ifdef PETSC
               realbuffer_gb(1:nvarsimrt) = (/                          &
-                   time_io,cstordiff(im),dpdiff(im),contmintot_mpi(im),&
-                   (dpdiffp(ireac),totdpdiffp_mpi(ireac),              &
+                   time_io,cstordiff(im),dpdiff(im),accudpdiff_mpi(im),&
+                   (dpdiffp(ireac),accudpdiffp_mpi(ireac),              &
                    ireac=istart,istop)/)
 #else
               realbuffer_gb(1:nvarsimrt) = (/                          &
-                   time_io,cstordiff(im),dpdiff(im),contmintot(im),    &
-                   (dpdiffp(ireac),totdpdiffp(ireac),                  &
+                   time_io,cstordiff(im),dpdiff(im),accudpdiff(im),    &
+                   (dpdiffp(ireac),accudpdiffp(ireac),                  &
                    ireac=istart,istop)/)
 #endif
               call binary_write_data(imrt_mpi(imrt), 1,        &
@@ -4958,10 +4958,10 @@
 
                   do ireac = istart, istop
 #ifdef PETSC
-                    totdpdiffp_mpi(ireac) = totdpdiffp_mpi(ireac) +      &
+                    accudpdiffp_mpi(ireac) = accudpdiffp_mpi(ireac) +      &
                                rdummys_alloc(6+(ireac-istart)*2)
 #else
-                    totdpdiffp(ireac) = totdpdiffp(ireac) +              &
+                    accudpdiffp(ireac) = accudpdiffp(ireac) +              &
                                rdummys_alloc(6+(ireac-istart)*2)
 #endif
                   end do
@@ -4975,17 +4975,48 @@
                  (mtime >= mtime_append .and. i_append_sim >= 1)) then
 #ifdef PETSC
                 write(imrt,ascii_fmt)                                  &
-                  time_io,cstordiff(im),dpdiff(im),contmintot_mpi(im), &
-                  (dpdiffp(ireac),totdpdiffp_mpi(ireac),               &
+                  time_io,cstordiff(im),dpdiff(im),accudpdiff_mpi(im), &
+                  (dpdiffp(ireac),accudpdiffp_mpi(ireac),               &
                   ireac=istart,istop)
 #else
                 write(imrt,ascii_fmt)                                  &
-                  time_io,cstordiff(im),dpdiff(im),contmintot(im),     &
-                  (dpdiffp(ireac),totdpdiffp(ireac),                   &
+                  time_io,cstordiff(im),dpdiff(im),accudpdiff(im),     &
+                  (dpdiffp(ireac),accudpdiffp(ireac),                   &
                   ireac=istart,istop)
 #endif      
               end if
             end if
+          end if
+        end do
+
+
+!cdsu mass balance of source sink of each component from mineral phases
+        dpdiff_m2c = r0
+        accu_dpdiff_m2c = r0
+
+        do im = 1,nm
+          istart = iam(im)
+          iend = iam(im+1)-1
+
+          do i1 = istart, iend    ! loop through components in mineral
+            ic = jam(i1)
+
+            dpdiff_m2c(im,ic) = dpdiff_m2c(im,ic) - xnum(i1)*dpdiff(im)
+            accu_dpdiff_m2c(im,ic) = accu_dpdiff_m2c(im,ic) - xnum(i1)*accudpdiff(im)
+          end do
+        end do
+
+        do ic = 1, n
+          imrtm2c = imrtm2c_first+ic-1
+          if (mtime == mtime_append .and. i_append_sim >= 1) then
+            call reposition_file(imrtm2c,irecord)
+          end if
+          if (i_append_sim < 1 .or.                                &
+             (mtime >= mtime_append .and. i_append_sim >= 1)) then
+
+            write(imrtm2c,ascii_fmt) time_io,sum(dpdiff_m2c(:,ic)),&
+                  sum(accu_dpdiff_m2c(:,ic)),dpdiff_m2c(:,ic),     &
+                  accu_dpdiff_m2c(:,ic)
           end if
         end do
  

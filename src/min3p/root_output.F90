@@ -58,8 +58,8 @@ contains
 
       integer :: i, iunit, l_sufx, ic, ig, ivol, nvars, ivar
       
-      real*8 :: zout
-      real*8, external :: zoutput
+      real*8 :: zout, rdummy
+      real*8, external :: zoutput, rootwat
       
       character*3 :: suffix      
       
@@ -193,9 +193,11 @@ contains
           cycle  
         end if
 #endif
+        !c recalculate alpha_vol and v_prop_vol value from rootwat. 
+        rdummy = rootwat(sanew,ivol,rsum_vprop)
        
 !c  assign depth coordinate in terms of depth or elevation
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
         
         if (b_output_binary) then
             

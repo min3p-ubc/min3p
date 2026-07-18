@@ -177,7 +177,7 @@
                                 b_use_node_matids, b_use_cell_matids,  &
                                 b_error_flag, num_nodes_per_cell,      &
                                 num_node_layers, num_nodes_per_layer,  &
-                                num_cell_layers, num_cells_per_layer,  &                                
+                                num_cell_layers, num_cells_per_layer,  &
                                 is_boundary_node_gbl,                  &
                                 is_boundary_cell_gbl,                  &
                                 layer_nodes_top, layer_nodes_bottom,   &
@@ -193,7 +193,8 @@
                                 b_reverse_cell_node,                   &
                                 b_reorder_cell_node,                   &
                                 b_export_mesh_pflotran,                &
-                                b_use_face_based_flux
+                                b_use_face_based_flux,                 &
+                                usg_mesh_data_calculate_depth
 #endif
 
       implicit none
@@ -1240,6 +1241,10 @@
         call checkerr(ierr,'zg',ilog)
         call memory_monitor(sizeof(zg),'zg',.true.)
 
+        allocate (zg_depth(nngl), stat = ierr)
+        zg_depth=0.0d0
+        call checkerr(ierr,'zg_depth',ilog)
+        call memory_monitor(sizeof(zg_depth),'zg_depth',.true.)
 
         allocate (dimcv(3,nngl), stat = ierr)
         dimcv=0.0d0
@@ -1310,6 +1315,11 @@
           gzlmin = zglat(nvzgle)
           gzlmax = zglat(nvzgls)
         end if
+
+!c  calculate the depth value
+        do i = 1, nngl
+          zg_depth(i) = zlmaxgbl - zg(i)
+        end do
 
 !c  calculate volumes
 !c  Parallelized, OpenMP, DSU
@@ -1955,18 +1965,6 @@
 #endif
         end if
 
-!cdsu free unnecessary memory after final use in initopgs
-#ifdef PETSC
-        if (allocated(nodes_gbl)) then
-          call memory_monitor(-sizeof(nodes_gbl),'nodes_gbl',.false.)
-          deallocate(nodes_gbl)
-        end if
-        if (allocated(cells_gbl)) then
-          call memory_monitor(-sizeof(cells_gbl),'cells_gbl',.false.)
-          deallocate(cells_gbl)
-        end if
-#endif
-
         !c *******************************************************************
         !c !!! IMPORTNANT NOTE: GREEN GAUSS METHOD FOR TETRA IS NOT STRICT !!!
         !c !!!     IN THE CURRENT CODE, FURTHER IMPROVEMENT IS NEEDED      !!!
@@ -2009,6 +2007,11 @@
         call checkerr(ierr,'zg',ilog)
         call memory_monitor(sizeof(zg),'zg',.true.)
 
+        allocate (zg_depth(nngl), stat = ierr)
+        zg_depth=0.0d0
+        call checkerr(ierr,'zg_depth',ilog)
+        call memory_monitor(sizeof(zg_depth),'zg_depth',.true.)
+
 !c  assign coordinates to xg, yg, zg array. This is not required if
 !c  use nodes(i)%x, nodes(i)%y, nodes(i)%z instead of xg, yg and zg
         do i = 1, nngl
@@ -2050,6 +2053,23 @@
         ylmaxgbl = ylmax
         zlmingbl = zlmin
         zlmaxgbl = zlmax
+#endif
+
+!c  Calculate the depth value, assign initial value to elevation and then recalculate.
+        zg_depth(:) = zg(:)     
+        call usg_mesh_data_calculate_depth
+
+!cdsu free unnecessary memory after final use in initopgs
+#ifdef PETSC
+        if (allocated(nodes_gbl)) then
+          call memory_monitor(-sizeof(nodes_gbl),'nodes_gbl',.false.)
+          deallocate(nodes_gbl)
+        end if
+        if (allocated(cells_gbl)) then
+          call memory_monitor(-sizeof(cells_gbl),'cells_gbl',.false.)
+          deallocate(cells_gbl)
+        end if
+        
 #endif
 
 !c  calculate volumes

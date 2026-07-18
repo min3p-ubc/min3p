@@ -71,9 +71,19 @@ module usg_mesh_data
   integer :: num_nodes
 
   !>
+  !> number of boundary nodes in the mesh
+  !>
+  integer :: num_bd_nodes
+
+  !>
   !> number of cells in the mesh
   !>
   integer :: num_cells
+
+  !>
+  !> number of boundary cells in the mesh
+  !>
+  integer :: num_bd_cells
 
   !>
   !> number of nodes in each cell
@@ -375,6 +385,20 @@ module usg_mesh_data
   !>
   logical, allocatable :: is_boundary_cell_gbl(:)
 
+  !>
+  !> boundary nodes in the global mesh
+  !>
+  type(point), allocatable :: bd_nodes_gbl(:)
+
+  !>
+  !> boundary cells in the global mesh
+  !>
+  integer, allocatable :: bd_cells_gbl(:,:)
+
+  !>
+  !> indicator of boundary face for boundary cells
+  !>
+  logical, allocatable :: bd_faces_gbl(:,:)
   !> ********************************************************************************
 
   !> half-edge based data storage for 2d mesh
@@ -1566,17 +1590,18 @@ module usg_mesh_data
     num_nodes_gbl = num_nodes
     num_cells_gbl = num_cells
 
-    if (btest(usg_mesh_ordering,0) .or. b_export_mesh_pflotran) then
-      allocate(nodes_gbl(num_nodes_gbl), stat = ierr)
-      call checkerr(ierr,'nodes_gbl',ilog)
-      call memory_monitor(sizeof(nodes_gbl),'nodes_gbl',.false.)
-      nodes_gbl = nodes
+    !if (btest(usg_mesh_ordering,0) .or. b_export_mesh_pflotran) then
+    !c this part is required in user specified mesh ordering, 
+    !c export mesh to pflotran and calculate depth for each node.
+    allocate(nodes_gbl(num_nodes_gbl), stat = ierr)
+    call checkerr(ierr,'nodes_gbl',ilog)
+    call memory_monitor(sizeof(nodes_gbl),'nodes_gbl',.false.)
+    nodes_gbl = nodes
 
-      allocate(cells_gbl(num_nodes_per_cell,num_cells), stat = ierr)
-      call checkerr(ierr,'cells_gbl',ilog)
-      call memory_monitor(sizeof(cells_gbl),'cells_gbl',.false.)
-      cells_gbl = cells
-    end if
+    allocate(cells_gbl(num_nodes_per_cell,num_cells), stat = ierr)
+    call checkerr(ierr,'cells_gbl',ilog)
+    call memory_monitor(sizeof(cells_gbl),'cells_gbl',.false.)
+    cells_gbl = cells
 #endif
 
     !c Set node properties for layered prism and hexahedral mesh
@@ -2459,16 +2484,39 @@ module usg_mesh_data
 
     use parm, only : ncon_usg, ncon_cell_usg
 
+#ifdef PETSC
+#include <petscversion.h>
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 8)
+#include <petsc/finclude/petscsys.h>
+    use petscsys
+#endif
+#endif
+
     implicit none
+
+#ifdef PETSC
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 6 && PETSC_VERSION_MINOR < 8)
+#include <petsc/finclude/petscsys.h>
+#elif (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR < 6)
+#include <finclude/petscsys.h>
+#endif
+#endif
+
+#ifdef PETSC
+    PetscErrorCode :: ierrcode
+#endif
 
     !c passed variables
     logical, intent(in) :: b_mark_boundary
 
     !c local variables
-    integer :: i, j, k, i2, j2, k0, k1, k2, k3, k4, ivol, jvol, iborder, nvec
+    integer :: i, j, k, i2, j2, k0, k1, k2, k3, k4, ivol, jvol,        &
+               iborder, nvec, inode, icell, ibdnode, ibdcell,          &
+               iface, jvol1, jvol2, jvol3, jvol4
     integer*8 :: id
     integer :: inodes(4)
     integer*8, allocatable :: iwork(:)
+    integer, allocatable :: node_idx2bd_temp(:)
     integer :: info_debug, ierr
     type(point) :: pt
     type(point) :: pts(8)
@@ -3041,6 +3089,138 @@ module usg_mesh_data
       deallocate(is_boundary_cell)
 
       return
+    end if
+
+    !c collect boundary cells list that will be used to calculate depth
+    !c note: the master processor call this function (b_mark_boundary = .true.) first
+    !c and then all the other processors call this function (b_mark_boundary = .false.)
+    !c after domain decomposition
+    if (b_mark_boundary) then
+      allocate(node_idx2bd_temp(num_nodes), stat = ierr)
+      node_idx2bd_temp = 0
+      call checkerr(ierr,'node_idx2bd_temp',ilog)
+      call memory_monitor(sizeof(node_idx2bd_temp),'node_idx2bd_temp',.false.)
+
+      num_bd_nodes = count(is_boundary_node)
+      allocate(bd_nodes_gbl(num_bd_nodes), stat = ierr)
+      call checkerr(ierr,'bd_nodes_gbl',ilog)
+      call memory_monitor(sizeof(bd_nodes_gbl),'bd_nodes_gbl',.false.)
+      
+      ibdnode = 0
+      do inode = 1, num_nodes
+        if (is_boundary_node(inode)) then
+          ibdnode = ibdnode + 1
+          bd_nodes_gbl(ibdnode) = nodes(inode)
+          node_idx2bd_temp(inode) = ibdnode
+        end if
+      end do
+
+      num_bd_cells = count(is_boundary_cell)
+      allocate(bd_cells_gbl(num_nodes_per_cell,num_bd_cells), stat = ierr)
+      call checkerr(ierr,'bd_cells_gbl',ilog)
+      bd_cells_gbl = 0
+      call memory_monitor(sizeof(bd_cells_gbl),'bd_cells_gbl',.false.)
+
+      allocate(bd_faces_gbl(num_faces_per_cell,num_bd_cells), stat = ierr)
+      call checkerr(ierr,'bd_faces_gbl',ilog)
+      bd_faces_gbl = .false.
+      call memory_monitor(sizeof(bd_faces_gbl),'bd_faces_gbl',.false.)
+      
+      ibdcell = 0
+      do icell = 1, num_cells
+        if (is_boundary_cell(icell)) then
+          ibdcell = ibdcell + 1
+          do inode = 1, num_nodes_per_cell
+            bd_cells_gbl(inode,ibdcell) = node_idx2bd_temp(cells(inode,icell))
+          end do
+          !c note: this is not strict, e.g., face from corner tetrahedron where three points
+          !c are at the boundary may be an internal face.
+          if (cell_type == cell_type_tetra) then
+            do iface = 1,  num_faces_per_cell           !number of faces, get boundary face
+              jvol1 = cells(face_node_mapping_tetra(1,iface),icell)
+              jvol2 = cells(face_node_mapping_tetra(2,iface),icell)
+              jvol3 = cells(face_node_mapping_tetra(3,iface),icell)
+              if (is_boundary_node(jvol1) .and. is_boundary_node(jvol2) .and. &
+                  is_boundary_node(jvol3)) then
+                bd_faces_gbl(iface,ibdcell) = .true.
+              end if
+            end do
+          else if (cell_type == cell_type_hexa) then
+            do iface = 1,  num_faces_per_cell           !number of faces, get boundary face
+              jvol1 = cells(face_node_mapping_hexa(1,iface),icell)
+              jvol2 = cells(face_node_mapping_hexa(2,iface),icell)
+              jvol3 = cells(face_node_mapping_hexa(3,iface),icell)
+              jvol4 = cells(face_node_mapping_hexa(4,iface),icell)
+              if (is_boundary_node(jvol1) .and. is_boundary_node(jvol2) .and. &
+                  is_boundary_node(jvol3) .and. is_boundary_node(jvol4)) then
+                bd_faces_gbl(iface,ibdcell) = .true.
+              end if
+            end do
+          else if (cell_type == cell_type_prism) then
+            do iface = 1, 2                              !number of faces, top and bottom faces of prism
+              jvol1 = cells(face_node_mapping_prism(1,iface),icell)
+              jvol2 = cells(face_node_mapping_prism(2,iface),icell)
+              jvol3 = cells(face_node_mapping_prism(3,iface),icell)
+              if (is_boundary_node(jvol1) .and. is_boundary_node(jvol2) .and. &
+                  is_boundary_node(jvol3)) then
+                bd_faces_gbl(iface,ibdcell) = .true.
+              end if
+            end do
+            do iface = 3,  num_faces_per_cell
+              jvol1 = cells(face_node_mapping_prism(1,iface),icell)
+              jvol2 = cells(face_node_mapping_prism(2,iface),icell)
+              jvol3 = cells(face_node_mapping_prism(3,iface),icell)
+              jvol4 = cells(face_node_mapping_prism(4,iface),icell)
+            end do
+            if (is_boundary_node(jvol1) .and. is_boundary_node(jvol2) .and. &
+                is_boundary_node(jvol3) .and. is_boundary_node(jvol4)) then
+              bd_faces_gbl(iface,ibdcell) = .true.
+            end if
+          end if
+        end if
+      end do
+
+      call memory_monitor(-sizeof(node_idx2bd_temp),'node_idx2bd_temp',.false.)
+      deallocate(node_idx2bd_temp)
+    else
+#ifdef PETSC
+      !c broadcast variables required by other processors
+      if (nprcs > 1) then
+        call MPI_BCAST(num_bd_nodes, 1, MPI_INTEGER4, 0,         &
+                       Petsc_Comm_World, ierrcode)
+        CHKERRQ(ierrcode)
+
+        call MPI_BCAST(num_bd_cells, 1, MPI_INTEGER4, 0,         &
+                       Petsc_Comm_World, ierrcode)
+        CHKERRQ(ierrcode)
+
+        if (rank > 0) then
+          allocate(bd_nodes_gbl(num_bd_nodes), stat = ierr)
+          call checkerr(ierr,'bd_nodes_gbl',ilog)
+          call memory_monitor(sizeof(bd_nodes_gbl),'bd_nodes_gbl',.false.)
+
+          allocate(bd_cells_gbl(num_nodes_per_cell,num_bd_cells), stat = ierr)
+          call checkerr(ierr,'bd_cells_gbl',ilog)
+          call memory_monitor(sizeof(bd_cells_gbl),'bd_cells_gbl',.false.)
+
+          allocate(bd_faces_gbl(num_faces_per_cell,num_bd_cells), stat = ierr)
+          call checkerr(ierr,'bd_faces_gbl',ilog)
+          call memory_monitor(sizeof(bd_faces_gbl),'bd_faces_gbl',.false.)
+        end if
+
+        call MPI_BCAST (bd_nodes_gbl, num_bd_nodes*3, MPI_REAL8, 0,    &
+                        Petsc_Comm_World, ierrcode)
+        CHKERRQ(ierrcode)
+
+        call MPI_BCAST (bd_cells_gbl, num_nodes_per_cell*num_bd_cells, &
+                        MPI_INTEGER4, 0, Petsc_Comm_World, ierrcode)
+        CHKERRQ(ierrcode)
+
+        call MPI_BCAST (bd_faces_gbl, num_faces_per_cell*num_bd_cells, &
+                        MPI_LOGICAL, 0, Petsc_Comm_World, ierrcode)
+        CHKERRQ(ierrcode)
+      end if
+#endif
     end if
 
     !c end of marking boundary nodes and cells
@@ -5721,6 +5901,239 @@ module usg_mesh_data
   end subroutine usg_mesh_data_interpolate_bd
 
   !>
+  !> calculate the depth of current location
+  !> important note: this only works for convex polgon or convex polyhedron domain
+  !>
+  subroutine usg_mesh_data_calculate_depth()
+
+    use gen, only : zg, zg_depth, zone_buffer, numofthreads_global,    &
+                    numofloops_thred_global
+#ifdef OPENMP
+    use omp_lib 
+#endif
+
+    implicit none
+
+    integer :: idx, inode, icell, iface, ibdcell, ivol, jvol, iflag
+    real*8 :: rtemp, rzbd
+    type(point), allocatable :: pts3(:), pts3_xy(:), pts4(:), pts4_xy(:)
+    real*8, parameter :: r0 = 0.0d0
+
+    allocate(pts3(3))
+    allocate(pts3_xy(3))
+    allocate(pts4(4))
+    allocate(pts4_xy(4))
+
+    if (cell_projection == projection_xyz) then
+      if (cell_type == cell_type_tetra) then
+#ifdef OPENMP
+    !$omp parallel                                                     &                                                                
+    !$omp if (num_nodes > numofloops_thred_global)                     & 
+    !$omp num_threads(numofthreads_global)                             &
+    !$omp default(shared)                                              &
+    !$omp private (inode, ibdcell, iface, idx, ivol, pts3, pts3_xy,    &
+    !$omp iflag, rzbd)                                             
+    !$omp do schedule(static)
+#endif   
+        do inode = 1, num_nodes        
+          do ibdcell = 1, num_bd_cells
+            do iface = 1, num_faces_per_cell
+              if (bd_faces_gbl(iface,ibdcell)) then
+                do idx = 1, 3
+                  ivol = bd_cells_gbl(face_node_mapping_tetra(idx,iface),ibdcell)
+                  pts3(idx) = bd_nodes_gbl(ivol)
+                end do
+                pts3_xy = pts3
+                pts3_xy(:)%z = nodes(inode)%z
+                !c check whether the current node is inside the projection of boundary face
+                iflag = geometry_is_point_inside_2d(projection_xy,nodes(inode),&
+                                                    3,pts3_xy,zone_buffer)
+                if (iflag >= 0) then
+                  rzbd = geometry_idw_interpolation_z(nodes(inode),3,pts3,1.0d0)
+                  if (rzbd > zg_depth(inode)) then
+                    zg_depth(inode) = rzbd
+                  end if
+                end if
+              end if
+            end do
+          end do
+        end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+      else if (cell_type == cell_type_hexa) then
+#ifdef OPENMP
+    !$omp parallel                                                     &                                                                
+    !$omp if (num_nodes > numofloops_thred_global)                     & 
+    !$omp num_threads(numofthreads_global)                             &
+    !$omp default(shared)                                              &
+    !$omp private (inode, ibdcell, iface, idx, ivol, pts4, pts4_xy,    &
+    !$omp iflag, rzbd)                                             
+    !$omp do schedule(static)
+#endif  
+        do inode = 1, num_nodes        
+          do ibdcell = 1, num_bd_cells
+            do iface = 1, num_faces_per_cell
+              if (bd_faces_gbl(iface,ibdcell)) then
+                do idx = 1, 4
+                  ivol = bd_cells_gbl(face_node_mapping_hexa(idx,iface),ibdcell)
+                  pts4(idx) = bd_nodes_gbl(ivol)
+                end do
+                pts4_xy = pts4
+                pts4_xy(:)%z = nodes(inode)%z
+                !c check whether the current node is inside the projection of boundary face
+                iflag = geometry_is_point_inside_2d(projection_xy,nodes(inode),&
+                                                    4,pts4_xy,zone_buffer)
+                if (iflag >= 0) then
+                  rzbd = geometry_idw_interpolation_z(nodes(inode),4,pts4,1.0d0)
+                  if (rzbd > zg_depth(inode)) then
+                    zg_depth(inode) = rzbd
+                  end if
+                end if
+              end if
+            end do
+          end do
+        end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+      else if (cell_type == cell_type_prism) then
+#ifdef OPENMP
+    !$omp parallel                                                     &                                                                
+    !$omp if (num_nodes > numofloops_thred_global)                     & 
+    !$omp num_threads(numofthreads_global)                             &
+    !$omp default(shared)                                              &
+    !$omp private (inode, ibdcell, iface, idx, ivol, pts3, pts3_xy,    &
+    !$omp pts4, pts4_xy, iflag, rzbd)                                             
+    !$omp do schedule(static)
+#endif  
+        do inode = 1, num_nodes        
+          do ibdcell = 1, num_bd_cells
+            do iface = 1, 2
+              if (bd_faces_gbl(iface,ibdcell)) then
+                do idx = 1, 3
+                  ivol = bd_cells_gbl(face_node_mapping_prism(idx,iface),ibdcell)
+                  pts3(idx) = bd_nodes_gbl(ivol)
+                end do
+                pts3_xy = pts3
+                pts3_xy(:)%z = nodes(inode)%z
+                !c check whether the current node is inside the projection of boundary face
+                iflag = geometry_is_point_inside_2d(projection_xy,nodes(inode),&
+                                                    3,pts3_xy,zone_buffer)
+                if (iflag >= 0) then
+                  rzbd = geometry_idw_interpolation_z(nodes(inode),3,pts3,1.0d0)
+                  if (rzbd > zg_depth(inode)) then
+                    zg_depth(inode) = rzbd
+                  end if
+                end if
+              end if
+            end do
+
+            do iface = 3, num_faces_per_cell
+              if (bd_faces_gbl(iface,ibdcell)) then
+                do idx = 1, 4
+                  ivol = bd_cells_gbl(face_node_mapping_tetra(idx,iface),ibdcell)
+                  pts4(idx) = bd_nodes_gbl(ivol)
+                end do
+                pts4_xy = pts4
+                pts4_xy(:)%z = nodes(inode)%z
+                !c check whether the current node is inside the projection of boundary face
+                iflag = geometry_is_point_inside_2d(projection_xy,nodes(inode),&
+                                                    4,pts4_xy,zone_buffer)
+                if (iflag >= 0) then
+                  rzbd = geometry_idw_interpolation_z(nodes(inode),4,pts4,1.0d0)
+                  if (rzbd > zg_depth(inode)) then
+                    zg_depth(inode) = rzbd
+                  end if
+                end if
+              end if
+            end do
+          end do
+        end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+      end if
+    else if (cell_projection == projection_xz) then
+#ifdef OPENMP
+    !$omp parallel                                                     &                                                                
+    !$omp if (num_nodes > numofloops_thred_global)                     & 
+    !$omp num_threads(numofthreads_global)                             &
+    !$omp default(shared)                                              &
+    !$omp private (inode, ibdcell, idx, ivol, jvol, rtemp, rzbd)                                             
+    !$omp do schedule(static)
+#endif     
+      do inode = 1, num_nodes        
+        do ibdcell = 1, num_bd_cells
+          do idx = 1, num_nodes_per_cell
+            ivol = bd_cells_gbl(idx,ibdcell)
+            if(idx < num_nodes_per_cell) then
+              jvol = bd_cells_gbl(idx+1,ibdcell)
+            else
+              jvol = bd_cells_gbl(1,ibdcell)
+            end if
+      
+            rtemp = (nodes(inode)%x-bd_nodes_gbl(ivol)%x)*(nodes(inode)%x-bd_nodes_gbl(jvol)%x)
+            if (rtemp <= r0) then
+              rzbd = math_common_linear(bd_nodes_gbl(ivol)%x,bd_nodes_gbl(jvol)%x,&
+                                        bd_nodes_gbl(ivol)%z,bd_nodes_gbl(jvol)%z,&
+                                        nodes(inode)%x)
+              if (rzbd > zg_depth(inode)) then
+                zg_depth(inode) = rzbd
+              end if
+            end if
+          end do
+        end do
+      end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+    else if (cell_projection == projection_yz) then
+#ifdef OPENMP
+    !$omp parallel                                                     &                                                                
+    !$omp if (num_nodes > numofloops_thred_global)                     & 
+    !$omp num_threads(numofthreads_global)                             &
+    !$omp default(shared)                                              &
+    !$omp private (inode, ibdcell, idx, ivol, jvol, rtemp, rzbd)                                             
+    !$omp do schedule(static)
+#endif 
+      do inode = 1, num_nodes        
+        do ibdcell = 1, num_bd_cells
+          do idx = 1, num_nodes_per_cell
+            ivol = bd_cells_gbl(idx,ibdcell)
+            if(idx < num_nodes_per_cell) then
+              jvol = bd_cells_gbl(idx+1,ibdcell)
+            else
+              jvol = bd_cells_gbl(1,ibdcell)
+            end if
+      
+            rtemp = (nodes(inode)%y-bd_nodes_gbl(ivol)%y)*(nodes(inode)%y-bd_nodes_gbl(jvol)%y)
+            if (rtemp <= r0) then
+              rzbd = math_common_linear(bd_nodes_gbl(ivol)%y,bd_nodes_gbl(jvol)%y,&
+                                        bd_nodes_gbl(ivol)%z,bd_nodes_gbl(jvol)%z,&
+                                        nodes(inode)%y)
+              if (rzbd > zg_depth(inode)) then
+                zg_depth(inode) = rzbd
+              end if
+            end if
+          end do
+        end do
+      end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+    end if
+
+    zg_depth = zg_depth - zg
+
+  end subroutine usg_mesh_data_calculate_depth
+
+  !>
   !> get adjacent nodes, can be replace with recrusive subroutine
   !> variable description:
   !>   nreq : required number of nodes that needed
@@ -6094,7 +6507,7 @@ module usg_mesh_data
   !>
   subroutine write_mesh_data_vtk_ascii_z(ifile,strtitle)
 
-    use gen, only : ascii_fmt
+    use gen, only : ascii_fmt, depth_output, zg_depth
 
     implicit none
 
@@ -6102,6 +6515,9 @@ module usg_mesh_data
     character(len=*), intent(in) :: strtitle
 
     integer :: i, j
+    real*8 :: zout
+
+    real*8, external :: zoutput
 
     !c write version information
     write(ifile,'(a)') "# vtk DataFile Version 2.0"
@@ -6119,13 +6535,15 @@ module usg_mesh_data
     write(ifile,'(a,1x,i12,1x,a)') "POINTS",num_nodes,"double"
     if (b_mesh_output_scale) then
       do i = 1, num_nodes
+        zout = zoutput(depth_output,nodes(i)%z,zg_depth(i))
         write(ifile,ascii_fmt) nodes(i)%x*mesh_output_scale%x,         &
                                nodes(i)%y*mesh_output_scale%y,         &
-                               nodes(i)%z*mesh_output_scale%z
+                               zout*mesh_output_scale%z
       end do
     else
       do i = 1, num_nodes
-        write(ifile,ascii_fmt) nodes(i)%x,nodes(i)%y,nodes(i)%z
+        zout = zoutput(depth_output,nodes(i)%z,zg_depth(i))
+        write(ifile,ascii_fmt) nodes(i)%x,nodes(i)%y,zout
       end do
     end if
 

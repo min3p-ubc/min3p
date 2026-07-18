@@ -81,7 +81,7 @@
 !c
 !c local:    real*8:
 !c           ------- 
-!c           fhead              = freshwater head 
+!c           fhead              = equivalent freshwater head 
 !c           ioutdebug          = output toggle
 !c           phead              = pressure head
 !c           qroot              = root water uptake for current
@@ -161,7 +161,10 @@
 
 !c  calculate pressure and freshwater heads
       phead = uvsnew(ivol)/(density(ivol) * gacc)
-      fhead = phead * density(ivol)/ref_dens + zg(ivol)
+
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+      fhead = zg(ivol) + phead*(density(ivol)/ref_dens)
 
 !c  calculate ice and water saturation when freezing/thawing are considered
       if ((heat_transport .or. temp_field) .and. b_water_freezing) then

@@ -246,13 +246,13 @@
       call checkerr(ierr,'velocity_g_usg-vels_neq_loc',ilog)
       call memory_monitor(sizeof(vels_neq_loc),'vels_neq_loc',.true.)
 
-      allocate(gasdiff_usg_loc(n,nmaxconc), stat = ierr)
-      call checkerr(ierr,'velocity_g_usg-gasdiff_usg_loc',ilog)
-      call memory_monitor(sizeof(gasdiff_usg_loc),'gasdiff_usg_loc',.true.)
+      allocate(gasdiff_usg(n,nmaxconc), stat = ierr)
+      call checkerr(ierr,'velocity_g_usg-gasdiff_usg',ilog)
+      call memory_monitor(sizeof(gasdiff_usg),'gasdiff_usg',.true.)
 
-      allocate(grad_gasdiff_loc(ng,nmaxconc), stat = ierr)
-      call checkerr(ierr,'velocity_g_usg-grad_gasdiff_loc',ilog)
-      call memory_monitor(sizeof(grad_gasdiff_loc),'grad_gasdiff_loc',.true.)
+      allocate(grad_gasdiff(ng,nmaxconc), stat = ierr)
+      call checkerr(ierr,'velocity_g_usg-grad_gasdiff',ilog)
+      call memory_monitor(sizeof(grad_gasdiff),'grad_gasdiff',.true.)
 
 !c    spatial weighting for the gas phase
       spt_weight = spatial_weighting
@@ -723,34 +723,7 @@
 
         !c open corresponding xmf file for mesh and domain decomposition
         if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
+          call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
         end if
 
         !c create a group for the mesh data set
@@ -955,34 +928,7 @@
 
           !c open corresponding xmf file for mesh and domain decomposition
           if (rank == 0) then
-            call hdf5_usg_write_xmf_initialize(ixmf)
-            call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,        &
-                      cell_type,num_cells_gbl,num_nodes_gbl,           &
-                      num_nodes_per_cell)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_rank",       &
-                      "Scalar","Node",num_nodes_gbl,1)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_rank",          &
-                      "Scalar","Cell",num_cells_gbl,1)
-
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_lg2g",       &
-                      "Scalar","Node",num_nodes_gbl,1)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_lg2g",          &
-                      "Scalar","Cell",num_cells_gbl,1)
-
-            if (b_use_node_matids) then
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_matid",    &
-                        "Scalar","Node",num_nodes_gbl,1)
-            end if
-            if (b_use_cell_matids) then
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_matid",       &
-                        "Scalar","Cell",num_cells_gbl,1)
-            end if
+            call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
           end if
 
           !c create a group for the mesh data set
@@ -1302,34 +1248,7 @@
 
             !c open corresponding xmf file for mesh and domain decomposition
             if (rank == 0) then
-              call hdf5_usg_write_xmf_initialize(ixmf)
-              call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,      &
-                        cell_type,num_cells_gbl,num_nodes_gbl,         &
-                        num_nodes_per_cell)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_rank",     &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_rank",        &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_lg2g",     &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_lg2g",        &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              if (b_use_node_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                &
-                          strfilename_mesh,"domain","vertices_matid",  &
-                          "Scalar","Node",num_nodes_gbl,1)
-              end if
-              if (b_use_cell_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                &
-                          strfilename_mesh,"domain","cells_matid",     &
-                          "Scalar","Cell",num_cells_gbl,1)
-              end if
+              call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
             end if
 
             !c create a group for the mesh data set
@@ -1496,34 +1415,7 @@
 
         !c open corresponding xmf file for mesh and domain decomposition
         if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
+          call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
         end if
 
         !c create a group for the mesh data set
@@ -1664,34 +1556,7 @@
 
         !c open corresponding xmf file for mesh and domain decomposition
         if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
+          call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
         end if
 
         !c create a group for the mesh data set
@@ -1834,34 +1699,7 @@
 
         !c open corresponding xmf file for mesh and domain decomposition
         if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
+          call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
         end if
 
         !c create a group for the mesh data set

@@ -1172,11 +1172,65 @@ module geometry
 
     !c local variable
     integer :: i, j
-    real*8 :: dist
+    real*8 :: dist, xmin, xmax, ymin, ymax, zmin, zmax
+    real*8, parameter :: rsmall = 1.0d-10
 
     iflag = -1
 
-    !c first check if the node is same as polygon vertex
+    !c check if the node is outside of regular domain
+    xmin = pts(1)%x
+    ymin = pts(1)%y
+    zmin = pts(1)%z
+    xmax = xmin
+    ymax = ymin
+    zmax = zmin
+    do i = 2, n
+      if (pts(i)%x > xmax) then
+        xmax = pts(i)%x
+      else if (pts(i)%x < xmin) then
+        xmin = pts(i)%x
+      end if
+
+      if (pts(i)%y > ymax) then
+        ymax = pts(i)%y
+      else if (pts(i)%y < ymin) then
+        ymin = pts(i)%y
+      end if
+
+      if (pts(i)%z > zmax) then
+        zmax = pts(i)%z
+      else if (pts(i)%z < zmin) then
+        zmin = pts(i)%z
+      end if
+    end do
+    xmin = xmin - rsmall
+    ymin = ymin - rsmall
+    zmin = zmin - rsmall
+    xmax = xmax + rsmall
+    ymax = ymax + rsmall
+    zmax = zmax + rsmall
+
+    if (ixyz == projection_xy) then
+      if (pt%x < xmin .or. pt%x > xmax .or. &
+          pt%y < ymin .or. pt%y > ymax) then
+        iflag = -1
+        return
+      end if
+    else if (ixyz == projection_yz) then
+      if (pt%y < ymin .or. pt%y > ymax .or. &
+          pt%z < zmin .or. pt%z > zmax) then
+        iflag = -1
+        return
+      end if
+    else if (ixyz == projection_xz) then
+      if (pt%x < xmin .or. pt%x > xmax .or. &
+          pt%z < zmin .or. pt%z > zmax) then
+        iflag = -1
+        return
+      end if
+    end if
+
+    !c check if the node is same as polygon vertex
     do i = 1, n
       if(geometry_points_same(pt, pts(i))) then
         iflag = 0
@@ -1184,7 +1238,7 @@ module geometry
       end if
     end do
 
-    !c second check if the node is on the edge by comparing the distance to the vector
+    !c check if the node is on the edge by comparing the distance to the vector
     do i = 1, n
       j = mod(i,n)+1
       dist = geometry_point_to_line(pt, pts(i), pts(j))
@@ -1226,5 +1280,50 @@ module geometry
   end function geometry_is_point_inside_2d
 
 #endif
+
+!>
+!> inverse distance weighted interpolation of z value based on xy coordinates
+!>
+  function geometry_idw_interpolation_z(pt,n,pts,power) result(idw_z)
+
+    implicit none
+    integer, intent(in) :: n
+    real*8, intent(in) :: power
+    type(point) :: pt
+    type(point), allocatable :: pts(:)
+    real*8 :: idw_z
+
+    !c local parameters
+    integer :: i
+    real*8 :: distance, weight, sum_weights, sum_weighted_values
+    real*8, parameter :: rsmall = 1.0d-10
+    
+    ! Initialize sums
+    sum_weights = 0.0
+    sum_weighted_values = 0.0
+
+    ! Loop over all known points
+    do i = 1, n
+      ! Calculate Euclidean distance
+      distance = sqrt((pt%x - pts(i)%x)**2 + (pt%y - pts(i)%y)**2)
+      
+      ! Avoid division by zero (if the point coincides with a known point)
+      if (distance <= rsmall) then
+        idw_z = pts(i)%z
+        return
+      end if
+      
+      ! Calculate weight
+      weight = 1.0 / (distance**power)
+      
+      ! Accumulate weighted values and weights
+      sum_weighted_values = sum_weighted_values + weight * pts(i)%z
+      sum_weights = sum_weights + weight
+    end do
+    
+    ! Calculate interpolated value
+    idw_z = sum_weighted_values / sum_weights
+
+  end function geometry_idw_interpolation_z
 
 end module geometry

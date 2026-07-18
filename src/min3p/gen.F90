@@ -337,6 +337,7 @@
       real (type_r8), allocatable :: xg(:)
       real (type_r8), allocatable :: yg(:)
       real (type_r8), allocatable :: zg(:)
+      real (type_r8), allocatable :: zg_depth(:)
       real (type_r8), allocatable :: xglat(:)
       real (type_r8), allocatable :: yglat(:)
       real (type_r8), allocatable :: zglat(:)      

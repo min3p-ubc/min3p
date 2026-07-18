@@ -473,7 +473,7 @@
                                dhac(ic),dhbc(ic),dhad(tid),dhbd(tid),  &
                                adav,bdav,acth2omin,nc,                 &
                                nx,namec(ic),namec,ic,issit,asit,basit, &
-                   coepsil,iasit,jasit)
+                               coepsil,iasit,jasit)
       end do
          
 !c initialize variables
@@ -558,21 +558,18 @@
         
 !c calculate total component concentration in aq. and gas phase
 
-        
           tot_gas(ig,ivol) = sanew(ivol) * aqueous_gas(ig) +           &
                             (r1-sanew(ivol)) * gnew(ig,ivol)            
 
 !c calculate total pressure based on tot_gas               
 
           sum_pressure = sum_pressure+tot_gas(ig,ivol)/k_henry(ig,ivol)
-        
         end do
 
 
 !c calculate hydrodynamic pressure 
 
         tot_press = pres_atm+uvsnew(ivol)*rho_w*gacc/pa_atm
-
 
 !c if sum_pressure is greater than tot_press then a gas phase is present 
 !c and calculate the volume of the gas phase
@@ -950,7 +947,7 @@
         ivol_l = ivol_l + 1
         
 !c  assign depth coordinate in terms of depth or elevation
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
         
         if (b_output_binary) then
           realbuffer((ivol_l-1)*nvars+1:(ivol_l-1)*nvars+6) = (/       &

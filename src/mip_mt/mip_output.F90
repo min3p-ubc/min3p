@@ -162,7 +162,7 @@ contains
         ivol_l = ivol_l + 1
         
 !c  assign depth coordinate in terms of depth or elevation
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
         
         if (b_output_binary) then
             
@@ -382,7 +382,7 @@ contains
         ivol_l = ivol_l + 1
         
 !c  assign depth coordinate in terms of depth or elevation
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
         
         if (b_output_binary) then
             

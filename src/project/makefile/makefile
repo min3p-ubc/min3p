@@ -15,6 +15,8 @@ with-gcc = true
 with-intel =
 with-pgi =
 
+with-fallow-mismatch =
+
 with-repo-info = true
 with-build-info = true
 
@@ -90,6 +92,10 @@ FPPFLAGS := $(FPPFLAGS) -DINTEL
 
 FFLAGS := $(FFLAGS) -qoverride-limits
 CXXFLAGS := $(CXXFLAGS) -qoverride-limits
+endif
+
+ifdef with-fallow-mismatch
+FFLAGS := $(FFLAGS) -fallow-argument-mismatch
 endif
 
 ########## Repository Version and build options ###########

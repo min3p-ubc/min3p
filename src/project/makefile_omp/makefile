@@ -17,6 +17,8 @@ with-intel =
 with-intel-after2018 =
 with-pgi = 
 
+with-fallow-mismatch =
+
 with-repo-info = true
 with-build-info = true
 
@@ -113,6 +115,10 @@ FFLAGS := $(FFLAGS) -openmp
 endif
 endif
 
+endif
+
+ifdef with-fallow-mismatch
+FFLAGS := $(FFLAGS) -fallow-argument-mismatch
 endif
 
 ########## Repository Version and build options ###########

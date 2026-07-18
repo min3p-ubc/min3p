@@ -848,7 +848,7 @@
 
 !c  assign depth coordinate in terms of depth or elevation
 
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
         theta_a = pornew(ivol)*sanew(ivol)
         

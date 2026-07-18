@@ -2508,7 +2508,7 @@
 
 !c  assign depth coordinate in terms of depth or elevation
 
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
 !c  calculate concentrations of sorbed species and convert the unit to mol/L H2O
 !c  when 'combined output of aquous and sorbed concentrations' is specified
@@ -4910,7 +4910,7 @@
 
 !c  assign depth coordinate in terms of depth or elevation
 
-          zout = zoutput(depth_output,zg(ivol),elevmax)
+          zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
  
 !c  update secondary variables before output
  

@@ -379,7 +379,7 @@
 
 !c  assign depth coordinate in terms of depth or elevation
 
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
         if (density_dependence) then
           stor_out = stor(ivol)*density(ivol)*gacc

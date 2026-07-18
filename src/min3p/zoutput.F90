@@ -42,14 +42,14 @@
 !c external: -  
 !c ----------------------------------------------------------------------
  
-      real*8 function zoutput(depth_output,z,elevmax)
+      real*8 function zoutput(depth_output,z,depth)
  
       implicit none
-      real*8 :: z, elevmax
+      real*8 :: z, depth
       logical depth_output
 
       if (depth_output) then
-        zoutput = elevmax - z
+        zoutput = depth
       else
         zoutput = z
       end if

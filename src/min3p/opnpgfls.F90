@@ -502,7 +502,7 @@
 !c
 !c  for domain decomposition method, ivol = -1 indicates that 
 !c  this volume is not in the current sub-domain, skip it.
-          zout = zoutput(depth_output,zg(ivol),elevmax)
+          zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
 !c  assign file suffixes
 !c  maximum of 999 locations
@@ -2179,8 +2179,8 @@
 !c  this volume is not in the current sub-domain, skip it.
           xout = (xg(ivol)+xg(jvol))*0.5d0
           yout = (yg(ivol)+yg(jvol))*0.5d0
-          zout = (zoutput(depth_output,zg(ivol),elevmax) +             &
-                  zoutput(depth_output,zg(jvol),elevmax))*0.5d0
+          zout = (zoutput(depth_output,zg(ivol),zg_depth(ivol)) +             &
+                  zoutput(depth_output,zg(jvol),zg_depth(jvol)))*0.5d0
 
 !c  assign file suffixes
 !c  maximum of 999 locations

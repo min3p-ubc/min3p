@@ -138,7 +138,7 @@
 !c
 !c local:    real*8:
 !c           ------- 
-!c           fhead              = freshwater head 
+!c           fhead              = equivalent freshwater head 
 !c           qroot              = root water uptake for current
 !c                                control volume
 !c           theta_a            = aqueous phase content         
@@ -564,7 +564,7 @@
             ddensreact_dt = ddensreact_dt / delt
             ddensmix_dt = ddens_dt - ddensreact_dt
             
-            zout = zoutput(depth_output,zg(ivol),elevmax)
+            zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
             
             if (b_output_binary) then
               realbuffer((ivol_l-1)*(6+nm)+1:ivol_l*(6+nm)-nm) = (/    &
@@ -1350,15 +1350,14 @@
 
           phead = uvsnew(ivol)/(density(ivol) * gacc)
 
-          fhead = phead + zg(ivol)
-
-!c        phead = uvsnew(ivol)/(ref_dens * gacc)
-!c        fhead = phead + zg(ivol)
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+          fhead = zg(ivol) + phead*(density(ivol)/ref_dens)
 
 
 !c  assign depth coordinate in terms of depth or elevation
 
-          zout = zoutput(depth_output,zg(ivol),elevmax)
+          zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
           theta_a = pornew(ivol) * sanew(ivol)
 
@@ -2121,12 +2120,15 @@
           
 !c  calculate pressure and freshwater heads
           phead = uvsnew(ivol)/(density(ivol) * gacc)
-          fhead = phead * density(ivol)/ref_dens + zg(ivol)
+          
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+          fhead = zg(ivol) + phead*(density(ivol)/ref_dens)
 
 
 !c  assign depth coordinate in terms of depth or elevation
 
-          zout = zoutput(depth_output,zg(ivol),elevmax)
+          zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
           theta_a = pornew(ivol) * sanew(ivol)
           theta_n = pornew(ivol) * snnew(ivol)

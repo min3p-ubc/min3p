@@ -1613,7 +1613,7 @@
 
 !c  assign depth coordinate in terms of depth or elevation
           if(ivol > 0) then
-            zout = zoutput(depth_output,zg(ivol),elevmax)
+            zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 #ifdef PETSC
             write(igen,'(2(a,i10,1x),3(a,1pe15.6e3,a))')              &
      &                          'local ivol = ',ivol,                 &

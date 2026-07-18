@@ -140,7 +140,9 @@
                          elect_correction,name_elect_correction,       &
                          nelect,dz_surf,totc,component_type,nlayer,    &
                          mol_frac_ads)
-                                                                      
+
+      !use math_common, only : math_common_solve_cubic
+
       implicit none
       
       real*8 :: csb_ion,csb_surf,cec,eqsb_ion,eqsb_surf,gammac,c,      &
@@ -161,7 +163,7 @@
                                                                         
       real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0,      &
                            r2 = 2.0d0, r3 = 3.0d0, r4 = 4.0d0,         &
-                           rtol = 1.0d-10, pi = 3.141592653589793d0
+                           rtol = 1.0d-15, pi = 3.141592653589793d0
       integer, parameter :: ilayer_0 = 1, ilayer_beta = 2
 
       logical :: quadratic1, quadratic2, cubic1, cubic2
@@ -170,7 +172,8 @@
       
       real*8 :: term1, term2, term3, term4, term5, term6, cte, cloc, totloc
 
-      real*8 :: ra, rb, rc, rx1, rx2, fx, fdx            !c parameter for cubic equation fx=x^3+ax^2+bx+c
+      real*8 :: ra, rb, rc, rx1, rx2, rx3, fx, fdx            !c parameter for cubic equation x^3+ax^2+bx+c=0
+      !integer :: num_real_roots, num_positive_roots
 
       if (isb_ion.gt.0) then
 
@@ -267,9 +270,16 @@
             rb = term4/term6
             rc = -r1/term6
 
+            !c method 1: analytical solution, not stable
+            !call math_common_solve_cubic(ra, rb, rc, rx1, rx2, rx3,    &
+            !                             num_real_roots, num_positive_roots)
+            !if (num_positive_roots == 1) then              
+            !  term2 = rx1
+            !end if
+
+            !c method 2: numerical solution
             !c use Newton-Raphson method to solve cubic equation instead, 
             !c x_i+1 = x_i - f(x_i)/f'(x_i)
-
             rx1 = r1
             rx2 = r0
             nits = 0
@@ -279,11 +289,12 @@
               fdx = 3.0*rx1**2+2.0*ra*rx1+rb       !c derivative
               rx1 = rx1-fx/fdx
               nits = nits + 1
-              if (abs(fx) < rtol .or. abs(rx1-rx2) < rtol .or. nits > 100) then
+              if (abs(fx) < rtol .or. abs(rx1-rx2) < rtol .or. nits > 1000) then
                 exit                
               end if
             end do
             term2 = rx1
+
           else if (term5.ne.0) then
             term2 = (-term4 + (term4**r2 + r4*term5)**rhalf)/(r2*term5)
           else
@@ -370,7 +381,9 @@
                          nsb_ion,nsb_surf,isb_ion,isb_surf,                       &
                          sorption_type_ion,sorption_type_surf,                    &
                          sorption_group,isactcexch)
+
       use chem, only : idx_nsites_ion, nss_onIsite_ion, idx_ss2isite_ion, nsites_ion
+      !use math_common, only : math_common_solve_cubic
 
       implicit none
 
@@ -381,7 +394,8 @@
                  nroots, nits
 
       real*8 :: term1, term2, term3, term4, term5, term6
-      real*8 :: ra, rb, rc, rx1, rx2, fx, fdx            !c parameter for cubic equation x^3+ax^2+bx+c=0
+      real*8 :: ra, rb, rc, rx1, rx2, rx3, fx, fdx            !c parameter for cubic equation x^3+ax^2+bx+c=0
+      !integer :: num_real_roots, num_positive_roots
 
       character*72 sorption_type_ion,sorption_type_surf,sorption_group                         
                                                                         
@@ -392,7 +406,7 @@
                                                                         
       real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0,      &
                            r2 = 2.0d0, r3 = 3.0d0, r4 = 4.0d0,         &
-                           rtol = 1.0d-10, pi = 3.141592653589793d0
+                           rtol = 1.0d-15, pi = 3.141592653589793d0
 
       logical quadratic1, quadratic2, cubic1, cubic2
 
@@ -515,9 +529,16 @@
             rb = term4/term6
             rc = -r1/term6
 
+            !c method 1: analytical solution, not stable
+            !call math_common_solve_cubic(ra, rb, rc, rx1, rx2, rx3,    &
+            !                             num_real_roots, num_positive_roots)
+            !if (num_positive_roots == 1) then              
+            !  term2 = rx1
+            !end if
+
+            !c method 2: numerical solution
             !c use Newton-Raphson method to solve cubic equation instead, 
             !c x_i+1 = x_i - f(x_i)/f'(x_i)
-
             rx1 = r1
             rx2 = r0
             nits = 0
@@ -527,13 +548,14 @@
               fdx = 3.0*rx1**2+2.0*ra*rx1+rb       !c derivative
               rx1 = rx1-fx/fdx
               nits = nits + 1
-              if (abs(fx) < rtol .or. abs(rx1-rx2) < rtol .or. nits > 100) then
+              if (abs(fx) < rtol .or. abs(rx1-rx2) < rtol .or. nits > 1000) then
                 exit                
               end if
             end do
-            term2 = rx1
+            term2 = rx1            
+            
           else if (term5.ne.0) then       !quadratic equation for bi-valent cation
-            term2 = (-term4 + (term4**r2 + r4*term5)**rhalf)/(r2*term5)          
+            term2 = (-term4 + (term4**r2 + r4*term5)**rhalf)/(r2*term5) 
           else
             term2 = r1/term4
           end if

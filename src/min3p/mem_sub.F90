@@ -41,13 +41,6 @@
       
       logical iserror
 
-      !bit flag of subdomains, initialize with position 0 true for the entire domain 
-      if (.not.allocated(subdomains_bits)) then
-        allocate(subdomains_bits(nngl), stat = ierr)
-        subdomains_bits = 1
-        call checkerr(ierr,'subdomains_bits',ilog)  
-        call memory_monitor(sizeof(subdomains_bits),'subdomains_bits',.true.)
-      end if
 
       !c  mass balance related file unit for flow
       if (varsat_flow) then

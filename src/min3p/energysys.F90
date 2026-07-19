@@ -163,7 +163,7 @@
           end if
 #endif
 
-          if (.not.btest(subdomains_bits(ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
             cycle
           end if
       
@@ -218,7 +218,7 @@
             cycle
           end if
 #endif
-          if (.not.btest(subdomains_bits(ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
             cycle
           end if
 

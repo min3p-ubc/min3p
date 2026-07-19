@@ -1018,7 +1018,7 @@
       integer (type_i4) :: subdomains_n
       integer (type_i4), allocatable :: subdomains_bdface_conn(:,:)
       integer (type_i4), allocatable :: subdomains_bdface(:,:,:)
-      integer (type_i4), allocatable :: subdomains_bits(:)
+      integer (type_i4), allocatable :: subdomains_bits(:,:)
 
       !c  mass balance related file unit
       integer (type_i4), allocatable :: iarup(:)

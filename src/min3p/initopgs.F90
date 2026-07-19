@@ -1328,12 +1328,12 @@
 
           call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection .and. discretization_type == 0) then
+          if (found_subsection) then
             gb_output_faceflux = .true.
             ierrcd = 21
             read(itmp,*,err=999,end=999) subdomains_n    !number of control volumes
 
-            if (subdomains_n < 0 .or. subdomains_n > 30) then
+            if (subdomains_n < 0) then
               goto 996
             end if
 
@@ -1345,14 +1345,14 @@
             allocate (subdomains_bdface(2,2,subdomains_n), stat = ierr)
             subdomains_bdface = 0 
             call checkerr(ierr,'subdomains_bdface',ilog)  
-            call memory_monitor(sizeof(subdomains_bdface),'subdomains_bdface',.true.)
-      
-            !bit flag of subdomains, initialize with position 0 true for the entire domain 
-            allocate (subdomains_bits(nngl), stat = ierr)
-            subdomains_bits = 1
-            call checkerr(ierr,'subdomains_bits',ilog)  
-            call memory_monitor(sizeof(subdomains_bits),'subdomains_bits',.true.)
+            call memory_monitor(sizeof(subdomains_bdface),'subdomains_bdface',.true.)          
           end if
+
+          !bit flag of subdomains, initialize with position 0 true for the entire domain 
+          allocate(subdomains_bits(ceiling(max(subdomains_n,1)/30.0),nngl), stat = ierr)
+          subdomains_bits = 1
+          call checkerr(ierr,'subdomains_bits',ilog)  
+          call memory_monitor(sizeof(subdomains_bits),'subdomains_bits',.true.)
 
 !allocate binary output control parameters for breakthrough data
 !currently not supported
@@ -1460,7 +1460,7 @@
                        (zg(ivol)-zcoord2(1))*(zg(ivol)-zcoord2(2))
 
                 if (dist <= small) then                         
-                  subdomains_bits(ivol) = ibset(subdomains_bits(ivol),isub)
+                  subdomains_bits(ceiling(max(isub,1)/30.0),ivol) = ibset(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)
                 end if
               end do
 
@@ -2045,8 +2045,8 @@
 996   continue
 
       if (rank == 0) then
-        write(*,*) 'Error: maximum number of subdomains is 30'
-        write(ilog,*) 'Error: maximum number of subdomains is 30'
+        write(*,*) 'Error: number of subdomains cannot be negative'
+        write(ilog,*) 'Error: number of subdomains cannot be negative'
         close(ilog)
       end if
 #ifdef PETSC

@@ -867,6 +867,7 @@
 
       logical :: ircm_tz_restart
       logical :: skip_time_gb
+      logical :: ascii_fmt_comma
 
 !cdsu exclude solute uptake in recycling during return time.
       logical :: exclude_return_uptake
@@ -4009,7 +4010,6 @@
 !> output precision in ascii format, by default, single precision is used
 !>dsu----------------------------------------------------------
     character*72 :: ascii_fmt
-    character*72 :: ascii_fmt_iir
 
 !>dsu----------------------------------------------------------
 !>Parameters for binary output of tecplot and paraview data file

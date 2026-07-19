@@ -252,7 +252,8 @@
       b_output_binary = .false.
       b_output_trans_binary = .false.
       b_output_mpiio_single = .true.
-      b_output_separate_mesh_result = .false.      
+      b_output_separate_mesh_result = .false.  
+      ascii_fmt_comma = .false.    
       hdf5_compress_level = 0
 
 
@@ -320,14 +321,26 @@
         end if
 #endif
 
+        subsection = 'use comma as data delimiter'
+        call findstrg(subsection,itmp,found_subsection)
+        if (found_subsection) then
+          ascii_fmt_comma = .true.
+        end if
+
         subsection = 'use double precision'  
         call findstrg(subsection,itmp,found_subsection)
         if (found_subsection) then
-          ascii_fmt = '(1000(1pe25.17e3))'
-          ascii_fmt_iir = '(2(i10,1x),1000(1pe25.17e3))'
+          if (ascii_fmt_comma) then
+            ascii_fmt = '(1000(1pe25.17e3,","))'
+          else
+            ascii_fmt = '(1000(1pe25.17e3))'
+          end if
         else
-          ascii_fmt = '(1000(1pe15.6e3))'
-          ascii_fmt_iir = '(2(i10,1x),1000(1pe15.6e3))'
+          if (ascii_fmt_comma) then
+            ascii_fmt = '(1000(1pe15.6e3,","))'
+          else
+            ascii_fmt = '(1000(1pe15.6e3))'
+          end if
         end if
         
         if (.not.varsat_flow .and. .not.reactive_transport) then

@@ -402,10 +402,8 @@
       call findstrg(subsection,itmp,found_subsection)
       if (found_subsection) then
         ascii_fmt = '(1000(1pe25.17e3))'
-        ascii_fmt_iir = '(2(i10,1x),1000(1pe25.17e3))'
       else
         ascii_fmt = '(1000(1pe15.6e3))'
-        ascii_fmt_iir = '(2(i10,1x),1000(1pe15.6e3))'
       end if
 
 !c  maximum memory avaiable for master node per CPU

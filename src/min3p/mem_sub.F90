@@ -288,5 +288,52 @@
   
       end if
 
+      !c some of the variables are used in batch reaction
+      if (nm > 0 .and. (reactive_transport .or. reactive_minerals)) then
+        if (.not.allocated(imrtm2c)) then
+          allocate (imrtm2c(0:subdomains_n), stat = ierr)
+          imrtm2c = 0 
+          call checkerr(ierr,'imrtm2c',ilog)  
+          call memory_monitor(sizeof(imrtm2c),'imrtm2c',.true.)
+        end if
+
+        if (.not.allocated(imrtm2c_first)) then
+          allocate (imrtm2c_first(0:subdomains_n), stat = ierr)
+          imrtm2c_first = 0 
+          call checkerr(ierr,'imrtm2c_first',ilog)  
+          call memory_monitor(sizeof(imrtm2c_first),'imrtm2c_first',.true.)  
+        end if
+
+        if (.not.allocated(imrtm2c_last)) then
+          allocate (imrtm2c_last(0:subdomains_n), stat = ierr)
+          imrtm2c_last = 0 
+          call checkerr(ierr,'imrtm2c_last',ilog)  
+          call memory_monitor(sizeof(imrtm2c_last),'imrtm2c_last',.true.)
+        end if
+      end if
+
+      if (flux_out .and. (reactive_transport .or. reactive_minerals)) then
+        if (.not.allocated(imcd)) then
+          allocate (imcd(0:subdomains_n), stat = ierr)
+          imcd = 0 
+          call checkerr(ierr,'imcd',ilog)  
+          call memory_monitor(sizeof(imcd),'imcd',.true.)
+        end if
+
+        if (.not.allocated(imcd_first)) then
+          allocate (imcd_first(0:subdomains_n), stat = ierr)
+          imcd_first = 0 
+          call checkerr(ierr,'imcd_first',ilog)  
+          call memory_monitor(sizeof(imcd_first),'imcd_first',.true.)
+        end if
+  
+        if (.not.allocated(imcd_last)) then
+          allocate (imcd_last(0:subdomains_n), stat = ierr)
+          imcd_last = 0 
+          call checkerr(ierr,'imcd_last',ilog)  
+          call memory_monitor(sizeof(imcd_last),'imcd_last',.true.)
+        end if
+      end if
+
       return
       end

@@ -951,16 +951,16 @@
 #endif 
 
 !c  initialize local variables
-     relpgij  = r0 
-     densgij  = r0          
-     viscgij  = r0 
-     gpij     = r0  
-     dgpivol  = r0 
-     dmdens_i = r0 
-     ddens_i  = r0 
-     wfac     = r0
-     relpgi   = r0
-     relpgj   = r0
+      relpgij  = r0 
+      densgij  = r0          
+      viscgij  = r0 
+      gpij     = r0  
+      dgpivol  = r0 
+      dmdens_i = r0 
+      ddens_i  = r0 
+      wfac     = r0
+      relpgi   = r0
+      relpgj   = r0
 
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -3420,19 +3420,21 @@
           if (root_uptake) then
             if (itype_root_resp == 1) then 
               if (rld(ivol) > rverysmall) then
-                if (resprate(ic,izn) > r0) then
-                  if (resprate_charge(izn) .and. namec(ic).eq.'h+1') then
-                    drootarup(ic) = r0
-                  else
-                    !c derivative of respiration depends on the formula 
-                    !c d(([TotC]/([TotC]+[TotC_h])^n) = n*[TotC_h][TotC]^(n-1)/([TotC]+[TotC_h])^(n+1))
-                    drootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)/   &                                
-                                    (totcinc(ic,tid)+totc_uptake_hk(ic,izn))**     &
-                                    (totc_uptake_hn(ic,izn)+1)*                    &
-                                    totc_uptake_hk(ic,izn)*totc_uptake_hn(ic,izn)* &
-                                    totcinc(ic,tid)**(totc_uptake_hn(ic,izn)-1)
+                do ic = 1, n  
+                  if (resprate(ic,izn) > r0) then
+                    if (resprate_charge(izn) .and. namec(ic).eq.'h+1') then
+                      drootarup(ic) = r0
+                    else
+                      !c derivative of respiration depends on the formula 
+                      !c d(([TotC]/([TotC]+[TotC_h])^n) = n*[TotC_h][TotC]^(n-1)/([TotC]+[TotC_h])^(n+1))
+                      drootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)/   &                                
+                                      (totcinc(ic,tid)+totc_uptake_hk(ic,izn))**     &
+                                      (totc_uptake_hn(ic,izn)+1)*                    &
+                                      totc_uptake_hk(ic,izn)*totc_uptake_hn(ic,izn)* &
+                                      totcinc(ic,tid)**(totc_uptake_hn(ic,izn)-1)
+                    end if
                   end if
-                end if
+                end do
               end if
             end if
           end if 

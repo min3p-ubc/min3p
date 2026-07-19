@@ -1050,13 +1050,13 @@ Program driver_pc
       if(rank == 0) then
         write(ilog,'(72a)')('-',i=1,72)
         write(ilog,'(/a//)')                                           &
-        '         ***************** normal exit *****************'
+        '     ***************** normal exit ******************'
       end if
       
       if(b_enable_output .and. b_enable_output_gen) then
         write(igen,'(72a)')('-',i=1,72)
         write(igen,'(/a//)')                                           &
-        '         ***************** normal exit ******************'
+        '     ***************** normal exit ******************'
       end if
 
 

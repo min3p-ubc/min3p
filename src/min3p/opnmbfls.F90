@@ -3495,111 +3495,114 @@
       end if
 
 !c  mass balance of source sink of each component from mineral phases
-      if (nm.gt.0) then
+      if (reactive_transport .or. reactive_minerals) then
+        if (nm.gt.0) then
 
-        write(ifls,'(/a/72a/)') &
-          'mass balance - source sink of component from mineral phase',&
-          ('-',i=1,72)
+          write(ifls,'(/a/72a/)') &
+            'mass balance - source sink of component from mineral phase',&
+            ('-',i=1,72)
 
-        write(ifls,'(2a)') 'file name                           ',     &
-                           'component'
+          write(ifls,'(2a)') 'file name                           ',     &
+                             'component'
         
-        imrtm2c_first(isub) = lun_get()
+          imrtm2c_first(isub) = lun_get()
 
-        do ic = 1, n
-          if(ic.lt.10) then                                          
-            write(suffix,'(i1)') ic
-            l_sufx = 1                                               
-          elseif (ic.ge.10) then                                     
-            write(suffix,'(i2)') ic
-            l_sufx = 2                                               
-          end if
-
-          strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmac'
-          write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
-
-          imrtm2c(isub) = imrtm2c_first(isub) + ic - 1
-          call lun_set(imrtm2c(isub))
-
-          b_rewind_valid = check_rewind_status(trim(strFilePath))
-          if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imrtm2c(isub),file=trim(strFilePath),status='unknown',           &
-                 form='formatted',position='rewind')
-          else
-            open(imrtm2c(isub),file=trim(strFilePath),status='unknown',           &
-                 form='formatted')
-
-            write(imrtm2c(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-
-            strbuffer = 'variables = "time", "source from all minerals [mol/d]"'//&
-                        ', "sink from all minerals [mol/d]"'//&
-                        ', "source/sink from all minerals [mol/d]"'
-            do im = 1,nm
-              strbuffer = trim(strbuffer)//', "source/sink from '//    &
-                          trim(namem(im))//' [mol/d]"'
-            end do
-
-            strbuffer = trim(strbuffer)//&
-                        ', "accumulative source from all minerals [mol]"'//&
-                        ', "accumulative sink from all minerals [mol]"'//&
-                        ', "accumulative source/sink from all minerals [mol]"'
-
-            do im = 1,nm
-              strbuffer = trim(strbuffer)//', "accumulative source/sink from '// &
-                          trim(namem(im))//' [mol]"'
-            end do
-
-            write(imrtm2c(isub),'(a)') trim(strbuffer)
-            write(imrtm2c(isub),'(3a)') 'zone t = "source/sink of ',         &
-                  trim(namec(ic)),' from mineral phase", f=point'
-
-            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrtm2c(isub), "#")
+          do ic = 1, n
+            if(ic.lt.10) then                                          
+              write(suffix,'(i1)') ic
+              l_sufx = 1                                               
+            elseif (ic.ge.10) then                                     
+              write(suffix,'(i2)') ic
+              l_sufx = 2                                               
             end if
-          end if
-        end do
 
-        imrtm2c_last(isub) = imrtm2c(isub)
+            strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmac'
+            write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
+
+            imrtm2c(isub) = imrtm2c_first(isub) + ic - 1
+            call lun_set(imrtm2c(isub))
+
+            b_rewind_valid = check_rewind_status(trim(strFilePath))
+            if (b_rewind_valid .and. i_append_sim > 0) then
+              open(imrtm2c(isub),file=trim(strFilePath),status='unknown',           &
+                   form='formatted',position='rewind')
+            else
+              open(imrtm2c(isub),file=trim(strFilePath),status='unknown',           &
+                   form='formatted')
+
+              write(imrtm2c(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+
+              strbuffer = 'variables = "time", "source from all minerals [mol/d]"'//&
+                          ', "sink from all minerals [mol/d]"'//&
+                          ', "source/sink from all minerals [mol/d]"'
+              do im = 1,nm
+                strbuffer = trim(strbuffer)//', "source/sink from '//    &
+                            trim(namem(im))//' [mol/d]"'
+              end do
+
+              strbuffer = trim(strbuffer)//&
+                          ', "accumulative source from all minerals [mol]"'//&
+                          ', "accumulative sink from all minerals [mol]"'//&
+                          ', "accumulative source/sink from all minerals [mol]"'
+
+              do im = 1,nm
+                strbuffer = trim(strbuffer)//', "accumulative source/sink from '// &
+                            trim(namem(im))//' [mol]"'
+              end do
+
+              write(imrtm2c(isub),'(a)') trim(strbuffer)
+              write(imrtm2c(isub),'(3a)') 'zone t = "source/sink of ',         &
+                    trim(namec(ic)),' from mineral phase", f=point'
+
+              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+                call writeversion2file(imrtm2c(isub), "#")
+              end if
+            end if
+          end do
+
+          imrtm2c_last(isub) = imrtm2c(isub)
         
-        !c write file information
-        write(ifls,'(/2a)')                                            &
-              'column   entry                                        ',&
-              '                           unit'
-        write(ifls,'(3a)')                                             &
-              '1        time                                         ',&
-              '                           ',time_unit
-        write(ifls,'(2a)')                                             &
-              '2        source from all minerals                     ',&
-              '                           moles/day'
-        write(ifls,'(2a)')                                             &
-              '3        sink from all minerals                       ',&
-              '                           moles/day'
-        write(ifls,'(2a)')                                             &
-              '4        source/sink from all minerals                ',&
-              '                           moles/day'
-        do im = 1, nm    
-          write(strl9,'(i0)') im+4
-          write(strl72,'(2a)') 'source/sink from ',namem(im)(1:36)
-          write(ifls,'(3a)') strl9,strl72,'moles/day'
-        end do
+          !c write file information
+          write(ifls,'(/2a)')                                            &
+                'column   entry                                        ',&
+                '                           unit'
+          write(ifls,'(3a)')                                             &
+                '1        time                                         ',&
+                '                           ',time_unit
+          write(ifls,'(2a)')                                             &
+                '2        source from all minerals                     ',&
+                '                           moles/day'
+          write(ifls,'(2a)')                                             &
+                '3        sink from all minerals                       ',&
+                '                           moles/day'
+          write(ifls,'(2a)')                                             &
+                '4        source/sink from all minerals                ',&
+                '                           moles/day'
+          do im = 1, nm    
+            write(strl9,'(i0)') im+4
+            write(strl72,'(2a)') 'source/sink from ',namem(im)(1:36)
+            write(ifls,'(3a)') strl9,strl72,'moles/day'
+          end do
 
-        write(strl9,'(i0)') nm+5
-        write(strl72,'(a)') 'accumulative source from all minerals'
-        write(ifls,'(3a)') strl9,strl72,'moles'
-
-        write(strl9,'(i0)') nm+6
-        write(strl72,'(a)') 'accumulative sink from all minerals'
-        write(ifls,'(3a)') strl9,strl72,'moles'
-
-        write(strl9,'(i0)') nm+7
-        write(strl72,'(a)') 'accumulative source/sink from all minerals'
-        write(ifls,'(3a)') strl9,strl72,'moles'
-
-        do im = 1, nm    
-          write(strl9,'(i0)') im+nm+7
-          write(strl72,'(2a)') 'accumulative source/sink from ',namem(im)(1:36)
+          write(strl9,'(i0)') nm+5
+          write(strl72,'(a)') 'accumulative source from all minerals'
           write(ifls,'(3a)') strl9,strl72,'moles'
-        end do
+
+          write(strl9,'(i0)') nm+6
+          write(strl72,'(a)') 'accumulative sink from all minerals'
+          write(ifls,'(3a)') strl9,strl72,'moles'
+
+          write(strl9,'(i0)') nm+7
+          write(strl72,'(a)') 'accumulative source/sink from all minerals'
+          write(ifls,'(3a)') strl9,strl72,'moles'
+
+          do im = 1, nm    
+            write(strl9,'(i0)') im+nm+7
+            write(strl72,'(2a)') 'accumulative source/sink from ',namem(im)(1:36)
+            write(ifls,'(3a)') strl9,strl72,'moles'
+          end do
+
+        end if
 
       end if
 

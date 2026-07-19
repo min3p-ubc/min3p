@@ -314,9 +314,8 @@
             if (.not.multi_diff) then 
               read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw                  !c note, alkfac is calculated internally later
             else      
-              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,diffcoff2   !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff            
+              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,null,diffcoff2   !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff            
             end if                           !  .not.multi_diff
-            
             read(ixdbs,'(a)',end=9998,err=9999) strbuffer
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)

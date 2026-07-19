@@ -1038,37 +1038,34 @@
               end do
 
             end if
+          end if                !boundary type (transport) 
 
 !c mass flux due to root water uptake and solute uptake (HG 28 Mar 2019)
-            if (passive_uptake) then 
-              if (btypert(ivol).ne.'first') then                
-                !c root uptake, positive means source and negative means sink here                
-                if (rld(ivol) > rverysmall) then
-                  izn = mpropvs(ivol)
-                  if (itype_rootuptk_solut == 1) then
-                    qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
-                    if (rootwateruptake_field) then
-                      qrootloc = qrootloc*uptakefactor_vol(ivol)
-                    else
-                      qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
-                    end if
-                    do ic = 1,n    
-                      rootprup(ic) = rootprup(ic) + conv3 * qrootloc * totcnew(ic,ivol)
-                    end do
-                  else if (itype_rootuptk_solut == 2) then
-                    qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
-                    do ic = 1,n
-                      totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
-                                                   rld(ivol),sanew(ivol),pornew(ivol), &
-                                                   ic,izn)
-                      rootprup(ic) = rootprup(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
-                    end do
-                  end if
+          if (passive_uptake) then 
+            !c root uptake, positive means source and negative means sink here                
+            if (rld(ivol) > rverysmall) then
+              izn = mpropvs(ivol)
+              if (itype_rootuptk_solut == 1) then
+                qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+                if (rootwateruptake_field) then
+                  qrootloc = qrootloc*uptakefactor_vol(ivol)
+                else
+                  qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
                 end if
+                do ic = 1,n    
+                  rootprup(ic) = rootprup(ic) + conv3 * qrootloc * totcnew(ic,ivol)
+                end do
+              else if (itype_rootuptk_solut == 2) then
+                qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+                do ic = 1,n
+                  totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
+                                               rld(ivol),sanew(ivol),pornew(ivol), &
+                                               ic,izn)
+                  rootprup(ic) = rootprup(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
+                end do
               end if
-            end if 
-
-          end if                !boundary type (transport) 
+            end if
+          end if 
 
 !c  assign flux contributions
 

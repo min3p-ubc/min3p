@@ -116,6 +116,7 @@
       ierrcd = 0
       drive = 'u'
       density_dependence = .false.
+      ascii_fmt_comma = .false.
 
 !c  read numerical data and write to temporary file   
    
@@ -398,12 +399,26 @@
       end if
 
 !c  ascii output data format
+      subsection = 'use comma as data delimiter'
+      call findstrg(subsection,itmp,found_subsection)
+      if (found_subsection) then
+        ascii_fmt_comma = .true.
+      end if
+
       subsection = 'use double precision'  
       call findstrg(subsection,itmp,found_subsection)
       if (found_subsection) then
-        ascii_fmt = '(1000(1pe25.17e3))'
+        if (ascii_fmt_comma) then
+          ascii_fmt = '(1000(1pe25.17e3,","))'
+        else
+          ascii_fmt = '(1000(1pe25.17e3))'
+        end if
       else
-        ascii_fmt = '(1000(1pe15.6e3))'
+        if (ascii_fmt_comma) then
+          ascii_fmt = '(1000(1pe15.6e3,","))'
+        else
+          ascii_fmt = '(1000(1pe15.6e3))'
+        end if
       end if
 
 !c  maximum memory avaiable for master node per CPU

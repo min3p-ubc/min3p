@@ -3047,34 +3047,32 @@
             end if
 
             izn = mpropvs(ivol)
-            if (btypert(ivol).ne.'first') then
-              !c root uptake, positive means source and negative means sink here
-              if (rld(ivol) > rverysmall) then
-                izn = mpropvs(ivol)
-                if (itype_rootuptk_solut == 1) then
-                  qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)*conv3
-                  if (rootwateruptake_field) then
-                    qrootloc = qrootloc*uptakefactor_vol(ivol)
-                  else
-                    qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
-                  end if
-           
-                  do ic = 1,n     
-                    rootprup(ic) = rootprup(ic) + qrootloc*totcnew(ic,ivol) 
-                    rootprup_zn(ic,izn) = rootprup_zn(ic,izn) + qrootloc*totcnew(ic,ivol)
-                  end do 
-                else if (itype_rootuptk_solut == 2) then
-                  qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
-                  do ic = 1,n
-                    totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
-                                                 rld(ivol),sanew(ivol),pornew(ivol), &
-                                                 ic,izn)
-                    rootprup(ic) = rootprup(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
-                    rootprup_zn(ic,izn) = rootprup_zn(ic,izn) + conv3*cvol(ivol)*totuptake   !*delt
-                  end do
+            !c root uptake, positive means source and negative means sink here
+            if (rld(ivol) > rverysmall) then
+              izn = mpropvs(ivol)
+              if (itype_rootuptk_solut == 1) then
+                qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)*conv3
+                if (rootwateruptake_field) then
+                  qrootloc = qrootloc*uptakefactor_vol(ivol)
+                else
+                  qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
                 end if
+           
+                do ic = 1,n     
+                  rootprup(ic) = rootprup(ic) + qrootloc*totcnew(ic,ivol) 
+                  rootprup_zn(ic,izn) = rootprup_zn(ic,izn) + qrootloc*totcnew(ic,ivol)
+                end do 
+              else if (itype_rootuptk_solut == 2) then
+                qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+                do ic = 1,n
+                  totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
+                                               rld(ivol),sanew(ivol),pornew(ivol), &
+                                               ic,izn)
+                  rootprup(ic) = rootprup(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
+                  rootprup_zn(ic,izn) = rootprup_zn(ic,izn) + conv3*cvol(ivol)*totuptake   !*delt
+                end do
               end if
-            end if   
+            end if
           end do 
 #ifdef OPENMP
     !$omp end do

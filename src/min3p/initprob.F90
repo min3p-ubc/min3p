@@ -198,9 +198,9 @@
       external inittsgs,initcpvs,initcpdd,initcprt,sptldisc,           &
                initopgs,initcsys,opnmbfls,datstr_1,datstr_n,initcplc,  &
                initpppm,initppvs,initppdd,infcvs,initpprt,initicvs,    &
-               initicdd,initbcvs,initbcdd,initsatw, initicrt,initbcrt, &
+               initicdd,initbcvs,initbcdd,initsatw,initicrt,initbcrt,  &
                initppsn,initiice,initbcice,indextec,inittemp,initweed, &
-               mem_rt,mem_vs,mem_dd,weed,mem_hmcd,tcorr
+               mem_rt,mem_vs,mem_dd,weed,mem_hmcd,tcorr,mem_sub
      
       real*8, parameter :: rkelvin=273.15d0,r0=0.0d0,r1=1.0d0
 
@@ -212,6 +212,7 @@
         call sptldisc
       end if
     
+   
 !c  define geochemical system
       if (geo_chemistry) then
         call initcsys
@@ -365,6 +366,9 @@
 !c  variably saturated flow and/or batch reaction
 
       call initopgs
+
+!c  allocated memory space for subdomain mass balance related variables
+      call mem_sub
 
 !c  open mass balance files
 !c  write mass balance files only by the master process (thread)

@@ -1335,9 +1335,23 @@
             if (subdomains_n < 0 .or. subdomains_n > 30) then
               goto 996
             end if
-          end if
 
-          call mem_sub
+            allocate (subdomains_bdface_conn(2,subdomains_n), stat = ierr)
+            subdomains_bdface_conn = 0 
+            call checkerr(ierr,'subdomains_bdface_conn',ilog)  
+            call memory_monitor(sizeof(subdomains_bdface_conn),'subdomains_bdface_conn',.true.)
+      
+            allocate (subdomains_bdface(2,2,subdomains_n), stat = ierr)
+            subdomains_bdface = 0 
+            call checkerr(ierr,'subdomains_bdface',ilog)  
+            call memory_monitor(sizeof(subdomains_bdface),'subdomains_bdface',.true.)
+      
+            !bit flag of subdomains, initialize with position 0 true for the entire domain 
+            allocate (subdomains_bits(nngl), stat = ierr)
+            subdomains_bits = 1
+            call checkerr(ierr,'subdomains_bits',ilog)  
+            call memory_monitor(sizeof(subdomains_bits),'subdomains_bits',.true.)
+          end if
 
 !allocate binary output control parameters for breakthrough data
 !currently not supported
@@ -1827,16 +1841,6 @@
 
       end if             !(found_section)
       
-      if (.not.varsat_flow .and. .not.reactive_transport) then
-        return  
-      end if
-
-!c  return to calling routine if appropriate
-
-      if (.not.reactive_transport.and..not.transient_flow) then
-        return
-      end if
-
 !c  write output control parameters to generic output file
       if (b_enable_output .and. b_enable_output_gen) then
         write(igen,'(/72a)')('-',i=1,72)

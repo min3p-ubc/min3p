@@ -363,6 +363,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/root_output.o\
 	$(SRC)min3p/opnpgfls.o\
 	$(SRC)min3p/opnmbfls.o\
+	$(SRC)min3p/opnmbfls_sub.o\
 	$(SRC)min3p/mem_nm.o\
 	$(SRC)min3p/mem_irm.o\
 	$(SRC)min3p/mem_heat.o\
@@ -582,6 +583,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/readcomp.o\
 	$(SRC)min3p/phcorr.o\
 	$(SRC)min3p/opnmbfls_mcd.o\
+	$(SRC)min3p/opnmbfls_mcd_sub.o\
 	$(SRC)min3p/modrate.o\
 	$(SRC)min3p/mbalrt.o\
 	$(SRC)min3p/jacbvs_energybal.o\
@@ -606,6 +608,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/opndbfls_pc.o\
 	$(SRC)min3p/mem_vs.o\
 	$(SRC)min3p/mem_rt.o\
+	$(SRC)min3p/mem_sub.o\
 	$(SRC)min3p/initicvs.o\
 	$(SRC)usg/outputice_usg.o\
 	$(SRC)min3p/initiice.o\
@@ -659,6 +662,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/rstatlc.o\
 	$(SRC)min3p/raoult.o\
 	$(SRC)min3p/opnenergybal.o\
+	$(SRC)min3p/opnenergybal_sub.o\
 	$(SRC)min3p/msysvs.o\
 	$(SRC)dgm/ms_dfluxdg.o\
 	$(SRC)min3p/mem_ng.o\

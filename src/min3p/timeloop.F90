@@ -3377,12 +3377,12 @@
           if(discretization_type == 0) then
             !velodd seems not necessary to call to calculate courant
             !if user specified maximum courant is very large.
-            call velodd(nvxgl,nvygl,nvzgl,iavs,javs,cinfvs_a,dimcv, xg,&
-                        yg, zg, uvsnew, density, viscosity,            &
+            call velodd(nvxgl,nvygl,nvzgl,iavs,javs,cinfvs_a,dimcv,    &
+                        xg, yg, zg, uvsnew, density, viscosity,        &
                         relperm, idbg, ilog,ivel, fully_saturated,     &
                         njavs, nngl, nn, half_cells, pornew, sanew,    &
-                        delt, courant_max, courant_num, iprint,time_io,&
-                        cinfrad,radial_coord,0)
+                        delt, courant_max, courant_num, iprint,        &
+                        time_io,cinfrad,radial_coord,0)
 #ifdef USG
           else if (discretization_type > 0) then
             !velodd_usg seems not necessary to call to calculate courant

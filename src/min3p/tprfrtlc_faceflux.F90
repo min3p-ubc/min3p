@@ -54,18 +54,18 @@
       use petscsys
 #endif
 #endif
-      use gen, only : ngb_vol_ijface_jtemp, xg, yg, zg,nfloatbit,      &
-                      delt, realbuffer_gb, igcvel, offset_igcvel,      &
-                      ngb_vol_ijface_area, offset_igcvel_ijk,          &
-                      ngb_vol_ijface_velratio, time_io, n, delt,       &
-                      mtime, mtime_append, i_append_sim, time_io_rs,   &
-                      gcvelx_adv_accu,gcvely_adv_accu,gcvelz_adv_accu, &
-                      gcvelx_dif_accu,gcvely_dif_accu,gcvelz_dif_accu, &
-                      gcvelx_mig_accu,gcvely_mig_accu,gcvelz_mig_accu, &
-                      gcvelx_tot_accu,gcvely_tot_accu,gcvelz_tot_accu, &
-                      ascii_fmt, cnew, cx, totcnew, cinfrt_va,         &
-                      cinfrt_da, cinfvs_a, pornew, sanew,              &
-                      type_averaging_De, b_output_trans_binary
+      use gen, only : ngb_vol_ijface_jtemp, xg, yg, zg,nfloatbit,          &
+                      delt, realbuffer_gb, ifrt, offset_ifrt,              &
+                      ngb_vol_ijface_area, offset_ifrt_ijk,                &
+                      ngb_vol_ijface_velratio, time_io, n, delt,           &
+                      mtime, mtime_append, i_append_sim, time_io_rs,       &
+                      ifrt_vx_adv_accu,ifrt_vy_adv_accu,ifrt_vz_adv_accu,  &
+                      ifrt_vx_dif_accu,ifrt_vy_dif_accu,ifrt_vz_dif_accu,  &
+                      ifrt_vx_mig_accu,ifrt_vy_mig_accu,ifrt_vz_mig_accu,  &
+                      ifrt_vx_tot_accu,ifrt_vy_tot_accu,ifrt_vz_tot_accu,  &
+                      ascii_fmt, cnew, cx, totcnew, cinfrt_va, cinfrt_da,  &
+                      cinfvs_a, pornew, sanew, type_averaging_De,          &
+                      b_output_trans_binary, ilog
       
       use multidiff, only : multi_diff, delta_totviscnew,              &
                             delta_electromignew, cinfrt_mcd
@@ -179,7 +179,7 @@
         vela_adv_x = vela_adv * velxratio
         vela_adv_y = vela_adv * velyratio
         vela_adv_z = vela_adv * velzratio
-        
+       
         vela_dif_x = vela_dif * velxratio
         vela_dif_y = vela_dif * velyratio
         vela_dif_z = vela_dif * velzratio
@@ -192,21 +192,21 @@
         vela_tot_y = vela_tot * velyratio
         vela_tot_z = vela_tot * velzratio
 
-        gcvelx_adv_accu(ic,igb) = gcvelx_adv_accu(ic,igb) + vela_adv_x*delt
-        gcvely_adv_accu(ic,igb) = gcvely_adv_accu(ic,igb) + vela_adv_y*delt
-        gcvelz_adv_accu(ic,igb) = gcvelz_adv_accu(ic,igb) + vela_adv_z*delt
+        ifrt_vx_adv_accu(ic,igb) = ifrt_vx_adv_accu(ic,igb) + vela_adv_x*delt
+        ifrt_vy_adv_accu(ic,igb) = ifrt_vy_adv_accu(ic,igb) + vela_adv_y*delt
+        ifrt_vz_adv_accu(ic,igb) = ifrt_vz_adv_accu(ic,igb) + vela_adv_z*delt
 
-        gcvelx_dif_accu(ic,igb) = gcvelx_dif_accu(ic,igb) + vela_dif_x*delt
-        gcvely_dif_accu(ic,igb) = gcvely_dif_accu(ic,igb) + vela_dif_y*delt
-        gcvelz_dif_accu(ic,igb) = gcvelz_dif_accu(ic,igb) + vela_dif_z*delt
+        ifrt_vx_dif_accu(ic,igb) = ifrt_vx_dif_accu(ic,igb) + vela_dif_x*delt
+        ifrt_vy_dif_accu(ic,igb) = ifrt_vy_dif_accu(ic,igb) + vela_dif_y*delt
+        ifrt_vz_dif_accu(ic,igb) = ifrt_vz_dif_accu(ic,igb) + vela_dif_z*delt
 
-        gcvelx_mig_accu(ic,igb) = gcvelx_mig_accu(ic,igb) + vela_mig_x*delt
-        gcvely_mig_accu(ic,igb) = gcvely_mig_accu(ic,igb) + vela_mig_y*delt
-        gcvelz_mig_accu(ic,igb) = gcvelz_mig_accu(ic,igb) + vela_mig_z*delt
+        ifrt_vx_mig_accu(ic,igb) = ifrt_vx_mig_accu(ic,igb) + vela_mig_x*delt
+        ifrt_vy_mig_accu(ic,igb) = ifrt_vy_mig_accu(ic,igb) + vela_mig_y*delt
+        ifrt_vz_mig_accu(ic,igb) = ifrt_vz_mig_accu(ic,igb) + vela_mig_z*delt
 
-        gcvelx_tot_accu(ic,igb) = gcvelx_tot_accu(ic,igb) + vela_tot_x*delt
-        gcvely_tot_accu(ic,igb) = gcvely_tot_accu(ic,igb) + vela_tot_y*delt
-        gcvelz_tot_accu(ic,igb) = gcvelz_tot_accu(ic,igb) + vela_tot_z*delt
+        ifrt_vx_tot_accu(ic,igb) = ifrt_vx_tot_accu(ic,igb) + vela_tot_x*delt
+        ifrt_vy_tot_accu(ic,igb) = ifrt_vy_tot_accu(ic,igb) + vela_tot_y*delt
+        ifrt_vz_tot_accu(ic,igb) = ifrt_vz_tot_accu(ic,igb) + vela_tot_z*delt
 
 !c  write data back to file
         if (.not.flag_skip) then
@@ -215,55 +215,55 @@
             realbuffer_gb(1:nvars)= (/time_io,                                         &
               vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
               vela_mig_x,vela_mig_y,vela_mig_z,vela_tot_x,vela_tot_y,vela_tot_z,       &
-              gcvelx_adv_accu(ic,igb),gcvely_adv_accu(ic,igb),gcvelz_adv_accu(ic,igb), &
-              gcvelx_dif_accu(ic,igb),gcvely_dif_accu(ic,igb),gcvelz_dif_accu(ic,igb), &
-              gcvelx_mig_accu(ic,igb),gcvely_mig_accu(ic,igb),gcvelz_mig_accu(ic,igb), &
-              gcvelx_tot_accu(ic,igb),gcvely_tot_accu(ic,igb),gcvelz_tot_accu(ic,igb)/)
+              ifrt_vx_adv_accu(ic,igb),ifrt_vy_adv_accu(ic,igb),ifrt_vz_adv_accu(ic,igb), &
+              ifrt_vx_dif_accu(ic,igb),ifrt_vy_dif_accu(ic,igb),ifrt_vz_dif_accu(ic,igb), &
+              ifrt_vx_mig_accu(ic,igb),ifrt_vy_mig_accu(ic,igb),ifrt_vz_mig_accu(ic,igb), &
+              ifrt_vx_tot_accu(ic,igb),ifrt_vy_tot_accu(ic,igb),ifrt_vz_tot_accu(ic,igb)/)
             
-            call binary_write_data(igcvel(ic,igb), 1, (/ngb_tstep/),     &
-                        offset_igcvel_ijk(ic,igb),.true.)
-            call binary_write_data(igcvel(ic,igb), nvars, realbuffer_gb, &
-                        offset_igcvel(ic,igb),.true.) 
+            call binary_write_data(ifrt(ic,igb), 1, (/ngb_tstep/),     &
+                        offset_ifrt_ijk(ic,igb),.true.)
+            call binary_write_data(ifrt(ic,igb), nvars, realbuffer_gb, &
+                        offset_ifrt(ic,igb),.true.) 
           
-            offset_igcvel(ic,igb) = offset_igcvel(ic,igb) + nvars*nfloatbit
+            offset_ifrt(ic,igb) = offset_ifrt(ic,igb) + nvars*nfloatbit
           else
   
             if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(igcvel(ic,igb),irecord)
+              call reposition_file(ifrt(ic,igb),irecord)
   
               if (irecord > 0) then
                 !c locate to the restart time and get previous results
-                call reposition_file(igcvel(ic,igb),irecord,time_io_rs)
-                read(igcvel(ic,igb),*,end=10,err=10) rdummys(1:nvars)
+                call reposition_file(ifrt(ic,igb),irecord,time_io_rs)
+                read(ifrt(ic,igb),*,end=10,err=10) rdummys(1:nvars)
                 !c reposition to the line to append results
-                call reposition_file(igcvel(ic,igb),irecord)
+                call reposition_file(ifrt(ic,igb),irecord)
   
                 !c get the last record and add to the current value for accumulative results
-                gcvelx_adv_accu(ic,igb) = gcvelx_adv_accu(ic,igb) + rdummys(14)
-                gcvely_adv_accu(ic,igb) = gcvely_adv_accu(ic,igb) + rdummys(15)
-                gcvelz_adv_accu(ic,igb) = gcvelz_adv_accu(ic,igb) + rdummys(16)
-                gcvelx_dif_accu(ic,igb) = gcvelx_dif_accu(ic,igb) + rdummys(17)
-                gcvely_dif_accu(ic,igb) = gcvely_dif_accu(ic,igb) + rdummys(18)
-                gcvelz_dif_accu(ic,igb) = gcvelz_dif_accu(ic,igb) + rdummys(19)
-                gcvelx_mig_accu(ic,igb) = gcvelx_mig_accu(ic,igb) + rdummys(20)
-                gcvely_mig_accu(ic,igb) = gcvely_mig_accu(ic,igb) + rdummys(21)
-                gcvelz_mig_accu(ic,igb) = gcvelz_mig_accu(ic,igb) + rdummys(22)
-                gcvelx_tot_accu(ic,igb) = gcvelx_tot_accu(ic,igb) + rdummys(23)
-                gcvely_tot_accu(ic,igb) = gcvely_tot_accu(ic,igb) + rdummys(24)
-                gcvelz_tot_accu(ic,igb) = gcvelz_tot_accu(ic,igb) + rdummys(25)
+                ifrt_vx_adv_accu(ic,igb) = ifrt_vx_adv_accu(ic,igb) + rdummys(14)
+                ifrt_vy_adv_accu(ic,igb) = ifrt_vy_adv_accu(ic,igb) + rdummys(15)
+                ifrt_vz_adv_accu(ic,igb) = ifrt_vz_adv_accu(ic,igb) + rdummys(16)
+                ifrt_vx_dif_accu(ic,igb) = ifrt_vx_dif_accu(ic,igb) + rdummys(17)
+                ifrt_vy_dif_accu(ic,igb) = ifrt_vy_dif_accu(ic,igb) + rdummys(18)
+                ifrt_vz_dif_accu(ic,igb) = ifrt_vz_dif_accu(ic,igb) + rdummys(19)
+                ifrt_vx_mig_accu(ic,igb) = ifrt_vx_mig_accu(ic,igb) + rdummys(20)
+                ifrt_vy_mig_accu(ic,igb) = ifrt_vy_mig_accu(ic,igb) + rdummys(21)
+                ifrt_vz_mig_accu(ic,igb) = ifrt_vz_mig_accu(ic,igb) + rdummys(22)
+                ifrt_vx_tot_accu(ic,igb) = ifrt_vx_tot_accu(ic,igb) + rdummys(23)
+                ifrt_vy_tot_accu(ic,igb) = ifrt_vy_tot_accu(ic,igb) + rdummys(24)
+                ifrt_vz_tot_accu(ic,igb) = ifrt_vz_tot_accu(ic,igb) + rdummys(25)
               end if
 10            continue
             end if
   
             if (i_append_sim < 1 .or.                                                    &
                (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(igcvel(ic,igb),ascii_fmt) time_io,                                   &
+              write(ifrt(ic,igb),ascii_fmt) time_io,                                   &
                 vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
                 vela_mig_x,vela_mig_y,vela_mig_z,vela_tot_x,vela_tot_y,vela_tot_z,       &
-                gcvelx_adv_accu(ic,igb),gcvely_adv_accu(ic,igb),gcvelz_adv_accu(ic,igb), &
-                gcvelx_dif_accu(ic,igb),gcvely_dif_accu(ic,igb),gcvelz_dif_accu(ic,igb), &
-                gcvelx_mig_accu(ic,igb),gcvely_mig_accu(ic,igb),gcvelz_mig_accu(ic,igb), &
-                gcvelx_tot_accu(ic,igb),gcvely_tot_accu(ic,igb),gcvelz_tot_accu(ic,igb)
+                ifrt_vx_adv_accu(ic,igb),ifrt_vy_adv_accu(ic,igb),ifrt_vz_adv_accu(ic,igb), &
+                ifrt_vx_dif_accu(ic,igb),ifrt_vy_dif_accu(ic,igb),ifrt_vz_dif_accu(ic,igb), &
+                ifrt_vx_mig_accu(ic,igb),ifrt_vy_mig_accu(ic,igb),ifrt_vz_mig_accu(ic,igb), &
+                ifrt_vx_tot_accu(ic,igb),ifrt_vy_tot_accu(ic,igb),ifrt_vz_tot_accu(ic,igb)
             end if  
           end if
         end if

@@ -338,6 +338,7 @@
 		<File RelativePath="..\..\min3p\mem_nx.F90"/>
 		<File RelativePath="..\..\min3p\mem_rt.F90"/>
 		<File RelativePath="..\..\min3p\mem_vs.F90"/>
+		<File RelativePath="..\..\min3p\mem_sub.F90"/>
 		<File RelativePath="..\..\usg\metis_iface.F90"/>
 		<File RelativePath="..\..\min3p\mimicMassDisp.F90"/>
 		<File RelativePath="..\..\min3p\minmaxwd.F90"/>
@@ -359,9 +360,12 @@
 		<File RelativePath="..\..\noble_gas\nobleGasIngrowth.F90"/>
 		<File RelativePath="..\..\min3p\opndbfls_pc.F90"/>
 		<File RelativePath="..\..\min3p\opnenergybal.F90"/>
+		<File RelativePath="..\..\min3p\opnenergybal_sub.F90"/>
 		<File RelativePath="..\..\min3p\opngfls.F90"/>
 		<File RelativePath="..\..\min3p\opnmbfls.F90"/>
+		<File RelativePath="..\..\min3p\opnmbfls_sub.F90"/>
 		<File RelativePath="..\..\min3p\opnmbfls_mcd.F90"/>
+		<File RelativePath="..\..\min3p\opnmbfls_mcd_sub.F90"/>
 		<File RelativePath="..\..\min3p\opnpgfls.F90"/>
 		<File RelativePath="..\..\min3p\opnplfls.F90"/>
 		<File RelativePath="..\..\min3p\opntemp.F90"/>

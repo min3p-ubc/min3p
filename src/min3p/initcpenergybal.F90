@@ -569,9 +569,9 @@
 !cprovi Read if energy balance must be computed
 !cprovi Default value => false
 !cprovi----------------------------------------------------
-      imheat=0
-      imheat_first=0
-      imheat_last=0
+      !imheat=0
+      !imheat_first=0
+      !imheat_last=0
       culabsbalheat = r0
       culrelbalheat = r0
 

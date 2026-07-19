@@ -56,12 +56,12 @@
 #endif
       use gen, only : fully_saturated, upstream, ngb_vol_ijface_jtemp, &                      
                       hhead, uvsnew, relperm, cinfvs_a, xg, yg, zg,    &
-                      gacc, nfloatbit, realbuffer_gb, igfvel, delt,    &
+                      gacc, nfloatbit, realbuffer_gb, ifvs, delt,    &
                       mtime, mtime_append, i_append_sim, time_io_rs,   &
-                      gfvelx_accu, gfvely_accu, gfvelz_accu,           &
+                      ifvs_vx_accu, ifvs_vy_accu, ifvs_vz_accu,           &
                       ascii_fmt, b_use_fixed_flow_vel, fixed_flow_vel, &
-                      offset_igfvel, ngb_vol_ijface_area,              &
-                      offset_igfvel_ijk, ngb_vol_ijface_velratio,      &
+                      offset_ifvs, ngb_vol_ijface_area,              &
+                      offset_ifvs_ijk, ngb_vol_ijface_velratio,      &
                       time_io, b_output_trans_binary
       
       use dens, only : density_dependence, av_dens_z, density,      &
@@ -93,8 +93,7 @@
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rhalf = 0.5d0      
       real*8, external :: fluxfs, fluxvs, fluxdd
 
-      if (b_use_fixed_flow_vel) then
-              
+      if (b_use_fixed_flow_vel) then              
         velx = fixed_flow_vel%x
         vely = fixed_flow_vel%y
         velz = fixed_flow_vel%z
@@ -168,47 +167,47 @@
         velz = vel*ngb_vol_ijface_velratio(3,igb)
       end if
 
-      gfvelx_accu(igb) = gfvelx_accu(igb) + velx*delt
-      gfvely_accu(igb) = gfvely_accu(igb) + vely*delt
-      gfvelz_accu(igb) = gfvelz_accu(igb) + velz*delt
+      ifvs_vx_accu(igb) = ifvs_vx_accu(igb) + velx*delt
+      ifvs_vy_accu(igb) = ifvs_vy_accu(igb) + vely*delt
+      ifvs_vz_accu(igb) = ifvs_vz_accu(igb) + velz*delt
 
 !c  write data back to file
       if (.not.flag_skip) then
         nvars = 7
         if (b_output_trans_binary) then
           realbuffer_gb(1:nvars)= (/time_io,velx,vely,velz,              &
-                     gfvelx_accu(igb),gfvely_accu(igb),gfvelz_accu(igb)/)
+                     ifvs_vx_accu(igb),ifvs_vy_accu(igb),ifvs_vz_accu(igb)/)
           
-          call binary_write_data(igfvel(igb), 1, (/ngb_tstep/),          &
-                      offset_igfvel_ijk(igb),.true.)
-          call binary_write_data(igfvel(igb), nvars, realbuffer_gb,      &
-                      offset_igfvel(igb),.true.) 
+          call binary_write_data(ifvs(igb), 1, (/ngb_tstep/),          &
+                      offset_ifvs_ijk(igb),.true.)
+          call binary_write_data(ifvs(igb), nvars, realbuffer_gb,      &
+                      offset_ifvs(igb),.true.) 
 
-          offset_igfvel(igb) = offset_igfvel(igb) + nvars*nfloatbit
+          offset_ifvs(igb) = offset_ifvs(igb) + nvars*nfloatbit
         else
 
           if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(igfvel(igb),irecord)
+            call reposition_file(ifvs(igb),irecord)
 
             if (irecord > 0) then
               !c locate to the restart time and get previous results
-              call reposition_file(igfvel(igb),irecord,time_io_rs)
-              read(igfvel(igb),*,end=10,err=10) rdummys(1:nvars)
+              call reposition_file(ifvs(igb),irecord,time_io_rs)
+              read(ifvs(igb),*,end=10,err=10) rdummys(1:nvars)
               !c reposition to the line to append results
-              call reposition_file(igfvel(igb),irecord)
+              call reposition_file(ifvs(igb),irecord)
   
               !c get the last record and add to the current value for accumulative results
-              gfvelx_accu(igb) = gfvelx_accu(igb) + rdummys(5)
-              gfvely_accu(igb) = gfvely_accu(igb) + rdummys(6)
-              gfvelz_accu(igb) = gfvelz_accu(igb) + rdummys(7)
+              ifvs_vx_accu(igb) = ifvs_vx_accu(igb) + rdummys(5)
+              ifvs_vy_accu(igb) = ifvs_vy_accu(igb) + rdummys(6)
+              ifvs_vz_accu(igb) = ifvs_vz_accu(igb) + rdummys(7)
             end if
 10          continue
           end if
 
           if (i_append_sim < 1 .or.                                      &
              (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(igfvel(igb),ascii_fmt) time_io,velx,vely,velz,         &
-                  gfvelx_accu(igb),gfvely_accu(igb),gfvelz_accu(igb)
+            write(ifvs(igb),ascii_fmt) time_io,velx,vely,velz,         &
+                  ifvs_vx_accu(igb),ifvs_vy_accu(igb),ifvs_vz_accu(igb)
           end if
         end if
       end if

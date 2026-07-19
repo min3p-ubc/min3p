@@ -343,11 +343,6 @@
         call mip_ctrl_params
       end if
 
-!c  output control parameters for reactive transport and/or
-!c  variably saturated flow and/or batch reaction
-
-      call initopgs
-
 !c  set up data structure, generate ordering vectors and perform 
 !c  symbolic factorization for 1d - Jacobian matrix
 !c  (variably saturated flow and reactive transport)
@@ -366,25 +361,30 @@
 #endif
       end if
 
+!c  output control parameters for reactive transport and/or
+!c  variably saturated flow and/or batch reaction
+
+      call initopgs
 
 !c  open mass balance files
 !c  write mass balance files only by the master process (thread)
       if(b_enable_output) then
 
           call opnmbfls
+          call opnmbfls_sub
 
           if(flux_out)then               !MCD
             call opnmbfls_mcd
+            call opnmbfls_mcd_sub
           end if
       end if
 
 !cprovi--------------------------------------------------------------
 !cprovi Open file corresponding to energy balance
 !cprovi--------------------------------------------------------------
-      if(rank == 0) then
-        if (heat_transport.and.energy_balance) then
-          call opnenergybal
-        end if
+      if (heat_transport.and.energy_balance) then
+        call opnenergybal
+        call opnenergybal_sub
       end if
 
 !c  physical parameters for ice sheet basal      
@@ -522,8 +522,6 @@
 !c  not density dependent
 !c  Partially parallelized, OpenMP, DSU
         if ((varsat_flow).and.(.not.density_dependence)) then
-          
-          culabsbalvs = r0
         
           call initicvs
 

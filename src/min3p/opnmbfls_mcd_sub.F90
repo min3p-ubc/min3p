@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/opnmbfls_mcd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/opnmbfls_mcd_sub.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -14,7 +14,9 @@
 !c
 !c open mass balance files 
 !c
-!c written by:      Pejman Rasouli - March 5, 2012
+!c Based on Pejman Rasouli - March 5, 2012
+!c
+!c written by:  Danyang Su, May 27, 2025
 !c
 !c last modified:   -
 !c
@@ -129,7 +131,7 @@
 !c external: -
 !c ----------------------------------------------------------------------
  
-      subroutine opnmbfls_mcd
+      subroutine opnmbfls_mcd_sub
 
 #ifdef PETSC
 #include <petscversion.h>
@@ -144,11 +146,6 @@
       use chem
       use file_unit, only : lun_get, lun_set
       use file_utility, only : check_rewind_status
-      use module_binary_mpiio, only : binary_file_open,               &
-                                       tecplot_binary_write_header,    &
-                                       tecplot_binary_write_variable,  &
-                                       tecplot_binary_write_zoneinfo,  &
-                                       tecplot_binary_write_section
       
       implicit none
 #ifdef PETSC
@@ -163,8 +160,8 @@
 
       character*2 suffix
       character*36 :: strl36
+      character*256 :: prefix_sub
       character*2048 :: strbuffer      
-      character*72, allocatable :: tec_variables(:)
       integer :: nvarsimcd, ilun, nlun
       logical :: b_rewind_valid
       
@@ -175,151 +172,95 @@
         return
       end if
 
-      isub = 0
+      if (subdomains_n < 1) then
+        return
+      end if 
 
       b_rewind_valid = .false.
 
-      if (b_enable_output .and. b_output_trans_binary) then
-        allocate(tec_variables(nc+nmb+15), stat = ierr)
-        call checkerr(ierr,'opnmbfls_mcd-tec_variables',ilog)
-        tec_variables = ''
-        call memory_monitor(sizeof(tec_variables),'tec_variables',.false.)
-      end if
  
 !c  mass balance - reactive transport - Multicomponent Diffusion Option
 
       if (flux_out) then
 
-        imcd_first(isub) = lun_get()
-        nlun = n+2
-        do ilun = 1, nlun
-          call lun_set(imcd_first(isub)+ilun)
-        end do
+!c  loop over subdomains
 
-        if (i_append_sim < 1) then
-          write(ifls,'(//72a/a/72a)')    &
-               ('*',i=1,72),             &
-               'mass balance - reactive transport- Multicomponent Diffusion',&
-               ('*',i=1,72)
-        end if
+        do isub = 1, subdomains_n
+
+          write(prefix_sub,'(a,i0)') "subdomain_", isub
+          prefix_sub = trim(prefix_sub)//'/'//prefix(:l_prfx)
+
+          imcd_first(isub) = lun_get()
+          nlun = n+2
+          do ilun = 1, nlun
+            call lun_set(imcd_first(isub)+ilun)
+          end do
+
+          if (i_append_sim < 1) then
+            write(ifls,'(//72a/2a/72a)') ('*',i=1,72),                         &
+                  'subdomain mass balance - reactive transport for ',          &
+                  'multicomponent diffusion', ('*',i=1,72)
+          end if
 
 !c  total system mass for components
 
-        imcd(isub) = imcd_first(isub)
+          imcd(isub) = imcd_first(isub)
         
 !c  total system mass for selected species
 
-        if (nmb.gt.0) then
-          imcd(isub) = imcd(isub) + 1
-        end if
+          if (nmb.gt.0) then
+
+            imcd(isub) = imcd(isub) + 1
+
+          end if
 
 !c  contributions to mass balance - aqueous phase
 
-        if (b_enable_output) then
-          write(ifls,'(/a/72a/)')'mass balance - aqueous phase',       &
-                                 ('-',i=1,72)
-          write(ifls,'(2a)') 'file name                           ',   &
-                             'component'
-        end if
-        
-        if (b_enable_output .and. b_output_trans_binary) then
-          nvarsimcd = 17
-          tec_variables(1:nvarsimcd) = [character(len=72) ::           &
-              "time ["//"time_unit(:l_time_unit)]",                    &
-              "influx diffusion [mol/d]",                              &
-              "influx migration [mol/d]",                              & 
-              "influx [mol/d]",                                        &
-              "outflux diffusion [mol/d]",                             &
-              "outflux migration [mol/d]",                             &
-              "outflux [mol/d]",                                       &
-              "change in storage [mol/d]",                             &
-              "source/sink from passive solute uptake [mol/d]",        &
-              "accumulative influx diffusion [mol]",                   &
-              "accumulative influx migration [mol]",                   &
-              "accumulative influx [mol]",                             &
-              "accumulative outflux diffusion [mol]",                  &
-              "accumulative outflux migration [mol]",                  &
-              "accumulative outflux [mol]",                            &
-              "accumulative change in storage [mol]",                  &
-              "accumulative source/sink from passive solute uptake [mol]"] 
-        end if
-
-        do ic = 1,n
-
-          imcd(isub) = imcd(isub) + 1 
-          
           if (b_enable_output) then
+            write(ifls,'(/a/72a/)')'subdomain mass balance - aqueous phase', &
+                                   ('-',i=1,72)
+            write(ifls,'(2a)') 'file name                           ',   &
+                               'component'
+          end if
+        
+          do ic = 1,n
 
-            !rewind(icnv)           !Deprecated, use internal convert instead. DSU
-            if(ic.lt.10) then
-              write(suffix,'(i1)') ic
-              l_sufx = 1
-            elseif (ic.ge.10) then
-              write(suffix,'(i2)') ic
-              l_sufx = 2
-            end if
+            imcd(isub) = imcd(isub) + 1
+          
+            if (b_enable_output) then
+
+              if(ic.lt.10) then
+                write(suffix,'(i1)') ic
+                l_sufx = 1
+              elseif (ic.ge.10) then
+                write(suffix,'(i2)') ic
+                l_sufx = 2
+              end if
 
 !c  open file
-            if (b_output_trans_binary) then
-#ifndef PETSC
-              if (imcd_mpi(imcd(isub)) < 10) then
-                imcd_mpi(imcd(isub)) = lun_get()
-              end if
-#endif
-              call binary_file_open(PETSC_COMM_SELF,                   &
-                          imcd_mpi(imcd(isub)), prefix(:l_prfx)//'_'// &
-                          suffix(:l_sufx)//'.mcd',.true.)
-            else 
-              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//   &
+              b_rewind_valid = check_rewind_status(trim(prefix_sub)//  &
                                      '_'//suffix(:l_sufx)//'.mcd')
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imcd(isub),file=prefix(:l_prfx)//'_'//            &
-                     suffix(:l_sufx)//'.mcd',status='unknown',         &
-                     form='formatted',position='rewind')
+                open(imcd(isub),file=trim(prefix_sub)//'_'//           &
+                        suffix(:l_sufx)//'.mcd',status='unknown',      &
+                        form='formatted',position='rewind')
               else
-                open(imcd(isub),file=prefix(:l_prfx)//'_'//            &
-                     suffix(:l_sufx)//'.mcd',status='unknown',         &
-                     form='formatted')
+                open(imcd(isub),file=trim(prefix_sub)//'_'//           &
+                        suffix(:l_sufx)//'.mcd',status='unknown',      &
+                        form='formatted')
               end if
-            end if
           
 !c  version information
-            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imcd(isub), "#")
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                if (b_writeversion_tecplot) then
+                  call writeversion2file(imcd(isub), "#")
+                end if
               end if
-            end if
             
-            if (b_output_trans_binary) then
-              write(strbuffer,'(3a)') "mass balance for component ",   &
-                    namec(ic)(:l_namec(ic))," - reactive transport"              
-              
-              offset_imcd(imcd(isub)) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,            &
-                           imcd_mpi(imcd(isub)), "#!TDV102",'dataset '//   &
-                           prefix(:l_prfx),offset_imcd(imcd(isub)),.true., &
-                           .true.)  
-              
-              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imcd_mpi(imcd(isub)), nvarsimcd,            &
-                           tec_variables(1:nvarsimcd),                 &
-                           offset_imcd(imcd(isub)),.true.,.true.)               
-              
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
-                           imcd_mpi(imcd(isub)),trim(strbuffer),           &
-                           offset_imcd(imcd(isub)), 1, 1, 1, .true.,.true.,&
-                           b_output_multizone)
-              offset_imcd_ijk(imcd(isub)) = offset_imcd(imcd(isub)) - 5*4
-              
-              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imcd_mpi(imcd(isub)),nvarsimcd,0,           &
-                           offset_imcd(imcd(isub)),.true.,.true.,      &
-                           b_output_multizone) 
-            else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                 write(imcd(isub),'(3a)') 'title = "dataset ',          &
-                      prefix(:l_prfx),'"'
-
+                      trim(prefix_sub),'"'
+  
                 write(imcd(isub),'(33a)') 'variables = "time [',       &
                        time_unit(:l_time_unit),']", ',                 &
                       '"influx diffusion [mol/d]", ',                  &
@@ -339,23 +280,24 @@
                       '"accumulative change in storage [mol]",',       &
                       '"accumulative source/sink from passive solute uptake', &
                       ' [mol]"'
-
+  
                 write(imcd(isub),'(4a)')                               &
                       'zone t = "mass balance for component ',         &
                       namec(ic)(:l_namec(ic)),' - ',                   &
                       ' reactive transport", f=point'
               end if
-            end if
 
 !c  write data to file information file
-            strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mcd'
-            write(ifls,'(2a)') strl36,namec(ic)
-          end if
-        end do
+              strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mcd'
+              write(ifls,'(2a)') strl36,namec(ic)
+            end if
+          end do
 
 !c  pointer to last mass balance file for reactive transport
 
-        imcd_last(isub) = imcd(isub)
+          imcd_last(isub) = imcd(isub)
+
+        end do
 
       end if
 

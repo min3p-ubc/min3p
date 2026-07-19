@@ -84,7 +84,7 @@
 !c           iamb(nmb)          = pointer array for selected          + -
 !c                                species to species concentration
 !c                                arrays
-!c           imrt               = unit number, mass balance -         + -
+!c           imrt(isub)               = unit number, mass balance -         + -
 !c                                             reactive transport
 !c           imrt_first         = pointer - first unit number for     + -
 !c                                mass balance - reactive transport
@@ -314,7 +314,7 @@
       PetscErrorCode :: ierrcode
 #endif
       
-      integer :: tid
+      integer :: tid, isub
       
       real*8 dummy
       real*8 :: rtmass  !temporary local variable
@@ -325,13 +325,15 @@
       
       integer :: nvarsimrt, irecord
  
-!c  assign pointer for first mass balance file
+!c  loop over subdomains
+      do isub = 0, subdomains_n 
 
-      imrt = imrt_first
+!c  assign pointer for first mass balance file
+        imrt(isub) = imrt_first(isub)
  
-      if (flux_out) then
-        imcd = imcd_first
-      endif
+        if (flux_out) then
+          imcd(isub) = imcd_first(isub)
+        endif
       
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -347,12 +349,12 @@
 !c  compute total mass in aqueous phase in terms of total 
 !c  aqueous component concentrations [moles] and total system
 !c  mass in terms of total component concentrations [moles]
-      do ic=1,nc-1
+        do ic=1,nc-1
 #ifdef OPENMP
     !$omp single
 #endif
-        cmass(ic) = r0  
-        tmass(ic) = r0
+          cmass(ic) = r0  
+          tmass(ic,isub) = r0
 #ifdef OPENMP
     !$omp end single
 #endif 
@@ -360,249 +362,34 @@
 #ifdef OPENMP
     !$omp do schedule(static) reduction(+:cmass, tmass)
 #endif
-        do ivol = 1,nngl
-!#ifdef PETSC
-!          if(node_idx_lg2l(ivol) < 0) then
-!              cycle
-!          end if
-!#endif
-            
+          do ivol = 1, nngl
+#ifdef PETSC
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
+#endif
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
+
 #ifdef OPENMP    
-          tid = omp_get_thread_num() + 1
+            tid = omp_get_thread_num() + 1
 #else
-          tid = 1
+            tid = 1
 #endif
 
 !c  recompute total aqueous component concentrations and
 !c  total gaseous component concentrations
 
-          call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
-          call totconcg(cnew(1,ivol),totgn(:,tid))
+            call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
+            call totconcg(cnew(1,ivol),totgn(:,tid))
 
 !c  compute total system mass
-#ifdef PETSC
-          if(node_idx_lg2l(ivol) > 0) then
-#endif
-            cmass(ic)  = cmass(ic) + conv3 * cvol(ivol)                &
-     &                 * sanew(ivol) * pornew(ivol) * totcn(ic,tid)
-            tmass(ic)  = tmass(ic) + conv3 * cvol(ivol) *              &
-     &                 ( sanew(ivol) * pornew(ivol) * totcn(ic,tid)    &
-     &                 + sgnew(ivol) * pornew(ivol) * totgn(ic,tid))
-#ifdef PETSC
-          end if
-#endif        
-        end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-      end do
-#ifdef OPENMP
-    !$omp end parallel
-#endif    
-
-#ifdef PETSC
-      call MPI_Allreduce(cmass, cmass_gbl,nc-1,MPI_REAL8,MPI_SUM,   &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cmass(1:nc-1) = cmass_gbl(1:nc-1)
-      
-      call MPI_Allreduce(tmass, tmass_gbl,nc-1,MPI_REAL8,MPI_SUM,   &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      tmass(1:nc-1) = tmass_gbl(1:nc-1)     
-#endif
-
-!c  compute total for equilibrium redox reactions for actual primary
-!c  unknowns
-
-      if (redox_equil_rt.and.nr.gt.0) then
-        call comptotc(tmass)
-      end if
- 
-!c  write total system mass in aqueous phase to file
-      if(rank == 0 .and. b_enable_output .and.                       &
-         .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-        if (b_output_trans_binary) then
-          nvarsimrt = nc
-          realbuffer_gb(1:nvarsimrt) = (/time_io,(cmass(ic),ic=1,nc-1)/)
-          call binary_write_data(imrt_mpi(imrt), 1,            &
-                       (/mtime/),offset_imrt_ijk(imrt),.true.)
-          call binary_write_data(imrt_mpi(imrt), nvarsimrt,    &
-                       realbuffer_gb,offset_imrt(imrt),.true.) 
-
-          offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-
-        else 
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imrt,irecord)
-          end if
-
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imrt,ascii_fmt) time_io,(cmass(ic),ic=1,nc-1)
-          end if
-
-        end if
-      end if
-
-!c  compute total mass in aqueous phase for selected species 
-!c  concentrations [moles]
-
-      if (nmb.gt.0) then
-
-        imrt = imrt + 1
-        
-        if (flux_out) then
-          imcd = imcd + 1
-        endif
-#ifdef OPENMP
-    !$omp parallel                                                    &
-    !$omp if (nngl > numofloops_thred_msysrt_2)                       &
-    !$omp num_threads(numofthreads_global)                            &
-    !$omp default(shared)                                             &
-    !$omp private(ivol)                         
-#endif 
-        do imb=1,nmb
-#ifdef OPENMP
-    !$omp single
-#endif
-          smass(imb) = r0
- 
-          isp = iamb(imb) 
-#ifdef OPENMP
-    !$omp end single
-#endif          
-
-!c  selected species is free species
-
-          if (isp.le.nc) then
-#ifdef OPENMP
-    !$omp do schedule(static) reduction(+:smass)
-#endif
-            do ivol = 1,nngl
-#ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                  cycle
-              end if
-#endif
-              smass(imb) = smass(imb) + conv3 * cvol(ivol)            &
-                         * sanew(ivol) * pornew(ivol) * cnew(isp,ivol)
-
-            end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-!c  selected species is aqueous complex
-
-          else
-#ifdef OPENMP
-    !$omp single
-#endif
-            isp = isp - nc
-#ifdef OPENMP
-    !$omp end single
-#endif
-
-#ifdef OPENMP
-    !$omp do schedule(static) reduction(+:smass)
-#endif
-            do ivol = 1,nngl
-#ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                  cycle
-              end if
-#endif
-              smass(imb) = smass(imb) + conv3 * cvol(ivol)            &
-     &                   * sanew(ivol) * pornew(ivol) * cx(isp,ivol)
-
-            end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-          end if
-
-        end do
-#ifdef OPENMP
-    !$omp end parallel
-#endif 
-
-#ifdef PETSC
-      call MPI_Allreduce(smass, smass_gbl,nmb,MPI_REAL8,MPI_SUM,       &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      smass(1:nmb) = smass_gbl(1:nmb)     
-#endif
-
-!c  write total system mass in aqueous phase to file
-      if(rank == 0 .and. b_enable_output .and.                         &
-         .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-        if (b_output_trans_binary) then
-          nvarsimrt = nmb+1
-          realbuffer_gb(1:nvarsimrt)=(/time_io,(smass(imb),imb=1,nmb)/)
-          call binary_write_data(imrt_mpi(imrt), 1,            &
-                       (/mtime/),offset_imrt_ijk(imrt),.true.)
-          call binary_write_data(imrt_mpi(imrt), nvarsimrt,    &
-                       realbuffer_gb,offset_imrt(imrt),.true.) 
-
-          offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-
-        else 
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imrt,irecord)
-          end if
-
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imrt,ascii_fmt) time_io,(smass(imb),imb=1,nmb)
-          end if
-        end if
-      end if
-      
-      end if              !(nmb.gt.0)           
-
-!c  compute total mass in gaseous phase in terms of gas concentrations 
-!c  [moles] (only if gases are specified)
-
-      if (ng.gt.0) then
-#ifdef OPENMP
-    !$omp parallel                                                    &
-    !$omp if (nngl > numofloops_thred_msysrt_3)                       &
-    !$omp num_threads(numofthreads_global)                            &
-    !$omp default(shared)                                             &
-    !$omp private(ivol)                         
-#endif           
-        do ig=1,ng
-#ifdef OPENMP
-    !$omp single
-#endif            
-          gmass(ig) = r0 
-#ifdef OPENMP
-    !$omp end single
-#endif          
-          
-#ifdef OPENMP
-    !$omp do schedule(static) reduction(+:gmass)
-#endif          
-          do ivol = 1,nngl
-#ifdef PETSC 
-            if(node_idx_lg2l(ivol) < 0) then
-                cycle
-            end if
-#endif
-            gmass(ig) = gmass(ig) + conv3 * cvol(ivol)                &
-                      * sgnew(ivol) * pornew(ivol) * gnew(ig,ivol)
+            cmass(ic)  = cmass(ic) + conv3 * cvol(ivol)      &
+                       * sanew(ivol) * pornew(ivol) * totcn(ic,tid)
+            tmass(ic,isub)  = tmass(ic,isub) + conv3 * cvol(ivol) *    &
+                       ( sanew(ivol) * pornew(ivol) * totcn(ic,tid)    &
+                       + sgnew(ivol) * pornew(ivol) * totgn(ic,tid))      
           end do
 #ifdef OPENMP
     !$omp end do
@@ -614,52 +401,277 @@
         end do
 #ifdef OPENMP
     !$omp end parallel
+#endif    
+
+#ifdef PETSC
+        call MPI_Allreduce(cmass,cmass_gbl,nc-1,MPI_REAL8,             &
+                           MPI_SUM,Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cmass(1:nc-1) = cmass_gbl(1:nc-1)
+        
+        call MPI_Allreduce(tmass(1:nc-1,isub),tmass_gbl,nc-1,MPI_REAL8,&
+                           MPI_SUM,Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        tmass(1:nc-1,isub) = tmass_gbl(1:nc-1)     
+#endif
+
+!c  compute total for equilibrium redox reactions for actual primary
+!c  unknowns
+
+        if (redox_equil_rt.and.nr.gt.0) then
+          call comptotc(tmass(:,isub))
+        end if
+ 
+!c  write total system mass in aqueous phase to file
+        if(rank == 0 .and. b_enable_output .and.                       &
+           .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+          if (b_output_trans_binary) then
+            nvarsimrt = nc
+            realbuffer_gb(1:nvarsimrt) = (/time_io,(cmass(ic),ic=1,nc-1)/)
+            call binary_write_data(imrt_mpi(imrt(isub)), 1,            &
+                         (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+            call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,    &
+                         realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
+
+            offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
+
+          else 
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(imrt(isub),irecord)
+            end if
+
+            if (i_append_sim < 1 .or.                                    &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(imrt(isub),ascii_fmt) time_io,(cmass(ic),ic=1,nc-1)
+            end if
+
+          end if
+        end if
+
+!c  compute total mass in aqueous phase for selected species 
+!c  concentrations [moles]
+
+        if (nmb.gt.0) then
+
+          imrt(isub) = imrt(isub) + 1
+        
+          if (flux_out) then
+            imcd(isub) = imcd(isub) + 1
+          endif
+#ifdef OPENMP
+    !$omp parallel                                                    &
+    !$omp if (nngl > numofloops_thred_msysrt_2)                       &
+    !$omp num_threads(numofthreads_global)                            &
+    !$omp default(shared)                                             &
+    !$omp private(ivol)                         
+#endif 
+          do imb=1,nmb
+#ifdef OPENMP
+    !$omp single
+#endif
+            smass(imb,isub) = r0
+ 
+            isp = iamb(imb) 
+#ifdef OPENMP
+    !$omp end single
+#endif          
+
+!c  selected species is free species
+
+            if (isp.le.nc) then
+#ifdef OPENMP
+    !$omp do schedule(static) reduction(+:smass)
+#endif
+              do ivol = 1, nngl
+#ifdef PETSC
+                if(node_idx_lg2l(ivol) < 0) then
+                  cycle
+                end if
+#endif
+                if (.not.btest(subdomains_bits(ivol),isub)) then
+                  cycle
+                end if
+
+                smass(imb,isub) = smass(imb,isub) + conv3 * cvol(ivol) &
+                           * sanew(ivol) * pornew(ivol) * cnew(isp,ivol)
+
+              end do
+#ifdef OPENMP
+    !$omp end do
+#endif
+
+#ifdef OPENMP
+    !$omp barrier
+#endif
+!c  selected species is aqueous complex
+
+            else
+#ifdef OPENMP
+    !$omp single
+#endif
+              isp = isp - nc
+#ifdef OPENMP
+    !$omp end single
+#endif
+
+#ifdef OPENMP
+    !$omp do schedule(static) reduction(+:smass)
+#endif
+              do ivol = 1, nngl
+#ifdef PETSC
+                if(node_idx_lg2l(ivol) < 0) then
+                  cycle
+                end if
+#endif
+                if (.not.btest(subdomains_bits(ivol),isub)) then
+                  cycle
+                end if
+
+                smass(imb,isub) = smass(imb,isub) + conv3 * cvol(ivol) &
+                           * sanew(ivol) * pornew(ivol) * cx(isp,ivol)
+
+              end do
+#ifdef OPENMP
+    !$omp end do
+#endif
+
+#ifdef OPENMP
+    !$omp barrier
+#endif
+            end if
+
+          end do
+#ifdef OPENMP
+    !$omp end parallel
 #endif 
 
 #ifdef PETSC
-        call MPI_Allreduce(gmass,gmass_gbl,ng,MPI_REAL8,MPI_SUM,       &
-                           Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        gmass(1:ng) = gmass_gbl(1:ng)     
+          call MPI_Allreduce(smass(:,isub),smass_gbl,nmb,MPI_REAL8,    &
+                             MPI_SUM,Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          smass(1:nmb,isub) = smass_gbl(1:nmb)     
+#endif
+
+!c  write total system mass in aqueous phase to file
+          if(rank == 0 .and. b_enable_output .and.                         &
+             .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+            if (b_output_trans_binary) then
+              nvarsimrt = nmb+1
+              realbuffer_gb(1:nvarsimrt)=(/time_io,(smass(imb,isub),imb=1,nmb)/)
+              call binary_write_data(imrt_mpi(imrt(isub)), 1,            &
+                           (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+              call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,    &
+                           realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
+
+              offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
+
+            else 
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(imrt(isub),irecord)
+              end if
+
+              if (i_append_sim < 1 .or.                                    &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                write(imrt(isub),ascii_fmt) time_io,(smass(imb,isub),imb=1,nmb)
+              end if
+            end if
+          end if
+      
+        end if              !(nmb.gt.0)           
+
+!c  compute total mass in gaseous phase in terms of gas concentrations 
+!c  [moles] (only if gases are specified)
+
+        if (ng.gt.0) then
+#ifdef OPENMP
+    !$omp parallel                                                    &
+    !$omp if (nngl > numofloops_thred_msysrt_3)                       &
+    !$omp num_threads(numofthreads_global)                            &
+    !$omp default(shared)                                             &
+    !$omp private(ivol)                         
+#endif           
+          do ig=1,ng
+#ifdef OPENMP
+    !$omp single
+#endif            
+            gmass(ig) = r0 
+#ifdef OPENMP
+    !$omp end single
+#endif          
+          
+#ifdef OPENMP
+    !$omp do schedule(static) reduction(+:gmass)
+#endif          
+            do ivol = 1, nngl
+#ifdef PETSC 
+              if(node_idx_lg2l(ivol) < 0) then
+                cycle
+              end if
+#endif
+              if (.not.btest(subdomains_bits(ivol),isub)) then
+                cycle
+              end if
+
+              gmass(ig) = gmass(ig) + conv3 * cvol(ivol)               &
+                        * sgnew(ivol) * pornew(ivol) * gnew(ig,ivol)
+            end do
+#ifdef OPENMP
+    !$omp end do
+#endif
+
+#ifdef OPENMP
+    !$omp barrier
+#endif
+          end do
+#ifdef OPENMP
+    !$omp end parallel
+#endif 
+
+#ifdef PETSC
+          call MPI_Allreduce(gmass,gmass_gbl,ng,MPI_REAL8,MPI_SUM,     &
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          gmass(1:ng) = gmass_gbl(1:ng)     
 #endif
 
 !c  write total system mass in gaseous phase to file
 
-        imrt = imrt+1
+          imrt(isub) = imrt(isub) + 1
         
-        if (flux_out) then
-          imcd = imcd+1
-        endif
+          if (flux_out) then
+            imcd(isub) = imcd(isub)+1
+          endif
         
-        if(rank == 0 .and. b_enable_output .and.                       &
-           .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-          if (b_output_trans_binary) then
-            nvarsimrt = ng+1
-            realbuffer_gb(1:nvarsimrt) = (/time_io,(gmass(ig),ig=1,ng)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
+          if(rank == 0 .and. b_enable_output .and.                       &
+             .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+            if (b_output_trans_binary) then
+              nvarsimrt = ng+1
+              realbuffer_gb(1:nvarsimrt) = (/time_io,(gmass(ig),ig=1,ng)/)
+              call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                           (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+              call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                           realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
 
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-   
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
-            end if
+              offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) +      &
+                                        nvarsimrt*nfloatbit
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt) time_io,(gmass(ig),ig=1,ng)
+            else
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(imrt(isub),irecord)
+              end if
+
+              if (i_append_sim < 1 .or.                                  &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                write(imrt(isub),ascii_fmt) time_io,(gmass(ig),ig=1,ng)
+              end if
             end if
           end if
-        end if
 
-      end if
+        end if
 
 !c  compute total sorbed mass - non-competitive sorption [moles]
       
-    if (noncompetitive_sorption) then
+        if (noncompetitive_sorption) then
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_4)                       &
@@ -672,17 +684,27 @@
 #ifdef OPENMP
     !$omp do schedule(static)
 #endif  
-      do ivol =1,nngl
+          do ivol = 1, nngl
+
+#ifdef PETSC 
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
+#endif
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
+
 #ifdef OPENMP    
-          tid = omp_get_thread_num() + 1
+            tid = omp_get_thread_num() + 1
 #else
-          tid = 1
+            tid = 1
 #endif 
-          call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
-          call totcona(totanew(1,ivol),totcn(:,tid),                  &
-                       distcoff_rt(1,ivol),sanew(ivol),               &
-                       pornew(ivol))         
-      end do  
+            call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
+            call totcona(totanew(1,ivol),totcn(:,tid),                 &
+                         distcoff_rt(1,ivol),sanew(ivol),              &
+                         pornew(ivol))         
+          end do  
 #ifdef OPENMP
     !$omp end do
 #endif  
@@ -693,11 +715,11 @@
 
 !c total sorbed mass
 
-      do ic = 1,nc-1
+          do ic = 1,nc-1
 #ifdef OPENMP
     !$omp single
 #endif          
-        amass(ic) = r0
+            amass(ic) = r0
 #ifdef OPENMP
     !$omp end single
 #endif
@@ -705,14 +727,18 @@
 #ifdef OPENMP
     !$omp do schedule(static) reduction(+:amass)
 #endif         
-        do ivol = 1,nngl
+            do ivol = 1, nngl
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
-              cycle
-          end if
+              if(node_idx_lg2l(ivol) < 0) then
+                cycle
+              end if
 #endif
-          amass(ic) = amass(ic) + conv3 * cvol(ivol) * totanew(ic,ivol)
-        end do
+              if (.not.btest(subdomains_bits(ivol),isub)) then
+                cycle
+              end if
+
+              amass(ic) = amass(ic) + conv3 * cvol(ivol) * totanew(ic,ivol)
+            end do
 #ifdef OPENMP
     !$omp end do
 #endif 
@@ -720,33 +746,33 @@
 #ifdef OPENMP
     !$omp barrier
 #endif
-      end do
+          end do
       
 #ifdef OPENMP
     !$omp end parallel
 #endif
 
 #ifdef PETSC
-      call MPI_Allreduce(amass,amass_gbl,nc-1,MPI_REAL8,MPI_SUM,       &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      amass(1:nc-1) = amass_gbl(1:nc-1)     
+          call MPI_Allreduce(amass,amass_gbl,nc-1,MPI_REAL8,MPI_SUM,       &
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          amass(1:nc-1) = amass_gbl(1:nc-1)     
 #endif
 
 !c  compress total sorbed mass vector for output 
-      ianc = 0
-      do ic = 1,nc-1
-        if (isotherm_type(ic).ne.'none') then
-          ianc = ianc+1
-          amass(ianc) = amass(ic)
-        end if
-      end do
+          ianc = 0
+          do ic = 1,nc-1
+            if (isotherm_type(ic).ne.'none') then
+              ianc = ianc+1
+              amass(ianc) = amass(ic)
+            end if
+          end do
     
-    end if
+        end if
 
 !c  compute total sorbed mass - competitive sorption [moles]
 !c something wrong here, NAN in .mss file
-      if (nsb_ion.gt.0.or.nsb_surf.gt.0) then        
+        if (nsb_ion.gt.0.or.nsb_surf.gt.0) then        
 !c  compute total sorbed mass - ion-exchange
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -755,11 +781,11 @@
     !$omp default(shared)                                             &
     !$omp private(tid, ivol)                                          
 #endif 
-        do isb = 1,nsb_ion
+          do isb = 1,nsb_ion
 #ifdef OPENMP
     !$omp single
 #endif
-          csbmass_ion(isb) = r0
+            csbmass_ion(isb) = r0
 #ifdef OPENMP
     !$omp end single
 #endif
@@ -767,43 +793,42 @@
 #ifdef OPENMP                       
     !$omp do schedule(static) reduction(+:csbmass_ion)
 #endif 
-          do ivol = 1,nngl
-!#ifdef PETSC
-!            if(node_idx_lg2l(ivol) < 0) then
-!                cycle
-!            end if
-!#endif
+            do ivol = 1, nngl
+#ifdef PETSC
+              if(node_idx_lg2l(ivol) < 0) then
+                cycle
+              end if
+#endif
+              if (.not.btest(subdomains_bits(ivol),isub)) then
+                cycle
+              end if
               
 #ifdef OPENMP    
-            tid = omp_get_thread_num() + 1
+              tid = omp_get_thread_num() + 1
 #else
-            tid = 1
+              tid = 1
 #endif      
 
 !c  compute sorbed mass for each control volume and each sorbed species
 !c  exclude contributions from first type boundary nodes
 
-            if (btypert(ivol).ne.'first') then
+              if (btypert(ivol).ne.'first') then
 
-                    call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),&
-                         cec_fraction_g(idx_nsites_ion(isb),ivol),    &
-                         eqsb_ion(:,tid),eqsb_surf(:,tid),            &
-                         gamma(1,ivol),                               &
-                         cnew(1,ivol),xnusb_ion,xnusb_surf,           &
-                         iasb_ion,iasb_surf,jasb_ion,jasb_surf,       &
-                         nsb_ion,nsb_surf,isb,0,sorption_type_ion,    &
-                         sorption_type_surf,sorption_group,isactcexch)
-#ifdef PETSC
-                    if(node_idx_lg2l(ivol) > 0) then
-#endif
-                      csbmass_ion(isb) = csbmass_ion(isb) +            &
-                          cvol(ivol) * csb_ion(isb,tid)*rhobulk_g(ivol)
-#ifdef PETSC
-                    end if
-#endif
-            end if
+                call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),       &
+                     cec_fraction_g(idx_nsites_ion(isb),ivol),           &
+                     eqsb_ion(:,tid),eqsb_surf(:,tid),                   &
+                     gamma(1,ivol),                                      &
+                     cnew(1,ivol),xnusb_ion,xnusb_surf,                  &
+                     iasb_ion,iasb_surf,jasb_ion,jasb_surf,              &
+                     nsb_ion,nsb_surf,isb,0,sorption_type_ion,           &
+                     sorption_type_surf,sorption_group,isactcexch)
 
-          end do
+                  csbmass_ion(isb) = csbmass_ion(isb) +                  &
+                      cvol(ivol) * csb_ion(isb,tid)*rhobulk_g(ivol)
+
+              end if
+
+            end do
 #ifdef OPENMP
     !$omp end do
 #endif 
@@ -815,23 +840,22 @@
 #ifdef OPENMP
     !$omp single
 #endif
-          csbmass_ion(isb) = conv3 * csbmass_ion(isb) / (r100 * chargesb_ion(isb))
-!CMX            csbmass(isb) = conv3 * rhobulk * csbmass(isb) /           & 
-!CMX     &                     (r100 * chargesb(isb))
+            csbmass_ion(isb) = conv3 * csbmass_ion(isb) / (r100 * chargesb_ion(isb))
+
 #ifdef OPENMP
     !$omp end single
 #endif
 
-        end do
+          end do
 
        
 !c  compute total sorbed mass - surface-complex
-        do isb = 1,nsb_surf
+          do isb = 1,nsb_surf
 
 #ifdef OPENMP
     !$omp single
 #endif
-          csbmass_surf(isb) = r0
+            csbmass_surf(isb) = r0
 #ifdef OPENMP
     !$omp end single
 #endif          
@@ -839,41 +863,49 @@
 #ifdef OPENMP                     
     !$omp do schedule(static) reduction(+:csbmass_surf)
 #endif
-          do ivol = 1,nngl
+            do ivol = 1, nngl
+#ifdef PETSC 
+              if(node_idx_lg2l(ivol) < 0) then
+                cycle
+              end if
+#endif
+              if (.not.btest(subdomains_bits(ivol),isub)) then
+                cycle
+              end if
               
 #ifdef OPENMP    
-            tid = omp_get_thread_num() + 1
+              tid = omp_get_thread_num() + 1
 #else
-            tid = 1
+              tid = 1
 #endif 
 
 !c  compute sorbed mass for each control volume and each sorbed species
 !c  exclude contributions from first type boundary nodes
 
-            if (btypert(ivol).ne.'first') then
+              if (btypert(ivol).ne.'first') then
 
-              call sorbspc(dummy,csb_surf(isb,tid),                   &
-                   cnew(n-nelect+1:n,ivol),cec_g(ivol),               &
-                   eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),    &
-                   cnew(1,ivol),xnusb_ion,xnusb_surf,                 &
-                   iasb_ion,iasb_surf,jasb_ion,                       &
-                   jasb_surf,nsb_ion,nsb_surf,0,isb,                  &
-                   sorption_type_ion,sorption_type_surf,              &
-                   sorption_group,isactcexch,                         &
-                   elect_correction,name_elect_correction,nelect,     &
-                   dz_surf,totcn(:,tid),component_type,nlayer,        &
-                   mol_frac_ads)
+                call sorbspc(dummy,csb_surf(isb,tid),                  &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),              &
+                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),   &
+                     cnew(1,ivol),xnusb_ion,xnusb_surf,                &
+                     iasb_ion,iasb_surf,jasb_ion,                      &
+                     jasb_surf,nsb_ion,nsb_surf,0,isb,                 &
+                     sorption_type_ion,sorption_type_surf,             &
+                     sorption_group,isactcexch,                        &
+                     elect_correction,name_elect_correction,nelect,    &
+                     dz_surf,totcn(:,tid),component_type,nlayer,       &
+                     mol_frac_ads)
 #ifdef PETSC
-              if(node_idx_lg2l(ivol) > 0) then
+                if(node_idx_lg2l(ivol) > 0) then
 #endif
-                csbmass_surf(isb) = csbmass_surf(isb) +                &
-                     cvol(ivol) * sanew(ivol) *                        &
-                     pornew(ivol) * csb_surf(isb,tid)
+                  csbmass_surf(isb) = csbmass_surf(isb) +              &
+                       cvol(ivol) * sanew(ivol) *                      &
+                       pornew(ivol) * csb_surf(isb,tid)
 #ifdef PETSC
+                end if
+#endif
               end if
-#endif
-            end if
-          end do
+            end do
 #ifdef OPENMP
     !$omp end do
 #endif
@@ -885,24 +917,24 @@
 #ifdef OPENMP
     !$omp single
 #endif
-          csbmass_surf(isb) = conv3 * csbmass_surf(isb)
+            csbmass_surf(isb) = conv3 * csbmass_surf(isb)
 #ifdef OPENMP
     !$omp end single
 #endif
 
-        end do 
+          end do 
 
 !c  compute sorbed mass for each control volume - non-aqueous components
 
-        if (sorption_group.eq.'surface-complexation' .or.         &
-            (sorption_group.eq.'surface-complex and ion-exchange' &
-            .and. nsb_surf.gt.0)) then
+          if (sorption_group.eq.'surface-complexation' .or.         &
+              (sorption_group.eq.'surface-complex and ion-exchange' &
+              .and. nsb_surf.gt.0)) then
 #ifdef OPENMP
     !$omp single
 #endif
-          do isites = 1,nsites
-            csbmass_c(isites) = r0
-          end do
+            do isites = 1,nsites
+              csbmass_c(isites) = r0
+            end do
 #ifdef OPENMP
     !$omp end single
 #endif          
@@ -911,21 +943,25 @@
                        
     !$omp do schedule(static) reduction(+:csbmass_c)
 #endif
-          do ivol = 1,nngl
+            do ivol = 1, nngl
 #ifdef PETSC
-            if(node_idx_lg2l(ivol) < 0) then
+              if(node_idx_lg2l(ivol) < 0) then
                 cycle
-            end if
+              end if
 #endif  
-            if (btypert(ivol).ne.'first') then
-              do isites = 1,nsites
-                  csbmass_c(isites) = csbmass_c(isites)                 &
-                                      + conv3 * cvol(ivol) * sanew(ivol)&
-                                      * pornew(ivol)                    &
-                                      * cnew(iaic(isites),ivol)             
-              end do
-            end if
-          end do
+              if (.not.btest(subdomains_bits(ivol),isub)) then
+                cycle
+              end if
+
+              if (btypert(ivol).ne.'first') then
+                do isites = 1,nsites
+                    csbmass_c(isites) = csbmass_c(isites)                 &
+                                        + conv3 * cvol(ivol) * sanew(ivol)&
+                                        * pornew(ivol)                    &
+                                        * cnew(iaic(isites),ivol)             
+                end do
+              end if
+            end do
 #ifdef OPENMP
     !$omp end do
 #endif  
@@ -933,261 +969,260 @@
 #ifdef OPENMP
     !$omp barrier
 #endif
-        end if
+          end if
 #ifdef OPENMP
     !$omp end parallel
 #endif   
 
 #ifdef PETSC
-        if(nsb_ion > 0) then
-          call MPI_Allreduce(csbmass_ion,csbmass_ion_gbl,nsb_ion,      &
-                    MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
-          CHKERRQ(ierrcode)
-          csbmass_ion(1:nsb_ion) = csbmass_ion_gbl(1:nsb_ion)
-        end if
+          if(nsb_ion > 0) then
+            call MPI_Allreduce(csbmass_ion,csbmass_ion_gbl,nsb_ion,    &
+                      MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
+            CHKERRQ(ierrcode)
+            csbmass_ion(1:nsb_ion) = csbmass_ion_gbl(1:nsb_ion)
+          end if
         
-        if(nsb_surf > 0) then
-          call MPI_Allreduce(csbmass_surf,csbmass_surf_gbl,nsb_surf,   &
-                    MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
-          CHKERRQ(ierrcode)
-          csbmass_surf(1:nsb_surf) = csbmass_surf_gbl(1:nsb_surf)
-        end if 
+          if(nsb_surf > 0) then
+            call MPI_Allreduce(csbmass_surf,csbmass_surf_gbl,nsb_surf, &
+                      MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
+            CHKERRQ(ierrcode)
+            csbmass_surf(1:nsb_surf) = csbmass_surf_gbl(1:nsb_surf)
+          end if 
         
-        if (sorption_group.eq.'surface-complexation' .or.              &
-            (sorption_group.eq.'surface-complex and ion-exchange'      &
-            .and. nsb_surf.gt.0)) then
-          call MPI_Allreduce(csbmass_c,csbmass_c_gbl,nsites,           &
-                    MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
-          CHKERRQ(ierrcode)
-          csbmass_c(1:nsites) = csbmass_c_gbl(1:nsites)
-        end if
+          if (sorption_group.eq.'surface-complexation' .or.            &
+              (sorption_group.eq.'surface-complex and ion-exchange'    &
+              .and. nsb_surf.gt.0)) then
+            call MPI_Allreduce(csbmass_c,csbmass_c_gbl,nsites,         &
+                      MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
+            CHKERRQ(ierrcode)
+            csbmass_c(1:nsites) = csbmass_c_gbl(1:nsites)
+          end if
 #endif
 
-      end if                     !(nsb.gt.0)
+        end if                     !(nsb.gt.0)
 
 !c  write total sorbed mass in system to file
 
-      if (nsb_ion.gt.0.or.nsb_surf.gt.0.or.noncompetitive_sorption) then
+        if (nsb_ion.gt.0.or.nsb_surf.gt.0.or.noncompetitive_sorption) then
 
-        imrt = imrt+1
+          imrt(isub) = imrt(isub) + 1
 
-        if (flux_out) then
-          imcd = imcd+1
-        endif
+          if (flux_out) then
+            imcd(isub) = imcd(isub) + 1
+          endif
 
 !c  only competitive sorption
 
-      if(rank == 0 .and. b_enable_output .and.                       &
-         .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+          if(rank == 0 .and. b_enable_output .and.                       &
+             .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
       
-      if (.not.noncompetitive_sorption) then
+            if (.not.noncompetitive_sorption) then
         
-        if (sorption_group.eq.'ion-exchange') then 
-          if (b_output_trans_binary) then
-            nvarsimrt = nsb_ion+1
-            realbuffer_gb(1:nvarsimrt) = (/time_io, (csbmass_ion(isb), &
-                                                     isb=1,nsb_ion)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
+              if (sorption_group.eq.'ion-exchange') then 
+                if (b_output_trans_binary) then
+                  nvarsimrt = nsb_ion+1
+                  realbuffer_gb(1:nvarsimrt) = (/time_io, (csbmass_ion(isb), &
+                                                           isb=1,nsb_ion)/)
+                  call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                               (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+                  call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                               realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
 
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-  
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
-            end if
+                  offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt) time_io,                           &
-                   (csbmass_ion(isb),isb=1,nsb_ion)
-            end if
-          end if
-       
-        elseif (sorption_group.eq.'surface-complexation') then
-          if (b_output_trans_binary) then
-            nvarsimrt = nsites+nsb_surf+1
-            realbuffer_gb(1:nvarsimrt) = (/time_io,(csbmass_c(isites), &
-                                                   isites = 1,nsites), &
-                                                   (csbmass_surf(isb), &
-                                                      isb=1,nsb_surf)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
+                else
+                  if (mtime == mtime_append .and. i_append_sim >= 1) then
+                    call reposition_file(imrt(isub),irecord)
+                  end if
 
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-  
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
-            end if
+                  if (i_append_sim < 1 .or.                                  &
+                     (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                    write(imrt(isub),ascii_fmt) time_io,                           &
+                         (csbmass_ion(isb),isb=1,nsb_ion)
+                  end if
+                end if
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt)                                    &
-                    time_io,(csbmass_c(isites),isites = 1,nsites),     &
-                    (csbmass_surf(isb),isb=1,nsb_surf)
-            end if
-          end if
+              elseif (sorption_group.eq.'surface-complexation') then
+                if (b_output_trans_binary) then
+                  nvarsimrt = nsites+nsb_surf+1
+                  realbuffer_gb(1:nvarsimrt) = (/time_io,(csbmass_c(isites), &
+                                                         isites = 1,nsites), &
+                                                         (csbmass_surf(isb), &
+                                                            isb=1,nsb_surf)/)
+                  call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                               (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+                  call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                               realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
 
-        elseif (sorption_group.eq.'surface-complex and ion-exchange') then
-          if (b_output_trans_binary) then
-            nvarsimrt = nsites+nsb_ion+nsb_surf+1
-            realbuffer_gb(1:nvarsimrt) = (/                            & 
-                       time_io, (csbmass_ion(isb),isb=1,nsb_ion),      & 
-                       (csbmass_c(isites),isites = 1,nsites),          &
-                       (csbmass_surf(isb),isb=1,nsb_surf)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
+                  offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
 
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
- 
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
-            end if
+                else
+                  if (mtime == mtime_append .and. i_append_sim >= 1) then
+                    call reposition_file(imrt(isub),irecord)
+                  end if
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt)                                    &
-                    time_io, (csbmass_ion(isb),isb=1,nsb_ion),         &
-                    (csbmass_c(isites),isites = 1,nsites),             &
-                    (csbmass_surf(isb),isb=1,nsb_surf)
-            end if
-          end if
+                  if (i_append_sim < 1 .or.                                  &
+                     (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                    write(imrt(isub),ascii_fmt)                                    &
+                          time_io,(csbmass_c(isites),isites = 1,nsites),     &
+                          (csbmass_surf(isb),isb=1,nsb_surf)
+                  end if
+                end if
 
-        end if
+              elseif (sorption_group.eq.'surface-complex and ion-exchange') then
+                if (b_output_trans_binary) then
+                  nvarsimrt = nsites+nsb_ion+nsb_surf+1
+                  realbuffer_gb(1:nvarsimrt) = (/                            & 
+                             time_io, (csbmass_ion(isb),isb=1,nsb_ion),      & 
+                             (csbmass_c(isites),isites = 1,nsites),          &
+                             (csbmass_surf(isb),isb=1,nsb_surf)/)
+                  call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                               (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+                  call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                               realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
+      
+                  offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
+
+                else
+                  if (mtime == mtime_append .and. i_append_sim >= 1) then
+                    call reposition_file(imrt(isub),irecord)
+                  end if
+
+                  if (i_append_sim < 1 .or.                                  &
+                     (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                    write(imrt(isub),ascii_fmt)                                    &
+                          time_io, (csbmass_ion(isb),isb=1,nsb_ion),         &
+                          (csbmass_c(isites),isites = 1,nsites),             &
+                          (csbmass_surf(isb),isb=1,nsb_surf)
+                  end if
+                end if
+
+              end if
 
 !c  only non-competitive sorption
 
-      elseif(nsb_ion.eq.0 .and. nsb_surf.eq.0) then
-        if (b_output_trans_binary) then
-          nvarsimrt = nanc+1
-          realbuffer_gb(1:nvarsimrt) = (/time_io,(amass(ianc),         &
-                                                  ianc=1,nanc)/)
-          call binary_write_data(imrt_mpi(imrt), 1,            &
-                       (/mtime/),offset_imrt_ijk(imrt),.true.)
-          call binary_write_data(imrt_mpi(imrt), nvarsimrt,    &
-                       realbuffer_gb,offset_imrt(imrt),.true.) 
+            elseif(nsb_ion.eq.0 .and. nsb_surf.eq.0) then
+              if (b_output_trans_binary) then
+                nvarsimrt = nanc+1
+                realbuffer_gb(1:nvarsimrt) = (/time_io,(amass(ianc),         &
+                                                        ianc=1,nanc)/)
+                call binary_write_data(imrt_mpi(imrt(isub)), 1,            &
+                             (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+                call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,    &
+                             realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
 
-          offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
+                offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
 
-        else
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imrt,irecord)
-          end if
+              else
+                if (mtime == mtime_append .and. i_append_sim >= 1) then
+                  call reposition_file(imrt(isub),irecord)
+                end if
 
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imrt,ascii_fmt) time_io,(amass(ianc),ianc=1,nanc)
-          end if
-        end if
+                if (i_append_sim < 1 .or.                                    &
+                   (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                  write(imrt(isub),ascii_fmt) time_io,(amass(ianc),ianc=1,nanc)
+                end if
+              end if
 
 !c  competitive and non-competitive sorption
 
-      else
+            else
 
-        if (sorption_group.eq.'ion-exchange') then 
-          if (b_output_trans_binary) then
-            nvarsimrt = nanc+nsb_ion+1
-            realbuffer_gb(1:nvarsimrt) = (/time_io,                    &
-                       (amass(ianc),ianc=1,nanc),                      &
-                       (csbmass_ion(isb),isb=1,nsb_ion)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
+              if (sorption_group.eq.'ion-exchange') then 
+                if (b_output_trans_binary) then
+                  nvarsimrt = nanc+nsb_ion+1
+                  realbuffer_gb(1:nvarsimrt) = (/time_io,                    &
+                             (amass(ianc),ianc=1,nanc),                      &
+                             (csbmass_ion(isb),isb=1,nsb_ion)/)
+                  call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                               (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+                  call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                               realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
 
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
- 
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
+                  offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
+
+                else
+                  if (mtime == mtime_append .and. i_append_sim >= 1) then
+                    call reposition_file(imrt(isub),irecord)
+                  end if
+
+                  if (i_append_sim < 1 .or.                                  &
+                     (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                    write(imrt(isub),ascii_fmt) time_io,                           &
+                                              (amass(ianc),ianc=1,nanc),     &
+                                              (csbmass_ion(isb),isb=1,nsb_ion)
+                  end if
+                end if  
+
+              elseif (sorption_group.eq.'surface-complexation') then
+      
+                if (b_output_trans_binary) then
+                  nvarsimrt = nanc+nsites+nsb_surf+1
+                  realbuffer_gb(1:nvarsimrt) = (/time_io,                    &
+                              (amass(ianc),ianc=1,nanc),                     &
+                              (csbmass_c(isites),isites = 1,nsites),         &
+                              (csbmass_surf(isb),isb=1,nsb_surf)/)
+                  call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                               (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+                  call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                               realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
+
+                  offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
+
+                else
+                  if (mtime == mtime_append .and. i_append_sim >= 1) then
+                    call reposition_file(imrt(isub),irecord)
+                  end if
+
+                  if (i_append_sim < 1 .or.                                  &
+                     (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                    write(imrt(isub),ascii_fmt) time_io,                           &
+                              (amass(ianc),ianc=1,nanc),                     &
+                              (csbmass_c(isites),isites = 1,nsites),         &
+                              (csbmass_surf(isb),isb=1,nsb_surf)
+                  end if
+                end if  
+              elseif (sorption_group.eq.'surface-complex and ion-exchange') then
+                  
+                if (b_output_trans_binary) then
+                  nvarsimrt = nanc+nsb_ion+nsb_surf+nsites+1
+                  realbuffer_gb(1:nvarsimrt) = (/time_io,                    &
+                              (amass(ianc),ianc=1,nanc),                     &
+                              (csbmass_ion(isb),isb=1,nsb_ion),              &
+                              (csbmass_c(isites),isites = 1,nsites),         &
+                              (csbmass_surf(isb),isb=1,nsb_surf)/)
+                  call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                               (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+                  call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                               realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
+
+                  offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
+
+                else
+                  if (mtime == mtime_append .and. i_append_sim >= 1) then
+                    call reposition_file(imrt(isub),irecord)
+                  end if
+
+                  if (i_append_sim < 1 .or.                                  &
+                     (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                    write(imrt(isub),ascii_fmt) time_io,                           &
+                              (amass(ianc),ianc=1,nanc),                     &
+                              (csbmass_ion(isb),isb=1,nsb_ion),              &
+                              (csbmass_c(isites),isites = 1,nsites),         &
+                              (csbmass_surf(isb),isb=1,nsb_surf) 
+                  end if
+                end if
+              end if
+      
             end if
+      
+          end if                    !Output by rank 0
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt) time_io,                           &
-                                        (amass(ianc),ianc=1,nanc),     &
-                                        (csbmass_ion(isb),isb=1,nsb_ion)
-            end if
-          end if  
-        
-        elseif (sorption_group.eq.'surface-complexation') then
-
-          if (b_output_trans_binary) then
-            nvarsimrt = nanc+nsites+nsb_surf+1
-            realbuffer_gb(1:nvarsimrt) = (/time_io,                    &
-                        (amass(ianc),ianc=1,nanc),                     &
-                        (csbmass_c(isites),isites = 1,nsites),         &
-                        (csbmass_surf(isb),isb=1,nsb_surf)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
-
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-  
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
-            end if
-
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt) time_io,                           &
-                        (amass(ianc),ianc=1,nanc),                     &
-                        (csbmass_c(isites),isites = 1,nsites),         &
-                        (csbmass_surf(isb),isb=1,nsb_surf)
-            end if
-          end if  
-        elseif (sorption_group.eq.'surface-complex and ion-exchange') then
-            
-          if (b_output_trans_binary) then
-            nvarsimrt = nanc+nsb_ion+nsb_surf+nsites+1
-            realbuffer_gb(1:nvarsimrt) = (/time_io,                    &
-                        (amass(ianc),ianc=1,nanc),                     &
-                        (csbmass_ion(isb),isb=1,nsb_ion),              &
-                        (csbmass_c(isites),isites = 1,nsites),         &
-                        (csbmass_surf(isb),isb=1,nsb_surf)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
-
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-   
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
-            end if
-
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt) time_io,                           &
-                        (amass(ianc),ianc=1,nanc),                     &
-                        (csbmass_ion(isb),isb=1,nsb_ion),              &
-                        (csbmass_c(isites),isites = 1,nsites),         &
-                        (csbmass_surf(isb),isb=1,nsb_surf) 
-            end if
-          end if
         end if
-      
-      end if
-      
-      end if                    !Output by rank 0
-
-      end if
 
 !c  compute total mineral mass [moles]
 !c  (only if minerals are specified)
- 
-      if (nm.gt.0) then
+        if (nm.gt.0) then
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_6)                       &
@@ -1195,11 +1230,11 @@
     !$omp default(shared)                                             &
     !$omp private(ivol)                         
 #endif  
-        do im=1,nm
+          do im=1,nm
 #ifdef OPENMP
     !$omp single
 #endif            
-          cmmass(im) = r0
+            cmmass(im) = r0
 #ifdef OPENMP
     !$omp end single
 #endif          
@@ -1207,14 +1242,18 @@
 #ifdef OPENMP
     !$omp do schedule(static) reduction(+:cmmass)
 #endif          
-          do ivol = 1,nngl
+            do ivol = 1, nngl
 #ifdef PETSC
-            if(node_idx_lg2l(ivol) < 0) then
+              if(node_idx_lg2l(ivol) < 0) then
                 cycle
-            end if
+              end if
 #endif
-            cmmass(im) = cmmass(im) + conv3 * cvol(ivol) * cmnew(im,ivol)          
-          end do
+              if (.not.btest(subdomains_bits(ivol),isub)) then
+                cycle
+              end if
+
+              cmmass(im) = cmmass(im) + conv3 * cvol(ivol) * cmnew(im,ivol) 
+            end do
 #ifdef OPENMP
     !$omp end do
 #endif
@@ -1228,7 +1267,7 @@
 #ifdef OPENMP
     !$omp single
 #endif
-          rtmass = r0
+            rtmass = r0
 #ifdef OPENMP
     !$omp end single
 #endif
@@ -1244,30 +1283,33 @@
     !$omp do schedule(auto) reduction(+:rtmass)
 #endif
 #endif 
-          do ibrt=1,nbrt
+            do ibrt=1,nbrt
               
-            ivol = jabrt(ibrt)             !pointer to control volume
-            if (ivol < 0) then
-              cycle
-            end if
-
-            if (compute_ice_sheet_loading) then
-              if (.not. b_jabrt_ice(ibrt)) then
+              ivol = jabrt(ibrt)             !pointer to control volume
+              if (ivol < 0) then
                 cycle
               end if
-            end if
 
 #ifdef PETSC
-            if(node_idx_lg2l(ivol) < 0) then
+              if(node_idx_lg2l(ivol) < 0) then
                 cycle
-            end if
+              end if
 #endif
+              if (.not.btest(subdomains_bits(ivol),isub)) then
+                cycle
+              end if
+
+              if (compute_ice_sheet_loading) then
+                if (.not. b_jabrt_ice(ibrt)) then
+                  cycle
+                end if
+              end if
             
-            if (btypert(ivol).eq.'first') then
-              !cmmass(im) = cmmass(im)  - conv3 * cvol(ivol) * cmnew(im,ivol)
-              rtmass = rtmass + conv3 * cvol(ivol) * cmnew(im,ivol)
-            end if
-          end do 
+              if (btypert(ivol).eq.'first') then
+                !cmmass(im) = cmmass(im)  - conv3 * cvol(ivol) * cmnew(im,ivol)
+                rtmass = rtmass + conv3 * cvol(ivol) * cmnew(im,ivol)
+              end if
+            end do 
 #ifdef OPENMP
     !$omp end do
 #endif
@@ -1279,81 +1321,83 @@
 #ifdef OPENMP
     !$omp single
 #endif
-          cmmass(im) = cmmass(im) - rtmass
+            cmmass(im) = cmmass(im) - rtmass
 #ifdef OPENMP
     !$omp end single
 #endif          
           
-        end do
+          end do
 #ifdef OPENMP
     !$omp end parallel
 #endif 
 
 #ifdef PETSC
-        call MPI_Allreduce(cmmass,cmmass_gbl,nm,MPI_REAL8,MPI_SUM,       &
-                           Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        cmmass(1:nm) = cmmass_gbl(1:nm)     
+          call MPI_Allreduce(cmmass,cmmass_gbl,nm,MPI_REAL8,   &
+                             MPI_SUM,Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          cmmass(1:nm) = cmmass_gbl(1:nm)     
 #endif
 
         
 !c  write total mineral mass in system to file
 
-        imrt = imrt+1
+          imrt(isub) = imrt(isub) + 1
         
-        if (flux_out) then
-          imcd = imcd+1
-        endif
+          if (flux_out) then
+            imcd(isub) = imcd(isub) + 1
+          endif
         
-        if(rank == 0 .and. b_enable_output .and.                       &
-           .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-          if (b_output_trans_binary) then
-            nvarsimrt = nm+1
-            realbuffer_gb(1:nvarsimrt) = (/time_io,(cmmass(im),        &
-                                                    im=1,nm)/)
-            call binary_write_data(imrt_mpi(imrt), 1,          &
-                         (/mtime/),offset_imrt_ijk(imrt),.true.)
-            call binary_write_data(imrt_mpi(imrt), nvarsimrt,  &
-                         realbuffer_gb,offset_imrt(imrt),.true.) 
+          if(rank == 0 .and. b_enable_output .and.                     &
+             .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+            if (b_output_trans_binary) then
+              nvarsimrt = nm+1
+              realbuffer_gb(1:nvarsimrt) = (/time_io,(cmmass(im),      &
+                                                      im=1,nm)/)
+              call binary_write_data(imrt_mpi(imrt(isub)), 1,          &
+                           (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
+              call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,  &
+                           realbuffer_gb,offset_imrt(imrt(isub)),.true.) 
 
-            offset_imrt(imrt) = offset_imrt(imrt) + nvarsimrt*nfloatbit
-   
-          else 
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrt,irecord)
-            end if
+              offset_imrt(imrt(isub)) = offset_imrt(imrt(isub)) + nvarsimrt*nfloatbit
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imrt,ascii_fmt) time_io,(cmmass(im),im=1,nm)
+            else 
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(imrt(isub),irecord)
+              end if
+
+              if (i_append_sim < 1 .or.                                  &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                write(imrt(isub),ascii_fmt) time_io,(cmmass(im),im=1,nm)
+              end if
             end if
           end if
+
         end if
 
-      end if
-
 !c  check total surface site mass
-      if (mtime == 0) then
-        do isites = 1, nsites
-          if (csbmass_c(isites) > site_mass_tot(isites)) then
-            if (rank == 0 .and. b_enable_output) then
-              write(*,*) 'SIMULATION TERMINATED'
-              write(*,*) 'Error: Total sorbed mass in system exceeds total sites.'
-              write(*,*) 'Total sorbed mass in moles: ',csbmass_c(isites)
-              write(*,*) 'Total sites mass in moles: : ',site_mass_tot(isites)
-              write(ilog,*) 'SIMULATION TERMINATED'
-              write(ilog,*) 'Error: Total sorbed mass in system exceeds total sites.'
-              write(ilog,*) 'Total sorbed mass in moles: ',csbmass_c(isites)
-              write(ilog,*) 'Total sites mass in moles: ',site_mass_tot(isites)
-              close(ilog)
-            end if            
+        if (mtime == 0 .and. isub == 0) then
+          do isites = 1, nsites
+            if (csbmass_c(isites) > site_mass_tot(isites)) then
+              if (rank == 0 .and. b_enable_output) then
+                write(*,*) 'SIMULATION TERMINATED'
+                write(*,*) 'Error: Total sorbed mass in system exceeds total sites.'
+                write(*,*) 'Total sorbed mass in moles: ',csbmass_c(isites)
+                write(*,*) 'Total sites mass in moles: : ',site_mass_tot(isites)
+                write(ilog,*) 'SIMULATION TERMINATED'
+                write(ilog,*) 'Error: Total sorbed mass in system exceeds total sites.'
+                write(ilog,*) 'Total sorbed mass in moles: ',csbmass_c(isites)
+                write(ilog,*) 'Total sites mass in moles: ',site_mass_tot(isites)
+                close(ilog)
+              end if            
 #ifdef PETSC
-            call petsc_mpi_finalize
+              call petsc_mpi_finalize
 #endif
-            stop
-          end if
-        end do
-      end if
+              stop
+            end if
+          end do
+        end if
+
+      end do    !subdomains
 
       return
 

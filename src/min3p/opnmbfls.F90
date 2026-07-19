@@ -166,7 +166,7 @@
 #endif
       
       integer :: i, j, ianc, iaq, ic, im, imb, ig, isites, isb, itmsb, &
-                 istart, istop, istart2, istop2, ireac, ic2,           &
+                 istart, istop, istart2, istop2, ireac, ic2, isub,     &
                  l_sufx, l_sufx2, ierr
 
       character*2 :: suffix, suffix2, strtemp
@@ -190,6 +190,7 @@
         return
       end if
 
+      isub = 0
       b_rewind_valid = .false.
       
       if (b_output_trans_binary) then
@@ -205,8 +206,7 @@
       
       if (mass_balance_vs) then
 
-        !imvs_first  = 100
-        imvs_first = lun_get()
+        imvs_first(isub) = lun_get()
         
         if (density_dependence) then
           write(ifls,'(//72a/a/72a/)')                      &
@@ -222,21 +222,21 @@
 
 !c  system mass
 
-        imvs = imvs_first
-        call lun_set(imvs)
+        imvs(isub) = imvs_first(isub)
+        call lun_set(imvs(isub))
         
         if (b_output_trans_binary) then
-          allocate(imvs_mpi(imvs_first:imvs_first+2+ntmsb), stat = ierr)
+          allocate(imvs_mpi(imvs_first(0):imvs_first(0)+2+ntmsb), stat = ierr)
           call checkerr(ierr,'opnmbfls-imvs_mpi',ilog)
           imvs_mpi = 0
           call memory_monitor(sizeof(imvs_mpi),'imvs_mpi',.false.)
 
-          allocate(offset_imvs(imvs_first:imvs_first+2+ntmsb), stat = ierr)
+          allocate(offset_imvs(imvs_first(0):imvs_first(0)+2+ntmsb), stat = ierr)
           call checkerr(ierr,'opnmbfls-offset_imvs',ilog)
           offset_imvs = 0
           call memory_monitor(sizeof(offset_imvs),'offset_imvs',.false.)
 
-          allocate(offset_imvs_ijk(imvs_first:imvs_first+2+ntmsb), stat = ierr)
+          allocate(offset_imvs_ijk(imvs_first(0):imvs_first(0)+2+ntmsb), stat = ierr)
           call checkerr(ierr,'opnmbfls-offset_imvs_ijk',ilog)
           offset_imvs_ijk = 0
           call memory_monitor(sizeof(offset_imvs_ijk),'offset_imvs_ijk',.false.)
@@ -245,20 +245,19 @@
             
         if (b_output_trans_binary) then
 #ifndef PETSC
-          if (imvs_mpi(imvs) < 10) then
-            imvs_mpi(imvs) = lun_get()
+          if (imvs_mpi(imvs(isub)) < 10) then
+            imvs_mpi(imvs(isub)) = lun_get()
           end if
 #endif
-          call binary_file_open(PETSC_COMM_SELF,             &
-                       imvs_mpi(imvs), prefix(:l_prfx)//'_o.mvs',    &
-                       .true.)
+          call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs(isub)),  &
+                                prefix(:l_prfx)//'_o.mvs',.true.)
         else
           b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mvs')
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imvs,file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
+            open(imvs(isub),file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
                  form='formatted',position='rewind')
           else
-            open(imvs,file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
+            open(imvs(isub),file=prefix(:l_prfx)//'_o.mvs',status='unknown', &
                  form='formatted')
           end if
         end if
@@ -266,7 +265,7 @@
 !c  version information
         if (i_append_sim < 1 .or. .not.b_rewind_valid) then
           if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-            call writeversion2file(imvs, "#")
+            call writeversion2file(imvs(isub), "#")
           end if
         end if
           
@@ -283,44 +282,43 @@
           end if
           strbuffer = "system mass - variably saturated flow"
           
-          offset_imvs(imvs) = 0  
-          call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                       imvs_mpi(imvs), "#!TDV102",'dataset '//     &
-                       prefix(:l_prfx),offset_imvs(imvs),.true.,   &
+          offset_imvs(imvs(isub)) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                       imvs_mpi(imvs(isub)), "#!TDV102",'dataset '//   &
+                       prefix(:l_prfx),offset_imvs(imvs(isub)),.true., &
                        .true.)  
           
-          call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                       imvs_mpi(imvs), nvarsimvs,                  &
-                       tec_variables(1:nvarsimvs),                 &
-                       offset_imvs(imvs),.true.,.true.)               
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs(isub)), nvarsimvs,                &
+                       tec_variables(1:nvarsimvs),                     &
+                       offset_imvs(imvs(isub)),.true.,.true.)               
           
-          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                       imvs_mpi(imvs),trim(strbuffer),             &
-                       offset_imvs(imvs), 1, 1, 1, .true.,.true.,  &
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs(isub)),trim(strbuffer),           &
+                       offset_imvs(imvs(isub)), 1, 1, 1, .true.,.true.,&
                        b_output_multizone)
-          offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4
+          offset_imvs_ijk(imvs(isub)) = offset_imvs(imvs(isub)) - 5*4
           
-          call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                       imvs_mpi(imvs),nvarsimvs,0,                 &
-                       offset_imvs(imvs),.true.,.true.,            &
+          call tecplot_binary_write_section(PETSC_COMM_SELF,           &
+                       imvs_mpi(imvs(isub)),nvarsimvs,0,               &
+                       offset_imvs(imvs(isub)),.true.,.true.,          &
                        b_output_multizone) 
         else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (evaporation) then
 
-              write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-              write(imvs,'(3a)') 'variables = "time", "water mass", ', &
-                              '"water filled volume", ',               &
+              write(imvs(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imvs(isub),'(3a)') 'variables = "time", "water mass", ', &
+                              '"water filled volume", ',                     &
                               '"vapour filled volume" '
-              write(imvs,'(2a)') 'zone t = "system mass - ',           &
+              write(imvs(isub),'(2a)') 'zone t = "system mass - ',           &
                               ' variably saturated flow", f=point'
             else
 
-              write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-              write(imvs,'(3a)') 'variables = "time", "water mass", ', &
-                              '"water filled volume", ',               &
-                              '"gas filled volume" '
-              write(imvs,'(2a)') 'zone t = "system mass - ',           &
+              write(imvs(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imvs(isub),'(3a)') 'variables = "time", "water mass", ', &
+                              '"water filled volume", ','"gas filled volume" '
+              write(imvs(isub),'(2a)') 'zone t = "system mass - ',           &
                               ' variably saturated flow", f=point'
             end if
           end if
@@ -342,26 +340,25 @@
 
 !c  mass balance contributions
 
-        imvs = imvs+1
-        call lun_set(imvs)
+        imvs(isub) = imvs(isub)+1
+        call lun_set(imvs(isub))
         
             
         if (b_output_trans_binary) then
 #ifndef PETSC
-          if (imvs_mpi(imvs) < 10) then
-            imvs_mpi(imvs) = lun_get()
+          if (imvs_mpi(imvs(isub)) < 10) then
+            imvs_mpi(imvs(isub)) = lun_get()
           end if
 #endif
-          call binary_file_open(PETSC_COMM_SELF,                     &
-                       imvs_mpi(imvs), prefix(:l_prfx)//'_o.mvc',    &
-                       .true.)
+          call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs(isub)),  &
+                                prefix(:l_prfx)//'_o.mvc',.true.)
         else
           b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mvc')
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imvs,file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
+            open(imvs(isub),file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
                  form='formatted',position='rewind')
           else
-            open(imvs,file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
+            open(imvs(isub),file=prefix(:l_prfx)//'_o.mvc',status='unknown', &
                  form='formatted')
           end if
         end if
@@ -369,50 +366,51 @@
 !c  version information
         if (i_append_sim < 1 .or. .not.b_rewind_valid) then
           if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-            call writeversion2file(imvs, "#")
+            call writeversion2file(imvs(isub), "#")
           end if
         end if
           
         if (b_output_trans_binary) then
           nvarsimvs = 5
-          tec_variables(1:nvarsimvs) = [character(len=72) ::         &
-              "time", "inflow", "outflow",                           &
+          tec_variables(1:nvarsimvs) = [character(len=72) ::           &
+              "time", "inflow", "outflow",                             &
               "change in storage","root water uptake"]
           strbuffer = "mass balance - variably saturated flow"
           
-          offset_imvs(imvs) = 0  
-          call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                       imvs_mpi(imvs), "#!TDV102",'dataset '//       &
-                       prefix(:l_prfx),offset_imvs(imvs),.true.,     &
+          offset_imvs(imvs(isub)) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                       imvs_mpi(imvs(isub)), "#!TDV102",'dataset '//   &
+                       prefix(:l_prfx),offset_imvs(imvs(isub)),.true., &
                        .true.)                                       
                                                                      
-          call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                       imvs_mpi(imvs), nvarsimvs,                    &
-                       tec_variables(1:nvarsimvs),                   &
-                       offset_imvs(imvs),.true.,.true.)                 
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs(isub)), nvarsimvs,                &
+                       tec_variables(1:nvarsimvs),                     &
+                       offset_imvs(imvs(isub)),.true.,.true.)                 
                                                                      
-          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                       imvs_mpi(imvs),trim(strbuffer),               &
-                       offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs(isub)),trim(strbuffer),           &
+                       offset_imvs(imvs(isub)), 1, 1, 1, .true.,.true.,&
                        b_output_multizone)                                
-          offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4            
+          offset_imvs_ijk(imvs(isub)) = offset_imvs(imvs(isub)) - 5*4            
                                                                      
-          call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                       imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
-                       .true.,.true.,b_output_multizone) 
+          call tecplot_binary_write_section(PETSC_COMM_SELF,           &
+                       imvs_mpi(imvs(isub)),nvarsimvs,0,               &
+                       offset_imvs(imvs(isub)),.true.,.true.,          &
+                       b_output_multizone) 
         else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-            write(imvs,'(3a)')                                         &
+            write(imvs(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imvs(isub),'(3a)')                                   &
                   'variables = "time", "inflow", "outflow", ',         &
                   '"change in storage", ',                             &
                   '"root water uptake" '
-            write(imvs,'(2a)') 'zone t = "mass balance - ',            &
+            write(imvs(isub),'(2a)') 'zone t = "mass balance - ',      &
                                   ' variably saturated flow", f=point'
           end if
         end if
 
-        write(ifls,'(a/72a/)')'mass balance contributions',          &
+        write(ifls,'(a/72a/)')'mass balance contributions',            &
                               ('-',i=1,72)
         write(ifls,'(a/)') prefix(:l_prfx)//'_o.mvc'
 
@@ -438,25 +436,25 @@
 
 !c  mass balance error
 
-        imvs = imvs+1
-        call lun_set(imvs)
+        imvs(isub) = imvs(isub)+1
+        call lun_set(imvs(isub))
         
         if (b_output_trans_binary) then
 #ifndef PETSC
-          if (imvs_mpi(imvs) < 10) then
-            imvs_mpi(imvs) = lun_get()
+          if (imvs_mpi(imvs(isub)) < 10) then
+            imvs_mpi(imvs(isub)) = lun_get()
           end if
 #endif
-          call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs),      &
+          call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs(isub)),  &
                       prefix(:l_prfx)//'_o.mve',.true.)
         else
 
           b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mve')
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imvs,file=prefix(:l_prfx)//'_o.mve',status='unknown', &
+            open(imvs(isub),file=prefix(:l_prfx)//'_o.mve',status='unknown', &
                  form='formatted',position='rewind')
           else
-            open(imvs,file=prefix(:l_prfx)//'_o.mve',status='unknown', &
+            open(imvs(isub),file=prefix(:l_prfx)//'_o.mve',status='unknown', &
                  form='formatted')
           end if
         end if
@@ -464,7 +462,7 @@
 !c  version information
         if (i_append_sim < 1 .or. .not.b_rewind_valid) then
           if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-            call writeversion2file(imvs, "#")
+            call writeversion2file(imvs(isub), "#")
           end if
         end if
           
@@ -477,35 +475,36 @@
                       "relative cumulative mass balance error"]
           strbuffer = "mass balance error - variably saturated flow"
           
-          offset_imvs(imvs) = 0  
-          call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                       imvs_mpi(imvs), "#!TDV102",'dataset '//       &
-                       prefix(:l_prfx),offset_imvs(imvs),.true.,     &
+          offset_imvs(imvs(isub)) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                       imvs_mpi(imvs(isub)), "#!TDV102",'dataset '//   &
+                       prefix(:l_prfx),offset_imvs(imvs(isub)),.true., &
                        .true.)                                       
                                                                      
-          call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                       imvs_mpi(imvs), nvarsimvs,                    &
-                       tec_variables(1:nvarsimvs),                   &
-                       offset_imvs(imvs),.true.,.true.)                 
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs(isub)), nvarsimvs,                &
+                       tec_variables(1:nvarsimvs),                     &
+                       offset_imvs(imvs(isub)),.true.,.true.)                 
                                                                      
-          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                       imvs_mpi(imvs),trim(strbuffer),               &
-                       offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
+                       imvs_mpi(imvs(isub)),trim(strbuffer),           &
+                       offset_imvs(imvs(isub)), 1, 1, 1, .true.,.true.,&
                        b_output_multizone)                                
-          offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4            
+          offset_imvs_ijk(imvs(isub)) = offset_imvs(imvs(isub)) - 5*4            
                                                                      
-          call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                       imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
-                       .true.,.true.,b_output_multizone) 
+          call tecplot_binary_write_section(PETSC_COMM_SELF,           &
+                       imvs_mpi(imvs(isub)),nvarsimvs,0,               &
+                       offset_imvs(imvs(isub)),.true.,.true.,          &
+                       b_output_multizone) 
         else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-            write(imvs,'(5a)') 'variables = "time", ',               &
-                       '"absolute mass balance error", ',            &
-                       '"relative mass balance error", ',            &
-                       '"absolute cumulative mass balance error", ', &
+            write(imvs(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imvs(isub),'(5a)') 'variables = "time", ',           &
+                       '"absolute mass balance error", ',              &
+                       '"relative mass balance error", ',              &
+                       '"absolute cumulative mass balance error", ',   &
                        '"relative cumulative mass balance error" '
-            write(imvs,'(2a)') 'zone t = "mass balance error - ',    &
+            write(imvs(isub),'(2a)') 'zone t = "mass balance error - ',&
                                ' variably saturated flow", f=point'
           end if
         end if
@@ -542,11 +541,11 @@
         end if
 
 !c  total mass through specified boundary
-        if (ntmsb > 0) then
+        if (ntmsb > 0 .and. isub == 0) then
 
           do itmsb = 1, ntmsb
-            imvs = imvs+1
-            call lun_set(imvs)
+            imvs(isub) = imvs(isub)+1
+            call lun_set(imvs(isub))
 
             if(itmsb.lt.10) then
               write(suffix,'(i1)') itmsb
@@ -560,19 +559,19 @@
 
             if (b_output_trans_binary) then
 #ifndef PETSC
-              if (imvs_mpi(imvs) < 10) then
-                imvs_mpi(imvs) = lun_get()
+              if (imvs_mpi(imvs(isub)) < 10) then
+                imvs_mpi(imvs(isub)) = lun_get()
               end if
 #endif
-              call binary_file_open(PETSC_COMM_SELF,                 &
-                          imvs_mpi(imvs), trim(strfilename),.true.)
+              call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs(isub)),  &
+                                    trim(strfilename),.true.)
             else
               b_rewind_valid = check_rewind_status(trim(strfilename))
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imvs,file=trim(strfilename),status='unknown',   &
+                open(imvs(isub),file=trim(strfilename),status='unknown',   &
                      form='formatted',position='rewind')
               else
-                open(imvs,file=trim(strfilename),status='unknown',   &
+                open(imvs(isub),file=trim(strfilename),status='unknown',   &
                      form='formatted')
               end if
             end if
@@ -580,46 +579,47 @@
 !c  version information
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               if (b_writeversion_tecplot .and. .not.b_output_trans_binary) then
-                call writeversion2file(imvs, "#")
+                call writeversion2file(imvs(isub), "#")
               end if
             end if
 
             if (b_output_trans_binary) then
               nvarsimvs = 5
-              tec_variables(1:nvarsimvs) = [character(len=72) ::         &
-                  "time","inflow","outflow",                             &
-                  "accumulative inflow","accumulative outflow"]
-              strbuffer = "mass through specified boundary "//           &
-                          trim(name_tmsb(itmsb))//                       &
+              tec_variables(1:nvarsimvs) = [character(len=72) ::       &
+                  "time","inflow","outflow","accumulative inflow",     &
+                  "accumulative outflow"]
+              strbuffer = "mass through specified boundary "//         &
+                          trim(name_tmsb(itmsb))//                     &
                           " - variably saturated flow"
 
-              offset_imvs(imvs) = 0
-              call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                           imvs_mpi(imvs), "#!TDV102",'dataset '//       &
-                           prefix(:l_prfx),offset_imvs(imvs),.true.,     &
+              offset_imvs(imvs(isub)) = 0
+              call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                           imvs_mpi(imvs(isub)), "#!TDV102",'dataset '//   &
+                           prefix(:l_prfx),offset_imvs(imvs(isub)),.true., &
                            .true.)
 
               call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                           imvs_mpi(imvs), nvarsimvs,                    &
+                           imvs_mpi(imvs(isub)), nvarsimvs,              &
                            tec_variables(1:nvarsimvs),                   &
-                           offset_imvs(imvs),.true.,.true.)
+                           offset_imvs(imvs(isub)),.true.,.true.)
 
               call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                           imvs_mpi(imvs),trim(strbuffer),               &
-                           offset_imvs(imvs), 1, 1, 1, .true.,.true.,    &
+                           imvs_mpi(imvs(isub)),trim(strbuffer),               &
+                           offset_imvs(imvs(isub)), 1, 1, 1, .true.,.true.,    &
                            b_output_multizone)
-              offset_imvs_ijk(imvs) = offset_imvs(imvs) - 5*4
+              offset_imvs_ijk(imvs(isub)) = offset_imvs(imvs(isub)) - 5*4
 
-              call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                           imvs_mpi(imvs),nvarsimvs,0,offset_imvs(imvs), &
-                           .true.,.true.,b_output_multizone)
+              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
+                           imvs_mpi(imvs(isub)),nvarsimvs,0,           &
+                           offset_imvs(imvs(isub)),.true.,.true.,      &
+                           b_output_multizone)
             else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imvs,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                write(imvs,'(2a)')                                       &
+                write(imvs(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(imvs(isub),'(2a)')                                 &
                       'variables = "time", "inflow", "outflow", ',       &
                       '"accumulative inflow", "accumulative outflow"'
-                write(imvs,'(3a)')                                       &
+                write(imvs(isub),'(3a)')                                 &
                       'zone t = "mass through specified boundary ',      &
                       trim(name_tmsb(itmsb)),                            &
                       ' - variably saturated flow", f=point'
@@ -656,7 +656,7 @@
           end do
         end if
 
-        imvs_last = imvs
+        imvs_last(isub) = imvs(isub)
 
       end if
  
@@ -667,7 +667,7 @@
 !c  solute uptake by active root uptake
         if (root_uptake) then
           !c active root uptake related code
-          iarup = lun_get()
+          iarup(isub) = lun_get()
           if (b_output_trans_binary) then
             iarup_mpi = 0
             offset_iarup = 0
@@ -685,10 +685,10 @@
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.arup')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
+              open(iarup(isub),file=prefix(:l_prfx)//'_o.arup',status='unknown', &
                    form='formatted',position='rewind')
             else
-              open(iarup,file=prefix(:l_prfx)//'_o.arup',status='unknown', &
+              open(iarup(isub),file=prefix(:l_prfx)//'_o.arup',status='unknown', &
                    form='formatted')
             end if
           end if
@@ -696,7 +696,7 @@
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(iarup, "#")
+              call writeversion2file(iarup(isub), "#")
             end if
           end if
           
@@ -737,7 +737,7 @@
                          .true.,.true.,b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(iarup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(iarup(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               strbuffer = 'variables = "time"'
 
@@ -751,8 +751,8 @@
                             ' accumulative solute uptake [mol]"'
               end do
 
-              write(iarup,'(a)') trim(strbuffer)
-              write(iarup,'(2a)')                                       &
+              write(iarup(isub),'(a)') trim(strbuffer)
+              write(iarup(isub),'(2a)')                                       &
                  'zone t = "active solute uptake - selected species", f=point'
             end if
           end if
@@ -790,7 +790,7 @@
 !c  solute uptake by passive solute uptake
         if (root_uptake .or. passive_uptake) then
           !c total passive solute uptake related code
-          iprup = lun_get()
+          iprup(isub) = lun_get()
           if (b_output_trans_binary) then
             iprup_mpi = 0
             offset_iprup = 0
@@ -808,18 +808,18 @@
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.prup')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
-                   form='formatted',position='rewind')
+              open(iprup(isub),file=prefix(:l_prfx)//'_o.prup',        &
+                   status='unknown',form='formatted',position='rewind')
             else
-              open(iprup,file=prefix(:l_prfx)//'_o.prup',status='unknown', &
-                   form='formatted')
+              open(iprup(isub),file=prefix(:l_prfx)//'_o.prup',        &
+                   status='unknown',form='formatted')
             end if
           end if
           
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(iprup, "#")
+              call writeversion2file(iprup(isub), "#")
             end if
           end if
           
@@ -860,7 +860,7 @@
                          .true.,.true.,b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(iprup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(iprup(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               strbuffer = 'variables = "time"'
 
@@ -874,8 +874,8 @@
                             ' accumulative solute uptake [mol]"'
               end do
 
-              write(iprup,'(a)') trim(strbuffer)
-              write(iprup,'(2a)')                                       &
+              write(iprup(isub),'(a)') trim(strbuffer)
+              write(iprup(isub),'(2a)')                                &
                  'zone t = "passive solute uptake - selected species", f=point'
             end if
           end if
@@ -931,18 +931,18 @@
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.rup')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(irup,file=prefix(:l_prfx)//'_o.rup',status='unknown', &
-                   form='formatted',position='rewind')
+              open(irup(isub),file=prefix(:l_prfx)//'_o.rup',          &
+                   status='unknown',form='formatted',position='rewind')
             else
-              open(irup,file=prefix(:l_prfx)//'_o.rup',status='unknown', &
-                   form='formatted')
+              open(irup(isub),file=prefix(:l_prfx)//'_o.rup',          &
+                   status='unknown',form='formatted')
             end if
           end if
           
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(irup, "#")
+              call writeversion2file(irup(isub), "#")
             end if
           end if
           
@@ -983,7 +983,7 @@
                          .true.,.true.,b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(irup,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(irup(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               strbuffer = 'variables = "time"'
 
@@ -997,8 +997,8 @@
                             ' accumulative solute uptake [mol]"'
               end do
 
-              write(irup,'(a)') trim(strbuffer)
-              write(irup,'(a)')                                            &
+              write(irup(isub),'(a)') trim(strbuffer)
+              write(irup(isub),'(a)')                                        &
                  'zone t = "accumulative total solute uptake - selected species", f=point'
             end if
           end if
@@ -1033,8 +1033,8 @@
 
         end if
 
-!c  output of dilution index
-        if (b_dilution_index) then
+!c  output of dilution index, not implemented for subdomains
+        if (b_dilution_index .and. isub == 0) then
 
           if (ndim_sys == 3) then
             dix_unit = 'm^3'
@@ -1300,11 +1300,13 @@
           end do
         end if  
 
-        !imrt_first = 103
-        imrt_first = lun_get()
+
+!c  total system mass for components
+
+        imrt_first(isub) = lun_get()
         nlun = 5+2*n+nmb+naq+ng+nm+ntmsb*(n+ng)
         do ilun = 1, nlun
-          call lun_set(imrt_first+ilun)
+          call lun_set(imrt_first(isub)+ilun)
         end do
 
         write(ifls,'(//72a/a/72a)')               &
@@ -1312,22 +1314,20 @@
              'mass balance - reactive transport', &
              ('*',i=1,72)
 
-!c  total system mass for components
-
-        imrt = imrt_first
+        imrt(isub) = imrt_first(isub)
         
         if (b_output_trans_binary) then
-          allocate(imrt_mpi(imrt_first:imrt_first+nlun-1), stat = ierr)
+          allocate(imrt_mpi(imrt_first(isub):imrt_first(isub)+nlun-1), stat = ierr)
           call checkerr(ierr,'opnmbfls-imrt_mpi',ilog)
           imrt_mpi = 0
           call memory_monitor(sizeof(imrt_mpi),'imrt_mpi',.false.)
 
-          allocate(offset_imrt(imrt_first:imrt_first+nlun-1), stat = ierr)
+          allocate(offset_imrt(imrt_first(isub):imrt_first(isub)+nlun-1), stat = ierr)
           call checkerr(ierr,'opnmbfls-offset_imrt',ilog)
           offset_imrt = 0
           call memory_monitor(sizeof(offset_imrt),'offset_imrt',.false.)
 
-          allocate(offset_imrt_ijk(imrt_first:imrt_first+nlun-1), stat = ierr)
+          allocate(offset_imrt_ijk(imrt_first(isub):imrt_first(isub)+nlun-1), stat = ierr)
           call checkerr(ierr,'opnmbfls-offset_imrt_ijk',ilog)
           offset_imrt_ijk = 0
           call memory_monitor(sizeof(offset_imrt_ijk),'offset_imrt_ijk',.false.)
@@ -1335,20 +1335,19 @@
         
         if (b_output_trans_binary) then
 #ifndef PETSC
-          if (imrt_mpi(imrt) < 10) then
-            imrt_mpi(imrt) = lun_get()
+          if (imrt_mpi(imrt(isub)) < 10) then
+            imrt_mpi(imrt(isub)) = lun_get()
           end if
 #endif
-          call binary_file_open(PETSC_COMM_SELF,             &
-                       imrt_mpi(imrt), prefix(:l_prfx)//'_o.mas',    &
-                       .true.)
+          call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt(isub)),  &
+                                prefix(:l_prfx)//'_o.mas',.true.)
         else
           b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mas')
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imrt,file=prefix(:l_prfx)//'_o.mas',status='unknown', &
+            open(imrt(isub),file=prefix(:l_prfx)//'_o.mas',status='unknown', &
                  form='formatted',position='rewind')
           else
-            open(imrt,file=prefix(:l_prfx)//'_o.mas',status='unknown', &
+            open(imrt(isub),file=prefix(:l_prfx)//'_o.mas',status='unknown', &
                  form='formatted')
           end if
         end if
@@ -1356,7 +1355,7 @@
 !c  version information
         if (i_append_sim < 1 .or. .not.b_rewind_valid) then
           if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-            call writeversion2file(imrt, "#")
+            call writeversion2file(imrt(isub), "#")
           end if
         end if
           
@@ -1370,42 +1369,43 @@
           
           strbuffer = 'system mass - aqueous phase'
           
-          offset_imrt(imrt) = 0  
-          call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                       imrt_mpi(imrt), "#!TDV102",'dataset '//       &
-                       prefix(:l_prfx),offset_imrt(imrt),.true.,     &
+          offset_imrt(imrt(isub)) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                       imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                       prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                        .true.)  
   
-          call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                       imrt_mpi(imrt), nvarsimrt,                    &
-                       tec_variables(1:nvarsimrt), offset_imrt(imrt),&
-                       .true.,.true.)               
+          call tecplot_binary_write_variable(PETSC_COMM_SELF,          &
+                       imrt_mpi(imrt(isub)), nvarsimrt,                &
+                       tec_variables(1:nvarsimrt),                     &
+                       offset_imrt(imrt(isub)),.true.,.true.)               
 
-          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                       imrt_mpi(imrt),trim(strbuffer),               &
-                       offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
+                       imrt_mpi(imrt(isub)),trim(strbuffer),           &
+                       offset_imrt(imrt(isub)),1,1,1,.true.,.true.,    &
                        b_output_multizone)
-          offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+          offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
 
-          call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                       imrt_mpi(imrt),nvarsimrt,0,offset_imrt(imrt), &
-                       .true.,.true.,b_output_multizone) 
+          call tecplot_binary_write_section(PETSC_COMM_SELF,           &
+                       imrt_mpi(imrt(isub)),nvarsimrt,0,               &
+                       offset_imrt(imrt(isub)),.true.,.true.,          &
+                       b_output_multizone) 
         else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
             strbuffer = 'variables = "time"'
             do ic = 1,nc-1
               strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//'"'
             end do
 
-            write(imrt,'(a)') trim(strbuffer)
-            write(imrt,'(2a)')                                       &
+            write(imrt(isub),'(a)') trim(strbuffer)
+            write(imrt(isub),'(2a)')                                   &
                   'zone t = "system mass - aqueous phase", f=point'
           end if
         end if
 
-        write(ifls,'(/a/72a/)') 'system mass - aqueous phase',       &
+        write(ifls,'(/a/72a/)') 'system mass - aqueous phase',         &
                                 ('-',i=1,72)
         write(ifls,'(a/)') prefix(:l_prfx)//'_o.mas'
 
@@ -1425,32 +1425,31 @@
 
         if (nmb.gt.0) then
 
-          imrt = imrt + 1
+          imrt(isub) = imrt(isub) + 1
           
           if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imrt_mpi(imrt) < 10) then
-              imrt_mpi(imrt) = lun_get()
+            if (imrt_mpi(imrt(isub)) < 10) then
+              imrt_mpi(imrt(isub)) = lun_get()
             end if
 #endif
-            call binary_file_open(PETSC_COMM_SELF,           &
-                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mss',  &
-                         .true.)
+            call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt(isub)),&
+                                  prefix(:l_prfx)//'_o.mss',.true.)
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mss')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imrt,file=prefix(:l_prfx)//'_o.mss',status='unknown', &
-                  form='formatted',position='rewind')
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mss',          &
+                   status='unknown',form='formatted',position='rewind')
             else
-              open(imrt,file=prefix(:l_prfx)//'_o.mss',status='unknown', &
-                  form='formatted')
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mss',          &
+                   status='unknown',form='formatted')
             end if
           end if
             
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrt, "#")
+              call writeversion2file(imrt(isub), "#")
             end if
           end if
             
@@ -1463,38 +1462,38 @@
 
             strbuffer = 'system mass - selected species'
             
-            offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+            offset_imrt(imrt(isub)) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,              &
+                         imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//     &
+                         prefix(:l_prfx),offset_imrt(imrt(isub)),.true.,   &
                          .true.)  
             
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt), nvarsimrt,                  &
-                         tec_variables(1:nvarsimrt),                 &
-                         offset_imrt(imrt),.true.,.true.)               
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt(isub)), nvarsimrt,              &
+                         tec_variables(1:nvarsimrt),                   &
+                         offset_imrt(imrt(isub)),.true.,.true.)               
             
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt),trim(strbuffer),             &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,            &
+                         imrt_mpi(imrt(isub)),trim(strbuffer),             &
+                         offset_imrt(imrt(isub)), 1, 1, 1, .true.,.true.,  &
                          b_output_multizone)
-            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
             
-            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                         imrt_mpi(imrt),nvarsimrt,0,                 &
-                         offset_imrt(imrt),.true.,.true.,            &
+            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                         imrt_mpi(imrt(isub)),nvarsimrt,0,             &
+                         offset_imrt(imrt(isub)),.true.,.true.,        &
                          b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               strbuffer = 'variables = "time"'
               do imb = 1,nmb
                 strbuffer = trim(strbuffer)//', "'//trim(namemb(imb))//'"'
               end do
 
-              write(imrt,'(a)') trim(strbuffer)
-              write(imrt,'(2a)')                                     &
+              write(imrt(isub),'(a)') trim(strbuffer)
+              write(imrt(isub),'(2a)')                                 &
                     'zone t = "system mass - selected species", f=point'
             end if
           end if
@@ -1520,24 +1519,23 @@
 
         if (ng.gt.0) then
 
-          imrt = imrt + 1
+          imrt(isub) = imrt(isub) + 1
           
           if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imrt_mpi(imrt) < 10) then
-              imrt_mpi(imrt) = lun_get()
+            if (imrt_mpi(imrt(isub)) < 10) then
+              imrt_mpi(imrt(isub)) = lun_get()
             end if
 #endif
-            call binary_file_open(PETSC_COMM_SELF,           &
-                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mgs',  &
-                         .true.)
+            call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt(isub)),&
+                                  prefix(:l_prfx)//'_o.mgs',.true.)
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mgs')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imrt,file=prefix(:l_prfx)//'_o.mgs',              &
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mgs',          &
                    status='unknown',form='formatted',position='rewind')
             else
-              open(imrt,file=prefix(:l_prfx)//'_o.mgs',              &
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mgs',          &
                    status='unknown',form='formatted')
             end if
           end if
@@ -1545,7 +1543,7 @@
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrt, "#")
+              call writeversion2file(imrt(isub), "#")
             end if
           end if
           
@@ -1558,43 +1556,43 @@
 
             strbuffer = 'system mass - gaseous phase'
             
-            offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
-                         .true.)  
+            offset_imrt(imrt(isub)) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
+                         imrt_mpi(imrt(isub)), "#!TDV102",'dataset '// &
+                         prefix(:l_prfx),offset_imrt(imrt(isub)),      &
+                         .true.,.true.)  
             
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt), nvarsimrt,                  &
-                         tec_variables(1:nvarsimrt),                 &
-                         offset_imrt(imrt),.true.,.true.)               
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt(isub)), nvarsimrt,              &
+                         tec_variables(1:nvarsimrt),                   &
+                         offset_imrt(imrt(isub)),.true.,.true.)               
             
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt),trim(strbuffer),             &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt(isub)),trim(strbuffer),         &
+                         offset_imrt(imrt(isub)),1,1,1, .true.,.true., &
                          b_output_multizone)
-            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
             
-            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                         imrt_mpi(imrt),nvarsimrt,0,                 &
-                         offset_imrt(imrt),.true.,.true.,            &
+            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                         imrt_mpi(imrt(isub)),nvarsimrt,0,             &
+                         offset_imrt(imrt(isub)),.true.,.true.,        &
                          b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               strbuffer = 'variables = "time"'
               do ig = 1,ng
                 strbuffer = trim(strbuffer)//', "'//trim(nameg(ig))//'"'
               end do
 
-              write(imrt,'(a)') trim(strbuffer)
-              write(imrt,'(2a)')                                     &
+              write(imrt(isub),'(a)') trim(strbuffer)
+              write(imrt(isub),'(2a)')                                 &
                     'zone t = "system mass - gaseous phase", f=point'
             end if
           end if
 
-          write(ifls,'(/a/72a/)') 'system mass - gaseous phase',     &
+          write(ifls,'(/a/72a/)') 'system mass - gaseous phase',       &
                                   ('-',i=1,72)
           write(ifls,'(a/)') prefix(:l_prfx)//'_o.mgs'
 
@@ -1615,24 +1613,23 @@
 
         if (nsb_ion.gt.0.or.nsb_surf.gt.0.or.noncompetitive_sorption) then
 
-          imrt = imrt + 1
+          imrt(isub) = imrt(isub) + 1
               
           if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imrt_mpi(imrt) < 10) then
-              imrt_mpi(imrt) = lun_get()
+            if (imrt_mpi(imrt(isub)) < 10) then
+              imrt_mpi(imrt(isub)) = lun_get()
             end if
 #endif
-            call binary_file_open(PETSC_COMM_SELF,           &
-                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mss',  &
-                         .true.)
+            call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt(isub)),&
+                                  prefix(:l_prfx)//'_o.mss',.true.)
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mss')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imrt,file=prefix(:l_prfx)//'_o.mss',              &
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mss',          &
                    status='unknown',form='formatted',position='rewind')
             else
-              open(imrt,file=prefix(:l_prfx)//'_o.mss',              &
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mss',          &
                    status='unknown',form='formatted')
             end if
           end if
@@ -1640,19 +1637,19 @@
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrt, "#")
+              call writeversion2file(imrt(isub), "#")
             end if
           end if
           
           if (b_output_trans_binary) then
-            offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+            offset_imrt(imrt(isub)) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                         imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                         prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                          .true.) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
             end if
           end if
           
@@ -1760,25 +1757,25 @@
             
           if (b_output_trans_binary) then                
             strbuffer = 'system mass - sorbed species'  
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt), nvarsimrt,                  &
-                         tec_variables(1:nvarsimrt),                 &
-                         offset_imrt(imrt),.true.,.true.)               
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
+                         imrt_mpi(imrt(isub)), nvarsimrt,              &
+                         tec_variables(1:nvarsimrt),                   &
+                         offset_imrt(imrt(isub)),.true.,.true.)               
             
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt),trim(strbuffer),             &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,            &
+                         imrt_mpi(imrt(isub)),trim(strbuffer),             &
+                         offset_imrt(imrt(isub)), 1, 1, 1, .true.,.true.,  &
                          b_output_multizone)
-            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
             
-            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                         imrt_mpi(imrt),nvarsimrt,0,                 &
-                         offset_imrt(imrt),.true.,.true.,            &
+            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
+                         imrt_mpi(imrt(isub)),nvarsimrt,0,             &
+                         offset_imrt(imrt(isub)),.true.,.true.,        &
                          b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imrt,'(a)') trim(strbuffer)
-              write(imrt,'(2a)')                                     &
+              write(imrt(isub),'(a)') trim(strbuffer)
+              write(imrt(isub),'(2a)')                                 &
                     'zone t = "system mass - sorbed species", f=point'
             end if
           end if
@@ -1789,24 +1786,23 @@
 
         if (nm.gt.0) then    
 
-          imrt = imrt + 1
+          imrt(isub) = imrt(isub) + 1
           
           if (b_output_trans_binary) then  
 #ifndef PETSC
-            if (imrt_mpi(imrt) < 10) then
-              imrt_mpi(imrt) = lun_get()
+            if (imrt_mpi(imrt(isub)) < 10) then
+              imrt_mpi(imrt(isub)) = lun_get()
             end if
 #endif
-            call binary_file_open(PETSC_COMM_SELF,           &
-                         imrt_mpi(imrt), prefix(:l_prfx)//'_o.mms',  &
-                         .true.)
+            call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt(isub)),&
+                                  prefix(:l_prfx)//'_o.mms',.true.)
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.mms')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imrt,file=prefix(:l_prfx)//'_o.mms',              &
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mms',          &
                    status='unknown',form='formatted',position='rewind')
             else
-              open(imrt,file=prefix(:l_prfx)//'_o.mms',              &
+              open(imrt(isub),file=prefix(:l_prfx)//'_o.mms',          &
                    status='unknown',form='formatted')
             end if
           end if
@@ -1814,7 +1810,7 @@
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrt, "#")
+              call writeversion2file(imrt(isub), "#")
             end if
           end if
             
@@ -1827,43 +1823,43 @@
 
             strbuffer = 'system mass - mineral phase'
             
-            offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+            offset_imrt(imrt(isub)) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,              &
+                         imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//     &
+                         prefix(:l_prfx),offset_imrt(imrt(isub)),.true.,   &
                          .true.)  
             
             call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt), nvarsimrt,                  &
+                         imrt_mpi(imrt(isub)), nvarsimrt,            &
                          tec_variables(1:nvarsimrt),                 &
-                         offset_imrt(imrt),.true.,.true.)               
+                         offset_imrt(imrt(isub)),.true.,.true.)               
             
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                         imrt_mpi(imrt),trim(strbuffer),             &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,            &
+                         imrt_mpi(imrt(isub)),trim(strbuffer),             &
+                         offset_imrt(imrt(isub)), 1, 1, 1, .true.,.true.,  &
                          b_output_multizone)
-            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
             
-            call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                         imrt_mpi(imrt),nvarsimrt,0,                 &
-                         offset_imrt(imrt),.true.,.true.,            &
+            call tecplot_binary_write_section(PETSC_COMM_SELF,             &
+                         imrt_mpi(imrt(isub)),nvarsimrt,0,                 &
+                         offset_imrt(imrt(isub)),.true.,.true.,            &
                          b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               strbuffer = 'variables = "time"'
               do im = 1,nm
                 strbuffer = trim(strbuffer)//', "'//trim(namem(im))//'"'
               end do
 
-              write(imrt,'(a)') trim(strbuffer)
-              write(imrt,'(2a)')                                     &
+              write(imrt(isub),'(a)') trim(strbuffer)
+              write(imrt(isub),'(2a)')                                 &
                     'zone t = "system mass - mineral phase", f=point'
             end if
           end if
 
-          write(ifls,'(/a/72a/)') 'system mass - mineral phase',     &
+          write(ifls,'(/a/72a/)') 'system mass - mineral phase',       &
                                   ('-',i=1,72)
           write(ifls,'(a/)') prefix(:l_prfx)//'_o.mms'
 
@@ -1889,7 +1885,7 @@
 
         do ic = 1,n
 
-          imrt = imrt+1
+          imrt(isub) = imrt(isub) + 1
 
           !rewind(icnv)           !Deprecated, use internal convert instead. DSU
           if(ic.lt.10) then
@@ -1909,23 +1905,23 @@
 !c  open file
           if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imrt_mpi(imrt) < 10) then
-              imrt_mpi(imrt) = lun_get()
+            if (imrt_mpi(imrt(isub)) < 10) then
+              imrt_mpi(imrt(isub)) = lun_get()
             end if
 #endif
-            call binary_file_open(PETSC_COMM_SELF,             &
-                         imrt_mpi(imrt), prefix(:l_prfx)//'_'//        &
+            call binary_file_open(PETSC_COMM_SELF,                     &
+                         imrt_mpi(imrt(isub)), prefix(:l_prfx)//'_'//  &
                          suffix(:l_sufx)//'.mac',.true.)
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_'//&
                                           suffix(:l_sufx)//'.mac')
 
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imrt,file=prefix(:l_prfx)//'_'//                    &
+              open(imrt(isub),file=prefix(:l_prfx)//'_'//              &
                    suffix(:l_sufx)//'.mac',status='unknown',           &
                    form='formatted',position='rewind')
             else
-              open(imrt,file=prefix(:l_prfx)//'_'//                    &
+              open(imrt(isub),file=prefix(:l_prfx)//'_'//              &
                    suffix(:l_sufx)//'.mac',status='unknown',           &
                    form='formatted')
             end if
@@ -1934,7 +1930,7 @@
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrt, "#")
+              call writeversion2file(imrt(isub), "#")
             end if
           end if
           
@@ -2037,33 +2033,33 @@
             write(strbuffer,'(3a)') 'mass balance for component ',     &
                   trim(namec(ic)),' - reactive transport'
             
-            offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//       &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,     &
+            offset_imrt(imrt(isub)) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,              &
+                         imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//     &
+                         prefix(:l_prfx),offset_imrt(imrt(isub)),.true.,   &
                          .true.)                                       
                                                                        
-            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), nvarsimrt,                    &
-                         tec_variables(1:nvarsimrt),                   &
-                         offset_imrt(imrt),.true.,.true.)                 
+            call tecplot_binary_write_variable(PETSC_COMM_SELF,            &
+                         imrt_mpi(imrt(isub)), nvarsimrt,                  &
+                         tec_variables(1:nvarsimrt),                       &
+                         offset_imrt(imrt(isub)),.true.,.true.)                 
                                                                        
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt),trim(strbuffer),               &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,            &
+                         imrt_mpi(imrt(isub)),trim(strbuffer),             &
+                         offset_imrt(imrt(isub)), 1, 1, 1, .true.,.true.,  &
                          b_output_multizone)                                
-            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4            
+            offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4            
                                                                        
-            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                         imrt_mpi(imrt),nvarsimrt,0,offset_imrt(imrt), &
+            call tecplot_binary_write_section(PETSC_COMM_SELF,                     &
+                         imrt_mpi(imrt(isub)),nvarsimrt,0,offset_imrt(imrt(isub)), &
                          .true.,.true.,b_output_multizone) 
           else
 
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
               if (ng .gt. 0 .and. gas_advection) then
-                write(imrt,'(47a)') 'variables = "time [',                 &
+                write(imrt(isub),'(47a)') 'variables = "time [',           &
                  time_unit(:l_time_unit),']", ',                           &
                 '"mass influx [mol/d]", ',                                 &
                 '"mass outflux [mol/d]", ',                                &
@@ -2111,7 +2107,7 @@
                 '"accumulative source/sink from noble gas ingrowth '//           &
                 '[mol]"'
               else
-                write(imrt,'(44a)') 'variables = "time [',                 &
+                write(imrt(isub),'(44a)') 'variables = "time [',           &
                  time_unit(:l_time_unit),']", ',                           &
                 '"mass influx [mol/d]", ',                                 &
                 '"mass outflux [mol/d]", ',                                &
@@ -2153,7 +2149,7 @@
                 '[mol]"'
               end if
 
-              write(imrt,'(3a)') 'zone t = "mass balance for component ',  &
+              write(imrt(isub),'(3a)') 'zone t = "mass balance for component ', &
                     trim(namec(ic)),' - reactive transport", f=point'
             end if
           end if
@@ -2383,7 +2379,7 @@
 
         do ic = 1,n
 
-          imrt = imrt+1
+          imrt(isub) = imrt(isub) + 1
 
           !rewind(icnv)             !Deprecated, use internal convert instead. DSU
           if(ic.lt.10) then
@@ -2402,22 +2398,22 @@
 
           if (b_output_trans_binary) then
 #ifndef PETSC
-            if (imrt_mpi(imrt) < 10) then
-              imrt_mpi(imrt) = lun_get()
+            if (imrt_mpi(imrt(isub)) < 10) then
+              imrt_mpi(imrt(isub)) = lun_get()
             end if
 #endif
-            call binary_file_open(PETSC_COMM_SELF,             &
-                         imrt_mpi(imrt), prefix(:l_prfx)//'_'//        &
+            call binary_file_open(PETSC_COMM_SELF,                     &
+                         imrt_mpi(imrt(isub)), prefix(:l_prfx)//'_'//  &
                          suffix(:l_sufx)//'.mae',.true.)
           else
             b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_'//&
                                           suffix(:l_sufx)//'.mae')
             if (b_rewind_valid .and. i_append_sim > 0) then
-              open(imrt,file=prefix(:l_prfx)//'_'//                    &
+              open(imrt(isub),file=prefix(:l_prfx)//'_'//              &
                    suffix(:l_sufx)//'.mae',status='unknown',           &
                    form='formatted',position='rewind')
             else
-              open(imrt,file=prefix(:l_prfx)//'_'//                    &
+              open(imrt(isub),file=prefix(:l_prfx)//'_'//              &
                    suffix(:l_sufx)//'.mae',status='unknown',           &
                    form='formatted')
             end if
@@ -2426,7 +2422,7 @@
 !c  version information
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrt, "#")
+              call writeversion2file(imrt(isub), "#")
             end if
           end if
           
@@ -2443,31 +2439,31 @@
                   'mass balance error for component ',                 &
                   trim(namec(ic)),' - reactive transport'
             
-            offset_imrt(imrt) = 0  
-            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                         imrt_mpi(imrt), "#!TDV102",'dataset '//       &
-                         prefix(:l_prfx),offset_imrt(imrt),.true.,     &
+            offset_imrt(imrt(isub)) = 0  
+            call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                         imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                         prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                          .true.)  
             
             call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt), nvarsimrt,                    &
+                         imrt_mpi(imrt(isub)), nvarsimrt,              &
                          tec_variables(1:nvarsimrt),                   &
-                         offset_imrt(imrt),.true.,.true.)               
+                         offset_imrt(imrt(isub)),.true.,.true.)               
             
-            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                         imrt_mpi(imrt),trim(strbuffer),               &
-                         offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
+            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
+                         imrt_mpi(imrt(isub)),trim(strbuffer),           &
+                         offset_imrt(imrt(isub)), 1, 1, 1, .true.,.true.,&
                          b_output_multizone)
-            offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+            offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
             
             call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                         imrt_mpi(imrt),nvarsimrt,0,                   &
-                         offset_imrt(imrt), .true.,.true.,             &
+                         imrt_mpi(imrt(isub)),nvarsimrt,0,             &
+                         offset_imrt(imrt(isub)), .true.,.true.,       &
                          b_output_multizone) 
           else
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-              write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-              write(imrt,'(11a)') 'variables = "time [',               &
+              write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(imrt(isub),'(11a)') 'variables = "time [',         &
                       time_unit(:l_time_unit),']", ',                  &
                      '"absolute mass balance error [mol]", ',          &
                      '"relative mass balance error ',                  &
@@ -2476,7 +2472,7 @@
                      '[mol] ", ',                                      &
                      '"relative cumulative mass balance error ',       &
                      '[% of system mass]"'
-              write(imrt,'(3a)')                                       &
+              write(imrt(isub),'(3a)')                                 &
                     'zone t = "mass balance error for component ',     &
                     trim(namec(ic)),' - reactive transport", f=point'
             end if
@@ -2503,7 +2499,7 @@
         write(ifls,'(a)')   '         balance error'
 
 !c  total mass through specified boundary
-        if (ntmsb > 0) then
+        if (ntmsb > 0 .and. isub == 0) then
 
           do itmsb = 1, ntmsb
 
@@ -2524,7 +2520,7 @@
 
             do ic = 1,n
 
-              imrt = imrt+1
+              imrt(isub) = imrt(isub) + 1
 
               !rewind(icnv)           !Deprecated, use internal convert instead. DSU
               if(ic.lt.10) then
@@ -2547,20 +2543,20 @@
 !c  open file
               if (b_output_trans_binary) then
 #ifndef PETSC
-                if (imrt_mpi(imrt) < 10) then
-                  imrt_mpi(imrt) = lun_get()
+                if (imrt_mpi(imrt(isub)) < 10) then
+                  imrt_mpi(imrt(isub)) = lun_get()
                 end if
 #endif
-                call binary_file_open(PETSC_COMM_SELF,               &
-                             imrt_mpi(imrt), trim(strfilename),.true.)
+                call binary_file_open(PETSC_COMM_SELF,                 &
+                            imrt_mpi(imrt(isub)),trim(strfilename),.true.)
               else
                 b_rewind_valid = check_rewind_status(trim(strfilename))
 
                 if (b_rewind_valid .and. i_append_sim > 0) then
-                  open(imrt,file=trim(strfilename),status='unknown', &
+                  open(imrt(isub),file=trim(strfilename),status='unknown', &
                        form='formatted',position='rewind')
                 else
-                  open(imrt,file=trim(strfilename),status='unknown', &
+                  open(imrt(isub),file=trim(strfilename),status='unknown', &
                        form='formatted')
                 end if
               end if
@@ -2568,7 +2564,7 @@
 !c  version information
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                 if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                  call writeversion2file(imrt, "#")
+                  call writeversion2file(imrt(isub), "#")
                 end if
               end if
 
@@ -2611,33 +2607,34 @@
                      trim(name_tmsb(itmsb)),' for component ',             &
                      trim(namec(ic)),' - reactive transport'
 
-                offset_imrt(imrt) = 0
-                call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-                             imrt_mpi(imrt), "#!TDV102",'dataset '//       &
-                             prefix(:l_prfx),offset_imrt(imrt),.true.,     &
+                offset_imrt(imrt(isub)) = 0
+                call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                             imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                             prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                              .true.)
 
-                call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-                             imrt_mpi(imrt), nvarsimrt,                    &
-                             tec_variables(1:nvarsimrt),                   &
-                             offset_imrt(imrt),.true.,.true.)
+                call tecplot_binary_write_variable(PETSC_COMM_SELF,    &
+                             imrt_mpi(imrt(isub)), nvarsimrt,          &
+                             tec_variables(1:nvarsimrt),               &
+                             offset_imrt(imrt(isub)),.true.,.true.)
 
                 call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-                             imrt_mpi(imrt),trim(strbuffer),               &
-                             offset_imrt(imrt), 1, 1, 1, .true.,.true.,    &
+                             imrt_mpi(imrt(isub)),trim(strbuffer),         &
+                             offset_imrt(imrt(isub)),1,1,1, .true.,.true., &
                              b_output_multizone)
-                offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+                offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
 
                 call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-                             imrt_mpi(imrt),nvarsimrt,0,offset_imrt(imrt), &
-                             .true.,.true.,b_output_multizone)
+                             imrt_mpi(imrt(isub)),nvarsimrt,0,             &
+                             offset_imrt(imrt(isub)),.true.,.true.,        &
+                             b_output_multizone)
               else
 
                 if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                  write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                  write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
                   if (ng .gt. 0 .and. gas_advection) then
-                    write(imrt,'(19a)') 'variables = "time [',               &
+                    write(imrt(isub),'(19a)') 'variables = "time [',         &
                      time_unit(:l_time_unit),']", ',                         &
                     '"mass influx [mol/d]", ',                               &
                     '"mass outflux [mol/d]", ',                              &
@@ -2656,7 +2653,7 @@
                     '"accumulative mass outflux by advection (gas phase) ',  &
                     '[mol]"'
                   else
-                    write(imrt,'(11a)') 'variables = "time [',               &
+                    write(imrt(isub),'(11a)') 'variables = "time [',         &
                      time_unit(:l_time_unit),']", ',                         &
                     '"mass influx [mol/d]", ',                               &
                     '"mass outflux [mol/d]", ',                              &
@@ -2668,7 +2665,7 @@
                     '"accumulative mass outflux (gas phase) [mol]"'
                   end if
 
-                  write(imrt,'(5a)')                                         &
+                  write(imrt(isub),'(5a)')                                   &
                         'zone t = "mass through specified boundary ',        &
                         trim(name_tmsb(itmsb)),' for component ',            &
                         trim(namec(ic)),' - reactive transport", f=point'
@@ -2773,9 +2770,9 @@
           write(ifls,'(2a)') 'file name                           ', &
                              'species'
 
-          do imb = 1,nmb
+          do imb = 1, nmb
 
-            imrt = imrt+1
+            imrt(isub) = imrt(isub) + 1
 
             !rewind(icnv)              !Deprecated, use internal convert instead. DSU
             if(imb.lt.10) then
@@ -2795,22 +2792,22 @@
 !c  open file
             if (b_output_trans_binary) then
 #ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
+              if (imrt_mpi(imrt(isub)) < 10) then
+                imrt_mpi(imrt(isub)) = lun_get()
               end if
 #endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_'//      &
+              call binary_file_open(PETSC_COMM_SELF,                   &
+                           imrt_mpi(imrt(isub)), prefix(:l_prfx)//'_'//&
                            suffix(:l_sufx)//'.msc',.true.)
             else
               b_rewind_valid = check_rewind_status(prefix(:l_prfx)//   &
                                      '_'//suffix(:l_sufx)//'.msc')
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.msc',status='unknown',         &
                      form='formatted',position='rewind')
               else
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.msc',status='unknown',         &
                      form='formatted')
               end if
@@ -2819,7 +2816,7 @@
 !c  version information
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
+                call writeversion2file(imrt(isub), "#")
               end if
             end if
             
@@ -2836,31 +2833,31 @@
               write(strbuffer,'(3a)') 'contributions to mass ',        &
                     'balance for ', trim(namemb(imb))
               
-              offset_imrt(imrt) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+              offset_imrt(imrt(isub)) = 0  
+              call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                           imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                           prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                            .true.)  
               
               call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
+                           imrt_mpi(imrt(isub)), nvarsimrt,            &
                            tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
+                           offset_imrt(imrt(isub)),.true.,.true.)               
               
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
+                           imrt_mpi(imrt(isub)),trim(strbuffer),           &
+                           offset_imrt(imrt(isub)), 1, 1, 1, .true.,.true.,&
                            b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+              offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
               
               call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
+                           imrt_mpi(imrt(isub)),nvarsimrt,0,           &
+                           offset_imrt(imrt(isub)),.true.,.true.,      &
                            b_output_multizone) 
             else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                write(imrt,'(9a)') 'variables = "time [',              &
+                write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(imrt(isub),'(9a)') 'variables = "time [',        &
                        time_unit(:l_time_unit),']", ',                 &
                       '"mass influx [mol/d]", ',                       &
                       '"mass outflux [mol/d]", ',                      &
@@ -2868,7 +2865,7 @@
                       '"source/sink from redox reactns [mol/d]", ',    &
                       '"source/sink from mineral phase [mol/d]", ',    &
                       '"source/sink from gas phase [mol/d]"'
-                write(imrt,'(4a)') 'zone t = "contributions to mass ', &
+                write(imrt(isub),'(4a)') 'zone t = "contributions to mass ', &
                       'balance for ', trim(namemb(imb)), '", f=point'
               end if
             end if
@@ -2914,9 +2911,9 @@
           write(ifls,'(2a)') 'file name                           ', &
                              'reaction'
 
-          do iaq = 1,naq
+          do iaq = 1, naq
 
-            imrt = imrt+1
+            imrt(isub) = imrt(isub) + 1
 
             !rewind(icnv)               !Deprecated, use internal convert instead. DSU
             if(iaq.lt.10) then
@@ -2936,22 +2933,22 @@
 !c  open file
             if (b_output_trans_binary) then  
 #ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
+              if (imrt_mpi(imrt(isub)) < 10) then
+                imrt_mpi(imrt(isub)) = lun_get()
               end if
 #endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_'//      &
+              call binary_file_open(PETSC_COMM_SELF,                   &
+                           imrt_mpi(imrt(isub)), prefix(:l_prfx)//'_'//&
                            suffix(:l_sufx)//'.mic',.true.)
             else
               b_rewind_valid = check_rewind_status(prefix(:l_prfx)//   &
                                      '_'//suffix(:l_sufx)//'.mic')
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.mic',status='unknown',         &
                      form='formatted',position='rewind')
               else
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.mic',status='unknown',         &
                      form='formatted')
               end if
@@ -2960,7 +2957,7 @@
 !c  version information
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
+                call writeversion2file(imrt(isub), "#")
               end if
             end if
             
@@ -2974,35 +2971,35 @@
                  '- intra-aqueous kinetic reactions for ',             &
                  trim(nameaq(iaq))
               
-              offset_imrt(imrt) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+              offset_imrt(imrt(isub)) = 0  
+              call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                           imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                           prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                            .true.)  
               
               call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
+                           imrt_mpi(imrt(isub)), nvarsimrt,            &
                            tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
+                           offset_imrt(imrt(isub)),.true.,.true.)               
               
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
+                           imrt_mpi(imrt(isub)),trim(strbuffer),         &
+                           offset_imrt(imrt(isub)),1,1,1, .true.,.true., &
                            b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+              offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
               
               call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
+                           imrt_mpi(imrt(isub)),nvarsimrt,0,           &
+                           offset_imrt(imrt(isub)),.true.,.true.,      &
                            b_output_multizone) 
             else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                write(imrt,'(5a)') 'variables = "time [',              &
+                write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(imrt(isub),'(5a)') 'variables = "time [',        &
                        time_unit(:l_time_unit),']", ',                 &
                       '"total rate [mol/d]", ',                        &
                       '"total contribution [mol]"'
-                write(imrt,'(4a)')                                     &
+                write(imrt(isub),'(4a)')                               &
                    'zone t = "mass balance contributions ',            &
                    '- intra-aqueous kinetic reactions for ',           &
                       trim(nameaq(iaq)), '", f=point'
@@ -3036,9 +3033,9 @@
           write(ifls,'(2a)') 'file name                           ', &
                              'gas'
 
-          do ig = 1,ng
+          do ig = 1, ng
 
-            imrt = imrt+1
+            imrt(isub) = imrt(isub) + 1
 
             !rewind(icnv)           !Deprecated, use internal convert instead. DSU
             if(ig.lt.10) then
@@ -3057,22 +3054,22 @@
 
             if (b_output_trans_binary) then
 #ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
+              if (imrt_mpi(imrt(isub)) < 10) then
+                imrt_mpi(imrt(isub)) = lun_get()
               end if
 #endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_'//      &
+              call binary_file_open(PETSC_COMM_SELF,                   &
+                           imrt_mpi(imrt(isub)), prefix(:l_prfx)//'_'//&
                            suffix(:l_sufx)//'.mgc',.true.)
             else
               b_rewind_valid = check_rewind_status(prefix(:l_prfx)//   &
                                      '_'//suffix(:l_sufx)//'.mgc')
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.mgc',status='unknown',         &
                      form='formatted',position='rewind')
               else
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.mgc',status='unknown',         &
                      form='formatted')
               end if
@@ -3081,7 +3078,7 @@
 !c  version information
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
+                call writeversion2file(imrt(isub), "#")
               end if
             end if
             
@@ -3100,31 +3097,31 @@
               write(strbuffer,'(3a)') 'mass balance - gaseous ',       &
                     'phase for ', trim(nameg(ig))
               
-              offset_imrt(imrt) = 0  
+              offset_imrt(imrt(isub)) = 0  
               call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
-                           .true.)  
+                           imrt_mpi(imrt(isub)),"#!TDV102",'dataset '//&
+                           prefix(:l_prfx),offset_imrt(imrt(isub)),    &
+                           .true.,.true.)  
               
               call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
+                           imrt_mpi(imrt(isub)), nvarsimrt,            &
                            tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
+                           offset_imrt(imrt(isub)),.true.,.true.)               
               
               call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                           imrt_mpi(imrt(isub)),trim(strbuffer),       &
+                           offset_imrt(imrt(isub)),1,1,1,.true.,.true.,&
                            b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+              offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
               
               call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
+                           imrt_mpi(imrt(isub)),nvarsimrt,0,           &
+                           offset_imrt(imrt(isub)),.true.,.true.,      &
                            b_output_multizone) 
             else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                write(imrt,'(11a)') 'variables = "time [',             &
+                write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(imrt(isub),'(11a)') 'variables = "time [',       &
                        time_unit(:l_time_unit),']", ',                 &
                       '"mass influx [mol/d]", ',                       &
                       '"mass outflux [mol/d]", ',                      &
@@ -3134,7 +3131,7 @@
                       '"change in storage [mol/d]", ',                 &
                       '"source/sink - aqueous phase [mol/d]", ',       &
                       '"mass loss - degassing [mol/d]"'
-                write(imrt,'(4a)') 'zone t = "mass balance - gaseous ',&
+                write(imrt(isub),'(4a)') 'zone t = "mass balance - gaseous ',&
                       'phase for ', trim(nameg(ig)), '", f=point'
               end if
             end if
@@ -3170,7 +3167,7 @@
 
 !c  total mass through specified boundary - gaseous phase
 
-        if (ng > 0 .and. ntmsb > 0) then
+        if (ng > 0 .and. ntmsb > 0 .and. isub == 0) then
 
           do itmsb = 1, ntmsb
             write(ifls,'(/3a/72a/)')                                   &
@@ -3190,7 +3187,7 @@
 
             do ig = 1,ng
 
-              imrt = imrt+1
+              imrt(isub) = imrt(isub) + 1
 
               !rewind(icnv)           !Deprecated, use internal convert instead. DSU
               if(ig.lt.10) then
@@ -3212,19 +3209,19 @@
 
               if (b_output_trans_binary) then
 #ifndef PETSC
-                if (imrt_mpi(imrt) < 10) then
-                  imrt_mpi(imrt) = lun_get()
+                if (imrt_mpi(imrt(isub)) < 10) then
+                  imrt_mpi(imrt(isub)) = lun_get()
                 end if
 #endif
-                call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt),  &
+                call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt(isub)),&
                                       trim(strfilename),.true.)
               else
                 b_rewind_valid = check_rewind_status(trim(strfilename))
                 if (b_rewind_valid .and. i_append_sim > 0) then
-                  open(imrt,file=trim(strfilename),status='unknown',   &
+                  open(imrt(isub),file=trim(strfilename),status='unknown',   &
                        form='formatted',position='rewind')
                 else
-                  open(imrt,file=trim(strfilename),status='unknown',   &
+                  open(imrt(isub),file=trim(strfilename),status='unknown',   &
                        form='formatted')
                 end if
               end if
@@ -3232,7 +3229,7 @@
 !c  version information
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                 if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                  call writeversion2file(imrt, "#")
+                  call writeversion2file(imrt(isub), "#")
                 end if
               end if
 
@@ -3249,37 +3246,37 @@
                       trim(name_tmsb(itmsb)), ' - gaseous phase for ',   &
                       trim(nameg(ig))
 
-                offset_imrt(imrt) = 0
-                call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                             imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                             prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+                offset_imrt(imrt(isub)) = 0
+                call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                             imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                             prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                              .true.)
 
-                call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                             imrt_mpi(imrt), nvarsimrt,                  &
-                             tec_variables(1:nvarsimrt),                 &
-                             offset_imrt(imrt),.true.,.true.)
+                call tecplot_binary_write_variable(PETSC_COMM_SELF,    &
+                             imrt_mpi(imrt(isub)), nvarsimrt,          &
+                             tec_variables(1:nvarsimrt),               &
+                             offset_imrt(imrt(isub)),.true.,.true.)
 
                 call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                             imrt_mpi(imrt),trim(strbuffer),             &
-                             offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                             imrt_mpi(imrt(isub)),trim(strbuffer),       &
+                             offset_imrt(imrt(isub)),1,1,1,.true.,.true.,&
                              b_output_multizone)
-                offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+                offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
 
                 call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                             imrt_mpi(imrt),nvarsimrt,0,                 &
-                             offset_imrt(imrt),.true.,.true.,            &
+                             imrt_mpi(imrt(isub)),nvarsimrt,0,           &
+                             offset_imrt(imrt(isub)),.true.,.true.,      &
                              b_output_multizone)
               else
                 if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                  write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-                  write(imrt,'(7a)') 'variables = "time [',              &
+                  write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                  write(imrt(isub),'(7a)') 'variables = "time [',        &
                          time_unit(:l_time_unit),']", ',                 &
                         '"mass influx [mol/d]", ',                       &
                         '"mass outflux [mol/d]", ',                      &
                         '"mass influx by gas advection [mol/d]", ',      &
                         '"mass outflux by gas advection [mol/d]"'
-                  write(imrt,'(5a)')                                     &
+                  write(imrt(isub),'(5a)')                               &
                         'zone t = "mass through specified boundary ',    &
                         trim(name_tmsb(itmsb)),' - gaseous phase for ',  &
                         trim(nameg(ig)), '", f=point'
@@ -3316,9 +3313,9 @@
           write(ifls,'(2a)') 'file name                           ', &
                              'mineral'
                                                                        
-          do im = 1,nm        !loop over minerals
+          do im = 1, nm        !loop over minerals
                                                                        
-            imrt = imrt+1
+            imrt(isub) = imrt(isub) + 1
 
             istart = iamd(im)
             istop = iamd(im+1)-1
@@ -3340,22 +3337,22 @@
                   
             if (b_output_trans_binary) then  
 #ifndef PETSC
-              if (imrt_mpi(imrt) < 10) then
-                imrt_mpi(imrt) = lun_get()
+              if (imrt_mpi(imrt(isub)) < 10) then
+                imrt_mpi(imrt(isub)) = lun_get()
               end if
 #endif
-              call binary_file_open(PETSC_COMM_SELF,           &
-                           imrt_mpi(imrt), prefix(:l_prfx)//'_'//      &
+              call binary_file_open(PETSC_COMM_SELF,                   &
+                           imrt_mpi(imrt(isub)), prefix(:l_prfx)//'_'//&
                            suffix(:l_sufx)//'.mmc',.true.)
             else
               b_rewind_valid = check_rewind_status(prefix(:l_prfx)//   &
                                      '_'//suffix(:l_sufx)//'.mmc')
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.mmc',status='unknown',         &
                      form='formatted',position='rewind')
               else
-                open(imrt,file=prefix(:l_prfx)//'_'//                  &
+                open(imrt(isub),file=prefix(:l_prfx)//'_'//            &
                      suffix(:l_sufx)//'.mmc',status='unknown',         &
                      form='formatted')
               end if
@@ -3364,7 +3361,7 @@
 !c  version information
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imrt, "#")
+                call writeversion2file(imrt(isub), "#")
               end if
             end if
             
@@ -3399,31 +3396,31 @@
               write(strbuffer,'(4a)') 'mass balance - mineral ',       &
                     'phase for ', trim(namem(im))
               
-              offset_imrt(imrt) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imrt_mpi(imrt), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imrt(imrt),.true.,   &
+              offset_imrt(imrt(isub)) = 0  
+              call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                           imrt_mpi(imrt(isub)), "#!TDV102",'dataset '//   &
+                           prefix(:l_prfx),offset_imrt(imrt(isub)),.true., &
                            .true.)  
               
               call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt), nvarsimrt,                  &
+                           imrt_mpi(imrt(isub)), nvarsimrt,            &
                            tec_variables(1:nvarsimrt),                 &
-                           offset_imrt(imrt),.true.,.true.)               
+                           offset_imrt(imrt(isub)),.true.,.true.)               
               
               call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imrt_mpi(imrt),trim(strbuffer),             &
-                           offset_imrt(imrt), 1, 1, 1, .true.,.true.,  &
+                           imrt_mpi(imrt(isub)),trim(strbuffer),       &
+                           offset_imrt(imrt(isub)),1,1,1,.true.,.true.,&
                            b_output_multizone)
-              offset_imrt_ijk(imrt) = offset_imrt(imrt) - 5*4
+              offset_imrt_ijk(imrt(isub)) = offset_imrt(imrt(isub)) - 5*4
               
               call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imrt_mpi(imrt),nvarsimrt,0,                 &
-                           offset_imrt(imrt),.true.,.true.,            &
+                           imrt_mpi(imrt(isub)),nvarsimrt,0,           &
+                           offset_imrt(imrt(isub)),.true.,.true.,      &
                            b_output_multizone) 
             else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
 
-                write(imrt,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(imrt(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
                 strbuffer = 'variables = "time ['//                    &
                             time_unit(:l_time_unit)//']", '//          &
@@ -3460,9 +3457,9 @@
                   end do
                 end if
                 
-                write(imrt,'(a)') trim(strbuffer)
+                write(imrt(isub),'(a)') trim(strbuffer)
 
-                write(imrt,'(4a)') 'zone t = "mass balance - mineral ',&
+                write(imrt(isub),'(4a)') 'zone t = "mass balance - mineral ',&
                       'phase for ', trim(namem(im)), '", f=point'
               end if
             end if
@@ -3493,7 +3490,7 @@
 
 !c  pointer to last mass balance file for reactive transport
 
-        imrt_last = imrt
+        imrt_last = imrt(isub)
 
       end if
 
@@ -3507,7 +3504,7 @@
         write(ifls,'(2a)') 'file name                           ',     &
                            'component'
         
-        imrtm2c_first = lun_get()
+        imrtm2c_first(isub) = lun_get()
 
         do ic = 1, n
           if(ic.lt.10) then                                          
@@ -3521,18 +3518,18 @@
           strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmac'
           write(ifls,'(2a)') strl36,namec(ic)
 
-          imrtm2c = imrtm2c_first + ic - 1
-          call lun_set(imrtm2c)
+          imrtm2c(isub) = imrtm2c_first(isub) + ic - 1
+          call lun_set(imrtm2c(isub))
 
           b_rewind_valid = check_rewind_status(trim(strl36))
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imrtm2c,file=trim(strl36),status='unknown',           &
+            open(imrtm2c(isub),file=trim(strl36),status='unknown',           &
                  form='formatted',position='rewind')
           else
-            open(imrtm2c,file=trim(strl36),status='unknown',           &
+            open(imrtm2c(isub),file=trim(strl36),status='unknown',           &
                  form='formatted')
 
-            write(imrtm2c,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imrtm2c(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
             strbuffer = 'variables = "time", "source from all minerals [mol/d]"'//&
                         ', "sink from all minerals [mol/d]"'//&
@@ -3552,17 +3549,17 @@
                           trim(namem(im))//' [mol]"'
             end do
 
-            write(imrtm2c,'(a)') trim(strbuffer)
-            write(imrtm2c,'(3a)') 'zone t = "source/sink of ',         &
+            write(imrtm2c(isub),'(a)') trim(strbuffer)
+            write(imrtm2c(isub),'(3a)') 'zone t = "source/sink of ',         &
                   trim(namec(ic)),' from mineral phase", f=point'
 
             if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-              call writeversion2file(imrtm2c, "#")
+              call writeversion2file(imrtm2c(isub), "#")
             end if
           end if
         end do
 
-        imrtm2c_last = imrtm2c
+        imrtm2c_last(isub) = imrtm2c(isub)
         
         !c write file information
         write(ifls,'(/2a)')                                            &

@@ -40,9 +40,9 @@
 
       use chem
       use gen
-	  
-	    implicit none
-	  
+  
+      implicit none
+  
 !cdsu---------------------------------------------------------------
 !cdsu      Noble gas ingrowth related variables
 !cdsu---------------------------------------------------------------
@@ -107,7 +107,7 @@
 
 !c  mass balance related
       real*8, allocatable :: ngidiff(:)                      !global source-sink to aqueous component concentrationsterm due to noble gas introwth
-      real*8, allocatable :: totngidiff(:)                   !total source-sink to aqueous component concentrationsterm due to noble gas introwth
+      real*8, allocatable :: totngidiff(:,:)                 !total source-sink to aqueous component concentrationsterm due to noble gas introwth
 
 !c  data type of radioelement
       type :: typeOfRadioelement
@@ -159,11 +159,11 @@
       type(typeOfNeutronProduct), allocatable :: noble_gas_npre(:)
       type(typeOfIngrowth), allocatable :: noble_gas_ingrowth(:)
 
-	    contains  
+      contains  
 
     !>
-	  !> allocate memory for noble gas ingrowth related variables
-	  !>
+    !> allocate memory for noble gas ingrowth related variables
+    !>
       subroutine mem_ngi
       
       implicit none
@@ -186,12 +186,12 @@
       end if
 
       return
-	  
+  
       end subroutine mem_ngi
 
     !>
-	  !> allocate memory for noble gas ingrowth related variables, elements, radio elements
-	  !>
+    !> allocate memory for noble gas ingrowth related variables, elements, radio elements
+    !>
       subroutine mem_ngi_inirt
       
       implicit none
@@ -275,7 +275,7 @@
       call memory_monitor(sizeof(density_rock_ngi),'density_rock_ngi',.true.)
 
       return
-	  
+ 
       end subroutine mem_ngi_inirt
 
 !>
@@ -1729,5 +1729,5 @@
         end do
 
       end function findloc_str_first
-	  
-	end module nobleGasIngrowth
+ 
+    end module nobleGasIngrowth

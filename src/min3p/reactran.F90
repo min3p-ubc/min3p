@@ -1690,7 +1690,7 @@
                 rvoidLiter = cvol(ivol)*pornew(ivol)*conv3
                 advGasDispBdMass(ig) = advGasDispBdMass(ig) +            &
                       dispMassGas*rvoidLiter*sgnew(ivol)
-                gnew(ig,ivol) = advGasDispBd(ig)              
+                gnew(ig,ivol) = advGasDispBd(ig)
                 istart = iaga(ig)
                 iend = iaga(ig+1)-1
                 do i = istart, iend

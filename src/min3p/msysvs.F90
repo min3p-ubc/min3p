@@ -113,7 +113,7 @@
 #endif
 #endif
 
-      integer :: ivol, nvarsimvs, irecord
+      integer :: ivol, isub, nvarsimvs, irecord
       real*8 :: totv_a, totv_g, vsmass, phead_vol
       real*8, external :: storvs
 
@@ -124,17 +124,22 @@
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, dens_h2o = 1.0d+3
       
-      vsmass= r0
+!c  loop over subdomains
+      do isub = 0, subdomains_n
+      
+        imvs(isub) = imvs_first(isub)
+
+        vsmass= r0
 
 !c  compute total system mass
 !c  variably saturated conditions:
 !c  replace uvsold and saold by 0 -> can use storage function 
 
-      totvsmass = r0
+        totvsmass(isub) = r0
 
 !c  compute total volumes for aqueous and gaseous phase
-      totv_a = r0
-      totv_g = r0
+        totv_a = r0
+        totv_g = r0
       
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -145,85 +150,88 @@
     !$omp reduction(+:totvsmass, totv_a, totv_g)
     !$omp do schedule(static)
 #endif 
-      do ivol = 1,nngl   
+        do ivol = 1,nngl   
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
+          end if
 #endif
-          
-        if (variably_saturated) then
-          vsmass = cvol(ivol) * dens_h2o *                             &
-                   storvs(r1,uvsnew(ivol),r0,sanew(ivol),r0,           &
-                          pornew(ivol),stor(ivol))
-        elseif (fully_saturated) then
+          if (.not.btest(subdomains_bits(ivol),isub)) then
+            cycle
+          end if
+
+          if (variably_saturated) then
+            vsmass = cvol(ivol) * dens_h2o *                           &
+                     storvs(r1,uvsnew(ivol),r0,sanew(ivol),r0,         &
+                            pornew(ivol),stor(ivol))
+          else if (fully_saturated) then
 
 !c  fully saturated conditions
 !c  replace uvsold and saold by 0 and pass pressure head 
 !c  instead of hydraulic head
 !c  -> can use storage function for variably saturated flow 
 
-          phead_vol = uvsnew(ivol)-zg(ivol)    !need pressure head here
-          vsmass = cvol(ivol) * dens_h2o *                             &
-                   storvs(r1,phead_vol,r0,sanew(ivol),r0,              &
-                          pornew(ivol),stor(ivol))
-        end if
-        totvsmass = totvsmass + vsmass
+            phead_vol = uvsnew(ivol)-zg(ivol)    !need pressure head here
+            vsmass = cvol(ivol) * dens_h2o *                           &
+                     storvs(r1,phead_vol,r0,sanew(ivol),r0,            &
+                            pornew(ivol),stor(ivol))
+          end if
+          totvsmass(isub) = totvsmass(isub) + vsmass
         
-        !Put totv_a and totv_g here to reduce overhead by OpenMP
-        totv_a = totv_a + sanew(ivol)*pornew(ivol)*cvol(ivol)
-        totv_g = totv_g + (r1-sanew(ivol))*pornew(ivol)*cvol(ivol)
+          !Put totv_a and totv_g here to reduce overhead by OpenMP
+          totv_a = totv_a + sanew(ivol)*pornew(ivol)*cvol(ivol)
+          totv_g = totv_g + (r1-sanew(ivol))*pornew(ivol)*cvol(ivol)
         
-      end do
+        end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
 
 #ifdef PETSC
-      call MPI_Allreduce(totvsmass, totvsmass_gbl,1,MPI_REAL8,MPI_SUM, &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totvsmass = totvsmass_gbl
-      call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,       &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totv_a = totv_a_gbl
-      call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,       &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totv_g = totv_g_gbl      
+        call MPI_Allreduce(totvsmass(isub),totvsmass_gbl,1,MPI_REAL8,  &
+                           MPI_SUM,Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totvsmass(isub) = totvsmass_gbl
+        call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,     &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totv_a = totv_a_gbl
+        call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,     &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totv_g = totv_g_gbl      
 #endif
 
  
 !c  write total contributions to file   
 
-      imvs = imvs_first
+        if(rank == 0 .and. b_enable_output .and.                       &
+           .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+          if (b_output_trans_binary) then
+            nvarsimvs = 4
+            realbuffer_gb(1:nvarsimvs) = (/time_io,totvsmass(isub),    &
+                                           totv_a,totv_g/)
+            call binary_write_data(imvs_mpi(imvs(isub)), 1,            &
+                         (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)      
+            call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,    &
+                         realbuffer_gb,offset_imvs(imvs(isub)),.true.) 
 
-      if(rank == 0 .and. b_enable_output .and.                         &
-         .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-        if (b_output_trans_binary) then
-          nvarsimvs = 4
-          realbuffer_gb(1:nvarsimvs) = (/time_io,totvsmass,totv_a,  &
-                                         totv_g/)
-          call binary_write_data(imvs_mpi(imvs), 1,         &
-                       (/mtime/),offset_imvs_ijk(imvs),.true.)      
-          call binary_write_data(imvs_mpi(imvs), nvarsimvs, &
-                       realbuffer_gb,offset_imvs(imvs),.true.) 
-
-          offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
-
-        else
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imvs,irecord)
-          end if
-
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imvs,ascii_fmt) time_io,totvsmass,totv_a,totv_g
+            offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) +        &
+                                      nvarsimvs*nfloatbit
+          else
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(imvs(isub),irecord)
+            end if
+            if (i_append_sim < 1 .or.                                  &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(imvs(isub),ascii_fmt) time_io,totvsmass(isub),     &
+                                          totv_a,totv_g
+            end if
           end if
         end if
-      end if
+      
+      end do      !subdomains
 
       return
       end 

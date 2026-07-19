@@ -105,7 +105,7 @@
 #endif
 #endif
 
-      integer :: ivol
+      integer :: ivol, isub
       real*8 :: rpor, porosity_flow, heat_ivol
       
 #ifdef PETSC
@@ -121,9 +121,13 @@
       
       integer :: nvarsimheat, irecord
       
-      totenergy = r0
-      totv_a = r0
-      totv_g = r0
+
+!c  loop over subdomains
+      do isub = 0, subdomains_n 
+
+        totenergy = r0
+        totv_a = r0
+        totv_g = r0
       
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -152,36 +156,40 @@
     !$omp do schedule(auto) reduction(+:totenergy)
 #endif
 #endif
-      do ivol = 1,nngl 
+        do ivol = 1,nngl 
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
+          end if
 #endif
-      
-        if (modify_por(ivol)) then
-             rpor=porosity_flow(porold(ivol),  &
-                  uvsnew(ivol),uvsold(ivol),stor(ivol), &
-                  por_stress_dt(ivol),por_init(ivol),facpormin)   
-        else
-             rpor=pornew(ivol)
-        end if   
-        
-        if (b_icewater_heat) then
-          relheat_iw = r1
-        else
-          relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,heatcapi,uvsnew(ivol))
-        end if
 
-        heat_ivol = cvol(ivol)*(heatcapw*relheat_iw*density(ivol)*sanew(ivol)*rpor+ &
-                               (r1-rpor)*heatcaps(ivol)*denssolid(ivol))*tempnew(ivol)
-        if (evaporation) then                       
+          if (.not.btest(subdomains_bits(ivol),isub)) then
+            cycle
+          end if
+      
+          if (modify_por(ivol)) then
+            rpor = porosity_flow(porold(ivol),uvsnew(ivol),uvsold(ivol), &
+                                 stor(ivol),por_stress_dt(ivol),         &
+                                 por_init(ivol),facpormin)   
+          else
+             rpor = pornew(ivol)
+          end if   
+        
+          if (b_icewater_heat) then
+            relheat_iw = r1
+          else
+            relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,heatcapi,uvsnew(ivol))
+          end if
+
+          heat_ivol = cvol(ivol)*(heatcapw*relheat_iw*density(ivol)*sanew(ivol)*rpor+ &
+                                 (r1-rpor)*heatcaps(ivol)*denssolid(ivol))*tempnew(ivol)
+          if (evaporation) then                       
             heat_ivol = heat_ivol + cvol(ivol)* &
                         heatcapv*densvnew(ivol)*sgnew(ivol)*rpor*tempnew(ivol)
             heat_ivol = heat_ivol + cvol(ivol)*latvapnew(ivol)*rpor*sgnew(ivol)*densvnew(ivol)            
-        end if
-        totenergy = totenergy + heat_ivol
-      end do
+          end if
+          totenergy = totenergy + heat_ivol
+        end do
 #ifdef OPENMP 
     !$omp end do
 #endif    
@@ -204,22 +212,26 @@
     !$omp do schedule(auto) reduction(+:totv_a, totv_g)
 #endif
 #endif
-      do ivol = 1,nngl
+        do ivol = 1,nngl
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
+          end if
 #endif
-        if (modify_por(ivol)) then
-              rpor=porosity_flow(porold(ivol), &
-                   uvsnew(ivol),uvsold(ivol),stor(ivol), &
-                   por_stress_dt(ivol),por_init(ivol),facpormin)   
-        else
-              rpor=pornew(ivol)
-        end if 
-        totv_a = totv_a + sanew(ivol)*rpor*cvol(ivol)
-        totv_g = totv_g + (r1-sanew(ivol))*rpor*cvol(ivol)
-      end do
+          if (.not.btest(subdomains_bits(ivol),isub)) then
+            cycle
+          end if
+
+          if (modify_por(ivol)) then
+            rpor = porosity_flow(porold(ivol),uvsnew(ivol),uvsold(ivol), &
+                                 stor(ivol),por_stress_dt(ivol),         &
+                                 por_init(ivol),facpormin)   
+          else
+            rpor = pornew(ivol)
+          end if 
+          totv_a = totv_a + sanew(ivol)*rpor*cvol(ivol)
+          totv_g = totv_g + (r1-sanew(ivol))*rpor*cvol(ivol)
+        end do
 #ifdef OPENMP 
     !$omp end do
 #endif 
@@ -233,53 +245,53 @@
 #endif 
 
 #ifdef PETSC  
-      call MPI_Allreduce(totenergy, totenergy_gbl,1,MPI_REAL8,      &
-                         MPI_SUM,Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totenergy = totenergy_gbl
+        call MPI_Allreduce(totenergy, totenergy_gbl,1,MPI_REAL8,       &
+                           MPI_SUM,Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totenergy = totenergy_gbl
 
-      call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,    &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totv_a = totv_a_gbl
+        call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,     &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totv_a = totv_a_gbl
       
-      call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,    &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totv_g = totv_g_gbl
+        call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,     &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totv_g = totv_g_gbl
 #endif
 
 
 !cprovi------------------------------------------------------------------------------
 !cprovi  write total contributions to file   
 !cprovi------------------------------------------------------------------------------
-      imheat = imheat_first
+        imheat(isub) = imheat_first(isub)
  
-      if(rank == 0 .and. b_enable_output) then
-        if (b_output_trans_binary) then
-          nvarsimheat = 4
-          realbuffer_gb(1:nvarsimheat)=(/time_io,totenergy,totv_a,     &
-                                         totv_g/)
-          call binary_write_data(imheat_mpi(imheat), 1,        &
-                       (/mtime/),offset_imheat_ijk(imheat),.true.)
-          call binary_write_data(imheat_mpi(imheat),           &
-                       nvarsimheat,realbuffer_gb,offset_imheat(imheat),&
-                       .true.) 
+        if(rank == 0 .and. b_enable_output) then
+          if (b_output_trans_binary) then
+            nvarsimheat = 4
+            realbuffer_gb(1:nvarsimheat)=(/time_io,totenergy,totv_a,totv_g/)
+            call binary_write_data(imheat_mpi(imheat(isub)),1,(/mtime/), &
+                                   offset_imheat_ijk(imheat(isub)),.true.)
+            call binary_write_data(imheat_mpi(imheat(isub)),nvarsimheat, &
+                        realbuffer_gb,offset_imheat(imheat(isub)),.true.) 
 
-          offset_imheat(imheat) = offset_imheat(imheat) +              &
-                                  nvarsimheat*nfloatbit
- 
-        else
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imheat,irecord)
-          end if
+            offset_imheat(imheat(isub)) = offset_imheat(imheat(isub)) +  &
+                                          nvarsimheat*nfloatbit
 
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imheat,ascii_fmt) time_io,totenergy,totv_a,totv_g
+          else
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(imheat(isub),irecord)
+            end if
+
+            if (i_append_sim < 1 .or.                                    &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(imheat(isub),ascii_fmt) time_io,totenergy,totv_a,totv_g
+            end if
           end if
         end if
-      end if
-      
+
+      end do      ! subdomains
+
       return
       end 

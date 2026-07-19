@@ -338,11 +338,11 @@ real*8                                       :: uheatlim_log          ! Limit fo
 
 real*8                                       :: uheatant_log          ! anitcipate temperature change in log scale
 
-integer                                      :: imheat                ! unit for energy balance unit 
+!integer                                      :: imheat                ! unit for energy balance unit 
 
-integer                                      :: imheat_first          ! index of first unit for energy balance
+!integer                                      :: imheat_first          ! index of first unit for energy balance
 
-integer                                      :: imheat_last           ! index of last unit for energy balance
+!integer                                      :: imheat_last           ! index of last unit for energy balance
 
 integer, allocatable                         :: imheat_mpi(:)         ! file unit of heat transport for binary output 
 

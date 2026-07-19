@@ -191,7 +191,7 @@
 #endif
 
 
-      integer :: igb
+      integer :: igb, isub, iunit
 
 !c  close files
    
@@ -276,24 +276,34 @@
       if(rank == 0 .and. b_enable_output) then            !By rank 0
  
         if (mass_balance_vs) then
-          do imvs = imvs_first,imvs_last
-            close(imvs)
-            call lun_free(imvs)
+          do isub = 0, subdomains_n
+            do iunit = imvs_first(isub),imvs_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
           end do
         end if
 
         if (mass_balance_rt) then
           if (root_uptake) then
-            close(iarup)
-            call lun_free(iarup)
+            do isub = 0, subdomains_n
+              close(iarup(isub))
+              call lun_free(iarup(isub))
 
-            close(iprup)
-            call lun_free(iprup)
+              close(iprup(isub))
+              call lun_free(iprup(isub))
 
-            close(irup)
-            call lun_free(irup)
+              close(irup(isub))
+              call lun_free(irup(isub))
+            end do
           end if
 
+          do isub = 0, subdomains_n
+            do iunit = imrt_first(isub),imrt_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
+          end do
 
           if (b_dilution_index) then
             close(idix)
@@ -309,24 +319,23 @@
             close(irupcm)
             call lun_free(irupcm)
           end if
-
-          do imrt = imrt_first,imrt_last
-            close(imrt)
-            call lun_free(imrt)
-          end do
         end if
       
         if (flux_out) then
-          do imcd = imcd_first,imcd_last
-            close(imcd)
-            call lun_free(imcd)
+          do isub = 0, subdomains_n
+            do iunit = imcd_first(isub),imcd_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
           end do
         end if
       
         if (energy_balance) then
-          do imheat = imheat_first,imheat_last
-            close(imheat)
-            call lun_free(imheat)
+          do isub = 0, subdomains_n
+            do iunit = imheat_first(isub),imheat_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
           end do
         end if
       
@@ -385,6 +394,9 @@
                 call binary_file_close(igbd_mpi(igb),.true.)
                 call binary_file_close(igbs_mpi(igb),.true.)
                 call binary_file_close(igbv_mpi(igb),.true.)
+                if (ntpsd > 0) then
+                  call binary_file_close(igbvpsd_mpi(igb),.true.)
+                end if
               end if
               if (nmx.gt.0) then
                 call binary_file_close(igbx_mpi(igb),.true.)

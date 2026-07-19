@@ -841,7 +841,9 @@
       integer (type_i4), allocatable :: ngb_vol_ijface(:,:)
       integer (type_i4), allocatable :: ngb_vol_ijface_jtemp(:)
 
-      integer (type_i4) :: ngb,ngs,ngb_ijface
+      integer (type_i4) :: ngb
+      integer (type_i4) :: ngs
+      integer (type_i4) :: ngb_ijface
       integer (type_i4) :: igstime
       integer (type_i4) :: ircm_tz
       integer (type_i4) :: ircm_stage
@@ -894,24 +896,26 @@
       integer (type_i4) :: isitdbs
       integer (type_i4) :: irdbs
       integer (type_i4) :: igdbs
-      integer (type_i4) :: imvs
-      integer (type_i4) :: imvs_first
-      integer (type_i4) :: imvs_last
-      integer (type_i4) :: iprup            !passive root uptake, solute uptake with water
-      integer (type_i4) :: iarup            !active root uptake, including respiration and exudation
-      integer (type_i4) :: irup             !total solute uptake, including passive solute uptake and active solute uptake
+
+      !integer (type_i4) :: iprup            !passive root uptake, solute uptake with water
+      !integer (type_i4) :: iarup            !active root uptake, including respiration and exudation
+      !integer (type_i4) :: irup             !total solute uptake, including passive solute uptake and active solute uptake
+      !integer (type_i4) :: imvs
+      !integer (type_i4) :: imvs_first
+      !integer (type_i4) :: imvs_last
+      !integer (type_i4) :: imrt
+      !integer (type_i4) :: imrt_first
+      !integer (type_i4) :: imrt_last
+      !integer (type_i4) :: imrtm2c
+      !integer (type_i4) :: imrtm2c_first
+      !integer (type_i4) :: imrtm2c_last
+      !integer (type_i4) :: imcd
+      !integer (type_i4) :: imcd_first
+      !integer (type_i4) :: imcd_last 
+      
       integer (type_i4) :: irupcm           !recyclable root uptake for component-mineral
-      integer (type_i4) :: imrt
-      integer (type_i4) :: imrt_first
-      integer (type_i4) :: imrt_last
-      integer (type_i4) :: imrtm2c
-      integer (type_i4) :: imrtm2c_first
-      integer (type_i4) :: imrtm2c_last
       integer (type_i4) :: idix
       integer (type_i4) :: ispm
-      integer (type_i4) :: imcd
-      integer (type_i4) :: imcd_first
-      integer (type_i4) :: imcd_last 
       integer (type_i4) :: igsaqt
       integer (type_i4) :: igsmech
       integer (type_i4) :: igsp
@@ -982,7 +986,6 @@
 
       character*72, allocatable :: namemb(:)
 
-      !character*72 :: prefix
       character*256 :: prefix           !dsu, change the length of prefix to 256 to support long file path
       character*72 :: section_header
       character*72 :: zone_name
@@ -1005,6 +1008,41 @@
       integer (type_i4), allocatable :: jatmsb(:)
       integer (type_i8), allocatable :: mproptmsb(:)
       logical :: b_overlap_tmsb
+
+! ----------------------------------------------------------------------
+! output of mass balance for selected subdomains
+! ----------------------------------------------------------------------
+      logical :: subdomain_mass
+      integer (type_i4) :: subdomains_skip
+      integer (type_i4) :: subdomains_n
+      integer (type_i4), allocatable :: subdomains_bdface_conn(:,:)
+      integer (type_i4), allocatable :: subdomains_bdface(:,:,:)
+      integer (type_i4), allocatable :: subdomains_bits(:)
+
+      !c  mass balance related file unit
+      integer (type_i4), allocatable :: iarup(:)
+      integer (type_i4), allocatable :: iprup(:)
+      integer (type_i4), allocatable :: irup(:)
+      integer (type_i4), allocatable :: imvs(:)
+      integer (type_i4), allocatable :: imvs_first(:)
+      integer (type_i4), allocatable :: imvs_last(:)
+      integer (type_i4), allocatable :: imrt(:)
+      integer (type_i4), allocatable :: imrt_first(:)
+      integer (type_i4), allocatable :: imrt_last(:)
+      integer (type_i4), allocatable :: imcd(:)
+      integer (type_i4), allocatable :: imcd_first(:)
+      integer (type_i4), allocatable :: imcd_last(:)
+      integer (type_i4), allocatable :: imrtm2c(:)
+      integer (type_i4), allocatable :: imrtm2c_first(:)
+      integer (type_i4), allocatable :: imrtm2c_last(:)
+      integer (type_i4), allocatable :: imheat(:)
+      integer (type_i4), allocatable :: imheat_first(:)
+      integer (type_i4), allocatable :: imheat_last(:)
+
+      !c  mass balance related variables
+      real (type_r8), allocatable :: totvsmass(:)
+      real (type_r8), allocatable :: culabsbalvs(:)
+
 
  
 ! ----------------------------------------------------------------------
@@ -1986,12 +2024,6 @@
 !           totcfluxout(nc)    = accumulative mass loss due to inflow in
 !                                aqueous phase in terms of total 
 !                                aqueous component concentrations
-
-!      real (type_r8), allocatable :: totcfluxin_diff(:)
-!      real (type_r8), allocatable :: totcfluxin_mig(:)
-!      real (type_r8), allocatable :: totcfluxout_diff(:)
-!      real (type_r8), allocatable :: totcfluxout_mig(:)
-
 !           totcstordiff(nc)   = total change in storage in
 !                                aqueous phase in terms of total 
 !                                aqueous component concentrations
@@ -2076,7 +2108,7 @@
       real (type_r8), allocatable :: gdiff(:)
       real (type_r8), allocatable :: amass(:)
       real (type_r8), allocatable :: amass_gbl(:)
-      real (type_r8), allocatable :: tmass(:)
+      real (type_r8), allocatable :: tmass(:,:)
       real (type_r8), allocatable :: tmass_gbl(:)
       real (type_r8), allocatable :: cmass(:)
       real (type_r8), allocatable :: cmass_gbl(:)
@@ -2091,53 +2123,49 @@
       real (type_r8), allocatable :: csbmass_surf_gbl(:)
       real (type_r8), allocatable :: csbmass_c(:)
       real (type_r8), allocatable :: csbmass_c_gbl(:)
-      real (type_r8), allocatable :: cculabsbal(:)
+      real (type_r8), allocatable :: cculabsbal(:,:)
       real (type_r8), allocatable :: cculrelbal(:)
       real (type_r8), allocatable :: gculabsbal(:)
       real (type_r8), allocatable :: gculrelbal(:)
       real (type_r8), allocatable :: cmculabsbal(:)
       real (type_r8), allocatable :: cmculrelbal(:)
-      real (type_r8), allocatable :: smass(:)
+      real (type_r8), allocatable :: smass(:,:)
       real (type_r8), allocatable :: smass_gbl(:)
       real (type_r8), allocatable :: sbdiff(:)
       real (type_r8), allocatable :: rateaqtot(:)
-      real (type_r8), allocatable :: accuaqtot(:)
-      real (type_r8), allocatable :: accudpdiff(:)
-#ifdef PETSC
-      real (type_r8), allocatable :: accudpdiff_mpi(:)
-#endif
-      real (type_r8), allocatable :: totcfluxin(:)
-      real (type_r8), allocatable :: totcfluxin_diff(:)
-      real (type_r8), allocatable :: totcfluxin_mig(:)
-      real (type_r8), allocatable :: totcfluxout(:)
-      real (type_r8), allocatable :: totcfluxout_diff(:)
-      real (type_r8), allocatable :: totcfluxout_mig(:)
-      real (type_r8), allocatable :: totcstordiff(:)
-      real (type_r8), allocatable :: totordiff(:)
-      real (type_r8), allocatable :: totintradiff(:)
-      real (type_r8), allocatable :: totdpdiff(:)
-      real (type_r8), allocatable :: totgdegas(:)
-      real (type_r8), allocatable :: totgdiff(:)
-      real (type_r8), allocatable :: totgfluxin(:)
-      real (type_r8), allocatable :: totgfluxout(:)
-      real (type_r8), allocatable :: totgafluxin(:)
-      real (type_r8), allocatable :: totgafluxout(:)
-      real (type_r8), allocatable :: totgstordiff(:)
-      real (type_r8), allocatable :: totsbdiff(:) 
+      real (type_r8), allocatable :: accuaqtot(:,:)
+      real (type_r8), allocatable :: accudpdiff(:,:)
+
+      real (type_r8), allocatable :: totcfluxin(:,:)
+      real (type_r8), allocatable :: totcfluxout(:,:)
+      real (type_r8), allocatable :: totcstordiff(:,:)
+      real (type_r8), allocatable :: totordiff(:,:)
+      real (type_r8), allocatable :: totintradiff(:,:)
+      real (type_r8), allocatable :: totdpdiff(:,:)
+      real (type_r8), allocatable :: totsbdiff(:,:) 
+      real (type_r8), allocatable :: totgdiff(:,:)
+      real (type_r8), allocatable :: totgfluxin(:,:)
+      real (type_r8), allocatable :: totgfluxout(:,:)
+      real (type_r8), allocatable :: totgafluxin(:,:)
+      real (type_r8), allocatable :: totgafluxout(:,:)
+      real (type_r8), allocatable :: totgstordiff(:,:)
+      real (type_r8), allocatable :: totgdegas(:,:)
+      real (type_r8), allocatable :: totcfluxin_diff(:,:)
+      real (type_r8), allocatable :: totcfluxin_mig(:,:)
+      real (type_r8), allocatable :: totcfluxout_diff(:,:)
+      real (type_r8), allocatable :: totcfluxout_mig(:,:)
+
       real (type_r8), allocatable :: dpdiffp(:)
-      real (type_r8), allocatable :: accudpdiffp(:)
-#ifdef PETSC
-      real (type_r8), allocatable :: accudpdiffp_mpi(:)
-#endif
+      real (type_r8), allocatable :: accudpdiffp(:,:)
 
       !c mass balance of source sink of each component from mineral phases      
       real (type_r8), allocatable :: dpdiff_m2c(:,:)
       real (type_r8), allocatable :: accu_dpdiff_m2c(:,:)
 
       !c solute uptake
-      real (type_r8), allocatable :: totrootprup(:)     !passive solute uptake, including respiration and exudation
-      real (type_r8), allocatable :: totrootarup(:)     !active solute uptake, including respiration and exudation
-      real (type_r8), allocatable :: totrootrup(:)      !total solute uptake by passive solute uptake and active solute uptake
+      real (type_r8), allocatable :: totrootprup(:,:)     !passive solute uptake, including respiration and exudation
+      real (type_r8), allocatable :: totrootarup(:,:)     !active solute uptake, including respiration and exudation
+      real (type_r8), allocatable :: totrootrup(:,:)      !total solute uptake by passive solute uptake and active solute uptake
 
       real (type_r8), allocatable :: totrcm_c(:)        !total uptake in component-mineral recycles
       real (type_r8), allocatable :: totrcm_c_tz(:)     !total uptake in component-mineral recycles - current cycle
@@ -2579,8 +2607,8 @@
 !        -->                                                         <--
 ! ----------------------------------------------------------------------
 
-      real (type_r8) :: totvsmass
-      real (type_r8) :: culabsbalvs 
+      !real (type_r8) :: totvsmass
+      !real (type_r8) :: culabsbalvs 
 
       real (type_r8) :: rtol_relbalance_vs
       real (type_r8) :: rtol_absbalance_vs
@@ -4145,37 +4173,47 @@
     integer*8, allocatable :: offset_igbac_ijk(:)
     integer*8, allocatable :: offset_igbre_ijk(:)
     
-!c  file unit for writing transient data (*.gfvel, *.gcvel) 
-    integer(type_i4), allocatable :: igfvel(:)
-    integer(type_i4), allocatable :: igcvel(:,:)
+!c  file unit for interface flux of variable saturated flow,
+!c  reactive transprot and biomixing (*.ifvs, *.ifrt) 
+    integer(type_i4), allocatable :: ifvs(:)
+    integer(type_i4), allocatable :: ifrt(:,:)
+    integer(type_i4), allocatable :: ifbm(:,:)
     
-    real*8, allocatable :: gfvelx_accu(:)
-    real*8, allocatable :: gfvely_accu(:)
-    real*8, allocatable :: gfvelz_accu(:)
+    real*8, allocatable :: ifvs_vx_accu(:)
+    real*8, allocatable :: ifvs_vy_accu(:)
+    real*8, allocatable :: ifvs_vz_accu(:)
     
-    real*8, allocatable :: gcvelx_adv_accu(:,:)
-    real*8, allocatable :: gcvely_adv_accu(:,:)
-    real*8, allocatable :: gcvelz_adv_accu(:,:)
+    real*8, allocatable :: ifrt_vx_adv_accu(:,:)
+    real*8, allocatable :: ifrt_vy_adv_accu(:,:)
+    real*8, allocatable :: ifrt_vz_adv_accu(:,:)
 
-    real*8, allocatable :: gcvelx_dif_accu(:,:)
-    real*8, allocatable :: gcvely_dif_accu(:,:)
-    real*8, allocatable :: gcvelz_dif_accu(:,:)
+    real*8, allocatable :: ifrt_vx_dif_accu(:,:)
+    real*8, allocatable :: ifrt_vy_dif_accu(:,:)
+    real*8, allocatable :: ifrt_vz_dif_accu(:,:)
 
-    real*8, allocatable :: gcvelx_mig_accu(:,:)
-    real*8, allocatable :: gcvely_mig_accu(:,:)
-    real*8, allocatable :: gcvelz_mig_accu(:,:)
+    real*8, allocatable :: ifrt_vx_mig_accu(:,:)
+    real*8, allocatable :: ifrt_vy_mig_accu(:,:)
+    real*8, allocatable :: ifrt_vz_mig_accu(:,:)
 
-    real*8, allocatable :: gcvelx_tot_accu(:,:)
-    real*8, allocatable :: gcvely_tot_accu(:,:)
-    real*8, allocatable :: gcvelz_tot_accu(:,:)
+    real*8, allocatable :: ifrt_vx_tot_accu(:,:)
+    real*8, allocatable :: ifrt_vy_tot_accu(:,:)
+    real*8, allocatable :: ifrt_vz_tot_accu(:,:)
+
+    real*8, allocatable :: ifbm_vx_accu(:,:)
+    real*8, allocatable :: ifbm_vy_accu(:,:)
+    real*8, allocatable :: ifbm_vz_accu(:,:)
     
-!c  offset for writing transient data (*.gfvel, *.gcvel) 
-    integer*8, allocatable :: offset_igfvel(:)
-    integer*8, allocatable :: offset_igfvel_ijk(:)
+    integer*8, allocatable :: offset_ifvs(:)
+    integer*8, allocatable :: offset_ifvs_ijk(:)
     
-    integer*8, allocatable :: offset_igcvel(:,:)
-    integer*8, allocatable :: offset_igcvel_temp(:,:)
-    integer*8, allocatable :: offset_igcvel_ijk(:,:)
+    integer*8, allocatable :: offset_ifrt(:,:)
+    integer*8, allocatable :: offset_ifrt_temp(:,:)
+    integer*8, allocatable :: offset_ifrt_ijk(:,:)
+
+    integer*8, allocatable :: offset_ifbm(:,:)
+    integer*8, allocatable :: offset_ifbm_temp(:,:)
+    integer*8, allocatable :: offset_ifbm_ijk(:,:)
+
     
 !c  file unit for writing transient data e.g., 
 !c  .mas, .mss, .mgs, .mss, .mms, .mac, .mae, .msc, .mic, .mgc, .mmc, idx

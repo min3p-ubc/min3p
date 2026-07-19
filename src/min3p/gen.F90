@@ -4149,6 +4149,26 @@
     integer(type_i4), allocatable :: igfvel(:)
     integer(type_i4), allocatable :: igcvel(:,:)
     
+    real*8, allocatable :: gfvelx_accu(:)
+    real*8, allocatable :: gfvely_accu(:)
+    real*8, allocatable :: gfvelz_accu(:)
+    
+    real*8, allocatable :: gcvelx_adv_accu(:,:)
+    real*8, allocatable :: gcvely_adv_accu(:,:)
+    real*8, allocatable :: gcvelz_adv_accu(:,:)
+
+    real*8, allocatable :: gcvelx_dif_accu(:,:)
+    real*8, allocatable :: gcvely_dif_accu(:,:)
+    real*8, allocatable :: gcvelz_dif_accu(:,:)
+
+    real*8, allocatable :: gcvelx_mig_accu(:,:)
+    real*8, allocatable :: gcvely_mig_accu(:,:)
+    real*8, allocatable :: gcvelz_mig_accu(:,:)
+
+    real*8, allocatable :: gcvelx_tot_accu(:,:)
+    real*8, allocatable :: gcvely_tot_accu(:,:)
+    real*8, allocatable :: gcvelz_tot_accu(:,:)
+    
 !c  offset for writing transient data (*.gfvel, *.gcvel) 
     integer*8, allocatable :: offset_igfvel(:)
     integer*8, allocatable :: offset_igfvel_ijk(:)

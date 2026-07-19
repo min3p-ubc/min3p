@@ -45,7 +45,7 @@
 !c 
 !c --------------------------------------------------------------------------
 
-      subroutine tprfrtlc_faceflux(ivol,jvol,igb,ngb_tstep)
+      subroutine tprfrtlc_faceflux(ivol,jvol,igb,ngb_tstep,flag_skip)
  
 #ifdef PETSC
 #include <petscversion.h>
@@ -55,16 +55,24 @@
 #endif
 #endif
       use gen, only : ngb_vol_ijface_jtemp, xg, yg, zg,nfloatbit,      &
-                      realbuffer_gb, igcvel, offset_igcvel,            &
+                      delt, realbuffer_gb, igcvel, offset_igcvel,      &
                       ngb_vol_ijface_area, offset_igcvel_ijk,          &
-                      ngb_vol_ijface_velratio, time_io, n,             &
-                      cnew, cx, totcnew, cinfrt_va,                    &
+                      ngb_vol_ijface_velratio, time_io, n, delt,       &
+                      mtime, mtime_append, i_append_sim, time_io_rs,   &
+                      gcvelx_adv_accu,gcvely_adv_accu,gcvelz_adv_accu, &
+                      gcvelx_dif_accu,gcvely_dif_accu,gcvelz_dif_accu, &
+                      gcvelx_mig_accu,gcvely_mig_accu,gcvelz_mig_accu, &
+                      gcvelx_tot_accu,gcvely_tot_accu,gcvelz_tot_accu, &
+                      ascii_fmt, cnew, cx, totcnew, cinfrt_va,         &
                       cinfrt_da, cinfvs_a, pornew, sanew,              &
                       type_averaging_De, b_output_trans_binary
+      
       use multidiff, only : multi_diff, delta_totviscnew,              &
                             delta_electromignew, cinfrt_mcd
                             
       use module_binary_mpiio, only : binary_write_data
+      
+      use file_utility, only : reposition_file 
 
 #ifdef OPENMP
       use omp_lib 
@@ -80,9 +88,10 @@
 #endif
       
       integer :: ivol, jvol, jtemp, igb, ngb_tstep
-      
+      logical :: flag_skip
+
       !c local variables
-      integer :: i1, nvars, ic, tid
+      integer :: i1, nvars, ic, tid, irecord
       real*8 :: areai, velxratio, velyratio, velzratio,                &
                 aflux_adv, aflux_dif, aflux_mig, aflux_tot,            &
                 vela_adv, vela_dif, vela_mig, vela_tot,                &
@@ -90,7 +99,8 @@
                 vela_adv_y, vela_dif_y, vela_mig_y, vela_tot_y,        &
                 vela_adv_z, vela_dif_z, vela_mig_z, vela_tot_z
       
-      character*1 :: iups         
+      character*1 :: iups   
+      real*8 :: rdummys(25)      
       real*8, external :: fluxv_vl, fluxd, fluxv_vl_dp, fluxd_dp
       external elecmigration
 
@@ -182,30 +192,83 @@
         vela_tot_y = vela_tot * velyratio
         vela_tot_z = vela_tot * velzratio
 
+        gcvelx_adv_accu(ic,igb) = gcvelx_adv_accu(ic,igb) + vela_adv_x*delt
+        gcvely_adv_accu(ic,igb) = gcvely_adv_accu(ic,igb) + vela_adv_y*delt
+        gcvelz_adv_accu(ic,igb) = gcvelz_adv_accu(ic,igb) + vela_adv_z*delt
+
+        gcvelx_dif_accu(ic,igb) = gcvelx_dif_accu(ic,igb) + vela_dif_x*delt
+        gcvely_dif_accu(ic,igb) = gcvely_dif_accu(ic,igb) + vela_dif_y*delt
+        gcvelz_dif_accu(ic,igb) = gcvelz_dif_accu(ic,igb) + vela_dif_z*delt
+
+        gcvelx_mig_accu(ic,igb) = gcvelx_mig_accu(ic,igb) + vela_mig_x*delt
+        gcvely_mig_accu(ic,igb) = gcvely_mig_accu(ic,igb) + vela_mig_y*delt
+        gcvelz_mig_accu(ic,igb) = gcvelz_mig_accu(ic,igb) + vela_mig_z*delt
+
+        gcvelx_tot_accu(ic,igb) = gcvelx_tot_accu(ic,igb) + vela_tot_x*delt
+        gcvely_tot_accu(ic,igb) = gcvely_tot_accu(ic,igb) + vela_tot_y*delt
+        gcvelz_tot_accu(ic,igb) = gcvelz_tot_accu(ic,igb) + vela_tot_z*delt
+
 !c  write data back to file
-        if (b_output_trans_binary) then
-          nvars = 13 
-          realbuffer_gb(1:nvars)= (/time_io,                           &
-                                    vela_adv_x,vela_adv_y,vela_adv_z,  &
-                                    vela_dif_x,vela_dif_y,vela_dif_z,  &
-                                    vela_mig_x,vela_mig_y,vela_mig_z,  &
-                                    vela_tot_x,vela_tot_y,vela_tot_z/)
+        if (.not.flag_skip) then
+          nvars = 25 
+          if (b_output_trans_binary) then
+            realbuffer_gb(1:nvars)= (/time_io,                                         &
+              vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
+              vela_mig_x,vela_mig_y,vela_mig_z,vela_tot_x,vela_tot_y,vela_tot_z,       &
+              gcvelx_adv_accu(ic,igb),gcvely_adv_accu(ic,igb),gcvelz_adv_accu(ic,igb), &
+              gcvelx_dif_accu(ic,igb),gcvely_dif_accu(ic,igb),gcvelz_dif_accu(ic,igb), &
+              gcvelx_mig_accu(ic,igb),gcvely_mig_accu(ic,igb),gcvelz_mig_accu(ic,igb), &
+              gcvelx_tot_accu(ic,igb),gcvely_tot_accu(ic,igb),gcvelz_tot_accu(ic,igb)/)
+            
+            call binary_write_data(igcvel(ic,igb), 1, (/ngb_tstep/),     &
+                        offset_igcvel_ijk(ic,igb),.true.)
+            call binary_write_data(igcvel(ic,igb), nvars, realbuffer_gb, &
+                        offset_igcvel(ic,igb),.true.) 
           
-          call binary_write_data(igcvel(ic,igb), 1, (/ngb_tstep/),     &
-                      offset_igcvel_ijk(ic,igb),.true.)
-          call binary_write_data(igcvel(ic,igb), nvars, realbuffer_gb, &
-                      offset_igcvel(ic,igb),.true.) 
-        
-          offset_igcvel(ic,igb) = offset_igcvel(ic,igb) + nvars*nfloatbit
-        else
-          write(igcvel(ic,igb),'(13e15.6e3)') time_io,                 &
-                            vela_adv_x,vela_adv_y,vela_adv_z,          &
-                            vela_dif_x,vela_dif_y,vela_dif_z,          &
-                            vela_mig_x,vela_mig_y,vela_mig_z,          &
-                            vela_tot_x,vela_tot_y,vela_tot_z
+            offset_igcvel(ic,igb) = offset_igcvel(ic,igb) + nvars*nfloatbit
+          else
+  
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(igcvel(ic,igb),irecord)
+  
+              if (irecord > 0) then
+                !c locate to the restart time and get previous results
+                call reposition_file(igcvel(ic,igb),irecord,time_io_rs)
+                read(igcvel(ic,igb),*,end=10,err=10) rdummys(1:nvars)
+                !c reposition to the line to append results
+                call reposition_file(igcvel(ic,igb),irecord)
+  
+                !c get the last record and add to the current value for accumulative results
+                gcvelx_adv_accu(ic,igb) = gcvelx_adv_accu(ic,igb) + rdummys(14)
+                gcvely_adv_accu(ic,igb) = gcvely_adv_accu(ic,igb) + rdummys(15)
+                gcvelz_adv_accu(ic,igb) = gcvelz_adv_accu(ic,igb) + rdummys(16)
+                gcvelx_dif_accu(ic,igb) = gcvelx_dif_accu(ic,igb) + rdummys(17)
+                gcvely_dif_accu(ic,igb) = gcvely_dif_accu(ic,igb) + rdummys(18)
+                gcvelz_dif_accu(ic,igb) = gcvelz_dif_accu(ic,igb) + rdummys(19)
+                gcvelx_mig_accu(ic,igb) = gcvelx_mig_accu(ic,igb) + rdummys(20)
+                gcvely_mig_accu(ic,igb) = gcvely_mig_accu(ic,igb) + rdummys(21)
+                gcvelz_mig_accu(ic,igb) = gcvelz_mig_accu(ic,igb) + rdummys(22)
+                gcvelx_tot_accu(ic,igb) = gcvelx_tot_accu(ic,igb) + rdummys(23)
+                gcvely_tot_accu(ic,igb) = gcvely_tot_accu(ic,igb) + rdummys(24)
+                gcvelz_tot_accu(ic,igb) = gcvelz_tot_accu(ic,igb) + rdummys(25)
+              end if
+10            continue
+            end if
+  
+            if (i_append_sim < 1 .or.                                                    &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(igcvel(ic,igb),ascii_fmt) time_io,                                   &
+                vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
+                vela_mig_x,vela_mig_y,vela_mig_z,vela_tot_x,vela_tot_y,vela_tot_z,       &
+                gcvelx_adv_accu(ic,igb),gcvely_adv_accu(ic,igb),gcvelz_adv_accu(ic,igb), &
+                gcvelx_dif_accu(ic,igb),gcvely_dif_accu(ic,igb),gcvelz_dif_accu(ic,igb), &
+                gcvelx_mig_accu(ic,igb),gcvely_mig_accu(ic,igb),gcvelz_mig_accu(ic,igb), &
+                gcvelx_tot_accu(ic,igb),gcvely_tot_accu(ic,igb),gcvelz_tot_accu(ic,igb)
+            end if  
+          end if
         end if
 
-      enddo
+      end do
          
       return
       end subroutine tprfrtlc_faceflux

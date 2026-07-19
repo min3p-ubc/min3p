@@ -3210,12 +3210,12 @@
                     end if
                     
                     if (density_dependence) then
-                      call tprfrtlc(totcnew(1,ivol),cnew(1,ivol),        &
-                             cx(1,ivol),gamma(1,ivol),                   &
-                             gamma(nc+1,ivol),cmnew(1,ivol),             &
-                             gnew(1,ivol),cec_g(ivol),                   &
-                             distcoff_rt(1,ivol),area(1,ivol),           &
-                             phi(1,ivol),phiold(1,ivol),                 &
+                      call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),        &
+                             cx(:,ivol),gamma(:,ivol),                   &
+                             gamma(nc+1,ivol),cmnew(:,ivol),             &
+                             gnew(:,ivol),cec_g(ivol),                   &
+                             distcoff_rt(:,ivol),area(:,ivol),           &
+                             phi(:,ivol),phiold(:,ivol),                 &
                              sionnew(ivol),tkel(ivol),                   &
                              uvsnew(ivol),xg(ivol),yg(ivol),zg(ivol),    &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
@@ -3240,12 +3240,12 @@
                              l_zone_name,update_porosity,                &
                              mtime,i_append_sim,mtime_append)
                     else
-                      call tprfrtlc(totcnew(1,ivol),cnew(1,ivol),        &
-                             cx(1,ivol),gamma(1,ivol),                   &
-                             gamma(nc+1,ivol),cmnew(1,ivol),             &
-                             gnew(1,ivol),cec_g(ivol),                   &
-                             distcoff_rt(1,ivol),area(1,ivol),           &
-                             phi(1,ivol),phiold(1,ivol),                 &
+                      call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),        &
+                             cx(:,ivol),gamma(:,ivol),                   &
+                             gamma(nc+1,ivol),cmnew(:,ivol),             &
+                             gnew(:,ivol),cec_g(ivol),                   &
+                             distcoff_rt(:,ivol),area(:,ivol),           &
+                             phi(:,ivol),phiold(:,ivol),                 &
                              sionnew(ivol),tkel(ivol),                   &
                              hhead(ivol),xg(ivol),yg(ivol),zg(ivol),     &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
@@ -3340,17 +3340,32 @@
               do igb = 1,ngb_ijface
                 call tprfvs_faceflux(ngb_vol_ijface(1,igb),            &
                                      ngb_vol_ijface(2,igb),igb,        &
-                                     ngb_tstep_ijface+1)  
+                                     ngb_tstep_ijface+1,.false.)  
               end do
             end if
             if (reactive_transport) then                
               do igb = 1,ngb_ijface
                 call tprfrtlc_faceflux(ngb_vol_ijface(1,igb),          &
                                        ngb_vol_ijface(2,igb),igb,      &
-                                       ngb_tstep_ijface+1)  
+                                       ngb_tstep_ijface+1,.false.)  
               end do
             end if
             igb_step_ijface = 0
+          else
+            if (transient_flow) then                
+              do igb = 1,ngb_ijface
+                call tprfvs_faceflux(ngb_vol_ijface(1,igb),            &
+                                     ngb_vol_ijface(2,igb),            &
+                                     igb,0,.true.)  
+              end do
+            end if
+            if (reactive_transport) then                
+              do igb = 1,ngb_ijface
+                call tprfrtlc_faceflux(ngb_vol_ijface(1,igb),          &
+                                       ngb_vol_ijface(2,igb),          &
+                                       igb,0,.true.)   
+              end do
+            end if
           end if
         end if                !(gb_output_faceflux)  
 

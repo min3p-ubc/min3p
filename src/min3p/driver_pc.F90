@@ -772,10 +772,10 @@ Program driver_pc
                 conc_ngre_loc(:) = conc_ngre(:,ivol)
               end if
 
-              call tprfrtlc(totcnew(1,ivol),cnew(1,ivol),cx(1,ivol),  &
-                         gamma(1,ivol),gamma(nc+1,ivol),cmnew(1,ivol),&
-                         gnew(1,ivol),cec_g(ivol),distcoff_rt(1,ivol),&
-                         area(1,ivol),phi(1,ivol),phiold(1,ivol),     &
+              call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),cx(:,ivol),  &
+                         gamma(:,ivol),gamma(nc+1,ivol),cmnew(:,ivol),&
+                         gnew(:,ivol),cec_g(ivol),distcoff_rt(:,ivol),&
+                         area(:,ivol),phi(:,ivol),phiold(:,ivol),     &
                          sionnew(ivol),tkel(ivol),                    &
                          hhead(ivol),xg(ivol),yg(ivol),zg(ivol),      &
                          time_io,delt,sanew(ivol),                    &

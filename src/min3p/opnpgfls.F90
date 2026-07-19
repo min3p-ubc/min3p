@@ -2123,16 +2123,27 @@
                   call checkerr(ierr,'offset_igfvel_ijk',ilog)
             call memory_monitor(sizeof(offset_igfvel_ijk),'offset_igfvel_ijk',.true.)
             
-            allocate(igfvel(ngb_ijface), stat = ierr)
-            igfvel = 0
-            call checkerr(ierr,'igfvel',ilog)
-            call memory_monitor(sizeof(igfvel),'igfvel',.true.)
-          else
-            allocate(igfvel(ngb_ijface), stat = ierr)
-            igfvel = 0
-            call checkerr(ierr,'igfvel',ilog)
-            call memory_monitor(sizeof(igfvel),'igfvel',.true.)
           end if
+
+          allocate(igfvel(ngb_ijface), stat = ierr)
+          igfvel = 0
+          call checkerr(ierr,'igfvel',ilog)
+          call memory_monitor(sizeof(igfvel),'igfvel',.true.)
+
+          allocate(gfvelx_accu(ngb_ijface), stat = ierr)
+          gfvelx_accu = 0.0
+          call checkerr(ierr,'gfvelx_accu',ilog)
+          call memory_monitor(sizeof(gfvelx_accu),'gfvelx_accu',.true.)
+
+          allocate(gfvely_accu(ngb_ijface), stat = ierr)
+          gfvely_accu = 0.0
+          call checkerr(ierr,'gfvely_accu',ilog)
+          call memory_monitor(sizeof(gfvely_accu),'gfvely_accu',.true.)
+
+          allocate(gfvelz_accu(ngb_ijface), stat = ierr)
+          gfvelz_accu = 0.0
+          call checkerr(ierr,'gfvelz_accu',ilog)
+          call memory_monitor(sizeof(gfvelz_accu),'gfvelz_accu',.true.)
         end if  
         
         if (reactive_transport) then            
@@ -2156,12 +2167,72 @@
             igcvel = 0
             call checkerr(ierr,'igcvel',ilog)
             call memory_monitor(sizeof(igcvel),'igcvel',.true.)
-          else
-            allocate(igcvel(n,ngb_ijface), stat = ierr)
-            igcvel = 0
-            call checkerr(ierr,'igcvel',ilog)
-            call memory_monitor(sizeof(igcvel),'igcvel',.true.)
-          end if          
+          end if
+
+          allocate(igcvel(n,ngb_ijface), stat = ierr)
+          igcvel = 0
+          call checkerr(ierr,'igcvel',ilog)
+          call memory_monitor(sizeof(igcvel),'igcvel',.true.)
+
+          allocate(gcvelx_adv_accu(n,ngb_ijface), stat = ierr)
+          gcvelx_adv_accu = 0
+          call checkerr(ierr,'gcvelx_adv_accu',ilog)
+          call memory_monitor(sizeof(gcvelx_adv_accu),'gcvelx_adv_accu',.true.)
+       
+          allocate(gcvely_adv_accu(n,ngb_ijface), stat = ierr)
+          gcvely_adv_accu = 0
+          call checkerr(ierr,'gcvely_adv_accu',ilog)
+          call memory_monitor(sizeof(gcvely_adv_accu),'gcvely_adv_accu',.true.)
+
+          allocate(gcvelz_adv_accu(n,ngb_ijface), stat = ierr)
+          gcvelz_adv_accu = 0
+          call checkerr(ierr,'gcvelz_adv_accu',ilog)
+          call memory_monitor(sizeof(gcvelz_adv_accu),'gcvelz_adv_accu',.true.)
+
+          allocate(gcvelx_dif_accu(n,ngb_ijface), stat = ierr)
+          gcvelx_dif_accu = 0
+          call checkerr(ierr,'gcvelx_dif_accu',ilog)
+          call memory_monitor(sizeof(gcvelx_dif_accu),'gcvelx_dif_accu',.true.)
+       
+          allocate(gcvely_dif_accu(n,ngb_ijface), stat = ierr)
+          gcvely_dif_accu = 0
+          call checkerr(ierr,'gcvely_dif_accu',ilog)
+          call memory_monitor(sizeof(gcvely_dif_accu),'gcvely_dif_accu',.true.)
+
+          allocate(gcvelz_dif_accu(n,ngb_ijface), stat = ierr)
+          gcvelz_dif_accu = 0
+          call checkerr(ierr,'gcvelz_dif_accu',ilog)
+          call memory_monitor(sizeof(gcvelz_dif_accu),'gcvelz_dif_accu',.true.)
+
+          allocate(gcvelx_mig_accu(n,ngb_ijface), stat = ierr)
+          gcvelx_mig_accu = 0
+          call checkerr(ierr,'gcvelx_mig_accu',ilog)
+          call memory_monitor(sizeof(gcvelx_mig_accu),'gcvelx_mig_accu',.true.)
+       
+          allocate(gcvely_mig_accu(n,ngb_ijface), stat = ierr)
+          gcvely_mig_accu = 0
+          call checkerr(ierr,'gcvely_mig_accu',ilog)
+          call memory_monitor(sizeof(gcvely_mig_accu),'gcvely_mig_accu',.true.)
+
+          allocate(gcvelz_mig_accu(n,ngb_ijface), stat = ierr)
+          gcvelz_mig_accu = 0
+          call checkerr(ierr,'gcvelz_mig_accu',ilog)
+          call memory_monitor(sizeof(gcvelz_mig_accu),'gcvelz_mig_accu',.true.)
+
+          allocate(gcvelx_tot_accu(n,ngb_ijface), stat = ierr)
+          gcvelx_tot_accu = 0
+          call checkerr(ierr,'gcvelx_tot_accu',ilog)
+          call memory_monitor(sizeof(gcvelx_tot_accu),'gcvelx_tot_accu',.true.)
+       
+          allocate(gcvely_tot_accu(n,ngb_ijface), stat = ierr)
+          gcvely_tot_accu = 0
+          call checkerr(ierr,'gcvely_tot_accu',ilog)
+          call memory_monitor(sizeof(gcvely_tot_accu),'gcvely_tot_accu',.true.)
+
+          allocate(gcvelz_tot_accu(n,ngb_ijface), stat = ierr)
+          gcvelz_tot_accu = 0
+          call checkerr(ierr,'gcvelz_tot_accu',ilog)
+          call memory_monitor(sizeof(gcvelz_tot_accu),'gcvelz_tot_accu',.true.)
         end if
 
         do igb = 1,ngb_ijface                 !loop over output locations
@@ -2224,10 +2295,19 @@
                           igfvel(igb), prefix(:l_prfx)//'_'//          &
                           suffix(:l_sufx)//'.gfvel', .true.)
             else
-              open(igfvel(igb),file=prefix(:l_prfx)//'_'//             &
-                   suffix(:l_sufx)//'.gfvel',status='unknown',         &
-                   form='formatted')
+              b_rewind_valid = check_rewind_status(prefix(:l_prfx)//   &
+                                     '_'//suffix(:l_sufx)//'.gfvel')
+              if (b_rewind_valid .and. i_append_sim > 0) then
+                open(igfvel(igb),file=prefix(:l_prfx)//'_'//           &
+                     suffix(:l_sufx)//'.gfvel',status='unknown',       &
+                     form='formatted',position='rewind')
+              else
+                open(igfvel(igb),file=prefix(:l_prfx)//'_'//           &
+                     suffix(:l_sufx)//'.gfvel',status='unknown',       &
+                     form='formatted')
+              end if
             end if
+
 !c  write file information
             if (rank == 0 .and. b_enable_output) then 
 
@@ -2243,26 +2323,36 @@
                                   suffix(:l_sufx)//'.gfvel'
                                                                          
               write(ifls,'(2a)')                                       &
-                   'column   entry                          ','unit'     
+                    'column   entry                          ','unit'     
               write(ifls,'(2a)')                                       &
                     '1        time                           ',time_unit 
 
               write(ifls,'(2a)')                                       &
-                    '2        v_x                             ','m/d'    
+                    '2        vx                             ','m/d'    
               
               write(ifls,'(2a)')                                       &
-                    '3        v_y                             ','m/d'    
+                    '3        vy                             ','m/d'    
               
               write(ifls,'(2a)')                                       &
-                    '4        v_z                             ','m/d'
+                    '4        vz                             ','m/d'
+
+              write(ifls,'(2a)')                                       &
+                    '5        accumulative vx                ','m'
           
+              write(ifls,'(2a)')                                       &
+                    '6        accumulative vy                ','m'
+
+              write(ifls,'(2a)')                                       &
+                    '7        accumulative vz                ','m'
             end if
 
 !c  title and variables
 
 !c  version information
-            if (b_writeversion_tecplot.and..not.b_output_trans_binary) then
-              call writeversion2file(igfvel(igb), "#")
+            if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+                call writeversion2file(igfvel(igb), "#")
+              end if
             end if
         
             if (b_output_trans_binary) then
@@ -2272,15 +2362,18 @@
                            prefix(:l_prfx),offset_igfvel(igb),.true.,  &
                            .true.)              
             else
-              write(igfvel(igb),'(3a)') 'title = "dataset ',           &
-                    prefix(:l_prfx),'"'
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                write(igfvel(igb),'(3a)') 'title = "dataset ',         &
+                      prefix(:l_prfx),'"'
+              end if
             end if
             
             if (b_output_trans_binary) then
                 
-              nvarsigfvel = 4  
-              tec_variables(1:4)= [character(len=72) ::                &
-                                    "time","vx","vy","vz"]                                                                       
+              nvarsigfvel = 7  
+              tec_variables(1:7)= [character(len=72) ::                &
+                  "time","vx","vy","vz","accumulative vx",             &
+                  "accumulative vy","accumulative vz"]                                                                       
             
               call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
                            igfvel(igb), nvarsigfvel,                   &
@@ -2288,10 +2381,11 @@
                            offset_igfvel(igb),.true.,.true.) 
             
             else
-
-              write(igfvel(igb),'(4a)') 'variables = "time",',         &
-                                        ' "vx",',' "vy",',' "vz"'
-          
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                write(igfvel(igb),'(7a)') 'variables = "time",',       &
+                      ' "vx",',' "vy",',' "vz",',' "accumulative vx",',&
+                      ' "accumulative vy",',' "accumulative vz"'
+              end if
             end if !binary output 
 
 !c  zone record for fully saturated or variably saturated conditions
@@ -2317,18 +2411,20 @@
               offset_igfvel_ijk(igb) = offset_igfvel(igb) - 5*4
              
             else
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
 #ifdef PETSC
-              write(igfvel(igb),'(4(a,i0,1x),a)')                      &
-                    'zone t = "Flow variable, local volume = ',ivol,   &
-                    ', global volume = ', node_idx_lg2g(ivol),         &       
-                    'connected to local volume = ',jvol,               &
-                    ', global volume = ', node_idx_lg2g(jvol),         &       
-                    '", f=point'
+                write(igfvel(igb),'(4(a,i0,1x),a)')                    &
+                      'zone t = "Flow variable, local volume = ',ivol, &
+                      ', global volume = ', node_idx_lg2g(ivol),       &       
+                      'connected to local volume = ',jvol,             &
+                      ', global volume = ', node_idx_lg2g(jvol),       &       
+                      '", f=point'
 #else        
-              write(igfvel(igb),'(2(a,i0,1x),a)')                      &
-                    'zone t = "Flow variables, volume = ',ivol,        &
-                    'connected to volume = ',jvol,'", f=point'
+                write(igfvel(igb),'(2(a,i0,1x),a)')                    &
+                      'zone t = "Flow variables, volume = ',ivol,      &
+                      'connected to volume = ',jvol,'", f=point'
 #endif       
+              end if
             end if
           
 !c  write tecplot zone section information for binary output
@@ -2346,12 +2442,17 @@
           if (reactive_transport) then    
               
             if (b_output_trans_binary) then
-              nvarsigcvel = 13  
+              nvarsigcvel = 25  
               tec_variables(1:nvarsigcvel) = [character(len=72) ::     &
-                                "time", "vx adv", "vy adv", "vz adv",  &
-                                "vx dif", "vy dif", "vz dif", "vx mig",&
-                                "vy mig", "vz mig", "vx tot", "vy tot",&
-                                "vz tot"]
+                  "time", "vx adv", "vy adv", "vz adv", "vx dif",      &
+                  "vy dif", "vz dif", "vx mig", "vy mig", "vz mig",    &
+                  "vx tot", "vy tot", "vz tot", "accumulative vx adv", &
+                  "accumulative vy adv", "accumulative vz adv",        &
+                  "accumulative vx dif", "accumulative vy dif",        &
+                  "accumulative vz dif", "accumulative vx mig",        &
+                  "accumulative vy mig", "accumulative vz mig",        &
+                  "accumulative vx tot", "accumulative vy tot",        &
+                  "accumulative vz tot"]
             end if
              
             do ic = 1, n
@@ -2364,9 +2465,18 @@
                              suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//  &
                              '.gcvel', .true.)
               else
-                open(igcvel(ic,igb),file=prefix(:l_prfx)//'_'//        &
-                     suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.gcvel', &
-                     status='unknown',form='formatted')
+
+                b_rewind_valid = check_rewind_status(prefix(:l_prfx)// &
+                  '_'//suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.gcvel')
+                if (b_rewind_valid .and. i_append_sim > 0) then
+                  open(igcvel(ic,igb),file=prefix(:l_prfx)//'_'//      &
+                    suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.gcvel',  &
+                    status='unknown',form='formatted',position='rewind')
+                else
+                  open(igcvel(ic,igb),file=prefix(:l_prfx)//'_'//      &
+                    suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.gcvel',  &
+                    status='unknown',form='formatted')
+                end if
               end if
 
 !c  write file information
@@ -2385,37 +2495,62 @@
                 write(ifls,'(2a)')                        &
                     'column   entry                           ','unit'
                 write(ifls,'(2a)')                        &
-                    '1        time                           ',time_unit 
+                    '1        time                            ',time_unit 
                 write(ifls,'(2a)')                        &
-                    '2        v_x Advection                   ','moles/m^2/d'
+                    '2        vx adv                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '3        v_y Advection                   ','moles/m^2/d'
+                    '3        vy adv                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '4        v_z Advection                   ','moles/m^2/d'
+                    '4        vz adv                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '5        v_x Diffusion                   ','moles/m^2/d'
+                    '5        vx dif                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '6        v_y Diffusion                   ','moles/m^2/d'
+                    '6        vy dif                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '7        v_z Diffusion                   ','moles/m^2/d'
+                    '7        vz dif                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '8        v_x Electromigration            ','moles/m^2/d'
+                    '8        vx mig                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '9        v_y Electromigration            ','moles/m^2/d'
+                    '9        vy mig                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '10       v_z Electromigration            ','moles/m^2/d'
+                    '10       vz mig                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '11       v_x Total                       ','moles/m^2/d'
+                    '11       vx tot                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '12       v_y Total                       ','moles/m^2/d'
+                    '12       vy tot                         ','moles/m^2/d'
                 write(ifls,'(2a)')                        &
-                    '13       v_z Total                       ','moles/m^2/d'
-                
+                    '13       vz tot                         ','moles/m^2/d'
+                write(ifls,'(2a)')                        &
+                    '14       accumulative vx adv            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '15       accumulative vy adv            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '16       accumulative vz adv            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '17       accumulative vx dif            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '18       accumulative vy dif            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '19       accumulative vz dif            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '20       accumulative vx mig            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '21      accumulative vy mig            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '22      accumulative vz mig            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '23      accumulative vx tot            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '24      accumulative vy tot            ','moles/m^2'
+                write(ifls,'(2a)')                        &
+                    '25      accumulative vz tot            ','moles/m^2'
               end if  
 
 !c  version information
-              if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(igcvel(ic,igb), "#")
+              if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+                  call writeversion2file(igcvel(ic,igb), "#")
+                end if
               end if
               
               if (b_output_trans_binary) then
@@ -2426,10 +2561,11 @@
                              offset_igcvel(ic,igb),b_output_mpiio_single,.false.) 
                 
                 call tecplot_binary_write_variable(PETSC_COMM_SELF,            &
-                             igcvel(ic,igb),13, tec_variables(1:13),           &
+                             igcvel(ic,igb),nvarsigcvel,                       &
+                             tec_variables(1:nvarsigcvel),                     &
                              offset_igcvel(ic,igb),b_output_mpiio_single,.false.) 
                 
-                strbuffer = 'advection and diffusion fluxes'
+                strbuffer = 'advection and diffusion fluxes of '//trim(namec(ic))
                 offset_igcvel_temp(ic,igb) = offset_igcvel(ic,igb)
                 
                 if (b_output_multizone) then
@@ -2451,24 +2587,40 @@
                 end if
                 offset_igcvel_ijk(ic,igb) = offset_igcvel_temp(ic,igb) - 5*4
               else
-                write(igcvel(ic,igb),'(3a)') 'title = "dataset ',              &
-                                             prefix(:l_prfx),'"'
-                write(igcvel(ic,igb),'(6a)') 'variables = "time", ',           &
-                                  '"vx adv", "vy adv", "vz adv", ',            &
-                                  '"vx dif", "vy dif", "vz dif", ',            &
-                                  '"vx mig", "vy mig", "vz mig", ',            &
-                                  '"vx tot", "vy tot", "vz tot"'
+                if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                  write(igcvel(ic,igb),'(3a)') 'title = "dataset ',            &
+                                               prefix(:l_prfx),'"'
+                  write(igcvel(ic,igb),'(18a)') 'variables = "time", ',        &
+                                    '"vx adv", "vy adv", "vz adv", ',          &
+                                    '"vx dif", "vy dif", "vz dif", ',          &
+                                    '"vx mig", "vy mig", "vz mig", ',          &
+                                    '"vx tot", "vy tot", "vz tot", ',          &
+                                    '"accumulative vx adv", ',                 &
+                                    '"accumulative vy adv", ',                 &
+                                    '"accumulative vz adv", ',                 &
+                                    '"accumulative vx dif", ',                 &
+                                    '"accumulative vy dif", ',                 &
+                                    '"accumulative vz dif", ',                 &
+                                    '"accumulative vx mig", ',                 &
+                                    '"accumulative vy mig", ',                 &
+                                    '"accumulative vz mig", ',                 &
+                                    '"accumulative vx tot", ',                 &
+                                    '"accumulative vy tot", ',                 &
+                                    '"accumulative vz tot"'
+
 #ifdef PETSC
-                write(igcvel(ic,igb),'(4(a,i0,1x),a)')                         &
-                   'zone t = "advection and diffusion fluxes, local volume = ',&
-                    ivol,', global volume = ', node_idx_lg2g(ivol),            &       
-                   'connected to local volume = ',jvol,                        &
-                   ', global volume = ', node_idx_lg2g(jvol),'", f=point'
+                  write(igcvel(ic,igb),'(4(a,i0,1x),a)')                         &
+                     'zone t = "advection and diffusion fluxes, local volume = ',&
+                      ivol,', global volume = ', node_idx_lg2g(ivol),            &       
+                     'connected to local volume = ',jvol,                        &
+                     ', global volume = ', node_idx_lg2g(jvol),'", f=point'
 #else           
-                write(igcvel(ic,igb),'(2(a,i0,1x),a)')                         &
-                   'zone t = "advection and diffusion fluxes, volume = ',ivol, &
-                   'connected to volume = ',jvol,'", f=point'
+                  write(igcvel(ic,igb),'(2(a,i0,1x),a)')                         &
+                     'zone t = "advection and diffusion fluxes of '//            &
+                     trim(namec(ic))//',volume = ',ivol,                         &
+                     'connected to volume = ',jvol,'", f=point'
 #endif          
+                end if
               end if
    
             end do

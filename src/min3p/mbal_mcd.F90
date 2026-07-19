@@ -533,7 +533,7 @@
 #endif
 
       integer :: i1, ibrt, ic, ivol, istart, iend, imb, jvol,irecord,  &
-                 idim, izn, isub, tid
+                 idim, izn, isub, isub_bit, tid
       
       real*8 :: totvsflux, bdyinfrt_da, diff_eff, diff_loc
       real*8, external :: bulkconc, bdryflux, fluxd 
@@ -640,6 +640,8 @@
 
  !c  loop over subdomains
       do isub = 0, subdomains_n
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
  
 !c  calculate mass balance for water phase in terms of total 
 !c  aqueous component concentrations [moles/unit time]
@@ -698,7 +700,7 @@
           end if
 #endif
 
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
 
@@ -1205,7 +1207,7 @@
           end if
 #endif
 
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
 

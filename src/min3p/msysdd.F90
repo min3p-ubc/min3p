@@ -113,7 +113,7 @@
 #endif
 #endif
 
-      integer :: ivol, isub
+      integer :: ivol, isub, isub_bit
       
       real*8 :: rpor, vsmass, totv_a, totv_g, rtemp_sub
 
@@ -129,6 +129,8 @@
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
 
       do isub = 0, subdomains_n
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
 
         imvs(isub) = imvs_first(isub)
       
@@ -157,7 +159,7 @@
             cycle
           end if
 #endif
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
 
@@ -212,7 +214,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
           
@@ -292,7 +294,7 @@
               cycle
             end if 
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 

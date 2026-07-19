@@ -314,7 +314,7 @@
       PetscErrorCode :: ierrcode
 #endif
       
-      integer :: tid, isub
+      integer :: tid, isub, isub_bit
       
       real*8 dummy
       real*8 :: rtemp_sub, rtemps_sub(nc)  !temporary local variable
@@ -327,6 +327,8 @@
  
 !c  loop over subdomains
       do isub = 0, subdomains_n 
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
 
 !c  assign pointer for first mass balance file
         imrt(isub) = imrt_first(isub)
@@ -357,7 +359,7 @@
             cycle
           end if
 #endif
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
 
@@ -460,7 +462,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 
@@ -534,7 +536,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 
@@ -614,7 +616,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 
@@ -643,7 +645,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 
@@ -695,7 +697,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
               
@@ -742,7 +744,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
               
@@ -796,7 +798,7 @@
                 cycle
               end if
 #endif  
-              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
                 cycle
               end if
 
@@ -1081,7 +1083,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 

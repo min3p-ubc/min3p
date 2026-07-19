@@ -185,7 +185,7 @@
 #endif
       
       integer :: i1, i2, icon, ibvs, ivol, istart, iend, jvol, irecord,&
-                 itmsb, ierr, isub, izn
+                 itmsb, ierr, isub, isub_bit, izn
       real*8 :: absbalance, culrelbalvs, area_ivol, relbalance,        &
                 totvsstor, totinflux, totoutflux, totvsflux, vsstor,   &
                 qroot_tot_act, totwflux_atm, tothflux_atm,             &
@@ -235,6 +235,8 @@
 
 !c  loop over subdomains
       do isub = 0, subdomains_n
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
       
 !c  for transient conditions -> compute changes in storage 
 
@@ -259,7 +261,7 @@
               end if
 #endif
 
-              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
                 cycle
               end if
 
@@ -338,7 +340,7 @@
               end if
 #endif
 
-              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
                 cycle
               end if
 
@@ -481,7 +483,7 @@
           end if
 #endif
 
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
 
@@ -782,7 +784,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 
@@ -841,7 +843,7 @@
               cycle
             end if
 #endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
 

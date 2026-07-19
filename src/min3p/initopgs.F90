@@ -201,7 +201,7 @@
       integer :: i, info_debug, l_string, ierr, im, istart, istop,     &
                  igb, igs, ivx, ivy, ivz, ivol, idum, itemp_vol,       &
                  imb, ic, icur, ix, i1, icount, ii, iiso, inic, izn,   &
-                 ilink, isub, jvol, ierrcd, istat
+                 ilink, isub, jvol, ierrcd, istat, isub_bit
       real*8 :: xcoord, ycoord, zcoord,                                &
                 dist_x, dist_y, dist_z, dist_min, dist, dist2, zout,   &
                 xcoord2(2), ycoord2(2), zcoord2(2),                    &
@@ -344,10 +344,6 @@
           end if
         end if
         
-        if (.not.varsat_flow .and. .not.reactive_transport) then
-          return  
-        end if
-
 #ifdef PETSC
         subsection = 'use separated file for spatial subdomain output' 
         call findstrg(subsection,itmp,found_subsection)
@@ -1004,8 +1000,7 @@
                   istop = ngb
                 end if
                 ierrcd = 8
-                read(itmp,*,err=999,end=999) (ngb_vol(igb),           &
-     &                                      igb=istart,istop)
+                read(itmp,*,err=999,end=999) (ngb_vol(igb), igb=istart,istop)
 
               end do
               
@@ -1049,8 +1044,7 @@
                 if (rank == 0) then  
                   write(ilog,*) 'ABNORMAL EXIT from initopgs'
                   write(ilog,*) 'ngb_vol > nn'
-                  write(ilog,*) 'check section "output control" ',     &
-     &                          'in input file'
+                  write(ilog,*) 'check section "output control" in input file'
                 end if
 #ifdef PETSC
                 call petsc_mpi_finalize
@@ -1366,6 +1360,9 @@
 !c  assumes level model domain
              
             do isub = 1,subdomains_n
+
+              isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
+
               ierrcd = 23
               read(itmp,*,err=999,end=999) xcoord2(1), ycoord2(1), zcoord2(1), &
                                            xcoord2(2), ycoord2(2), zcoord2(2)
@@ -1459,14 +1456,20 @@
                        (yg(ivol)-ycoord2(1))*(yg(ivol)-ycoord2(2)) +   &
                        (zg(ivol)-zcoord2(1))*(zg(ivol)-zcoord2(2))
 
-                if (dist <= small) then                         
-                  subdomains_bits(ceiling(max(isub,1)/30.0),ivol) = ibset(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)
+                if (dist <= small) then                    
+                  subdomains_bits(ceiling(max(isub,1)/30.0),ivol) =    &
+                    ibset(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)
                 end if
               end do
 
 !c  create folder for mass balance output for subdomains
               write(strSubDir,'(a,i0)') "subdomain_", isub
+              
+#ifdef INTEL
+              inquire(directory=trim(strSubDir),exist=is_exist)
+#else
               inquire(file=trim(strSubDir),exist=is_exist)
+#endif
 
               if (.not.is_exist) then
                 flag_stop = .false.
@@ -1495,10 +1498,9 @@
 
             end do            !isub = 1,subdomains_n
 
-          end if              !(found_subsection)
-          
-        end if                !(reactive_transport or transient_flow)
+          end if              !(found_subsection)          
 
+        end if                !(reactive_transport or transient_flow)
 
 !c  output for total flux/mass through specified boundary nodes
 !c ----------------------------------------------------------------------
@@ -1525,7 +1527,7 @@
             subsection = 'allow overlap in specified boundary'
             call findstrg(subsection,itmp,b_overlap_tmsb)
 
-            if (ntmsb > 0 .and. isub == 0) then
+            if (ntmsb > 0) then
               allocate(name_tmsb(ntmsb), stat = ierr)
               name_tmsb = ''
               call checkerr(ierr,'name_tmsb',ilog)
@@ -1670,7 +1672,7 @@
 #endif
             end do           !loop over zones
 
-            if (ntmsb > 0 .and. isub == 0) then
+            if (ntmsb > 0) then
               allocate(iatmsb(ntmsb+1), stat = ierr)
               iatmsb = 0
               call checkerr(ierr,'iatmsb',ilog)
@@ -1841,6 +1843,15 @@
         end if           !(found_subsection)
 
       end if             !(found_section)
+
+!c  allocate memory space for subdomains_bits if 'output contorl' section is not found or for non-reactive steady state problem
+      if (.not.allocated(subdomains_bits)) then
+        !bit flag of subdomains, initialize with position 0 true for the entire domain 
+        allocate(subdomains_bits(1,nngl), stat = ierr)
+        subdomains_bits = 1
+        call checkerr(ierr,'subdomains_bits',ilog)  
+        call memory_monitor(sizeof(subdomains_bits),'subdomains_bits',.true.)
+      end if
       
 !c  write output control parameters to generic output file
       if (b_enable_output .and. b_enable_output_gen) then
@@ -2011,7 +2022,7 @@
         write(igen,'(/a,i10)')                                          &
               'number of specified boundaries                 = ',ntmsb
 
-        if (ntmsb > 0 .and. isub == 0) then
+        if (ntmsb > 0) then
           do izn = 1, ntmsb
             write(igen,'(/a,i10,2a)')                                  &
                   'specified boundary: ',izn,', name: ',               &

@@ -177,7 +177,8 @@
 #endif
 #endif
       
-      integer :: i1, i2, ibheat, ibvs, icon, ivol, istart, iend, jvol,im
+      integer :: i1, i2, ibheat, ibvs, icon, ivol, istart, iend, jvol, &
+                 im, isub_bit
       real*8 :: area_ivol, coeff, ddbdflux_energybal, densloc,         &
                 diff_vapour, heatflux, totheatstor, rpor, heatstor,    &
                 temploc, totheatflux, totinflux, totoutflux,           &
@@ -245,7 +246,7 @@
 
 !c  loop over entire domain and subdomains
       do isub = 0, subdomains_n
-
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
 !cprovi----------------------------------------------------
 !cprovi for transient conditions -> compute changes 
 !cprovi in storage 
@@ -259,7 +260,7 @@
     !$omp if (nngl > numofloops_thred_energy_bal_1)                   &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(ivol, heatstor, rpor, totsinksource, relheat_iw)    &
+    !$omp private(ivol, heatstor, rpor, totsinksource, relheat_iw)                                                   &
     !$omp reduction(+:totheatstor)
     !$omp do schedule(static)
 #endif
@@ -269,8 +270,8 @@
             if(node_idx_lg2l(ivol) < 0) then
               cycle
             end if
-#endif
-            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+#endif            
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
               cycle
             end if
         
@@ -397,7 +398,8 @@
             cycle
           end if
 #endif
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
 

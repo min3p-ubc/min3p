@@ -105,7 +105,7 @@
 #endif
 #endif
 
-      integer :: ivol, isub
+      integer :: ivol, isub, isub_bit
       real*8 :: rpor, porosity_flow, heat_ivol
       
 #ifdef PETSC
@@ -124,6 +124,8 @@
 
 !c  loop over subdomains
       do isub = 0, subdomains_n 
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
 
         totenergy = r0
         totv_a = r0
@@ -163,7 +165,7 @@
           end if
 #endif
 
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
       
@@ -218,7 +220,7 @@
             cycle
           end if
 #endif
-          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub)) then
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
             cycle
           end if
 

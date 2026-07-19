@@ -1027,29 +1027,25 @@
       !    call checkerr(ierr,'csbmass',ilog)
       !end if
       
-      if(nsb_ion > 0) then
-          allocate (csbmass_ion(nsb_ion), stat = ierr)
-          csbmass_ion=0.0d0
-          call checkerr(ierr,'csbmass_ion',ilog)
-          call memory_monitor(sizeof(csbmass_ion),'csbmass_ion',.true.)
+      allocate (csbmass_ion(nsb_ion), stat = ierr)
+      csbmass_ion=0.0d0
+      call checkerr(ierr,'csbmass_ion',ilog)
+      call memory_monitor(sizeof(csbmass_ion),'csbmass_ion',.true.)
           
-          allocate (csbmass_ion_gbl(nsb_ion), stat = ierr)
-          csbmass_ion_gbl=0.0d0
-          call checkerr(ierr,'csbmass_ion_gbl',ilog)
-          call memory_monitor(sizeof(csbmass_ion_gbl),'csbmass_ion_gbl',.true.)
-      end if
+      allocate (csbmass_ion_gbl(nsb_ion), stat = ierr)
+      csbmass_ion_gbl=0.0d0
+      call checkerr(ierr,'csbmass_ion_gbl',ilog)
+      call memory_monitor(sizeof(csbmass_ion_gbl),'csbmass_ion_gbl',.true.)
       
-      if(nsb_surf > 0) then
-          allocate (csbmass_surf(nsb_surf), stat = ierr)
-          csbmass_surf=0.0d0
-          call checkerr(ierr,'csbmass_surf',ilog)
-          call memory_monitor(sizeof(csbmass_surf),'csbmass_surf',.true.)
+      allocate (csbmass_surf(nsb_surf), stat = ierr)
+      csbmass_surf=0.0d0
+      call checkerr(ierr,'csbmass_surf',ilog)
+      call memory_monitor(sizeof(csbmass_surf),'csbmass_surf',.true.)
           
-          allocate (csbmass_surf_gbl(nsb_surf), stat = ierr)
-          csbmass_surf_gbl=0.0d0
-          call checkerr(ierr,'csbmass_surf_gbl',ilog)
-          call memory_monitor(sizeof(csbmass_surf_gbl),'csbmass_surf_gbl',.true.)
-      end if
+      allocate (csbmass_surf_gbl(nsb_surf), stat = ierr)
+      csbmass_surf_gbl=0.0d0
+      call checkerr(ierr,'csbmass_surf_gbl',ilog)
+      call memory_monitor(sizeof(csbmass_surf_gbl),'csbmass_surf_gbl',.true.)
 
       allocate (csbmass_c(nsites), stat = ierr)
       csbmass_c=0.0d0

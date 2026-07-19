@@ -4112,41 +4112,38 @@
     !$omp if (nngl > numofloops_thred_mbalrt_9)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(tid, ivol)                                          
-#endif
-          do iaq = 1,naq
-          
-#ifdef OPENMP
+    !$omp private(tid, iaq, ivol)                                          
     !$omp do schedule(static) reduction(+:rateaqtot)
 #endif
-            do ivol = 1, nngl
+          do ivol = 1, nngl
 #ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
 
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
 
 #ifdef OPENMP
-              tid = omp_get_thread_num() + 1
+            tid = omp_get_thread_num() + 1
 #else
-              tid = 1
+            tid = 1
 #endif  
           
 !c  exclude first type boundary control volumes
 
-              if (btypert(ivol).ne.'first') then
+            if (btypert(ivol).ne.'first') then
 
 !c  temperature corrections for debye-huckel, equilibrium and
 !c  rate constants
 
-                if (temp_corr.or.heat_transport) then
-                  call tcorr(tkel(ivol),ivol,tid)
-                end if
+              if (temp_corr.or.heat_transport) then
+                call tcorr(tkel(ivol),ivol,tid)
+              end if
 
+              do iaq = 1,naq
 !c  recompute reactions rates
 
                 if (new_database) then
@@ -4168,18 +4165,13 @@
                                * bulkconc(rateaq(iaq,tid),sanew(ivol),   &
                                         pornew(ivol))
 
-              end if          !exclude first type boundary conditions    
+              end do              !iaq = 1,naq 
 
-            end do            !loop over control volumes
+            end if          !exclude first type boundary conditions    
+
+          end do            !loop over control volumes
 #ifdef OPENMP
     !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-          end do              !iaq = 1,naq        
-#ifdef OPENMP
     !$omp end parallel
 #endif 
 
@@ -4964,53 +4956,51 @@
 !c  change in storage and total dissolved/precipitated mass
 !c  [moles/unit time]
  
-          do im = 1,nm
-
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_mbalrt_11)                      &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private (tid, ireac, istart, istop, ivol, i1, im2, izn_c,   &
-    !$omp rootdens)                                                   &
-    !$omp reduction(+: accudpdiff, cstordiff,                         &
-    !$omp dpdiff, dpdiffp, accudpdiffp)                     
+    !$omp private (tid, ireac, istart, istop, ivol, i1, im, im2,      &
+    !$omp izn_c, rootdens)                                            &
+    !$omp reduction(+: cstordiff, dpdiff, dpdiffp)                     
     !$omp do schedule(static)
 #endif
-            do ivol = 1,nngl
+          do ivol = 1,nngl
               
 #ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
               
 #ifdef OPENMP
-              tid = omp_get_thread_num() + 1
+            tid = omp_get_thread_num() + 1
 #else
-              tid = 1
+            tid = 1
 #endif   
 
-              izn_c = mpropc(ivol)
+            izn_c = mpropc(ivol)
 
 !c  exclude first type boundary control volumes
 
-              if (btypert(ivol).ne.'first') then
+            if (btypert(ivol).ne.'first') then
 
 !c  temperature corrections for debye-huckel, equilibrium and
 !c  rate constants
 
-                if (temp_corr.or.heat_transport) then
-                  call tcorr(tkel(ivol),ivol,tid)
-                end if
+              if (temp_corr.or.heat_transport) then
+                call tcorr(tkel(ivol),ivol,tid)
+              end if
 
 !c  compute average molar concentrations for organic mixture
 !c  in solid phase
-                call molconc(phiold(1,ivol),tid)     
+              call molconc(phiold(1,ivol),tid)
 
+              do im = 1, nm
 !c  recompute rates for output of mass balance contributions of 
 !c  parallel reaction pathways
 
@@ -5082,13 +5072,17 @@
                                  * ratemp(ireac,tid)
                 end do
 
-              end if       !exclude first type control volumes
+              end do
 
-            end do         !number of control volumes
+            end if       !exclude first type control volumes
+
+          end do         !number of control volumes
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
+
+          do im = 1, nm
 
             accudpdiff(im,isub) = accudpdiff(im,isub) + dpdiff(im)*delt
           

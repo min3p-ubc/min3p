@@ -317,7 +317,7 @@
       integer :: tid, isub
       
       real*8 dummy
-      real*8 :: rtmass  !temporary local variable
+      real*8 :: rtemp_sub, rtemps_sub(nc)  !temporary local variable
 
       external comptotc, sorbspc, totcona, totconc, totconcg
  
@@ -334,74 +334,59 @@
         if (flux_out) then
           imcd(isub) = imcd_first(isub)
         endif
-      
+
+        cmass(:) = r0  
+        tmass(:,isub) = r0
+        rtemps_sub(:) = r0
+
+!c  compute total mass in aqueous phase in terms of total 
+!c  aqueous component concentrations [moles] and total system
+!c  mass in terms of total component concentrations [moles]
+
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_1)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(tid, ivol)                                          
-#endif 
-
-!c  Note: the parallel loops are put into the inner loops as the number of 
-!c        the outer loops are usually smaller than the number of threads
-      
-!c  compute total mass in aqueous phase in terms of total 
-!c  aqueous component concentrations [moles] and total system
-!c  mass in terms of total component concentrations [moles]
-        do ic=1,nc-1
-#ifdef OPENMP
-    !$omp single
+    !$omp private(tid, ivol, ic)                                          
+    !$omp do schedule(static) reduction(+:cmass, rtemps_sub)
 #endif
-          cmass(ic) = r0  
-          tmass(ic,isub) = r0
-#ifdef OPENMP
-    !$omp end single
-#endif 
-
-#ifdef OPENMP
-    !$omp do schedule(static) reduction(+:cmass, tmass)
-#endif
-          do ivol = 1, nngl
+        do ivol = 1, nngl
 #ifdef PETSC
-            if(node_idx_lg2l(ivol) < 0) then
-              cycle
-            end if
+          if(node_idx_lg2l(ivol) < 0) then
+            cycle
+          end if
 #endif
-            if (.not.btest(subdomains_bits(ivol),isub)) then
-              cycle
-            end if
+          if (.not.btest(subdomains_bits(ivol),isub)) then
+            cycle
+          end if
 
 #ifdef OPENMP    
-            tid = omp_get_thread_num() + 1
+          tid = omp_get_thread_num() + 1
 #else
-            tid = 1
+          tid = 1
 #endif
 
 !c  recompute total aqueous component concentrations and
 !c  total gaseous component concentrations
 
-            call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
-            call totconcg(cnew(1,ivol),totgn(:,tid))
+          call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
+          call totconcg(cnew(1,ivol),totgn(:,tid))
 
+          do ic = 1, nc-1
 !c  compute total system mass
-            cmass(ic)  = cmass(ic) + conv3 * cvol(ivol)      &
+            cmass(ic)  = cmass(ic) + conv3 * cvol(ivol)                &
                        * sanew(ivol) * pornew(ivol) * totcn(ic,tid)
-            tmass(ic,isub)  = tmass(ic,isub) + conv3 * cvol(ivol) *    &
+            rtemps_sub(ic)  = rtemps_sub(ic) + conv3 * cvol(ivol) *    &
                        ( sanew(ivol) * pornew(ivol) * totcn(ic,tid)    &
                        + sgnew(ivol) * pornew(ivol) * totgn(ic,tid))      
           end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
         end do
 #ifdef OPENMP
+    !$omp end do
     !$omp end parallel
-#endif    
+#endif
+        tmass(1:nc-1,isub)  = tmass(1:nc-1,isub) + rtemps_sub(1:nc-1)
 
 #ifdef PETSC
         call MPI_Allreduce(cmass,cmass_gbl,nc-1,MPI_REAL8,             &
@@ -458,98 +443,49 @@
           if (flux_out) then
             imcd(isub) = imcd(isub) + 1
           endif
+
+          smass = r0
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_2)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(ivol)                         
+    !$omp private(ivol, imb, isp)                                     &
+    !$omp reduction(+:smass)
+    !$omp do schedule(static) 
 #endif 
-          do imb=1,nmb
-#ifdef OPENMP
-    !$omp single
-#endif
-            smass(imb,isub) = r0
- 
-            isp = iamb(imb) 
-#ifdef OPENMP
-    !$omp end single
-#endif          
-
-!c  selected species is free species
-
-            if (isp.le.nc) then
-#ifdef OPENMP
-    !$omp do schedule(static) reduction(+:smass)
-#endif
-              do ivol = 1, nngl
+          do ivol = 1, nngl
 #ifdef PETSC
-                if(node_idx_lg2l(ivol) < 0) then
-                  cycle
-                end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
-                if (.not.btest(subdomains_bits(ivol),isub)) then
-                  cycle
-                end if
-
-                smass(imb,isub) = smass(imb,isub) + conv3 * cvol(ivol) &
-                           * sanew(ivol) * pornew(ivol) * cnew(isp,ivol)
-
-              end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-!c  selected species is aqueous complex
-
-            else
-#ifdef OPENMP
-    !$omp single
-#endif
-              isp = isp - nc
-#ifdef OPENMP
-    !$omp end single
-#endif
-
-#ifdef OPENMP
-    !$omp do schedule(static) reduction(+:smass)
-#endif
-              do ivol = 1, nngl
-#ifdef PETSC
-                if(node_idx_lg2l(ivol) < 0) then
-                  cycle
-                end if
-#endif
-                if (.not.btest(subdomains_bits(ivol),isub)) then
-                  cycle
-                end if
-
-                smass(imb,isub) = smass(imb,isub) + conv3 * cvol(ivol) &
-                           * sanew(ivol) * pornew(ivol) * cx(isp,ivol)
-
-              end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
             end if
 
+            do imb=1,nmb
+              isp = iamb(imb)
+              if (isp.le.nc) then
+                smass(imb) = smass(imb) + conv3 * cvol(ivol)           &
+                           * sanew(ivol) * pornew(ivol) * cnew(isp,ivol)
+              else
+                isp = isp - nc
+                smass(imb) = smass(imb) + conv3 * cvol(ivol)           &
+                           * sanew(ivol) * pornew(ivol) * cx(isp,ivol)
+              end if
+            end do
           end do
 #ifdef OPENMP
+    !$omp end do
     !$omp end parallel
-#endif 
+#endif
 
 #ifdef PETSC
-          call MPI_Allreduce(smass(:,isub),smass_gbl,nmb,MPI_REAL8,    &
+          call MPI_Allreduce(smass,smass_gbl,nmb,MPI_REAL8,            &
                              MPI_SUM,Petsc_Comm_World,ierrcode)
           CHKERRQ(ierrcode)
-          smass(1:nmb,isub) = smass_gbl(1:nmb)     
+          smass(1:nmb) = smass_gbl(1:nmb)     
 #endif
 
 !c  write total system mass in aqueous phase to file
@@ -557,7 +493,7 @@
              .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
             if (b_output_trans_binary) then
               nvarsimrt = nmb+1
-              realbuffer_gb(1:nvarsimrt)=(/time_io,(smass(imb,isub),imb=1,nmb)/)
+              realbuffer_gb(1:nvarsimrt)=(/time_io,(smass(imb),imb=1,nmb)/)
               call binary_write_data(imrt_mpi(imrt(isub)), 1,            &
                            (/mtime/),offset_imrt_ijk(imrt(isub)),.true.)
               call binary_write_data(imrt_mpi(imrt(isub)), nvarsimrt,    &
@@ -572,7 +508,7 @@
 
               if (i_append_sim < 1 .or.                                    &
                  (mtime >= mtime_append .and. i_append_sim >= 1)) then
-                write(imrt(isub),ascii_fmt) time_io,(smass(imb,isub),imb=1,nmb)
+                write(imrt(isub),ascii_fmt) time_io,(smass(imb),imb=1,nmb)
               end if
             end if
           end if
@@ -583,47 +519,32 @@
 !c  [moles] (only if gases are specified)
 
         if (ng.gt.0) then
+          gmass = r0
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_3)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(ivol)                         
-#endif           
-          do ig=1,ng
-#ifdef OPENMP
-    !$omp single
-#endif            
-            gmass(ig) = r0 
-#ifdef OPENMP
-    !$omp end single
-#endif          
-          
-#ifdef OPENMP
+    !$omp private(ivol, ig)                         
     !$omp do schedule(static) reduction(+:gmass)
 #endif          
-            do ivol = 1, nngl
+          do ivol = 1, nngl
 #ifdef PETSC 
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
 
+            do ig = 1, ng 
               gmass(ig) = gmass(ig) + conv3 * cvol(ivol)               &
                         * sgnew(ivol) * pornew(ivol) * gnew(ig,ivol)
             end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
           end do
 #ifdef OPENMP
+    !$omp end do
     !$omp end parallel
 #endif 
 
@@ -672,12 +593,14 @@
 !c  compute total sorbed mass - non-competitive sorption [moles]
       
         if (noncompetitive_sorption) then
+          amass = r0
+
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_4)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(tid, ivol)                                          
+    !$omp private(tid, ivol, ic)                                          
 #endif  
         
 !c  recompute total sorbed component concentrations
@@ -709,46 +632,27 @@
     !$omp end do
 #endif  
 
-#ifdef OPENMP
-    !$omp barrier
-#endif
 
-!c total sorbed mass
-
-          do ic = 1,nc-1
-#ifdef OPENMP
-    !$omp single
-#endif          
-            amass(ic) = r0
-#ifdef OPENMP
-    !$omp end single
-#endif
-
+!c total sorbed mass          
 #ifdef OPENMP
     !$omp do schedule(static) reduction(+:amass)
 #endif         
-            do ivol = 1, nngl
+          do ivol = 1, nngl
 #ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
 
+            do ic = 1,nc-1
               amass(ic) = amass(ic) + conv3 * cvol(ivol) * totanew(ic,ivol)
             end do
+          end do
 #ifdef OPENMP
     !$omp end do
-#endif 
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-          end do
-      
-#ifdef OPENMP
     !$omp end parallel
 #endif
 
@@ -772,48 +676,40 @@
 
 !c  compute total sorbed mass - competitive sorption [moles]
 !c something wrong here, NAN in .mss file
-        if (nsb_ion.gt.0.or.nsb_surf.gt.0) then        
+        if (nsb_ion.gt.0.or.nsb_surf.gt.0) then 
+          csbmass_ion = r0   
+          csbmass_surf = r0  
+          csbmass_c = r0
 !c  compute total sorbed mass - ion-exchange
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_5)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(tid, ivol)                                          
-#endif 
-          do isb = 1,nsb_ion
-#ifdef OPENMP
-    !$omp single
-#endif
-            csbmass_ion(isb) = r0
-#ifdef OPENMP
-    !$omp end single
-#endif
-
-#ifdef OPENMP                       
+    !$omp private(tid, ivol, isb, isites)
     !$omp do schedule(static) reduction(+:csbmass_ion)
 #endif 
-            do ivol = 1, nngl
+          do ivol = 1, nngl
 #ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
               
 #ifdef OPENMP    
-              tid = omp_get_thread_num() + 1
+            tid = omp_get_thread_num() + 1
 #else
-              tid = 1
+            tid = 1
 #endif      
 
 !c  compute sorbed mass for each control volume and each sorbed species
 !c  exclude contributions from first type boundary nodes
 
-              if (btypert(ivol).ne.'first') then
-
+            if (btypert(ivol).ne.'first') then
+              do isb = 1,nsb_ion
                 call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),       &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),           &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                   &
@@ -823,67 +719,45 @@
                      nsb_ion,nsb_surf,isb,0,sorption_type_ion,           &
                      sorption_type_surf,sorption_group,isactcexch)
 
-                  csbmass_ion(isb) = csbmass_ion(isb) +                  &
-                      cvol(ivol) * csb_ion(isb,tid)*rhobulk_g(ivol)
+                  csbmass_ion(isb) = csbmass_ion(isb) + conv3 *          &
+                      cvol(ivol) * csb_ion(isb,tid)*rhobulk_g(ivol) /    &
+                      (r100 * chargesb_ion(isb))
+              end do
+            end if
 
-              end if
-
-            end do
+          end do
 #ifdef OPENMP
     !$omp end do
 #endif 
 
-#ifdef OPENMP
-    !$omp barrier
-#endif
-
-#ifdef OPENMP
-    !$omp single
-#endif
-            csbmass_ion(isb) = conv3 * csbmass_ion(isb) / (r100 * chargesb_ion(isb))
-
-#ifdef OPENMP
-    !$omp end single
-#endif
-
-          end do
-
        
 !c  compute total sorbed mass - surface-complex
-          do isb = 1,nsb_surf
-
-#ifdef OPENMP
-    !$omp single
-#endif
-            csbmass_surf(isb) = r0
-#ifdef OPENMP
-    !$omp end single
-#endif          
-          
+         
 #ifdef OPENMP                     
     !$omp do schedule(static) reduction(+:csbmass_surf)
 #endif
-            do ivol = 1, nngl
+          do ivol = 1, nngl
 #ifdef PETSC 
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
               
 #ifdef OPENMP    
-              tid = omp_get_thread_num() + 1
+            tid = omp_get_thread_num() + 1
 #else
-              tid = 1
+            tid = 1
 #endif 
 
 !c  compute sorbed mass for each control volume and each sorbed species
 !c  exclude contributions from first type boundary nodes
 
-              if (btypert(ivol).ne.'first') then
+            if (btypert(ivol).ne.'first') then
 
+              do isb = 1,nsb_surf
                 call sorbspc(dummy,csb_surf(isb,tid),                  &
                      cnew(n-nelect+1:n,ivol),cec_g(ivol),              &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),   &
@@ -895,49 +769,22 @@
                      elect_correction,name_elect_correction,nelect,    &
                      dz_surf,totcn(:,tid),component_type,nlayer,       &
                      mol_frac_ads)
-#ifdef PETSC
-                if(node_idx_lg2l(ivol) > 0) then
-#endif
+
                   csbmass_surf(isb) = csbmass_surf(isb) +              &
-                       cvol(ivol) * sanew(ivol) *                      &
+                       conv3 * cvol(ivol) * sanew(ivol) *              &
                        pornew(ivol) * csb_surf(isb,tid)
-#ifdef PETSC
-                end if
-#endif
-              end if
-            end do
+              end do
+            end if
+          end do
 #ifdef OPENMP
     !$omp end do
 #endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-
-#ifdef OPENMP
-    !$omp single
-#endif
-            csbmass_surf(isb) = conv3 * csbmass_surf(isb)
-#ifdef OPENMP
-    !$omp end single
-#endif
-
-          end do 
 
 !c  compute sorbed mass for each control volume - non-aqueous components
 
           if (sorption_group.eq.'surface-complexation' .or.         &
               (sorption_group.eq.'surface-complex and ion-exchange' &
               .and. nsb_surf.gt.0)) then
-#ifdef OPENMP
-    !$omp single
-#endif
-            do isites = 1,nsites
-              csbmass_c(isites) = r0
-            end do
-#ifdef OPENMP
-    !$omp end single
-#endif          
           
 #ifdef OPENMP
                        
@@ -965,10 +812,6 @@
 #ifdef OPENMP
     !$omp end do
 #endif  
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
           end if
 #ifdef OPENMP
     !$omp end parallel
@@ -1222,112 +1065,32 @@
 
 !c  compute total mineral mass [moles]
 !c  (only if minerals are specified)
+        cmmass = r0
         if (nm.gt.0) then
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysrt_6)                       &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(ivol)                         
-#endif  
-          do im=1,nm
-#ifdef OPENMP
-    !$omp single
-#endif            
-            cmmass(im) = r0
-#ifdef OPENMP
-    !$omp end single
-#endif          
-          
-#ifdef OPENMP
+    !$omp private(ivol, im)                         
     !$omp do schedule(static) reduction(+:cmmass)
 #endif          
-            do ivol = 1, nngl
+          do ivol = 1, nngl
 #ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
+            if (.not.btest(subdomains_bits(ivol),isub)) then
+              cycle
+            end if
 
-              cmmass(im) = cmmass(im) + conv3 * cvol(ivol) * cmnew(im,ivol) 
-            end do
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-
-!c  first type control volumes do not contribute to total mineral mass
-!c  fix up some time
-#ifdef OPENMP
-    !$omp single
-#endif
-            rtmass = r0
-#ifdef OPENMP
-    !$omp end single
-#endif
-
-#ifdef OPENMP
-#ifdef SCHEDULE_DYNAMIC
-    !$omp do schedule(dynamic) reduction(+:rtmass)
-#elif SCHEDULE_STATIC
-    !$omp do schedule(static) reduction(+:rtmass)
-#elif SCHEDULE_GUIDED
-    !$omp do schedule(guided) reduction(+:rtmass) 
-#else
-    !$omp do schedule(auto) reduction(+:rtmass)
-#endif
-#endif 
-            do ibrt=1,nbrt
-              
-              ivol = jabrt(ibrt)             !pointer to control volume
-              if (ivol < 0) then
-                cycle
-              end if
-
-#ifdef PETSC
-              if(node_idx_lg2l(ivol) < 0) then
-                cycle
-              end if
-#endif
-              if (.not.btest(subdomains_bits(ivol),isub)) then
-                cycle
-              end if
-
-              if (compute_ice_sheet_loading) then
-                if (.not. b_jabrt_ice(ibrt)) then
-                  cycle
-                end if
-              end if
-            
-              if (btypert(ivol).eq.'first') then
-                !cmmass(im) = cmmass(im)  - conv3 * cvol(ivol) * cmnew(im,ivol)
-                rtmass = rtmass + conv3 * cvol(ivol) * cmnew(im,ivol)
-              end if
+            do im = 1, nm
+              cmmass(im) = cmmass(im) + conv3 * cvol(ivol) * cmnew(im,ivol)
             end do 
-#ifdef OPENMP
-    !$omp end do
-#endif
-
-#ifdef OPENMP
-    !$omp barrier
-#endif
-
-#ifdef OPENMP
-    !$omp single
-#endif
-            cmmass(im) = cmmass(im) - rtmass
-#ifdef OPENMP
-    !$omp end single
-#endif          
-          
           end do
 #ifdef OPENMP
+    !$omp end do
     !$omp end parallel
 #endif 
 
@@ -1337,7 +1100,6 @@
           CHKERRQ(ierrcode)
           cmmass(1:nm) = cmmass_gbl(1:nm)     
 #endif
-
         
 !c  write total mineral mass in system to file
 

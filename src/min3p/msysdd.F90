@@ -115,7 +115,7 @@
 
       integer :: ivol, isub
       
-      real*8 :: rpor, vsmass, totv_a, totv_g
+      real*8 :: rpor, vsmass, totv_a, totv_g, rtemp_sub
 
       integer :: nvarsimvs, irecord
       
@@ -137,6 +137,8 @@
 !c  replace uvsold and saold by 0 -> can use storage function 
 
         totvsmass(isub) = r0
+
+        rtemp_sub = r0
       
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -144,7 +146,7 @@
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
     !$omp private(ivol, rpor, vsmass)                                 &
-    !$omp reduction(+:totvsmass)
+    !$omp reduction(+:rtemp_sub)
     !$omp do schedule(static)
 #endif 
         do ivol = 1,nngl  
@@ -173,13 +175,14 @@
             vsmass = vsmass + cvol(ivol)*sgnew(ivol)*rpor*densvnew(ivol)
           end if
 
-          totvsmass(isub) = totvsmass(isub) + vsmass
-
+          rtemp_sub = rtemp_sub + vsmass
         end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
+
+        totvsmass(isub) = totvsmass(isub) + rtemp_sub
 
 #ifdef PETSC     
         call MPI_Allreduce(totvsmass(isub), totvsmass_gbl,1,MPI_REAL8,MPI_SUM, &

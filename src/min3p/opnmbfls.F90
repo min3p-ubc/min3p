@@ -171,9 +171,9 @@
 
       character*2 :: suffix, suffix2, strtemp
       character*9 :: strl9
-      character*36 :: strl36, dix_unit
+      character*36 :: dix_unit
       character*72 :: strl72
-      character*256 :: strfilename
+      character*256 :: strFilePath
       character*2048 :: strbuffer2048
       character*4096 :: strbuffer
       
@@ -203,7 +203,7 @@
 !c     write(*,'(/a)') 'enter routine opnmbfls ...'
  
 !c  mass balance - variably saturated flow
-      
+     
       if (mass_balance_vs) then
 
         imvs_first(isub) = lun_get()
@@ -555,7 +555,7 @@
               l_sufx = 2
             end if
 
-            strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_b.mvc'
+            strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_b.mvc'
 
             if (b_output_trans_binary) then
 #ifndef PETSC
@@ -564,14 +564,14 @@
               end if
 #endif
               call binary_file_open(PETSC_COMM_SELF,imvs_mpi(imvs(isub)),  &
-                                    trim(strfilename),.true.)
+                                    trim(strFilePath),.true.)
             else
-              b_rewind_valid = check_rewind_status(trim(strfilename))
+              b_rewind_valid = check_rewind_status(trim(strFilePath))
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imvs(isub),file=trim(strfilename),status='unknown',   &
+                open(imvs(isub),file=trim(strFilePath),status='unknown',   &
                      form='formatted',position='rewind')
               else
-                open(imvs(isub),file=trim(strfilename),status='unknown',   &
+                open(imvs(isub),file=trim(strFilePath),status='unknown',   &
                      form='formatted')
               end if
             end if
@@ -628,7 +628,7 @@
 
             write(ifls,'(/2a/72a/)')'mass through specified boundary ',     &
                                    trim(name_tmsb(itmsb)),('-',i=1,72)
-            write(ifls,'(a/)') trim(strfilename)
+            write(ifls,'(a/)') trim(strFilePath)
 
             write(ifls,'(2a)')  'column   entry                           ',&
                                 'unit'
@@ -2156,8 +2156,8 @@
           
 
 !c  write data to file information file
-          strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mac'
-          write(ifls,'(2a)') strl36,namec(ic)
+          strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mac'
+          write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
 
         end do
            
@@ -2478,8 +2478,8 @@
             end if
           end if
 
-          strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mae'
-          write(ifls,'(2a)') strl36,namec(ic)          
+          strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mae'
+          write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)          
 
         end do
       
@@ -2537,7 +2537,7 @@
                 l_sufx = 2
               end if
 
-              strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
+              strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
                             '_'//suffix2(:l_sufx2)//'_b.mac'
 
 !c  open file
@@ -2548,15 +2548,15 @@
                 end if
 #endif
                 call binary_file_open(PETSC_COMM_SELF,                 &
-                            imrt_mpi(imrt(isub)),trim(strfilename),.true.)
+                            imrt_mpi(imrt(isub)),trim(strFilePath),.true.)
               else
-                b_rewind_valid = check_rewind_status(trim(strfilename))
+                b_rewind_valid = check_rewind_status(trim(strFilePath))
 
                 if (b_rewind_valid .and. i_append_sim > 0) then
-                  open(imrt(isub),file=trim(strfilename),status='unknown', &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown', &
                        form='formatted',position='rewind')
                 else
-                  open(imrt(isub),file=trim(strfilename),status='unknown', &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown', &
                        form='formatted')
                 end if
               end if
@@ -2674,7 +2674,7 @@
 
 !c  write data to file information file
 
-              write(ifls,'(a52,a)') strfilename, namec(ic)
+              write(ifls,'(a52,a)') trim(strFilePath), namec(ic)
             end do
 
 
@@ -3008,8 +3008,8 @@
             
 
 !c  write data to file information file
-            strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mic'
-            write(ifls,'(2a)') strl36,nameaq(iaq)
+            strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mic'
+            write(ifls,'(a,1x,a)') trim(strFilePath),nameaq(iaq)
 
           end do
 
@@ -3137,8 +3137,8 @@
             end if
 
 !c  write file information
-            strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mgc'
-            write(ifls,'(2a)') strl36,nameg(ig)
+            strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mgc'
+            write(ifls,'(a,1x,a)') trim(strFilePath),nameg(ig)
                                                                        
           end do                !(i=1,ng)
 
@@ -3204,7 +3204,7 @@
                 l_sufx = 2
               end if
 
-              strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
+              strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
                               '_'//suffix2(:l_sufx2)//'_b.mgc'
 
               if (b_output_trans_binary) then
@@ -3214,14 +3214,14 @@
                 end if
 #endif
                 call binary_file_open(PETSC_COMM_SELF,imrt_mpi(imrt(isub)),&
-                                      trim(strfilename),.true.)
+                                      trim(strFilePath),.true.)
               else
-                b_rewind_valid = check_rewind_status(trim(strfilename))
+                b_rewind_valid = check_rewind_status(trim(strFilePath))
                 if (b_rewind_valid .and. i_append_sim > 0) then
-                  open(imrt(isub),file=trim(strfilename),status='unknown',   &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown',   &
                        form='formatted',position='rewind')
                 else
-                  open(imrt(isub),file=trim(strfilename),status='unknown',   &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown',   &
                        form='formatted')
                 end if
               end if
@@ -3283,7 +3283,7 @@
                 end if
               end if
 
-              write(ifls,'(a52,a)') strfilename,nameg(ig)
+              write(ifls,'(a52,a)') trim(strFilePath),nameg(ig)
 
             end do                !(i=1,ng)
 
@@ -3464,8 +3464,8 @@
               end if
             end if
 
-            strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmc'
-            write(ifls,'(2a)') strl36,namem(im)
+            strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmc'
+            write(ifls,'(a,1x,a)') trim(strFilePath),namem(im)
 
           end do           !(im=1,nm)
           
@@ -3515,18 +3515,18 @@
             l_sufx = 2                                               
           end if
 
-          strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmac'
-          write(ifls,'(2a)') strl36,namec(ic)
+          strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mmac'
+          write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
 
           imrtm2c(isub) = imrtm2c_first(isub) + ic - 1
           call lun_set(imrtm2c(isub))
 
-          b_rewind_valid = check_rewind_status(trim(strl36))
+          b_rewind_valid = check_rewind_status(trim(strFilePath))
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imrtm2c(isub),file=trim(strl36),status='unknown',           &
+            open(imrtm2c(isub),file=trim(strFilePath),status='unknown',           &
                  form='formatted',position='rewind')
           else
-            open(imrtm2c(isub),file=trim(strl36),status='unknown',           &
+            open(imrtm2c(isub),file=trim(strFilePath),status='unknown',           &
                  form='formatted')
 
             write(imrtm2c(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'

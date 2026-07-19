@@ -159,7 +159,7 @@
       integer :: i, ic, imb, isub, l_sufx, ierr
 
       character*2 suffix
-      character*36 :: strl36
+      character*256 :: strFilePath
       character*256 :: prefix_sub
       character*2048 :: strbuffer      
       integer :: nvarsimcd, ilun, nlun
@@ -288,8 +288,8 @@
               end if
 
 !c  write data to file information file
-              strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mcd'
-              write(ifls,'(2a)') strl36,namec(ic)
+              strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mcd'
+              write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
             end if
           end do
 

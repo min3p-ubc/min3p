@@ -2130,7 +2130,7 @@
       real (type_r8), allocatable :: gculrelbal(:)
       real (type_r8), allocatable :: cmculabsbal(:)
       real (type_r8), allocatable :: cmculrelbal(:)
-      real (type_r8), allocatable :: smass(:,:)
+      real (type_r8), allocatable :: smass(:)
       real (type_r8), allocatable :: smass_gbl(:)
       real (type_r8), allocatable :: sbdiff(:)
       real (type_r8), allocatable :: rateaqtot(:)

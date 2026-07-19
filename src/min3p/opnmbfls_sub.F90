@@ -171,9 +171,9 @@
 
       character*2 :: suffix, suffix2, strtemp
       character*9 :: strl9
-      character*36 :: strl36, dix_unit
+      character*36 :: dix_unit
       character*72 :: strl72
-      character*256 :: strfilename, prefix_sub
+      character*256 :: strFilePath, prefix_sub
       character*2048 :: strbuffer2048
       character*4096 :: strbuffer
       
@@ -1105,8 +1105,8 @@
           
 
 !c  write data to file information file
-            strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mac'
-            write(ifls,'(2a)') strl36,namec(ic)
+            strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mac'
+            write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
 
           end do
            
@@ -1381,8 +1381,8 @@
                     trim(namec(ic)),' - reactive transport", f=point'
             end if
 
-            strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mae'
-            write(ifls,'(2a)') strl36,namec(ic)          
+            strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mae'
+            write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)          
 
           end do
       
@@ -1440,17 +1440,17 @@
                   l_sufx = 2
                 end if
 
-                strfilename = trim(prefix_sub)//'_'//suffix(:l_sufx)//  &
+                strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//  &
                               '_'//suffix2(:l_sufx2)//'_b.mac'
 
 !c  open file
-                b_rewind_valid = check_rewind_status(trim(strfilename))
+                b_rewind_valid = check_rewind_status(trim(strFilePath))
 
                 if (b_rewind_valid .and. i_append_sim > 0) then
-                  open(imrt(isub),file=trim(strfilename),status='unknown', &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown', &
                        form='formatted',position='rewind')
                 else
-                  open(imrt(isub),file=trim(strfilename),status='unknown', &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown', &
                        form='formatted')
                 end if
 
@@ -1504,7 +1504,7 @@
 
 !c  write data to file information file
 
-                write(ifls,'(a52,a)') strfilename, namec(ic)
+                write(ifls,'(a52,a)') trim(strFilePath), namec(ic)
               end do
 
 
@@ -1732,8 +1732,8 @@
             
 
 !c  write data to file information file
-              strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mic'
-              write(ifls,'(2a)') strl36,nameaq(iaq)
+              strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mic'
+              write(ifls,'(a,1x,a)') trim(strFilePath),nameaq(iaq)
 
             end do
 
@@ -1805,8 +1805,8 @@
               end if
 
 !c  write file information
-              strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mgc'
-              write(ifls,'(2a)') strl36,nameg(ig)
+              strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mgc'
+              write(ifls,'(a,1x,a)') trim(strFilePath),nameg(ig)
                                                                        
             end do                !(i=1,ng)
 
@@ -1872,15 +1872,15 @@
                   l_sufx = 2
                 end if
 
-                strfilename = trim(prefix_sub)//'_'//suffix(:l_sufx)//  &
+                strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//  &
                                 '_'//suffix2(:l_sufx2)//'_b.mgc'
   
-                b_rewind_valid = check_rewind_status(trim(strfilename))
+                b_rewind_valid = check_rewind_status(trim(strFilePath))
                 if (b_rewind_valid .and. i_append_sim > 0) then
-                  open(imrt(isub),file=trim(strfilename),status='unknown',   &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown',   &
                        form='formatted',position='rewind')
                 else
-                  open(imrt(isub),file=trim(strfilename),status='unknown',   &
+                  open(imrt(isub),file=trim(strFilePath),status='unknown',   &
                        form='formatted')
                 end if
 
@@ -1905,7 +1905,7 @@
                         trim(nameg(ig)), '", f=point'
                 end if
 
-                write(ifls,'(a52,a)') strfilename,nameg(ig)
+                write(ifls,'(a52,a)') trim(strFilePath),nameg(ig)
 
               end do                !(i=1,ng)
 
@@ -2015,8 +2015,8 @@
                       'phase for ', trim(namem(im)), '", f=point'
               end if
 
-              strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mmc'
-              write(ifls,'(2a)') strl36,namem(im)
+              strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mmc'
+              write(ifls,'(a,1x,a)') trim(strFilePath),namem(im)
 
             end do           !(im=1,nm)
           
@@ -2064,18 +2064,18 @@
                 l_sufx = 2                                               
               end if
 
-              strl36 = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mmac'
-              write(ifls,'(2a)') strl36,namec(ic)
+              strFilePath = trim(prefix_sub)//'_'//suffix(:l_sufx)//'.mmac'
+              write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
 
               imrtm2c(isub) = imrtm2c_first(isub) + ic - 1
               call lun_set(imrtm2c(isub))
 
-              b_rewind_valid = check_rewind_status(trim(strl36))
+              b_rewind_valid = check_rewind_status(trim(strFilePath))
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imrtm2c(isub),file=trim(strl36),status='unknown', &
+                open(imrtm2c(isub),file=trim(strFilePath),status='unknown', &
                      form='formatted',position='rewind')
               else
-                open(imrtm2c(isub),file=trim(strl36),status='unknown', &
+                open(imrtm2c(isub),file=trim(strFilePath),status='unknown', &
                      form='formatted')
 
                 write(imrtm2c(isub),'(3a)') 'title = "dataset ',trim(prefix_sub),'"'

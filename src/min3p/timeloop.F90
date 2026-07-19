@@ -1587,7 +1587,6 @@
                   end if
                 end do
                 
-                do izn = 1, nzn
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_global)                         &
@@ -1597,21 +1596,23 @@
     !$omp reduction(+:rcm_totcvol)
     !$omp do schedule(static)
 #endif                                  
-                  do ivol = 1, nngl
+                do ivol = 1, nngl
 #ifdef PETSC
-                    if(node_idx_lg2l(ivol) < 0) then
-                      cycle
-                    end if
+                  if(node_idx_lg2l(ivol) < 0) then
+                    cycle
+                  end if
 #endif
+
+                  do izn = 1, nzn
                     if (ibits(rcm_flag_cvol(ivol),izn-1,1) > 0) then
                       rcm_totcvol(izn) = rcm_totcvol(izn) + cvol(ivol)
                     end if
                   end do
+                end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
-                end do
                 
 #ifdef PETSC
                 call MPI_Allreduce(rcm_totcvol, rcm_totcvol_gbl,nzn,   &

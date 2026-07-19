@@ -114,7 +114,7 @@
 #endif
 
       integer :: ivol, isub, nvarsimvs, irecord
-      real*8 :: totv_a, totv_g, vsmass, phead_vol
+      real*8 :: totv_a, totv_g, vsmass, phead_vol, rtemp_sub
       real*8, external :: storvs
 
 #ifdef PETSC
@@ -130,6 +130,7 @@
         imvs(isub) = imvs_first(isub)
 
         vsmass= r0
+        rtemp_sub = r0
 
 !c  compute total system mass
 !c  variably saturated conditions:
@@ -147,7 +148,7 @@
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
     !$omp private(ivol, phead_vol, vsmass)                            &
-    !$omp reduction(+:totvsmass, totv_a, totv_g)
+    !$omp reduction(+: totv_a, totv_g, rtemp_sub)
     !$omp do schedule(static)
 #endif 
         do ivol = 1,nngl   
@@ -176,7 +177,7 @@
                      storvs(r1,phead_vol,r0,sanew(ivol),r0,            &
                             pornew(ivol),stor(ivol))
           end if
-          totvsmass(isub) = totvsmass(isub) + vsmass
+          rtemp_sub = rtemp_sub + vsmass
         
           !Put totv_a and totv_g here to reduce overhead by OpenMP
           totv_a = totv_a + sanew(ivol)*pornew(ivol)*cvol(ivol)
@@ -187,6 +188,8 @@
     !$omp end do
     !$omp end parallel
 #endif
+
+        totvsmass(isub) = totvsmass(isub) + rtemp_sub
 
 #ifdef PETSC
         call MPI_Allreduce(totvsmass(isub),totvsmass_gbl,1,MPI_REAL8,  &

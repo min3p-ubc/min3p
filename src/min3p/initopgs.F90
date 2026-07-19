@@ -215,6 +215,7 @@
 
       logical :: found, found_section, found_subsection, use_coord,    &
                  found_interface, is_exist, flag_stop
+      character*16 :: strTemp      
       character*72 :: subsection, strSubDir
       
 #ifdef PETSC
@@ -1822,7 +1823,7 @@
           call checkerr(ierr,'iamb',ilog)
           call memory_monitor(sizeof(iamb),'iamb',.true.)
           
-          allocate (smass(nmb,0:subdomains_n), stat = ierr)
+          allocate (smass(nmb), stat = ierr)
           smass=0.0d0
           call checkerr(ierr,'smass',ilog)
           call memory_monitor(sizeof(smass),'smass',.true.)

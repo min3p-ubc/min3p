@@ -51,7 +51,7 @@
 !c
 !c           gacc               = gravity                             + -
 !c           deltaij(njavs)     = distance between i-j                + -
-!c           gmfrac(1,ivol)     = gas molar fractions at c.v. i       * +
+!c           gmfrac(:,ivol)     = gas molar fractions at c.v. i       * +
 !c           gporij(njavs)      = gas filled porosity                 + -
 !c           relpermg(ivol)     = relative permeability (gas phase)   * +
 !c           tauij(njavs)       = tortuosity (gas phase)              + -
@@ -1310,9 +1310,9 @@
                 gvisc_jvol  = gasv(gmfrac(:,jvol))
 
 !c  calculate gas properties at interface according to weighting scheme
-                call wgprop(totgnew(1,ivol),totgnew(1,jvol),totgij   , &
-                            gnew(1,ivol)   ,gnew(1,jvol)   ,gij      , &
-                            gmfrac(1,ivol) ,gmfrac(1,jvol) ,gmfracij , &
+                call wgprop(totgnew(:,ivol),totgnew(:,jvol),totgij   , &
+                            gnew(:,ivol)   ,gnew(:,jvol)   ,gij      , &
+                            gmfrac(:,ivol) ,gmfrac(:,jvol) ,gmfracij , &
                             relpermg(ivol) ,relpermg(jvol) ,relpgij  , &
                             gdens_ivol     ,gdens_jvol     ,densgij  , &
                             gvisc_ivol     ,gvisc_jvol     ,viscgij  , &
@@ -1331,7 +1331,7 @@
 !c                 solve A F = B
 !c                 computes fluxes F of all gas components at current c.v. interphase
 
-                  call dgm_fluxdg (gnew(1,ivol)     ,gnew(1,jvol)  ,   &
+                  call dgm_fluxdg (gnew(:,ivol)     ,gnew(:,jvol)  ,   &
                                    gij              ,gmfracij      ,   &
                                    zg(ivol)         ,zg(jvol)      ,   &
                                    densgij          ,gpij          ,   &
@@ -1343,7 +1343,7 @@
                                    fmat             ,                  &
                                    ipvt             ,                  &
                                    dgm_gflux        ,neflux       )
-                  call diff_grad(gnew(1,ivol)  ,gnew(1,jvol) ,         &
+                  call diff_grad(gnew(:,ivol)  ,gnew(:,jvol) ,         &
                                  gmfracij      ,                       &
                                  zg(ivol)      ,zg(jvol)     ,         &
                                  densgij       ,tkel(ivol)   ,         &
@@ -1354,7 +1354,7 @@
 
                 else if (maxwell) then
 
-                  call ms_fluxdg (gnew(1,ivol)     ,gnew(1,jvol)    ,  &
+                  call ms_fluxdg (gnew(:,ivol)     ,gnew(:,jvol)    ,  &
                                   gij              ,gmfracij        ,  &
                                   zg(ivol)         ,zg(jvol)        ,  &
                                   densgij          ,gpij            ,  &
@@ -1412,7 +1412,7 @@
 !c                  diffusion coefficient calc'd with LeBlanc's law
 
                      diff(ic,idim)  = gasdiff2                         & 
-                                    (gmfrac(1,ivol),gmfrac(1,jvol),    &
+                                    (gmfrac(:,ivol),gmfrac(:,jvol),    &
                                      gpivol_ivol   ,gpivol_jvol   ,    &
                                      zg(ivol)      ,zg(jvol)      ,    &
                                      gdens_ivol    ,gdens_jvol    ,    &

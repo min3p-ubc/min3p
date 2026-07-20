@@ -149,7 +149,7 @@
                                                                         
 !  compute total molar concentration in organic mixture                 
                                                                         
-         CALL molconc (phiold (1, ivol), tid) 
+         CALL molconc (phiold (:,ivol), tid) 
                                                                         
 !  check individual organic compounds for supersaturated conditions     
                                                                         
@@ -164,7 +164,7 @@
                                                                         
 !  pure phase saturation index                                          
                                                                         
-            satm(im,tid) = satindex(cnew(1,ivol),eqm(im,tid),gamma(1, &
+            satm(im,tid) = satindex(cnew(:,ivol),eqm(im,tid),gamma(1, &
                        ivol),xnum,iam,jam,im)                                  
                                                                         
 !  compute effective solubility                                         

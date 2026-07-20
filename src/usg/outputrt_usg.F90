@@ -1756,7 +1756,7 @@
 !c  recompute total aqueous component concentrations
 
         if (redox_equil.and.nr.gt.0) then
-          call totconc(cnew(1,inode),cx(1,inode),totcnew(1,inode))
+          call totconc(cnew(:,inode),cx(:,inode),totcnew(:,inode))
         end if
 
 !c  write results
@@ -1772,7 +1772,7 @@
               call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(inode),    &
                    cec_fraction_g(idx_nsites_ion(isb),inode),        &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                   gamma(1,inode),cnew(1,inode),xnusb_ion,xnusb_surf, &
+                   gamma(:,inode),cnew(:,inode),xnusb_ion,xnusb_surf, &
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,           &
                    nsb_ion,nsb_surf,isb,0,                          &
                    sorption_type_ion,sorption_type_surf,            &
@@ -1809,7 +1809,7 @@
               call sorbspc(dummy,csb_surf(isb,tid),                   &
                    cnew(n-nelect+1:n,inode),cec_g(inode),             &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                  &
-                   gamma(1,inode),cnew(1,inode),                      &
+                   gamma(:,inode),cnew(:,inode),                      &
                    xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,           &
                    jasb_ion,jasb_surf,nsb_ion,                        &
                    nsb_surf,0,isb,sorption_type_ion,                  &
@@ -2219,7 +2219,7 @@
       !c  compress vector containing total aqueous component concentrations
       do inode = 1, num_nodes
         if (redox_equil.and.nr.gt.0) then
-          call comptotc(totcnew(1,inode))
+          call comptotc(totcnew(:,inode))
         end if
       end do
 
@@ -2552,12 +2552,12 @@
 
 !c  update secondary variables before output
  
-          call updtsvap(cnew(1,inode),cx(1,inode),gamma(1,inode),      &
+          call updtsvap(cnew(:,inode),cx(:,inode),gamma(:,inode),      &
      &                  gamma(nc+1,inode),sionnew(inode),tid)
           
           if (hmulti_diff) then
           
-            call updtsvap(c(1,inode),cxold(1,inode),gammaold(1,inode), &
+            call updtsvap(c(:,inode),cxold(:,inode),gammaold(:,inode), &
      &                    gammaold(nc+1,inode),sionold(inode),tid)  
           end if       !MX test
      
@@ -2570,13 +2570,13 @@
           ! Compute charge balance
           call cbalance(cnew(:,inode),cx(:,inode),zbal,zpos,zneg) 
 
-          call phpe(cnew(1,inode),gamma(1,inode),ph,pe,eh,tkel(inode))
+          call phpe(cnew(:,inode),gamma(:,inode),ph,pe,eh,tkel(inode))
 
           if (compute_alkalinity) then
             call alkcalc(alk_carb,alk_noncarb,alk_tot,                 &
-     &                   alk_carb_mg,alk_noncarb_mg,alk_tot_mg,        &
-     &                   alkfacc,alkfacx,cnew(1,inode),cx(1,inode),    &
-     &                   iax,jax,nc,nx,namec,namex)                    
+                         alk_carb_mg,alk_noncarb_mg,alk_tot_mg,        &
+                         alkfacc,alkfacx,cnew(:,inode),cx(:,inode),    &
+                         iax,jax,nc,nx,namec,namex)                    
           else                                        !MX              
              alk_carb = r0                                             
              alk_noncarb = r0                                          
@@ -2625,9 +2625,9 @@
 !c  recompute oxidation-reduction rates
 
             do ir = 1,nr
-              call rateredx(cnew(1,inode),cx(1,inode),gamma(1,inode),  &
+              call rateredx(cnew(:,inode),cx(:,inode),gamma(:,inode),  &
      &                      gamma(nc+1,inode),rateor(ir,tid),          &
-     &                      totcnew(1,inode),ir,tid)
+     &                      totcnew(:,inode),ir,tid)
               rateor_vols(ir,inode) = rateor(ir,tid)
             end do
             !write(igsi,ascii_fmt) xg(inode),yg(inode),zout,            &
@@ -2643,15 +2643,15 @@
                                                                        
             do iaq = 1,naq
               if (new_database) then                                   
-                call rateint_new(rateaq(iaq,tid),totcnew(1,inode),     &
-                                 cnew(1,inode),cx(1,inode),            &
-                                 gamma(1,inode),gamma(nc+1,inode),     &
-                                 phi(1,inode),iaq,                     &
+                call rateint_new(rateaq(iaq,tid),totcnew(:,inode),     &
+                                 cnew(:,inode),cx(:,inode),            &
+                                 gamma(:,inode),gamma(nc+1,inode),     &
+                                 phi(:,inode),iaq,                     &
                                  scalfac_aq_ivol(iaq,inode),           &
                                  sanew(inode),pornew(inode),tid)
               else                                                     
-                call rateint(rateaq(iaq,tid),totcnew(1,inode),         &
-                             cnew(1,inode),gamma(1,inode),phi(1,inode),&
+                call rateint(rateaq(iaq,tid),totcnew(:,inode),         &
+                             cnew(:,inode),gamma(:,inode),phi(:,inode),&
                              iaq,scalfac_aq_ivol(iaq,inode),tid)
               end if
               rateaq_vols(iaq,inode) = rateaq(iaq,tid)
@@ -2709,10 +2709,10 @@
             if (gas_removal) then
 
               if (density_dependence) then
-                call rategasd(gnew(1,inode),tkel(inode),uvsnew(inode), &
+                call rategasd(gnew(:,inode),tkel(inode),uvsnew(inode), &
                               sgnew(inode),tid)
               else
-                call rategas(gnew(1,inode),tkel(inode),hhead(inode),   &
+                call rategas(gnew(:,inode),tkel(inode),hhead(inode),   &
                              zg(inode),sgnew(inode),tid)                      
               end if
 
@@ -2733,14 +2733,14 @@
           if (noncompetitive_sorption) then
           
             if (redox_equil.and.nr.gt.0) then
-              call totconc(cnew(1,inode),cx(1,inode),totcnew(1,inode))
+              call totconc(cnew(:,inode),cx(:,inode),totcnew(:,inode))
             end if
 
-            call totcona(totan(:,tid),totcnew(1,inode),                &
-                         distcoff_rt(1,inode),sanew(inode),pornew(inode))
+            call totcona(totan(:,tid),totcnew(:,inode),                &
+                         distcoff_rt(:,inode),sanew(inode),pornew(inode))
 
             if (redox_equil.and.nr.gt.0) then
-              call comptotc(totcnew(1,inode))
+              call comptotc(totcnew(:,inode))
             end if
 
 !c  compress concentration vector for output
@@ -2763,7 +2763,7 @@
               call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(inode),  &
                    cec_fraction_g(idx_nsites_ion(isb),inode),      &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),               &
-                   gamma(1,inode),cnew(1,inode),xnusb_ion,xnusb_surf,&
+                   gamma(:,inode),cnew(:,inode),xnusb_ion,xnusb_surf,&
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,          &
                    nsb_ion,nsb_surf,isb,0,                         &
                    sorption_type_ion,sorption_type_surf,           &
@@ -2774,7 +2774,7 @@
               call sorbspc(dummy,csb_surf(isb,tid),                  &
                    cnew(n-nelect+1:n,inode),cec_g(inode),            &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                 &
-                   gamma(1,inode),cnew(1,inode),                     &
+                   gamma(:,inode),cnew(:,inode),                     &
                    xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,          &
                    jasb_ion,jasb_surf,nsb_ion,                       &
                    nsb_surf,0,isb,sorption_type_ion,                 &
@@ -2876,7 +2876,7 @@
 !c  compute total molar concentration of organic mixture
 !c  in solid phase
 
-            call molconc(phiold(1,inode),tid)
+            call molconc(phiold(:,inode),tid)
 
             do im=1,nm
 
@@ -2918,7 +2918,7 @@
                     !if not calculate the saturaton index the normal way  
                     if (icount.eq.0) then                               
                       satm(im,tid) = satm(im,tid) *                    &
-     &                        (gamma(ic,inode)*cnew(ic,inode))**xnum(i1)  
+                              (gamma(ic,inode)*cnew(ic,inode))**xnum(i1)  
                     end if                                              
                   end do   !i1                                          
                                                                         
@@ -2926,8 +2926,8 @@
                                                                         
                 else if (reaction_type(im).ne.'raoult') then
                    
-                  satm(im,tid) = satindex(cnew(1,inode),eqm(im,tid),   &
-     &                                gamma(1,inode),xnum,iam,jam,im)
+                  satm(im,tid) = satindex(cnew(:,inode),eqm(im,tid),   &
+                                      gamma(:,inode),xnum,iam,jam,im)
                   satm_log(im) = dlog10(satm(im,tid))
 
 !c  effective saturation indices for dissolution form organic mixtures
@@ -2941,8 +2941,8 @@
 
 !c  pure phase saturation index
 
-                  satm(im,tid) = satindex(cnew(1,inode),eqm(im,tid),   &
-     &                                gamma(1,inode),xnum,iam,jam,im)
+                  satm(im,tid) = satindex(cnew(:,inode),eqm(im,tid),   &
+                                    gamma(:,inode),xnum,iam,jam,im)
 
 !c  effective solubility according to Raoult's Law
 
@@ -2978,15 +2978,15 @@
                 else
                   rootdens = r1
                 end if
-                call ratemin_new(totcnew(1,inode),cnew(1,inode),       &
-                                 cx(1,inode),gamma(1,inode),           &
+                call ratemin_new(totcnew(:,inode),cnew(:,inode),       &
+                                 cx(:,inode),gamma(:,inode),           &
                                  gamma(nc+1,inode),sanew(inode),       &
                                  ratemdp(im,inode),                    &
-                                 phi(1,inode),phiold(im,inode),        &
+                                 phi(:,inode),phiold(im,inode),        &
                                  area(im,inode),rootdens,im,tid)  
               else                                                     
-                call ratemin(totcnew(1,inode),cnew(1,inode),cx(1,inode),&
-                             gamma(1,inode),gamma(nc+1,inode),          &
+                call ratemin(totcnew(:,inode),cnew(:,inode),cx(:,inode),&
+                             gamma(:,inode),gamma(nc+1,inode),          &
                              ratemdp(im,inode),phi(im,inode),           &
                              phiold(im,inode),area(im,inode),im,tid)
               end if
@@ -3049,8 +3049,8 @@
           if (nmx.gt.0) then
 
             do imx = 1,nmx
-              satmx(imx) =  satindex(cnew(1,inode),eqmx(imx,tid),      &
-                                     gamma(1,inode),xnumx,iamx,jamx,imx)
+              satmx(imx) =  satindex(cnew(:,inode),eqmx(imx,tid),      &
+                                     gamma(:,inode),xnumx,iamx,jamx,imx)
             end do
             
             satmx_vols(:,inode) = satmx(:)

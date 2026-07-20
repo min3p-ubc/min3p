@@ -372,8 +372,8 @@
 !c  recompute total aqueous component concentrations and
 !c  total gaseous component concentrations
 
-          call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
-          call totconcg(cnew(1,ivol),totgn(:,tid))
+          call totconc(cnew(:,ivol),cx(:,ivol),totcn(:,tid))
+          call totconcg(cnew(:,ivol),totgn(:,tid))
 
           do ic = 1, nc-1
 !c  compute total system mass
@@ -625,9 +625,9 @@
 #else
             tid = 1
 #endif 
-            call totconc(cnew(1,ivol),cx(1,ivol),totcn(:,tid))
-            call totcona(totanew(1,ivol),totcn(:,tid),                 &
-                         distcoff_rt(1,ivol),sanew(ivol),              &
+            call totconc(cnew(:,ivol),cx(:,ivol),totcn(:,tid))
+            call totcona(totanew(:,ivol),totcn(:,tid),                 &
+                         distcoff_rt(:,ivol),sanew(ivol),              &
                          pornew(ivol))         
           end do  
 #ifdef OPENMP
@@ -715,8 +715,7 @@
                 call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),       &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),           &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                   &
-                     gamma(1,ivol),                                      &
-                     cnew(1,ivol),xnusb_ion,xnusb_surf,                  &
+                     gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf,    &
                      iasb_ion,iasb_surf,jasb_ion,jasb_surf,              &
                      nsb_ion,nsb_surf,isb,0,sorption_type_ion,           &
                      sorption_type_surf,sorption_group,isactcexch)
@@ -762,8 +761,8 @@
               do isb = 1,nsb_surf
                 call sorbspc(dummy,csb_surf(isb,tid),                  &
                      cnew(n-nelect+1:n,ivol),cec_g(ivol),              &
-                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),   &
-                     cnew(1,ivol),xnusb_ion,xnusb_surf,                &
+                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(:,ivol),   &
+                     cnew(:,ivol),xnusb_ion,xnusb_surf,                &
                      iasb_ion,iasb_surf,jasb_ion,                      &
                      jasb_surf,nsb_ion,nsb_surf,0,isb,                 &
                      sorption_type_ion,sorption_type_surf,             &

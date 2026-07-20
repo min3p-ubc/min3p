@@ -630,7 +630,7 @@
     !$omp do schedule(static)
 #endif   
         do ivol = 1,nngl
-          call comptotc(totcnew(1,ivol))
+          call comptotc(totcnew(:,ivol))
         end do
 #ifdef OPENMP
     !$omp end do

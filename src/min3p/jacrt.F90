@@ -1123,7 +1123,7 @@
         end if
 #endif
 
-        call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),           & 
+        call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),           & 
      &                gamma(nc+1,ivol),sionnew(ivol),tid)
         
 #ifdef DEBUG
@@ -1160,7 +1160,7 @@
 !c     - ionic strength                                                 
  
         if (update_activity(tid).eq.'double_update') then
-          call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),         &     
+          call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),         &     
      &                  gamma(nc+1,ivol),sionnew(ivol),tid)
 #ifdef DEBUG
           if(info_debug > 10) then
@@ -1193,14 +1193,14 @@
         
 !c  compute total aqueous component concentrations                      
 
-        call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol)) 
+        call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol)) 
 
 !c Calculate the total concentrations times correction factors - new time level !MX
         if (hmulti_diff) then               
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
                 
-            call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
+            call totconcfac(cnew(:,ivol),cx(:,ivol),totcnewf(:,ivol),izn)
 
         end if
         
@@ -1228,8 +1228,8 @@
 !c  non-competitive sorption                                            
 
         if (noncompetitive_sorption) then
-          call totcona(totanew(1,ivol),totcnew(1,ivol),                &
-                       distcoff_rt(1,ivol),sanew(ivol),pornew(ivol))     
+          call totcona(totanew(:,ivol),totcnew(:,ivol),                &
+                       distcoff_rt(:,ivol),sanew(ivol),pornew(ivol))     
         end if
         
 #ifdef DEBUG
@@ -1248,9 +1248,9 @@
 !c  reactions                                                           
 
         if (redox_equil.and.nr.gt.0) then
-          call comptotc(totcnew(1,ivol))
+          call comptotc(totcnew(:,ivol))
           if (noncompetitive_sorption) then
-            call comptotc(totanew(1,ivol))                              
+            call comptotc(totanew(:,ivol))                              
           end if
         end if
 !OPENMP Check: This part is not checked   
@@ -1277,7 +1277,7 @@
         if (ng.gt.0) then
 
           do ig = 1,ng 
-            call gasconc(cnew(1,ivol),gamma(1,ivol),gnew(ig,ivol),ig,  &
+            call gasconc(cnew(:,ivol),gamma(:,ivol),gnew(ig,ivol),ig,  &
                          tkel(ivol),tid)
           end do
 #ifdef DEBUG
@@ -1293,13 +1293,13 @@
             end if
           end if
 #endif
-          call totconcg(gnew(1,ivol),totgnew(1,ivol))                       
+          call totconcg(gnew(:,ivol),totgnew(:,ivol))                       
 
 !c  compress total gaseous component concentration vector in case
 !c  of redox equilibrium reactions
 
           if (redox_equil.and.nr.gt.0) then
-            call comptotc(totgnew(1,ivol))
+            call comptotc(totgnew(:,ivol))
           end if
 
         end if                 !(ng.gt.0)
@@ -1322,7 +1322,7 @@
                 call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),    &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf, &
+                     gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf, &
                      iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,   &
                      nsb_surf,isb,0,sorption_type_ion,                &
                      sorption_type_surf,sorption_group,isactcexch)
@@ -1335,7 +1335,7 @@
               call sorbspc(dummy,csb_surf(isb,tid),                   &
                    cnew(n-nelect+1:n,ivol),                           &
                    cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),      &
-                   gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf,   &
+                   gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf,   &
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,     &
                    nsb_surf,0,isb,sorption_type_ion,                  &
                    sorption_type_surf,sorption_group,isactcexch,      &
@@ -1346,8 +1346,8 @@
           end if
 
           call totsorb(csb_ion(:,tid),csb_surf(:,tid),                &
-               chargesb_ion,rhobulk_g(ivol),totsnew_ion(1,ivol),      &
-               totsnew_surf(1,ivol),xnusb_ion,xnusb_surf,iasb_ion,    &
+               chargesb_ion,rhobulk_g(ivol),totsnew_ion(:,ivol),      &
+               totsnew_surf(:,ivol),xnusb_ion,xnusb_surf,iasb_ion,    &
                iasb_surf,jasb_ion,jasb_surf,nc,nsb_ion,nsb_surf,      &
                namec)
 
@@ -1355,11 +1355,11 @@
 !c  of redox equilibrium reactions
 
           if (redox_equil.and.nr.gt.0.and.nsb_ion.gt.0) then
-            call comptotc(totsnew_ion(1,ivol))
+            call comptotc(totsnew_ion(:,ivol))
           end if
           
           if (redox_equil.and.nr.gt.0.and.nsb_surf.gt.0) then
-            call comptotc(totsnew_surf(1,ivol))
+            call comptotc(totsnew_surf(:,ivol))
           end if
 
         end if  
@@ -1386,7 +1386,7 @@
         if (nm.gt.0) then        
 
 !c  compute total molar concentration in organic mixture 
-          call molconc(phiold(1,ivol),tid)   
+          call molconc(phiold(:,ivol),tid)   
           do im=1,nm
 
 !c  overall dissolution-precipitation rate
@@ -1411,16 +1411,16 @@
               else
                 rootdens = r1
               end if
-              call ratemin_new(totcnew(1,ivol),cnew(1,ivol),         &
-                            cx(1,ivol),gamma(1,ivol),gamma(nc+1,ivol),&
+              call ratemin_new(totcnew(:,ivol),cnew(:,ivol),         &
+                            cx(:,ivol),gamma(:,ivol),gamma(nc+1,ivol),&
                             sanew(ivol),ratemdp(im,ivol),             &
-                            phi(1,ivol),phiold(im,ivol),area(im,ivol),&
+                            phi(:,ivol),phiold(im,ivol),area(im,ivol),&
                             rootdens,im,tid)
               
             else
 
-              call ratemin(totcnew(1,ivol),cnew(1,ivol),cx(1,ivol),   &
-                           gamma(1,ivol),gamma(nc+1,ivol),            &
+              call ratemin(totcnew(:,ivol),cnew(:,ivol),cx(:,ivol),   &
+                           gamma(:,ivol),gamma(nc+1,ivol),            &
                            ratemdp(im,ivol),phi(im,ivol),             &
                            phiold(im,ivol),area(im,ivol),im,tid)
             end if      
@@ -1482,7 +1482,7 @@
 !c  concentrations due to mineral dissolution precipitation 
 !c  reactions                                                           
  
-          call totmin(ratemdp(1,ivol),totmdp(1,ivol))
+          call totmin(ratemdp(:,ivol),totmdp(:,ivol))
 #ifdef DEBUG
           if (info_debug > 10 .and. (ivol_gbl == ivol_track .or.       &
               ivol_track == 0)) then
@@ -1498,7 +1498,7 @@
 !c  in case of redox equilibrium reactions                              
 
           if (redox_equil.and.nr.gt.0) then
-            call comptotc(totmdp(1,ivol))
+            call comptotc(totmdp(:,ivol))
           end if
 
         end if                       !(nm.gt.0)
@@ -1514,7 +1514,7 @@
 !c  calculate gas properties + molar fractions
         if (ng .gt. 0 .and. (gas_advection .or. dgm .or. maxwell)) then      
 
-          mdens_g(ivol) = gasm(ng, gnew(1,ivol))                   ! gas molar density               
+          mdens_g(ivol) = gasm(ng, gnew(:,ivol))                   ! gas molar density               
 
           do ig=1,ng
             gmfrac(ig,ivol) = gnew(ig,ivol) / mdens_g(ivol)    ! molar fractions
@@ -1638,27 +1638,27 @@
          else 
 !c  --> for free species
           do ic=1,nc
-            gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),           &
-     &                             sionnew(ivol),chargec(ic),         &
-     &                             dhac(ic),dhbc(ic),                 &
-     &                             dhad(tid),dhbd(tid),               &
-     &                             adav,bdav,acth2omin,nc,            &
-     &                             nx,namec(ic),namec,ic,             &
-     &                             issit,asit,basit,coepsil,          &
-     &                             iasit,jasit)
+            gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),           &
+                                   sionnew(ivol),chargec(ic),         &
+                                   dhac(ic),dhbc(ic),                 &
+                                   dhad(tid),dhbd(tid),               &
+                                   adav,bdav,acth2omin,nc,            &
+                                   nx,namec(ic),namec,ic,             &
+                                   issit,asit,basit,coepsil,          &
+                                   iasit,jasit)
           end do
         
 
 !c  --> for secondary aqueous species
           do ix=1,nx
-            gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol),        &
-     &                                sionnew(ivol),chargex(ix),      &
-     &                                dhax(ix),dhbx(ix),              &
-     &                                dhad(tid),dhbd(tid),            &
-     &                                adav,bdav,acth2omin,nc,         &
-     &                                nx,namex(ix),namec,             &
-     &                                nc+ix,issit,asit,basit,         &
-     &                                coepsil,iasit,jasit)
+            gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol),        &
+                                      sionnew(ivol),chargex(ix),      &
+                                      dhax(ix),dhbx(ix),              &
+                                      dhad(tid),dhbd(tid),            &
+                                      adav,bdav,acth2omin,nc,         &
+                                      nx,namex(ix),namec,             &
+                                      nc+ix,issit,asit,basit,         &
+                                      coepsil,iasit,jasit)
           end do
          end if 
         end if
@@ -1848,7 +1848,7 @@
                 do isb = 1,nsb_surf 
                   call sorbspc(dummy,csb_surf(isb,tid),cnew(n-nelect+1:n,ivol),    &
                                cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),       &
-                               gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf,    &
+                               gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf,    &
                                iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,      &
                                nsb_surf,0,isb,sorption_type_ion,                   &
                                sorption_type_surf,sorption_group,isactcexch,       &
@@ -1896,14 +1896,14 @@
 
           do iaq = 1,naq
             if (new_database) then
-              call rateint_new(rateaq(iaq,tid),totcnew(1,ivol),       &
-                               cnew(1,ivol),cx(1,ivol),gamma(1,ivol), &
-                               gamma(nc+1,ivol),phi(1,ivol),iaq,      &
+              call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),       &
+                               cnew(:,ivol),cx(:,ivol),gamma(:,ivol), &
+                               gamma(nc+1,ivol),phi(:,ivol),iaq,      &
                                scalfac_aq_ivol(iaq,ivol),             &
                                sanew(ivol),pornew(ivol),tid)
             else
-              call rateint(rateaq(iaq,tid),totcnew(1,ivol),           &
-                           cnew(1,ivol),gamma(1,ivol),phi(1,ivol),    &
+              call rateint(rateaq(iaq,tid),totcnew(:,ivol),           &
+                           cnew(:,ivol),gamma(:,ivol),phi(:,ivol),    &
                            iaq,scalfac_aq_ivol(iaq,ivol),tid)
             end if
           end do
@@ -1942,10 +1942,10 @@
  
         if (ng.gt.0.and.gas_removal) then
           if (density_dependence) then
-            call rategasd(gnew(1,ivol),tkel(ivol),uvsnew(ivol),        &
+            call rategasd(gnew(:,ivol),tkel(ivol),uvsnew(ivol),        &
                           sgnew(ivol),tid)
           else
-            call rategas(gnew(1,ivol),tkel(ivol),hhead(ivol),zg(ivol), &
+            call rategas(gnew(:,ivol),tkel(ivol),hhead(ivol),zg(ivol), &
                          sgnew(ivol),tid)
           end if
           call totconcg(rateg(:,tid),totrateg)
@@ -2037,9 +2037,9 @@
 !c  overall oxidation-reduction rates for redox couples
 
           do ir = 1,nr
-            call rateredx(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),      &
+            call rateredx(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),      &
      &                    gamma(nc+1,ivol),rateor(ir,tid),            &
-     &                    totcnew(1,ivol),ir,tid)
+     &                    totcnew(:,ivol),ir,tid)
           end do
 
 !c  total source/sink terms towards total aqueous component
@@ -2249,9 +2249,9 @@
             end if
 #endif
 
-            call wgprop(totgnew(1,ivol),totgnew(1,jvol),totgij ,     &
-                      gnew(1,ivol)   ,gnew(1,jvol)   ,gij      ,     &
-                      gmfrac(1,ivol) ,gmfrac(1,jvol) ,gmfracij ,     &
+            call wgprop(totgnew(:,ivol),totgnew(:,jvol),totgij ,     &
+                      gnew(:,ivol)   ,gnew(:,jvol)   ,gij      ,     &
+                      gmfrac(:,ivol) ,gmfrac(:,jvol) ,gmfracij ,     &
                       relpgi         ,relpgj         ,relpgij  ,     &
                       gdens_ivol     ,gdens_jvol     ,densgij  ,     &
                       gvisc_ivol     ,gvisc_jvol     ,viscgij  ,     &
@@ -2281,7 +2281,7 @@
 
 #ifdef USG
               if (discretization_type > 0) then
-                call dgm_fluxdg(gnew(1,ivol)       ,gnew(1,jvol) ,    &
+                call dgm_fluxdg(gnew(:,ivol)       ,gnew(:,jvol) ,    &
                                 gij                ,gmfracij     ,    &
                                 zg(ivol)           ,zg(jvol)     ,    &
                                 densgij            ,gpij         ,    &
@@ -2296,7 +2296,7 @@
                                 dgm_gflux          ,neflux       )
               else
 #endif
-                call dgm_fluxdg (gnew(1,ivol)       ,gnew(1,jvol) ,    &
+                call dgm_fluxdg (gnew(:,ivol)       ,gnew(:,jvol) ,    &
                                  gij                ,gmfracij     ,    &
                                  zg(ivol)           ,zg(jvol)     ,    &
                                  densgij            ,gpij         ,    &
@@ -2336,17 +2336,17 @@
 
             else if (maxwell) then
 
-              call ms_fluxdg (gnew(1,ivol)        ,gnew(1,jvol) ,      &
-     &                        gij                 ,gmfracij     ,      &
-     &                        zg(ivol)            ,zg(jvol)     ,      &
-     &                        densgij             ,gpij         ,      &
-     &                        tkel(ivol)          ,tauij(i1)    ,      &
-     &                        gporij(i1)          ,deltaij(i1)  ,      &
-     &                        rverysmall          ,                    &
-     &                        ludecomp(1,1,icon)  ,                    &
-     &                        fmat(1,icon)        ,                    &
-     &                        ipvt(1,icon)        ,equimolar    ,      &
-     &                        ms_gflux            ,neflux       )
+              call ms_fluxdg (gnew(:,ivol)        ,gnew(:,jvol) ,      &
+                              gij                 ,gmfracij     ,      &
+                              zg(ivol)            ,zg(jvol)     ,      &
+                              densgij             ,gpij         ,      &
+                              tkel(ivol)          ,tauij(i1)    ,      &
+                              gporij(i1)          ,deltaij(i1)  ,      &
+                              rverysmall          ,                    &
+                              ludecomp(1,1,icon)  ,                    &
+                              fmat(1,icon)        ,                    &
+                              ipvt(1,icon)        ,equimolar    ,      &
+                              ms_gflux            ,neflux       )
 
             endif
 
@@ -2607,7 +2607,7 @@
                 if (blanc_diff_g) then
 #ifdef USG
                   if (discretization_type > 0) then
-                    gasdiff_loc = gasdiff2(gmfrac(1,ivol),gmfrac(1,jvol),    &
+                    gasdiff_loc = gasdiff2(gmfrac(:,ivol),gmfrac(:,jvol),    &
                                            gpivol_ivol   ,gpivol_jvol   ,    &
                                            zg(ivol)      ,zg(jvol)      ,    &
                                            gdens_ivol    ,gdens_jvol    ,    &
@@ -2620,7 +2620,7 @@
 #endif
 !c                  diffusion coefficient calc'd with LeBlanc's law
                     cinfrt = cinfrt_dg(i1) * gasdiff2                        &
-                                    (gmfrac(1,ivol), gmfrac(1,jvol),         &
+                                    (gmfrac(:,ivol), gmfrac(:,jvol),         &
                                      gpivol_ivol   , gpivol_jvol   ,         &
                                      zg(ivol)      , zg(jvol)      ,         &
                                      gdens_ivol    , gdens_jvol    ,         &
@@ -2883,7 +2883,7 @@
             do ir=1,nr
               ic = n+ir    
               call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),      &
-                   gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                   gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
             end do
           end if
 
@@ -2892,20 +2892,20 @@
 
           do ix=1,nx
             call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),       &
-                 gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+                 gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
           end do
          
 !c  compute derivatives of total aqueous component concentrations
 !c  to be modified later, for better performance for USG as the derivation has already been saved
 
           if (analyt_deriv_rt) then
-            call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)
+            call atotconc(cnew(:,ivol),cx(:,ivol),jbl,tid)
           else
             if (hmulti_diff) then
-                call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,izn)
-                call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+                call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,izn)
+                call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
             else   
-                call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+                call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
             end if
           end if
 
@@ -2914,7 +2914,7 @@
 
           if (noncompetitive_sorption) then
           
-            call totcona(dtota,dtotc(:,tid),distcoff_rt(1,ivol),       &
+            call totcona(dtota,dtotc(:,tid),distcoff_rt(:,ivol),       &
                          sanew(ivol), pornew(ivol))
             do ic = 1,n
               dtota(ic) = cvol(ivol)/delt * dtota(ic)
@@ -2939,7 +2939,7 @@
           if (ng.gt.0) then
 
             do ig = 1,ng
-              call gasconc(cinc(:,tid),gamma(1,ivol),ginc(ig,tid),     &
+              call gasconc(cinc(:,tid),gamma(:,ivol),ginc(ig,tid),     &
                    ig,tkel(ivol),tid)
             end do
             
@@ -2959,7 +2959,7 @@
 
 !c  compute derivatives of total gaseous component concentrations 
 
-            call dtotcong(gnew(1,ivol),ginc(:,tid),dtotg(:,tid),xnug,drtinc, &
+            call dtotcong(gnew(:,ivol),ginc(:,tid),dtotg(:,tid),xnug,drtinc, &
      &                    iaga,jaga,nc,ng,jbl,namec)
             
 #ifdef DEBUG
@@ -2990,11 +2990,11 @@
 
             if (gas_removal) then
               if (density_dependence) then
-                call drategdd(gnew(1,ivol),tkel(ivol),uvsnew(ivol),   &
-     &                        drtinc,tid)
+                call drategdd(gnew(:,ivol),tkel(ivol),uvsnew(ivol),   &
+                              drtinc,tid)
               else
-                call drategas(gnew(1,ivol),tkel(ivol),hhead(ivol),    &
-     &                        zg(ivol),drtinc,tid)         
+                call drategas(gnew(:,ivol),tkel(ivol),hhead(ivol),    &
+                              zg(ivol),drtinc,tid)         
               end if
               call totconcg(rateg(:,tid),totrateg)
 
@@ -3061,7 +3061,7 @@
                 call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),    &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                      eqsb_ion(:,tid), eqsb_surf(:,tid),               &
-                     gamma(1,ivol),cnew(1,ivol),                      &
+                     gamma(:,ivol),cnew(:,ivol),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,isb,0,       &
                      sorption_type_ion,sorption_type_surf,            &
@@ -3069,7 +3069,7 @@
                 call sorbspc_m(dcsb_ion(isb,tid),dummy,cec_g(ivol),   &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol), cinc(:,tid),                      &
+                     gamma(:,ivol), cinc(:,tid),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,isb,0,       &
                      sorption_type_ion,sorption_type_surf,            &
@@ -3084,7 +3084,7 @@
                 call sorbspc(dummy,csb_surf(isb,tid),                 &
                      cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol),cnew(1,ivol),                      &
+                     gamma(:,ivol),cnew(:,ivol),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,0,isb,       &
                      sorption_type_ion,sorption_type_surf,            &
@@ -3096,7 +3096,7 @@
                 call sorbspc(dummy,dcsb_surf(isb,tid),                &
                      cinc(n-nelect+1:n,tid),cec_g(ivol),              &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol), cinc(:,tid),                      &
+                     gamma(:,ivol), cinc(:,tid),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,0,isb,       &
                      sorption_type_ion,sorption_type_surf,            &
@@ -3183,11 +3183,9 @@
 !c  to be used for computing derivatives of dissolution-precipitation,
 !c  oxidation-reduction rates and/or advective fluxes (Van Leer flux
 !c  limiter)
+!c  this is used for certain conditions before, but now always computed
 
-          if ((.not.redox_equil.and.nr.gt.0).or.(nm.gt.0).or.         &
-     &         naq.gt.0) then
-            call totconc(cinc(:,tid),cxinc(:,tid),totcinc(:,tid))
-          end if
+          call totconc(cinc(:,tid),cxinc(:,tid),totcinc(:,tid))
 
 !c  compute derivatives of intra-aqueous kinetic reactions
 
@@ -3195,15 +3193,15 @@
 
             do iaq = 1,naq
               if (new_database) then
-                call drateint_new(rateaq(iaq,tid),totcnew(1,ivol),    & 
-                                cnew(1,ivol),cx(1,ivol),gamma(1,ivol),&
-                                gamma(nc+1,ivol),phi(1,ivol),         &
+                call drateint_new(rateaq(iaq,tid),totcnew(:,ivol),    & 
+                                cnew(:,ivol),cx(:,ivol),gamma(:,ivol),&
+                                gamma(nc+1,ivol),phi(:,ivol),         &
                                 drtinc,iaq,scalfac_aq_ivol(iaq,ivol), &
                                 sanew(ivol),pornew(ivol),tid)
               else
                 
-                call drateint(rateaq(iaq,tid),totcnew(1,ivol),        &
-                              cnew(1,ivol),gamma(1,ivol),phi(1,ivol), &
+                call drateint(rateaq(iaq,tid),totcnew(:,ivol),        &
+                              cnew(:,ivol),gamma(:,ivol),phi(:,ivol), &
                               drtinc,iaq,scalfac_aq_ivol(iaq,ivol),   &
                               tid)
               end if
@@ -3230,9 +3228,9 @@
           if (.not.redox_equil.and.nr.gt.0) then
 
             do ir = 1,nr
-              call draterdx(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),    &
+              call draterdx(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),    &
      &                      gamma(nc+1,ivol),rateor(ir,tid),          &
-     &                      totcnew(1,ivol),drtinc,ir,tid,idbg)
+     &                      totcnew(:,ivol),drtinc,ir,tid,idbg)
             end do
 
 !c  derivative of total source/sink terms towards total aqueous 
@@ -3258,7 +3256,7 @@
           if (nm.gt.0) then
 
 !c  compute total molar concentration in organic mixture 
-            call molconc(phiold(1,ivol),tid)
+            call molconc(phiold(:,ivol),tid)
 
             do im=1,nm
 
@@ -3282,8 +3280,8 @@
 
                 if (analyt_deriv_rt) then
 
-                  call aratemin(totcnew(1,ivol),cnew(1,ivol),         &
-                                cx(1,ivol),gamma(1,ivol),             &
+                  call aratemin(totcnew(:,ivol),cnew(:,ivol),         &
+                                cx(:,ivol),gamma(:,ivol),             &
                                 gamma(nc+1,ivol),dratedp(im,tid),     &
                                 phi(im,ivol),phiold(im,ivol),         &
                                 area(im,ivol),im,jbl,ivol,tid)
@@ -3299,17 +3297,17 @@
                     else
                       rootdens = r1
                     end if
-                    call dratemin_new(totcnew(1,ivol),cnew(1,ivol),   &  
-                                    cx(1,ivol),gamma(1,ivol),         &
+                    call dratemin_new(totcnew(:,ivol),cnew(:,ivol),   &  
+                                    cx(:,ivol),gamma(:,ivol),         &
                                     gamma(nc+1,ivol),sanew(ivol),     &
                                     dratedp(im,tid),                  &
-                                    phi(1,ivol),phiold(im,ivol),      &
+                                    phi(:,ivol),phiold(im,ivol),      &
                                     area(im,ivol),drtinc,rootdens,    &
                                     im,ivol,tid)
                   else
 
-                    call dratemin(totcnew(1,ivol),cnew(1,ivol),       &  
-                                cx(1,ivol),gamma(1,ivol),             &
+                    call dratemin(totcnew(:,ivol),cnew(:,ivol),       &  
+                                cx(:,ivol),gamma(:,ivol),             &
                                 gamma(nc+1,ivol),dratedp(im,tid),     &
                                 phi(im,ivol),phiold(im,ivol),         &
                                 area(im,ivol),drtinc,im,ivol,tid)
@@ -3420,6 +3418,7 @@
           if (root_uptake) then
             if (itype_root_resp == 1) then 
               if (rld(ivol) > rverysmall) then
+
                 do ic = 1, n  
                   if (resprate(ic,izn) > r0) then
                     if (resprate_charge(izn) .and. namec(ic).eq.'h+1') then
@@ -3546,14 +3545,14 @@
 #endif
 
 !c        calculate gas properties at interface according to weighting scheme
-              call wgpropd( totgnew(1,ivol),totgnew(1,jvol),totgij   , &
-     &                      relpgi         ,relpgj         ,relpgij  , &
-     &                      gdens_ivol     ,gdens_jvol     ,densgij  , &
-     &                      gvisc_ivol     ,gvisc_jvol     ,viscgij  , &
-     &                      gpivol_ivol    ,gpivol_jvol    ,gpij     , &
-     &                      zg(ivol)       ,zg(jvol)       ,           &
-     &                      spt_weight     ,iupsg(i1)      ,wfac     , &
-     &                      nc             ,ng             ,gacc     )
+              call wgpropd( totgnew(:,ivol),totgnew(:,jvol),totgij   , &
+                            relpgi         ,relpgj         ,relpgij  , &
+                            gdens_ivol     ,gdens_jvol     ,densgij  , &
+                            gvisc_ivol     ,gvisc_jvol     ,viscgij  , &
+                            gpivol_ivol    ,gpivol_jvol    ,gpij     , &
+                            zg(ivol)       ,zg(jvol)       ,           &
+                            spt_weight     ,iupsg(i1)      ,wfac     , &
+                            nc             ,ng             ,gacc     )
                
 !c ----- DGM module -------------------------------------------------------------
 !c           solve A dF/dy = dB/dy - dA/dy F
@@ -3561,16 +3560,16 @@
           
               if (dgm) then
               
-                call dgm_dfluxdg (gnew(1,ivol)  ,gnew(1,jvol)  ,       &
-     &                            dg            ,dgmfrac       ,       &
-     &                            zg(ivol)      ,zg(jvol)      ,       &
-     &                            densgij       ,gpij          ,       &
-     &                            tkel(ivol)    ,relpgij       ,       &
-     &                            tauij(i1)     ,gporij(i1)    ,       &
-     &                            deltaij(i1)   ,rverysmall    ,       &
-     &                            wfac          ,ipvt(1,icon)  ,       &
-     &                            ludecomp(1,1,icon)           ,       &
-     &                            fmat(1,icon)  ,dgm_dgflux    )
+                call dgm_dfluxdg (gnew(:,ivol)  ,gnew(:,jvol)  ,       &
+                                  dg            ,dgmfrac       ,       &
+                                  zg(ivol)      ,zg(jvol)      ,       &
+                                  densgij       ,gpij          ,       &
+                                  tkel(ivol)    ,relpgij       ,       &
+                                  tauij(i1)     ,gporij(i1)    ,       &
+                                  deltaij(i1)   ,rverysmall    ,       &
+                                  wfac          ,ipvt(1,icon)  ,       &
+                                  ludecomp(1,1,icon)           ,       &
+                                  fmat(1,icon)  ,dgm_dgflux    )
             
               endif
 
@@ -3587,16 +3586,16 @@
                   enddo
                 enddo
                 
-                call ms_dfluxdg  (gnew(1,ivol)    ,gnew(1,jvol)    ,   &
-     &                            dg              ,dgmfrac         ,   &
-     &                            zg(ivol)        ,zg(jvol)        ,   &
-     &                            densgij         ,gpij            ,   &
-     &                            tkel(ivol)      ,tauij(i1)       ,   &
-     &                            gporij(i1)      ,deltaij(i1)     ,   &
-     &                            rverysmall      ,wfac            ,   &
-     &                            ipvt(1,icon)    ,equimolar       ,   &
-     &                            lumat2          ,fmat(1,icon)    ,   &
-     &                            ms_gflux        ,ms_dgflux   )
+                call ms_dfluxdg  (gnew(:,ivol)    ,gnew(:,jvol)    ,   &
+                                  dg              ,dgmfrac         ,   &
+                                  zg(ivol)        ,zg(jvol)        ,   &
+                                  densgij         ,gpij            ,   &
+                                  tkel(ivol)      ,tauij(i1)       ,   &
+                                  gporij(i1)      ,deltaij(i1)     ,   &
+                                  rverysmall      ,wfac            ,   &
+                                  ipvt(1,icon)    ,equimolar       ,   &
+                                  lumat2          ,fmat(1,icon)    ,   &
+                                  ms_gflux        ,ms_dgflux   )
               
               endif
 
@@ -3949,7 +3948,7 @@
                     if (blanc_diff_g) then
 #ifdef USG
                       if (discretization_type > 0) then
-                        gasdiff_loc = gasdiff2(gmfrac(1,ivol),gmfrac(1,jvol),  &
+                        gasdiff_loc = gasdiff2(gmfrac(:,ivol),gmfrac(:,jvol),  &
                                            gpivol_ivol   ,gpivol_jvol   ,      &
                                            zg(ivol)      ,zg(jvol)      ,      &
                                            gdens_ivol    ,gdens_jvol    ,      &
@@ -3962,7 +3961,7 @@
 #endif
 !c                      diffusion coefficient calc'd with LeBlanc's law
                         cinfrt = cinfrt_dg(i1) * gasdiff2                      &
-                                        (gmfrac(1,ivol), gmfrac(1,jvol),       &
+                                        (gmfrac(:,ivol), gmfrac(:,jvol),       &
                                          gpivol_ivol   , gpivol_jvol   ,       &
                                          zg(ivol)      , zg(jvol)      ,       &
                                          gdens_ivol    , gdens_jvol    ,       &

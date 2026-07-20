@@ -468,7 +468,7 @@
       end if
       
       do ic=1,nc
-        gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),                &
+        gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),                &
                                sionnew(ivol),chargec(ic),              &
                                dhac(ic),dhbc(ic),dhad(tid),dhbd(tid),  &
                                adav,bdav,acth2omin,nc,                 &
@@ -496,7 +496,7 @@
 
         do ig=1,ng
             
-          call gasconc(cnew(1,ivol),gamma(1,ivol),gnew(ig,ivol),ig,    & 
+          call gasconc(cnew(:,ivol),gamma(:,ivol),gnew(ig,ivol),ig,    & 
                        tkel(ivol),tid)
 
           ip=gas_pair(ig)

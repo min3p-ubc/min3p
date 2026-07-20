@@ -1236,24 +1236,7 @@
       
 !cdbg
       b_mpi_process_flag = .false.
-
-#ifdef DEBUG
-      if (info_debug.gt.0) then
-        write(idbg,'(/a,i3)')  'Reactran Newton iterations ',         &
-     &                          iter_rt
-                                                                       
-        write(idbg,'(/a,3a/)') 'ivol   ',                             &
-     &                         'conc. update        ',                &
-     &                         'c old               ',                &
-     &                         'c new               '
-
-        do ivol = 1,nngl
-          uuu = cnew(1,ivol) - c(1,ivol)
-          write(idbg,'(I3,3es20.10)') ivol,uuu,c(1,ivol),cnew(1,ivol)
-        end do
-      end if
-#endif
-      
+     
       if (info_debug.gt.1) then
         b_mpi_process_flag = .true.
         
@@ -1310,10 +1293,10 @@
             call tcorr(tkel(ivol),ivol,tid)           
           end if
   
-          call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),         &
+          call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),         &
                         gamma(nc+1,ivol),sionnew(ivol),tid)
           if (hmulti_diff) then
-                call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),&        !MX June 2014
+                call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),&        !MX June 2014
                               gammaold(nc+1,ivol),sionold(ivol),tid)
           end if
 
@@ -1322,10 +1305,10 @@
 !c  recompute total concentrations vectors
       
         if (redox_equil_rt.and.nr.gt.0) then
-          call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+          call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
 
           if (ng.gt.0) then
-              call totconcg(gnew(1,ivol),totgnew(1,ivol))
+              call totconcg(gnew(:,ivol),totgnew(:,ivol))
           end if  
         end if
 
@@ -1510,10 +1493,10 @@
             call tcorr(tkel(ivol),ivol,tid)           
           end if
    
-          call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),         & 
+          call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),         & 
                         gamma(nc+1,ivol),sionnew(ivol),tid)
           if (hmulti_diff) then
-             call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),   &        !MX June 2014
+             call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),   &        !MX June 2014
                          gammaold(nc+1,ivol),sionold(ivol),tid)
           end if
 
@@ -1564,15 +1547,15 @@
                         end if
                       end do   !i1
                     else
-                      satm(im,tid) = satindex(cnew(1,ivol),eqm(im,tid),&
-                                        gamma(1,ivol),xnum,iam,jam,im)
+                      satm(im,tid) = satindex(cnew(:,ivol),eqm(im,tid),&
+                                        gamma(:,ivol),xnum,iam,jam,im)
                     end if
                   end if
                 end if
               end do
 
-              call updtsvmp(cmnew(1,ivol),cmold(1,ivol),phi(1,ivol),   &
-                            area(1,ivol),ratemdp(1,ivol),satm(1,tid),  &
+              call updtsvmp(cmnew(:,ivol),cmold(:,ivol),phi(:,ivol),   &
+                            area(:,ivol),ratemdp(:,ivol),satm(1,tid),  &
                             delt,ivol,tid)
               
 !c         added by Anna H Jan 24, 2014 to remove water during hydrate carb pptn
@@ -1636,13 +1619,13 @@
           tid = 1
 #endif
 
-          call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+          call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
 
           if (hmulti_diff) then
-            call totconc(c(1,ivol),cxold(1,ivol),totcold(1,ivol))
+            call totconc(c(:,ivol),cxold(:,ivol),totcold(:,ivol))
           end if
           if (ng.gt.0) then
-            call totconcg(gnew(1,ivol),totgnew(1,ivol))
+            call totconcg(gnew(:,ivol),totgnew(:,ivol))
           end if
         end do
 #ifdef OPENMP
@@ -1708,9 +1691,9 @@
 
           !c update total concentration for aqueous phase and gas phase
           if (bflag) then
-            call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+            call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
             if (ng.gt.0) then
-              call totconcg(gnew(1,ivol),totgnew(1,ivol))
+              call totconcg(gnew(:,ivol),totgnew(:,ivol))
             end if
           end if
 

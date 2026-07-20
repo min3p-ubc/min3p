@@ -467,7 +467,7 @@ real*8, intent(in), dimension(numprop)                :: prop       ! Values of 
 
 character(len=*), intent(out)                         :: msg        ! Error message 
 
-logical, intent(out)                                  :: iserror    ! iserror=true, then there was an error
+logical, intent(inout)                                :: iserror    ! iserror=true, then there was an error
 
 !-------------------------------------------------------------------------
 !
@@ -536,6 +536,9 @@ end if
 !%-----------------------------------------------------------
 !20 continue
 call check_pointer_ (namesp,1,.false.)
+
+!cdsu  iserror is not passed by reference but not used in the current code
+
 if (iserror) goto 10
 !%----------------------------------------------------------- 
 return

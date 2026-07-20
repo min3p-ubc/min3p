@@ -171,7 +171,7 @@
 !c  total source/sink terms towards water concentration
 !c  due to mineral dissolution precipitation reactions
  
-          call totmin_w(ratemdp(1,ivol),totmdp_w)
+          call totmin_w(ratemdp(:,ivol),totmdp_w)
 
 !c  scale total source-sink term due to dissolution/precipitation 
 !c  reactions
@@ -196,9 +196,9 @@
 !c  overall oxidation-reduction rates for redox couples
 
           do ir = 1,nr
-            call rateredx(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),       &
+            call rateredx(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),       &
      &                    gamma(nc+1,ivol),rateor(ir,tid),             &
-     &                    totcnew(1,ivol),ir,tid)
+     &                    totcnew(:,ivol),ir,tid)
           end do
 
 !c  total source/sink terms towards water concentration
@@ -231,14 +231,14 @@
 
           do iaq = 1,naq
             if (new_database) then
-              call rateint_new(rateaq(iaq,tid),totcnew(1,ivol),        &
-                               cnew(1,ivol),cx(1,ivol),gamma(1,ivol),  &
-                               gamma(nc+1,ivol),phi(1,ivol),iaq,       &
+              call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),        &
+                               cnew(:,ivol),cx(:,ivol),gamma(:,ivol),  &
+                               gamma(nc+1,ivol),phi(:,ivol),iaq,       &
                                scalfac_aq_ivol(iaq,ivol),              &
                                sanew(ivol),pornew(ivol),tid)                               
             else                                                          
-              call rateint(rateaq(iaq,tid),totcnew(1,ivol),            &
-                           cnew(1,ivol),gamma(1,ivol),phi(1,ivol),iaq, &
+              call rateint(rateaq(iaq,tid),totcnew(:,ivol),            &
+                           cnew(:,ivol),gamma(:,ivol),phi(:,ivol),iaq, &
                            scalfac_aq_ivol(iaq,ivol),tid)          
             end if
           end do

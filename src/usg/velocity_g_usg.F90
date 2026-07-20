@@ -323,9 +323,9 @@
             relpgj = relpermg(jvol)
           end if
 
-          call wgprop(totgnew(1,ivol),totgnew(1,jvol),totgij   ,       &
-                      gnew(1,ivol)   ,gnew(1,jvol)   ,gij      ,       &
-                      gmfrac(1,ivol) ,gmfrac(1,jvol) ,gmfracij ,       &
+          call wgprop(totgnew(:,ivol),totgnew(:,jvol),totgij   ,       &
+                      gnew(:,ivol)   ,gnew(:,jvol)   ,gij      ,       &
+                      gmfrac(:,ivol) ,gmfrac(:,jvol) ,gmfracij ,       &
                       relpgi         ,relpgj         ,relpgij  ,       &
                       gdens_ivol     ,gdens_jvol     ,densgij  ,       &
                       gvisc_ivol     ,gvisc_jvol     ,viscgij  ,       &
@@ -343,7 +343,7 @@
 !c           solve A F = B
 !c           computes fluxes F of all gas components at current c.v. interphase
 
-            call dgm_fluxdg(gnew(1,ivol)     ,gnew(1,jvol)  ,          &
+            call dgm_fluxdg(gnew(:,ivol)     ,gnew(:,jvol)  ,          &
                             gij              ,gmfracij      ,          &
                             zg(ivol)         ,zg(jvol)      ,          &
                             densgij          ,gpij          ,          &
@@ -355,7 +355,7 @@
                             fmat             ,ipvt          ,          &
                             dgm_gflux        ,neflux       )
 
-            call diff_grad(gnew(1,ivol)  ,gnew(1,jvol) ,               &
+            call diff_grad(gnew(:,ivol)  ,gnew(:,jvol) ,               &
                            gmfracij      ,                             &
                            zg(ivol)      ,zg(jvol)     ,               &
                            densgij       ,tkel(ivol)   ,               &
@@ -367,7 +367,7 @@
 
           else if (maxwell) then
 
-            call ms_fluxdg (gnew(1,ivol)     ,gnew(1,jvol)    ,        &
+            call ms_fluxdg (gnew(:,ivol)     ,gnew(:,jvol)    ,        &
                             gij              ,gmfracij        ,        &
                             zg(ivol)         ,zg(jvol)        ,        &
                             densgij          ,gpij            ,        &
@@ -507,7 +507,7 @@
 
             if (blanc_diff_g) then
 !c            diffusion coefficient calc'd with LeBlanc's law
-              gasdiff_loc = gasdiff2 (gmfrac(1,ivol),gmfrac(1,jvol),   &
+              gasdiff_loc = gasdiff2 (gmfrac(:,ivol),gmfrac(:,jvol),   &
                                       gpivol_ivol   ,gpivol_jvol   ,   &
                                       zg(ivol)      ,zg(jvol)      ,   &
                                       gdens_ivol    ,gdens_jvol    ,   &

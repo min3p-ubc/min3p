@@ -163,6 +163,11 @@ if (ispitzerdens) then
       read(iunit,*) ndim
       do i=1,ndim 
         read(iunit,'(a)') strbuffer 
+        
+        if (len_trim(strbuffer) == 0) then
+          cycle 
+        end if        
+        
         read(strbuffer,*) name,molw,molv
         do j=1,nc
           if (name==namec(j)) then

@@ -652,11 +652,11 @@
 !cdsu !c  -> update only concentrations of secondary aqueous species
 !cdsu !c     and compute ionic strength
 !cdsu 
-!cdsu         call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),    &
+!cdsu         call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),    &
 !cdsu      &                gamma(nc+1,ivol),sionnew(ivol),tid)
 !cdsu         
 !cdsu         if (hmulti_diff) then
-!cdsu           call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),        &
+!cdsu           call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),        &
 !cdsu      &                  gammaold(nc+1,ivol),sionold(ivol),tid)  
 !cdsu         end if       !MX test
 !cdsu 
@@ -669,14 +669,14 @@
 !cdsu  
 !cdsu         if (update_activity(tid).eq.'double_update') then
 !cdsu 
-!cdsu           call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),    &
+!cdsu           call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),    &
 !cdsu      &                  gamma(nc+1,ivol),sionnew(ivol),tid)
 !cdsu 
 !cdsu         end if
 !cdsu 
 !cdsu !c  compute total aqueous component concentrations
 !cdsu 
-!cdsu         call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+!cdsu         call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
 !cdsu         
 !cdsu !c Calculate the secondary species concentrations totcnewf and totcoldf
 !cdsu         if (hmulti_diff) then
@@ -685,8 +685,8 @@
 !cdsu !c  compute total concentrations of aqueous primary and secondary
 !cdsu !c  species times the correction factors
 !cdsu                 
-!cdsu             call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
-!cdsu             call totconcfac(c(1,ivol),cxold(1,ivol),totcoldf(1,ivol),izn)
+!cdsu             call totconcfac(cnew(:,ivol),cx(:,ivol),totcnewf(:,ivol),izn)
+!cdsu             call totconcfac(c(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
 !cdsu 
 !cdsu         end if
 !cdsu 

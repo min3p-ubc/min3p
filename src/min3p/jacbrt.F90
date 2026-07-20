@@ -590,9 +590,9 @@
             end do 
 
             zone_name = 'temperature-correction'
-            call gcreact(cnew(1,ivol),c(1,ivol),cx(1,ivol),       &
-                         gamma(1,ivol),gamma(nc+1,ivol),          &
-                         gnew(1,ivol),sanew(ivol),sgnew(ivol),    &
+            call gcreact(cnew(:,ivol),c(:,ivol),cx(:,ivol),       &
+                         gamma(:,ivol),gamma(nc+1,ivol),          &
+                         gnew(:,ivol),sanew(ivol),sgnew(ivol),    &
                          pornew(ivol),igen,ilog,tid,idbg,         &
                          tec_header,prefix,l_prfx,                &
                          zone_name,l_zone_name,                   &
@@ -699,8 +699,8 @@
                else
 !c  for free species
                  do ic=1,nc
-                     gamma(ic,ivol) = acoff(cnew(1,ivol),         &
-                                      cx(1,ivol),                 &
+                     gamma(ic,ivol) = acoff(cnew(:,ivol),         &
+                                      cx(:,ivol),                 &
                                       sionnew(ivol),chargec(ic),  &
                                       dhac(ic),dhbc(ic),          &
                                       dhad(tid),dhbd(tid),        &
@@ -714,8 +714,8 @@
 !c  for aqueous complexes
 
                  do ix=1,nx
-                    gamma(nc+ix,ivol) = acoff(cnew(1,ivol),       &
-                                        cx(1,ivol),               &
+                    gamma(nc+ix,ivol) = acoff(cnew(:,ivol),       &
+                                        cx(:,ivol),               &
                                         sionnew(ivol),chargex(ix),&
                                         dhax(ix),dhbx(ix),        &
                                         dhad(tid),dhbd(tid),      &
@@ -738,7 +738,7 @@
               do ir=1,nr
                 ic = n+ir
                 call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),    &
-                gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
               end do
             end if
 
@@ -747,16 +747,16 @@
 
             do ix=1,nx
               call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),     &
-              gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
             end do
 
 !c  compute total aqueous component concentrations with incremented
 !c  free species concentrations
 
             if (analyt_deriv_rt) then
-              call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)      
+              call atotconc(cnew(:,ivol),cx(:,ivol),jbl,tid)      
             else
-              call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+              call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
             end if
 
 !c  compress total aqueous component concentration vector in case
@@ -1096,7 +1096,7 @@
                   else
 !c  for free species
                     do ic=1,nc
-                      gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),   &
+                      gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),   &
                                              sionnew(ivol),chargec(ic), &
                                              dhac(ic),dhbc(ic),         &
                                              dhad(tid),dhbd(tid),       &
@@ -1109,7 +1109,7 @@
 
 !c  for aqueous complexes
                     do ix=1,nx
-                      gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol),&
+                      gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol),&
                                               sionnew(ivol),chargex(ix),&
                                               dhax(ix),dhbx(ix),        &
                                               dhad(tid),dhbd(tid),      &
@@ -1133,7 +1133,7 @@
                   do ir=1,nr
                     ic = n+ir
                     call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),&
-                    gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                    gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
                   end do
                 end if
 
@@ -1142,16 +1142,16 @@
 
                 do ix=1,nx
                   call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid), &
-                  gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+                  gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
                 end do
 
 !c  compute total aqueous component concentrations with incremented
 !c  free species concentrations
 
                 if (analyt_deriv_rt) then
-                  call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)
+                  call atotconc(cnew(:,ivol),cx(:,ivol),jbl,tid)
                 else
-                  call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+                  call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
                 end if
 
 !c  compress total aqueous component concentration vector in case
@@ -1377,8 +1377,8 @@
 !c-------------------------------------------------------------------------
 !c            calculate gas properties + molar fractions
 
-              mdens_g_ivol  = gasm(ng, gnew(1,ivol))            ! gas molar dens
-              mdens_g_brt   = gasm(ng, gbrt(1,ibrt))            ! gas molar dens               
+              mdens_g_ivol  = gasm(ng, gnew(:,ivol))            ! gas molar dens
+              mdens_g_brt   = gasm(ng, gbrt(:,ibrt))            ! gas molar dens               
 
               do ig=1,ng
                 gmfrac_ivol(ig) = gnew(ig,ivol) / mdens_g_ivol  ! molar fractions
@@ -1438,7 +1438,7 @@
               end if
 #endif
 
-              call wgprop(totgnew(1,ivol),totgnew_brt,totgij   ,       &
+              call wgprop(totgnew(:,ivol),totgnew_brt,totgij   ,       &
                       gnew(:,ivol)   ,gbrt(:,ibrt)   ,gij      ,       &
                       gmfrac_ivol    ,gmfrac_brt     ,gmfracij ,       &
                       relpgi         ,relpgj         ,relpgij  ,       &
@@ -1457,7 +1457,7 @@
           
             if (dgm) then
             
-              call dgm_fluxdg (gnew(1,ivol)     ,gbrt(1,ibrt)   ,      &
+              call dgm_fluxdg (gnew(:,ivol)     ,gbrt(:,ibrt)   ,      &
                                gij              ,gmfracij       ,      &
                                zg(ivol)         ,zgbrt(ibrt)    ,      &
                                densgij          ,gpij           ,      &
@@ -1473,7 +1473,7 @@
 
             else if (maxwell) then
             
-              call ms_fluxdg (gnew(1,ivol)      ,gbrt(1,ibrt)   ,      &
+              call ms_fluxdg (gnew(:,ivol)      ,gbrt(:,ibrt)   ,      &
                               gij               ,gmfracij       ,      &
                               zg(ivol)          ,zgbrt(ibrt)    ,      &
                               densgij           ,gpij           ,      &
@@ -1747,7 +1747,7 @@
               else
 !c  for free species
                 do ic=1,nc
-                     gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),&
+                     gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),&
                                       sionnew(ivol),chargec(ic),    &
                                       dhac(ic),dhbc(ic),            &
                                       dhad(tid),dhbd(tid),          &
@@ -1760,7 +1760,7 @@
 !c  for secondary aqueous species
 
                 do ix=1,nx
-                  gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol),&
+                  gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol),&
                                       sionnew(ivol),chargex(ix),    &
                                       dhax(ix),dhbx(ix),            &
                                       dhad(tid),dhbd(tid),          &
@@ -1784,7 +1784,7 @@
               do ir=1,nr
                 ic = n+ir
                 call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),    &
-                gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
               end do
             end if
 
@@ -1793,15 +1793,15 @@
 
             do ix=1,nx
               call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),     &
-              gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
             end do
 
 !c  compute derivative of total aqueous component concentrations 
 
             if (analyt_deriv_rt) then
-              call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)
+              call atotconc(cnew(:,ivol),cx(:,ivol),jbl,tid)
             else
-              call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+              call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
             end if
 
 !c  compress total aqueous component concentration vector in case
@@ -1819,13 +1819,13 @@
 !c  concentrations
 
               do ig = 1,ng
-                call gasconc(cinc(:,tid),gamma(1,ivol),ginc(ig,tid),  &
+                call gasconc(cinc(:,tid),gamma(:,ivol),ginc(ig,tid),  &
                      ig,tkel(ivol),tid)
               end do
 
 !c  compute derivatives of total gaseous component concentrations
 
-              call dtotcong(gnew(1,ivol),ginc(:,tid),dtotg(:,tid),xnug,      &
+              call dtotcong(gnew(:,ivol),ginc(:,tid),dtotg(:,tid),xnug,      &
                             drtinc,iaga,jaga,nc,ng,jbl,namec)
 
 !c  compress derivative of total gaseous component concentration
@@ -1879,7 +1879,7 @@
               end if
 #endif
 
-              call wgpropd(totgnew(1,ivol),totgnew_brt   ,totgij   ,   &
+              call wgpropd(totgnew(:,ivol),totgnew_brt   ,totgij   ,   &
                            relpgi         ,relpgj        ,relpgij  ,   &
                            gdens_ivol     ,gdens_brt     ,densgij  ,   &
                            gvisc_ivol     ,gvisc_brt     ,viscgij  ,   &
@@ -1894,7 +1894,7 @@
           
               if (dgm) then
               
-                call dgm_dfluxdg (gnew(1,ivol)      ,gbrt(1,ibrt)  ,   &
+                call dgm_dfluxdg (gnew(:,ivol)      ,gbrt(:,ibrt)  ,   &
                                   dg                ,dgmfrac       ,   &
                                   zg(ivol)          ,zgbrt(ibrt)   ,   &
                                   densgij           ,gpij          ,   &
@@ -1919,16 +1919,16 @@
                   enddo
                 enddo
                 
-                call ms_dfluxdg  (gnew(1,ivol),gbrt(1,ibrt),           &
-                                    dg          ,dgmfrac     ,         &
-                                    zg(ivol)    ,zgbrt(ibrt) ,         &
-                                    densgij     ,gpij        ,         &
-                                    tkel(ivol)  ,tauijbrt    ,         &
-                                    gporijbrt   ,dijbrt(ibrt),         &
-                                    rverysmall  ,wfac        ,         &
-                                    ipvt        ,equimolar   ,         &
-                                    lumat2      ,fmat        ,         &
-                                    ms_gflux    ,ms_dgflux   )
+                call ms_dfluxdg  (gnew(:,ivol),gbrt(:,ibrt),           &
+                                  dg          ,dgmfrac     ,           &
+                                  zg(ivol)    ,zgbrt(ibrt) ,           &
+                                  densgij     ,gpij        ,           &
+                                  tkel(ivol)  ,tauijbrt    ,           &
+                                  gporijbrt   ,dijbrt(ibrt),           &
+                                  rverysmall  ,wfac        ,           &
+                                  ipvt        ,equimolar   ,           &
+                                  lumat2      ,fmat        ,           &
+                                  ms_gflux    ,ms_dgflux   )
               
               endif
               

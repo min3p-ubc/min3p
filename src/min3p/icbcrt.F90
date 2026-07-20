@@ -271,7 +271,8 @@
       !concentration of reactive transport from multiple zones.
       logical :: flag_set_aq
       
-      integer :: iaq, ic, ig, im, isb, ix, izn, itid
+      !c local parameters
+      integer :: i, iaq, ic, ig, im, isb, ix, izn, itid
 
       real*8 :: rcvt
 
@@ -330,8 +331,8 @@
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
                 
-          call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
-          call totconcfac(c(1,ivol),cxold(1,ivol),totcoldf(1,ivol),izn)
+          call totconcfac(cnew(:,ivol),cx(:,ivol),totcnewf(:,ivol),izn)
+          call totconcfac(c(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
 
         end if
 

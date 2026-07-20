@@ -2802,7 +2802,7 @@
         call lun_free(igsv)
         
         do ivol =1,nngl
-          call distmp(cmnew(1,ivol),phi(1,ivol),area(1,ivol),tid)
+          call distmp(cmnew(:,ivol),phi(:,ivol),area(:,ivol),tid)
         end do
         
       end if

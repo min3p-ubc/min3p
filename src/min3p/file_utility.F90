@@ -481,7 +481,7 @@ module file_utility
       real*8 :: rdummy, rdummy_old, time_lot
       character(len=256) :: strdummy
       logical :: bflag1, bflag2, bflag3, bflag4
-      real*8, parameter :: r0 = 0.0d0, rsmall = 1.0d-4
+      real*8, parameter :: r0 = 0.0d0, rsmall = 1.0d-4, rtiny = 1.0d-10
 
       rewind(iunit,err=20)
 
@@ -529,8 +529,16 @@ module file_utility
           rdummy_old = rdummy
           read(iunit,*,err=10,end=10) rdummy
           irecord = irecord + 1
-          if (rdummy >= time_lot) then
+          !if (rdummy >= time_lot) then
+          if (rdummy - time_lot >= rtiny) then
+            !c to be checked later
             backspace(iunit,err=10)
+            if (irecord > 1) then
+              backspace(iunit,err=10)
+            end if
+
+            write(ilog,*) 'restart position found ',rdummy,'time_lot',time_lot
+
             bflag4 = .false.
             exit
           end if

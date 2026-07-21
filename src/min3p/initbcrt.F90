@@ -2386,7 +2386,9 @@
                          tec_header,prefix,l_prfx,zone_name,l_zone_name,   &
                          mtime,i_append_sim,mtime_append,.true.)
             call minmaxwd(cxc,totcn(:,tid))
-            ctype='free' 
+
+!c  clear array ctype for transport calculations
+            ctype = 'free'
 
 !c  compute total aqueous component concentrations
             call totconc(ccnew,cxc,totcn(:,tid))  
@@ -2738,10 +2740,7 @@
       enddo
 
 !c  clear array ctype for transport calculations
-
-      do ic = 1,nc-1
-        ctype(ic) = 'free'
-      end do
+      ctype = 'free'
 
 !c  determine if transient source chemistry is to be used
 

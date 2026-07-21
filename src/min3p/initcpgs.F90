@@ -284,12 +284,14 @@
         call findstrg(subsection,itmp,found_subsection)
         if (found_subsection) then
           i_append_sim = 1
+          mtime_append = 1
         end if
 
         subsection = 'append results in legacy mode'
         call findstrg(subsection,itmp,found_subsection)
         if (found_subsection) then
           i_append_sim = 2
+          mtime_append = 1
         end if
 
         subsection = 'append results after specified time steps'

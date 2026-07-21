@@ -395,7 +395,8 @@
 !c           updtsvap  = update secondary variables in aqueous phase
 !c ----------------------------------------------------------------------
 
-      subroutine tprfrtlc(totc,c,cx,gammac,gammax,cm,g,cec_l,distcoff,&
+      subroutine tprfrtlc(totc,c,cx,gammac,gammax,actvt,              &
+                          cm,g,cec_l,distcoff,                        &
                           aream,phim,phimold,strion,                  &
                           tempkel,hhead,xg,yg,zg,                     &
                           time,deltat,sw,porvol,fibt,fibc,fibm,       &
@@ -443,7 +444,7 @@
                       ilog, b_writeversion_tecplot, backup_frequency,  &
                       b_output_trans_binary, realbuffer_gb,            &
                       b_output_multizone,b_output_activity,            &
-                      mem_cur, mem_max, memory_monitor,                &
+                      mem_cur, mem_max, memory_monitor, time_io_rs,    &
                       nfloatbit, idbg, ascii_fmt, extended_output_gb,  &
                       b_water_freezing_ratemin, water_freezing_ratemin,&
                       ngb_step, ngb_step_bk, mpropc,                   &
@@ -475,16 +476,16 @@
 
       integer :: i_append_sim, mtime_append
       
-      real*8 :: c, cx, gammac, gammax, strion, totc, time, rootdens,   &
-                zbal, zpos, zneg, ph, pe, eh,                          &
-                tempkel, xg, yg, zg, alk_carb,                         &
-                alk_noncarb, alk_tot, alk_carb_mg, alk_noncarb_mg,     &
-                alk_tot_mg, pres_tot, g, hhead, phim, distcoff,        &
-                sw, porvol, dummy, cec_l, phimold, conc_mol,           &
-                frac_mol, ratem, aream, cm, deltat, gammatemp, tottemp
+      real*8 :: c, cx, gammac, gammax, actvt, strion, totc, time,      &
+                rootdens, zbal, zpos, zneg, ph, pe, eh, tempkel,       &
+                xg, yg, zg, alk_carb, alk_noncarb, alk_tot,            &
+                alk_carb_mg, alk_noncarb_mg, alk_tot_mg,               &
+                pres_tot, g, hhead, phim, distcoff, sw, porvol,        &
+                dummy, cec_l, phimold, conc_mol, frac_mol,             &
+                ratem, aream, cm, deltat, gammatemp, tottemp
       real*8, external :: satindex, pressure_melt_k
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r1d3 = 1.0d3
  
       external alkcalc, comptotc, phpe, rateredx,                      &
                sorbspc, totconc, molconc, rategas, rategasd,           &
@@ -497,7 +498,7 @@
       logical tec_header,update_porosity
                                                                        
       dimension totc(*),c(*),cx(*),cm(*),g(*),distcoff(*),gammac(*),   &
-                gammax(*),aream(*),phim(*),phimold(*)
+                gammax(*),actvt(*),aream(*),phim(*),phimold(*)
       
       character*72, allocatable :: nametemp(:)
       integer (type_i4), allocatable :: l_nametemp(:)
@@ -2985,10 +2986,39 @@
 !cdsu final results when transient output is used. 
 
 !c  update secondary variables before print-out
-      call updtsvap(c,cx,gammac,gammax,strion,tid)
+      call updtsvap(c,cx,gammac,gammax,strion,actvt,tid)
   
 !c  total aqueous component concentrations  
       call totconc(c,cx,totc)
+
+!c  compress total aqueous component concentration vector in case of
+!c  equilibrium reactions.
+      if (redox_equil.and.nr.gt.0) then
+        call comptotc(totc) 
+      end if
+
+!c  master variables
+
+      ! Compute charge balance
+      call cbalance(c,cx,zbal,zpos,zneg)
+
+      ! Compute pH, pe, Eh
+      call phpe(c,gammac,ph,pe,eh,tempkel)      
+
+      ! Compute alkalinity
+      if (compute_alkalinity) then
+        call alkcalc(alk_carb,alk_noncarb,alk_tot,                   &
+                     alk_carb_mg,alk_noncarb_mg,alk_tot_mg,          &
+                     alkfacc,alkfacx,c,cx,                           &
+                     iax,jax,nc,nx,namec,namex)
+      else                     !CMX
+        alk_carb=r0
+        alk_noncarb=r0
+        alk_tot=r0
+        alk_carb_mg=r0
+        alk_noncarb_mg=r0
+        alk_tot_mg=r0
+      end if
 
       !c  print out results of current time step
 
@@ -3084,27 +3114,6 @@
             end if
           end if
         end if     !c activity coefficients
-
-!c  master variables
-
-        ! Compute charge balance
-        call cbalance(c,cx,zbal,zpos,zneg)
-
-        call phpe(c,gammac,ph,pe,eh,tempkel)      
-
-        if (compute_alkalinity) then
-          call alkcalc(alk_carb,alk_noncarb,alk_tot,                   &
-                       alk_carb_mg,alk_noncarb_mg,alk_tot_mg,          &
-                       alkfacc,alkfacx,c,cx,                           &
-                       iax,jax,nc,nx,namec,namex)
-        else                     !CMX
-          alk_carb=r0
-          alk_noncarb=r0
-          alk_tot=r0
-          alk_carb_mg=r0
-          alk_noncarb_mg=r0
-          alk_tot_mg=r0
-        end if
 
         if (b_output_trans_binary) then
           if ((ph_output).and.(pe_output)) then
@@ -3529,8 +3538,8 @@
           !end do
        
           if (update_porosity) then
+            nvars = nm+2
             if (b_output_trans_binary) then
-              nvars = nm+2
               realbuffer_gb(1:nvars) =  (/time,(phi_out(im),im=1,nm),  &
                                           porvol/)
             else
@@ -3545,8 +3554,8 @@
             end if
 
           else
+            nvars = nm+2
             if (b_output_trans_binary) then
-              nvars = nm+2
               realbuffer_gb(1:nvars) =  (/time,(phi_out(im),im=1,nm),  &
                                           porvol/)
             else
@@ -3570,7 +3579,7 @@
             offset_bv = offset_bv + nvars*nfloatbit
           end if
 
-!c  mineral dissolution-precipitation rates
+!c  mineral dissolution-precipitation rates and mass over time
 
           do im = 1,nm
 
@@ -3608,11 +3617,9 @@
 
           end do
 
-!CMX
           istart = iamd(1)
           istop = iamd(nm+1)-1    
-!CMX
-        
+
           if (b_output_trans_binary) then
             nvars = istop-istart+2
             realbuffer_gb(1:nvars) =  (/time,(ratemp(ireac,tid),       &
@@ -3702,9 +3709,9 @@
           if (b_output_trans_binary) then
             nvars = i1+1
             realbuffer_gb(1:nvars) =  (/time,(valuetemp(imi),imi=1,i1)/)
-            call binary_write_data(fibis, 1,(/ngb_tstep/),           &
+            call binary_write_data(fibis, 1,(/ngb_tstep/),             &
                          offset_bis_ijk,.true.)
-            call binary_write_data(fibis, nvars,                     &
+            call binary_write_data(fibis, nvars,                       &
                          realbuffer_gb,offset_bis,.true.) 
 
             offset_bis = offset_bis + nvars*nfloatbit
@@ -3721,12 +3728,6 @@
           end if
         
         end if
-      end if
-
-!c  compress total aqueous component concentration vector in case of
-!c  equilibrium reactions.
-      if (redox_equil.and.nr.gt.0) then
-        call comptotc(totc) 
       end if
 
       call memory_monitor(-sizeof(nametemp),'nametemp',.false.)

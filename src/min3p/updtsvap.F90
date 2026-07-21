@@ -140,7 +140,7 @@
 !c           ionstr    = compute ionic strength
 !c ----------------------------------------------------------------------
  
-      subroutine updtsvap (c,cx,gammac,gammax,strion,tid)
+      subroutine updtsvap (c,cx,gammac,gammax,strion,actvt,tid)
  
       use parm
       use chem
@@ -148,7 +148,7 @@
 
       implicit none
       
-      real*8 :: c,cx,gammac,gammax,strion
+      real*8 :: c,cx,gammac,gammax,strion,actvt 
 
       integer :: tid 
       
@@ -158,7 +158,7 @@
 
       external secspec, ionstr
 
-      dimension c(*),cx(*),gammac(*),gammax(*)
+      dimension c(*),cx(*),gammac(*),gammax(*),actvt(*)
 
 !c  activity coefficients for free species
       if (update_activity(tid).eq.'double_update') then
@@ -208,7 +208,7 @@
 
       do ic = 1,nc-1
         if (ctype(ic).eq.'fixed') then
-          c(ic) = actv(ic)/gammac(ic) 
+          c(ic) = actvt(ic)/gammac(ic) 
         end if
       end do
 
@@ -219,7 +219,7 @@
         do ir=1,nr
           ic = nopu+ir
           call secspec(c,c(ic),eqr(ir,tid),gammac,gammac(ic),xnur,    &
-                       iarc,jarc,nc,ir)
+                       iarc,jarc,ir)
         end do
       end if
 
@@ -227,7 +227,7 @@
  
       do ix = 1,nx
         call secspec(c,cx(ix),eqx(ix,tid),gammac,gammax(ix),xnux,     &
-                     iax,jax,nc,ix)
+                     iax,jax,ix)
       end do
  
 !c  update ionic strength

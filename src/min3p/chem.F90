@@ -449,6 +449,7 @@
       integer (type_i4) :: ilbs
       integer (type_i4) :: ilbt
       integer (type_i4) :: ilbv
+      integer (type_i4) :: ilbis
       integer (type_i4) :: ilbx
       integer (type_i4) :: ilbac
 

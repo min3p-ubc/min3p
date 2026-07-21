@@ -252,18 +252,6 @@
       end if
 
 !c  assign unit numbers
-
-      !ilbt = 40        !total aqueous component concentrations
-      !ilbc = 41        !species concentrations
-      !ilbm = 42        !master variables
-      !ilbg = 43        !partial gas pressures
-      !ilbgr = 50       !degassing rates
-      !ilbi = 44        !intra-aqueous kinetic reactions
-      !ilbb = 45        !sorbed species concentrations
-      !ilbs = 46        !mineral saturation indices
-      !ilbv = 47        !mineral volume fractions
-      !ilbd = 48        !mineral dissolution-precipitation rates
-      !ilbx = 49        !saturation indices (excluded minerals)
       
       ilbt = lun_get()        !total aqueous component concentrations
       ilbc = lun_get()        !species concentrations
@@ -277,6 +265,10 @@
       ilbd = lun_get()        !mineral dissolution-precipitation rates
       ilbx = lun_get()        !saturation indices (excluded minerals)
       ilbac = lun_get()       !species concentrations
+
+      if (iso_output) then
+        ilbis = lun_get()     !activity coefficients
+      end if
 
 !cdsu concentration of radioelement related to noble gas ingrowth
       if (b_use_ngi .and. ngre_i > 0) then
@@ -586,10 +578,10 @@
             do ig = 1,ng                                                 
               if (ig.lt.9) then                                          
                 write(ifls,'(i1,8x,a30,2x,a)') ig+1,nameg(ig),         &
-     &                                        'mol L^-1 d^-1'            
+     &                                        'moles/l h2o/day'            
               else                                                       
                 write(ifls,'(i2,7x,a30,2x,a)') ig+1,nameg(ig),         &
-     &                                        'mol L^-1 d^-1'
+     &                                        'moles/l h2o/day'
               end if
             end do
           
@@ -600,14 +592,15 @@
       end if         !(ng.gt.0)
  
 !c  oxidation-reduction rates
+!c  note: file unit ilbi is shared with intro-aqueous kinetic reaction
 !c ----------------------------------------------------------------------
 
       if (naq.eq.0.and.(nr.gt.0).and.(.not.redox_equil)) then
 
         if (b_output_trans_binary) then
-          call binary_file_open(PETSC_COMM_SELF,               &
+          call binary_file_open(PETSC_COMM_SELF,                       &
                        ilbi, prefix(:l_prfx)//'_'//                    &
-                       suffix(:l_sufx)//'.lbi', .true.)
+                       suffix(:l_sufx)//'.lbr', .true.)
         else 
           open(ilbi,file=prefix(:l_prfx)//'_'//                        &
                          suffix(:l_sufx)//'.lbr',                      &
@@ -842,7 +835,7 @@
 !c  mineral volume fractions
 !c ----------------------------------------------------------------------
         if (b_output_trans_binary) then
-          call binary_file_open(PETSC_COMM_SELF,               &
+          call binary_file_open(PETSC_COMM_SELF,                       &
                        ilbv, prefix(:l_prfx)//'_'//                    &
                        suffix(:l_sufx)//'.lbv', .true.)
         else 

@@ -65,12 +65,12 @@
 !c external: -  
 !c ----------------------------------------------------------------------
   
-      subroutine secspec(c,c2,eqc2,gammac1,gammac2,xnuc2,ia,ja,n,i2)
+      subroutine secspec(c,c2,eqc2,gammac1,gammac2,xnuc2,ia,ja,i2)
  
       implicit none
       
       real*8 :: c, c2, gammac1, gammac2, xnuc2
-      integer :: ia, ja, n, i2
+      integer :: ia, ja, i2
 
       dimension c(*),gammac1(*),xnuc2(*),ia(*),ja(*)
       

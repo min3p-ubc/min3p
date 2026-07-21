@@ -368,7 +368,7 @@
 !c           updtsvap  = update secondary variables in aqueous phase
 !c ----------------------------------------------------------------------
  
-      subroutine jaclc(cnew,cx,gammac,gammax,sw,sa,por,tid)
+      subroutine jaclc(cnew,cx,gammac,gammax,actvt,sw,sa,por,tid)
       
       use parm
       use chem
@@ -379,7 +379,7 @@
 #endif 
       implicit none
       
-      real*8 :: cnew, cx, gammac, gammax, sw, sa, por
+      real*8 :: cnew, cx, gammac, gammax, actvt, sw, sa, por
       
       integer :: tid 
       
@@ -390,7 +390,7 @@
                dratemin_new, dtotconc, rateint, rateint_new,         &
                ratemin, ratemin_new, totint, updtsvap
 
-      dimension cnew(*),cx(*),gammac(*),gammax(*)
+      dimension cnew(*),cx(*),gammac(*),gammax(*),actvt(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       
@@ -429,7 +429,7 @@
           do ir=1,nr
             ic = nopu+ir
             call secspec(cnew,cnew(ic),eqr(ir,tid),gammac,gammac(ic), &
-     &                   xnur,iarc,jarc,nc,ir)
+     &                   xnur,iarc,jarc,ir)
           end do
         end if
 
@@ -437,7 +437,7 @@
 
         do ix=1,nx
           call secspec(cnew,cx(ix),eqx(ix,tid),gammac,gammax(ix),     &
-     &                 xnux,iax,jax,nc,ix)
+     &                 xnux,iax,jax,ix)
         end do
 
 !c  following iterations
@@ -447,7 +447,7 @@
 !c  unit activity coefficients
 !c  -> update only concentrations of secondary aqueous species
 !c     and compute ionic strength as a secondary variable 
-        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),tid)
+        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,tid)
 
 !c  variable activity coefficients
 !c  -> double update of secondary variables
@@ -457,7 +457,7 @@
 
         if (update_activity(tid).ne.'no_update') then
  
-          call updtsvap(cnew,cx,gammac,gammax,sion1(tid),tid)
+          call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,tid)
 
         end if
 
@@ -698,15 +698,15 @@
 !c----------------------------------------------------------------------
           if (nsb_ion.gt.0.and.explicit_surface_ion) then
             blc(ibl,tid) = blc(ibl,tid) - sw*por*                     &
-     &                     (totcsn_ion(ibl,tid)-totcso_ion(ibl))/     &
-     &                     delt_lc(tid)
+                           (totcsn_ion(ibl,tid)-totcso_ion(ibl))/     &
+                           delt_lc(tid)
           end if
 !c----------------------------------------------------------------------
 !c  contributions from sorbed phase         
 !c----------------------------------------------------------------------
           if (nsb_surf.gt.0.and.explicit_surface_surf) then
             blc(ibl,tid) = blc(ibl,tid)-sw*por*                       &
-     &                     (totcsn_surf(ibl,tid)-totcso_surf(ibl))/   &
+                           (totcsn_surf(ibl,tid)-totcso_surf(ibl))/   &
                            delt_lc(tid)
           end if
 !c----------------------------------------------------------------------
@@ -772,7 +772,7 @@
           do ir=1,nr
             ic = nopu+ir
             call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),gammac, &
-                 gammac(ic),xnur,iarc,jarc,nc,ir)
+                 gammac(ic),xnur,iarc,jarc,ir)
           end do
         end if
 
@@ -781,7 +781,7 @@
  
         do ix = 1,nx
           call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),gammac,  &
-               gammax(ix),xnux,iax,jax,nc,ix)   
+               gammax(ix),xnux,iax,jax,ix)   
         end do
 
 !c  compute derivatives of total aqueous component concentrations

@@ -296,16 +296,17 @@
 !c                       (local chemistry)
 !c ----------------------------------------------------------------------
  
-      subroutine gcreact(cnew,cold,cx,gammac,gammax,gnew,sw,sa,por,     &
-                        igen,ilog,tid,idbg,tec_header,prefix,l_prfx,    &
-                        zone_name,l_zone_name,mtime,i_append_sim,       &
-                        mtime_append)
+      subroutine gcreact(cnew,cold,cx,gammac,gammax,actvt,             &
+                         gnew,sw,sa,por,igen,ilog,tid,idbg,            &
+                         tec_header,prefix,l_prfx,zone_name,           &
+                         l_zone_name,mtime,i_append_sim,mtime_append,  &
+                         lc_output)
      
       use parm
       use chem
       use nobleGasIngrowth, only : conc_ngre_loc
       use dens, only : aq_conc_field
-      use gen, only : rank, b_enable_output
+      use gen, only : delt, time_io, ngb_tstep_gbl, rank, b_enable_output
       use multidiff, only : hmulti_diff
       !use math_common, only : math_common_linear_norm
 
@@ -315,20 +316,22 @@
  
       implicit none
       
-      real*8 :: cnew,cold,cx,gammac,gammax,gnew,sw,sa,por
+      real*8 :: cnew,cold,cx,gammac,gammax,actvt,gnew,sw,sa,por
       
       integer :: igen,ilog,tid,idbg,l_prfx,l_zone_name,mtime
       
       integer :: i_append_sim, mtime_append
 
-      integer :: i, ic, im, istart, istop, istart2, istop2,             &
-                 ireac, ilbis, i1, i2, i3, ii, ic2, icount, icur, next
+      logical :: lc_output
+
+      integer :: i, ic, im, istart, istop, istart2, istop2,            &
+                 ireac, i1, i2, i3, ii, ic2, icount, icur, next
       
-      real*8 :: time, time_io, delt_io, gammatemp
+      real*8 :: time_lc, time_io_lc, delt_io_lc, gammatemp
       real*8, external :: satindex
 
-      external comptotc, simq, totconc, totcona, tprfrtlc,    &
-               updtsvap, jaclc, updatelc, chrgcorr, surfcomp,           &
+      external comptotc, simq, totconc, totcona, tprfrtlc,             &
+               updtsvap, jaclc, updatelc, chrgcorr, surfcomp,          &
                tsteplc, updtsvmp, updtsvgp    
 
       logical :: tec_header
@@ -341,7 +344,7 @@
       character*72 :: zone_name
       character*72 :: update_activity_save
 
-      dimension cnew(*),cold(*),cx(*),gammac(*),gammax(*),gnew(*)
+      dimension cnew(*),cold(*),cx(*),gammac(*),gammax(*),gnew(*),actvt(*)
 
       !real*8 :: alc_bk(nc-1,nc-1), blc_bk(nc-1), rnorm
 
@@ -353,8 +356,8 @@
       done = .false.
       ntstp_lc(tid) = 0
       ittot_lc(tid) = 0
-      time = r0
-      time_io = r0
+      time_lc = r0
+      time_io_lc = r0
       false_logical = .false.
 
 
@@ -402,7 +405,7 @@
             ittot_lc(tid) = ittot_lc(tid)+1
 
 !c  construct Jacobian matrix and rhs-vector 
-            call jaclc(cnew,cx,gammac,gammax,sw,sa,por,tid)
+            call jaclc(cnew,cx,gammac,gammax,actvt,sw,sa,por,tid)
 
 !c  solve for update
 !c  linear solver type of local chemistry, 0 - Gaussian (default), 1 - QR, 2 - SVD
@@ -474,7 +477,7 @@
         end do                                 !end - Newton loop
  
 !c  update secondary variables in water phase
-        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),tid)
+        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,tid)
 
 !c  compute composition of surface sites based on equilibrated water
 !c  composition
@@ -551,14 +554,12 @@
         end if
 
 !c  write data for ph-pc diagrams
-        if(rank == 0) then  
-          if (lb_output .and. ph_sweep .and. b_enable_output) then       
-            call tprfrtlc(totcn(:,tid),cnew,cx,gammac,gammax,          &
-                     cmcnew(:,tid),gnew,                               &
-                     cec(tid),distcoff_lc,areac,                       &
-                     phic(:,tid),phicold(:,tid),                       &
-                     sion1(tid),tempk,r0,r0,r0,r0,                     &
-                     ph_fixed,delt_lc(tid),sw,por,                     &
+        if(rank == 0 .and. b_enable_output) then  
+          if (lb_output .and. ph_sweep .and. lc_output) then       
+            call tprfrtlc(totcn(:,tid),cnew,cx,gammac,gammax,actv,     &
+                     cmcnew(:,tid),gnew,cec(tid),distcoff_lc,areac,    &
+                     phic(:,tid),phicold(:,tid),sion1(tid),tempk,      &
+                     r0,r0,r0,r0,ph_fixed,delt_lc(tid),sw,por,     &
                      ilbt,ilbc,ilbm,ilbg,ilbgr,ilbi,ilbb,ilbs,         &
                      ilbv,ilbd,ilbx,ilbis,ilbac,ilbre,                 &
                      offset_ilbt,offset_ilbc,offset_ilbm,offset_ilbg,  &
@@ -617,14 +618,12 @@
 
 !c  optional printout of transient data
       
-          if(rank == 0) then
-            if (lb_output .and. b_enable_output) then
-              call tprfrtlc(totcn(:,tid),cnew,cx,gammac,gammax,        &
-                      cmcnew(:,tid),gnew,                              &
-                      cec(tid),distcoff_lc,areac,                      &
-                      phic(:,tid),phicold(:,tid),                      &
-                      sion1(tid),tempk,r0,r0,r0,r0,                    &
-                      time_io,delt_lc(tid),sw,por,                     &
+          if(rank == 0 .and. b_enable_output) then
+            if (lb_output .and. lc_output) then
+              call tprfrtlc(totcn(:,tid),cnew,cx,gammac,gammax,actv,   &
+                      cmcnew(:,tid),gnew,cec(tid),distcoff_lc,areac,   &
+                      phic(:,tid),phicold(:,tid),sion1(tid),tempk,     &
+                      r0,r0,r0,r0,time_io_lc,delt_lc(tid),sw,por,      &
                       ilbt,ilbc,ilbm,ilbg,ilbgr,ilbi,ilbb,ilbs,        &
                       ilbv,ilbd,ilbx,ilbis,ilbac,ilbre,                &
                       offset_ilbt,offset_ilbc,offset_ilbm,             &
@@ -646,7 +645,7 @@
 !c  final solution time is reached -> return
 
 
-          if (time.gt.tfinal_lc.and.tstart_to_tfinal) then
+          if (time_lc.gt.tfinal_lc.and.tstart_to_tfinal) then
             done = .true.
             all_saturated = .true.
           end if
@@ -669,7 +668,7 @@
             end if
 
             ntstp_lc(tid) = ntstp_lc(tid) + 1
-            time = time+delt_lc(tid)
+            time_lc = time_lc+delt_lc(tid)
             if (ntstp_lc(tid).eq.1 ) then
               if(rank == 0 .and. b_enable_output)  then  
                 write(ilog,'(/2a/72a)') 'enter timeloop - ',    &
@@ -679,8 +678,8 @@
 
 !c  convert time units to I/O units
 
-            time_io = time/time_factor_lc
-            delt_io = delt_lc(tid)/time_factor_lc
+            time_io_lc = time_lc/time_factor_lc
+            delt_io_lc = delt_lc(tid)/time_factor_lc
 
 !c  write time step information to screen
 
@@ -690,8 +689,8 @@
 
                 write(ilog,'(/72a)')('-',i=1,72)
                 write(ilog,'(a,i5,2x,a,1pe15.6e3,1x,a,1x,a,1pe15.6e3,1x,a)')&
-                      'timestep:',ntstp_lc(tid),'time:',time_io,       &
-                      time_unit_lc,'delt: ',delt_io,time_unit_lc
+                      'timestep:',ntstp_lc(tid),'time:',time_io_lc,       &
+                      time_unit_lc,'delt: ',delt_io_lc,time_unit_lc
                 write(ilog,'(72a/)')('-',i=1,72)
               
               end if

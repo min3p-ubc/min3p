@@ -1252,10 +1252,10 @@
             do ig = 1,ng                                               
               if (ig.lt.7) then                                        
                 write(ifls,'(i1,8x,a30,2x,a)') ig+3,nameg(ig),        &
-                                              'mol L^-1 d^-1'
+                                              'moles/l h2o/day'
               else                                                     
                 write(ifls,'(i2,7x,a30,2x,a)') ig+3,nameg(ig),        &
-                                              'mol L^-1 d^-1'
+                                              'moles/l h2o/day'
               end if
             end do
             

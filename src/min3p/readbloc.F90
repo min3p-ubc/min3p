@@ -59,6 +59,7 @@
      &                     isrewind)
       
       use gen, only : rank, ilog
+      use file_utility, only : makelowercase
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -88,12 +89,15 @@
  
 100   continue
       read(nin,*,end=400,err=999) dummy1
+      call makelowercase(dummy1)
       if (dummy1.eq.section_header) then
         found = .true.
 200     continue
         read(nin,*,end=400,err=999) dummy1
+        call makelowercase(dummy1)
         backspace(nin) 
         read(nin,'(a)') dummy2
+        call makelowercase(dummy2)
         if (dummy2(1:1).ne.'!') then
           write(nout,'(a)') trim(dummy2)
         end if

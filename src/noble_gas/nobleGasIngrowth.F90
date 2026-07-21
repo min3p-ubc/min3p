@@ -629,9 +629,11 @@
 
                     if (index(strbuffer,'neutron capture').eq.2) then
                       read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_nce(i)
+                      call makelowercase(noble_gas_ingrowth(ingi)%name_nu_nce(i))
                     else if (index(strbuffer,'first order decay').eq.2 .or. &
                              index(strbuffer,'spontaneous fission').eq.2) then 
                       read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_re(i)
+                      call makelowercase(noble_gas_ingrowth(ingi)%name_nu_re(i))
                     end if
 
                     read(icnv,'(a)',end=998,err=999) strbuffer
@@ -686,6 +688,7 @@
                         do i2 = 1, num2
                           read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_e(i2),  &
                                                        noble_gas_ingrowth(ingi)%a_nu_e(i2)
+                          call makelowercase(noble_gas_ingrowth(ingi)%name_nu_e(i2))
                         end do
 
                         do i2 = 1, num2
@@ -697,6 +700,8 @@
                                                          noble_gas_ingrowth(ingi)%b_nu_pre(1,i2)
                             read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_pre(2,i2), &
                                                          noble_gas_ingrowth(ingi)%b_nu_pre(2,i2)
+                            call makelowercase(noble_gas_ingrowth(ingi)%name_nu_pre(1,i2))
+                            call makelowercase(noble_gas_ingrowth(ingi)%name_nu_pre(2,i2))
                           else
                             if (rank == 0) then
                               write(*,*) 'Error in line: '//trim(strbuffer)

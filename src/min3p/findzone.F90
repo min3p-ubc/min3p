@@ -52,13 +52,15 @@
  
       subroutine findzone(subsection,itmp,found_subsection,izone, &
                          zone_name)
+
+      use file_utility, only : makelowercase
       
       implicit none
       
       integer :: itmp, izone, izone_temp
       logical found_subsection
       character*72 subsection,string,zone_name
- 
+
 !c  rewind input file
 
       rewind(itmp)
@@ -68,6 +70,7 @@
       found_subsection = .false.
       do while (.not.found_subsection)
         read(itmp,*,end=999,err=999) string
+        call makelowercase(string)
         if (string.eq.subsection) then
           found_subsection = .true.
         end if
@@ -77,6 +80,7 @@
             found_subsection = .false.
           else
             read(itmp,*,end=999,err=999) zone_name
+            call makelowercase(zone_name)
           end if
         end if
       end do

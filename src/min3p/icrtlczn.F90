@@ -626,6 +626,8 @@
             ierrcd = 9
             read(icnv,*,err=999,end=999) nametemp
             read(icnv,*,err=999,end=999) sdtype(i), nfact
+
+            call makelowercase(nametemp)
           
             if (sdtype(i) .eq. 'equation') then
               icount = 0
@@ -673,6 +675,7 @@
 !c read the inhibition component. Note: only one component is allowed.    
               ierrcd = 12          
               read(icnv,*,err=999,end=999) nametemp1
+              call makelowercase(nametemp1)
               icount_ic = 0
               do ic=1,nc
                 if (nametemp1 .eq. namec(ic)) then
@@ -730,11 +733,13 @@
             found = .false.
             ierrcd = 14
             read(icnv,*,err=999,end=999) name
+            call makelowercase(name)
             do ic = 1,nc
               if (name.eq.namec(ic)) then
                 backspace(icnv)
                 ierrcd = 15
                 read (icnv,*,err=999,end=999) name, distcoff_lc(ic)
+                call makelowercase(name)
                 found = .true.
               end if
             end do
@@ -821,6 +826,8 @@
               read(icnv,*,err=999,end=999) name,sitemass,sitearea,    &
                                           sitedens
 
+              call makelowercase(name)
+
               site_mass_tmp(isites) = sitemass * sitearea * sitedens  &
                                       * 1.0d+18 / avog_const
 
@@ -882,7 +889,7 @@
 !c  section 'surface sites of ion-exchange' within Data block 2: geochemical system.
 
         if (nsites_ion .gt. 1) then
-            subsection = 'CEC fraction of multisite ion exchange'
+            subsection = 'cec fraction of multisite ion exchange'
 
             call findstrg(subsection,icnv,found_subsection)
 
@@ -939,7 +946,9 @@
               read(icnv,*,err=999,end=999) name,sitemass,sitearea,    &
                                           sitedens
               site_mass_tmp(isites) = sitemass * sitearea * sitedens  &
-                                     * 1.0d+18 / avog_const                                          
+                                     * 1.0d+18 / avog_const
+                                     
+              call makelowercase(name)
 
               if (name.eq.namec(ic)) then
                 site_area(isites) = sitearea
@@ -1182,6 +1191,7 @@
             ierrcd = 30
             do iirm = 1, nirm
               read(icnv,*,err=999,end=999) name_irm
+              call makelowercase(name_irm)
               found = .false.
 
               do im = 1, nm

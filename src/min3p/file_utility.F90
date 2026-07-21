@@ -227,7 +227,8 @@ module file_utility
 
         do while(bflag)
 
-          read(iunit, "(a)", iostat = istat) strbuffer
+          read(iunit, "(a)", iostat = istat, end=998) strbuffer
+
           strbuffer_bk = strbuffer
       
           if (istat > 0) then             !Error in reading  
@@ -283,6 +284,11 @@ module file_utility
 
           end if
 
+          cycle
+
+998       continue
+          bflag = .false.
+
         end do
 
 #ifdef PGI
@@ -313,8 +319,9 @@ module file_utility
         character(len=*), intent(inout) :: str
         character(len=*), intent(in) :: str2
         logical, intent(in) :: flagQuote
-
         logical :: matched
+
+        call makelowercase(str)
 
         matched = .false.
 

@@ -600,7 +600,8 @@
      
 !c  modify reaction product for irreversible reactions - log K control
 
-    elseif (rtype_aq(iaq).eq.'irreversible - log K control') then
+    elseif (rtype_aq(iaq).eq.'irreversible - log K control' .or.       &
+            rtype_aq(iaq).eq.'irreversible - log k control') then
 
          prodrc = prodrc * dmax1(r0,(prodrc * (r1 - sataq(iaq,tid))))
          if (prodrc.gt.r0) then

@@ -5256,7 +5256,7 @@
 
             elseif (.not.noncompetitive_sorption) then
               
-              if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
+              if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
           
                 if (b_output_binary) then
                   realbuffer7((ivol_l-1)*nvarsgsb+1:(ivol_l-1)*        &
@@ -5321,7 +5321,7 @@
 
             else
               
-              if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
+              if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
                 if (b_output_binary) then  
                   realbuffer7((ivol_l-1)*nvarsgsb+1:(ivol_l-1)*        &
                             nvarsgsb+3) = (/xg(ivol),yg(ivol),zout/)

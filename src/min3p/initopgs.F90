@@ -1768,6 +1768,9 @@
           do i=1,nip
             ierrcd = 17
             read(itmp,*,err=999,end=999) inic, (namet(ii),ii = 1,inic)
+            do ii = 1,inic
+              call makelowercase(namet(ii))
+            end do
             read(itmp,*,err=999,end=999) (isodeltat(ii), ii=1,inic-1)    
             iamdisoo(i+1) = iamdisoo(i) + inic
             icount = 0
@@ -1838,6 +1841,7 @@
           do imb = 1,nmb
             ierrcd = 19
             read(itmp,*,err=999,end=999) namemb(imb)
+            call makelowercase(namemb(imb))
           end do
 
         end if           !(found_subsection)

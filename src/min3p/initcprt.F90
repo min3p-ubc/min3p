@@ -397,7 +397,8 @@
             averaging_diffusion = .true.
             type_averaging_De='harmonic'
           elseif (subsection.eq.'arithmetic' .or. &
-                  subsection.eq.'arithmetic De') then
+                  subsection.eq.'arithmetic De' .or. &
+		  subsection.eq.'arithmetic de') then
             averaging_diffusion = .true.
             type_averaging_De='arithmetic'
           elseif (subsection.eq.'pseudo element') then

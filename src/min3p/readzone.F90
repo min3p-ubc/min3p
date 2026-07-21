@@ -61,6 +61,7 @@
       subroutine readzone (nin,nout,ilog,zone_name,found)
       
       use gen, only : rank, b_enable_output
+      use file_utility, only : makelowercase
 #ifdef PETSC      
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -87,12 +88,15 @@
  
 100   continue
       read(nin,*,end=400,err=999) dummy1
+      call makelowercase(dummy1)
       if (trim(dummy1).eq.trim(zone_name)) then
         found = .true.
 200     continue
         read(nin,*,end=500,err=999) dummy1
+        call makelowercase(dummy1)
         backspace(nin) 
         read(nin,'(a)',err=999) dummy2
+        call makelowercase(dummy2)
         if (dummy2(1:1).ne.'!') then
           write(nout,'(a)') trim(dummy2)
         end if
@@ -148,6 +152,7 @@
       subroutine readzone_end_with_dbsbk (nin,nout,nout_bk,ilog,zone_name,zone_name_end,found)
       
       use gen, only : rank, b_enable_output
+      use file_utility, only : makelowercase
 #ifdef PETSC      
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -174,6 +179,7 @@
  
 100   continue
       read(nin,*,end=400,err=999) dummy1
+      call makelowercase(dummy1)
       if (trim(dummy1).eq.trim(zone_name)) then
         found = .true.
         write(nout,'(a)') "'"//trim(zone_name)//"'"
@@ -182,8 +188,10 @@
         end if
 200     continue
         read(nin,*,end=500,err=999) dummy1
+        call makelowercase(dummy1)
         backspace(nin) 
         read(nin,'(a)',err=999) dummy2
+        call makelowercase(dummy2)
         if (dummy2(1:1).ne.'!') then
           write(nout,'(a)') trim(dummy2)
           if (nout_bk > 0 .and. rank == 0) then

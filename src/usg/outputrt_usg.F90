@@ -2808,24 +2808,6 @@
               if (nsb_surf > 0) then
                 csb_surf_vols(:,inode) = csb_surf(:,tid)
               end if
-              !if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
-              !  write(igsb,ascii_fmt)                                  &
-              !        xg(inode),yg(inode),zout,                        &
-              !        (cnew(iaic(isites),inode),                       &
-              !        isites=1,nsites),                                &
-              !        (csb_ion(isb,tid),isb=1,nsb_ion),                &
-              !        (csb_surf(isb,tid),isb=1,nsb_surf)
-              !else
-              !  ! unit for SCM concentration in 'mol/L bulk'
-              !  write(igsb,ascii_fmt)                                  &
-              !        xg(inode),yg(inode),zout,                        &
-              !        (cnew(iaic(isites),inode)*                       &
-              !        sanew(inode)*pornew(inode),                      &
-              !        isites=1,nsites),                                &
-              !        (csb_ion(isb,tid),isb=1,nsb_ion),                &
-              !        (csb_surf(isb,tid)*sanew(inode)*pornew(inode),   &
-              !        isb=1,nsb_surf)
-              !end if
 
 !c  competitive and non-competitive sorption
 
@@ -2841,28 +2823,6 @@
               if (nsb_surf > 0) then
                 csb_surf_vols(:,inode) = csb_surf(:,tid)
               end if
-              !if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
-              !  write(igsb,ascii_fmt)                                  &
-              !        xg(inode),yg(inode),zout,                        &
-              !        (totan(ianc,tid),                                &
-              !        ianc=1,nanc),                                    &
-              !        (cnew(iaic(isites),inode),                       &
-              !        isites=1,nsites),                                &
-              !        (csb_ion(isb,tid),isb=1,nsb_ion),                &
-              !        (csb_surf(isb,tid),isb=1,nsb_surf)
-              !else
-              !  ! unit for SCM concentration in 'mol/L bulk'
-              !  write(igsb,ascii_fmt)                                  &
-              !        xg(inode),yg(inode),zout,                        &
-              !        (totan(ianc,tid),                                &
-              !        ianc=1,nanc),                                    &
-              !        (cnew(iaic(isites),inode)*                       &
-              !        sanew(inode)*pornew(inode),                      &
-              !        isites=1,nsites),                                &
-              !        (csb_ion(isb,tid),isb=1,nsb_ion),                &
-              !        (csb_surf(isb,tid)*sanew(inode)*pornew(inode),   &
-              !        isb=1,nsb_surf)
-              !end if
               
             end if
 
@@ -4195,7 +4155,7 @@
 
               elseif (.not.noncompetitive_sorption) then
 
-                if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
+                if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
                   do isites = 1,nsites
                     do inode = 1, num_nodes
                       realbuffer(inode) = cnew(iaic(isites),inode)
@@ -4298,7 +4258,7 @@
                   end if
                 end do
 
-                if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
+                if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
                     
                   do isites = 1,nsites
                     do inode = 1, num_nodes
@@ -4421,7 +4381,7 @@
               elseif (.not.noncompetitive_sorption) then
                 write(igsb,'(a,1x,i12)') "POINT_DATA",num_nodes
 
-                if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
+                if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
                   do isites = 1,nsites
                     write(igsb,'(3a)') "SCALARS ",namec(iaic(isites))(:l_namec(iaic(isites)))," double"
                     write(igsb,'(a)') "LOOKUP_TABLE default"
@@ -4482,7 +4442,7 @@
                   end do
                 end do
 
-                if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then                   
+                if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then                   
                   do isites = 1,nsites
                     write(igsb,'(3a)') "SCALARS ",namec(iaic(isites))(:l_namec(iaic(isites)))," double"
                     write(igsb,'(a)') "LOOKUP_TABLE default"

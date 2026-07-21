@@ -218,6 +218,7 @@
 !cprovi surface tension of water at 25oC
 !cprovi------------------------------------------------------      
       subsection = 'surface tension of water at 25oC'
+      call makelowercase(subsection)
       ! Surface tension of water at 25oC (71.89 gr s2) 
       gammaw0 = 71.89d0  
       call findstrg(subsection,itmp,found_subsection)

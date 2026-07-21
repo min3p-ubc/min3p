@@ -90,12 +90,16 @@
       do while (.not.found) 
         
         read(imdbs,*,err=999,end=998) keyword
+        call makelowercase(keyword)
         backspace(imdbs)
         read(imdbs,*,err=999,end=998) string
+        call makelowercase(string)
 
         if (keyword.eq.'pathway') then
           backspace(imdbs)
           read(imdbs,*,err=999,end=998) keyword, ipath2
+          call makelowercase(keyword)
+          
           if (ipath2.eq.ipath) then
           if (info_debug.gt.1 .and. rank == 0 .and. b_enable_output) then
             write(*,*) 'mineral ', trim(namem(im))

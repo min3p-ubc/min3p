@@ -165,6 +165,7 @@
 !c  read name of secondary component of redox couple 
  
           read(irdbs,*,err=997,end = 999) name_rs
+          call makelowercase(name_rs)
 
 !c  look for match, as long end of file is not reached or 
 !c  match is found
@@ -209,6 +210,9 @@
 !c  stoichiometry
 
             read(irdbs,*,err=997) nv,(namet(iv),xnut(iv),iv=1,nv)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
 
 !c  pointer array to row in stoichiometric reaction matrix for 
 !c  next redox couple

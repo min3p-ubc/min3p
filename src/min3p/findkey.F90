@@ -48,6 +48,8 @@
  
       subroutine findkey(keyword1,keyword2,itmp,found_keyword,    &
                 searching)
+
+      use file_utility, only : makelowercase
       
       implicit none
       
@@ -59,14 +61,15 @@
 !c  search for keyword1 in datablock bound by keyword2
 
       found_keyword = .false.
-    searching = .true.
+      searching = .true.
       do while (searching.and..not.found_keyword)
         read(itmp,*,end=999) string
-      write(*,*) string
+        call makelowercase(string)
+        write(*,*) string
         if (string.eq.keyword1) then
           found_keyword = .true.
-      elseif (string.eq.keyword2) then
-        searching = .false.
+        elseif (string.eq.keyword2) then
+          searching = .false.
         end if
       end do
 

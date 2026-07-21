@@ -219,6 +219,7 @@
 !c  and type of reaction
  
           read(irdbs,*,end = 998,err=999) name_aq, rtype_aq(iaq)
+          call makelowercase(name_aq)
 
 !c  look for match, as long end of file is not reached or 
 !c  match is found
@@ -239,6 +240,10 @@
 !c  and reaction stoichiometry
 
             read(irdbs,*,err=999) nv,(namet(iv),xnut(iv),iv=1,nv)
+
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
 
 !c  pointer array to row in stoichiometric reaction matrix for 
 !c  next intra-aqueous kinetic reaction
@@ -329,6 +334,10 @@
 
                   read(irdbs,*,err=999) (namet(i),value(i),i=1,naqt)
 
+                  do i = 1, naqt
+                    call makelowercase(namet(i))
+                  end do
+
 !c  check if all reactants involved in reaction are specified
 !c  as components
 !c  assign pointer to species and order of reaction
@@ -386,6 +395,9 @@
                 if (naqht.gt.0) then
 
                   read(irdbs,*,err=999) (namet(i),value(i),value2(i),i=1,naqht)
+                  do i = 1, naqht
+                    call makelowercase(namet(i))
+                  end do
 
 !c  check if all reactants involved in monod terms
 !c  are specified as components
@@ -447,6 +459,10 @@
 
                   read(irdbs,*,end=998,err=999) (namet(i),value(i),i=1,naqic)
 
+                  do i = 1, naqic
+                    call makelowercase(namet(i))
+                  end do
+
 !c  check if all reactants involved in inhibition terms
 !c  are specified as components
 !c  assign pointer to species and order of reaction
@@ -504,6 +520,9 @@
                 if (naqim.gt.0) then
 
                   read(irdbs,*,err=999) (namet(i),value(i),i=1,naqim)
+                  do i = 1, naqim
+                    call makelowercase(namet(i))
+                  end do
 
 !c  check if all reactants involved in inhibition terms
 !c  are present, assign pointer to species and order of reaction

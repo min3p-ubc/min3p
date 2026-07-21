@@ -520,7 +520,8 @@
      
 !c  modify reaction product for irreversible reactions - log K control
 
-      elseif (rtype_aq(iaq).eq.'irreversible - log K control') then
+      elseif (rtype_aq(iaq).eq.'irreversible - log K control' .or.     &
+              rtype_aq(iaq).eq.'irreversible - log k control') then
 
          prodrc = dmax1(r0,(prodrc * (dg_limaq(iaq) - sataq(iaq,tid))))
 

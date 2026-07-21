@@ -134,6 +134,7 @@ if (ispitzerdens) then
   read(iunit,*) ndim
   do i=1,ndim 
     read(iunit,*) name,molw,molv
+    call makelowercase(name)
     do j=1,nc
       if (name==namec(j)) then
          ndim_valid = ndim_valid + 1
@@ -169,6 +170,8 @@ if (ispitzerdens) then
         end if        
         
         read(strbuffer,*) name,molw,molv
+        call makelowercase(name)
+
         do j=1,nc
           if (name==namec(j)) then
              write(idbs_bk,'(a)') trim(strbuffer)

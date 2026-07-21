@@ -140,7 +140,8 @@
       use phys
       use dens, only : density_dependence
       use file_unit, only : lun_get, lun_free
-      use file_utility, only : read_vtk_data_from_file
+      use file_utility, only : read_vtk_data_from_file, makelowercase
+      
 #ifdef OPENMP
       use omp_lib 
 #endif
@@ -1640,6 +1641,7 @@
 !c  read oil saturation field from file
 
         subsection = 'read So field from file - no feedback on sat'
+        call makelowercase(subsection)
         call findstrg(subsection,itmp,found_subsection)
 
         if (found_subsection) then
@@ -1710,6 +1712,7 @@
 !c  read oil saturation field from file
 
         subsection = 'read So field from vtk file - no feedback on sat'
+        call makelowercase(subsection)
         call findstrg(subsection,itmp,found_subsection)
 
         if (found_subsection) then

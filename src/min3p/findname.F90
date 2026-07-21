@@ -46,7 +46,8 @@
  
       subroutine findname(name,itmp,found_name)
 
-      use gen, only : rank, ilog      
+      use gen, only : rank, ilog   
+      use file_utility, only : makelowercase   
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -67,6 +68,9 @@
       found_name = .false.
       do while (.not.found_name)
         read(itmp,'(a)',err=999,end=999) strbuffer
+
+        call makelowercase(strbuffer)
+
         strbuffer = adjustl(strbuffer)
         if (len(trim(strbuffer)) < 1 .or. strbuffer(1:1) == '!') then
           cycle

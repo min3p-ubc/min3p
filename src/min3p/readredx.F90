@@ -251,6 +251,7 @@
 !c  and type of reaction
  
           read(irdbs,*,err=997,end = 999) name_rs, rtype_hom(ir)
+          call makelowercase(name_rs)
 
 !c  look for match, as long end of file is not reached or 
 !c  match is found
@@ -295,6 +296,9 @@
 !c  stoichiometry
 
             read(irdbs,*,err=997) nv,(namet(iv),xnut(iv),iv=1,nv)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
 
 !c  pointer array to row in stoichiometric reaction matrix for 
 !c  next redox couple
@@ -410,12 +414,18 @@
                 if (nort+norc+norx.gt.0) then
 
                   if (rtype_hom(ir).eq.'forward'.or.                  &
-     &                rtype_hom(ir).eq.'backward') then                
+                      rtype_hom(ir).eq.'backward') then                
                     read(irdbs,*,err=997) (namet(i),ordt(i),ctmp(i),  &
-     &                             i=1,nort+norc+norx)                 
+                                   i=1,nort+norc+norx)
+                    do i = 1, nort+norc+norx
+                      call makelowercase(namet(i))
+                    end do
                   else                                                 
                     read(irdbs,*,err=997) (namet(i),ordt(i),          &
-     &                             i=1,nort+norc+norx)
+                                   i=1,nort+norc+norx)
+                    do i = 1, nort+norc+norx
+                      call makelowercase(namet(i))
+                    end do
                   end if
  
 !c  check if all reactants involved in reaction are specified 

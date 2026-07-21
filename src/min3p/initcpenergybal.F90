@@ -525,6 +525,7 @@
       if (found_subsection) then
         ierrcd = 7
         read(itmp,*,err=999,end=999) name
+        call makelowercase(name)
         if (name=='sutra') then
           iviscomodel=1
         else if (name=='diersch') then

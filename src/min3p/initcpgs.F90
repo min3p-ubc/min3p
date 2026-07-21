@@ -427,13 +427,13 @@
       if (found_subsection) then
         ierrcd = 6
         read(itmp,*,err=999,end=999) mem_input, mem_unit
-        if (mem_unit == 'MB') then
+        if (mem_unit == 'MB' .or. mem_unit == 'mb') then
           !c default, do nothing
-        else if (mem_unit == 'GB') then
+        else if (mem_unit == 'GB' .or. mem_unit == 'gb') then
           mem_input = mem_input*1.0d3
-        else if (mem_unit == 'TB') then
+        else if (mem_unit == 'TB' .or. mem_unit == 'tb') then
           mem_input = mem_input*1.0d6
-        else if (mem_unit == 'PB') then
+        else if (mem_unit == 'PB' .or. mem_unit == 'pb') then
           mem_input = mem_input*1.0d9
         else
           if (rank == 0) then

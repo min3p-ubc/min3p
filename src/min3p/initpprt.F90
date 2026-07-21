@@ -1176,7 +1176,7 @@
 !c  read correction factors of porosity for primary species
 
               subsection = 'porosity correction factor of primary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 
@@ -1208,7 +1208,7 @@
 !c  read correction factors of tortuosity for primary species
 
               subsection = 'tortuosity correction factor of primary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 
@@ -1240,7 +1240,7 @@
 !c  read correction factors of porosity for secondary species
 
               subsection = 'porosity correction factor of secondary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 
@@ -1273,7 +1273,7 @@
 !c  read correction factors of tortuosity for secondary species
 
               subsection = 'tortuosity correction factor of secondary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 

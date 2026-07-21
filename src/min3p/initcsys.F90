@@ -672,13 +672,14 @@
           new_database = .false.
         end if
         
-        subsection = 'use space delimiter in database'
+!c  use space delimiter in database files as default, unless specified otherwise
+        subsection = 'disable space delimiter in database'
         call findstrg(subsection,itmp,found_subsection)
 
         if (found_subsection) then
-          space_delimiter_dbs = .true.
-        else
           space_delimiter_dbs = .false.
+        else
+          space_delimiter_dbs = .true.
         end if
 
 !cdsu  use compatible bubble gas database where temperature dependent 
@@ -886,6 +887,7 @@
             elect_correction = .true. 
             ierrcd = 63
             read(itmp,*,err=999,end=999) name_elect_correction 
+            call makelowercase(name_elect_correction)
             !cprovi---------------------------------------------------------------
             !cprovi Allocate vector to store the electrostatic potential
             !cprovi for the surface complexation model
@@ -971,6 +973,7 @@
         ierrcd = 11
         do ic=1,n-nbio-nna-nelect
           read(itmp,*,err=999,end=999) namec(ic)
+          call makelowercase(namec(ic))
         end do
 
 !c  read biomass component names
@@ -988,6 +991,7 @@
           ierrcd = 13
           do ic=n-nbio-nna-nelect+1,n-nna-nelect
             read(itmp,*,err=999,end=999) namec(ic)
+            call makelowercase(namec(ic))
             component_type(ic) = 'biomass'
           end do
           
@@ -1009,6 +1013,8 @@
 
             ierrcd = 15
             read(itmp,*,err=999,end=999) namec(ic), component_type(ic)
+            call makelowercase(namec(ic))
+            call makelowercase(component_type(ic))
 
             if (component_type(ic).eq.'surface') then
               nsites = nsites+1
@@ -1034,6 +1040,8 @@
 
             ierrcd = 17
             read(itmp,*,err=999,end=999) namec(ic), component_type(ic)
+            call makelowercase(namec(ic))
+            call makelowercase(component_type(ic))
  
             if (component_type(ic).eq.'surface') then
               nsites = nsites+1
@@ -1085,6 +1093,8 @@
           do ir=1,nr
             ierrcd = 19
             read(itmp,*,err=999,end=999) namerp(ir), namers(ir)
+            call makelowercase(namerp(ir))
+            call makelowercase(namers(ir))
           end do
 
 !c  define length of primary and secondary components of redox couples
@@ -1149,6 +1159,7 @@
           do ix=1,nx
             ierrcd = 21
             read(itmp,*,err=999,end=999) namex(ix)
+            call makelowercase(namex(ix))
           end do
 
 !c  define length of names of secondary aqueous species
@@ -1261,7 +1272,9 @@
             do ig=1,ng
 !c_bubbles read gas names and gas pair
               ierrcd = 25
-              read(itmp,*,err=999,end=999) nameg(ig), pair
+              read(itmp,*,err=999,end=999) nameg(ig), pair              
+              call makelowercase(nameg(ig))
+              call makelowercase(pair)
 
 !c_bubbles Look for 'pair' in components then species
               call assnpair(pair, ig)            
@@ -1271,6 +1284,7 @@
             do ig=1,ng
               ierrcd = 26
               read(itmp,*,err=999,end=999) nameg(ig)
+              call makelowercase(nameg(ig))
             end do
           end if
 
@@ -1365,7 +1379,7 @@
             found = .false.
             ierrcd = 30
             read(itmp,*,err=999,end=999) name
-                      
+            call makelowercase(name)
             do ic = 1,nc
               if (name.eq.namec(ic)) then
                 isotherm_type(ic) = 'linear'
@@ -1478,6 +1492,7 @@
           do isb=1,nsb_ion
             ierrcd = 34
             read(itmp,*,err=999,end=999) namesb_ion(isb)
+            call makelowercase(namesb_ion(isb))
           end do
           namesb_surf(1:nsb_surf) = namesb_ion(1:nsb_ion)
 
@@ -1628,6 +1643,7 @@
             do isb=1,nsb_surf
               ierrcd = 40
               read(itmp,*,err=999,end=999) namesb_surf(isb)
+              call makelowercase(namesb_surf(isb))
             end do
 
 !c  define length of names of sorbed species of surface-complex
@@ -1659,6 +1675,7 @@
           do isb=1,nsb_ion
             ierrcd = 42
             read(itmp,*,err=999,end=999) namesb_ion(isb)
+            call makelowercase(namesb_ion(isb))
           end do
 
 !c  define length of names of sorbed species of ion-exchange
@@ -1690,7 +1707,7 @@
             do isb=1,nsites_ion
               ierrcd = 44
               read(itmp,*,err=999,end=999) namesb_sites_ion(isb)
-              !!! if (TRIM(namesb_sites_ion(isb))='-PS')
+              call makelowercase(namesb_sites_ion(isb))
               l_string = index(namesb_sites_ion(isb),' ')-1
               if (l_string.eq.-1.or.l_string.gt.72) then
               l_string=72
@@ -1851,6 +1868,8 @@
          
         if (sorption_type_surf .eq. 'surface-complex') then
           subsection = 'specify output unit for SCM sorbed species concentration'
+          call makelowercase(subsection)
+          
           call findstrg(subsection,itmp,found_subsection)
 
           if (found_subsection) then
@@ -1858,8 +1877,8 @@
             ierrcd = 47
             read(itmp,*,err=999,end=999) output_unit_sb_surf
                                   
-            if ((trim(output_unit_sb_surf) .ne. 'mol/L H2O') .and.&
-                (trim(output_unit_sb_surf) .ne. 'mol/L bulk')) then
+            if ((trim(output_unit_sb_surf) .ne. 'mol/l h2o') .and.&
+                (trim(output_unit_sb_surf) .ne. 'mol/l bulk')) then
                 l_string = index(subsection,' ')-1
               if (rank == 0) then  
                 write(ilog,*) 'SIMULATION TERMINATED'
@@ -1876,7 +1895,7 @@
                  
           else
 
-            output_unit_sb_surf = 'mol/L H2O'
+            output_unit_sb_surf = 'mol/l h2o'
 
           end if             !(found_subsection)
 
@@ -1962,10 +1981,9 @@
         if (sorption_group.eq.'ion-exchange') then
           output_unit_sb_ion = 'meq/100g'
         !elseif (sorption_group.eq.'surface-complexation') then       !removed as user defined
-        !  output_unit_sb_surf = 'mol/L h2o'
+        !  output_unit_sb_surf = 'mol/l h2o'
         elseif (sorption_group.eq.'surface-complex and ion-exchange') then
           output_unit_sb_ion = 'meq/100g'
- !MX      output_unit_sb_surf = 'mol/L h2o'
         end if
 
 !c  define compressed data structure for surface sites
@@ -2048,6 +2066,7 @@
           do im = 1,nm
             ierrcd = 51
             read(itmp,*,err=999,end=999) namem(im)
+            call makelowercase(namem(im))
           end do
 
 !c  define length of mineral names
@@ -2139,6 +2158,7 @@
               do im2 = 1,nmin_ss(iss)
                 ierrcd = 67
                 read(itmp,*,err=999,end=999) name
+                call makelowercase(name)
                 found=.false. 
                 do im = 1,nm
                   if (name == namem(im)) then
@@ -2217,6 +2237,7 @@
           do iaq=1,naq
             ierrcd = 55
             read(itmp,*,err=999,end=999) nameaq(iaq)
+            call makelowercase(nameaq(iaq))
           end do
 
 !c  define length of names of intra-aqueous kinetic reactions
@@ -2346,6 +2367,7 @@
           do imx = 1,nmx
             ierrcd = 58
             read(itmp,*,err=999,end=999) namemx(imx)
+            call makelowercase(namemx(imx))
           end do
 
 !c  define length of names of excluded minerals
@@ -2401,6 +2423,7 @@
           do im = 1,nm
             ierrcd = 59
             read(itmp,*,err=999,end=999) namet(im)
+            call makelowercase(namet(im))
           end do
      
 !c  define pointer arrays
@@ -2446,6 +2469,7 @@
           do ipts = 1,npts
             ierrcd = 61
             read(itmp,*,err=999,end=999) dummy, alpha
+            call makelowercase(dummy)
             do im=1,nm
                 if(namem(im).eq.dummy) then
                     sur_prec(im)=.true.
@@ -2483,6 +2507,7 @@
             read(itmp,*,err=999,end=999) rdummy
             do ingi = 1, ngi
               read(itmp,*,err=999,end=999) name_ngi(ingi)
+              call makelowercase(name_ngi(ingi))
             end do
           end if
 
@@ -2500,6 +2525,7 @@
             bitngre = 0
             do i = 1, ngre_i
               read(itmp,*,err=999,end=999) name
+              call makelowercase(name)
               if (trim(name).eq.'235u') then
                 bitngre = ibset(bitngre,0)
                 index_uiso(1) = i
@@ -2542,11 +2568,13 @@
             if (b_combine_238u_235u) then
               do i = 1, ngre_i-1
                 read(itmp,*,err=999,end=999) name_ngre_i(i)
+                call makelowercase(name_ngre_i(i))
               end do
               name_ngre_i(ngre_i) = '238u+235u'
             else
               do i = 1, ngre_i
                 read(itmp,*,err=999,end=999) name_ngre_i(i)
+                call makelowercase(name_ngre_i(i))
                 if (trim(name_ngre_i(i)).eq.'235u+238u') then
                   name_ngre_i(i) = '238u+235u'
                 end if
@@ -2576,6 +2604,7 @@
             read(itmp,*,err=999,end=999) rdummy
             do i = 1, nge_i
               read(itmp,*,err=999,end=999) name_nge_i(i)
+              call makelowercase(name_nge_i(i))
               do inge = 1, nge
                 if (trim(name_nge_i(i)) .eq. trim(name_nge(inge))) then
                   idx_nge_i2d(i) = inge
@@ -2591,6 +2620,7 @@
             read(itmp,*,err=999,end=999) rdummy
             do i = 1, ngnce_i
               read(itmp,*,err=999,end=999) name_ngnce_i(i)
+              call makelowercase(name_ngnce_i(i))
               do ingnce = 1, ngnce
                 if (trim(name_ngnce_i(i)) .eq. trim(name_ngnce(ingnce))) then
                   idx_ngnce_i2d(i) = ingnce

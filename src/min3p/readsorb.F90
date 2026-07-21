@@ -168,7 +168,8 @@
  
       use parm
       use chem
-      use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
+      use gen, only : rank, b_enable_output, b_enable_output_gen,      &
+                      idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
                                readnextline, startWithEntireName
 #ifdef PETSC
@@ -204,8 +205,16 @@
         do i = 1,10000
           if (space_delimiter_dbs) then
             read(isdbs,'(a)',end=996,err=999) strbuffer
-            !c make lower case and replace tab and quote with space
+
             call makelowercase(strbuffer)
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
+            !c make lower case and replace tab and quote with space
             call replacecharacter(strbuffer, achar(9), strspace)
             call replacecharacter(strbuffer, "'", strspace)
             call replacecharacter(strbuffer, '"', strspace)
@@ -235,6 +244,13 @@
 
             !c next line
             read(isdbs,'(a)',end=996,err=999) strbuffer
+
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -260,6 +276,11 @@
           else
             read(isdbs,*,end=996,err=999) name,dhc,eqt,charge,gfw
             read(isdbs,*,end=996,err=999) nv,(namet(iv),xnusbt(iv),iv=1,nv)
+
+            call makelowercase(name)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
           end if
 
 !c  check if all components with non-stoichiometric coefficients in
@@ -326,6 +347,13 @@
 
           if (space_delimiter_dbs) then
             read(isdbs,'(a)',end=997,err=999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -356,6 +384,13 @@
 
             !c next line
             read(isdbs,'(a)',end=997,err=999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -381,6 +416,11 @@
           else
             read(isdbs,*,end=997,err=999) name,dhc,eqt,charge,gfw
             read(isdbs,*,end=997,err=999) nv,(namet(iv),xnusbt(iv),iv=1,nv)
+
+            call makelowercase(name)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
           end if
 
 !c  look for match, as long end of file is not reached or 
@@ -503,6 +543,13 @@
 !c  read name of sorbed species and species specific data 
           if (space_delimiter_dbs) then
             read(isdbs,'(a)',end=998,err=999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -533,6 +580,13 @@
 
             !c next line
             read(isdbs,'(a)',end=997,err=999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -558,6 +612,11 @@
           else
             read(isdbs,*,end=998,err=999) name,dhc,eqt,charge,gfw
             read(isdbs,*,end=998,err=999) nv,(namet(iv),xnusbt(iv),iv=1,nv)
+
+            call makelowercase(name)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
           end if
 
 !c  look for match, as long end of file is not reached or 
@@ -566,6 +625,21 @@
 !c  sorbed species is found --> assign to permanent storage
  
           if (name.eq.namesb_surf(isb)) then
+
+            if (rank == 0 .and. b_enable_output_gen) then
+              if (isb == 1) then
+                write(igen,'(72a)') ('-',i=1,72)
+              end if
+              write(igen,'(2a,4(a,1pe15.6e3))')                        &
+                    'dbs sorbed specie ', trim(name), ' dhc ', dhc,    &
+                    ' eqt ', eqt, ' charge ', charge, ' gfw ', gfw
+              write(igen,'(a,1x,i0,100(1x,a,1x,1pe15.6e3))')           &
+                    'nv',nv,(trim(namet(iv)),xnusbt(iv),iv=1,nv)
+              if (isb == nsb_surf) then
+                write(igen,'(72a)') ('-',i=1,72)
+              end if
+            end if
+ 
  
             done = .true.
  

@@ -118,7 +118,8 @@
  
       use parm
       use chem
-      use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
+      use gen, only : rank, b_enable_output, b_enable_output_gen,      &
+                      idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
                                readnextline, startWithEntireName
 #ifdef PETSC
@@ -172,6 +173,8 @@
 !c  read mineral name
 
           read(imdbs,*,err=996,end=999) name
+          call makelowercase(name)
+
           if (info_debug.gt.1) then
             write(*,*) trim(name)
           end if
@@ -189,6 +192,13 @@
         
           if (space_delimiter_dbs) then                 !merged space delimiters
             read(imdbs,'(a)',end=996,err=996) strbuffer
+
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -212,6 +222,9 @@
             end do
           else
             read(imdbs,*,err=996) nv,(namet(iv),xnumt(iv),iv=1,nv)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
           end if
 
 !c  check if all components for mineral are specified in general
@@ -301,26 +314,71 @@
 !c  read mineral name
  
             read(imdbs,*,err=997) name
- 
+            call makelowercase(name)
 !c  look for match, as long end of file is not reached or 
 !c  match is found
  
 !c  mineral is found --> read data
  
             if (name.eq.namemx(imx)) then
-                
+
+              if (rank == 0 .and. b_enable_output_gen) then
+                if (imx == 1) then
+                  write(igen,'(72a)') ('-',i=1,72)
+                end if
+                write(igen,'(2a)') 'dbs excluded minerals ', trim(name)
+                write(igen,'(a,1x,i0,100(1x,a,1x,1pe15.6e3))')         &
+                      'nv',nv,(trim(namet(iv)),xnumt(iv),iv=1,nv)
+                if (imx == nmx) then
+                  write(igen,'(72a)') ('-',i=1,72)
+                end if
+              end if
  
               done = .true.
 
 !c  read equilibrium constant and reaction stoichiometry
 
               read(imdbs,*,err=997) string1
-              if (temp_corr) then
-                read(imdbs,*,err=997) junk,junk
+              read(imdbs,*,err=997) junk
+
+
+              if (space_delimiter_dbs) then                 !merged space delimiters
+                read(imdbs,'(a)',end=997,err=997) strbuffer
+
+                if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                    index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                    len_trim(adjustl(strbuffer)) .eq. 0) then
+                  cycle
+                end if
+
+                !c make lower case and replace tab and quote with space
+                call makelowercase(strbuffer)
+                call replacecharacter(strbuffer, achar(9), strspace)
+                call replacecharacter(strbuffer, "'", strspace)
+                call replacecharacter(strbuffer, '"', strspace)
+                strbuffer = trim(adjustl(strbuffer))
+                iend = index(strbuffer,strspace)
+                if (iend <= 1) then
+                  goto 997
+                end if
+                read(strbuffer,*,end=997,err=997) nv
+
+                do iv = 1, nv
+                  strbuffer = trim(adjustl(strbuffer(iend:)))
+                  iend = index(strbuffer,strspace)
+                  namet(iv) = strbuffer(1:iend-1)
+
+                  strbuffer = trim(adjustl(strbuffer(iend:)))
+                  iend = index(strbuffer,strspace)
+                  read(strbuffer,*,end=997,err=997) xnumt(iv)
+                end do
               else
-                read(imdbs,*,err=997) junk
+                read(imdbs,*,err=997) nv,(namet(iv),xnumt(iv),iv=1,nv)
+                do iv = 1, nv
+                  call makelowercase(namet(iv))
+                end do
               end if
-              read(imdbs,*,err=997) nv,(namet(iv),xnumt(iv),iv=1,nv)
+
                                                                        
               read(imdbs,*,err=997) string2
                                                                        

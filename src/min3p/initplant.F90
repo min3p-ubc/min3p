@@ -389,6 +389,7 @@
 
           if(.not. found_subsection) then
             subsection = 'root upscale factor - AS'
+            call makelowercase(subsection)
             call findstrg(subsection,itmp,found_subsection)
           end if
 
@@ -410,6 +411,7 @@
 
 !c DSU: Random generator control. By default, srand((unsigned) time(NULL)) is used.
           subsection = 'random generator seed - AS'
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if(.not. found_subsection) then
@@ -425,7 +427,7 @@
           end if
 
           subsection = 'random generator seed - RT'
-
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if(found_subsection) then
@@ -438,6 +440,7 @@
 !c ... or update by coupling with the root architecture software 'ArchiSimple' :
 
           subsection = 'update - coupled - AS'
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if (.not. found_subsection) then
@@ -481,7 +484,7 @@
 !c ... or update by coupling with the root architecture software 'Root Typ' :
 
           subsection = 'update - coupled - RT'
-
+          call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
 
           if(found_subsection) then

@@ -48,6 +48,8 @@
 !c ----------------------------------------------------------------------
  
       subroutine findstrg(subsection,itmp,found_subsection)
+
+      use file_utility, only : makelowercase
       
       implicit none
 
@@ -56,7 +58,7 @@
       logical found_subsection
 !c  change from 72 to 256 to support long string, e.g., database full path
       character*256 string
- 
+
 !c  rewind input file
 
       rewind(itmp)
@@ -66,6 +68,7 @@
       found_subsection = .false.
       do while (.not.found_subsection)
         read(itmp,*,err=999,end=999) string
+        call makelowercase(string)
         if (string.eq.subsection) then
           found_subsection = .true.
         end if
@@ -76,6 +79,8 @@
 
       
       subroutine findstrginzone(subsection,itmp,found_subsection)
+
+      use file_utility, only : makelowercase
       
       implicit none
 
@@ -84,7 +89,7 @@
       logical found_subsection      
 !c  change from 72 to 256 to support long string, e.g., database full path
       character*256 string
- 
+
 !c  rewind input file
 
       rewind(itmp)
@@ -94,6 +99,7 @@
       found_subsection = .false.
       do while (.not.found_subsection)
         read(itmp,*,err=999,end=999) string
+        call makelowercase(string)
         if (string.eq.subsection) then
           found_subsection = .true.
         end if
@@ -108,6 +114,8 @@
 
     
       subroutine findstrginblock(strblockname,subsection,itmp,found_subsection)
+
+      use file_utility, only : makelowercase
       
       implicit none
 
@@ -127,9 +135,11 @@
       found_subsection = .false.
       do while (.not.found_subsection)
         read(itmp,*,err=999,end=999) string
+        call makelowercase(string)
         if (string.eq.strblockname) then
           do while (.not.found_subsection)
             read(itmp,*,err=999,end=999) string
+            call makelowercase(string)
             if (string.eq.subsection) then
               found_subsection = .true.
               goto 999

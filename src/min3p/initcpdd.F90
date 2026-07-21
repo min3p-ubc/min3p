@@ -493,6 +493,7 @@
           ierrcd = 9
           do inpl = 1,nnpl
             read(itmp,*,err=999,end=999) namenpl(inpl)
+            call makelowercase(namenpl(inpl))
           end do
 
 !c  define length of napl names
@@ -652,6 +653,7 @@
           ierrcd = 13
           do ic = 1,ndd
             read(itmp,*,err=999,end=999) namedd(ic)
+            call makelowercase(namedd(ic))
           end do
 
 !c create gram formula weight vector with gram formula weights for

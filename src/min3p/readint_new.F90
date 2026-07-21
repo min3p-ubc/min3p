@@ -326,6 +326,8 @@
  
           read(irdbs,*,end = 998,err=999) name_aq
 
+          call makelowercase(name_aq)
+
 !c  look for match, as long end of file is not reached or 
 !c  match is found
  
@@ -351,6 +353,10 @@
 !c  and reaction stoichiometry
 
             read(irdbs,*,err=999) nv,(namet(iv),xnut(iv),iv=1,nv)
+
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
 
 !c  pointer array to row in stoichiometric reaction matrix for 
 !c  next intra-aqueous kinetic reaction
@@ -414,7 +420,8 @@
               read(irdbs,*,err=999) rtype_aq(iaq)
 
             if (rtype_aq(iaq).eq.'reversible'.or.                   &
-     &          rtype_aq(iaq).eq.'irreversible - log K control') then 
+                rtype_aq(iaq).eq.'irreversible - log K control'.or. &
+                rtype_aq(iaq).eq.'irreversible - log k control') then 
                
               backspace(irdbs)
               read(irdbs,*,err=999) rtype_aq(iaq),eqaqs(iaq),dhaq(iaq)
@@ -605,7 +612,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'fractional T^a') then
+              if (keyword.eq.'fractional T^a' .or. &
+                  keyword.eq.'fractional t^a') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -620,6 +628,7 @@
 
                 do i = 1,naqt
                   read(irdbs,*,err=999) namet(i),value(i)
+                  call makelowercase(namet(i))
                 end do
 
 !c  check if all specified reactants are defined as components 
@@ -694,7 +703,8 @@
               backspace(irdbs)
               read (irdbs,'(a1)',err=999,end=998) string
 
-              if (keyword.eq.'exponential T^a') then
+              if (keyword.eq.'exponential T^a' .or. &
+                  keyword.eq.'exponential t^a') then
 
                 found = .true.
                 backspace(irdbs)
@@ -709,6 +719,7 @@
 
                 do i = 1,naqe
                   read(irdbs,*,err=999) namet(i),value(i)
+                  call makelowercase(namet(i))
                 end do
 
 !c  check if all specified reactants are defined as components
@@ -784,7 +795,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'fractional C^c') then
+              if (keyword.eq.'fractional C^c' .or. &
+                  keyword.eq.'fractional c^c') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -799,6 +811,7 @@
 
                 do i = 1,naqc
                   read(irdbs,*,err=999) namet(i),value(i)
+                  call makelowercase(namet(i))
                 end do
 
 !c  check if all specified reactants are defined as components 
@@ -874,7 +887,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'fractional C^x') then
+              if (keyword.eq.'fractional C^x' .or. &
+                  keyword.eq.'fractional c^x') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -889,6 +903,7 @@
 
                 do i = 1,naqx
                   read(irdbs,*,err=999) namet(i),value(i)
+                  call makelowercase(namet(i))
                 end do
 
 !c  check if all specified reactants are defined as components 
@@ -964,7 +979,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'hyperbolic T^a') then
+              if (keyword.eq.'hyperbolic T^a' .or. &
+                  keyword.eq.'hyperbolic t^a') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -982,8 +998,10 @@
                   backspace(irdbs)
                   if(string .ne. "'") then
                     read(irdbs,*,err=999) value(i),value2(i),namet(i) 
+                    call makelowercase(namet(i))
                   else
                     read(irdbs,*,err=999) namet(i),value(i),value2(i)
+                    call makelowercase(namet(i))
                   end if
                 end do
 
@@ -1064,7 +1082,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'hyperbolic sum T^a') then
+              if (keyword.eq.'hyperbolic sum T^a' .or. &
+                  keyword.eq.'hyperbolic sum t^a') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -1321,7 +1340,7 @@
                 found = .true.
                 backspace(irdbs)
                 read(irdbs,*,err=999,end=998) keyword, namet3
-
+                call makelowercase(namet3)
                 
                 iaq1 = 0
                 found = .false.
@@ -1408,7 +1427,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'hyperbolic C^c') then
+              if (keyword.eq.'hyperbolic C^c' .or. &
+                  keyword.eq.'hyperbolic c^c') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -1426,8 +1446,10 @@
                   backspace(irdbs)
                   if(string .ne. "'") then 
                     read(irdbs,*,err=999) value(i),value2(i),namet(i)
+                    call makelowercase(namet(i))
                   else    
                     read(irdbs,*,err=999) namet(i),value(i),value2(i)
+                    call makelowercase(namet(i))
                   end if
                 end do
 
@@ -1526,8 +1548,10 @@
                   backspace(irdbs)
                   if(string .ne. "'") then
                     read(irdbs,*,err=999) value(i),value2(i),namet(i)
+                    call makelowercase(namet(i))
                   else
-                    read(irdbs,*,err=999) namet(i),value(i),value2(i)  
+                    read(irdbs,*,err=999) namet(i),value(i),value2(i)
+                    call makelowercase(namet(i))
                   end if
                 end do
 
@@ -1607,7 +1631,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'inhibition T^a') then
+              if (keyword.eq.'inhibition T^a' .or. &
+                  keyword.eq.'inhibition t^a') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -1624,9 +1649,11 @@
                   read (irdbs,'(a1)',err=999,end=998) string
                   backspace(irdbs)
                   if(string .ne. "'") then
-                    read(irdbs,*,err=999) value(i),value2(i),namet(i)  
+                    read(irdbs,*,err=999) value(i),value2(i),namet(i) 
+                    call makelowercase(namet(i))
                   else
                     read(irdbs,*,err=999) namet(i),value(i),value2(i)
+                    call makelowercase(namet(i))
                   end if
                 end do
 
@@ -1706,7 +1733,8 @@
               read (irdbs,'(a1)',err=999,end=998) string
 
                                 
-              if (keyword.eq.'inhibition C^c') then
+              if (keyword.eq.'inhibition C^c' .or. &
+                  keyword.eq.'inhibition c^c') then
                   
                 found = .true.
                 backspace(irdbs)
@@ -1723,8 +1751,10 @@
                   backspace(irdbs)
                   if(string .ne. "'") then
                     read(irdbs,*,err=999) value(i),value2(i),namet(i)  
+                    call makelowercase(namet(i))
                   else
                     read(irdbs,*,err=999) namet(i),value(i),value2(i)
+                    call makelowercase(namet(i))
                   end if
                 end do
 
@@ -1821,8 +1851,10 @@
                   backspace(irdbs)
                   if(string .ne. "'") then
                     read(irdbs,*,err=999) value(i),value2(i),namet(i) 
+                    call makelowercase(namet(i))
                   else
                     read(irdbs,*,err=999) namet(i),value(i),value2(i)
+                    call makelowercase(namet(i))
                   end if
                 end do
 

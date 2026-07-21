@@ -275,7 +275,6 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/totchargesorb.o\
 	$(SRC)min3p/rhsrt.o\
 	$(SRC)min3p/icnvrt.o\
-	$(SRC)min3p/findstrg.o\
 	$(SRC)min3p/zoutput.o\
 	$(SRC)min3p/vhoff.o\
 	$(SRC)min3p/satfpres.o\
@@ -300,12 +299,10 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/crc.o\
 	$(SRC)min3p/bunsen.o\
 	$(SRC)min3p/simq.o\
-	$(SRC)min3p/findkey.o\
 	$(SRC)min3p/storddfs.o\
 	$(SRC)gas_advection/relpfsat_g.o\
 	$(SRC)dgm/madd.o\
 	$(SRC)phase_class/tools/lubksb.o\
-	$(SRC)min3p/findzone.o\
 	$(SRC)min3p/dhconst.o\
 	$(SRC)gas_advection/wgprop.o\
 	$(SRC)min3p/secspec.o\
@@ -359,6 +356,9 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)usg/metis_iface.o\
 	$(SRC)min3p/file_unit.o\
 	$(SRC)min3p/file_utility.o\
+	$(SRC)min3p/findstrg.o\
+	$(SRC)min3p/findkey.o\
+	$(SRC)min3p/findzone.o\
 	$(SRC)phase_class/tools/xpath/m_path.o\
 	$(SRC)phase_class/tools/xmlreader/m_handlers.o\
 	$(SRC)solver/solver_results.o\

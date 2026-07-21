@@ -351,15 +351,20 @@
 !c  allocate memory for reactive transport simulation
 
 !c  main variables - reactive transport
-      allocate (c(nc,nngl), stat = ierr)
-      c=0.0d0
-      call checkerr(ierr,'c',ilog)
-      call memory_monitor(sizeof(c),'c',.true.)
+      allocate (cold(nc,nngl), stat = ierr)
+      cold=0.0d0
+      call checkerr(ierr,'cold',ilog)
+      call memory_monitor(sizeof(cold),'cold',.true.)
 
       allocate (cnew(nc,nngl), stat = ierr)
       cnew=0.0d0
       call checkerr(ierr,'cnew',ilog)
       call memory_monitor(sizeof(cnew),'cnew',.true.)
+
+      allocate (actvset(nc,nngl), stat = ierr)
+      actvset=0.0d0
+      call checkerr(ierr,'actvset',ilog)
+      call memory_monitor(sizeof(actvset),'actvset',.true.)
 
       allocate (cec_g(nngl), stat = ierr)
       cec_g=0.0d0
@@ -539,10 +544,10 @@
       
 
       if (nx.gt.0) then
-        allocate (cx(nx,nngl), stat = ierr)
-        cx=0.0d0
-        call checkerr(ierr,'cx',ilog)
-        call memory_monitor(sizeof(cx),'cx',.true.)
+        allocate (cxnew(nx,nngl), stat = ierr)
+        cxnew=0.0d0
+        call checkerr(ierr,'cxnew',ilog)
+        call memory_monitor(sizeof(cxnew),'cxnew',.true.)
     
         if (hmulti_diff) then
           allocate (cxold(nx,nngl), stat = ierr)
@@ -552,10 +557,10 @@
         end if
     
       else
-        allocate (cx(1,nngl), stat = ierr)
-        cx=0.0d0
-        call checkerr(ierr,'cx',ilog)
-        call memory_monitor(sizeof(cx),'cx',.true.)
+        allocate (cxnew(1,nngl), stat = ierr)
+        cxnew=0.0d0
+        call checkerr(ierr,'cxnew',ilog)
+        call memory_monitor(sizeof(cxnew),'cxnew',.true.)
     
         if (hmulti_diff) then
           allocate (cxold(1,nngl), stat = ierr)

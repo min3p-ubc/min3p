@@ -558,6 +558,7 @@
       integer (type_i4) :: l_time_unit
       integer (type_i4) :: mtime
       integer (type_i4) :: mtime_f
+      integer (type_i4) :: ngb_tstep_gbl
 
       logical :: read_spatial_master_proc
 
@@ -1196,6 +1197,9 @@
 !                                - old time level [moles/l water]
 !           cnew(nc,nn)        = concentrations of free species
 !                                - new time level [moles/l water]
+!           actvset(nc,nn)     = activities of components as species + -
+!c                               in solution - new time level
+!
 !           cec_g(nn)          = cation exchange capacity
 !                                - global system
 !           cec_fraction_g(nsites_ion,nn)                            * +
@@ -1259,7 +1263,7 @@
 !           gmfrac(ng,nn)      = molar fraction 
 !                                - new time level [moles/l air]
 !           totgmfrac(n,nn)    = total molar gas fractions
-!           cx(nx,nn)          = concentrations of secondary aqueous 
+!           cxnew(nx,nn)       = concentrations of secondary aqueous 
 !                                species [moles/l water]-new time level
 !           cxold(nx,nn)       = concentrations of secondary aqueous 
 !                                species [moles/l water]-old time level
@@ -1304,11 +1308,12 @@
 !        -->                                                         <--
 ! ----------------------------------------------------------------------
  
-      real (type_r8), allocatable :: c(:,:)
+      real (type_r8), allocatable :: cold(:,:)
       real (type_r8), allocatable :: cnew(:,:)
       real (type_r8), allocatable :: cec_g(:)
       real (type_r8), allocatable :: cec_fraction_g(:,:)
       real (type_r8), allocatable :: rhobulk_g(:)
+      real (type_r8), allocatable :: actvset(:,:)
       real (type_r8), allocatable :: gamma(:,:)
       real (type_r8), allocatable :: gammaold(:,:)
       real (type_r8), allocatable :: totaold(:,:)
@@ -1331,7 +1336,7 @@
       real (type_r8), allocatable :: distcoff_rt(:,:)
       real (type_r8), allocatable :: gold(:,:)
       real (type_r8), allocatable :: gnew(:,:)
-      real (type_r8), allocatable :: cx(:,:)
+      real (type_r8), allocatable :: cxnew(:,:)
       real (type_r8), allocatable :: cxold(:,:)
       real (type_r8), allocatable :: sionnew(:)
       real (type_r8), allocatable :: sionold(:)
@@ -4174,9 +4179,10 @@
     integer*8, allocatable :: offset_igbre_ijk(:)
     
 !c  file unit for interface flux of variable saturated flow,
-!c  reactive transprot and biomixing (*.ifvs, *.ifrt) 
+!c  reactive transprot and biomixing (*.ifvs, *.ifrt, *.ifga) 
     integer(type_i4), allocatable :: ifvs(:)
     integer(type_i4), allocatable :: ifrt(:,:)
+    integer(type_i4), allocatable :: ifga(:,:)
     integer(type_i4), allocatable :: ifbm(:,:)
     
     real*8, allocatable :: ifvs_vx_accu(:)
@@ -4199,6 +4205,26 @@
     real*8, allocatable :: ifrt_vy_tot_accu(:,:)
     real*8, allocatable :: ifrt_vz_tot_accu(:,:)
 
+    real*8, allocatable :: ifga_vx_adv_accu(:,:)
+    real*8, allocatable :: ifga_vy_adv_accu(:,:)
+    real*8, allocatable :: ifga_vz_adv_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_dif_accu(:,:)
+    real*8, allocatable :: ifga_vy_dif_accu(:,:)
+    real*8, allocatable :: ifga_vz_dif_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_tot_accu(:,:)
+    real*8, allocatable :: ifga_vy_tot_accu(:,:)
+    real*8, allocatable :: ifga_vz_tot_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_dgm_accu(:,:)
+    real*8, allocatable :: ifga_vy_dgm_accu(:,:)
+    real*8, allocatable :: ifga_vz_dgm_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_neq_accu(:,:)
+    real*8, allocatable :: ifga_vy_neq_accu(:,:)
+    real*8, allocatable :: ifga_vz_neq_accu(:,:)
+
     real*8, allocatable :: ifbm_vx_accu(:,:)
     real*8, allocatable :: ifbm_vy_accu(:,:)
     real*8, allocatable :: ifbm_vz_accu(:,:)
@@ -4209,6 +4235,10 @@
     integer*8, allocatable :: offset_ifrt(:,:)
     integer*8, allocatable :: offset_ifrt_temp(:,:)
     integer*8, allocatable :: offset_ifrt_ijk(:,:)
+
+    integer*8, allocatable :: offset_ifga(:,:)
+    integer*8, allocatable :: offset_ifga_temp(:,:)
+    integer*8, allocatable :: offset_ifga_ijk(:,:)
 
     integer*8, allocatable :: offset_ifbm(:,:)
     integer*8, allocatable :: offset_ifbm_temp(:,:)

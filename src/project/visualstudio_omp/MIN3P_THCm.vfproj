@@ -171,8 +171,6 @@
 		<File RelativePath="..\..\gas_advection\gasd_m.F90"/>
 		<File RelativePath="..\..\dgm\gasdiff.F90"/>
 		<File RelativePath="..\..\dgm\gasdiff2.F90"/>
-		<File RelativePath="..\..\dgm\gasdiff2_s.F90"/>
-		<File RelativePath="..\..\dgm\gasdiff_s.F90"/>
 		<File RelativePath="..\..\gas_advection\gasm.F90"/>
 		<File RelativePath="..\..\gas_advection\gasp.F90"/>
 		<File RelativePath="..\..\gas_advection\gasp_m.F90"/>

@@ -426,7 +426,7 @@
       
       logical iserror      
      
-      integer, parameter :: iscreen=6
+      integer, parameter :: i0=0
       
       character(len=100) :: msg 
 
@@ -1107,10 +1107,10 @@
 
 !c  compute concentration distribution at boundary
           call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-                       cgc,sac,sgc,porc,                              &
+                       actv,i0,cgc,sac,sgc,porc,                      &
                        igen,ilog,tid,idbg,tec_header,                 &
                        prefix,l_prfx,zone_name,l_zone_name,           &
-                       mtime,i_append_sim,mtime_append)
+                       mtime,i_append_sim,mtime_append,.true.)
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain
@@ -2136,7 +2136,7 @@
                 !cprovi Copy the molalities in the local vector 
                 !cprovi------------------------------------------------
                    cpz_loc(1:nc)=cnew(1:nc,ivol)
-                   cpz_loc(nc+1:nc+nx)=cx(1:nx,ivol)  
+                   cpz_loc(nc+1:nc+nx)=cxnew(1:nx,ivol)  
                  call compute_density_ (phase,0.0d0,0.0d0,cpz_loc,      &
                                       ssdens(ivol),.false.,iserror)
                  if (iserror) then 
@@ -2381,10 +2381,10 @@
             end if
 
 !c  compute concentration distribution at boundary
-            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),         &
-                         cgc,sac,sgc,porc,igen,ilog,tid,idbg,tec_header,   &
-                         prefix,l_prfx,zone_name,l_zone_name,              &
-                         mtime,i_append_sim,mtime_append)
+            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,    &
+                         i0,cgc,sac,sgc,porc,igen,ilog,tid,idbg,           &
+                         tec_header,prefix,l_prfx,zone_name,l_zone_name,   &
+                         mtime,i_append_sim,mtime_append,.true.)
             call minmaxwd(cxc,totcn(:,tid))
             ctype='free' 
 
@@ -2799,7 +2799,7 @@
 10    continue 
       if (rank == 0) then
         write (ilog,*) msg
-        write (iscreen,*) msg
+        write (*,*) msg
       end if
 #ifdef PETSC
       call petsc_mpi_finalize

@@ -303,7 +303,7 @@
             !cprovi Compute density at given concentration using Pitzer equations
             !cprovi-------------------------------------------------------------------
             cpz_loc(1:nc)=cnew(1:nc,ivol)
-            cpz_loc(nc+1:nc+nx)=cx(1:nx,ivol)  
+            cpz_loc(nc+1:nc+nx)=cxnew(1:nx,ivol)  
             !computer_density_ : m_phase (compute_density_) 
             !                    -> m_aqueousphase (compute_density_) 
             !                    -> m_aqueousphasepitzer (compute_density_)

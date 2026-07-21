@@ -44,13 +44,13 @@
 !c                                - new time level
 !c           sgold(nn)          = gaseous phase saturation            * +
 !c                                - old time level
-!c           c(nc,nn)           = concentrations of free species      * +
+!c           cold(nc,nn)        = concentrations of free species      * +
 !c                                - old time level [moles/l water]
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity [meq/100g] + -
 !c                                - global system
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -868,7 +868,7 @@
           if(b_binary_restart_read) then
             sionold(ivol) = realbuffer_irsrt(ivar+1)
             do ic = 1,n
-              c(ic,ivol) = realbuffer_irsrt(ivar+2*ic)
+              cold(ic,ivol) = realbuffer_irsrt(ivar+2*ic)
               totcold(ic,ivol) = realbuffer_irsrt(ivar+2*ic+1)
             end do
             ivar = ivar + 2*n+1
@@ -882,7 +882,7 @@
             do ic = 1,n
               ierrcd = 10
               read(irsrt,'(2e22.14)',ADVANCE='no',err=998,end=999)     &
-                   c(ic,ivol),totcold(ic,ivol)
+                   cold(ic,ivol),totcold(ic,ivol)
             end do
           end if
          
@@ -1218,7 +1218,7 @@
 !c  reassign free species concentrations for next time level
 
           do ic = 1,n
-            cnew(ic,ivol) = c(ic,ivol)
+            cnew(ic,ivol) = cold(ic,ivol)
             totcnew(ic,ivol) = totcold(ic,ivol)
           end do
 
@@ -1229,13 +1229,15 @@
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
 
-            call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),   &
-     &                    gammaold(nc+1,ivol),sionold(ivol),tid) 
-            call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),        &
-     &                  gamma(nc+1,ivol),sionnew(ivol),tid)
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol),   &
+                          gammaold(nc+1,ivol),sionold(ivol),             &
+                          actvset(:,ivol),0,tid) 
+            call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
+                          gamma(nc+1,ivol),sionnew(ivol),                &
+                          actvset(:,ivol),0,tid)
                 
-            call totconcfac(cnew(:,ivol),cx(:,ivol),totcnewf(:,ivol),izn)
-            call totconcfac(c(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
+            call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
+            call totconcfac(cold(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
 
           end if
          
@@ -1265,14 +1267,14 @@
 !c  compute concentrations of aqueous complexes
  
           do ix = 1,nx
-            call secspec(c(:,ivol),cx(ix,ivol),eqx(ix,tid),gamma(:,ivol),&
-                         gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
-
+            call secspec(cold(:,ivol),cxnew(ix,ivol),eqx(ix,tid),      &
+                         gamma(:,ivol),gamma(nc+ix,ivol),xnux,         &
+                         iax,jax,ix)
           end do
  
 !c  update ionic strength
  
-          call ionstr(c,cx,strion,chargec,chargex,nc-1,nx,namec)
+          call ionstr(cold,cxnew,strion,chargec,chargex,nc-1,nx,namec)
  
 !c  make sure new ionic strength is not larger than maximum
 !c  allowed ionic strength to avoid convergence problems
@@ -1298,36 +1300,36 @@
 !cprovi Pitzer equations 
 !cprovi---------------------------------------------- 
               call pitzer (phase,gamma(1:nc,ivol),                    &
-     &                     gamma(nc+1:nc+nx,ivol),                    &
-     &                     cnew(1:nc,ivol),cx(1:nx,ivol),             &
-     &                     nc,nx,ilog)
+                           gamma(nc+1:nc+nx,ivol),                    &
+                           cnew(1:nc,ivol),cxnew(1:nx,ivol),          &
+                           nc,nx,ilog)
             else
 !cprovi----------------------------------------------    
 !cprovi for free species
 !cprovi----------------------------------------------
 
               do ic=1,nc
-                   gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),    &
-                                    sionnew(ivol),chargec(ic),        &
-                                    dhac(ic),dhbc(ic),                &
-                                    dhad(tid),dhbd(tid),              &
-                                    adav,bdav,acth2omin,nc,           &
-                                    nx,namec(ic),namec,ic,            &
-                                    issit,asit,basit,coepsil,         &
-                                    iasit,jasit)
+                   gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol), &
+                                          sionnew(ivol),chargec(ic),  &
+                                          dhac(ic),dhbc(ic),          &
+                                          dhad(tid),dhbd(tid),        &
+                                          adav,bdav,acth2omin,nc,     &
+                                          nx,namec(ic),namec,ic,      &
+                                          issit,asit,basit,coepsil,   &
+                                          iasit,jasit)
               end do
 
 !c  --> for secondary aqueous species
 
               do ix=1,nx
-                   gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol), &
-                                       sionnew(ivol),chargex(ix),     &
-                                       dhax(ix),dhbx(ix),             &
-                                       dhad(tid),dhbd(tid),           &
-                                       adav,bdav,acth2omin,nc,        &
-                                       nx,namex(ix),namec,            &
-                                       nc+ix,issit,asit,basit,        &
-                                       coepsil,iasit,jasit)
+                   gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol), &
+                                             sionnew(ivol),chargex(ix),  &
+                                             dhax(ix),dhbx(ix),          &
+                                             dhad(tid),dhbd(tid),        &
+                                             adav,bdav,acth2omin,nc,     &
+                                             nx,namex(ix),namec,         &
+                                             nc+ix,issit,asit,basit,     &
+                                             coepsil,iasit,jasit)
               end do
                
             end if

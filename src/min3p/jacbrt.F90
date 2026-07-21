@@ -66,9 +66,9 @@
 !c           brt(nn*n)          = rhs vector                          + +
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
-!c           c(nc,nn)            = concentrations of free species      + -
+!c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - old time level [moles/l water]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of free       + -
 !c                                species
@@ -590,13 +590,14 @@
             end do 
 
             zone_name = 'temperature-correction'
-            call gcreact(cnew(:,ivol),c(:,ivol),cx(:,ivol),       &
-                         gamma(:,ivol),gamma(nc+1,ivol),          &
-                         gnew(:,ivol),sanew(ivol),sgnew(ivol),    &
-                         pornew(ivol),igen,ilog,tid,idbg,         &
-                         tec_header,prefix,l_prfx,                &
-                         zone_name,l_zone_name,                   &
-                         mtime,i_append_sim,mtime_append)
+            call gcreact(cnew(:,ivol),cold(:,ivol),cxnew(:,ivol),    &
+                         gamma(:,ivol),gamma(nc+1,ivol),             &
+                         actvset(:,ivol),0,                          &
+                         gnew(:,ivol),sanew(ivol),sgnew(ivol),       &
+                         pornew(ivol),igen,ilog,tid,idbg,            &
+                         tec_header,prefix,l_prfx,                   &
+                         zone_name,l_zone_name,                      &
+                         mtime,i_append_sim,mtime_append,.true.)
           end if
 
           istart = (ivol-1)*n+1           !pointer - first row
@@ -694,13 +695,13 @@
 !cprovi---------------------------------------------- 
                  call pitzer (phase,gamma(1:nc,ivol),             &
                               gamma(nc+1:nc+nx,ivol),             &
-                              cnew(1:nc,ivol),cx(1:nx,ivol),      &
+                              cnew(1:nc,ivol),cxnew(1:nx,ivol),   &
                               nc,nx,ilog)
                else
 !c  for free species
                  do ic=1,nc
                      gamma(ic,ivol) = acoff(cnew(:,ivol),         &
-                                      cx(:,ivol),                 &
+                                      cxnew(:,ivol),              &
                                       sionnew(ivol),chargec(ic),  &
                                       dhac(ic),dhbc(ic),          &
                                       dhad(tid),dhbd(tid),        &
@@ -715,7 +716,7 @@
 
                  do ix=1,nx
                     gamma(nc+ix,ivol) = acoff(cnew(:,ivol),       &
-                                        cx(:,ivol),               &
+                                        cxnew(:,ivol),            &
                                         sionnew(ivol),chargex(ix),&
                                         dhax(ix),dhbx(ix),        &
                                         dhad(tid),dhbd(tid),      &
@@ -738,7 +739,7 @@
               do ir=1,nr
                 ic = n+ir
                 call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),    &
-                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,ir)
               end do
             end if
 
@@ -747,16 +748,16 @@
 
             do ix=1,nx
               call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),     &
-              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,ix)
             end do
 
 !c  compute total aqueous component concentrations with incremented
 !c  free species concentrations
 
             if (analyt_deriv_rt) then
-              call atotconc(cnew(:,ivol),cx(:,ivol),jbl,tid)      
+              call atotconc(cnew(:,ivol),cxnew(:,ivol),jbl,tid)      
             else
-              call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
+              call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
             end if
 
 !c  compress total aqueous component concentration vector in case
@@ -1091,12 +1092,12 @@
 !cprovi---------------------------------------------- 
                     call pitzer (phase,gamma(1:nc,ivol),       &
                            gamma(nc+1:nc+nx,ivol),             &
-                           cnew(1:nc,ivol),cx(1:nx,ivol),      &
+                           cnew(1:nc,ivol),cxnew(1:nx,ivol),   &
                            nc,nx,ilog)
                   else
 !c  for free species
                     do ic=1,nc
-                      gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),   &
+                      gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
                                              sionnew(ivol),chargec(ic), &
                                              dhac(ic),dhbc(ic),         &
                                              dhad(tid),dhbd(tid),       &
@@ -1109,15 +1110,15 @@
 
 !c  for aqueous complexes
                     do ix=1,nx
-                      gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol),&
-                                              sionnew(ivol),chargex(ix),&
-                                              dhax(ix),dhbx(ix),        &
-                                              dhad(tid),dhbd(tid),      &
-                                              adav,bdav,acth2omin,      &
-                                              nc,nx,namex(ix),namec,    &
-                                              nc+ix,issit,              &
-                                              asit,basit,coepsil,       &
-                                              iasit,jasit)
+                      gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
+                                                sionnew(ivol),chargex(ix), &
+                                                dhax(ix),dhbx(ix),         &
+                                                dhad(tid),dhbd(tid),       &
+                                                adav,bdav,acth2omin,       &
+                                                nc,nx,namex(ix),namec,     &
+                                                nc+ix,issit,               &
+                                                asit,basit,coepsil,        &
+                                                iasit,jasit)
                     end do
                   
                   end if
@@ -1133,7 +1134,7 @@
                   do ir=1,nr
                     ic = n+ir
                     call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),&
-                    gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                    gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,ir)
                   end do
                 end if
 
@@ -1142,16 +1143,16 @@
 
                 do ix=1,nx
                   call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid), &
-                  gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+                  gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,ix)
                 end do
 
 !c  compute total aqueous component concentrations with incremented
 !c  free species concentrations
 
                 if (analyt_deriv_rt) then
-                  call atotconc(cnew(:,ivol),cx(:,ivol),jbl,tid)
+                  call atotconc(cnew(:,ivol),cxnew(:,ivol),jbl,tid)
                 else
-                  call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
+                  call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
                 end if
 
 !c  compress total aqueous component concentration vector in case
@@ -1742,32 +1743,32 @@
 !cprovi---------------------------------------------- 
                 call pitzer (phase,gamma(1:nc,ivol),           &
                              gamma(nc+1:nc+nx,ivol),           &
-                             cnew(1:nc,ivol),cx(1:nx,ivol),    &
+                             cnew(1:nc,ivol),cxnew(1:nx,ivol), &
                              nc,nx,ilog)
               else
 !c  for free species
                 do ic=1,nc
-                     gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),&
-                                      sionnew(ivol),chargec(ic),    &
-                                      dhac(ic),dhbc(ic),            &
-                                      dhad(tid),dhbd(tid),          &
-                                      adav,bdav,acth2omin,nc,       &
-                                      nx,namec(ic),namec,ic,        &
-                                      issit,asit,basit,coepsil,     &
-                                      iasit,jasit)
+                     gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
+                                            sionnew(ivol),chargec(ic), &
+                                            dhac(ic),dhbc(ic),         &
+                                            dhad(tid),dhbd(tid),       &
+                                            adav,bdav,acth2omin,nc,    &
+                                            nx,namec(ic),namec,ic,     &
+                                            issit,asit,basit,coepsil,  &
+                                            iasit,jasit)
                 end do
 
 !c  for secondary aqueous species
 
                 do ix=1,nx
-                  gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol),&
-                                      sionnew(ivol),chargex(ix),    &
-                                      dhax(ix),dhbx(ix),            &
-                                      dhad(tid),dhbd(tid),          &
-                                      adav,bdav,acth2omin,nc,       &
-                                      nx,namex(ix),namec,           &
-                                      nc+ix,issit,asit,basit,       &
-                                      coepsil,iasit,jasit)
+                  gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
+                                            sionnew(ivol),chargex(ix), &
+                                            dhax(ix),dhbx(ix),         &
+                                            dhad(tid),dhbd(tid),       &
+                                            adav,bdav,acth2omin,nc,    &
+                                            nx,namex(ix),namec,        &
+                                            nc+ix,issit,asit,basit,    &
+                                            coepsil,iasit,jasit)
                 end do
 
               end if
@@ -1784,7 +1785,7 @@
               do ir=1,nr
                 ic = n+ir
                 call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),    &
-                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,ir)
               end do
             end if
 
@@ -1793,15 +1794,15 @@
 
             do ix=1,nx
               call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),     &
-              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,ix)
             end do
 
 !c  compute derivative of total aqueous component concentrations 
 
             if (analyt_deriv_rt) then
-              call atotconc(cnew(:,ivol),cx(:,ivol),jbl,tid)
+              call atotconc(cnew(:,ivol),cxnew(:,ivol),jbl,tid)
             else
-              call dtotconc(cnew(:,ivol),cx(:,ivol),drtinc,jbl,tid,0)
+              call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
             end if
 
 !c  compress total aqueous component concentration vector in case

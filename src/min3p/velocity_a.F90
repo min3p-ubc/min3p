@@ -558,12 +558,12 @@
 
 !c when gas advection, report velocity and flux results
                   if (multi_diff) then
-                    call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),  &
-                                   cnew(:,jvol),cx(:,jvol),            &
+                    call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),  &
+                                   cnew(:,jvol),cxnew(:,jvol),            &
                                    delta_totviscnew(:,tid))
 
-                    call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),  &
-                                       cnew(:,jvol),cx(:,jvol),            &
+                    call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),  &
+                                       cnew(:,jvol),cxnew(:,jvol),            &
                                        delta_electromignew(:,tid))
                   end if
 

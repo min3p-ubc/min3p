@@ -61,7 +61,7 @@
 !c                                - old time level [moles/l bulk]]    * +
 !c           cmnew(nm,nn)       = mineral concentrations
 !c                                - new time level [moles/l bulk]     * +
-!c           cx(nx,nn)          = concentrations of secondary aqueous * +
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous * +
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of aqueous    * +
 !c                                species (global)
@@ -289,18 +289,20 @@
 !c  concentrations and activity coefficients of free species
  
         do ic=1,nc
-          c(ic,ivol) = ccnew(ic)
+          cold(ic,ivol) = ccnew(ic)
           cnew(ic,ivol) = ccnew(ic)
           gamma(ic,ivol) = gamma_l(ic)
           if (hmulti_diff) then
             gammaold(ic,ivol) = gamma_l(ic)
           end if
+          actvset(ic,ivol) = actv(ic)
         end do
+
  
 !c  concentrations and activity coefficients of aqueous complexes
  
         do ix=1,nx
-          cx(ix,ivol) = cxc(ix)
+          cxnew(ix,ivol) = cxc(ix)
           gamma(nc+ix,ivol) = gamma_l(nc+ix)
         
           if (hmulti_diff) then
@@ -331,8 +333,8 @@
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
                 
-          call totconcfac(cnew(:,ivol),cx(:,ivol),totcnewf(:,ivol),izn)
-          call totconcfac(c(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
+          call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
+          call totconcfac(cold(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
 
         end if
 
@@ -451,7 +453,7 @@
 !cmx----------------------------------------------------------------------
         if (.not.cec_field .and. nsites_ion > 1) then
             do isb=1, nsites_ion
-                cec_fraction_g(isb,ivol) = cec_fraction(isb)
+              cec_fraction_g(isb,ivol) = cec_fraction(isb)
             end do
         end if
       end if

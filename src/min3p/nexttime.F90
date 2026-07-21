@@ -58,7 +58,7 @@
 !c                                - new time level [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity [meq/100g] + -
 !c                                - global system
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -536,35 +536,35 @@
 !cprovi Cuidado, las componentes pueden no ser acuosas
 !cprovi preguntarle a Uli 
 !cprovi---------------------------------------------- 
-              call pitzer (phase,gamma(1:nc,ivol),                    &
-                           gamma(nc+1:nc+nx,ivol),                    &
-                           cnew(1:nc,ivol),cx(1:nx,ivol),             &
+              call pitzer (phase,gamma(1:nc,ivol),                     &
+                           gamma(nc+1:nc+nx,ivol),                     &
+                           cnew(1:nc,ivol),cxnew(1:nx,ivol),           &
                            nc,nx,ilog)                                
             else 
 !c  --> for free species
 
               do ic=1,nc
-                gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),       &
-                                       sionnew(ivol),chargec(ic),     &
-                                       dhac(ic),dhbc(ic),             &
-                                       dhad(tid), dhbd(tid),          &
-                                       adav,bdav,acth2omin,nc,        &
-                                       nx,namec(ic),namec,ic,         &
-     &                                 issit,asit,basit,coepsil,      &
-     &                                 iasit,jasit)
+                gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),     &
+                                       sionnew(ivol),chargec(ic),      &
+                                       dhac(ic),dhbc(ic),              &
+                                       dhad(tid), dhbd(tid),           &
+                                       adav,bdav,acth2omin,nc,         &
+                                       nx,namec(ic),namec,ic,          &
+                                       issit,asit,basit,coepsil,       &
+                                       iasit,jasit)
               end do
 
 !c  --> for secondary aqueous species
 
               do ix=1,nx
-                gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol),    &
-                                          sionnew(ivol),chargex(ix),  &
-                                          dhax(ix),dhbx(ix),          &
-                                          dhad(tid),dhbd(tid),        &     
-                                          adav,bdav,acth2omin,nc,     &
-                                          nx,namex(ix),namec,         &
-     &                                    nc+ix,issit,asit,basit,     &
-     &                                    coepsil,iasit,jasit)
+                gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),  &
+                                          sionnew(ivol),chargex(ix),   &
+                                          dhax(ix),dhbx(ix),           &
+                                          dhad(tid),dhbd(tid),         &     
+                                          adav,bdav,acth2omin,nc,      &
+                                          nx,namex(ix),namec,          &
+                                          nc+ix,issit,asit,basit,      &
+                                          coepsil,iasit,jasit)
               end do
             end if 
           end if
@@ -585,14 +585,14 @@
 !c  reassign free species concentrations for next time level
 
           do ic = 1,n
-            c(ic,ivol) = cnew(ic,ivol)
+            cold(ic,ivol) = cnew(ic,ivol)
           end do
           
 !c  reassign secondary species concentrations for next time level   !MX May2014
           if (hmulti_diff) then
-                do ix = 1,nx
-                  cxold(ix,ivol) = cx(ix,ivol)
-                end do
+            do ix = 1,nx
+              cxold(ix,ivol) = cxnew(ix,ivol)
+            end do
           end if
           
 !c  redox equilibrium reactions
@@ -602,7 +602,7 @@
 
 !c  recompute total aqueous component concentrations
 
-            call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
+            call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
 
 !c Calculate the secondary species concentrations cxold - old time level
             if (hmulti_diff) then
@@ -611,8 +611,8 @@
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
                 
-                call totconcfac(cnew(:,ivol),cx(:,ivol),totcnewf(:,ivol),izn)
-                call totconcfac(c(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
+                call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
+                call totconcfac(cold(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
             
             end if
 
@@ -892,7 +892,7 @@
           if (heat_transport.and.entalphy_change) then
               !sum_entalchg=r0
               !do ix=1,nx
-              !  sum_entalchg=sum_entalchg+dhcx(ix)*cx(ix,ivol)
+              !  sum_entalchg=sum_entalchg+dhcx(ix)*cxnew(ix,ivol)
               !end do
             
               !entalchg(ivol)=sum_entalchg

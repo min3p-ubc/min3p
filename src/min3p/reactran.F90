@@ -49,7 +49,7 @@
 !c           art(njart)         = jacobian matrix                     * *    
 !c           afrt(njafrt)       = incomplete factorization            * *
 !c           brt(nn*n)          = rhs vector                          * *
-!c           c(nc,nn)           = concentrations of free species      + +
+!c           cold(nc,nn)        = concentrations of free species      + +
 !c                                - old time level [moles/l water]
 !c           cinfvs(njavs)      = influence coefficients              + -
 !c                                (variably saturated flow)
@@ -59,7 +59,7 @@
 !c                                - new time level [moles/l bulk]
 !c           cmold(nm,nn)       = mineral concentrations              + +
 !c                                - old time level [moles/l bulk]]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + +
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + +
 !c                                species [moles/l water]
 !c           delt               = time step                           + -
 !c           deltol_rt          = solver update tolerance             + -
@@ -1212,7 +1212,7 @@
 !c_bubbles reset flow variables also
             end if 
             do ic=1,n
-              cnew(ic,ivol) = c(ic,ivol)
+              cnew(ic,ivol) = cold(ic,ivol)
             end do
             if (nm.gt.r0)then
               do im=1,nm
@@ -1293,11 +1293,13 @@
             call tcorr(tkel(ivol),ivol,tid)           
           end if
   
-          call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),         &
-                        gamma(nc+1,ivol),sionnew(ivol),tid)
+          call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
+                        gamma(nc+1,ivol),sionnew(ivol),                &
+                        actvset(:,ivol),0,tid)
           if (hmulti_diff) then
-                call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),&        !MX June 2014
-                              gammaold(nc+1,ivol),sionold(ivol),tid)
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &        !MX June 2014
+                          gammaold(nc+1,ivol),sionold(ivol),           &
+                          actvset(:,ivol),0,tid)
           end if
 
         end if
@@ -1305,7 +1307,7 @@
 !c  recompute total concentrations vectors
       
         if (redox_equil_rt.and.nr.gt.0) then
-          call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
+          call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
 
           if (ng.gt.0) then
               call totconcg(gnew(:,ivol),totgnew(:,ivol))
@@ -1493,11 +1495,13 @@
             call tcorr(tkel(ivol),ivol,tid)           
           end if
    
-          call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),         & 
-                        gamma(nc+1,ivol),sionnew(ivol),tid)
+          call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      & 
+                        gamma(nc+1,ivol),sionnew(ivol),                &
+                        actvset(:,ivol),0,tid)
           if (hmulti_diff) then
-             call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),   &        !MX June 2014
-                         gammaold(nc+1,ivol),sionold(ivol),tid)
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &        !MX June 2014
+                          gammaold(nc+1,ivol),sionold(ivol),           &
+                          actvset(:,ivol),0,tid)
           end if
 
 !c         THH edit: pass ivol # to updtsvmp to use in updating surface areas
@@ -1553,7 +1557,7 @@
                   end if
                 end if
               end do
-
+              
               call updtsvmp(cmnew(:,ivol),cmold(:,ivol),phi(:,ivol),   &
                             area(:,ivol),ratemdp(:,ivol),satm(1,tid),  &
                             delt,ivol,tid)
@@ -1619,10 +1623,10 @@
           tid = 1
 #endif
 
-          call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
+          call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
 
           if (hmulti_diff) then
-            call totconc(c(:,ivol),cxold(:,ivol),totcold(:,ivol))
+            call totconc(cold(:,ivol),cxold(:,ivol),totcold(:,ivol))
           end if
           if (ng.gt.0) then
             call totconcg(gnew(:,ivol),totgnew(:,ivol))
@@ -1691,7 +1695,7 @@
 
           !c update total concentration for aqueous phase and gas phase
           if (bflag) then
-            call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
+            call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
             if (ng.gt.0) then
               call totconcg(gnew(:,ivol),totgnew(:,ivol))
             end if

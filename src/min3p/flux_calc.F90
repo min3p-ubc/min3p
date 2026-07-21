@@ -59,7 +59,7 @@
 !c                                - global system
 !c           cstor(n)           = storage term (aqueous phase)        * *
 !c           cvol(nn)           = nodal volumes                       + -
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -764,12 +764,12 @@
 
           if (multi_diff) then
 
-            call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),          &
-                           cnew(:,jvol),cx(:,jvol),                    &
+            call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),       &
+                           cnew(:,jvol),cxnew(:,jvol),                 &
                            delta_totviscnew(:,tid))
 
-            call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),      &
-                               cnew(:,jvol),cx(:,jvol),                &
+            call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
                                delta_electromignew(:,tid))
           end if
 

@@ -106,7 +106,7 @@
 !c                                - new time level [moles/l air]
 !c           cmnew(nm,nn)       = mineral concentrations
 !c                                - new time level [moles/l bulk]
-!c           cx(nx,nn)          = concentrations of secondary aqueous
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients for aqueous
 !c                                species
@@ -735,7 +735,7 @@ Program driver_pc
 
 !c  assign unit numbers for output of transient data
 
-            call tranunit(igb)
+            call tranunit(igb,'gb')
 !cprovi----------------------------------------------------------------------
 !cprovi The point of activity coefficients corresponding to aqueous 
 !cprovi complexes was corrected. 
@@ -772,32 +772,33 @@ Program driver_pc
                 conc_ngre_loc(:) = conc_ngre(:,ivol)
               end if
 
-              call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),cx(:,ivol),  &
-                         gamma(:,ivol),gamma(nc+1,ivol),cmnew(:,ivol),&
-                         gnew(:,ivol),cec_g(ivol),distcoff_rt(:,ivol),&
-                         area(:,ivol),phi(:,ivol),phiold(:,ivol),     &
-                         sionnew(ivol),tkel(ivol),                    &
-                         hhead(ivol),xg(ivol),yg(ivol),zg(ivol),      &
-                         time_io,delt,sanew(ivol),                    &
-                         pornew(ivol),igbt,igbc,igbm,igbg,igbgr,igbi, &
-                         igbb,igbs,igbv,igbd,igbx,igbis,igbac,igbre,  &
-                         offset_igbt(igb),offset_igbc(igb),           &
-                         offset_igbm(igb),offset_igbg(igb),           &
-                         offset_igbgr(igb),offset_igbi(igb),          &
-                         offset_igbb(igb),offset_igbs(igb),           &
-                         offset_igbv(igb),offset_igbd(igb),           &
-                         offset_igbx(igb),offset_igbis(igb),          &
-                         offset_igbac(igb),offset_igbre(igb),         &
-                         offset_igbt_ijk(igb),offset_igbc_ijk(igb),   &
-                         offset_igbm_ijk(igb),offset_igbg_ijk(igb),   &
-                         offset_igbgr_ijk(igb),offset_igbi_ijk(igb),  &
-                         offset_igbb_ijk(igb),offset_igbs_ijk(igb),   &
-                         offset_igbv_ijk(igb),offset_igbd_ijk(igb),   &
-                         offset_igbx_ijk(igb),offset_igbis_ijk(igb),  &
-                         offset_igbac_ijk(igb),offset_igbre_ijk(igb), &
-                         prefix,l_prfx,tec_header,                    &
-                         ivol,tid,0,1,zone_name,l_zone_name,          &
-                         update_porosity,mtime,i_append_sim,          &
+              call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol),&
+                         gamma(:,ivol),gamma(nc+1,ivol),               &
+                         actvset(:,ivol),cmnew(:,ivol),gnew(:,ivol),   &
+                         cec_g(ivol),distcoff_rt(:,ivol),              &
+                         area(:,ivol),phi(:,ivol),phiold(:,ivol),      &
+                         sionnew(ivol),tkel(ivol),hhead(ivol),         &
+                         xg(ivol),yg(ivol),zg(ivol),0,                 &
+                         time_io,delt,sanew(ivol),pornew(ivol),        &
+                         igbt,igbc,igbm,igbg,igbgr,igbi,igbb,igbs,     &
+                         igbv,igbd,igbx,igbis,igbac,igbre,             &
+                         offset_igbt(igb),offset_igbc(igb),            &
+                         offset_igbm(igb),offset_igbg(igb),            &
+                         offset_igbgr(igb),offset_igbi(igb),           &
+                         offset_igbb(igb),offset_igbs(igb),            &
+                         offset_igbv(igb),offset_igbd(igb),            &
+                         offset_igbx(igb),offset_igbis(igb),           &
+                         offset_igbac(igb),offset_igbre(igb),          &
+                         offset_igbt_ijk(igb),offset_igbc_ijk(igb),    &
+                         offset_igbm_ijk(igb),offset_igbg_ijk(igb),    &
+                         offset_igbgr_ijk(igb),offset_igbi_ijk(igb),   &
+                         offset_igbb_ijk(igb),offset_igbs_ijk(igb),    &
+                         offset_igbv_ijk(igb),offset_igbd_ijk(igb),    &
+                         offset_igbx_ijk(igb),offset_igbis_ijk(igb),   &
+                         offset_igbac_ijk(igb),offset_igbre_ijk(igb),  &
+                         prefix,l_prfx,tec_header,                     &
+                         ivol,tid,0,1,zone_name,l_zone_name,           &
+                         update_porosity,mtime,i_append_sim,           &
                          mtime_append)
             end if
           end do

@@ -47,7 +47,7 @@
 !c           csbmass_c(nsites)  = total sorbed mass in system         * *
 !c                                - non-aqueous components [moles]
 !c           cvol(nn)           = nodal volumes                       + -
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -372,7 +372,7 @@
 !c  recompute total aqueous component concentrations and
 !c  total gaseous component concentrations
 
-          call totconc(cnew(:,ivol),cx(:,ivol),totcn(:,tid))
+          call totconc(cnew(:,ivol),cxnew(:,ivol),totcn(:,tid))
           call totconcg(cnew(:,ivol),totgn(:,tid))
 
           do ic = 1, nc-1
@@ -474,7 +474,7 @@
               else
                 isp = isp - nc
                 smass(imb) = smass(imb) + conv3 * cvol(ivol)           &
-                           * sanew(ivol) * pornew(ivol) * cx(isp,ivol)
+                           * sanew(ivol) * pornew(ivol) * cxnew(isp,ivol)
               end if
             end do
           end do
@@ -625,7 +625,7 @@
 #else
             tid = 1
 #endif 
-            call totconc(cnew(:,ivol),cx(:,ivol),totcn(:,tid))
+            call totconc(cnew(:,ivol),cxnew(:,ivol),totcn(:,tid))
             call totcona(totanew(:,ivol),totcn(:,tid),                 &
                          distcoff_rt(:,ivol),sanew(ivol),              &
                          pornew(ivol))         

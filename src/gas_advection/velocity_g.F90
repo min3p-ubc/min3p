@@ -221,7 +221,8 @@
 !c ----------------------------------------------------------------------
 
       subroutine velocity_g (l_sufx, suffix, nmax, njamxc, cinfradx,  &
-                             radial_coordx)
+                             radial_coordx, bit_gsa, bit_gsga,        &
+                             bit_gsf, bit_gsr, bit_gsy, bit_gsk)
 
 #ifdef PETSC
 #include <petscversion.h>
@@ -267,10 +268,12 @@
       real*8, external :: fluxvg, fluxd, gasp_m, gasd_m, gasv, gasdiff2
 
 !c    passed variables
-      integer, intent(in) :: l_sufx, nmax, njamxc
+      integer, intent(in) :: l_sufx, nmax, njamxc, bit_gsa, bit_gsga,  &
+                             bit_gsf, bit_gsr, bit_gsy, bit_gsk
       character(len=*), intent(in) :: suffix      
       real*8 :: cinfradx(njamxc)
       logical :: radial_coordx
+
 
 !c    local variables
       real*8, parameter :: eps = 1.0d-300, r0 = 0.0d0, rhalf = 0.5d0
@@ -281,7 +284,8 @@
              dist(3,12), areax(3,12)
       
       integer ivol, ivz, ivy, ivx, i1, jvol, i1sav, idim, npair(3),   &
-              cvpair(3,12,2), ipair, idim2, idim3, ivol_l, nvarsgsk
+              cvpair(3,12,2), ipair, idim2, idim3, ivol_l, nvarsgsk,  &
+              nvarsgsga
       
       
       integer :: i, ic, ig, ivol2, izn, ierr, igsa2, igsf2
@@ -345,41 +349,45 @@
         call memory_monitor(sizeof(tec_variables),                     &
                             'velocity_g-tec_variables',.true.)
 
-        allocate(offset_igsa2(n), stat = ierr)
-        call checkerr(ierr,'velocity_g-offset_igsa2',ilog)
-        offset_igsa2 = 0
-        call memory_monitor(sizeof(offset_igsa2),'offset_igsa2',.true.)
+        if (bit_gsga > 0) then
+          allocate(offset_igsa2(n), stat = ierr)
+          call checkerr(ierr,'velocity_g-offset_igsa2',ilog)
+          offset_igsa2 = 0
+          call memory_monitor(sizeof(offset_igsa2),'offset_igsa2',.true.)
+        
+          allocate(offset_igsa2_temp(n), stat = ierr)
+          call checkerr(ierr,'velocity_g-offset_igsa2_temp',ilog)
+          offset_igsa2_temp = 0
+          call memory_monitor(sizeof(offset_igsa2_temp),                 &
+                              'offset_igsa2_temp',.true.)
 
-        allocate(offset_igsa2_temp(n), stat = ierr)
-        call checkerr(ierr,'velocity_g-offset_igsa2_temp',ilog)
-        offset_igsa2_temp = 0
-        call memory_monitor(sizeof(offset_igsa2_temp),                 &
-                            'offset_igsa2_temp',.true.)
-
-        allocate(igsa2_list(n), stat = ierr)
-        call checkerr(ierr,'velocity_g-igsa2_list',ilog)
-        igsa2_list = 0
-        call memory_monitor(sizeof(igsa2_list),                        &
-                            'velocity_g-igsa2_list',.true.)
+          allocate(igsa2_list(n), stat = ierr)
+          call checkerr(ierr,'velocity_g-igsa2_list',ilog)
+          igsa2_list = 0
+          call memory_monitor(sizeof(igsa2_list),                        &
+                              'velocity_g-igsa2_list',.true.)
+        end if
 
         if (blanc_diff_g) then
-          allocate(offset_igsf2(n), stat = ierr)
-          call checkerr(ierr,'velocity_g-offset_igsf2',ilog)
-          offset_igsf2 = 0
-          call memory_monitor(sizeof(offset_igsf2),                    &
-                              'velocity_g-offset_igsf2',.true.)
+          if (bit_gsf > 0) then
+            allocate(offset_igsf2(n), stat = ierr)
+            call checkerr(ierr,'velocity_g-offset_igsf2',ilog)
+            offset_igsf2 = 0
+            call memory_monitor(sizeof(offset_igsf2),                  &
+                                'velocity_g-offset_igsf2',.true.)
 
-          allocate(offset_igsf2_temp(n), stat = ierr)
-          call checkerr(ierr,'velocity_g-offset_igsf2_temp',ilog)
-          offset_igsf2_temp = 0
-          call memory_monitor(sizeof(offset_igsf2_temp),               &
-                              'velocity_g-offset_igsf2_temp',.true.)
+            allocate(offset_igsf2_temp(n), stat = ierr)
+            call checkerr(ierr,'velocity_g-offset_igsf2_temp',ilog)
+            offset_igsf2_temp = 0
+            call memory_monitor(sizeof(offset_igsf2_temp),             &
+                                'velocity_g-offset_igsf2_temp',.true.)
 
-          allocate(igsf2_list(n), stat = ierr)
-          call checkerr(ierr,'velocity_g-igsf2_list',ilog)
-          igsf2_list = 0
-          call memory_monitor(sizeof(igsf2_list),                      &
-                              'velocity_g-igsf2_list',.true.)
+            allocate(igsf2_list(n), stat = ierr)
+            call checkerr(ierr,'velocity_g-igsf2_list',ilog)
+            igsf2_list = 0
+            call memory_monitor(sizeof(igsf2_list),                    &
+                                'velocity_g-igsf2_list',.true.)
+          end if
         end if
         
       end if
@@ -400,101 +408,105 @@
       igsa = igsa_first
 
 !c    gas phase velocity
-      if (b_output_binary) then
-        if (b_output_mpiio_single) then
-          strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.vlg'
-        else
-          strbuffer = prefix(:l_prfx)//'_'//                           &
-                      suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg'
-        end if
-          
-        call binary_file_open(Petsc_Comm_World, igsa,          &
-                     trim(strbuffer), b_output_mpiio_single)
+      if (bit_gsa > 0) then
 
-      else
-        open(igsa,file=prefix(:l_prfx)//'_'//                          &
-             suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg',         &
-             status='unknown',form='formatted')
-      end if
+        if (b_output_binary) then
+          if (b_output_mpiio_single) then
+            strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.vlg'
+          else
+            strbuffer = prefix(:l_prfx)//'_'//                           &
+                        suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg'
+          end if
+
+          call binary_file_open(Petsc_Comm_World, igsa,                  &
+                       trim(strbuffer), b_output_mpiio_single)
+  
+        else
+          open(igsa,file=prefix(:l_prfx)//'_'//                          &
+               suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg',         &
+               status='unknown',form='formatted')
+        end if
       
 !c  version information
-      if (b_writeversion_tecplot .and. .not. b_output_binary) then
+        if (b_writeversion_tecplot .and. .not. b_output_binary) then
           call writeversion2file(igsa, "#")
-      end if
-
-      if (b_output_binary) then
-        strbuffer = 'dataset '//prefix(:l_prfx)//'' 
-        offset_igsa = 0
-        call tecplot_binary_write_header(Petsc_Comm_World, igsa,       &
-                     "#!TDV102", trim(strbuffer), offset_igsa,         &
-                     b_output_mpiio_single,.false.)
-        
-        tec_variables(1:7) = [character(len=72) ::"x", "y", "z",       &
-                              "vx", "vy", "vz", "p_t_o_t"]
-        call tecplot_binary_write_variable(Petsc_Comm_World,           &
-                     igsa, 7, tec_variables(1:7), offset_igsa,         &
-                     b_output_mpiio_single,.false.)
-        
-        write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
-              'Average interfacial gas phase velocities, T = ',        &
-              time_io,time_unit
-
-        offset_igsa_temp = offset_igsa
-        
-        if (b_output_multizone) then
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsa,    &
-                       trim(strbuffer),offset_igsa,itec_vel,           &
-                       jtec_vel,ktec_vel,b_output_mpiio_single,        &
-                       .false.,b_output_multizone)
-          offset_igsa = offset_igsa_temp +                             &
-                        (11+len_trim(strbuffer))*4*nprcs + 4
-        else
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsa,    &
-                       trim(strbuffer),offset_igsa,itec_vel_gbl,       &
-                       jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
-                       .false.,b_output_multizone)
-          offset_igsa = offset_igsa_temp +                             &
-                        (12+len_trim(strbuffer))*4
         end if
-      else
-        write(igsa,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-        write(igsa,'(3a)') 'variables = "x", "y", "z", ',              &
-                                     '"vx", "vy", "vz"',               &
-                                     ', "p_t_o_t"'
-        write(igsa,'(a,1pe15.6e3,1x,a,3(a,i5),a)')                     &
-            'zone t = "Average interfacial gas phase velocities, T = ',&
-            time_io, time_unit,                                        &
-            '" i =',itec_vel,                                          &
-            ', j =',jtec_vel,                                          &
-            ', k =',ktec_vel,',  f=point' 
-      end if
-      
-      if (rank == 0 .and. b_enable_output) then
 
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                           &
-                   'Average interfacial gas phase velocities, T = ',   &
-                    time_io,time_unit,('-',i=1,72)
+        if (b_output_binary) then
+          strbuffer = 'dataset '//prefix(:l_prfx)//'' 
+          offset_igsa = 0
+          call tecplot_binary_write_header(Petsc_Comm_World, igsa,       &
+                       "#!TDV102", trim(strbuffer), offset_igsa,         &
+                       b_output_mpiio_single,.false.)
+          
+          tec_variables(1:7) = [character(len=72) ::"x", "y", "z",       &
+                                "vx", "vy", "vz", "p_t_o_t"]
+          call tecplot_binary_write_variable(Petsc_Comm_World,           &
+                       igsa, 7, tec_variables(1:7), offset_igsa,         &
+                       b_output_mpiio_single,.false.)
+          
+          write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
+                'Average interfacial gas phase velocities, T = ',        &
+                time_io,time_unit
+
+          offset_igsa_temp = offset_igsa
+          
+          if (b_output_multizone) then
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsa,    &
+                         trim(strbuffer),offset_igsa,itec_vel,           &
+                         jtec_vel,ktec_vel,b_output_mpiio_single,        &
+                         .false.,b_output_multizone)
+            offset_igsa = offset_igsa_temp +                             &
+                          (11+len_trim(strbuffer))*4*nprcs + 4
+          else
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsa,    &
+                         trim(strbuffer),offset_igsa,itec_vel_gbl,       &
+                         jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
+                         .false.,b_output_multizone)
+            offset_igsa = offset_igsa_temp +                             &
+                          (12+len_trim(strbuffer))*4
+          end if
+        else
+          write(igsa,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+          write(igsa,'(3a)') 'variables = "x", "y", "z", ',              &
+                                       '"vx", "vy", "vz"',               &
+                                       ', "p_t_o_t"'
+          write(igsa,'(a,1pe15.6e3,1x,a,3(a,i5),a)')                     &
+              'zone t = "Average interfacial gas phase velocities, T = ',&
+              time_io, time_unit,                                        &
+              '" i =',itec_vel,                                          &
+              ', j =',jtec_vel,                                          &
+              ', k =',ktec_vel,',  f=point' 
+        end if
+      
+        if (rank == 0 .and. b_enable_output) then
+
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                         &
+                     'Average interfacial gas phase velocities, T = ',   &
+                      time_io,time_unit,('-',i=1,72)
         
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                     &
-                   suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg'
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                     &
+                     suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg'
         
-        write(ifls,'(2a)')                                             &
-                'column   entry                           ','unit'
-        write(ifls,'(2a)')                                             &
-                '1        x                               ','m'        
-        write(ifls,'(2a)')                                             &
-                '2        y                               ','m'        
-        write(ifls,'(2a)')                                             &
-                '3        z                               ','m'        
-        write(ifls,'(2a)')                                             &
-                '4        v_x                             ','m/d'      
-        write(ifls,'(2a)')                                             &
-                '5        v_y                             ','m/d'      
-        write(ifls,'(2a)')                                             &
-                '6        v_z                             ','m/d'
-        write(ifls,'(2a)')                                             &
-                '7        p_t_o_t                         ','atm'
+          write(ifls,'(2a)')                                             &
+                  'column   entry                           ','unit'
+          write(ifls,'(2a)')                                             &
+                  '1        x                               ','m'        
+          write(ifls,'(2a)')                                             &
+                  '2        y                               ','m'        
+          write(ifls,'(2a)')                                             &
+                  '3        z                               ','m'        
+          write(ifls,'(2a)')                                             &
+                  '4        v_x                             ','m/d'      
+          write(ifls,'(2a)')                                             &
+                  '5        v_y                             ','m/d'      
+          write(ifls,'(2a)')                                             &
+                  '6        v_z                             ','m/d'
+          write(ifls,'(2a)')                                             &
+                  '7        p_t_o_t                         ','atm'
         
+        end if
+
       end if
 
       igsa2 = igsa 
@@ -517,140 +529,171 @@
           close(ilog)
           stop
         end if
-            
-        if (b_output_binary) then
-          if (b_output_mpiio_single) then
-            strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
-               suffix2(:l_sfx2)//'.gsga'
-          else
-            strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
-                        suffix2(:l_sfx2)//trim(adjustl(str_rank))//    &
-                        '.gsga'
-          end if
-            
-          call binary_file_open(Petsc_Comm_World,              &
-                       igsa2_list(ic),trim(strbuffer),                 &
-                       b_output_mpiio_single)
 
-        else
-          open(igsa2,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
-               suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsga',      &
-               status='unknown', form='formatted')
-        end if
+        if (bit_gsga > 0) then
+
+          if (btest(bit_gsga,0)) then
+            nvarsgsga = 18
+          else if (btest(bit_gsga,1)) then
+            nvarsgsga = 12
+          end if          
+
+          if (b_output_binary) then
+            if (b_output_mpiio_single) then
+              strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
+                 suffix2(:l_sfx2)//'.gsga'
+            else
+              strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
+                          suffix2(:l_sfx2)//trim(adjustl(str_rank))//    &
+                          '.gsga'
+            end if
+              
+            call binary_file_open(Petsc_Comm_World,                      &
+                         igsa2_list(ic),trim(strbuffer),                 &
+                         b_output_mpiio_single)
+
+          else
+            open(igsa2,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
+                 suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsga',     &
+                 status='unknown', form='formatted')
+          end if
         
 !c  version information
-        if (b_writeversion_tecplot .and. .not. b_output_binary) then
+          if (b_writeversion_tecplot .and. .not. b_output_binary) then
             call writeversion2file(igsa2, "#")
-        end if
+          end if
 
-        if (b_output_binary) then
-          strbuffer = 'dataset '//prefix(:l_prfx)//'' 
-          offset_igsa2(ic) = 0
-          call tecplot_binary_write_header(Petsc_Comm_World,           &
-                       igsa2_list(ic),"#!TDV102", trim(strbuffer),     &
-                       offset_igsa2(ic),b_output_mpiio_single,.false.) 
-          
-          tec_variables(1:18) = [character(len=72) ::                  &
-                          "x", "y", "z", "vx adv", "vy adv", "vz adv", &
-                          "vx dif", "vy dif", "vz dif", "vx tot",      &
-                          "vy tot", "vz tot", "vx dgm", "vy dgm",      &
-                          "vz dgm", "vx neq", "vy neq", "vz neq"]
-          
-          call tecplot_binary_write_variable(Petsc_Comm_World,         &
-                       igsa2_list(ic),18, tec_variables(1:18),         &
-                       offset_igsa2(ic),b_output_mpiio_single,.false.) 
-          
-          write(strbuffer,'(a, a, 1x, a, 1p, 1pe15.6e3, 1x, a)')       &
-                  'Average interfacial gas velocities for component: ',&
-                  namec(ic)(:l_namec(ic)),' T = ',                     &
-                  time_io,time_unit
-          offset_igsa2_temp(ic) = offset_igsa2(ic)  
-          
-          if (b_output_multizone) then
-            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,       &
-                         igsa2_list(ic), trim(strbuffer),              &
-                         offset_igsa2(ic),itec_vel,                    &
-                         jtec_vel,ktec_vel,b_output_mpiio_single,      &
-                         .false.,b_output_multizone)
-            offset_igsa2(ic) = offset_igsa2_temp(ic) +                 &
-                          (11+len_trim(strbuffer))*4*nprcs + 4
-          else
-            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,       &
-                         igsa2_list(ic), trim(strbuffer),              &
-                         offset_igsa2(ic),itec_vel_gbl,                &
-                         jtec_vel_gbl,ktec_vel_gbl,                    &
-                         b_output_mpiio_single,.false.,                &
-                         b_output_multizone)
-            offset_igsa2(ic) = offset_igsa2_temp(ic) +                 &
-                          (12+len_trim(strbuffer))*4
-          end if  
-        else
-          write(igsa2,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-          write(igsa2,'(6a)') 'variables = "x", "y", "z", ',           &
-                              '"vx adv", "vy adv", "vz adv", ',        &
-                              '"vx dif", "vy dif", "vz dif", ',        &
-                              '"vx tot", "vy tot", "vz tot", ',        &
-                              '"vx dgm", "vy dgm", "vz dgm",',         &
-                              '"vx neq", "vy neq", "vz neq"'
-          write(igsa2,'(4a,1pe15.6e3,1x,2a,3(a,i5),a)')                &
-                'zone t = "advection and diffusion fluxes for',        &
-                ' component: ', namec(ic)(:l_namec(ic)),' T = ',       &
-                time_io,time_unit, ' "',                               &  
-                ', i =',itec_vel,                                      &
-                ', j =',jtec_vel,                                      &
-                ', k =',ktec_vel,',  f=point'
-        end if
+          if (b_output_binary) then
+            strbuffer = 'dataset '//prefix(:l_prfx)//'' 
+            offset_igsa2(ic) = 0
+            call tecplot_binary_write_header(Petsc_Comm_World,           &
+                         igsa2_list(ic),"#!TDV102", trim(strbuffer),     &
+                         offset_igsa2(ic),b_output_mpiio_single,.false.) 
+            
+            if (btest(bit_gsga,0)) then
+              tec_variables(1:nvarsgsga) = [character(len=72) ::           &
+                              "x", "y", "z", "vx adv", "vy adv", "vz adv", &
+                              "vx dif", "vy dif", "vz dif", "vx tot",      &
+                              "vy tot", "vz tot", "vx dgm", "vy dgm",      &
+                              "vz dgm", "vx neq", "vy neq", "vz neq"]
+            else if (btest(bit_gsga,1)) then
+              tec_variables(1:nvarsgsga) = [character(len=72) ::           &
+                              "x", "y", "z", "vx adv", "vy adv", "vz adv", &
+                              "vx dif", "vy dif", "vz dif", "vx tot",      &
+                              "vy tot", "vz tot"]
+            end if
 
-        if (rank == 0 .and. b_enable_output) then
+            
+            call tecplot_binary_write_variable(Petsc_Comm_World,         &
+                         igsa2_list(ic),nvarsgsga,                       &
+                         tec_variables(1:nvarsgsga),                     &
+                         offset_igsa2(ic),b_output_mpiio_single,.false.) 
+            
+            write(strbuffer,'(a, a, 1x, a, 1p, 1pe15.6e3, 1x, a)')       &
+                    'Average interfacial gas velocities for component: ',&
+                    namec(ic)(:l_namec(ic)),' T = ',                     &
+                    time_io,time_unit
+            offset_igsa2_temp(ic) = offset_igsa2(ic)  
+            
+            if (b_output_multizone) then
+              call tecplot_binary_write_zoneinfo(Petsc_Comm_World,       &
+                           igsa2_list(ic), trim(strbuffer),              &
+                           offset_igsa2(ic),itec_vel,                    &
+                           jtec_vel,ktec_vel,b_output_mpiio_single,      &
+                           .false.,b_output_multizone)
+              offset_igsa2(ic) = offset_igsa2_temp(ic) +                 &
+                            (11+len_trim(strbuffer))*4*nprcs + 4
+            else
+              call tecplot_binary_write_zoneinfo(Petsc_Comm_World,       &
+                           igsa2_list(ic), trim(strbuffer),              &
+                           offset_igsa2(ic),itec_vel_gbl,                &
+                           jtec_vel_gbl,ktec_vel_gbl,                    &
+                           b_output_mpiio_single,.false.,                &
+                           b_output_multizone)
+              offset_igsa2(ic) = offset_igsa2_temp(ic) +                 &
+                            (12+len_trim(strbuffer))*4
+            end if  
+          else          
+            write(igsa2,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
 
-          write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)')   &
-                'Average interfacial gas fluxes for component: ',      &
-                 namec(ic)(:l_namec(ic)),' T = ',                      &
-                 time_io,time_unit,('-',i=1,72)
+            if (btest(bit_gsga,0)) then
+              write(igsa2,'(6a)') 'variables = "x", "y", "z", ',         &
+                                  '"vx adv", "vy adv", "vz adv", ',      &
+                                  '"vx dif", "vy dif", "vz dif", ',      &
+                                  '"vx tot", "vy tot", "vz tot", ',      &
+                                  '"vx dgm", "vy dgm", "vz dgm",',       &
+                                  '"vx neq", "vy neq", "vz neq"'
+            else if (btest(bit_gsga,1)) then
+              write(igsa2,'(4a)') 'variables = "x", "y", "z", ',         &
+                                  '"vx adv", "vy adv", "vz adv", ',      &
+                                  '"vx dif", "vy dif", "vz dif", ',      &
+                                  '"vx tot", "vy tot", "vz tot"'
+            end if
+
+            write(igsa2,'(4a,1pe15.6e3,1x,2a,3(a,i5),a)')                &
+                  'zone t = "advection and diffusion fluxes of gas ',    &
+                  'phase for component ', namec(ic)(:l_namec(ic)),       &
+                  ' T = ', time_io,time_unit, ' "',                      &  
+                  ', i =',itec_vel,                                      &
+                  ', j =',jtec_vel,                                      &
+                  ', k =',ktec_vel,',  f=point'
+          end if
+
+          if (rank == 0 .and. b_enable_output) then
+
+            write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)')   &
+                  'Average interfacial gas fluxes for component: ',      &
+                   namec(ic)(:l_namec(ic)),' T = ',                      &
+                   time_io,time_unit,('-',i=1,72)
           
-          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                   &
-                      suffix(:l_sufx)//'_'//                           &
-                      suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsga'
+            write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                   &
+                        suffix(:l_sufx)//'_'//                           &
+                        suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsga'
           
-          write(ifls,'(2a)')                                           &
-              'column   entry                           ','unit'
-          write(ifls,'(2a)')                                           &
-              '1        x                               ','m'
-          write(ifls,'(2a)')                                           &
-              '2        y                               ','m'
-          write(ifls,'(2a)')                                           &
-              '3        z                               ','m'
-          write(ifls,'(2a)')                                           &
-              '4        v_x advection                   ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '5        v_y advection                   ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '6        v_z advection                   ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '7        v_x Fick s diffusion            ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '8        v_y Fick s diffusion            ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '9        v_z Fick s diffusion            ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '10       v_x total                       ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '11       v_y total                       ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '12       v_z total                       ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '13       v_x DGM / M-S diffusion         ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '14       v_y DGM / M-S diffusion         ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '15       v_z DGM / M-S diffusion         ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '16       v_x non-equimolar diffusion     ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '17       v_y non-equimolar diffusion     ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '18       v_z non-equimolar diffusion     ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                'column   entry                           ','unit'
+            write(ifls,'(2a)')                                           &
+                '1        x                               ','m'
+            write(ifls,'(2a)')                                           &
+                '2        y                               ','m'
+            write(ifls,'(2a)')                                           &
+                '3        z                               ','m'
+            write(ifls,'(2a)')                                           &
+                '4        v_x advection                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '5        v_y advection                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '6        v_z advection                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '7        v_x diffusion                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '8        v_y diffusion                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '9        v_z diffusion                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '10       v_x total                       ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '11       v_y total                       ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '12       v_z total                       ','moles/m^2/d'
+
+            if (btest(bit_gsga,0)) then
+              write(ifls,'(2a)')                                         &
+                  '13       v_x DGM / M-S diffusion         ','moles/m^2/d'
+              write(ifls,'(2a)')                                         &
+                  '14       v_y DGM / M-S diffusion         ','moles/m^2/d'
+              write(ifls,'(2a)')                                         &
+                  '15       v_z DGM / M-S diffusion         ','moles/m^2/d'
+              write(ifls,'(2a)')                                         &
+                  '16       v_x non-equimolar diffusion     ','moles/m^2/d'
+              write(ifls,'(2a)')                                         &
+                  '17       v_y non-equimolar diffusion     ','moles/m^2/d'
+              write(ifls,'(2a)')                                         &
+                  '18       v_z non-equimolar diffusion     ','moles/m^2/d'
+            end if
         
+          end if
+
         end if
     
       enddo
@@ -678,108 +721,111 @@
             stop
           end if
 
-          if (b_output_binary) then
-            if (b_output_mpiio_single) then
-              strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
-                 suffix2(:l_sfx2)//'.gsf'
+          if (bit_gsf > 0) then
+            if (b_output_binary) then
+              if (b_output_mpiio_single) then
+                strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
+                   suffix2(:l_sfx2)//'.gsf'
+              else
+                strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
+                            suffix2(:l_sfx2)//trim(adjustl(str_rank))//  &
+                            '.gsf'
+              end if
+                
+              call binary_file_open(Petsc_Comm_World,                    &
+                           igsf2_list(ic),trim(strbuffer),               &
+                           b_output_mpiio_single)
+            
             else
-              strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
-                          suffix2(:l_sfx2)//trim(adjustl(str_rank))//  &
-                          '.gsf'
+              open(igsf2,file=prefix(:l_prfx)//'_'//                     &  
+                              suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//   &
+                              trim(adjustl(str_rank))//'.gsf',           &
+                              status='unknown',form='formatted')
             end if
-              
-            call binary_file_open(Petsc_Comm_World,                    &
-                         igsf2_list(ic),trim(strbuffer),               &
-                         b_output_mpiio_single)
-          
-          else
-            open(igsf2,file=prefix(:l_prfx)//'_'//                     &  
-                            suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//   &
-                            trim(adjustl(str_rank))//'.gsf',           &
-                            status='unknown',form='formatted')
-          end if
           
 !c  version information
-          if (b_writeversion_tecplot .and. .not. b_output_binary) then
-            call writeversion2file(igsf2, "#")
-          end if          
+            if (b_writeversion_tecplot .and. .not. b_output_binary) then
+              call writeversion2file(igsf2, "#")
+            end if          
           
-          if (b_output_binary) then
-            strbuffer = 'dataset '//prefix(:l_prfx)//'' 
-            offset_igsf2(ic) = 0
-            call tecplot_binary_write_header(Petsc_Comm_World,         &
-                         igsf2_list(ic),"#!TDV102", trim(strbuffer),   &
-                         offset_igsf2(ic),b_output_mpiio_single,.false.) 
-            
-            tec_variables(1:6) = [character(len=72) ::                 &
-                            "x", "y", "z", "Dxx", "Dyy", "Dzz"]
-            
-            call tecplot_binary_write_variable(Petsc_Comm_World,       &
-                         igsf2_list(ic),6, tec_variables(1:6),         &
-                         offset_igsf2(ic),b_output_mpiio_single,.false.) 
-            
-            write(strbuffer,'(3a, 1x, a, 1p, 1pe15.6e3, 1x, a)')       &
-                    'Species-dependent gas diffusion coefficients ',   &
-                    'for component: ', namec(ic)(:l_namec(ic)),' T = ',&
-                    time_io,time_unit
-            offset_igsf2_temp(ic) = offset_igsf2(ic)  
-            
-            if (b_output_multizone) then
-              call tecplot_binary_write_zoneinfo(Petsc_Comm_World,     &
-                           igsf2_list(ic), trim(strbuffer),            &
-                           offset_igsf2(ic),itec_vel,                  &
-                           jtec_vel,ktec_vel,b_output_mpiio_single,    &
-                           .false.,b_output_multizone)
-              offset_igsf2(ic) = offset_igsf2_temp(ic) +               &
-                            (11+len_trim(strbuffer))*4*nprcs + 4
+            if (b_output_binary) then
+              strbuffer = 'dataset '//prefix(:l_prfx)//'' 
+              offset_igsf2(ic) = 0
+              call tecplot_binary_write_header(Petsc_Comm_World,         &
+                           igsf2_list(ic),"#!TDV102", trim(strbuffer),   &
+                           offset_igsf2(ic),b_output_mpiio_single,.false.) 
+              
+              tec_variables(1:6) = [character(len=72) ::                 &
+                              "x", "y", "z", "Dxx", "Dyy", "Dzz"]
+              
+              call tecplot_binary_write_variable(Petsc_Comm_World,       &
+                           igsf2_list(ic),6, tec_variables(1:6),         &
+                           offset_igsf2(ic),b_output_mpiio_single,.false.) 
+              
+              write(strbuffer,'(3a, 1x, a, 1p, 1pe15.6e3, 1x, a)')       &
+                      'Species-dependent gas diffusion coefficients ',   &
+                      'for component: ', namec(ic)(:l_namec(ic)),' T = ',&
+                      time_io,time_unit
+              offset_igsf2_temp(ic) = offset_igsf2(ic)  
+              
+              if (b_output_multizone) then
+                call tecplot_binary_write_zoneinfo(Petsc_Comm_World,     &
+                             igsf2_list(ic), trim(strbuffer),            &
+                             offset_igsf2(ic),itec_vel,                  &
+                             jtec_vel,ktec_vel,b_output_mpiio_single,    &
+                             .false.,b_output_multizone)
+                offset_igsf2(ic) = offset_igsf2_temp(ic) +               &
+                              (11+len_trim(strbuffer))*4*nprcs + 4
+              else
+                call tecplot_binary_write_zoneinfo(Petsc_Comm_World,     &
+                             igsf2_list(ic), trim(strbuffer),            &
+                             offset_igsf2(ic),itec_vel_gbl,              &
+                             jtec_vel_gbl,ktec_vel_gbl,                  &
+                             b_output_mpiio_single,.false.,              &
+                             b_output_multizone)
+                offset_igsf2(ic) = offset_igsf2_temp(ic) +               &
+                              (12+len_trim(strbuffer))*4
+              end if  
             else
-              call tecplot_binary_write_zoneinfo(Petsc_Comm_World,     &
-                           igsf2_list(ic), trim(strbuffer),            &
-                           offset_igsf2(ic),itec_vel_gbl,              &
-                           jtec_vel_gbl,ktec_vel_gbl,                  &
-                           b_output_mpiio_single,.false.,              &
-                           b_output_multizone)
-              offset_igsf2(ic) = offset_igsf2_temp(ic) +               &
-                            (12+len_trim(strbuffer))*4
+              write(igsf2,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+              write(igsf2,'(2a)') 'variables = "x", "y", "z", ',         &  
+                                  '"Dxx", "Dyy", "Dzz"'     
+              write(igsf2,'(4a,1pe15.6e3,1x,2a,3(a,i5),a)')              &
+                    'zone t = "Species-dependent gas diffusion ',        &
+                    'coefficients for component: ',                      &
+                    namec(ic)(:l_namec(ic)),' T = ',                     &
+                    time_io,time_unit, ' "',                             &  
+                    ', i =',itec_vel,                                    &
+                    ', j =',jtec_vel,                                    &
+                    ', k =',ktec_vel,',  f=point'
             end if  
-          else
-            write(igsf2,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-            write(igsf2,'(2a)') 'variables = "x", "y", "z", ',         &  
-                                '"Dxx", "Dyy", "Dzz"'     
-            write(igsf2,'(4a,1pe15.6e3,1x,2a,3(a,i5),a)')              &
-                  'zone t = "Species-dependent gas diffusion ',        &
-                  'coefficients for component: ',                      &
-                  namec(ic)(:l_namec(ic)),' T = ',                     &
-                  time_io,time_unit, ' "',                             &  
-                  ', i =',itec_vel,                                    &
-                  ', j =',jtec_vel,                                    &
-                  ', k =',ktec_vel,',  f=point'
-          end if  
        
-          if (rank == 0 .and. b_enable_output) then
-            write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)') &
-                  'Species-dependent gas diffusion coefficients: ',    &
-                  namec(ic)(:l_namec(ic)),' T = ',                     &
-                  time_io,time_unit,('-',i=1,72)                    
-                                                                          
-            write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                 &
-                                suffix(:l_sufx)//'_'//                 &
-                                suffix2(:l_sfx2)//'.gsf'
-                                                                          
-            write(ifls,'(2a)')                                         &
-                  'column   entry                           ','unit'    
-            write(ifls,'(2a)')                                         &
-                  '1        x                               ','m'       
-            write(ifls,'(2a)')                                         &
-                  '2        y                               ','m'       
-            write(ifls,'(2a)')                                         &
-                  '3        z                               ','m'       
-            write(ifls,'(2a)')                                         &
-                  '4        Dxx                             ','m2/d'    
-            write(ifls,'(2a)')                                         &
-                  '5        Dyy                             ','m2/d'    
-            write(ifls,'(2a)')                                         &
-                  '6        Dzz                             ','m2/d'
+            if (rank == 0 .and. b_enable_output) then
+              write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)') &
+                    'Species-dependent gas diffusion coefficients: ',    &
+                    namec(ic)(:l_namec(ic)),' T = ',                     &
+                    time_io,time_unit,('-',i=1,72)                    
+                                                                            
+              write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                 &
+                                  suffix(:l_sufx)//'_'//                 &
+                                  suffix2(:l_sfx2)//'.gsf'
+                                                                            
+              write(ifls,'(2a)')                                         &
+                    'column   entry                           ','unit'    
+              write(ifls,'(2a)')                                         &
+                    '1        x                               ','m'       
+              write(ifls,'(2a)')                                         &
+                    '2        y                               ','m'       
+              write(ifls,'(2a)')                                         &
+                    '3        z                               ','m'       
+              write(ifls,'(2a)')                                         &
+                    '4        Dxx                             ','m2/d'    
+              write(ifls,'(2a)')                                         &
+                    '5        Dyy                             ','m2/d'    
+              write(ifls,'(2a)')                                         &
+                    '6        Dzz                             ','m2/d'
+            end if
+
           end if
     
         enddo
@@ -789,424 +835,447 @@
       igsf_last = igsf2
 
 !c   open files for density
-      if (b_output_binary) then
-        if (b_output_mpiio_single) then
-          strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsr'
-        else
-          strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//          &
-                      trim(adjustl(str_rank))//'.gsr'
-        end if
-          
-        call binary_file_open(Petsc_Comm_World, igsr,          &
-                     trim(strbuffer), b_output_mpiio_single)
+      if (bit_gsr > 0) then
 
-      else
-        open(igsr,file=prefix(:l_prfx)//'_'//                          &
-                  suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsr',    &
-                  status='unknown',form='formatted')
-      end if
+        if (b_output_binary) then
+          if (b_output_mpiio_single) then
+            strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsr'
+          else
+            strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//          &
+                        trim(adjustl(str_rank))//'.gsr'
+          end if
+            
+          call binary_file_open(Petsc_Comm_World, igsr,          &
+                       trim(strbuffer), b_output_mpiio_single)
+
+        else
+          open(igsr,file=prefix(:l_prfx)//'_'//                          &
+                    suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsr',    &
+                    status='unknown',form='formatted')
+        end if
       
 !c  version information
-      if (b_writeversion_tecplot .and. .not. b_output_binary) then
+        if (b_writeversion_tecplot .and. .not. b_output_binary) then
           call writeversion2file(igsr, "#")
-      end if
-
-      if (b_output_binary) then
-        strbuffer = 'dataset '//prefix(:l_prfx)//'' 
-        offset_igsr = 0
-        call tecplot_binary_write_header(Petsc_Comm_World, igsr,       &
-                     "#!TDV102", trim(strbuffer), offset_igsr,         &
-                     b_output_mpiio_single,.false.)
-        
-        tec_variables(1:4) = [character(len=72) ::"x", "y", "z",       &
-                              "density"]
-        call tecplot_binary_write_variable(Petsc_Comm_World, igsr,     &
-                     4, tec_variables(1:4), offset_igsr,               &
-                     b_output_mpiio_single,.false.)
-        
-        write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
-              'Density of the gas phase, T = ',                        &
-              time_io,time_unit(:l_time_unit)
-        
-        offset_igsr_temp = offset_igsr
-        
-        if (b_output_multizone) then
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsr,    &
-                       trim(strbuffer),offset_igsr,itec_vel,           &
-                       jtec_vel,ktec_vel,b_output_mpiio_single,        &
-                       .false.,b_output_multizone)        
-          offset_igsr = offset_igsr_temp +                             &
-                        (11+len_trim(strbuffer))*4*nprcs + 4
-        else
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsr,    &
-                       trim(strbuffer),offset_igsr,itec_vel_gbl,       &
-                       jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
-                       .false.,b_output_multizone)        
-          offset_igsr = offset_igsr_temp +                             &
-                        (12+len_trim(strbuffer))*4
         end if
-      else
-        write(igsr,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-        write(igsr,'(2a)') 'variables = "x", "y", "z", "density"'
-        write(igsr,'(2a,1pe15.6e3,1x,a,3(a,i5),a)')                    &
-             'zone t = "Density of the gas phase, ',                   &
-             'T = ',time_io,time_unit(:l_time_unit),                   &
-             '", i =',itec_vel,', j =',jtec_vel,', k =',               &
-             ktec_vel,',  f=point'
-      end if
-      
-      if (rank == 0 .and. b_enable_output) then
 
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
-                   'Density of the gas phase, T = ',                  &
-                    time_io,time_unit,('-',i=1,72)
-        
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
-                    suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsr'
-        
-        write(ifls,'(2a)')                                            &
-                'column   entry                           ','unit'     
-        write(ifls,'(2a)')                                            &
-                '1        x                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '2        y                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '3        z                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '4        density                         ','g/l'
+        if (b_output_binary) then
+          strbuffer = 'dataset '//prefix(:l_prfx)//'' 
+          offset_igsr = 0
+          call tecplot_binary_write_header(Petsc_Comm_World, igsr,       &
+                       "#!TDV102", trim(strbuffer), offset_igsr,         &
+                       b_output_mpiio_single,.false.)
+          
+          tec_variables(1:4) = [character(len=72) ::"x", "y", "z",       &
+                                "density"]
+          call tecplot_binary_write_variable(Petsc_Comm_World, igsr,     &
+                       4, tec_variables(1:4), offset_igsr,               &
+                       b_output_mpiio_single,.false.)
+          
+          write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
+                'Density of the gas phase, T = ',                        &
+                time_io,time_unit(:l_time_unit)
+          
+          offset_igsr_temp = offset_igsr
+          
+          if (b_output_multizone) then
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsr,    &
+                         trim(strbuffer),offset_igsr,itec_vel,           &
+                         jtec_vel,ktec_vel,b_output_mpiio_single,        &
+                         .false.,b_output_multizone)        
+            offset_igsr = offset_igsr_temp +                             &
+                          (11+len_trim(strbuffer))*4*nprcs + 4
+          else
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsr,    &
+                         trim(strbuffer),offset_igsr,itec_vel_gbl,       &
+                         jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
+                         .false.,b_output_multizone)        
+            offset_igsr = offset_igsr_temp +                             &
+                          (12+len_trim(strbuffer))*4
+          end if
+        else
+          write(igsr,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+          write(igsr,'(2a)') 'variables = "x", "y", "z", "density"'
+          write(igsr,'(2a,1pe15.6e3,1x,a,3(a,i5),a)')                    &
+               'zone t = "Density of the gas phase, ',                   &
+               'T = ',time_io,time_unit(:l_time_unit),                   &
+               '", i =',itec_vel,', j =',jtec_vel,', k =',               &
+               ktec_vel,',  f=point'
+        end if
       
+        if (rank == 0 .and. b_enable_output) then
+
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
+                     'Density of the gas phase, T = ',                  &
+                      time_io,time_unit,('-',i=1,72)
+        
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
+                      suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsr'
+        
+          write(ifls,'(2a)')                                            &
+                  'column   entry                           ','unit'     
+          write(ifls,'(2a)')                                            &
+                  '1        x                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '2        y                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '3        z                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '4        density                         ','g/l'
+
+        end if
+
       end if
 
 !c   open files for viscosity
-      if (b_output_binary) then
-        if (b_output_mpiio_single) then
-          strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsy'
-        else
-          strbuffer = prefix(:l_prfx)//'_'//                           &
-                      suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsy'
-        end if
-          
-        call binary_file_open(Petsc_Comm_World, igsy,          &
-                     trim(strbuffer), b_output_mpiio_single)
+      if (bit_gsy > 0) then
 
-      else
-        open(igsy,file=prefix(:l_prfx)//'_'//                          &
-                  suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsy',    &
-                  status='unknown',form='formatted')
-      end if
+        if (b_output_binary) then
+          if (b_output_mpiio_single) then
+            strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsy'
+          else
+            strbuffer = prefix(:l_prfx)//'_'//                           &
+                        suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsy'
+          end if
+            
+          call binary_file_open(Petsc_Comm_World, igsy,          &
+                       trim(strbuffer), b_output_mpiio_single)
+
+        else
+          open(igsy,file=prefix(:l_prfx)//'_'//                          &
+                    suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsy',    &
+                    status='unknown',form='formatted')
+        end if
       
 !c  version information
-      if (b_writeversion_tecplot .and. .not. b_output_binary) then
+        if (b_writeversion_tecplot .and. .not. b_output_binary) then
           call writeversion2file(igsy, "#")
-      end if
-
-      if (b_output_binary) then
-        strbuffer = 'dataset '//prefix(:l_prfx)//'' 
-        offset_igsy = 0
-        call tecplot_binary_write_header(Petsc_Comm_World, igsy,       &
-                     "#!TDV102", trim(strbuffer), offset_igsy,         &
-                     b_output_mpiio_single,.false.)
-        
-        tec_variables(1:4) = [character(len=72) :: "x", "y", "z",      &
-                              "viscosity"]
-        call tecplot_binary_write_variable(Petsc_Comm_World, igsy,     &
-                     4, tec_variables(1:4), offset_igsy,               &
-                     b_output_mpiio_single,.false.)
-        
-        write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
-              'Viscosity of the gas phase, T = ',                      &
-              time_io,time_unit(:l_time_unit)
-        
-        offset_igsy_temp = offset_igsy   
-        
-        if (b_output_multizone) then
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsy,    &
-                       trim(strbuffer),offset_igsy,itec_vel,           &
-                       jtec_vel,ktec_vel,b_output_mpiio_single,        &
-                       .false.,b_output_multizone)        
-          offset_igsy = offset_igsy_temp +                             &
-                        (11+len_trim(strbuffer))*4*nprcs + 4
-        else
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsy,    &
-                       trim(strbuffer),offset_igsy,itec_vel_gbl,       &
-                       jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
-                       .false.,b_output_multizone)        
-          offset_igsy = offset_igsy_temp +                             &
-                        (12+len_trim(strbuffer))*4
         end if
-      else
-        write(igsy,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-        write(igsy,'(2a)') 'variables = "x", "y", "z", ',              &
-                                     '"viscosity"'
-        write(igsy,'(2a,1pe15.6e3,1x,a,3(a,i5),a)')                    &
-             'zone t = "Viscosity of the gas phase, ',                 &
-             'T = ',time_io,time_unit(:l_time_unit),                   &
-             '", i =',itec_vel,', j =',jtec_vel,', k =',               &
-             ktec_vel,',  f=point'
-      end if
-      
-      if (rank == 0 .and. b_enable_output) then
 
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
-                   'Viscosity of the gas phase, T = ',                &
-                    time_io,time_unit,('-',i=1,72)
-        
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
-                   suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsy'
-        
-        write(ifls,'(2a)')                                            &
-                'column   entry                           ','unit'     
-        write(ifls,'(2a)')                                            &
-                '1        x                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '2        y                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '3        z                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '4        viscosity                       ','Pa s'
-      
-      end if
-
-
-!c  gas phase velocity
-      if (b_output_binary) then
-        if (b_output_mpiio_single) then
-          strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsk'
-        else
-          strbuffer = prefix(:l_prfx)//'_'//                           &
-                      suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsk'
-        end if
+        if (b_output_binary) then
+          strbuffer = 'dataset '//prefix(:l_prfx)//'' 
+          offset_igsy = 0
+          call tecplot_binary_write_header(Petsc_Comm_World, igsy,       &
+                       "#!TDV102", trim(strbuffer), offset_igsy,         &
+                       b_output_mpiio_single,.false.)
           
-        call binary_file_open(Petsc_Comm_World, igsk,          &
-                     trim(strbuffer), b_output_mpiio_single)
+          tec_variables(1:4) = [character(len=72) :: "x", "y", "z",      &
+                                "viscosity"]
+          call tecplot_binary_write_variable(Petsc_Comm_World, igsy,     &
+                       4, tec_variables(1:4), offset_igsy,               &
+                       b_output_mpiio_single,.false.)
+          
+          write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
+                'Viscosity of the gas phase, T = ',                      &
+                time_io,time_unit(:l_time_unit)
+          
+          offset_igsy_temp = offset_igsy   
+          
+          if (b_output_multizone) then
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsy,    &
+                         trim(strbuffer),offset_igsy,itec_vel,           &
+                         jtec_vel,ktec_vel,b_output_mpiio_single,        &
+                         .false.,b_output_multizone)        
+            offset_igsy = offset_igsy_temp +                             &
+                          (11+len_trim(strbuffer))*4*nprcs + 4
+          else
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World,igsy,    &
+                         trim(strbuffer),offset_igsy,itec_vel_gbl,       &
+                         jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
+                         .false.,b_output_multizone)        
+            offset_igsy = offset_igsy_temp +                             &
+                          (12+len_trim(strbuffer))*4
+          end if
+        else
+          write(igsy,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+          write(igsy,'(2a)') 'variables = "x", "y", "z", ',              &
+                                       '"viscosity"'
+          write(igsy,'(2a,1pe15.6e3,1x,a,3(a,i5),a)')                    &
+               'zone t = "Viscosity of the gas phase, ',                 &
+               'T = ',time_io,time_unit(:l_time_unit),                   &
+               '", i =',itec_vel,', j =',jtec_vel,', k =',               &
+               ktec_vel,',  f=point'
+        end if
+      
+        if (rank == 0 .and. b_enable_output) then
 
-      else
-        open(igsk,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//         &
-                       trim(adjustl(str_rank))//'.gsk',                &
-                       status='unknown',form='formatted')
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
+                     'Viscosity of the gas phase, T = ',                &
+                      time_io,time_unit,('-',i=1,72)
+        
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
+                     suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsy'
+        
+          write(ifls,'(2a)')                                            &
+                  'column   entry                           ','unit'     
+          write(ifls,'(2a)')                                            &
+                  '1        x                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '2        y                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '3        z                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '4        viscosity                       ','Pa s'
+
+        end if
+
       end if
+
+
+!c  gas phase gradient
+      if (bit_gsk > 0) then
+
+        if (b_output_binary) then
+          if (b_output_mpiio_single) then
+            strbuffer = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsk'
+          else
+            strbuffer = prefix(:l_prfx)//'_'//                           &
+                        suffix(:l_sufx)//trim(adjustl(str_rank))//'.gsk'
+          end if
+            
+          call binary_file_open(Petsc_Comm_World, igsk,          &
+                       trim(strbuffer), b_output_mpiio_single)
+
+        else
+          open(igsk,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//         &
+                         trim(adjustl(str_rank))//'.gsk',                &
+                         status='unknown',form='formatted')
+        end if
       
 !c  version information
-      if (b_writeversion_tecplot .and. .not. b_output_binary) then
+        if (b_writeversion_tecplot .and. .not. b_output_binary) then
           call writeversion2file(igsk, "#")
-      end if
-
-      if (b_output_binary) then
-        strbuffer = 'dataset '//prefix(:l_prfx)//'' 
-        offset_igsk = 0
-        call tecplot_binary_write_header(Petsc_Comm_World, igsk,       &
-                     "#!TDV102", trim(strbuffer), offset_igsk,         &
-                     b_output_mpiio_single,.false.)
-        
-        nvarsgsk = 6+3*ng
-        
-        tec_variables(1:6) = [character(len=72) :: "x", "y", "z",      &
-                              "grad_adv_x", "grad_adv_y","grad_adv_z"]
-        do ic=1,ng
-          tec_variables(ic+6) = nameg(ic)(:l_nameg(ic))//'_diff_x'  
-        end do
-        
-        do ic=1,ng
-          tec_variables(ic+ng+6) = nameg(ic)(:l_nameg(ic))//'_diff_y'  
-        end do
-        
-        do ic=1,ng
-          tec_variables(ic+2*ng+6) = nameg(ic)(:l_nameg(ic))//'_diff_z'  
-        end do
-        
-        
-        call tecplot_binary_write_variable(Petsc_Comm_World, igsk,     &
-                     nvarsgsk, tec_variables(1:nvarsgsk), offset_igsk, &
-                     b_output_mpiio_single,.false.)
-        
-        write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
-              'Advective and Diffusive driving force gradients, T = ', &
-              time_io,time_unit(:l_time_unit)
-        
-        offset_igsk_temp = offset_igsk    
-        
-        if (b_output_multizone) then
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World, igsk,   &
-                       trim(strbuffer),offset_igsk, itec_vel,          &
-                       jtec_vel,ktec_vel,b_output_mpiio_single,        &
-                       .false.,b_output_multizone)        
-          offset_igsk = offset_igsk_temp +                             &
-                        (11+len_trim(strbuffer))*4*nprcs + 4
-        else
-          call tecplot_binary_write_zoneinfo(Petsc_Comm_World, igsk,   &
-                       trim(strbuffer),offset_igsk,itec_vel_gbl,       &
-                       jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
-                       .false.,b_output_multizone)        
-          offset_igsk = offset_igsk_temp +                             &
-                        (12+len_trim(strbuffer))*4
         end if
-      else
-        write(igsk,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-        write(igsk,'(600a)') 'variables = "x", "y", "z", ',            &
-                     '"grad_adv_x",','"grad_adv_y",','"grad_adv_z"',   &
-                      (',"',nameg(ic)(:l_nameg(ic))//'_diff_x',        &
-                       '"',ic=1,ng),                                   &
-                      (',"',nameg(ic)(:l_nameg(ic))//'_diff_y',        &
-                       '"',ic=1,ng),                                   &
-                      (',"',nameg(ic)(:l_nameg(ic))//'_diff_z',        &
-                       '"',ic=1,ng)
-        write(igsk,'(2a,1pe15.6e3,1x,a,3(a,i5),a)')                    &
-             'zone t = "Advective and Diffusive driving force ',       &
-             'gradients, T = ',time_io,time_unit(:l_time_unit),        &
-             '", i =',itec_vel,', j =',jtec_vel,', k =',               &
-             ktec_vel,',  f=point'
-      end if
-      
-      if (rank == 0 .and. b_enable_output) then
 
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
-                   'Advective and Diffusive driving force gradients', &
-                    time_io,time_unit,('-',i=1,72)
+        if (b_output_binary) then
+          strbuffer = 'dataset '//prefix(:l_prfx)//'' 
+          offset_igsk = 0
+          call tecplot_binary_write_header(Petsc_Comm_World, igsk,       &
+                       "#!TDV102", trim(strbuffer), offset_igsk,         &
+                       b_output_mpiio_single,.false.)
         
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
-                            suffix(:l_sufx)//'.gsk'
+          nvarsgsk = 6+3*ng
         
-        write(ifls,'(2a)')                                            &
-                'column   entry                           ','unit'     
-        write(ifls,'(2a)')                                            &
-                '1        x                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '2        y                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '3        z                               ','m'        
-        write(ifls,'(2a)')                                            &
-                '4        grad_adv_x                      ','m^3/d' 
-        write(ifls,'(2a)')                                            &
-                '5        grad_adv_y                      ','m^3/d'  
-        write(ifls,'(2a)')                                            &
-                '6        grad_adv_z                      ','m^3/d'  
-        do ic = 1,ng
-          strvar32 = trim(nameg(ic))//"_diff_x"
-          if(ic+6 < 10) then
-            write(ifls,'(i1,8x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
-          else if (ic+6 >= 10 .and. ic+6 < 100) then
-            write(ifls,'(i2,7x,2a)') ic+6,strvar32,'moles L^-1 m^-1' 
-          else if (ic+6 >= 100 .and. ic+6 < 1000) then
-            write(ifls,'(i3,6x,2a)') ic+6,strvar32,'moles L^-1 m^-1' 
-          else if (ic+6 >= 1000 .and. ic+6 < 10000) then
-            write(ifls,'(i4,5x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+          tec_variables(1:6) = [character(len=72) :: "x", "y", "z",      &
+                                "grad_adv_x", "grad_adv_y","grad_adv_z"]
+          do ic=1,ng
+            tec_variables(ic+6) = nameg(ic)(:l_nameg(ic))//'_diff_x'  
+          end do
+        
+          do ic=1,ng
+            tec_variables(ic+ng+6) = nameg(ic)(:l_nameg(ic))//'_diff_y'  
+          end do
+        
+          do ic=1,ng
+            tec_variables(ic+2*ng+6) = nameg(ic)(:l_nameg(ic))//'_diff_z'  
+          end do
+        
+          call tecplot_binary_write_variable(Petsc_Comm_World, igsk,     &
+                       nvarsgsk, tec_variables(1:nvarsgsk), offset_igsk, &
+                       b_output_mpiio_single,.false.)
+        
+          write(strbuffer,'(a,1pe15.6e3,1x,a)')                          &
+                'Advective and Diffusive driving force gradients, T = ', &
+                time_io,time_unit(:l_time_unit)
+        
+          offset_igsk_temp = offset_igsk    
+        
+          if (b_output_multizone) then
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World, igsk,   &
+                         trim(strbuffer),offset_igsk, itec_vel,          &
+                         jtec_vel,ktec_vel,b_output_mpiio_single,        &
+                         .false.,b_output_multizone)        
+            offset_igsk = offset_igsk_temp +                             &
+                          (11+len_trim(strbuffer))*4*nprcs + 4
           else
-            write(ifls,'(i8,1x,2a)') ic+6,strvar32,'moles L^-1 m^-1' 
+            call tecplot_binary_write_zoneinfo(Petsc_Comm_World, igsk,   &
+                         trim(strbuffer),offset_igsk,itec_vel_gbl,       &
+                         jtec_vel_gbl,ktec_vel_gbl,b_output_mpiio_single,&
+                         .false.,b_output_multizone)        
+            offset_igsk = offset_igsk_temp +                             &
+                          (12+len_trim(strbuffer))*4
           end if
-        end do
-        
-        do ic = 1,ng
-          strvar32 = trim(nameg(ic))//"_diff_y"
-          if (ic+ng+6 < 10) then
-            write(ifls,'(i1,8x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else if (ic+ng+6 >= 10 .and. ic+ng+6 < 100) then
-            write(ifls,'(i2,7x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else if (ic+ng+6 >= 100 .and. ic+ng+6 < 1000) then
-            write(ifls,'(i3,6x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else if (ic+ng+6 >= 1000 .and. ic+ng+6 < 10000) then
-            write(ifls,'(i4,5x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else
-            write(ifls,'(i8,1x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1' 
-          end if
-        end do
-        
-        do ic = 1,ng
-          strvar32 = trim(nameg(ic))//"_diff_z"
-          if (ic+2*ng+6 < 10) then
-            write(ifls,'(i1,8x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else if (ic+2*ng+6 >= 10 .and. ic+2*ng+6 < 100) then
-            write(ifls,'(i2,7x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else if (ic+2*ng+6 >= 100 .and. ic+2*ng+6 < 1000) then
-            write(ifls,'(i3,6x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else if (ic+2*ng+6 >= 1000 .and. ic+2*ng+6 < 10000) then
-            write(ifls,'(i4,5x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else    
-            write(ifls,'(i8,1x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          end if
-        end do
+        else
+          write(igsk,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+          write(igsk,'(600a)') 'variables = "x", "y", "z", ',            &
+                       '"grad_adv_x",','"grad_adv_y",','"grad_adv_z"',   &
+                        (',"',nameg(ic)(:l_nameg(ic))//'_diff_x',        &
+                         '"',ic=1,ng),                                   &
+                        (',"',nameg(ic)(:l_nameg(ic))//'_diff_y',        &
+                         '"',ic=1,ng),                                   &
+                        (',"',nameg(ic)(:l_nameg(ic))//'_diff_z',        &
+                         '"',ic=1,ng)
+          write(igsk,'(2a,1pe15.6e3,1x,a,3(a,i5),a)')                    &
+               'zone t = "Advective and Diffusive driving force ',       &
+               'gradients, T = ',time_io,time_unit(:l_time_unit),        &
+               '", i =',itec_vel,', j =',jtec_vel,', k =',               &
+               ktec_vel,',  f=point'
+        end if
       
+        if (rank == 0 .and. b_enable_output) then
+
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
+                     'Advective and Diffusive driving force gradients', &
+                      time_io,time_unit,('-',i=1,72)
+        
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
+                              suffix(:l_sufx)//'.gsk'
+        
+          write(ifls,'(2a)')                                            &
+                  'column   entry                           ','unit'     
+          write(ifls,'(2a)')                                            &
+                  '1        x                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '2        y                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '3        z                               ','m'        
+          write(ifls,'(2a)')                                            &
+                  '4        grad_adv_x                      ','m^3/d' 
+          write(ifls,'(2a)')                                            &
+                  '5        grad_adv_y                      ','m^3/d'  
+          write(ifls,'(2a)')                                            &
+                  '6        grad_adv_z                      ','m^3/d'  
+          do ic = 1,ng
+            strvar32 = trim(nameg(ic))//"_diff_x"
+            if(ic+6 < 10) then
+              write(ifls,'(i1,8x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+            else if (ic+6 >= 10 .and. ic+6 < 100) then
+              write(ifls,'(i2,7x,2a)') ic+6,strvar32,'moles L^-1 m^-1' 
+            else if (ic+6 >= 100 .and. ic+6 < 1000) then
+              write(ifls,'(i3,6x,2a)') ic+6,strvar32,'moles L^-1 m^-1' 
+            else if (ic+6 >= 1000 .and. ic+6 < 10000) then
+              write(ifls,'(i4,5x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+            else
+              write(ifls,'(i8,1x,2a)') ic+6,strvar32,'moles L^-1 m^-1' 
+            end if
+          end do
+        
+          do ic = 1,ng
+            strvar32 = trim(nameg(ic))//"_diff_y"
+            if (ic+ng+6 < 10) then
+              write(ifls,'(i1,8x,2a)') ic+ng+6,strvar32,                 &
+                    'moles L^-1 m^-1'
+            else if (ic+ng+6 >= 10 .and. ic+ng+6 < 100) then
+              write(ifls,'(i2,7x,2a)') ic+ng+6,strvar32,                 &
+                    'moles L^-1 m^-1'
+            else if (ic+ng+6 >= 100 .and. ic+ng+6 < 1000) then
+              write(ifls,'(i3,6x,2a)') ic+ng+6,strvar32,                 &
+                    'moles L^-1 m^-1'
+            else if (ic+ng+6 >= 1000 .and. ic+ng+6 < 10000) then
+              write(ifls,'(i4,5x,2a)') ic+ng+6,strvar32,                 &
+                    'moles L^-1 m^-1'
+            else
+              write(ifls,'(i8,1x,2a)') ic+ng+6,strvar32,                 &
+                    'moles L^-1 m^-1' 
+            end if
+          end do
+        
+          do ic = 1,ng
+            strvar32 = trim(nameg(ic))//"_diff_z"
+            if (ic+2*ng+6 < 10) then
+              write(ifls,'(i1,8x,2a)') ic+2*ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else if (ic+2*ng+6 >= 10 .and. ic+2*ng+6 < 100) then
+              write(ifls,'(i2,7x,2a)') ic+2*ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else if (ic+2*ng+6 >= 100 .and. ic+2*ng+6 < 1000) then
+              write(ifls,'(i3,6x,2a)') ic+2*ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else if (ic+2*ng+6 >= 1000 .and. ic+2*ng+6 < 10000) then
+              write(ifls,'(i4,5x,2a)') ic+2*ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else    
+              write(ifls,'(i8,1x,2a)') ic+2*ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            end if
+          end do
+      
+        end if
+
       end if
         
 !c  write section and allocate output buffer for       
       if (b_output_binary) then
-        offset_igsa_temp = offset_igsa
-        call tecplot_binary_write_section(Petsc_Comm_World,igsa,7,     &
-                     nn_interfacial_offset,offset_igsa,                &
-                     b_output_mpiio_single,.false.,b_output_multizone) 
-        allocate(realbuffer(nn*7), stat = ierr)
-        call checkerr(ierr,'velocity_g-realbuffer',ilog)
-        realbuffer = 0.0d0
-        call memory_monitor(sizeof(realbuffer),                        &
-                            'velocity_g-realbuffer',.true.)
-        
-        do ic = 1, n  
-          offset_igsa2_temp(ic) = offset_igsa2(ic)
-          call tecplot_binary_write_section(Petsc_Comm_World,          &
-                       igsa2_list(ic),18,nn_interfacial_offset,        &
-                       offset_igsa2(ic),b_output_mpiio_single,.false., &
-                       b_output_multizone)
-        end do
-        allocate(realbuffer2d(nn*18, n), stat = ierr)
-        call checkerr(ierr,'velocity_g-realbuffer2d',ilog)
-        realbuffer2d = 0.0d0
-        call memory_monitor(sizeof(realbuffer2d),                      &
-                            'velocity_g-realbuffer2d',.true.)
-        
-        if (blanc_diff_g) then
-          do ic = 1, n  
-            offset_igsf2_temp(ic) = offset_igsf2(ic)
-            call tecplot_binary_write_section(Petsc_Comm_World,          &
-                         igsf2_list(ic),6,nn_interfacial_offset,         &
-                         offset_igsf2(ic),b_output_mpiio_single,.false., &
-                         b_output_multizone)
-          end do
-          allocate(realbuffer2d_2(nn*6, n), stat = ierr)
-          call checkerr(ierr,'velocity_g-realbuffer2d_2',ilog)
-          realbuffer2d_2 = 0.0d0
-          call memory_monitor(sizeof(realbuffer2d_2),                  &
-                              'velocity_g-realbuffer2d_2',.true.)
+
+        if (bit_gsa > 0) then
+          offset_igsa_temp = offset_igsa
+          call tecplot_binary_write_section(Petsc_Comm_World,igsa,7,     &
+                       nn_interfacial_offset,offset_igsa,                &
+                       b_output_mpiio_single,.false.,b_output_multizone) 
+          allocate(realbuffer(nn*7), stat = ierr)
+          call checkerr(ierr,'velocity_g-realbuffer',ilog)
+          realbuffer = 0.0d0
+          call memory_monitor(sizeof(realbuffer),                        &
+                              'velocity_g-realbuffer',.true.)
         end if
         
-        offset_igsr_temp = offset_igsr
-        call tecplot_binary_write_section(Petsc_Comm_World,igsr,4,     &
-                     nn_interfacial_offset,offset_igsr,                &
-                     b_output_mpiio_single,.false.,b_output_multizone) 
-        allocate(realbuffer2(nn*4), stat = ierr)
-        call checkerr(ierr,'velocity_g-realbuffer2',ilog)
-        realbuffer2 = 0.0d0
-        call memory_monitor(sizeof(realbuffer2),                       &
-                            'velocity_g-realbuffer2',.true.)
+        if (bit_gsga > 0) then
+          do ic = 1, n  
+            offset_igsa2_temp(ic) = offset_igsa2(ic)
+            call tecplot_binary_write_section(Petsc_Comm_World,          &
+                         igsa2_list(ic),nvarsgsga,nn_interfacial_offset, &
+                         offset_igsa2(ic),b_output_mpiio_single,.false., &
+                         b_output_multizone)
+          end do
+          allocate(realbuffer2d(nn*nvarsgsga, n), stat = ierr)
+          call checkerr(ierr,'velocity_g-realbuffer2d',ilog)
+          realbuffer2d = 0.0d0
+          call memory_monitor(sizeof(realbuffer2d),                      &
+                              'velocity_g-realbuffer2d',.true.)
+        end if
+                
+        if (blanc_diff_g) then
+          if (bit_gsf > 0) then
+            do ic = 1, n  
+              offset_igsf2_temp(ic) = offset_igsf2(ic)
+              call tecplot_binary_write_section(Petsc_Comm_World,          &
+                           igsf2_list(ic),6,nn_interfacial_offset,         &
+                           offset_igsf2(ic),b_output_mpiio_single,.false., &
+                           b_output_multizone)
+            end do
+            allocate(realbuffer2d_2(nn*6, n), stat = ierr)
+            call checkerr(ierr,'velocity_g-realbuffer2d_2',ilog)
+            realbuffer2d_2 = 0.0d0
+            call memory_monitor(sizeof(realbuffer2d_2),                  &
+                                'velocity_g-realbuffer2d_2',.true.)
+          end if
+        end if
         
-        offset_igsy_temp = offset_igsy
-        call tecplot_binary_write_section(Petsc_Comm_World,igsy,4,     &
-                     nn_interfacial_offset,offset_igsy,                &
-                     b_output_mpiio_single,.false.,b_output_multizone) 
-        allocate(realbuffer3(nn*4), stat = ierr)
-        call checkerr(ierr,'velocity_g-realbuffer3',ilog)
-        realbuffer3 = 0.0d0
-        call memory_monitor(sizeof(realbuffer3),                       &
-                            'velocity_g-realbuffer3',.true.)
+        if (bit_gsr > 0) then
+          offset_igsr_temp = offset_igsr
+          call tecplot_binary_write_section(Petsc_Comm_World,igsr,4,     &
+                       nn_interfacial_offset,offset_igsr,                &
+                       b_output_mpiio_single,.false.,b_output_multizone) 
+          allocate(realbuffer2(nn*4), stat = ierr)
+          call checkerr(ierr,'velocity_g-realbuffer2',ilog)
+          realbuffer2 = 0.0d0
+          call memory_monitor(sizeof(realbuffer2),                       &
+                              'velocity_g-realbuffer2',.true.)
+        end if
+        
+        if (bit_gsy > 0) then
+          offset_igsy_temp = offset_igsy
+          call tecplot_binary_write_section(Petsc_Comm_World,igsy,4,     &
+                       nn_interfacial_offset,offset_igsy,                &
+                       b_output_mpiio_single,.false.,b_output_multizone) 
+          allocate(realbuffer3(nn*4), stat = ierr)
+          call checkerr(ierr,'velocity_g-realbuffer3',ilog)
+          realbuffer3 = 0.0d0
+          call memory_monitor(sizeof(realbuffer3),                       &
+                              'velocity_g-realbuffer3',.true.)
+        end if
 
-
-        offset_igsk_temp = offset_igsk
-        call tecplot_binary_write_section(Petsc_Comm_World,igsk,       &
-                     nvarsgsk,nn_interfacial_offset,offset_igsk,       &
-                     b_output_mpiio_single,.false.,b_output_multizone) 
-        allocate(realbuffer4(nn*nvarsgsk), stat = ierr)
-        call checkerr(ierr,'velocity_g-realbuffer4',ilog)
-        realbuffer4 = 0.0d0
-        call memory_monitor(sizeof(realbuffer4),                       &
-                            'velocity_g-realbuffer4',.true.)
+        if (bit_gsk > 0) then
+          offset_igsk_temp = offset_igsk
+          call tecplot_binary_write_section(Petsc_Comm_World,igsk,       &
+                       nvarsgsk,nn_interfacial_offset,offset_igsk,       &
+                       b_output_mpiio_single,.false.,b_output_multizone) 
+          allocate(realbuffer4(nn*nvarsgsk), stat = ierr)
+          call checkerr(ierr,'velocity_g-realbuffer4',ilog)
+          realbuffer4 = 0.0d0
+          call memory_monitor(sizeof(realbuffer4),                       &
+                              'velocity_g-realbuffer4',.true.)
+        end if
 
       end if
 
@@ -1371,7 +1440,7 @@
 
 !c when gas advection, report velocity and flux results
 
-                if (ng .gt. 0 .and. gas_advection) then
+                if (gas_advection) then
 
                   dgflux = fluxvg(gpivol_ivol ,gpivol_jvol ,           &
                                   zg(ivol)    ,zg(jvol)    ,           &
@@ -1429,25 +1498,11 @@
                                 - fluxd(totgnew(ic,ivol),              &!diff flux
                                       totgnew(ic,jvol),                &
                                       cinfrt)
-!cz     &                          - fluxdg(totgmfrac(ic,ivol)    ,
-!cz     &                                   totgmfrac(ic,jvol)    ,
-!cz     &                                   mdens_g(ivol)         ,
-!cz     &                                   mdens_g(jvol)         ,
-!cz     &                                   cinfrt                ,
-!cz     &                                   gpivol    ,gpjvol     ,
-!cz     &                                   zg(ivol)  ,zg(jvol)   ,
-!cz     &                                   dens_i    ,dens_j     ,
-!cz     &                                   iupsg(i1sav)          ,
-!cz     &                                   spt_weight            )
 
                   if (dgm) then
 
 !c                     check if there is gas phase
                     if (gporij(i1sav).lt.rverysmall) then
-!c                     no gas phase 
-!c                     DSU, 2019-05-13, Bug fixed here, set to zero to avoid random
-!c                     initialized value as well as previous stored value
-!c                     as these two variables are local variable and used later
                        dgflux_cd_dgm(ic) = r0
                        neflux(ic) = r0
                     else
@@ -1469,15 +1524,11 @@
 
 !c                     check if there is gas phase
                     if (gporij(i1sav).lt.rverysmall) then
-!c                    no gas phase
-!c                    DSU, 2019-05-13, Bug fixed here, set to zero to avoid random
-!c                    initialized value as well as previous stored value
-!c                     as these two variables are local variable and used later
                       dgflux_cd_dgm(ic) = r0
                       neflux(ic) = r0
                     else
 
-                    dgflux_cd_dgm(ic) = cinfrt_dg(i1sav)                &
+                      dgflux_cd_dgm(ic) = cinfrt_dg(i1sav)             &
                                           * deltaij(i1sav)             &
                                           * ms_gflux(ic)               &
                                           / tauij(i1sav)               &
@@ -1494,7 +1545,7 @@
                   else
 
                     dgflux_cd_dgm(ic) = dgflux_cd(ic)
-                    neflux(ic)        = 0.d0
+                    neflux(ic)        = r0
                      
                   endif
 
@@ -1544,7 +1595,7 @@
                   velg_dgm = 0.0d0
                 end if
 
-             velg_neq(ic,idim) = velg_neq(ic,idim) /                   &
+                velg_neq(ic,idim) = velg_neq(ic,idim) /                &
                                    (float(npair(idim))+eps) 
                 
               enddo
@@ -1574,53 +1625,61 @@
 !c          velocity
             gpi = gasp_m(mdens_g(ivol2),ivol2)  ! gas pressure
 
-            if (b_output_binary) then
-              realbuffer((ivol_l-1)*7+1:ivol_l*7) = (/                 &
-                                     xg_out,yg_out,zg_out,             &
-                                    (velg(idim),idim=1,3),             &
-                                     gpi/pa_atm/)
-            else
-              write(igsa,ascii_fmt) xg_out,yg_out,zg_out,              &
-                                    (velg(idim),idim=1,3),             &
-                                     gpi/pa_atm
+            if (bit_gsa > 0) then
+              if (b_output_binary) then
+                realbuffer((ivol_l-1)*7+1:ivol_l*7) = (/               &
+                                       xg_out,yg_out,zg_out,           &
+                                      (velg(idim),idim=1,3),           &
+                                       gpi/pa_atm/)
+              else
+                write(igsa,ascii_fmt) xg_out,yg_out,zg_out,            &
+                                      (velg(idim),idim=1,3),           &
+                                       gpi/pa_atm
+              end if
             end if
 
 !c          density
-            if (b_output_binary) then
-              realbuffer2((ivol_l-1)*4+1:ivol_l*4) = (/                &
-                                     xg_out,yg_out,zg_out,             &
-                                     gasd_m(mdens_g(ivol2),            &
-                                            gmfrac(:,ivol2))/)
-            else
-              write(igsr,ascii_fmt) xg_out,yg_out,zg_out,              &
-                                     gasd_m(mdens_g(ivol2),            &
-                                            gmfrac(:,ivol2))
+            if (bit_gsr > 0) then
+              if (b_output_binary) then
+                realbuffer2((ivol_l-1)*4+1:ivol_l*4) = (/              &
+                                       xg_out,yg_out,zg_out,           &
+                                       gasd_m(mdens_g(ivol2),          &
+                                              gmfrac(:,ivol2))/)
+              else
+                write(igsr,ascii_fmt) xg_out,yg_out,zg_out,            &
+                                       gasd_m(mdens_g(ivol2),          &
+                                              gmfrac(:,ivol2))
+              end if
             end if
 
 !c          viscosity
-            if (b_output_binary) then
-              realbuffer3((ivol_l-1)*4+1:ivol_l*4) = (/                &
-                                     xg_out,yg_out,zg_out,             &
-                                     gasv(gmfrac(:,ivol2))/)
-            else
-              write(igsy,ascii_fmt) xg_out,yg_out,zg_out,              &
-                                     gasv(gmfrac(:,ivol2))
+            if (bit_gsy > 0) then
+              if (b_output_binary) then
+                realbuffer3((ivol_l-1)*4+1:ivol_l*4) = (/              &
+                                       xg_out,yg_out,zg_out,           &
+                                       gasv(gmfrac(:,ivol2))/)
+              else
+                write(igsy,ascii_fmt) xg_out,yg_out,zg_out,            &
+                                       gasv(gmfrac(:,ivol2))
+              end if
             end if
 
 !c          driving force gradients
-            if (b_output_binary) then
-              realbuffer4((ivol_l-1)*nvarsgsk+1:ivol_l*nvarsgsk) = (/  &
-                                      xg_out,yg_out,zg_out,            &
-                                  (grad_adv(idim),idim=1,3),           &
-                                  (grad_diff(ig,1),ig=1,ng),           &
-                                  (grad_diff(ig,2),ig=1,ng),           &
-                                  (grad_diff(ig,3),ig=1,ng)/)
-            else
-              write(igsk,ascii_fmt) xg_out,yg_out,zg_out,              &
-                                  (grad_adv(idim),idim=1,3),           &
-                                  (grad_diff(ig,1),ig=1,ng),           &
-                                  (grad_diff(ig,2),ig=1,ng),           &
-                                  (grad_diff(ig,3),ig=1,ng)
+            if (bit_gsk > 0) then
+              if (b_output_binary) then
+                realbuffer4((ivol_l-1)*nvarsgsk+1:ivol_l*nvarsgsk) = (/&
+                                        xg_out,yg_out,zg_out,          &
+                                    (grad_adv(idim),idim=1,3),         &
+                                    (grad_diff(ig,1),ig=1,ng),         &
+                                    (grad_diff(ig,2),ig=1,ng),         &
+                                    (grad_diff(ig,3),ig=1,ng)/)
+              else
+                write(igsk,ascii_fmt) xg_out,yg_out,zg_out,            &
+                                    (grad_adv(idim),idim=1,3),         &
+                                    (grad_diff(ig,1),ig=1,ng),         &
+                                    (grad_diff(ig,2),ig=1,ng),         &
+                                    (grad_diff(ig,3),ig=1,ng)
+              end if
             end if
             
 !c          mass fluxes
@@ -1630,22 +1689,40 @@
 
               igsa2 = igsa2 + 1
               
-              if (b_output_binary) then
-                realbuffer2d((ivol_l-1)*18+1:ivol_l*18,ic) = (/        & 
-                                    xg_out,yg_out,zg_out,              &
-                                   (velg_ca(ic,idim),idim=1,3),        &
-                                   (velg_cd(ic,idim),idim=1,3),        &
-                  (velg_ca(ic,idim)+velg_dgm(ic,idim),idim=1,3),       &
-                                   (velg_dgm(ic,idim),idim=1,3),       &
-                                   (velg_neq(ic,idim),idim=1,3)/)
-              else
-                write(igsa2,ascii_fmt) xg_out,yg_out,zg_out,           &
-                                   (velg_ca(ic,idim),idim=1,3),        &
-                                   (velg_cd(ic,idim),idim=1,3),        &
-                  (velg_ca(ic,idim)+velg_dgm(ic,idim),idim=1,3),       &
-                                   (velg_dgm(ic,idim),idim=1,3),       &
-                                   (velg_neq(ic,idim),idim=1,3) 
+              if (bit_gsga > 0) then
+                if (b_output_binary) then
+                  if (btest(bit_gsga,0)) then
+                    realbuffer2d((ivol_l-1)*nvarsgsga+1:ivol_l*nvarsgsga,ic) = (/& 
+                                        xg_out,yg_out,zg_out,            &
+                                       (velg_ca(ic,idim),idim=1,3),      &
+                                       (velg_cd(ic,idim),idim=1,3),      &
+                      (velg_ca(ic,idim)+velg_cd(ic,idim),idim=1,3),      &
+                                       (velg_dgm(ic,idim),idim=1,3),     &
+                                       (velg_neq(ic,idim),idim=1,3)/)
+                  else if (btest(bit_gsga,1)) then
+                    realbuffer2d((ivol_l-1)*nvarsgsga+1:ivol_l*nvarsgsga,ic) = (/& 
+                                        xg_out,yg_out,zg_out,            &
+                                       (velg_ca(ic,idim),idim=1,3),      &
+                                       (velg_cd(ic,idim),idim=1,3),      &
+                      (velg_ca(ic,idim)+velg_cd(ic,idim),idim=1,3)/)
+                  end if
+                else
+                  if (btest(bit_gsga,0)) then
+                    write(igsa2,ascii_fmt) xg_out,yg_out,zg_out,         &
+                                       (velg_ca(ic,idim),idim=1,3),      &
+                                       (velg_cd(ic,idim),idim=1,3),      &
+                      (velg_ca(ic,idim)+velg_cd(ic,idim),idim=1,3),      &
+                                       (velg_dgm(ic,idim),idim=1,3),     &
+                                       (velg_neq(ic,idim),idim=1,3) 
+                  else if (btest(bit_gsga,1)) then
+                    write(igsa2,ascii_fmt) xg_out,yg_out,zg_out,         &
+                                       (velg_ca(ic,idim),idim=1,3),      &
+                                       (velg_cd(ic,idim),idim=1,3),      &
+                      (velg_ca(ic,idim)+velg_cd(ic,idim),idim=1,3)
+                  end if
+                end if
               end if
+
             enddo  
             
             
@@ -1657,15 +1734,15 @@
             
                 igsf2 = igsf2+1
                 
-                if (b_output_binary) then
-                  realbuffer2d_2((ivol_l-1)*6+1:ivol_l*6,ic) = (/      & 
-                               xg_out,yg_out,zg_out,                   &
-                               (diff(ic,idim)/sec_per_days,idim=1,3)/)
-                else
-                  write(igsf2,ascii_fmt) xg_out,yg_out,zg_out,         &
-                        (diff(ic,idim)/sec_per_days,idim=1,3) 
-                  
-                 
+                if (bit_gsf > 0) then
+                  if (b_output_binary) then
+                    realbuffer2d_2((ivol_l-1)*6+1:ivol_l*6,ic) = (/      & 
+                                 xg_out,yg_out,zg_out,                   &
+                                 (diff(ic,idim)/sec_per_days,idim=1,3)/)
+                  else
+                    write(igsf2,ascii_fmt) xg_out,yg_out,zg_out,         &
+                          (diff(ic,idim)/sec_per_days,idim=1,3)
+                  end if
                 end if
                 
               end do
@@ -1679,183 +1756,232 @@
       end do
       
       if (b_output_binary) then
-        if (b_output_multizone .or. .not.b_output_mpiio_single) then
-          call binary_write_data(igsa, 7*ivol_l,                       &
-                       realbuffer, offset_igsa,b_output_mpiio_single) 
-        else
-          call binary_subarray_initialize(7,b_mpiarray_igsa_g_init,    &
-                      .true.,mpiarray_filetype_igsa_g,                 &
-                      mpiarray_sizes_gbl_igsa_g,                       &
-                      mpiarray_sizes_sub_igsa_g,                       &
-                      mpiarray_starts_sub_igsa_g)
-          call binary_write_data(igsa, 7*ivol_l,                       &
-                       realbuffer, offset_igsa,mpiarray_filetype_igsa_g) 
-        end if
 
-        call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
-        deallocate(realbuffer) 
-        
-        if (b_output_multizone .or. .not.b_output_mpiio_single) then
-          do ic = 1, n
-            call binary_write_data(igsa2_list(ic), ivol_l*18,          &
-                         realbuffer2d(:,ic), offset_igsa2(ic),         &
-                         b_output_mpiio_single)
-          end do
-        else
-          do ic = 1, n
-            call binary_subarray_initialize(18,b_mpiarray_igsa2_g_init,&
-                        .true.,mpiarray_filetype_igsa2_g,              &
-                        mpiarray_sizes_gbl_igsa2_g,                    &
-                        mpiarray_sizes_sub_igsa2_g,                    &
-                        mpiarray_starts_sub_igsa2_g)
-            call binary_write_data(igsa2_list(ic), ivol_l*18,          &
-                         realbuffer2d(:,ic), offset_igsa2(ic),         &
-                         mpiarray_filetype_igsa2_g)
-          end do
+        if (bit_gsa > 0) then
+          if (b_output_multizone .or. .not.b_output_mpiio_single) then
+            call binary_write_data(igsa, 7*ivol_l,                       &
+                         realbuffer, offset_igsa,b_output_mpiio_single) 
+          else
+            call binary_subarray_initialize(7,b_mpiarray_igsa_g_init,    &
+                        .true.,mpiarray_filetype_igsa_g,                 &
+                        mpiarray_sizes_gbl_igsa_g,                       &
+                        mpiarray_sizes_sub_igsa_g,                       &
+                        mpiarray_starts_sub_igsa_g)
+            call binary_write_data(igsa, 7*ivol_l,                       &
+                         realbuffer, offset_igsa,mpiarray_filetype_igsa_g) 
+          end if
+          call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
+          deallocate(realbuffer) 
         end if
-
-        call memory_monitor(-sizeof(realbuffer2d),'realbuffer2d',.true.)
-        deallocate(realbuffer2d)
         
-        if (blanc_diff_g) then
+        if (bit_gsga > 0) then
           if (b_output_multizone .or. .not.b_output_mpiio_single) then
             do ic = 1, n
-              call binary_write_data(igsf2_list(ic), ivol_l*6,         &
-                           realbuffer2d_2(:,ic), offset_igsf2(ic),     &
+              call binary_write_data(igsa2_list(ic), ivol_l*nvarsgsga,   &
+                           realbuffer2d(:,ic), offset_igsa2(ic),         &
                            b_output_mpiio_single)
             end do
           else
             do ic = 1, n
-              call binary_subarray_initialize(6,                       &
-                          b_mpiarray_igsf2_g_init,                     &
-                          .true.,mpiarray_filetype_igsf2_g,            &
-                          mpiarray_sizes_gbl_igsf2_g,                  &
-                          mpiarray_sizes_sub_igsf2_g,                  &
-                          mpiarray_starts_sub_igsf2_g)
-              call binary_write_data(igsf2_list(ic), ivol_l*6,         &
-                           realbuffer2d_2(:,ic), offset_igsf2(ic),     &
-                           mpiarray_filetype_igsf2_g)
+              call binary_subarray_initialize(nvarsgsga,                 &
+                          b_mpiarray_igsa2_g_init,.true.,                &
+                          mpiarray_filetype_igsa2_g,                     &
+                          mpiarray_sizes_gbl_igsa2_g,                    &
+                          mpiarray_sizes_sub_igsa2_g,                    &
+                          mpiarray_starts_sub_igsa2_g)
+              call binary_write_data(igsa2_list(ic), ivol_l*nvarsgsga,   &
+                           realbuffer2d(:,ic), offset_igsa2(ic),         &
+                           mpiarray_filetype_igsa2_g)
             end do
           end if
-
-          call memory_monitor(-sizeof(realbuffer2d_2),'realbuffer2d_2',.true.)
-          deallocate(realbuffer2d_2) 
+          call memory_monitor(-sizeof(realbuffer2d),'realbuffer2d',.true.)
+          deallocate(realbuffer2d)
         end if
         
-        if (b_output_multizone .or. .not.b_output_mpiio_single) then
-          call binary_write_data(igsr, 4*ivol_l,                       &
-                       realbuffer2, offset_igsr,b_output_mpiio_single)
-        else
-          call binary_subarray_initialize(4,b_mpiarray_igsr_g_init,    &
-                      .true.,mpiarray_filetype_igsr_g,                 &
-                      mpiarray_sizes_gbl_igsr_g,                       &
-                      mpiarray_sizes_sub_igsr_g,                       &
-                      mpiarray_starts_sub_igsr_g)
-          call binary_write_data(igsr, 4*ivol_l,                       &
-                       realbuffer2,offset_igsr,mpiarray_filetype_igsr_g) 
+        if (blanc_diff_g) then
+          if (bit_gsf > 0) then
+            if (b_output_multizone .or. .not.b_output_mpiio_single) then
+              do ic = 1, n
+                call binary_write_data(igsf2_list(ic), ivol_l*6,       &
+                             realbuffer2d_2(:,ic), offset_igsf2(ic),   &
+                             b_output_mpiio_single)
+              end do
+            else
+              do ic = 1, n
+                call binary_subarray_initialize(6,                     &
+                            b_mpiarray_igsf2_g_init,                   &
+                            .true.,mpiarray_filetype_igsf2_g,          &
+                            mpiarray_sizes_gbl_igsf2_g,                &
+                            mpiarray_sizes_sub_igsf2_g,                &
+                            mpiarray_starts_sub_igsf2_g)
+                call binary_write_data(igsf2_list(ic), ivol_l*6,       &
+                             realbuffer2d_2(:,ic), offset_igsf2(ic),   &
+                             mpiarray_filetype_igsf2_g)
+              end do
+            end if
+
+            call memory_monitor(-sizeof(realbuffer2d_2),'realbuffer2d_2',.true.)
+            deallocate(realbuffer2d_2)
+          end if
+        end if
+        
+        if (bit_gsr > 0) then
+          if (b_output_multizone .or. .not.b_output_mpiio_single) then
+            call binary_write_data(igsr, 4*ivol_l,                       &
+                         realbuffer2, offset_igsr,b_output_mpiio_single)
+          else
+            call binary_subarray_initialize(4,b_mpiarray_igsr_g_init,    &
+                        .true.,mpiarray_filetype_igsr_g,                 &
+                        mpiarray_sizes_gbl_igsr_g,                       &
+                        mpiarray_sizes_sub_igsr_g,                       &
+                        mpiarray_starts_sub_igsr_g)
+            call binary_write_data(igsr, 4*ivol_l,                       &
+                         realbuffer2,offset_igsr,mpiarray_filetype_igsr_g) 
+          end if
+
+          call memory_monitor(-sizeof(realbuffer2),'realbuffer2',.true.)
+          deallocate(realbuffer2) 
         end if
 
-        call memory_monitor(-sizeof(realbuffer2),'realbuffer2',.true.)
-        deallocate(realbuffer2) 
-            
-        if (b_output_multizone .or. .not.b_output_mpiio_single) then
-          call binary_write_data(igsy, 4*ivol_l,                       &
-                       realbuffer3, offset_igsy,b_output_mpiio_single)
-        else
-          call binary_subarray_initialize(4,b_mpiarray_igsy_g_init,    &
-                      .true.,mpiarray_filetype_igsy_g,                 &
-                      mpiarray_sizes_gbl_igsy_g,                       &
-                      mpiarray_sizes_sub_igsy_g,                       &
-                      mpiarray_starts_sub_igsy_g)
-          call binary_write_data(igsy, 4*ivol_l,                       &
-                       realbuffer3,offset_igsy,mpiarray_filetype_igsy_g)
+
+        if (bit_gsy > 0) then
+          if (b_output_multizone .or. .not.b_output_mpiio_single) then
+            call binary_write_data(igsy, 4*ivol_l,                       &
+                         realbuffer3, offset_igsy,b_output_mpiio_single)
+          else
+            call binary_subarray_initialize(4,b_mpiarray_igsy_g_init,    &
+                        .true.,mpiarray_filetype_igsy_g,                 &
+                        mpiarray_sizes_gbl_igsy_g,                       &
+                        mpiarray_sizes_sub_igsy_g,                       &
+                        mpiarray_starts_sub_igsy_g)
+            call binary_write_data(igsy, 4*ivol_l,                       &
+                         realbuffer3,offset_igsy,mpiarray_filetype_igsy_g)
+          end if
+
+          call memory_monitor(-sizeof(realbuffer3),'realbuffer3',.true.)
+          deallocate(realbuffer3)
         end if
 
-        call memory_monitor(-sizeof(realbuffer3),'realbuffer3',.true.)
-        deallocate(realbuffer3) 
-               
-        if (b_output_multizone .or. .not.b_output_mpiio_single) then
-          call binary_write_data(igsk, nvarsgsk*ivol_l,                &
-                       realbuffer4, offset_igsk,b_output_mpiio_single)
-        else
-          call binary_subarray_initialize(nvarsgsk,                    &
-                      b_mpiarray_igsk_g_init,                          &
-                      .true.,mpiarray_filetype_igsk_g,                 &
-                      mpiarray_sizes_gbl_igsk_g,                       &
-                      mpiarray_sizes_sub_igsk_g,                       &
-                      mpiarray_starts_sub_igsk_g)
-          call binary_write_data(igsk, nvarsgsk*ivol_l,                &
-                       realbuffer4,offset_igsk,mpiarray_filetype_igsk_g)
+
+        if (bit_gsk > 0) then
+          if (b_output_multizone .or. .not.b_output_mpiio_single) then
+            call binary_write_data(igsk, nvarsgsk*ivol_l,                &
+                         realbuffer4, offset_igsk,b_output_mpiio_single)
+          else
+            call binary_subarray_initialize(nvarsgsk,                    &
+                        b_mpiarray_igsk_g_init,                          &
+                        .true.,mpiarray_filetype_igsk_g,                 &
+                        mpiarray_sizes_gbl_igsk_g,                       &
+                        mpiarray_sizes_sub_igsk_g,                       &
+                        mpiarray_starts_sub_igsk_g)
+            call binary_write_data(igsk, nvarsgsk*ivol_l,                &
+                         realbuffer4,offset_igsk,mpiarray_filetype_igsk_g)
+          end if
+          call memory_monitor(-sizeof(realbuffer4),'realbuffer4',.true.)
+          deallocate(realbuffer4)
         end if
-        call memory_monitor(-sizeof(realbuffer4),'realbuffer4',.true.)
-        deallocate(realbuffer4)
+
       end if
         
       if(b_output_binary) then
-        call binary_file_close(igsa,b_output_mpiio_single)
-        do ic = 1, n
-          call binary_file_close(igsa2_list(ic),b_output_mpiio_single)
-        end do
-        if (blanc_diff_g) then
+        if (bit_gsa > 0) then
+          call binary_file_close(igsa,b_output_mpiio_single)
+        end if
+
+        if (bit_gsga > 0) then
           do ic = 1, n
-            call binary_file_close(igsf2_list(ic),b_output_mpiio_single)
+            call binary_file_close(igsa2_list(ic),b_output_mpiio_single)
           end do
         end if
-        
-        call binary_file_close(igsr,b_output_mpiio_single)
-        call binary_file_close(igsy,b_output_mpiio_single)
-        call binary_file_close(igsk,b_output_mpiio_single)
-      else
-        close(igsa) 
-        !Keep the file unit, this will be used later
-        !call lun_free(igsa)
-        igsa2 = igsa
-        do ic=1,n
-          igsa2 = igsa2 + 1
-          close(igsa2)
-          !Keep the file unit, this will be used later
-          !call lun_free(igsa2)
-        end do 
-        
-        igsf2 = igsf_first
+
         if (blanc_diff_g) then
-          do ic=1,n
-            igsf2 = igsf2 + 1
-            close(igsf2)
-            !Keep the file unit, this will be used later
-            !call lun_free(igsf2)
-          end do
+          if (bit_gsf > 0) then
+            do ic = 1, n
+              call binary_file_close(igsf2_list(ic),b_output_mpiio_single)
+            end do
+          end if
         end if
         
-        close(igsr)        
-        close(igsy)
-        close(igsk)
-        !Keep the file unit, this will be used later
-        !call lun_free(igsr)
-        !call lun_free(igsy)
-        !call lun_free(igsk)
+        if (bit_gsr > 0) then
+          call binary_file_close(igsr,b_output_mpiio_single)
+        end if
+
+        if (bit_gsy > 0) then
+          call binary_file_close(igsy,b_output_mpiio_single)
+        end if
+
+        if (bit_gsk > 0) then
+          call binary_file_close(igsk,b_output_mpiio_single)
+        end if
+
+      else
+        if (bit_gsa > 0) then
+          close(igsa) 
+        end if
+
+        if (bit_gsga > 0) then
+          igsa2 = igsa
+          do ic=1,n
+            igsa2 = igsa2 + 1
+            close(igsa2)
+          end do 
+        end if
+        
+        if (bit_gsf > 0) then
+          igsf2 = igsf_first
+          if (blanc_diff_g) then
+            do ic=1,n
+              igsf2 = igsf2 + 1
+              close(igsf2)
+              !Keep the file unit, this will be used later
+              !call lun_free(igsf2)
+            end do
+          end if
+        end if
+        
+        if (bit_gsr > 0) then
+          close(igsr) 
+        end if
+
+        if (bit_gsy > 0) then
+           close(igsy) 
+        end if
+
+        if (bit_gsk > 0) then
+          close(igsk)
+        end if
+
       end if
       
       if (b_output_binary) then
 
         call memory_monitor(-sizeof(tec_variables),'tec_variables',.true.)
-        call memory_monitor(-sizeof(offset_igsa2),'offset_igsa2',.true.)
-        call memory_monitor(-sizeof(offset_igsa2_temp),'offset_igsa2_temp',.true.)
-        call memory_monitor(-sizeof(igsa2_list),'igsa2_list',.true.)
-
         deallocate(tec_variables)
-        deallocate(offset_igsa2)        
-        deallocate(offset_igsa2_temp)
-        deallocate(igsa2_list)
+
+        if (bit_gsga > 0) then
+          call memory_monitor(-sizeof(offset_igsa2),'offset_igsa2',.true.)
+          deallocate(offset_igsa2)   
+
+          call memory_monitor(-sizeof(offset_igsa2_temp),'offset_igsa2_temp',.true.)
+          deallocate(offset_igsa2_temp)
+
+          call memory_monitor(-sizeof(igsa2_list),'igsa2_list',.true.)
+          deallocate(igsa2_list)
+        end if
 
         if (blanc_diff_g) then
-          call memory_monitor(-sizeof(offset_igsf2),'offset_igsf2',.true.)
-          call memory_monitor(-sizeof(offset_igsf2_temp),'offset_igsf2_temp',.true.)
-          call memory_monitor(-sizeof(igsf2_list),'igsf2_list',.true.)
-          deallocate(offset_igsf2)
-          deallocate(offset_igsf2_temp)
-          deallocate(igsf2_list) 
+          if (bit_gsf > 0) then
+            call memory_monitor(-sizeof(offset_igsf2),'offset_igsf2',.true.)
+            deallocate(offset_igsf2)
+
+            call memory_monitor(-sizeof(offset_igsf2_temp),'offset_igsf2_temp',.true.)
+            deallocate(offset_igsf2_temp)
+
+            call memory_monitor(-sizeof(igsf2_list),'igsf2_list',.true.)
+            deallocate(igsf2_list) 
+          end if
         end if
+
       end if     
 
 !c      if (update_permeability) then

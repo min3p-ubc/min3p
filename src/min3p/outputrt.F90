@@ -53,7 +53,7 @@
 !c                                - new time level [moles/l bulk]
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l h2o]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity (meq/100g) + -
 !c                                - global system
@@ -1267,24 +1267,24 @@
                                                                        
             if (initial_condition) then                                  
               write(ifls,'(/2a/72a)')'Partial gas pressures, initial ',&
-     &                               'condition',('-',i=1,72)           
+                                     'condition',('-',i=1,72)           
             else                                                        
               write(ifls,'(/2a,1pe15.6e3,1x,a/72a)')                   &
-     &              'Partial gas pressures, ','T = ',                  &
-     &              time_io,time_unit(:l_time_unit),('-',i=1,72)        
+                    'Partial gas pressures, ','T = ',                  &
+                    time_io,time_unit(:l_time_unit),('-',i=1,72)        
             end if
                                                                         
             write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                 &
-     &                          suffix(:l_sufx)//'.gsg'
+                                suffix(:l_sufx)//'.gsg'
                                                                         
             write(ifls,'(2a)')                                         &
-     &            'column   entry                           ','unit'    
+                  'column   entry                           ','unit'    
             write(ifls,'(2a)')                                         &
-     &            '1        x                               ','m'       
+                  '1        x                               ','m'       
             write(ifls,'(2a)')                                         &
-     &            '2        y                               ','m'       
+                  '2        y                               ','m'       
             write(ifls,'(2a)')                                         &
-     &            '3        z                               ','m'       
+                  '3        z                               ','m'       
             do ig = 1,ng                                                
               if (ig.lt.7) then                                         
                 write(ifls,'(i1,8x,a30,2x,a)') ig+3,nameg(ig),'atm'      
@@ -1293,7 +1293,7 @@
               end if                                                    
             end do                                                      
             write(ifls,'(2a)')                                         &
-     &           '3+ng+1   total gas pressure              ','atm'
+                 '3+ng+1   total gas pressure              ','atm'
             
           end if
 
@@ -1324,24 +1324,24 @@
             
               if (initial_condition) then
                   write(ifls,'(/2a/72a)')'Mole fractions, initial ',   &
-     &                                   'condition',('-',i=1,72)
+                                         'condition',('-',i=1,72)
               else
                   write(ifls,'(/2a,1pe15.6e3,1x,a/72a)')               &
-     &                  'Mole fractions, ','T = ',                     &
-     &                  time_io,time_unit(:l_time_unit),('-',i=1,72)
+                        'Mole fractions, ','T = ',                     &
+                        time_io,time_unit(:l_time_unit),('-',i=1,72)
               end if
               
               write(ifls,'(/a/)') prefix(:l_prfx)//'_'//               &
-     &              suffix(:l_sufx)//'.gs2'
+                    suffix(:l_sufx)//'.gs2'
               
               write(ifls,'(2a)')                                       &
-     &              'column   entry                           ','unit'  
+                    'column   entry                           ','unit'  
               write(ifls,'(2a)')                                       &
-     &              '1        x                               ','m'     
+                    '1        x                               ','m'     
               write(ifls,'(2a)')                                       &
-     &              '2        y                               ','m'     
+                    '2        y                               ','m'     
               write(ifls,'(2a)')                                       &
-     &              '3        z                               ','m'
+                    '3        z                               ','m'
               do ig = 1,ng
                 if (ig.lt.7) then
                   write(ifls,'(i1,8x,a30,2x,a)') ig+3,nameg(ig),'[-]'
@@ -1354,7 +1354,13 @@
             
             if (.not.initial_condition) then
               call velocity_g (l_sufx, suffix, nngl, njavs, cinfrad,   &
-                               radial_coord)
+                               radial_coord, 1, 1, 1, 1, 1, 1)
+            end if
+
+          else
+            if (.not.initial_condition) then
+              call velocity_g (l_sufx, suffix, nngl, njavs, cinfrad,   &
+                               radial_coord, 0, 2, 0, 0, 0, 0)
             end if
            
           end if
@@ -2501,7 +2507,7 @@
 !c  recompute total aqueous component concentrations
 
         if (redox_equil.and.nr.gt.0) then
-          call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
+          call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
         end if
 
 !c  write results
@@ -2626,7 +2632,7 @@
 ! cdsu ---------------------------------------------------------------
         
         if (multi_diff) then
-          call cbalance(cnew(:,ivol),cx(:,ivol),zbal,zpos,zneg)
+          call cbalance(cnew(:,ivol),cxnew(:,ivol),zbal,zpos,zneg)
                     
 ! prc ----------------------------------------------------------------
 ! prc Charge Balance distribution
@@ -4914,13 +4920,14 @@
  
 !c  update secondary variables before output
  
-          call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),        &
-     &                  gamma(nc+1,ivol),sionnew(ivol),tid)
+          call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
+                        gamma(nc+1,ivol),sionnew(ivol),                &
+                        actvset(:,ivol),0,tid)
           
-          if (hmulti_diff) then
-          
-            call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),   &
-     &                    gammaold(nc+1,ivol),sionold(ivol),tid)  
+          if (hmulti_diff) then          
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &
+                          gammaold(nc+1,ivol),sionold(ivol),           &
+                          actvset(:,ivol),0,tid)  
           end if       !MX test
      
 !c  free species and aqueous complex concentrations
@@ -4933,12 +4940,12 @@
               end do
               
               do ix=1, nxout
-                realbuffer((ivol_l-1)*nvarsgsc+2+nc+ix) = cx(ix,ivol)   
+                realbuffer((ivol_l-1)*nvarsgsc+2+nc+ix) = cxnew(ix,ivol)   
               end do
             else
               write(igsc,ascii_fmt) xg(ivol),yg(ivol),zout,            &
                                           (cnew(ic,ivol),ic=1,nc-1),   &
-                                          (cx(ix,ivol),ix=1,nxout)
+                                          (cxnew(ix,ivol),ix=1,nxout)
             end if
             
             !c activity coefficients
@@ -4963,14 +4970,14 @@
 
 !c  master variables
           ! Compute charge balance
-          call cbalance(cnew(:,ivol),cx(:,ivol),zbal,zpos,zneg) 
+          call cbalance(cnew(:,ivol),cxnew(:,ivol),zbal,zpos,zneg) 
 
           call phpe(cnew(:,ivol),gamma(:,ivol),ph,pe,eh,tkel(ivol))
 
           if (compute_alkalinity) then
             call alkcalc(alk_carb,alk_noncarb,alk_tot,                &
                          alk_carb_mg,alk_noncarb_mg,alk_tot_mg,       &
-                         alkfacc,alkfacx,cnew(:,ivol),cx(:,ivol),     &
+                         alkfacc,alkfacx,cnew(:,ivol),cxnew(:,ivol),  &
                          iax,jax,nc,nx,namec,namex)                    
           else                                        !MX              
              alk_carb = r0                                             
@@ -5033,9 +5040,9 @@
 !c  recompute oxidation-reduction rates
 
             do ir = 1,nr
-              call rateredx(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),    &
-     &                      gamma(nc+1,ivol),rateor(ir,tid),          &
-     &                      totcnew(:,ivol),ir,tid)                        
+              call rateredx(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+                            gamma(nc+1,ivol),rateor(ir,tid),           &
+                            totcnew(:,ivol),ir,tid)                        
             end do
 
               if (b_output_binary) then
@@ -5060,7 +5067,7 @@
             do iaq = 1,naq
               if (new_database) then                                   
                 call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),     &
-                                 cnew(:,ivol),cx(:,ivol),             &
+                                 cnew(:,ivol),cxnew(:,ivol),          &
                                  gamma(:,ivol),gamma(nc+1,ivol),      &
                                  phi(:,ivol),iaq,                     &
                                  scalfac_aq_ivol(iaq,ivol),           &
@@ -5178,7 +5185,7 @@
           if (noncompetitive_sorption) then
           
             if (redox_equil.and.nr.gt.0) then
-              call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
+              call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
             end if
 
             call totcona(totan(:,tid),totcnew(:,ivol),                 &
@@ -5516,15 +5523,15 @@
                   rootdens = r1
                 end if
                 call ratemin_new(totcnew(:,ivol),cnew(:,ivol),        &
-                                 cx(:,ivol),gamma(:,ivol),            &
+                                 cxnew(:,ivol),gamma(:,ivol),         &
                                  gamma(nc+1,ivol),sanew(ivol),        &
                                  ratemdp(im,ivol),                    &
                                  phi(:,ivol),phiold(im,ivol),         &
                                  area(im,ivol),rootdens,im,tid)  
               else                                                     
-                call ratemin(totcnew(:,ivol),cnew(:,ivol),cx(:,ivol), &
-                             gamma(:,ivol),gamma(nc+1,ivol),          &
-                             ratemdp(im,ivol),phi(im,ivol),           &
+                call ratemin(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol), &
+                             gamma(:,ivol),gamma(nc+1,ivol),             &
+                             ratemdp(im,ivol),phi(im,ivol),              &
                              phiold(im,ivol),area(im,ivol),im,tid)
               end if
 

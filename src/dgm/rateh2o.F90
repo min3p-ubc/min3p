@@ -37,7 +37,7 @@
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
 !c           cvol(nn)           = nodal volumes                       + -
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of aqueous
 !c                                species [-]
@@ -114,11 +114,11 @@
                        redox_equil, rateor, scalfac_aq_ivol
       
 #ifdef OPENMP
-      use gen, only : cnew, cvol, cx, gamma, idbg, nngl, phi, pornew,  &
-                      qwater, ratemdp, sanew, totcnew,                 &
+      use gen, only : cnew, cvol, cxnew, gamma, idbg, nngl, phi, pornew,  &
+                      qwater, ratemdp, sanew, totcnew,                    &
                       numofthreads_global, numofloops_thred_rateh2o_1
 #else
-      use gen, only : cnew, cvol, cx, gamma, idbg, nngl, phi, pornew,  &
+      use gen, only : cnew, cvol, cxnew, gamma, idbg, nngl, phi, pornew,  &
                       qwater, ratemdp, sanew, totcnew
 #endif
 
@@ -196,9 +196,9 @@
 !c  overall oxidation-reduction rates for redox couples
 
           do ir = 1,nr
-            call rateredx(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),       &
-     &                    gamma(nc+1,ivol),rateor(ir,tid),             &
-     &                    totcnew(:,ivol),ir,tid)
+            call rateredx(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),    &
+                          gamma(nc+1,ivol),rateor(ir,tid),             &
+                          totcnew(:,ivol),ir,tid)
           end do
 
 !c  total source/sink terms towards water concentration
@@ -209,8 +209,8 @@
 !c  scale total source-sink term due to oxidation/reduction reactions
 
           totor_w = cvol(ivol) * bulkconc(totor_w,                     &
-     &                                    sanew(ivol),                 &
-     &                                    pornew(ivol))
+                                          sanew(ivol),                 &
+                                          pornew(ivol))
 
         end if
 
@@ -231,10 +231,10 @@
 
           do iaq = 1,naq
             if (new_database) then
-              call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),        &
-                               cnew(:,ivol),cx(:,ivol),gamma(:,ivol),  &
-                               gamma(nc+1,ivol),phi(:,ivol),iaq,       &
-                               scalfac_aq_ivol(iaq,ivol),              &
+              call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),           &
+                               cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+                               gamma(nc+1,ivol),phi(:,ivol),iaq,          &
+                               scalfac_aq_ivol(iaq,ivol),                 &
                                sanew(ivol),pornew(ivol),tid)                               
             else                                                          
               call rateint(rateaq(iaq,tid),totcnew(:,ivol),            &

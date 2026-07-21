@@ -194,7 +194,7 @@
           !cprovi Copy the molalities in the local vector 
           !cprovi------------------------------------------------
           cpz_loc(1:nc)=cnew(1:nc,ivol)
-          cpz_loc(nc+1:nc+nx)=cx(1:nx,ivol)  
+          cpz_loc(nc+1:nc+nx)=cxnew(1:nx,ivol)  
           call compute_density_ (phase,r0,r0,cpz_loc,density(ivol),.false., &
                                     iserror)
           if (iserror) then          

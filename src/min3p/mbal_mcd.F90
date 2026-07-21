@@ -59,7 +59,7 @@
 !c           zg(nn)             = spatial coordinates in z-direction  + -
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of aqueous    + -
 !c                                species
@@ -760,12 +760,12 @@
 #endif
 
               if (multi_diff) then
-                call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),      &
-                               cnew(:,jvol),cx(:,jvol),                &
+                call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
                                delta_totviscnew(:,tid))
 
-                call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),  &
-                                   cnew(:,jvol),cx(:,jvol),            &
+                call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol), &
+                                   cnew(:,jvol),cxnew(:,jvol),           &
                                    delta_electromignew(:,tid))
               end if
 
@@ -1111,12 +1111,12 @@
               jvol = subdomains_bdface(2,ibrt,isub)       !outside domain
 
               if (multi_diff) then
-                call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),      &
-                               cnew(:,jvol),cx(:,jvol),                &
+                call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
                                delta_totviscnew(:,tid))
 
-                call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),  &
-                                   cnew(:,jvol),cx(:,jvol),            &
+                call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                                   cnew(:,jvol),cxnew(:,jvol),             &
                                    delta_electromignew(:,tid))
               end if
 

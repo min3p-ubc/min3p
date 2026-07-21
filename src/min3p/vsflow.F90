@@ -1022,7 +1022,7 @@
                   sgt(ivol) = sgt_old(ivol)
                 end if
                 do ic=1,n
-                  cnew(ic,ivol) = c(ic,ivol)
+                  cnew(ic,ivol) = cold(ic,ivol)
                 end do
                 if (nm.gt.r0)then
                   do im=1,nm

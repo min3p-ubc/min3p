@@ -468,7 +468,7 @@
       end if
       
       do ic=1,nc
-        gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),                &
+        gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),             &
                                sionnew(ivol),chargec(ic),              &
                                dhac(ic),dhbc(ic),dhad(tid),dhbd(tid),  &
                                adav,bdav,acth2omin,nc,                 &

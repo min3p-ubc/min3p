@@ -576,7 +576,6 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)icesheet/updtice_scalfac.o\
 	$(SRC)usg/infcrt_mcd_usg.o\
 	$(SRC)usg/hydrostatic_pitzerdens_usg.o\
-	$(SRC)dgm/gasdiff_s.o\
 	$(SRC)min3p/energy_bal.o\
 	$(SRC)min3p/datstr_n.o\
 	$(SRC)min3p/welcome_pc.o\
@@ -615,7 +614,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/readsit.o\
 	$(SRC)usg/infcrt_a_usg.o\
 	$(SRC)min3p/iajart.o\
-	$(SRC)dgm/gasdiff2_s.o\
+	$(SRC)dgm/gasdiff2.o\
 	$(SRC)gas_advection/fluxvg.o\
 	$(SRC)min3p/dratemin.o\
 	$(SRC)min3p/diffcoff_mcd.o\
@@ -694,7 +693,6 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/initbcenergybal.o\
 	$(SRC)min3p/infevap.o\
 	$(SRC)min3p/i2upfind_heat.o\
-	$(SRC)dgm/gasdiff2.o\
 	$(SRC)min3p/elecmigration.o\
 	$(SRC)min3p/comptotc.o\
 	$(SRC)usg/velovapour_usg.o\

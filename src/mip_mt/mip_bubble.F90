@@ -3417,7 +3417,7 @@ contains
 #ifdef OPENMP
                       i_omp_type_mip_bubble, numofthreads_mip_bubble,  &
 #endif
-                      gnew, cnew, cx, sanew, sgnew, idbg, pornew
+                      gnew, cnew, cxnew, sanew, sgnew, idbg, pornew
 
       implicit none
 

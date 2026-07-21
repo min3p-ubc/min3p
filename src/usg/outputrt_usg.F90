@@ -36,7 +36,7 @@
 !c                                - new time level [moles/l bulk]
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l h2o]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity (meq/100g) + -
 !c                                - global system
@@ -1205,7 +1205,12 @@
             end if
             
             if (.not.initial_condition) then
-              call velocity_g_usg
+              call velocity_g_usg(1, 1, 1, 1, 1, 1)
+            end if
+
+          else
+            if (.not.initial_condition) then
+              call velocity_g_usg(0, 2, 0, 0, 0, 0)
             end if
            
           end if
@@ -1756,7 +1761,7 @@
 !c  recompute total aqueous component concentrations
 
         if (redox_equil.and.nr.gt.0) then
-          call totconc(cnew(:,inode),cx(:,inode),totcnew(:,inode))
+          call totconc(cnew(:,inode),cxnew(:,inode),totcnew(:,inode))
         end if
 
 !c  write results
@@ -2054,7 +2059,7 @@
           end do
 
           do inode = 1, num_nodes
-            call cbalance(cnew(:,inode),cx(:,inode),zbal,zpos,zneg)
+            call cbalance(cnew(:,inode),cxnew(:,inode),zbal,zpos,zneg)
 
             realbuffer(inode) = zbal
             realbuffer2(inode) = zpos-zneg
@@ -2109,14 +2114,14 @@
           write(icbt,'(a)') "SCALARS Charge_Balance_Error_% double"
           write(icbt,'(a)') "LOOKUP_TABLE default"
           do inode = 1, num_nodes
-            call cbalance(cnew(:,inode),cx(:,inode),zbal,zpos,zneg)
+            call cbalance(cnew(:,inode),cxnew(:,inode),zbal,zpos,zneg)
             write(icbt,ascii_fmt) zbal
           end do
 
           write(icbt,'(a)') "SCALARS Charge_Balance double"
           write(icbt,'(a)') "LOOKUP_TABLE default"
           do inode = 1, num_nodes
-            call cbalance(cnew(:,inode),cx(:,inode),zbal,zpos,zneg)
+            call cbalance(cnew(:,inode),cxnew(:,inode),zbal,zpos,zneg)
             write(icbt,ascii_fmt) zpos-zneg
           end do
         end if
@@ -2551,31 +2556,33 @@
 
 
 !c  update secondary variables before output
- 
-          call updtsvap(cnew(:,inode),cx(:,inode),gamma(:,inode),      &
-     &                  gamma(nc+1,inode),sionnew(inode),tid)
+
+          call updtsvap(cnew(:,inode),cxnew(:,inode),gamma(:,inode),   &
+                        gamma(nc+1,inode),sionnew(inode),              &
+                        actvset(:,inode),0,tid)
           
           if (hmulti_diff) then
           
-            call updtsvap(c(:,inode),cxold(:,inode),gammaold(:,inode), &
-     &                    gammaold(nc+1,inode),sionold(inode),tid)  
+            call updtsvap(cold(:,inode),cxold(:,inode),gammaold(:,inode), &
+                          gammaold(nc+1,inode),sionold(inode),            &
+                          actvset(:,inode),0,tid)  
           end if       !MX test
      
 !c  free species and aqueous complex concentrations
           !write(igsc,ascii_fmt) xg(inode),yg(inode),zout,              &
           !                         (cnew(ic,inode),ic=1,nc-1),         &
-          !                         (cx(ix,inode),ix=1,nxout)
+          !                         (cxnew(ix,inode),ix=1,nxout)
 
 !c  master variables
           ! Compute charge balance
-          call cbalance(cnew(:,inode),cx(:,inode),zbal,zpos,zneg) 
+          call cbalance(cnew(:,inode),cxnew(:,inode),zbal,zpos,zneg) 
 
           call phpe(cnew(:,inode),gamma(:,inode),ph,pe,eh,tkel(inode))
 
           if (compute_alkalinity) then
             call alkcalc(alk_carb,alk_noncarb,alk_tot,                 &
                          alk_carb_mg,alk_noncarb_mg,alk_tot_mg,        &
-                         alkfacc,alkfacx,cnew(:,inode),cx(:,inode),    &
+                         alkfacc,alkfacx,cnew(:,inode),cxnew(:,inode), &
                          iax,jax,nc,nx,namec,namex)                    
           else                                        !MX              
              alk_carb = r0                                             
@@ -2620,14 +2627,14 @@
 !c  oxidation-reduction rates
 
           if (nr.gt.0.and.(.not.redox_equil)                           &
-     &               .and.(.not.initial_condition)) then
+              .and.(.not.initial_condition)) then
 
 !c  recompute oxidation-reduction rates
 
             do ir = 1,nr
-              call rateredx(cnew(:,inode),cx(:,inode),gamma(:,inode),  &
-     &                      gamma(nc+1,inode),rateor(ir,tid),          &
-     &                      totcnew(:,inode),ir,tid)
+              call rateredx(cnew(:,inode),cxnew(:,inode),gamma(:,inode),  &
+                            gamma(nc+1,inode),rateor(ir,tid),          &
+                            totcnew(:,inode),ir,tid)
               rateor_vols(ir,inode) = rateor(ir,tid)
             end do
             !write(igsi,ascii_fmt) xg(inode),yg(inode),zout,            &
@@ -2644,7 +2651,7 @@
             do iaq = 1,naq
               if (new_database) then                                   
                 call rateint_new(rateaq(iaq,tid),totcnew(:,inode),     &
-                                 cnew(:,inode),cx(:,inode),            &
+                                 cnew(:,inode),cxnew(:,inode),         &
                                  gamma(:,inode),gamma(nc+1,inode),     &
                                  phi(:,inode),iaq,                     &
                                  scalfac_aq_ivol(iaq,inode),           &
@@ -2733,7 +2740,7 @@
           if (noncompetitive_sorption) then
           
             if (redox_equil.and.nr.gt.0) then
-              call totconc(cnew(:,inode),cx(:,inode),totcnew(:,inode))
+              call totconc(cnew(:,inode),cxnew(:,inode),totcnew(:,inode))
             end if
 
             call totcona(totan(:,tid),totcnew(:,inode),                &
@@ -2939,15 +2946,15 @@
                   rootdens = r1
                 end if
                 call ratemin_new(totcnew(:,inode),cnew(:,inode),       &
-                                 cx(:,inode),gamma(:,inode),           &
+                                 cxnew(:,inode),gamma(:,inode),        &
                                  gamma(nc+1,inode),sanew(inode),       &
                                  ratemdp(im,inode),                    &
                                  phi(:,inode),phiold(im,inode),        &
                                  area(im,inode),rootdens,im,tid)  
               else                                                     
-                call ratemin(totcnew(:,inode),cnew(:,inode),cx(:,inode),&
-                             gamma(:,inode),gamma(nc+1,inode),          &
-                             ratemdp(im,inode),phi(im,inode),           &
+                call ratemin(totcnew(:,inode),cnew(:,inode),cxnew(:,inode),&
+                             gamma(:,inode),gamma(nc+1,inode),             &
+                             ratemdp(im,inode),phi(im,inode),              &
                              phiold(im,inode),area(im,inode),im,tid)
               end if
 
@@ -3130,7 +3137,7 @@
 
           do ix = 1, nxout
             do inode = 1, num_nodes
-              realbuffer(inode) = cx(ix,inode)
+              realbuffer(inode) = cxnew(ix,inode)
             end do
             call hdf5_usg_write_group_data_1d(group_id,trim(namex(ix)),  &
                       num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
@@ -3172,7 +3179,7 @@
             write(igsc,'(3a)') "SCALARS ",trim(namex(ix)(:l_namex(ix)))," double"
             write(igsc,'(a)') "LOOKUP_TABLE default"
             do inode = 1, num_nodes
-              write(igsc,ascii_fmt) cx(ix,inode)
+              write(igsc,ascii_fmt) cxnew(ix,inode)
             end do
           end do
         end if

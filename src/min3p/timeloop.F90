@@ -80,7 +80,7 @@
 !c           cec_g(nn)          = cation exchange capacity [meq/100g] + -
 !c                                - global system
 !c           cpuint             = cpu-time (intermediate) [seconds]   + +
-!c           cx(nx,nn)          = concentrations of secondary aqueous + *
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + *
 !c                                species [moles/l water]
 !c           delt               = time step                           + -
 !c           delt_io            = time step (I/O units)               + -
@@ -1191,7 +1191,7 @@
 
           if (reactive_transport) then
             sionnew = sionold
-            cnew(1:n,:) = c(1:n,:)
+            cnew(1:n,:) = cold(1:n,:)
           end if
 
 #ifdef USG
@@ -3143,7 +3143,10 @@
              (mtime == mtime_append .and. i_append_sim >= 1) .or.      &   !DSU: locate and append results when simulation is restarted (requrired)
              (mod(rsrt_cnt+1,backup_frequency) .eq. 0))) then              !DSU: write current timestep when restart point is reached (required)
             
-            ngb_tstep = ngb_tstep + 1  
+            ngb_tstep = ngb_tstep + 1 
+
+            !c save this for global use without passing argument
+            ngb_tstep_gbl = ngb_tstep    
 
             if (transient_flow.or.reactive_transport) then
               if (gb_output) then
@@ -3156,7 +3159,7 @@
                   
 !c  assign unit numbers for output of transient data
 
-                  call tranunit(igb)
+                  call tranunit(igb,'gb')
 
 !c  temperature corrections for debye-huckel, equilibrium and
 !c  rate constants
@@ -3212,13 +3215,13 @@
                     
                     if (density_dependence) then
                       call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),        &
-                             cx(:,ivol),gamma(:,ivol),                   &
-                             gamma(nc+1,ivol),cmnew(:,ivol),             &
-                             gnew(:,ivol),cec_g(ivol),                   &
+                             cxnew(:,ivol),gamma(:,ivol),                &
+                             gamma(nc+1,ivol),actvset(:,ivol),           &
+                             cmnew(:,ivol),gnew(:,ivol),cec_g(ivol),     &
                              distcoff_rt(:,ivol),area(:,ivol),           &
-                             phi(:,ivol),phiold(:,ivol),                 &
-                             sionnew(ivol),tkel(ivol),                   &
-                             uvsnew(ivol),xg(ivol),yg(ivol),zg(ivol),    &
+                             phi(:,ivol),phiold(:,ivol),sionnew(ivol),   &
+                             tkel(ivol),uvsnew(ivol),                    &
+                             xg(ivol),yg(ivol),zg(ivol),0,               &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
                              igbt,igbc,igbm,igbg,igbgr,igbi,igbb,        &
                              igbs,igbv,igbd,igbx,igbis,igbac,igbre,      &
@@ -3242,13 +3245,13 @@
                              mtime,i_append_sim,mtime_append)
                     else
                       call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),        &
-                             cx(:,ivol),gamma(:,ivol),                   &
-                             gamma(nc+1,ivol),cmnew(:,ivol),             &
-                             gnew(:,ivol),cec_g(ivol),                   &
+                             cxnew(:,ivol),gamma(:,ivol),                &
+                             gamma(nc+1,ivol),actvset(:,ivol),           &
+                             cmnew(:,ivol),gnew(:,ivol),cec_g(ivol),     &
                              distcoff_rt(:,ivol),area(:,ivol),           &
-                             phi(:,ivol),phiold(:,ivol),                 &
-                             sionnew(ivol),tkel(ivol),                   &
-                             hhead(ivol),xg(ivol),yg(ivol),zg(ivol),     &
+                             phi(:,ivol),phiold(:,ivol),sionnew(ivol),   &
+                             tkel(ivol),hhead(ivol),                     &
+                             xg(ivol),yg(ivol),zg(ivol),0,               &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
                              igbt,igbc,igbm,igbg,igbgr,igbi,igbb,        &
                              igbs,igbv,igbd,igbx,igbis,igbac,igbre,      &

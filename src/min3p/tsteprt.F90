@@ -177,7 +177,7 @@
 !#ifdef PETSC
           
         do ic=1,n 
-          delta_c(ic) = dabs(dlog10(cnew(ic,ivol))-dlog10(c(ic,ivol)))
+          delta_c(ic) = dabs(dlog10(cnew(ic,ivol))-dlog10(cold(ic,ivol)))
           delta_c_max(ic) = max(delta_c_max(ic),delta_c(ic))
         end do
       end do
@@ -360,7 +360,6 @@
       delta_root_uptake = delt_rt
 !c to be further checked, time step limitation is activated.
       if (root_uptake) then    
-        delta_root_uptake = delt_rt
 !        ic_max_dt = 0
 !        ivol_max_dt = 0
 !        if (itype_root_resp == 1) then

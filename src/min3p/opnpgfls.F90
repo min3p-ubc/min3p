@@ -343,7 +343,7 @@
       character*3 suffix
       character*12 suffix2
       
-      integer :: nvarsigbp, nvarsiifvs, nvarsiifrt, nvarsiifbm
+      integer :: nvarsigbp, nvarsiifvs, nvarsiifrt, nvarsiifga, nvarsiifbm
       
       character*2048 strbuffer
       character*72:: tec_variables(100)
@@ -530,7 +530,7 @@
 
 !c  assign unit numbers for output of transient data
 
-          call tranunit(igb)
+          call tranunit(igb,'gb')
 
 !c  output temperature when heat transport or temperature field is specified
           if (heat_transport .or. temp_field) then
@@ -2009,7 +2009,7 @@
                   end do 
                 end if              
               end if                           !(iso_output)
-            end if
+            end if                             !(extended_output)
 
             if (mip_mt_enable) then
 
@@ -2177,6 +2177,23 @@
             offset_ifbm_ijk = 0
             call checkerr(ierr,'offset_ifbm_ijk',ilog)
             call memory_monitor(sizeof(offset_ifbm_ijk),'offset_ifbm_ijk',.true.)
+
+            if (ng > 0) then
+              allocate(offset_ifga(n,ngb_ijface), stat = ierr)
+              offset_ifga = 0
+              call checkerr(ierr,'offset_ifga',ilog)
+              call memory_monitor(sizeof(offset_ifga),'offset_ifga',.true.)
+              
+              allocate(offset_ifga_temp(n,ngb_ijface), stat = ierr)
+              offset_ifga_temp = 0
+              call checkerr(ierr,'offset_ifga_temp',ilog)
+              call memory_monitor(sizeof(offset_ifga_temp),'offset_ifga_temp',.true.)
+              
+              allocate(offset_ifga_ijk(n,ngb_ijface), stat = ierr)
+              offset_ifga_ijk = 0
+              call checkerr(ierr,'offset_ifga_ijk',ilog)
+              call memory_monitor(sizeof(offset_ifga_ijk),'offset_ifga_ijk',.true.)
+            end if
           end if
 
           allocate(ifrt(n,ngb_ijface), stat = ierr)
@@ -2244,6 +2261,89 @@
           call checkerr(ierr,'ifrt_vz_tot_accu',ilog)
           call memory_monitor(sizeof(ifrt_vz_tot_accu),'ifrt_vz_tot_accu',.true.)
 
+
+          
+          if (ng > 0) then
+            allocate(ifga(n,ngb_ijface), stat = ierr)
+            ifga = 0
+            call checkerr(ierr,'ifga',ilog)
+            call memory_monitor(sizeof(ifga),'ifga',.true.)
+  
+            allocate(ifga_vx_adv_accu(n,ngb_ijface), stat = ierr)
+            ifga_vx_adv_accu = 0.0d0
+            call checkerr(ierr,'ifga_vx_adv_accu',ilog)
+            call memory_monitor(sizeof(ifga_vx_adv_accu),'ifga_vx_adv_accu',.true.)
+         
+            allocate(ifga_vy_adv_accu(n,ngb_ijface), stat = ierr)
+            ifga_vy_adv_accu = 0.0d0
+            call checkerr(ierr,'ifga_vy_adv_accu',ilog)
+            call memory_monitor(sizeof(ifga_vy_adv_accu),'ifga_vy_adv_accu',.true.)
+  
+            allocate(ifga_vz_adv_accu(n,ngb_ijface), stat = ierr)
+            ifga_vz_adv_accu = 0.0d0
+            call checkerr(ierr,'ifga_vz_adv_accu',ilog)
+            call memory_monitor(sizeof(ifga_vz_adv_accu),'ifga_vz_adv_accu',.true.)
+  
+            allocate(ifga_vx_dif_accu(n,ngb_ijface), stat = ierr)
+            ifga_vx_dif_accu = 0.0d0
+            call checkerr(ierr,'ifga_vx_dif_accu',ilog)
+            call memory_monitor(sizeof(ifga_vx_dif_accu),'ifga_vx_dif_accu',.true.)
+         
+            allocate(ifga_vy_dif_accu(n,ngb_ijface), stat = ierr)
+            ifga_vy_dif_accu = 0.0d0
+            call checkerr(ierr,'ifga_vy_dif_accu',ilog)
+            call memory_monitor(sizeof(ifga_vy_dif_accu),'ifga_vy_dif_accu',.true.)
+  
+            allocate(ifga_vz_dif_accu(n,ngb_ijface), stat = ierr)
+            ifga_vz_dif_accu = 0.0d0
+            call checkerr(ierr,'ifga_vz_dif_accu',ilog)
+            call memory_monitor(sizeof(ifga_vz_dif_accu),'ifga_vz_dif_accu',.true.)
+    
+            allocate(ifga_vx_tot_accu(n,ngb_ijface), stat = ierr)
+            ifga_vx_tot_accu = 0.0d0
+            call checkerr(ierr,'ifga_vx_tot_accu',ilog)
+            call memory_monitor(sizeof(ifga_vx_tot_accu),'ifga_vx_tot_accu',.true.)
+         
+            allocate(ifga_vy_tot_accu(n,ngb_ijface), stat = ierr)
+            ifga_vy_tot_accu = 0.0d0
+            call checkerr(ierr,'ifga_vy_tot_accu',ilog)
+            call memory_monitor(sizeof(ifga_vy_tot_accu),'ifga_vy_tot_accu',.true.)
+  
+            allocate(ifga_vz_tot_accu(n,ngb_ijface), stat = ierr)
+            ifga_vz_tot_accu = 0.0d0
+            call checkerr(ierr,'ifga_vz_tot_accu',ilog)
+            call memory_monitor(sizeof(ifga_vz_tot_accu),'ifga_vz_tot_accu',.true.)
+
+            allocate(ifga_vx_dgm_accu(n,ngb_ijface), stat = ierr)
+            ifga_vx_dgm_accu = 0.0d0
+            call checkerr(ierr,'ifga_vx_dgm_accu',ilog)
+            call memory_monitor(sizeof(ifga_vx_dgm_accu),'ifga_vx_dgm_accu',.true.)
+         
+            allocate(ifga_vy_dgm_accu(n,ngb_ijface), stat = ierr)
+            ifga_vy_dgm_accu = 0.0d0
+            call checkerr(ierr,'ifga_vy_dgm_accu',ilog)
+            call memory_monitor(sizeof(ifga_vy_dgm_accu),'ifga_vy_dgm_accu',.true.)
+  
+            allocate(ifga_vz_dgm_accu(n,ngb_ijface), stat = ierr)
+            ifga_vz_dgm_accu = 0.0d0
+            call checkerr(ierr,'ifga_vz_dgm_accu',ilog)
+            call memory_monitor(sizeof(ifga_vz_dgm_accu),'ifga_vz_dgm_accu',.true.)
+  
+            allocate(ifga_vx_neq_accu(n,ngb_ijface), stat = ierr)
+            ifga_vx_neq_accu = 0.0d0
+            call checkerr(ierr,'ifga_vx_neq_accu',ilog)
+            call memory_monitor(sizeof(ifga_vx_neq_accu),'ifga_vx_neq_accu',.true.)
+         
+            allocate(ifga_vy_neq_accu(n,ngb_ijface), stat = ierr)
+            ifga_vy_neq_accu = 0.0d0
+            call checkerr(ierr,'ifga_vy_neq_accu',ilog)
+            call memory_monitor(sizeof(ifga_vy_neq_accu),'ifga_vy_neq_accu',.true.)
+  
+            allocate(ifga_vz_neq_accu(n,ngb_ijface), stat = ierr)
+            ifga_vz_neq_accu = 0.0d0
+            call checkerr(ierr,'ifga_vz_neq_accu',ilog)
+            call memory_monitor(sizeof(ifga_vz_neq_accu),'ifga_vz_neq_accu',.true.)
+          end if
 
         end if
 
@@ -2636,6 +2736,218 @@
               end if
    
             end do
+
+
+
+!c  interface flux for gas phase
+            if (ng > 0) then
+
+              if (b_output_trans_binary) then
+                nvarsiifga = 19     !31  
+                tec_variables(1:nvarsiifga) = [character(len=72) ::       &
+                    "time", "vx adv", "vy adv", "vz adv", "vx dif",      &
+                    "vy dif", "vz dif", "vx tot", "vy tot", "vz tot",    &
+                    !"vx dgm", "vy dgm", "vz dgm",                       &
+                    !"vx neq", "vy neq", "vz neq",                       &
+                    "accumulative qx adv", "accumulative qy adv",        &
+                    "accumulative qz adv", "accumulative qx dif",        &
+                    "accumulative qy dif", "accumulative qz dif",        &
+                    "accumulative qx tot", "accumulative qy tot",        &
+                    "accumulative qz tot", "accumulative qx dgm"]
+                    !"accumulative qy dgm", "accumulative qz dgm",       &
+                    !"accumulative qx neq", "accumulative qy neq",       &
+                    !"accumulative qz neq"]
+              end if
+             
+              do ic = 1, n
+                call icnvrt(0,ic,suffix2,l_sfx2,ierr)
+!c  open file
+                ifga(ic,igb) = lun_get()
+                if (b_output_trans_binary) then
+                  call binary_file_open(PETSC_COMM_SELF,                 &
+                               ifga(ic,igb), prefix(:l_prfx)//'_'//&
+                               suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//  &
+                               '.ifga', .true.)
+                else
+
+                  b_rewind_valid = check_rewind_status(prefix(:l_prfx)// &
+                    '_'//suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.ifga')
+                  if (b_rewind_valid .and. i_append_sim > 0) then
+                    open(ifga(ic,igb),file=prefix(:l_prfx)//'_'//         &
+                      suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.ifga',    &
+                      status='unknown',form='formatted',position='rewind')
+                  else
+                    open(ifga(ic,igb),file=prefix(:l_prfx)//'_'//         &
+                      suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.ifga',    &
+                      status='unknown',form='formatted')
+                  end if
+                end if
+
+!c  write file information
+                if (rank == 0 .and. b_enable_output) then   
+                  write(ifls,'(/2a/3(a,1pe9.2,a,2x)/72a)')               & 
+                        'Average interfacial velocities for component ', &
+                        namec(ic)(:l_namec(ic)),                         &
+                        'x = ',xout,' m',                                &
+                        'y = ',yout,' m',                                &
+                        'z = ',zout,' m',                                &
+                        ('-',i=1,72)                
+             
+                  write(ifls,'(/a/)') prefix(:l_prfx)//'_'//             &
+                        suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//'.ifga'
+              
+                  write(ifls,'(2a)')                        &
+                      'column   entry                           ','unit'
+                  write(ifls,'(2a)')                        &
+                      '1        time                            ',time_unit 
+                  write(ifls,'(2a)')                        &
+                      '2        vx adv                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '3        vy adv                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '4        vz adv                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '5        vx dif                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '6        vy dif                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '7        vz dif                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '8        vx tot                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '9        vy tot                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '10       vz tot                         ','moles/m^2/d'
+                  !write(ifls,'(2a)')                        &
+                  !    '11       vx dgm                         ','moles/m^2/d'
+                  !write(ifls,'(2a)')                        &
+                  !    '12       vy dgm                         ','moles/m^2/d'
+                  !write(ifls,'(2a)')                        &
+                  !    '13       vz dgm                         ','moles/m^2/d'
+                  !write(ifls,'(2a)')                        &
+                  !    '14       vx neq                         ','moles/m^2/d'
+                  !write(ifls,'(2a)')                        &
+                  !    '15       vy neq                         ','moles/m^2/d'
+                  !write(ifls,'(2a)')                        &
+                  !    '16       vz neq                         ','moles/m^2/d'
+                  write(ifls,'(2a)')                        &
+                      '11       accumulative qx adv            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '12       accumulative qy adv            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '13       accumulative qz adv            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '14       accumulative qx dif            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '15       accumulative qy dif            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '15       accumulative qz dif            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '17       accumulative qx tot            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '18       accumulative qy tot            ','moles/m^2'
+                  write(ifls,'(2a)')                        &
+                      '19       accumulative qz tot            ','moles/m^2'
+                  !write(ifls,'(2a)')                        &
+                  !    '26       accumulative qx dgm            ','moles/m^2'
+                  !write(ifls,'(2a)')                        &
+                  !    '27       accumulative qy dgm            ','moles/m^2'
+                  !write(ifls,'(2a)')                        &
+                  !    '28       accumulative qz dgm            ','moles/m^2'
+                  !write(ifls,'(2a)')                        &
+                  !    '29       accumulative qx neq            ','moles/m^2'
+                  !write(ifls,'(2a)')                        &
+                  !    '30       accumulative qy neq            ','moles/m^2'
+                  !write(ifls,'(2a)')                        &
+                  !    '31       accumulative qz neq            ','moles/m^2'
+                end if  
+
+!c  version information
+                if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                  if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
+                    call writeversion2file(ifga(ic,igb), "#")
+                  end if
+                end if
+              
+                if (b_output_trans_binary) then
+                  strbuffer = 'dataset '//prefix(:l_prfx)//'' 
+                  offset_ifga(ic,igb) = 0
+                  call tecplot_binary_write_header(PETSC_COMM_SELF,              &
+                               ifga(ic,igb),"#!TDV102", trim(strbuffer),          &
+                               offset_ifga(ic,igb),b_output_mpiio_single,.false.) 
+                  
+                  call tecplot_binary_write_variable(PETSC_COMM_SELF,            &
+                               ifga(ic,igb),nvarsiifga,                            &
+                               tec_variables(1:nvarsiifga),                       &
+                               offset_ifga(ic,igb),b_output_mpiio_single,.false.) 
+                  
+                  strbuffer = 'advection and diffusion fluxes of gas phase for '//&
+                              trim(namec(ic))
+                  offset_ifga_temp(ic,igb) = offset_ifga(ic,igb)
+                  
+                  if (b_output_multizone) then
+                    call tecplot_binary_write_zoneinfo(                          &
+                                 PETSC_COMM_SELF, ifga(ic,igb),                   &
+                                 trim(strbuffer),offset_ifga(ic,igb),             &
+                                 itec_vel,jtec_vel,ktec_vel,                     &
+                                 b_output_mpiio_single,.false.,b_output_multizone)
+                    offset_ifga(ic,igb) = offset_ifga_temp(ic,igb) +               &
+                                  (11+len_trim(strbuffer))*4*nprcs + 4
+                  else
+                    call tecplot_binary_write_zoneinfo(                          &
+                                 PETSC_COMM_SELF, ifga(ic,igb),                   &
+                                 trim(strbuffer),offset_ifga(ic,igb),             &
+                                 itec_vel_gbl,jtec_vel_gbl,ktec_vel_gbl,         &
+                                 b_output_mpiio_single,.false.,b_output_multizone)
+                    offset_ifga(ic,igb) = offset_ifga_temp(ic,igb) +               &
+                                  (12+len_trim(strbuffer))*4
+                  end if
+                  offset_ifga_ijk(ic,igb) = offset_ifga_temp(ic,igb) - 5*4
+                else
+                  if (i_append_sim < 1 .or. .not.b_rewind_valid) then
+                    write(ifga(ic,igb),'(3a)') 'title = "dataset ',               &
+                                                 prefix(:l_prfx),'"'
+                    write(ifga(ic,igb),'(21a)') 'variables = "time", ',           &
+                                      '"vx adv", "vy adv", "vz adv", ',          &
+                                      '"vx dif", "vy dif", "vz dif", ',          &
+                                      '"vx tot", "vy tot", "vz tot", ',          &
+                                      !'"vx dgm", "vy dgm", "vz dgm", ',         &
+                                      !'"vx neq", "vy neq", "vz neq", ',         &
+                                      '"accumulative qx adv", ',                 &
+                                      '"accumulative qy adv", ',                 &
+                                      '"accumulative qz adv", ',                 &
+                                      '"accumulative qx dif", ',                 &
+                                      '"accumulative qy dif", ',                 &
+                                      '"accumulative qz dif", ',                 &
+                                      '"accumulative qx tot", ',                 &
+                                      '"accumulative qy tot", ',                 &
+                                      '"accumulative qz tot"' 
+                                      !'"accumulative qx dgm", ',                 &
+                                      !'"accumulative qy dgm", ',                 &
+                                      !'"accumulative qz dgm", ',                 &
+                                      !'"accumulative qx neq", ',                 &
+                                      !'"accumulative qy neq", ',                 &
+                                      !'"accumulative qz neq"'
+
+#ifdef PETSC
+                    write(ifga(ic,igb),'(a,4(a,i0,1x),a)')                        &
+                       'zone t = "advection and diffusion fluxes of gas phase, ',&
+                       'between local volume = ', ivol, ', global volume = ',    &
+                       node_idx_lg2g(ivol), 'and local volume = ', jvol,         &
+                       ', global volume = ', node_idx_lg2g(jvol),'", f=point'
+#else           
+                    write(ifga(ic,igb),'(2(a,i0,1x),a)')                                &
+                       'zone t = "advection and diffusion fluxes of gas phase for '//  &
+                       trim(namec(ic))//', between volume = ',ivol,                    &
+                       'and volume = ',jvol,'", f=point'
+#endif          
+                  end if
+                end if
+   
+              end do
+
+            end if
+
           end if                             !(reactive_transport)      
         end do                               !(igb = 1,ngb_ijface)
       end if                                 !(gb_output_faceflux)      

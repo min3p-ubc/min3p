@@ -78,7 +78,7 @@
 !c           zg(nn)             = spatial coordinates in z-direction  + -
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of aqueous    + -
 !c                                species
@@ -550,8 +550,6 @@
 !c                          using the Dusty Gas Model        
 !c           gasdiff2     = compute gas diffusion coeff for components 
 !c                          with LeBlanc's approx
-!c           gasdiff2_s   = compute gas diffusion coeff for species
-!c                          with LeBlanc's approx
 !c           ms_fluxdg    = compute total gas diffusive fluxes using
 !c                          the Stefan-Maxwell equations
 !c           ms_fluxdg_s  = compute diffusive fluxes of gas species 
@@ -633,7 +631,7 @@
                 gasv, relbalance, totwflux_atm, tothflux_atm
 
       real*8, external :: acoff, bulkconc, bdryflux, ddbdflux,         &
-              fluxv_vl, fluxd, diffcoff_g, gasdiff2, gasdiff2_s
+              fluxv_vl, fluxd, diffcoff_g, gasdiff2
 
       !c local variables to store mass through specified boundary
       !c note, assume n > ng so that tmsb_g* variables are shared for
@@ -1031,12 +1029,12 @@
 #endif
 
               if (multi_diff) then
-                call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),        &
-                               cnew(:,jvol),cx(:,jvol),                  &
+                call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
                                delta_totviscnew(:,tid))
 
-                call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),    &
-                                   cnew(:,jvol),cx(:,jvol),              &
+                call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol), &
+                                   cnew(:,jvol),cxnew(:,jvol),           &
                                    delta_electromignew(:,tid))
               end if
 
@@ -1526,12 +1524,12 @@
               jvol = subdomains_bdface(2,ibrt,isub)       !outside domain
 
               if (multi_diff) then
-                call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),        &
-                               cnew(:,jvol),cx(:,jvol),                  &
+                call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
                                delta_totviscnew(:,tid))
 
-                call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),    &
-                                   cnew(:,jvol),cx(:,jvol),              &
+                call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol), &
+                                   cnew(:,jvol),cxnew(:,jvol),           &
                                    delta_electromignew(:,tid))
               end if
 
@@ -2747,33 +2745,33 @@
                 if (ispitzer) then 
                       call pitzer (phase,gamma(1:nc,ivol),             &
                                    gamma(nc+1:nc+nx,ivol),             &
-                                   cnew(1:nc,ivol),cx(1:nx,ivol),      &
+                                   cnew(1:nc,ivol),cxnew(1:nx,ivol),   &
                                    nc,nx,ilog)
                 else
 !c  --> for free species
 
                   do ic=1,nc
-                     gamma(ic,ivol) = acoff(cnew(:,ivol),cx(:,ivol),  &
-                                      sionnew(ivol),chargec(ic),      &
-                                      dhac(ic),dhbc(ic),              &
-                                      dhad(tid),dhbd(tid),            &
-                                      adav,bdav,acth2omin,nc,         &
-                                      nx,namec(ic),namec,ic,          &
-                                      issit,asit,basit,coepsil,       &
-                                      iasit,jasit)
+                     gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
+                                            sionnew(ivol),chargec(ic), &
+                                            dhac(ic),dhbc(ic),         &
+                                            dhad(tid),dhbd(tid),       &
+                                            adav,bdav,acth2omin,nc,    &
+                                            nx,namec(ic),namec,ic,     &
+                                            issit,asit,basit,coepsil,  &
+                                            iasit,jasit)
                   end do
 
 !c  --> for secondary aqueous species
 
                   do ix=1,nx
-                    gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cx(:,ivol),&
-                                        sionnew(ivol),chargex(ix),    &
-                                        dhax(ix),dhbx(ix),            &
-                                        dhad(tid),dhbd(tid),          &
-                                        adav,bdav,acth2omin,nc,       &
-                                        nx,namex(ix),namec,           &
-                                        nc+ix,issit,asit,basit,       &
-                                        coepsil,iasit,jasit)
+                    gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),  &
+                                              sionnew(ivol),chargex(ix),   &
+                                              dhax(ix),dhbx(ix),           &
+                                              dhad(tid),dhbd(tid),         &
+                                              adav,bdav,acth2omin,nc,      &
+                                              nx,namex(ix),namec,          &
+                                              nc+ix,issit,asit,basit,      &
+                                              coepsil,iasit,jasit)
                   end do
                 end if 
               end if
@@ -2783,9 +2781,9 @@
               if (nr.gt.0) then
 
                 do ir = 1,nr
-                  call rateredx(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),  &
-                                gamma(nc+1,ivol),rateor(ir,tid),        &
-                               totcnew(:,ivol),ir,tid)
+                  call rateredx(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+                                gamma(nc+1,ivol),rateor(ir,tid),           &
+                                totcnew(:,ivol),ir,tid)
                 end do
 
 !c  total source/sink terms towards total aqueous component
@@ -2809,7 +2807,7 @@
                 do iaq = 1,naq
                   if (new_database) then
                     call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),   &
-                                     cnew(:,ivol),cx(:,ivol),           &
+                                     cnew(:,ivol),cxnew(:,ivol),        &
                                      gamma(:,ivol),gamma(nc+1,ivol),    &
                                      phi(:,ivol),iaq,                   &
                                      scalfac_aq_ivol(iaq,ivol),         &
@@ -4150,7 +4148,7 @@
 
                 if (new_database) then
                   call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),      &
-                                   cnew(:,ivol),cx(:,ivol),              &
+                                   cnew(:,ivol),cxnew(:,ivol),           &
                                    gamma(:,ivol),gamma(nc+1,ivol),       &
                                    phi(:,ivol),iaq,                      &
                                    scalfac_aq_ivol(iaq,ivol),            &
@@ -4502,7 +4500,7 @@
                     if (gporij(i1).lt.rverysmall) then
 !c                     no gas phase                 
                     else
-                      gflux_ig =                                         & 
+                      gflux_ig =                                          & 
                                   + cinfrt_dg(i1)                         &
                                   * deltaij(i1)                           &
                                   * ms_gflux_s(ig)                        &
@@ -4515,7 +4513,7 @@
                     if (blanc_diff_g) then
 #ifdef USG
                       if (discretization_type > 0) then
-                        gasdiff_loc = gasdiff2_s(gmfrac(:,ivol),gmfrac(:,jvol),&
+                        gasdiff_loc = gasdiff2(gmfrac(:,ivol),gmfrac(:,jvol),  &
                                          gpivol_ivol   ,gpivol_jvol  ,         &
                                          zg(ivol)      ,zg(jvol)      ,        &
                                          gdens_ivol    ,gdens_jvol    ,        &
@@ -4527,7 +4525,7 @@
                       else
 #endif
 !c                      diffusion coefficient calc'd with LeBlanc's law
-                        cinfrt = cinfrt_dg(i1) * gasdiff2_s                &
+                        cinfrt = cinfrt_dg(i1) * gasdiff2                  &
                                         (gmfrac(:,ivol),gmfrac(:,jvol),    &
                                          gpivol_ivol   ,gpivol_jvol  ,     &
                                          zg(ivol)      ,zg(jvol)      ,    &
@@ -5012,16 +5010,16 @@
                   else
                     rootdens = r1
                   end if
-                  call ratemin_new(totcnew(:,ivol),cnew(:,ivol),        &
-                                   cx(:,ivol),gamma(:,ivol),            &
-                                   gamma(nc+1,ivol),sanew(ivol),        &
-                                   ratemdp(im,ivol),                    &
-                                   phi(:,ivol),phiold(im,ivol),         &
+                  call ratemin_new(totcnew(:,ivol),cnew(:,ivol),       &
+                                   cxnew(:,ivol),gamma(:,ivol),        &
+                                   gamma(nc+1,ivol),sanew(ivol),       &
+                                   ratemdp(im,ivol),                   &
+                                   phi(:,ivol),phiold(im,ivol),        &
                                    area(im,ivol),rootdens,im,tid)  
                 else
-                  call ratemin(totcnew(:,ivol),cnew(:,ivol),cx(:,ivol), &
-                               gamma(:,ivol),gamma(nc+1,ivol),          &
-                               ratemdp(im,ivol),phi(im,ivol),           &
+                  call ratemin(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol), &
+                               gamma(:,ivol),gamma(nc+1,ivol),             &
+                               ratemdp(im,ivol),phi(im,ivol),              &
                                phiold(im,ivol),area(im,ivol),im,tid)        
                 end if
 

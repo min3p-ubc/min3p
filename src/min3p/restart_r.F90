@@ -348,7 +348,7 @@
 #endif
       
       integer :: i, ic, ig, im, isb, ivol, ivol_bottom, ix, izn, itz,   &
-                 bcvs_cnt, bcheat_cnt, bcice_cnt, disprt_cnt,           &
+                 bcvs_cnt, bcheat_cnt, bcrt_cnt, bcice_cnt, disprt_cnt, &
                  ice_scalfac_cnt, itsrc_idx, ierr, ierrcd, iunit_file
       
       real*8 :: rdummy, rtemp, acoff, actw, strion, time_temp, time_rs, &
@@ -1638,7 +1638,40 @@
       
       end if
 
+      if (update_bcrt) then
+        bcrt_cnt=0
+        time_temp = time_io_ini - tinytime_global
 
+        if (rank == 0 .and. b_enable_output) then
+          write(*,*) "restart - update reactive transport boundary condition"
+          write(ilog,*) "restart - update reactive transport boundary condition"
+        end if
+      
+        !rewind(ibcrt)
+        !cdsu skip comment line and rewind to the first record
+        call rewind_first_record(ibcrt)
+        do while (time_io.gt.time_temp)
+          time_bcrt_prev = time_temp
+          read(ibcrt,*,err=998,end=1990) time_temp
+          bcrt_cnt=bcrt_cnt+1
+        end do
+
+1990    continue
+
+        if (time_io.gt.time_temp) then
+          !cdsu set the time to the final time later
+          time_bcrt = 1.1d0*tfinal/time_factor
+          !cdsu backspace of this file, need for updtbcrt and updtbcdd
+          backspace(ibcrt)
+        else
+          time_bcrt = time_temp
+        end if
+
+        call updtbcrt
+
+        b_restart_update_bcrt = .false.
+
+      end if
 
       !c update ice boundary condition
       if (update_bcice) then

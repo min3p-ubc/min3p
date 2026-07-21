@@ -51,7 +51,7 @@
 !c
 !c           integer*4:
 !c           ----------
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           iavs(nn+1)         = row pointer array for avs           + -
 !c           imvs               = unit number, mass balance -         + *

@@ -59,7 +59,7 @@
 !c                                parameters internal time units
 !c           time_factor        = conversion factor from I/O time     + -
 !c                                units to internal time units
-!c           time_io            = current solution time (I/O units)   + -
+!c           time_check            = current solution time (I/O units)   + -
 !c           tfinal             = final solution time                 + -
 !c           xg(nn)             = spatial coordinates in x-direction  + -
 !c           yg(nn)             = spatial coordinates in y-direction  + -
@@ -243,14 +243,12 @@
         if(rank == 0 .and. b_enable_output)  then  
                                                                        
           write(*,*)                                                     
-          write(*,*) 'update boundary conditions - ',                  &
-                     'density dependent variably saturated flow'         
+          write(*,*) 'update boundary conditions - density dependent flow'         
           write(*,*) ('-',i=1,72)                                        
           write(*,*)
                                                                        
           write(ilog,*)
-          write(ilog,'(2a)') 'update boundary conditions - ',          &
-                             'density dependent variably saturated flow'
+          write(ilog,'(a)') 'update boundary conditions - density dependent flow'
           write(ilog,'(72a/)')('-',i=1,72)
           write(ilog,*)
         
@@ -344,7 +342,6 @@
         if (b_first_update_bcvs .and.                                  &
             time_check.ge.time_bcvs_prev .and.                            &
             time_check.le.time_bcvs) then  
-
           b_updt_next_only = b_first_update_bcvs
           backspace(ibcvs)
 
@@ -499,9 +496,9 @@
 
           if (nbvs > 0) then
             do ibvs = 1, nbvs
-              ivol = iabvs(ibvs)
+              ivol = jabvs(ibvs)
 
-              if (ivol < 0) then
+              if (ivol <= 0) then
                 cycle  
               end if
 
@@ -822,7 +819,6 @@
                   gradf_bvs(ibvs) = rwork(1,ibz)
                 end if
               end if   !(btypezn.eq.'first'.or.btypezn.eq.'second')
-
             end do
           end if
           b_first_update_bcvs = .false.
@@ -1147,7 +1143,7 @@
 
 !c  assign pointer and 
 !c
-              iabvs(ibvs) = ivol
+              jabvs(ibvs) = ivol
               btypevs(ibvs) = btypezn
 
               ivol2bvs(ivol) = ibvs
@@ -1622,32 +1618,32 @@
           call checkerr(ierr,'lwork_next',ilog)
         end if
         
-!c  array iabvs
+!c  array jabvs
 
         allocate (iwork(nbvs), stat = ierr)
         call checkerr(ierr,'iwork',ilog)
         call memory_monitor(sizeof(iwork),'iwork',.true.)
         
         do ibvs = 1,nbvs
-          iwork(ibvs) = iabvs(ibvs)
+          iwork(ibvs) = jabvs(ibvs)
         end do
         
-        call memory_monitor(-sizeof(iabvs),'iabvs',.true.)
-        deallocate (iabvs, stat = ierr)
-        call checkerr(ierr,'iabvs',ilog)
+        call memory_monitor(-sizeof(jabvs),'jabvs',.true.)
+        deallocate (jabvs, stat = ierr)
+        call checkerr(ierr,'jabvs',ilog)
         
-        allocate (iabvs(nbvs), stat = ierr)
-        call checkerr(ierr,'iabvs',ilog)
-        call memory_monitor(sizeof(iabvs),'iabvs',.true.)
+        allocate (jabvs(nbvs), stat = ierr)
+        call checkerr(ierr,'jabvs',ilog)
+        call memory_monitor(sizeof(jabvs),'jabvs',.true.)
         
         do ibvs = 1,nbvs
-          iabvs(ibvs) = iwork(ibvs)
+          jabvs(ibvs) = iwork(ibvs)
         end do
 
         do ibvs = 1, nbvs
           do i = nbvs, ibvs + 1, -1
-            if (iabvs(i) == iabvs(ibvs)) then
-              iabvs(ibvs) = -iabvs(ibvs)
+            if (jabvs(i) == jabvs(ibvs)) then
+              jabvs(ibvs) = -jabvs(ibvs)
               exit
             end if
           end do
@@ -1708,9 +1704,9 @@
       else if (b_interpolation_bcvs) then  
         if (nbvs > 0) then
           do ibvs = 1, nbvs
-            ivol = iabvs(ibvs)
+            ivol = jabvs(ibvs)
   
-            if (ivol < 0) then
+            if (ivol <= 0) then
               cycle  
             end if
   

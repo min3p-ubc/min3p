@@ -43,7 +43,7 @@
 !c           integer*4:
 !c           ----------
 !c           iavs(nn+1)         = row pointer array for avs           + -
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           nn                 = total number of control volumes     + -
 !c           nbvs               = number of specified boundary        + -
@@ -160,13 +160,13 @@
 #endif
       do ibvs = 1,nbvs
           
-        ivol = iabvs(ibvs)
-        if (ivol < 0 .or. .not.bcondvs_on(ibvs)) then
+        ivol = jabvs(ibvs)
+        if (ivol <= 0 .or. .not.bcondvs_on(ibvs)) then
           cycle  
         end if
         
         if (compute_ice_sheet_loading) then
-          if (.not. b_iabvs_ice(ibvs)) then
+          if (.not. b_jabvs_ice(ibvs)) then
             cycle
           end if
         end if

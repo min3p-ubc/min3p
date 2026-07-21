@@ -60,7 +60,7 @@
 !           igen               = unit number, generic output file    + -
 !           ilog               = unit number, log book               + -
 !           itmp               = unit number, temporary storage      + -
-!           iabvs(nbvs)        = pointer to boundary control volumes * +
+!           jabvs(nbvs)        = pointer to boundary control volumes * +
 !                                for variably saturated flow            
 !           iwork(:)           = integer work array                  * *
 !           l_prfx             = length of prefix of I/O files       + -
@@ -846,7 +846,7 @@
               bcondheat(nbheat) = bcond
 
               do ibvs = 1,nbvs
-                ivolvs = iabvs(ibvs)
+                ivolvs = jabvs(ibvs)
                 if (ivolvs < 0) then
                   cycle
                 end if

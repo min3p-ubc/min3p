@@ -979,6 +979,27 @@
               write(*,*) 'delt - i: ', delt
             end if
 
+!c  adjust time step to target read times for reactive transport transient boundary conditions
+            if (update_bcrt .and. .not.tran_steady_flow) then
+              if (b_relax_timestep) then
+                time_check = min(time_check,time_bcrt*time_factor)
+              end if
+
+              if ((time+delt>time_bcrt*time_factor .and.               &
+                  (time_bcrt*time_factor-time>tiny_delt .or.           &
+                  b_updtbc_min_timestep)) .or.                         &
+                  (time+delt.lt.time_bcrt*time_factor+tiny_delt .and.  &
+                  time+delt.gt.time_bcrt*time_factor-tiny_delt)) then
+                delt = time_bcrt*time_factor-time
+                delt = dmax1(delt, deltmin)
+              end if
+
+            end if
+
+            if (delt_debug > 0 .and. rank == 0) then
+              write(*,*) 'delt - h2: ', delt
+            end if        
+
 !c  adjust time step to target read times for transient boundary conditions
 !c  for ice sheet model
             if (update_bcice .and. .not.tran_steady_flow) then              
@@ -1701,6 +1722,11 @@
             call updtbcenergybal
           end if
 
+!cdsu update boundary conditions for reactive transport
+          if (update_bcrt .and. .not.tran_steady_flow) then
+            call updtbcrt
+          end if
+
 !c update transient dispersivity
           if (reactive_transport .and. update_disprt .and.             &
               .not. tran_steady_flow) then
@@ -1840,7 +1866,7 @@
         !c  allocate mask for porosities
         modify_por=.true.
         if (nbvs>0) then
-          modify_por(abs(iabvs(1:nbvs)))=.false.
+          modify_por(abs(jabvs(1:nbvs)))=.false.
         end if
 
         if (compute_ice_sheet_loading  .and. .not.tran_steady_flow) then
@@ -3444,7 +3470,12 @@
 !cprovi----------------------------------------------------        
         if (update_bcheat .and. .not.tran_steady_flow) then
           call updtbcenergybal
-        end if        
+        end if  
+
+!cdsu update boundary conditions for reactive transport
+        if (update_bcrt .and. .not.tran_steady_flow) then
+          call updtbcrt
+        end if
 
 !c update transient dispersivity
         if (reactive_transport .and. update_disprt .and.               &

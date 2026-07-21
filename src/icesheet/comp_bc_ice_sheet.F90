@@ -66,13 +66,13 @@ implicit none
 !cprovi-----------------------------------------------------------------
       !nbvs=nbvs0
       !nbrt=nbrt0
-      !iabvs=iabvs0
+      !jabvs=jabvs0
       !jabrt=jabrt0
       bcondrt_a=bcondrt_a0
 
       if (ice_sheet_type == 0) then
         if(nbvs>0) then
-          call get_new_bc_(ice_sheet,iabvs,nbvs,b_iabvs_ice,xg,zg,nngl,&
+          call get_new_bc_(ice_sheet,jabvs,nbvs,b_jabvs_ice,xg,zg,nngl,&
                            time_io,iserror)
         end if
       else if (ice_sheet_type == 1) then
@@ -88,7 +88,7 @@ implicit none
           call updtbcice
         end if
         if(nbvs>0) then
-          call usg_ice_get_new_bc(nbvs,iabvs,b_iabvs_ice)
+          call usg_ice_get_new_bc(nbvs,jabvs,b_jabvs_ice)
           iserror = .false.
         end if  
 #endif
@@ -231,14 +231,14 @@ implicit none
 #endif
       do ibvs = 1,nbvs
 
-        ivol=iabvs(ibvs)
+        ivol=jabvs(ibvs)
           
         if (ivol < 0) then
           cycle
         end if
 
 !c  assign pointer and 
-        if (b_iabvs_ice(ibvs) .and. bcondvs_on(ibvs)) then
+        if (b_jabvs_ice(ibvs) .and. bcondvs_on(ibvs)) then
          
           btypezn=btypevs(ibvs)
 

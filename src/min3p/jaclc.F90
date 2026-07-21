@@ -429,7 +429,7 @@
           do ir=1,nr
             ic = nopu+ir
             call secspec(cnew,cnew(ic),eqr(ir,tid),gammac,gammac(ic), &
-     &                   xnur,iarc,jarc,ir)
+                         xnur,iarc,jarc,ir)
           end do
         end if
 
@@ -437,8 +437,13 @@
 
         do ix=1,nx
           call secspec(cnew,cx(ix),eqx(ix,tid),gammac,gammax(ix),     &
-     &                 xnux,iax,jax,ix)
+                       xnux,iax,jax,ix)
         end do
+
+!c  unit activity coefficients
+!c  -> update only concentrations of secondary aqueous species
+!c     and compute ionic strength as a secondary variable 
+        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,idm,tid)
 
 !c  following iterations
 

@@ -68,7 +68,7 @@
 !           igen               = unit number, generic output file    + -
 !           ilog               = unit number, log book               + -
 !           itmp               = unit number, temporary storage      + -
-!           iabvs(nbvs)        = pointer to boundary control volumes * +
+!           jabvs(nbvs)        = pointer to boundary control volumes * +
 !                                for variably saturated flow            
 !           iwork(:)           = integer work array                  * *
 !           l_prfx             = length of prefix of I/O files       + -
@@ -293,10 +293,10 @@
       call checkerr(ierr,'bcondvs',ilog) 
       call memory_monitor(sizeof(bcondvs),'bcondvs',.true.)
                                                                         
-      allocate (iabvs(nngl), stat = ierr) 
-      iabvs=0 
-      call checkerr(ierr,'iabvs',ilog)
-      call memory_monitor(sizeof(iabvs),'iabvs',.true.)
+      allocate (jabvs(nngl), stat = ierr) 
+      jabvs=0 
+      call checkerr(ierr,'jabvs',ilog)
+      call memory_monitor(sizeof(jabvs),'jabvs',.true.)
                                                                         
       allocate (btypevs(nngl), stat = ierr) 
       btypevs=' ' 
@@ -344,7 +344,7 @@
 !  initialize pointer array for storage of boundary conditions          
                                                                         
       nbvs = 0 
-      iabvs(1) = 1 
+      jabvs(1) = 1 
       ivol2bvs(:) = 0
 
       tol_freezing_pond(:) = 1.0d300
@@ -794,7 +794,7 @@
                                                                         
 !  assign pointer and                                                   
                                                                         
-            iabvs(nbvs) = ivol
+            jabvs(nbvs) = ivol
             btypevs(nbvs) = btypezn
 
             ivol2bvs(ivol) = nbvs
@@ -1335,7 +1335,7 @@
         if (btypezn.ne.'seepage') then
           if (b_enable_output .and. b_enable_output_gen) then       
             do ibvs=nbvsp,nbvs
-              ivol = iabvs(ibvs)
+              ivol = jabvs(ibvs)
 #ifdef PETSC
               if(node_idx_lg2l(ivol) > 0) then
                 write(igen,'(i10,5x,i10,6x,a16,1pe15.6e3)') ivol,      &
@@ -1350,7 +1350,7 @@
                                                !seepage face
         else 
           do ibvs=nbvsp,nbvs 
-            ivol = iabvs(ibvs) 
+            ivol = jabvs(ibvs) 
             if (bcondvs(ibvs).lt.r0) then 
               if (b_enable_output .and. b_enable_output_gen) then  
 #ifdef PETSC
@@ -1389,7 +1389,7 @@
             (btypezn.eq.'point')) then                                     
           do ibvs=nbvsp,nbvs 
             if (b_water_freezing) then
-              ivol = iabvs(ibvs)
+              ivol = jabvs(ibvs)
               if (tkel(ivol) > pressure_melt_k(ivol,r0)) then
                 bcondvs(ibvs) = bcondvs(ibvs)*sec_per_days
               else
@@ -1631,32 +1631,32 @@
       deallocate (iwork, stat = ierr)
       call checkerr(ierr,'iwork',ilog)
 
-!c  array iabvs
+!c  array jabvs
 
       allocate (iwork(nbvs), stat = ierr)
       call checkerr(ierr,'iwork',ilog)
       call memory_monitor(sizeof(iwork),'initbcvs-iwork',.true.)
 
       do ibvs = 1,nbvs
-        iwork(ibvs) = iabvs(ibvs)
+        iwork(ibvs) = jabvs(ibvs)
       end do
 
-      call memory_monitor(-sizeof(iabvs),'iabvs',.true.)
-      deallocate (iabvs, stat = ierr)
-      call checkerr(ierr,'iabvs',ilog)
+      call memory_monitor(-sizeof(jabvs),'jabvs',.true.)
+      deallocate (jabvs, stat = ierr)
+      call checkerr(ierr,'jabvs',ilog)
 
-      allocate (iabvs(nbvs), stat = ierr)
-      call checkerr(ierr,'iabvs',ilog)
-      call memory_monitor(sizeof(iabvs),'iabvs',.true.)
+      allocate (jabvs(nbvs), stat = ierr)
+      call checkerr(ierr,'jabvs',ilog)
+      call memory_monitor(sizeof(jabvs),'jabvs',.true.)
 
       do ibvs = 1,nbvs
-        iabvs(ibvs) = iwork(ibvs)
+        jabvs(ibvs) = iwork(ibvs)
       end do
 
       do ibvs = 1,nbvs
         do i = nbvs, ibvs + 1, -1
-          if (iabvs(i) == iabvs(ibvs)) then
-            iabvs(ibvs) = -iabvs(ibvs)
+          if (jabvs(i) == jabvs(ibvs)) then
+            jabvs(ibvs) = -jabvs(ibvs)
             exit
           end if
         end do
@@ -1692,13 +1692,13 @@
       call checkerr(ierr,'cwork',ilog)            
       
       !Check if the boundary condition is valid
-      !allocate(bvalid_iabvs(nbvs), stat = ierr)
-      !call checkerr(ierr,'bvalid_iabvs',ilog)
-      !bvalid_iabvs = .true.
+      !allocate(bvalid_jabvs(nbvs), stat = ierr)
+      !call checkerr(ierr,'bvalid_jabvs',ilog)
+      !bvalid_jabvs = .true.
       !do ibvs = 1,nbvs
       !    do ibvs2 = ibvs +1, nbvs
-      !        if(iabvs(ibvs) == iabvs(ibvs2)) then
-      !            bvalid_iabvs(ibvs) = .false.
+      !        if(jabvs(ibvs) == jabvs(ibvs2)) then
+      !            bvalid_jabvs(ibvs) = .false.
       !            exit
       !        end if
       !    end do

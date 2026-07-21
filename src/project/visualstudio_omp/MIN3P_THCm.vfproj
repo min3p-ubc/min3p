@@ -402,7 +402,6 @@
 		<File RelativePath="..\..\min3p\reactran_2.F90"/>
 		<File RelativePath="..\..\dgm\read_tau.F90"/>
 		<File RelativePath="..\..\usg\read_zone_usg.F90"/>
-		<File RelativePath="..\..\min3p\readbcvs.F90"/>
 		<File RelativePath="..\..\min3p\readbloc.F90"/>
 		<File RelativePath="..\..\min3p\readcomp.F90"/>
 		<File RelativePath="..\..\min3p\readgses.F90"/>
@@ -496,6 +495,7 @@
 		<File RelativePath="..\..\min3p\tprfvs.F90"/>
 		<File RelativePath="..\..\min3p\tprfvs_faceflux.F90"/>
 		<File RelativePath="..\..\min3p\tranbcrt.F90"/>
+		<File RelativePath="..\..\min3p\updtbcrt.F90"/>
 		<File RelativePath="..\..\min3p\tranflow.F90"/>
 		<File RelativePath="..\..\min3p\trans_evap_info.F90"/>
 		<File RelativePath="..\..\min3p\tranunit.F90"/>

@@ -160,6 +160,9 @@
 
       dimension c(*),cx(*),gammac(*),gammax(*),actvt(*)
 
+!c  update ionic strength 
+      call ionstr(c,cx,strion,chargec,chargex,nc-1,nx,namec)
+
 !c  activity coefficients for free species
       if (update_activity(tid).eq.'double_update') then
 !cprovi----------------------------------------------      
@@ -177,9 +180,6 @@
  !c           write(ilog,*) ' in updatesvap c(nc)=',nc,c(1:nc)
 
             if (component_type(ic).eq.'aqueous') then
-!cmx            gammac(ic) = acoff(c,cx,strion,chargec(ic),dhac(ic),      &
-!cmx     &                         dhbc(ic),dhad(tid),dhbd(tid),adav,bdav,&
-!cmx     &                         acth2omin,nc,nx,namec(ic),namec)
               gammac(ic) = acoff(c,cx,strion,chargec(ic),dhac(ic),   &
                                  dhbc(ic),dhad(tid),dhbd(tid),adav,bdav,&
                                  acth2omin,nc,nx,namec(ic),namec,ic,    &

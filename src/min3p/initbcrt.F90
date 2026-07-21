@@ -359,7 +359,8 @@
       use phys
       use writeversion
       use mimicMassDisp
-      use file_utility, only : reposition_file, check_rewind_status
+      use file_utility, only : reposition_file, check_rewind_status,   &
+                               rewind_first_record
 #ifdef OPENMP
       use omp_lib 
 #endif
@@ -574,6 +575,20 @@
       call checkerr(ierr,'dijbrt',ilog)
       call memory_monitor(sizeof(dijbrt),'dijbrt',.true.)
 
+      allocate (ivol2brt(nngl), stat = ierr)
+      ivol2brt=0 
+      call checkerr(ierr,'ivol2brt',ilog)
+      call memory_monitor(sizeof(ivol2brt),'ivol2brt',.true.)
+
+      allocate (ivol2bzrt(nngl), stat = ierr)
+      ivol2bzrt=0
+      call checkerr(ierr,'ivol2bzrt',ilog)
+      call memory_monitor(sizeof(ivol2bzrt),'ivol2bzrt',.true.)
+
+      allocate (bzrt_nparms(nbzrt), stat = ierr)
+      bzrt_nparms = 0
+      call checkerr(ierr,'bzrt_nparms',ilog)
+      call memory_monitor(sizeof(bzrt_nparms),'bzrt_nparms',.true.)   
 
 
 #ifdef USG
@@ -773,6 +788,9 @@
             (btypezn.eq.'mixed') .or.                 &
             (btypezn.eq.'mixed-evap') .or.            &
             (btypezn.eq.'point')) then
+
+!c  save the number of components to be used in transient reactive transport boundary condition.
+          bzrt_nparms(ibz) = nc-1
 
           if (rank == 0 .and. b_enable_output) then  
             write(ilog,'(a/72a)') zone_name,('-',i=1,72)
@@ -1457,6 +1475,9 @@
             btypert(ivol) = btypezn
 
             b_fluxd_bcond(ivol) = b_fluxd_bcond_zn
+
+            ivol2brt(ivol) = ibrt
+            ivol2bzrt(ivol) = ibz
 
             if (btypert(ivol).eq.'mixed' .or.                          &
                 btypert(ivol).eq.'mixed-evap' .or.                     &
@@ -2301,7 +2322,7 @@
         end do                                 !boundary zone
 
       end do                                   !number of zones
-      
+
 !---------------------------------------------------------------------------------     
 !---------------------------------------------------------------------------------      
 !---------------------------------------------------------------------------------      
@@ -2742,7 +2763,10 @@
 !c  clear array ctype for transport calculations
       ctype = 'free'
 
-!c  determine if transient source chemistry is to be used
+!cdsu------------------------------------------------------------------
+!cdsu  determine if transient source chemistry is to be used
+!cdsu  note: the format is different from transient boundary conditions
+!cdsu------------------------------------------------------------------
 
       subsection = 'update boundary conditions'
 
@@ -2779,7 +2803,75 @@
 
       end if
 
+!cdsu------------------------------------------------------------------
+!cdsu  read transient boundary conditions from file
+!cdsu------------------------------------------------------------------
+      update_bcrt = .false.
+      update_bcrt_value_only = .false.      
+
+      subsection = 'transient boundary conditions: values only'
+      call findstrg(subsection,itmp,found_subsection)
+      if (found_subsection) then
+        update_bcrt = .true.
+        update_bcrt_value_only = .true.
+      end if
+
+!cdsu linear interpolation for boundary conditions, only if the 
+!cdsu boundary condition type remains the same
+      b_interpolation_bcrt = .false.
+      b_first_update_bcrt = .false.
+
+      if (update_bcrt_value_only) then
+        subsection = 'linear interpolation of boundary conditions'
+        call findstrg(subsection,itmp,found_subsection) 
+        if (found_subsection) then
+          b_interpolation_bcrt = .true.
+          b_first_update_bcrt = .true.
+        end if 
+      end if  
+
+!c  allocate memory space for transient boundary conditions if needed
+      if (update_bcrt) then
+        allocate (bcondrt_prev(nc,nbrt), stat = ierr)
+        call checkerr(ierr,'bcondrt_prev',ilog)
+        call memory_monitor(sizeof(bcondrt_prev),'bcondrt_prev',.true.)
+
+        allocate (bcondrt_next(nc,nbrt), stat = ierr)
+        call checkerr(ierr,'bcondrt_next',ilog)
+        call memory_monitor(sizeof(bcondrt_next),'bcondrt_next',.true.)
+      end if
+
+!c  read transient boundary conditions from file if needed
+      if (update_bcrt) then
+        ibcrt = lun_get()
+        open(ibcrt,file=prefix(:l_prfx)//'.bcrt',err=997, status='old')
+        !cdsu skip comment line and rewind to the first record
+        call rewind_first_record(ibcrt)
+        read(ibcrt,*,err=998,end=998) time_bcrt
+      end if
+
       goto 1000
+
+997   continue
+      if (rank == 0) then
+        write(ilog,*) 'SIMULATION TERMINATED' 
+        write(ilog,*) 'file ', prefix(:l_prfx)//'.bcrt missing'
+      end if
+#ifdef PETSC
+      call petsc_mpi_finalize
+#endif
+      stop
+
+998   continue
+      if (rank == 0) then
+        write(ilog,*) 'SIMULATION TERMINATED' 
+        write(ilog,*) 'error reading file ', prefix(:l_prfx)//'.bcrt'
+        close(ilog)
+      end if
+#ifdef PETSC
+      call petsc_mpi_finalize
+#endif
+      stop
 
 999   continue
       if (rank == 0) then

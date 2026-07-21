@@ -130,14 +130,12 @@
         if(rank == 0 .and. b_enable_output)  then   
                                                                        
           write(*,*)
-          write(*,*) 'update boundary conditions - ',                  &
-                     'ice sheet loading/unloading'
+          write(*,*) 'update boundary conditions - ice sheet loading/unloading'
           write(*,*) ('-',i=1,72)
           write(*,*)
 
           write(ilog,*)
-          write(ilog,'(2a)') 'update boundary conditions - ',          &
-                             'ice sheet loading/unloading'
+          write(ilog,'(a)') 'update boundary conditions - ice sheet loading/unloading'
           write(ilog,'(72a)')('-',i=1,72)
           write(ilog,*)
         

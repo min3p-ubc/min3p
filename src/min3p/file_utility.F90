@@ -531,13 +531,10 @@ module file_utility
           irecord = irecord + 1
           !if (rdummy >= time_lot) then
           if (rdummy - time_lot >= rtiny) then
-            !c to be checked later
             backspace(iunit,err=10)
             if (irecord > 1) then
               backspace(iunit,err=10)
             end if
-
-            write(ilog,*) 'restart position found ',rdummy,'time_lot',time_lot
 
             bflag4 = .false.
             exit

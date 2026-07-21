@@ -147,6 +147,7 @@
       logical :: update_tortuosity
       logical :: assign_marchies
 
+
       logical :: root_uptake
       logical :: root_uptake_legacy
 
@@ -1561,10 +1562,11 @@
 !           iupsgbrt(nbrt)     = upstream node 'i', 'j', 'a'
 !        -->                                                         <--
 ! ----------------------------------------------------------------------
-
       real (type_r8), allocatable :: bcondrt_a(:,:)
       real (type_r8), allocatable :: bcondrt_g(:,:)
       real (type_r8), allocatable :: bdycrt_d(:)
+      real (type_r8), allocatable :: bcondrt_prev(:,:)
+      real (type_r8), allocatable :: bcondrt_next(:,:)
       real (type_r8), allocatable :: zgbrt(:)
       real (type_r8), allocatable :: gbrt(:,:)
       real (type_r8), allocatable :: tsrc(:)
@@ -1574,12 +1576,17 @@
       real (type_r8), allocatable :: cinfvs_gbrt(:)  !gas transport
 
       integer (type_i4), allocatable :: iabrt(:)
+      integer (type_i4), allocatable :: ivol2brt(:)
+      integer (type_i4), allocatable :: ivol2bzrt(:)      
+
       !Boundary condition can be duplicated, use negative value for those overwritten boundary condition in jabrt, by DSU, 2018-02-02
       !This is important in parallel code as the boundary condition assignment to the nodes is not in the same order as sequential code
       !For the sequential code, the latter boundary condition will overwrite the previous boundary condition if assign to the same node.
       integer (type_i4), allocatable :: jabrt(:)
+      integer (type_i4), allocatable :: bzrt_nparms(:)
 
       integer (type_i4) :: itsrc
+      integer (type_i4) :: ibcrt
       integer (type_i4) :: nbrt
       integer (type_i4) :: nbzrt
       integer (type_i4) :: ntsrc
@@ -1587,7 +1594,12 @@
       logical :: spec_conc 
       logical :: transient_source
       logical :: transient_source_function
-      logical, allocatable :: b_update_zone_func(:)      
+      logical :: update_bcrt
+      logical :: update_bcrt_value_only
+      logical :: b_restart_update_bcrt
+      logical :: b_interpolation_bcrt
+      logical :: b_first_update_bcrt
+      logical, allocatable :: b_update_zone_func(:)   
 
       character*12, allocatable :: btypert(:)      
       
@@ -2724,13 +2736,13 @@
 !      
 !           integer:
 !           --------
-!           iabvs(nbvs)        = pointer to boundary control volumes
+!           jabvs(nbvs)        = pointer to boundary control volumes
 !                                for variably saturated flow
 !           ivol2bvs(nngl)     = pointer from control volume number to
 !                                boundary control volume index
 !           ivol2bzvs(nngl)    = pointer from control volume number to
 !                                the zone index of boundary control volume    
-!           bvalid_iabvs(nbvs) = flag to indicate if this boundary 
+!           bvalid_jabvs(nbvs) = flag to indicate if this boundary 
 !                                condition is valid. If the boundary
 !                                condition is overwritten, it is 
 !                                an invalid boundary condition
@@ -2794,11 +2806,11 @@
       !Boundary condition can be duplicated, use negative value for those overwritten boundary condition in jabrt, by DSU, 2018-02-02
       !This is important in parallel code as the boundary condition assignment to the nodes is not in the same order as sequential code
       !For the sequential code, the latter boundary condition will overwrite the previous boundary condition if assign to the same node.
-      integer (type_i4), allocatable :: iabvs(:)
+      integer (type_i4), allocatable :: jabvs(:)
       integer (type_i4), allocatable :: ivol2bvs(:)
       integer (type_i4), allocatable :: ivol2bzvs(:)      
 
-      !logical, allocatable :: bvalid_iabvs(:)
+      !logical, allocatable :: bvalid_jabvs(:)
 
       integer (type_i4) :: nbvs
       integer (type_i4) :: nbzvs
@@ -3189,7 +3201,7 @@
 !cprovi
 !cprovi Ice sheet 
 !cprovi Sergio Andres Bea Jofre 
-!cdsu   Add b_iabvs_ice and b_jabrt_ice to set those volumes in affected area
+!cdsu   Add b_jabvs_ice and b_jabrt_ice to set those volumes in affected area
 !cdsu   during ice advanc process, the flags of boundary nodes under ice are set to false,
 !cdsu   during ice retreat process, the flags of boundary nodes under ice are set to true,
 !cdsu   on other conditions, the flags of boundary nodes are set to true.
@@ -3209,16 +3221,16 @@
       real (type_r8) :: time_bcrt
 
       !cdsu the following variables are commented out, 
-      !cdsu replaced with new indicator b_iabvs_ice and b_jabrt_ice
+      !cdsu replaced with new indicator b_jabvs_ice and b_jabrt_ice
       real (type_r8), allocatable   :: bcondvs0(:)
       real (type_r8), allocatable   :: bcondvs1(:)
       real (type_r8), allocatable   :: bcondrt_a0(:,:)
-      !integer(type_i4), allocatable :: iabvs0(:)
+      !integer(type_i4), allocatable :: jabvs0(:)
       !integer(type_i4), allocatable :: jabrt0(:)      
       !integer(type_i4)              :: nbvs0
       !integer(type_i4)              :: nbrt0
 
-!cdsu b_iabvs_ice          = true,   apply normal boundary condition or 
+!cdsu b_jabvs_ice          = true,   apply normal boundary condition or 
 !cdsu                                ice retreat boundary condition
 !cdsu                        false,  apply ice advance boundary condition or
 !cdsu                                closed boundary condition.
@@ -3226,7 +3238,7 @@
 !cdsu                                ice retreat boundary condition
 !cdsu                        false,  apply ice advance boundary condition or
 !cdsu                                closed boundary condition.      
-      logical, allocatable :: b_iabvs_ice(:)
+      logical, allocatable :: b_jabvs_ice(:)
       logical, allocatable :: b_jabrt_ice(:)
       
       real (type_r8), allocatable   :: por_stress_dt(:)        ! - stor * skempton * delta stress  

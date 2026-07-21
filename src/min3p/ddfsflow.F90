@@ -1375,8 +1375,8 @@
         maxvol = i0
 
         do ibvs = 1, nbvs          
-          ivol = iabvs(ibvs)
-          if (ivol < 0) then
+          ivol = jabvs(ibvs)
+          if (ivol <= 0) then
             cycle  
           end if
           if ((btypevs(ibvs).eq.'second' .or. btypevs(ibvs).eq.'point' .or. &

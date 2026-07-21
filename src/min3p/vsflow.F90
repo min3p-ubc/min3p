@@ -920,8 +920,8 @@
           maxvol = i0
 
           do ibvs = 1, nbvs          
-            ivol = iabvs(ibvs)
-            if (ivol < 0 .or. .not.bcondvs_on(ibvs)) then
+            ivol = jabvs(ibvs)
+            if (ivol <= 0 .or. .not.bcondvs_on(ibvs)) then
               cycle  
             end if
             if ((btypevs(ibvs).eq.'second' .or. &

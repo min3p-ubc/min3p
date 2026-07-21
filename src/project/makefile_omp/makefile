@@ -375,6 +375,7 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/vapor_prop.o\
 	$(SRC)min3p/trans_evap_info.o\
 	$(SRC)min3p/tranbcrt.o\
+	$(SRC)min3p/updtbcrt.o\
 	$(SRC)min3p/stddmass.o\
 	$(SRC)min3p/seepface.o\
 	$(SRC)min3p/readsorb.o\

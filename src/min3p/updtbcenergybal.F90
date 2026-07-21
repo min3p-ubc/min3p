@@ -248,7 +248,7 @@
           write(*,*)
                        
            write(ilog,*)                                                   
-          write(ilog,'(2a)') 'update boundary conditions - energy balance'                               
+          write(ilog,'(a)') 'update boundary conditions - energy balance'                               
           write(ilog,'(72a/)')('-',i=1,72) 
           write(ilog,*)
         end if  
@@ -307,7 +307,6 @@
         read(itmp,*,err=999,end=999) nbzheat 
 !c  read values of new boundary conditions
 100     continue
-
 !c  allocate array for reading new boundary conditions
         allocate (rwork(2,nbzheat), stat = ierr)
         rwork=r0 
@@ -329,7 +328,6 @@
 
           read(ibcheat,*,err=998,end=997) time_bcheat_prev,            &
               (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
-
           do while (time_check < time_bcheat_prev)
             backspace(ibcheat)
             backspace(ibcheat)
@@ -364,7 +362,6 @@
             rwork_next = rwork
           end if 
         else 
-
           backspace(ibcheat)
           read(ibcheat,*,err=998,end=997) time_bcheat_prev,            &
               (rwork(1:bzheat_nparms(ibz),ibz),ibz=1,nbzheat)
@@ -413,19 +410,17 @@
 !c  note: actually the boundary type and zone cannot be changed in the current version
         if (update_bcheat_value_only) then
 
-
           if (nbheat > 0) then
             do ibheat = 1, nbheat
               ivol = iabheat(ibheat)
 
-              if (ivol < 0) then
+              if (ivol <= 0) then
                 cycle  
               end if
 
               btypezn = btypeheat(ibheat)
               ibz = ivol2bzheat(ivol)
               dir_grad = bzheat_dir_grad(ibz)
-
               if (dir_grad == 'r') then
                 rx0 = bzheat_radius_center(ibz)%x
                 ry0 = bzheat_radius_center(ibz)%y
@@ -577,7 +572,6 @@
               end if   !(btypezn.eq.'first'.or.btypezn.eq.'second')
 
               bcondheat0(ibheat) = bcondheat(ibheat)
-
             end do
           end if
           b_first_update_bcheat = .false.

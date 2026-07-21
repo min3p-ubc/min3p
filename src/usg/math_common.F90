@@ -131,6 +131,11 @@ module math_common
     module procedure math_common_zero_vecs2
   end interface
 
+  interface math_common_linear
+    module procedure math_common_linear_scalar
+    module procedure math_common_linear_vector
+  end interface math_common_linear
+
   contains
 
   !>
@@ -222,7 +227,7 @@ module math_common
   !>
   !> linear interpolation for general purpose
   !>
-  function math_common_linear(t1,t2,v1,v2,t_in) result(v_out)
+  function math_common_linear_scalar(t1,t2,v1,v2,t_in) result(v_out)
 
     implicit none
 
@@ -235,7 +240,27 @@ module math_common
       v_out = (t_in-t1)/(t2-t1)*(v2-v1)+v1
     end if
 
-  end function math_common_linear
+  end function math_common_linear_scalar
+
+    !>
+  !> linear interpolation for general purpose
+  !>
+  function math_common_linear_vector(t1,t2,n,v1,v2,t_in) result(v_out)
+
+    implicit none
+
+    real*8, intent(in) :: t1, t2, t_in
+    integer, intent(in) :: n
+    real*8, intent(in) :: v1(n), v2(n)
+    real*8 :: v_out(n)
+
+    if (t1 == t2) then
+      v_out(1:n) = (v1(1:n)+v2(1:n))*0.5d0
+    else
+      v_out(1:n) = (v2(1:n)-v1(1:n))*((t_in-t1)/(t2-t1))+v1(1:n)
+    end if
+
+  end function math_common_linear_vector
 
   !>
   !> harmonic mean for general purpose

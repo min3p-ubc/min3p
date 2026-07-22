@@ -4,7 +4,7 @@
 !> $Revision: 533 $
 !> $Author: dsu $
 !> $Date: 2017-10-16 11:50:08 -0700 (Mon, 16 Oct 2017) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/tsteplc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tsteplc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -70,7 +70,7 @@
       
       dimension cnew(*),cold(*),ulc(*)
 
-      real*8, parameter :: rhalf = 0.5d0, r3half = 1.5d0  
+      real*8, parameter :: rhalf = 0.5d0, r3half = 1.5d0, tiny = 1.0d-20  
       
       real*8 :: ph_star_lc, delt_min_lc, delta_ph, delt_old
       
@@ -88,6 +88,7 @@
       do ic=1,nc-1
         if (namec(ic).eq.'h+1') then
           delta_ph = dabs(dlog10(cnew(ic))-dlog10(cold(ic)))
+          delta_ph = dmax1(delta_ph, tiny)
         end if
       end do
           

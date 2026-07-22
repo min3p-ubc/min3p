@@ -4,7 +4,7 @@
 !> $Revision: 434 $
 !> $Author: dsu $
 !> $Date: 2016-08-04 15:09:50 -0700 (Thu, 04 Aug 2016) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/usg/metis_iface.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/metis_iface.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

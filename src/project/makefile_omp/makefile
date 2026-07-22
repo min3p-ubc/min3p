@@ -4,11 +4,13 @@
 #
 # last modified:   Danyang Su - Nov. 13, 2019
 #
+# URL: https://github.com/min3p-ubc/min3p/blob/main/src/project/makefile_omp/makefile
+#
 
 # Conditional parameters, please leave the variable empty (DO NOT PUT FALSE instead) if the given condition is FALSE.
 # e.g., 'with-debug = true' or 'with-debug = false' or 'with-debug = xxx' means debug is turned on.
 #       'with-debug = ' means debug is turned off. The provided value does not mean anything here.
-with-debug =
+with-debug = true
 
 with-openmp = true
 
@@ -44,8 +46,8 @@ ifdef with-intel
 FFLAGS := -g -check all -check bounds -traceback
 CXXFLAGS := -g -check all  -check bounds -traceback
 else
-FFLAGS := -g -fcheck=all -fbacktrace -Wall
-CXXFLAGS := -g -fcheck=all -fbacktrace -Wall
+FFLAGS := -g -fcheck=all -fbacktrace -Wall -Wextra -Wimplicit-interface -Wsurprising
+CXXFLAGS := -g -fcheck=all -fbacktrace -Wall -Wextra -Wimplicit-interface -Wsurprising
 endif
 
 FPPFLAGS := -DLINUX -DDEBUG -DDEBUG_X64 -DSTANDARD_FORTRAN

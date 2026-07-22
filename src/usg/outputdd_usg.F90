@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/usg/outputdd_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/outputdd_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -471,7 +471,7 @@
 !cprovi Store the concentration vector for aqueous species
 !cprovi--------------------------------------------------------
             cpz_loc(1:nc)=r0 ! cnew(1:nc,inode)
-            cpz_loc(nc+1:nc+nx)= r0 ! cx(1:nx,inode)
+            cpz_loc(nc+1:nc+nx)= r0 ! cxnew(1:nx,inode)
 !cprovi--------------------------------------------------------
 !cprovi Compute the increment for dissolution/precipitation
 !cprovi--------------------------------------------------------

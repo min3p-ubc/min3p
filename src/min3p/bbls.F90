@@ -4,7 +4,7 @@
 !> $Revision: 880 $
 !> $Author: dsu $
 !> $Date: 2024-02-19 14:19:39 -0800 (Mon, 19 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/bbls.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/bbls.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
     

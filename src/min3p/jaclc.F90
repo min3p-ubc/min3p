@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/jaclc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/jaclc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -32,7 +32,7 @@
 !c           -------
 !c           cnew(nc)           = concentrations of free species      + -
 !c                                [moles/l water]
-!c           cx(nx)             = concentrations of secondary         * +
+!c           cxnew(nx)          = concentrations of secondary         * +
 !c                                aqueous species
 !c                                [moles/l water]
 !c           gammac(nc)         = activity coefficients of free       * +
@@ -368,7 +368,7 @@
 !c           updtsvap  = update secondary variables in aqueous phase
 !c ----------------------------------------------------------------------
  
-      subroutine jaclc(cnew,cx,gammac,gammax,actvt,sw,sa,por,tid)
+      subroutine jaclc(cnew,cxnew,gammac,gammax,actvt,sw,sa,por,tid)
       
       use parm
       use chem
@@ -379,7 +379,7 @@
 #endif 
       implicit none
       
-      real*8 :: cnew, cx, gammac, gammax, actvt, sw, sa, por
+      real*8 :: cnew, cxnew, gammac, gammax, actvt, sw, sa, por
       
       integer :: tid 
       
@@ -390,7 +390,7 @@
                dratemin_new, dtotconc, rateint, rateint_new,         &
                ratemin, ratemin_new, totint, updtsvap
 
-      dimension cnew(*),cx(*),gammac(*),gammax(*),actvt(*)
+      dimension cnew(*),cxnew(*),gammac(*),gammax(*),actvt(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       
@@ -436,14 +436,14 @@
 !c  compute concentrations of aqueous complexes
 
         do ix=1,nx
-          call secspec(cnew,cx(ix),eqx(ix,tid),gammac,gammax(ix),     &
+          call secspec(cnew,cxnew(ix),eqx(ix,tid),gammac,gammax(ix),  &
                        xnux,iax,jax,ix)
         end do
 
 !c  unit activity coefficients
 !c  -> update only concentrations of secondary aqueous species
 !c     and compute ionic strength as a secondary variable 
-        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,tid)
+        call updtsvap(cnew,cxnew,gammac,gammax,sion1(tid),actvt,tid)
 
 !c  following iterations
 
@@ -452,7 +452,7 @@
 !c  unit activity coefficients
 !c  -> update only concentrations of secondary aqueous species
 !c     and compute ionic strength as a secondary variable 
-        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,tid)
+        call updtsvap(cnew,cxnew,gammac,gammax,sion1(tid),actvt,tid)
 
 !c  variable activity coefficients
 !c  -> double update of secondary variables
@@ -462,7 +462,7 @@
 
         if (update_activity(tid).ne.'no_update') then
  
-          call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,tid)
+          call updtsvap(cnew,cxnew,gammac,gammax,sion1(tid),actvt,tid)
 
         end if
 
@@ -470,7 +470,7 @@
 
 !c  compute total aqueous concentrations
  
-      call totconc(cnew,cx,totcn(:,tid))
+      call totconc(cnew,cxnew,totcn(:,tid))
 
 !c  compress total aqueous component concentration vector in case 
 !c  of redox equilibrium reactions
@@ -535,7 +535,7 @@
 !cprovi carried out
 !cprovi-------------------------------------------------------------------------
         if (elect_correction) then
-            call ionstr(cnew,cx,strion,chargec,chargex,nc-1,nx,namec)
+            call ionstr(cnew,cxnew,strion,chargec,chargex,nc-1,nx,namec)
             call totchargesorb(totcharge_surf(i1+1:nopu,tid),strion,       &
                     cnew(nopu-nelect+1:nopu),csb_surf(:,tid),charge_surf,  &
                     nsb_surf,tempks,area,cap_surf,name_elect_correction,   &
@@ -571,11 +571,11 @@
 
         do iaq = 1,naq
           if (new_database) then
-              call rateint_new(rateaq(iaq,tid),totcn(:,tid),cnew,cx,  &
-                               gammac,gammax,phic(:,tid),iaq,         &
+              call rateint_new(rateaq(iaq,tid),totcn(:,tid),cnew,cxnew,&
+                               gammac,gammax,phic(:,tid),iaq,          &
                                scalfac_aq(iaq),sw,por,tid)
           else
-              call rateint(rateaq(iaq,tid),totcn(:,tid),cnew,gammac,  &
+              call rateint(rateaq(iaq,tid),totcn(:,tid),cnew,gammac,   &
                            phic(:,tid),iaq,scalfac_aq(iaq),tid)
           end if
         end do
@@ -598,12 +598,12 @@
             if (minequil(im)) then
 
               if (new_database) then
-                call ratemin_new(totcn(:,tid),cnew,cx,gammac,gammax,  &
-                                 sw,ratedp(im,tid),phic(:,tid),       &
+                call ratemin_new(totcn(:,tid),cnew,cxnew,gammac,gammax,&
+                                 sw,ratedp(im,tid),phic(:,tid),        &
                                  phicold(im,tid),areac(im),r1,im,tid)
               else
-                call ratemin(totcn(:,tid),cnew,cx,gammac,gammax,      &
-                             ratedp(im,tid),phic(im,tid),             &
+                call ratemin(totcn(:,tid),cnew,cxnew,gammac,gammax,    &
+                             ratedp(im,tid),phic(im,tid),              &
                              phicold(im,tid),areac(im),im,tid)
               end if
 
@@ -634,8 +634,8 @@
           if (solid_solutions) then 
           
             ! Compute the reaction rates for the solid solution 
-            call ratess(ratedp(:,tid),areac,cnew,cx,gammac,gammax,      &
-                        cmcold(:,tid),cmcmin(:,tid),delt_lc(tid),       &
+            call ratess(ratedp(:,tid),areac,cnew,cxnew,gammac,gammax,  &
+                        cmcold(:,tid),cmcmin(:,tid),delt_lc(tid),      &
                         iter_lc(tid))  
             do iss = 1, nss
               do i1 = 1, nmin_ss(iss)  
@@ -792,9 +792,9 @@
 !c  compute derivatives of total aqueous component concentrations
 
         if (analyt_deriv_lc) then
-          call atotconc(cnew,cx,jbl,tid)
+          call atotconc(cnew,cxnew,jbl,tid)
         else
-          call dtotconc(cnew,cx,drtinc,jbl,tid,0)
+          call dtotconc(cnew,cxnew,drtinc,jbl,tid,0)
         end if
 
 !c  compress total aqueous component concentration vector in case 
@@ -920,7 +920,7 @@
 
           do iaq = 1,naq
           if (new_database) then
-              call drateint_new(rateaq(iaq,tid),totcn(:,tid),cnew,cx, &
+              call drateint_new(rateaq(iaq,tid),totcn(:,tid),cnew,cxnew, &
                                 gammac,gammax,phic(:,tid),drtinc,iaq, &
                                 scalfac_aq(iaq),sw,por,tid)
           else
@@ -963,12 +963,12 @@
 
               else
                 if (new_database) then
-                  call dratemin_new(totcn(:,tid),cnew,cx,gammac,gammax, &
+                  call dratemin_new(totcn(:,tid),cnew,cxnew,gammac,gammax, &
                                     sw,dratedp(im,tid),                 &
                                     phic(:,tid),phicold(im,tid),        &
                                     areac(im),drtinc,r1,im,0,tid)
                 else
-                  call dratemin(totcn(:,tid),cnew,cx,gammac,gammax,   &
+                  call dratemin(totcn(:,tid),cnew,cxnew,gammac,gammax,   &
                                 dratedp(im,tid),                      &
                                 phic(im,tid),phicold(im,tid),         &
                                 areac(im),drtinc,im,0,tid)

@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/phase_class/tools/F01bru.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/phase_class/tools/F01bru.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

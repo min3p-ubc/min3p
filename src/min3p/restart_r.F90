@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/restart_r.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/restart_r.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -1231,10 +1231,10 @@
 
             call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol),   &
                           gammaold(nc+1,ivol),sionold(ivol),             &
-                          actvset(:,ivol),0,tid) 
+                          actvset(:,ivol),tid) 
             call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
                           gamma(nc+1,ivol),sionnew(ivol),                &
-                          actvset(:,ivol),0,tid)
+                          actvset(:,ivol),tid)
                 
             call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
             call totconcfac(cold(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)

@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/updtsvmp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updtsvmp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -167,8 +167,8 @@
 
               if (ivol .gt. 0) then
                 rads(im,tid) = aream(im) * radi(im)**r3               &
-     &                 / (r3 * scalfac(im) * phi_init(im,ivol)        &
-     &                 +  aream(im) * radi(im)**r2)
+                       / (r3 * scalfac(im) * phi_init(im,ivol)        &
+                       +  aream(im) * radi(im)**r2)
               end if
             end if                  !reaction(type(im)
 
@@ -184,7 +184,6 @@
           end do
 
 !c  update mineral concentrations in [moles/l bulk]
- 
           cmnewm(im) = dmax1(cmoldm(im)+totratem(im,tid)*deltsv,      &
                        cmcmin(im,tid))
 

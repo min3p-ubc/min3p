@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/gcreact.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/gcreact.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -559,7 +559,7 @@
             call tprfrtlc(totcn(:,tid),cnew,cx,gammac,gammax,actv,     &
                      cmcnew(:,tid),gnew,cec(tid),distcoff_lc,areac,    &
                      phic(:,tid),phicold(:,tid),sion1(tid),tempk,      &
-                     r0,r0,r0,r0,ph_fixed,delt_lc(tid),sw,por,     &
+                     r0,r0,r0,r0,ph_fixed,delt_lc(tid),sw,por,         &
                      ilbt,ilbc,ilbm,ilbg,ilbgr,ilbi,ilbb,ilbs,         &
                      ilbv,ilbd,ilbx,ilbis,ilbac,ilbre,                 &
                      offset_ilbt,offset_ilbc,offset_ilbm,offset_ilbg,  &

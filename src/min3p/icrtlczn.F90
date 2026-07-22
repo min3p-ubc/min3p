@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/icrtlczn.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/icrtlczn.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -483,9 +483,7 @@
 
       if (nm.gt.0) then
         reactive_minerals = .true.
-      end if
-
-      if (nm.eq.0) then
+      else
         reactive_minerals = .false.
         lb_output = .false.
         delt_lc(:) = r1

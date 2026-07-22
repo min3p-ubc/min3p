@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/reactran.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/reactran.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -386,14 +386,17 @@
       
       integer :: tid, istatus
 
+      real*8 :: swc, sac, porc, rdummy, area_surf 
+      real*8 :: actvt(nc), totc(nc)
+
       external checkerr, zero_r8, infcrt_a, infcrtdd, infcrt_g,        &
                jacrt, jacbrt, updatert, mbalrt,                        &
                tsteprt, incompletefactorization, ws209,                &
                diffcoff_mcd,mbal_mcd,infcrt_mcd, giups,                &
                tcorr, updtsvap, updtsvmp
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, conv3 = 1.0d3,      &
-                           rverysmall = 1.0d-30
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r100 = 100.0d0,     &
+                           conv3 = 1.0d3, rverysmall = 1.0d-30
       
       !mole water to liter water, 1mole water = 0.018L
       real*8, parameter :: rwater_mole2liter =  0.018d0  
@@ -1295,11 +1298,11 @@
   
           call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
                         gamma(nc+1,ivol),sionnew(ivol),                &
-                        actvset(:,ivol),0,tid)
+                        actvset(:,ivol),tid)
           if (hmulti_diff) then
             call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &        !MX June 2014
                           gammaold(nc+1,ivol),sionold(ivol),           &
-                          actvset(:,ivol),0,tid)
+                          actvset(:,ivol),tid)
           end if
 
         end if
@@ -1497,11 +1500,11 @@
    
           call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      & 
                         gamma(nc+1,ivol),sionnew(ivol),                &
-                        actvset(:,ivol),0,tid)
+                        actvset(:,ivol),tid)
           if (hmulti_diff) then
             call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &        !MX June 2014
                           gammaold(nc+1,ivol),sionold(ivol),           &
-                          actvset(:,ivol),0,tid)
+                          actvset(:,ivol),tid)
           end if
 
 !c         THH edit: pass ivol # to updtsvmp to use in updating surface areas

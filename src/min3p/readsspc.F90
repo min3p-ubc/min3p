@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/readsspc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readsspc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -398,13 +398,13 @@
  
           if (name.eq.namex(ix)) then
 
-            !c to be checked later
             if (rank == 0 .and. b_enable_output_gen) then
               if (ix == 1) then
                 write(igen,'(72a)') ('-',i=1,72)
+                write(igen,'(a)') 'secondary aqueous species database entries read:'
               end if
-              write(igen,'(2a,7(a,1pe15.6e3))')                        &
-                    'dbs complex ',trim(name),' charge ', charge,      &
+              write(igen,'(a,7(a,1pe15.6e3))')                         &
+                    trim(name),' charge ', charge,                     &
                     ' dha ', dha, ' dhb ', dhb, ' dhc ', dhc,          &
                     ' gfw ', gfw, ' eqt ', eqt,                        &
                     ' diff_coeff ',diffcoff2

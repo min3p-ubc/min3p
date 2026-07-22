@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/opnpgfls.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/opnpgfls.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -530,7 +530,7 @@
 
 !c  assign unit numbers for output of transient data
 
-          call tranunit(igb,'gb')
+          call tranunit(igb)
 
 !c  output temperature when heat transport or temperature field is specified
           if (heat_transport .or. temp_field) then

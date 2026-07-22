@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/initcsys.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcsys.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -955,10 +955,15 @@
         na = n
         n = n+nbio+nna+nelect
 
-
 !c  number of components including h2o
 
         nc=n+1
+
+        if (elect_correction) then
+          if (b_enable_output .and. b_enable_output_gen) then
+            write(igen,'(/72a)')('-',i=1,72)
+          end if
+        end if
  
 !c  allocate memory for one-dimensional arrays of size n and nc
 
@@ -1186,7 +1191,7 @@
           end do
 
         end if                         !(found_subsection)
-        
+
 !c_bubbles Determine if bubble formation is required
 
         subsection = 'bubble formation'

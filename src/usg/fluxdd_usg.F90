@@ -4,7 +4,7 @@
 !> $Revision: 786 $
 !> $Author: dsu $
 !> $Date: 2021-01-06 21:41:32 -0800 (Wed, 06 Jan 2021) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/usg/fluxdd_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/fluxdd_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

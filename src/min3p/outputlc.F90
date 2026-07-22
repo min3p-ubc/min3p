@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/outputlc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/outputlc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -552,14 +552,15 @@
                   namec(ic),c(ic),                                    &
                   c(ic)/site_mass(isites)/site_area(isites),          &
                   c(ic)/totsitec*100.0d0
-            !write(igen,'(5(a, 1x, 1pe15.6e3, 1x))') "check: totcsn", totcsn_surf(ic), "totcn", totcn(ic), "c", c(ic), "site_mass", site_mass(isites), "site_area", site_area(isites)
+            !write(igen,'(5(a, 1x, 1pe15.6e3, 1x))') "check: totcsn", &
+            !      totcsn_surf(ic), "totcn", totcn(ic), "c", c(ic),   &
+            !      "site_mass", site_mass(isites),                    &
+            !      "site_area", site_area(isites)
           end do
           
           do isb = 1,nsb_surf
 !cff fix up for isites > 1
             !isites = 1
-
-!cdsu this is not right, value of isites depends on 'sorbed species'
             isites = isurf2isite(isb)
 
             write(igen,'(a12,3(3x,1pe15.6e3))')                       &
@@ -567,7 +568,9 @@
                   csb_surf(isb,tid)/site_mass(isites)/                &
                   site_area(isites),                                  &
                   csb_surf(isb,tid)/totsitec*100.0d0
-            !write(igen,'(3(a, 1x, 1pe15.6e3, 1x))') "check: csb", csb_surf(isb), "site_mass", site_mass(isites), "site_area", site_area(isites)
+            !write(igen,'(3(a, 1x, 1pe15.6e3, 1x))') "check: csb",    &
+            !      csb_surf(isb), "site_mass", site_mass(isites),     &
+            !      "site_area", site_area(isites)
           end do
         end if  
 

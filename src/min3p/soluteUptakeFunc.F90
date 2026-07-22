@@ -4,7 +4,7 @@
 !> $Revision: 465 $
 !> $Author: sbea $
 !> $Date: 2017-04-17 00:41:13 -0300 (Mon, 17 Apr 2017) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/soluteUptakeFunc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/soluteUptakeFunc.F90 $
 !---------------------------------------------------------------------
 !c -----------------------------------------------------------------------
 !c real*8 function soluteUptakeFunc

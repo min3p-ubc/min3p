@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/tranbcrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tranbcrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -294,6 +294,7 @@
                rtrvpprm, setsize, totconc, totconcg, minmaxwd_mpi
 
       real*8, parameter :: r1 = 1.0d0, r1000 = 1.0d+3
+      integer, parameter :: i0 = 0
 
       ierrcd = 0
 
@@ -586,10 +587,11 @@
 
 !c  compute concentration distribution at boundary
 
-            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),     &
-                       cgc,sac,sgc,porc,igen,ilog,tid,idbg,tec_header, &
-                       prefix,l_prfx,zone_name,l_zone_name,            &
-                       mtime,i_append_sim,mtime_append)
+            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,&
+                         cgc,sac,sgc,porc,igen,ilog,tid,idbg,          &
+                         tec_header,prefix,l_prfx,                     &
+                         zone_name,l_zone_name,                        &
+                         mtime,i_append_sim,mtime_append,.true.)
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain

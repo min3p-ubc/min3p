@@ -4,7 +4,7 @@
 !> $Revision: 268 $
 !> $Author: dsu $
 !> $Date: 2015-01-09 17:00:41 -0800 (Fri, 09 Jan 2015) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/phase_class/tools/lubksb.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/phase_class/tools/lubksb.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

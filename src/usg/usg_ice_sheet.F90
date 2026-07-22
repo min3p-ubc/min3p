@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/usg/usg_ice_sheet.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/usg_ice_sheet.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

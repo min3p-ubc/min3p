@@ -4,7 +4,7 @@
 !> $Revision: 726 $
 !> $Author: dsu $
 !> $Date: 2019-08-07 11:30:33 -0700 (Wed, 07 Aug 2019) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/drateint_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/drateint_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

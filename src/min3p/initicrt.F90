@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/initicrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initicrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -279,7 +279,7 @@
       character*72 :: subsection
       character*1 :: cdummy
       
-      integer, parameter :: nread = 4
+      integer, parameter :: i0 = 0, nread = 4
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, tiny = 1.0d-6,      &
                            rsmall = 1.0d-10
 
@@ -1033,10 +1033,10 @@
           l_zone_name = len_trim(zone_name)
 
 !c  compute initial condition
-          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-                     cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,  &
-                     prefix,l_prfx,zone_name,l_zone_name,             &
-                     mtime,i_append_sim,mtime_append)
+          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv, &
+                       cgc,swc,sac,porc,igen,ilog,tid,idbg,           &
+                       tec_header,prefix,l_prfx,zone_name,l_zone_name,&
+                       mtime,i_append_sim,mtime_append,.true.)
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain
@@ -1202,10 +1202,11 @@
           !call rtrvpprm(swc,sac,porc,porz(1),section_header)
 
 !c  compute initial condition
-          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),       &
-                     cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,   &
-                     prefix,l_prfx,zone_name,l_zone_name,              &
-                     mtime,i_append_sim,mtime_append)
+          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,  &
+                       cgc,swc,sac,porc,igen,ilog,tid,idbg,            &
+                       tec_header,prefix,l_prfx,zone_name,l_zone_name, &
+                       mtime,i_append_sim,mtime_append,.true.)
+
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain

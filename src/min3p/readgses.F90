@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/readgses.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readgses.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -544,9 +544,10 @@
               if (rank == 0 .and. b_enable_output_gen) then
                 if (ig == 1) then
                   write(igen,'(72a)') ('-',i=1,72)
+                  write(igen,'(a)') 'gas database entries read:'
                 end if
-                write(igen,'(2a,3(a,1pe15.6e3))')                      &
-                      'dbs gas ', trim(name), ' dhc ', dhc,            &
+                write(igen,'(a,3(a,1pe15.6e3))')                       &
+                      trim(name), ' dhc ', dhc,                        &
                       ' eqt ', eqt, ' gfw ', gfw
                 write(igen,'(a,1x,i0,100(1x,a,1x,1pe15.6e3))')         &
                       'nv', nv, (trim(namet(iv)),xnugt(iv),iv=1,nv)

@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/driver_pc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/driver_pc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -597,7 +597,7 @@ Program driver_pc
 !c  open problem specific input file, generic output file
 !c  and scratch file for temporary data storage
       call opngfls
-      
+    
 !c  initialize global control parameters
       call initcpgs
       
@@ -635,7 +635,7 @@ Program driver_pc
 !c  or initialize equilibrium or reaction path simulation
 !c  Parallelized, OpenMP, MPI
       call initprob
-      
+
 !c  initialize iteration parameters
       ittot_glob = 0 
       ittot_vs  = 0
@@ -735,7 +735,7 @@ Program driver_pc
 
 !c  assign unit numbers for output of transient data
 
-            call tranunit(igb,'gb')
+            call tranunit(igb)
 !cprovi----------------------------------------------------------------------
 !cprovi The point of activity coefficients corresponding to aqueous 
 !cprovi complexes was corrected. 
@@ -778,7 +778,7 @@ Program driver_pc
                          cec_g(ivol),distcoff_rt(:,ivol),              &
                          area(:,ivol),phi(:,ivol),phiold(:,ivol),      &
                          sionnew(ivol),tkel(ivol),hhead(ivol),         &
-                         xg(ivol),yg(ivol),zg(ivol),0,                 &
+                         xg(ivol),yg(ivol),zg(ivol),                   &
                          time_io,delt,sanew(ivol),pornew(ivol),        &
                          igbt,igbc,igbm,igbg,igbgr,igbi,igbb,igbs,     &
                          igbv,igbd,igbx,igbis,igbac,igbre,             &

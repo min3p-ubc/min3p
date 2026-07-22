@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/mem_rt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mem_rt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -1390,6 +1390,5 @@
       call checkerr(ierr,'accu_dpdiff_m2c',ilog)
       call memory_monitor(sizeof(accu_dpdiff_m2c),'accu_dpdiff_m2c',.true.)
 
-     
       return
       end

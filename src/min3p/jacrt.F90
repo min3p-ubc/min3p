@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/jacrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/jacrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -708,7 +708,7 @@
 !c        passive_uptake = calculate passive uptate term w/rootwat and q_root  (HG)
 !c ----------------------------------------------------------------------
  
-      subroutine jacrt
+    subroutine jacrt
  
       use parm
       use gen
@@ -869,23 +869,27 @@
       real*8 :: dummyvec(nm)
       
 !c root respiration variables:
-      real*8 :: rootarup_current, dresprate, rootdens,          &
+      real*8 :: rootarup_current, dresprate, rootdens,                 &
                 rootarup(nc), drootarup(nc)
       
 !c ms variables    
-      real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),     &
+      real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),            &
                    lumat2(ng-1,ng-1) 
       real*8 :: so_av, cinfrt, mdens_g_inc, dgmfrac(ng)
 
-     
-      external comptotc, dtotcong, rateredx, rhsrt,             &
-               secspec, sorbspc, totcona, totconc, totconcg,    &
-               totmin, totsorb, elecmigration, totconcfac,      &
-               wgprop, wgpropd, atotconc, ratemin, ratemin_new, &
-               aratemin, drategas, drategdd, drateint,          &
-               drateint_new, dratemin, dratemin_new, draterdx,  &
-               dtotconc, gasconc, molconc, rategas,             &
-               rategasd, rateint, rateint_new, tcorr, totint,   &
+      character*12 :: ctype_bulk(nc+nx)
+
+      real*8 :: swc, sac, porc, rdummy 
+      real*8 :: actvt(nc), totc(nc)
+
+      external comptotc, dtotcong, rateredx, rhsrt,                    &
+               secspec, sorbspc, totcona, totconc, totconcg,           &
+               totmin, totsorb, elecmigration, totconcfac,             &
+               wgprop, wgpropd, atotconc, ratemin, ratemin_new,        &
+               aratemin, drategas, drategdd, drateint,                 &
+               drateint_new, dratemin, dratemin_new, draterdx,         &
+               dtotconc, gasconc, molconc, rategas,                    &
+               rategasd, rateint, rateint_new, tcorr, totint,          &
                totredx, updtsvap
 
       !c root uptake variables !HG
@@ -893,12 +897,12 @@
 
       real*8, external :: pressure_melt_k   
   
-      real*8 :: r0, r1, small, gsatmin, rsmallarea, rverysmall, &
+      real*8 :: r0, r1, small, gsatmin, rsmallarea, rverysmall,        &
                 enat, conv3
 
-      parameter (r0 = 0.0d0, r1 = 1.0d0, small = 1.0d-10,       &
-                 gsatmin=0.0d0, rsmallarea = 1.0d-8,            &
-                 rverysmall = 1.0d-30, conv3 = 1.0d3,           &
+      parameter (r0 = 0.0d0, r1 = 1.0d0, small = 1.0d-10,              &
+                 gsatmin=0.0d0, rsmallarea = 1.0d-8,                   &
+                 rverysmall = 1.0d-30, conv3 = 1.0d3,                  &
                  enat = 2.71828182845904509d0)
 
       real*8 :: rcvt
@@ -999,7 +1003,7 @@
     !$omp tid, i1, i2, iaq, ibl, ic, ic_h, icon, idiag, iend, iss,    &
     !$omp ig, im, im2, ir, irow, isb, istart, isym, ivol, ivol_gbl,   &
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
-    !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   &    
+    !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   & 
     !$omp qrootloc, rootarup, rootarup_current,                       &   !!Root uptake and
     !$omp dresprate, drootarup, rootdens,                             &   !!respiration
     !$omp zbal, zpos, zneg, zpos_inc, zneg_inc,                       &
@@ -1145,7 +1149,7 @@
 
         call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),        & 
                       gamma(nc+1,ivol),sionnew(ivol),                  &
-                      actvset(:,ivol),0,tid)
+                      actvset(:,ivol),tid)
         
 #ifdef DEBUG
         if (info_debug > 10 .and. (ivol_gbl == ivol_track .or.         &
@@ -1178,12 +1182,13 @@
 !c  -> double update of secondary variables 
 !c     - activitiy coefficients
 !c     - concentrations of secondary aqueous species
-!c     - ionic strength                                                 
- 
+!c     - ionic strength     
+
+
         if (update_activity(tid).eq.'double_update') then
           call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &     
                         gamma(nc+1,ivol),sionnew(ivol),                &
-                        actvset(:,ivol),0,tid)
+                        actvset(:,ivol),tid)
 #ifdef DEBUG
           if(info_debug > 10) then
             if(ivol_gbl == ivol_track .or. ivol_track == 0) then  
@@ -1582,7 +1587,7 @@
 #endif
 
       if (b_prtfile .and. tid == 1) then 
-       prt_react_jac_part(1) = cputime() - prt_react_jac_part(1)
+        prt_react_jac_part(1) = cputime() - prt_react_jac_part(1)
       end if
 
     
@@ -1886,6 +1891,7 @@
                         cnew(n-nelect+1:n,ivol),csb_surf(:,tid),charge_surf,nsb_surf, &
                         tkel(ivol),area_surf,cap_surf,name_elect_correction,          &
                         nlayer,nelect,ncap)
+                !c Convert surface charge balance from C/L water to C,
                 do ielect = 1, nelect          
                   totcharge_surf(n-nelect+ielect,tid) = cvol(ivol)*pornew(ivol)*      &
                             sanew(ivol)*totcharge_surf(n-nelect+ielect,tid)
@@ -1976,9 +1982,9 @@
 !c  degassing [mol L^-1 bulk s^-1]
 
           do ic = 1,n
-            totrateg(ic) = cvol(ivol) * bulkconc(totrateg(ic),        &
-     &                                           sanew(ivol),         &
-     &                                           pornew(ivol))
+            totrateg(ic) = cvol(ivol) * bulkconc(totrateg(ic),         &
+                                                 sanew(ivol),          &
+                                                 pornew(ivol))
           end do
 
 !c  compress total rates for removal of aqueous components
@@ -2072,8 +2078,8 @@
 
           do ic = 1,n
             totor(ic) = cvol(ivol) * bulkconc(totor(ic),              &
-     &                                        sanew(ivol),            &
-     &                                        pornew(ivol))    
+                                              sanew(ivol),            &
+                                              pornew(ivol))    
           end do
         else
           totor = r0
@@ -2983,7 +2989,7 @@
 !c  compute derivatives of total gaseous component concentrations 
 
             call dtotcong(gnew(:,ivol),ginc(:,tid),dtotg(:,tid),xnug,drtinc, &
-     &                    iaga,jaga,nc,ng,jbl,namec)
+                          iaga,jaga,nc,ng,jbl,namec)
             
 #ifdef DEBUG
             if(info_debug > 10) then
@@ -3026,8 +3032,8 @@
 
               do ic = 1,n
                 totrateg(ic) = cvol(ivol) * bulkconc(totrateg(ic),    &
-     &                                               sanew(ivol),     &
-     &                                               pornew(ivol))
+                                                     sanew(ivol),     &
+                                                     pornew(ivol))
               end do
 
 !c  compress derivatives of total rates for removal of aqueous components
@@ -3239,8 +3245,8 @@
 
             do ic = 1,n
               dtotaq(ic,tid) = cvol(ivol) * bulkconc(dtotaq(ic,tid),  &
-     &                                           sanew(ivol),         &
-     &                                           pornew(ivol))        
+                                                 sanew(ivol),         &
+                                                 pornew(ivol))        
 
             end do
 
@@ -3266,8 +3272,8 @@
 
             do ic = 1,n
               dtotor(ic) = cvol(ivol) * bulkconc(dtotor(ic),          &
-     &                                           sanew(ivol),         &
-     &                                           pornew(ivol))
+                                                 sanew(ivol),         &
+                                                 pornew(ivol))
             end do
 
           end if
@@ -3291,8 +3297,8 @@
               dissvol = ratemdp(im,ivol)*delt
 
               if ((cmnew(im,ivol)+dissvol).lt.                        &
-     &            (r1+small)*cmcmin(im,tid).or.                       &
-     &            dabs(ratemdp(im,ivol)).lt.tinyrate) then
+                  (r1+small)*cmcmin(im,tid).or.                       &
+                  dabs(ratemdp(im,ivol)).lt.tinyrate) then
 !cmbalmin            if ((cmnew(im,ivol).le.cmcmin(im).and.
 !cmbalmin     &           ratemdp(im,ivol).le.r0).or.
 !cmbalmin     &          (dabs(ratemdp(im,ivol)).lt.tinyrate)) then
@@ -3345,7 +3351,7 @@
 
               if (.not.far_from_equil(im)) then
                 if (dlog10(satm(im,tid)).lt.supsatm(im) .and.         &
-     &              ratemdp(im,ivol).gt.r0) then
+                    ratemdp(im,ivol).gt.r0) then
 
                   dratedp(im,tid) = r0
 
@@ -4504,7 +4510,5 @@
       end if
       
 #endif
-!cdbg
 
-      return
-      end
+    end subroutine jacrt

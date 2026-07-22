@@ -4,7 +4,7 @@
 !> $Revision: 789 $
 !> $Author: dsu $
 !> $Date: 2021-03-22 21:33:49 -0700 (Mon, 22 Mar 2021) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/mip_mt/mip_math.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/mip_mt/mip_math.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

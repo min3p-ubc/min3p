@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/readcomp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readcomp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -201,13 +201,13 @@
  
           if (name.eq.namec(ic)) then
 
-            !c to be checked later
             if (rank == 0 .and. b_enable_output_gen) then
               if (ic == 1) then
                 write(igen,'(72a)') ('-',i=1,72)
+                write(igen,'(a)') 'component database entries read:'
               end if
-              write(igen,'(2a,6(a,1pe15.6e3))')                        &
-                    'dbs component ',trim(name), ' charge ', charge,   &
+              write(igen,'(a,6(a,1pe15.6e3))')                         &
+                    trim(name), ' charge ', charge,                    &
                     ' dha ',dha, ' dhb ',dhb, ' gfw ', gfw,            &
                     ' alkfac ', alkfac, ' diff_coeff ',diffcoff1
               if (ic == nc) then

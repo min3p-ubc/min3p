@@ -4,7 +4,7 @@
 !> $Revision: 880 $
 !> $Author: dsu $
 !> $Date: 2024-02-19 14:19:39 -0800 (Mon, 19 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/timeloop.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/timeloop.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -3252,7 +3252,7 @@
                   
 !c  assign unit numbers for output of transient data
 
-                  call tranunit(igb,'gb')
+                  call tranunit(igb)
 
 !c  temperature corrections for debye-huckel, equilibrium and
 !c  rate constants
@@ -3314,7 +3314,7 @@
                              distcoff_rt(:,ivol),area(:,ivol),           &
                              phi(:,ivol),phiold(:,ivol),sionnew(ivol),   &
                              tkel(ivol),uvsnew(ivol),                    &
-                             xg(ivol),yg(ivol),zg(ivol),0,               &
+                             xg(ivol),yg(ivol),zg(ivol),                 &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
                              igbt,igbc,igbm,igbg,igbgr,igbi,igbb,        &
                              igbs,igbv,igbd,igbx,igbis,igbac,igbre,      &
@@ -3344,7 +3344,7 @@
                              distcoff_rt(:,ivol),area(:,ivol),           &
                              phi(:,ivol),phiold(:,ivol),sionnew(ivol),   &
                              tkel(ivol),hhead(ivol),                     &
-                             xg(ivol),yg(ivol),zg(ivol),0,               &
+                             xg(ivol),yg(ivol),zg(ivol),                 &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
                              igbt,igbc,igbm,igbg,igbgr,igbi,igbb,        &
                              igbs,igbv,igbd,igbx,igbis,igbac,igbre,      &

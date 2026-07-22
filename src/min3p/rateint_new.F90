@@ -4,7 +4,7 @@
 !> $Revision: 726 $
 !> $Author: dsu $
 !> $Date: 2019-08-07 11:30:33 -0700 (Wed, 07 Aug 2019) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/rateint_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/rateint_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -35,7 +35,7 @@
 !c                                kinetic reactions [mol/(l h2o*day)
 !c           c(nc)              = concentrations of components as     + -
 !c                                species in solution
-!c           cx(nx)             = concentrations of aqueous           + -
+!c           cxnew(nx)          = concentrations of aqueous           + -
 !c                                complexes
 !c           gammac(nc)         = activity coefficients of components + -
 !c                                as species in solution

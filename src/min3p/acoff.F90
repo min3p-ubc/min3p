@@ -4,7 +4,7 @@
 !> $Revision: 598 $
 !> $Author: mxie $
 !> $Date: 2018-07-24 09:15:37 -0700 (Tue, 24 Jul 2018) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/acoff.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/acoff.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

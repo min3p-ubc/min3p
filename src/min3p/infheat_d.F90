@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/infheat_d.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/infheat_d.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

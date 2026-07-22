@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/datstr_1.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/datstr_1.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -134,7 +134,7 @@
       PetscErrorCode :: ierrcode
 #endif
 
-      real*8, parameter :: r0 = 0.0d0
+      real*8, parameter :: r0 = 0.0d0, rsmall = 1.0d-10
 
       external checkerr, iajavs, iajavs_dp, mem_njavs, rcmordering, &
               naturalordering, symbolicfactorization
@@ -901,6 +901,46 @@
         'spatial discretization resoltion mininum: ',EdgeLenMin,     &
         'spatial discretization resoltion maximum: ',EdgeLenMax
     end if
+
+!cdsu array to save forward and backward control volume in x-, y- and z-directions.
+    allocate (ivol_f(3,nngl), stat = ierr)
+    call checkerr(ierr,'ivol_f',ilog)
+    call memory_monitor(sizeof(ivol_f),'ivol_f',.true.)
+    ivol_f = 0
+
+    allocate (ivol_b(3,nngl), stat = ierr)
+    call checkerr(ierr,'ivol_b',ilog)
+    call memory_monitor(sizeof(ivol_b),'ivol_b',.true.)
+    ivol_b = 0
+
+    do ivol = 1, nngl           !loop over all volumes
+
+      istart = iavs(ivol)+1     !pointer - start of row
+      iend = iavs(ivol+1)-1     !pointer - end of row
+
+      do jtemp = istart, iend   !loop over all connections
+        jvol = javs(jtemp)
+
+        if (xg(ivol)-xg(jvol) > rsmall) then
+          ivol_b(1,ivol) = jvol
+        else if (xg(ivol)-xg(jvol) < -rsmall) then    
+          ivol_f(1,ivol) = jvol
+        end if
+
+        if (yg(ivol)-yg(jvol) > rsmall) then
+          ivol_b(2,ivol) = jvol
+        else if (yg(ivol)-yg(jvol) < -rsmall) then    
+          ivol_f(2,ivol) = jvol
+        end if
+
+        if (zg(ivol)-zg(jvol) > rsmall) then
+          ivol_b(3,ivol) = jvol
+        else if (zg(ivol)-zg(jvol) < -rsmall) then    
+          ivol_f(3,ivol) = jvol
+        end if
+
+      end do
+    end do
     
 !cdbg
 !c

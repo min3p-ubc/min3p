@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/tprfrtlc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tprfrtlc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -3024,25 +3024,6 @@
         return
       end if
 
-!cdsu Fixed bug that introduced in Revison 865. 
-!cdsu Updtsvap and totconc are rquired when redox components are considered
-!cdsu since totcnew is the compressed concentration vector. The number of unknowns is reduced 
-!cdsu due to redox equilibrium reactions.
-
-!cdsu Updating totc (totcnew) here causes slightly different 
-!cdsu totc (totcnew) value. This error can be accumulated, resulting in different 
-!cdsu final results when transient output is used. 
-
-!c  update secondary variables before print-out
-      call updtsvap(c,cx,gammac,gammax,strion,actvt,tid)
-  
-!c  total aqueous component concentrations 
-      if (redox_equil.and.nr.gt.0) then 
-        call totconc(c,cx,totc)
-!c  compress total aqueous component concentration vector in case of
-!c  equilibrium reactions.
-        call comptotc(totc) 
-      end if
 
 !c  master variables
 
@@ -3723,7 +3704,7 @@
                   read(fibv,*,end=200,err=200) rdummys(1:nvars)
                   !c reposition to the line to append results
                   call reposition_file(fibv,irecord)
-                  
+
                   phim(1:nm) = phim(1:nm) + rdummys(2:nm+1)
 
                 end if

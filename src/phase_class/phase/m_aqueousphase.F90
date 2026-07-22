@@ -4,7 +4,7 @@
 !> $Revision: 609 $
 !> $Author: dsu $
 !> $Date: 2018-09-14 11:47:55 -0700 (Fri, 14 Sep 2018) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/phase_class/phase/m_aqueousphase.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/phase_class/phase/m_aqueousphase.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

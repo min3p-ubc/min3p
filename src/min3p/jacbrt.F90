@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/jacbrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/jacbrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -592,8 +592,8 @@
             zone_name = 'temperature-correction'
             call gcreact(cnew(:,ivol),cold(:,ivol),cxnew(:,ivol),    &
                          gamma(:,ivol),gamma(nc+1,ivol),             &
-                         actvset(:,ivol),0,                          &
-                         gnew(:,ivol),sanew(ivol),sgnew(ivol),       &
+                         actvset(:,ivol),gnew(:,ivol),               &
+                         sanew(ivol),sgnew(ivol),                    &
                          pornew(ivol),igen,ilog,tid,idbg,            &
                          tec_header,prefix,l_prfx,                   &
                          zone_name,l_zone_name,                      &

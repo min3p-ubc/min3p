@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/i2upfind_heat.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/i2upfind_heat.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

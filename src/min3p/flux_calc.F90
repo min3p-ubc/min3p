@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/flux_calc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/flux_calc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -652,12 +652,14 @@
 !cdsu !c  -> update only concentrations of secondary aqueous species
 !cdsu !c     and compute ionic strength
 !cdsu 
-!cdsu         call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),    &
-!cdsu      &                gamma(nc+1,ivol),sionnew(ivol),tid)
+!cdsu         call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+!cdsu                       gamma(nc+1,ivol),sionnew(ivol),            &
+!cdsu                       actvset(:,ivol),tid)
 !cdsu         
 !cdsu         if (hmulti_diff) then
-!cdsu           call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),        &
-!cdsu      &                  gammaold(nc+1,ivol),sionold(ivol),tid)  
+!cdsu           call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),&
+!cdsu                         gammaold(nc+1,ivol),sionold(ivol),       &
+!cdsu                         actvset(:,ivol),tid)
 !cdsu         end if       !MX test
 !cdsu 
 !cdsu 
@@ -669,8 +671,9 @@
 !cdsu  
 !cdsu         if (update_activity(tid).eq.'double_update') then
 !cdsu 
-!cdsu           call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),    &
-!cdsu      &                  gamma(nc+1,ivol),sionnew(ivol),tid)
+!cdsu           call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),   &
+!cdsu                         gamma(nc+1,ivol),sionnew(ivol),          &
+!cdsu                         actvset(:,ivol),tid)
 !cdsu 
 !cdsu         end if
 !cdsu 

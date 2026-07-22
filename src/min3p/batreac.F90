@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/batreac.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/batreac.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -190,7 +190,7 @@
       
       implicit none
       
-      real*8 :: r0, r1, r10, swc, sac, porc 
+      real*8 :: swc, sac, porc 
       integer :: i, ic, ilz, ivol, l_string, nlz, tid, ierrcd 
 
       external clstpfls,icrtlczn,opnplfls,outputlc,       &
@@ -198,16 +198,16 @@
 
       logical found_section
 
-      parameter (r0=0.0d0, r1 = 1.0d0, r10 = 10.0d0)
+      integer, parameter :: i0 = 0
+      real*8, parameter :: r0=0.0d0, r1 = 1.0d0, r10 = 10.0d0
       
-     
-    
+
 #ifdef OPENMP
       tid = omp_get_thread_num() + 1
 #else
       tid = 1
 #endif
- 
+
 !c  read section header for local chemistry
 
       section_header = 'initial condition - local geochemistry'
@@ -299,10 +299,10 @@
           call tcorr(tempk,0,1)
         end if
         call rtrvpprm(swc,sac,porc,r1,section_header)
-        call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),       &
-                    cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,  &
-                    prefix,l_prfx,zone_name,l_zone_name,             &
-                    mtime,i_append_sim,mtime_append)
+        call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,  &
+                    cgc,swc,sac,porc,igen,ilog,tid,idbg,             &
+                    tec_header,prefix,l_prfx,zone_name,l_zone_name,  &
+                    mtime,i_append_sim,mtime_append,.true.)
 
       else
 !CMX 
@@ -326,11 +326,11 @@
           end if
 !c  compute initial condition
           call rtrvpprm(swc,sac,porc,pornew(ivol),section_header)
-          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-                     cgc,swc,sac,porc,igen,ilog,tid,idbg,             &
-                     tec_header,prefix,l_prfx,                        &
-                     zone_name,l_zone_name,mtime,                     &
-                     i_append_sim,mtime_append)
+          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,  &
+                       cgc,swc,sac,porc,igen,ilog,tid,idbg,            &
+                       tec_header,prefix,l_prfx,                       &
+                       zone_name,l_zone_name,mtime,                    &
+                       i_append_sim,mtime_append,.true.)
  
       end do            !loop over control volumes
 #ifdef OPENMP
@@ -390,9 +390,10 @@
               end if
               call rtrvpprm(swc,sac,porc,r1,section_header)
               call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),   &
-                       cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header, &
-                       prefix,l_prfx,zone_name,l_zone_name,            &
-                       mtime,i_append_sim,mtime_append)
+                           actv,cgc,swc,sac,porc,igen,ilog,            &
+                           tid,idbg,tec_header,prefix,l_prfx,          &
+                           zone_name,l_zone_name,mtime,                &
+                           i_append_sim,mtime_append,.true.)
             else
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -414,10 +415,10 @@
                 end if
                 call rtrvpprm(swc,sac,porc,pornew(ivol),section_header)
                 call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1), &
-                             cgc,swc,sac,porc,                         &
+                             actv,cgc,swc,sac,porc,                    &
                              igen,ilog,tid,idbg,tec_header,            &
                              prefix,l_prfx,zone_name,l_zone_name,      &
-                             mtime,i_append_sim,mtime_append)
+                             mtime,i_append_sim,mtime_append,.true.)
               end do         !loop over control volumes
 #ifdef OPENMP
     !$omp end do

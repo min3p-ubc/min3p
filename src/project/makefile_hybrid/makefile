@@ -4,6 +4,8 @@
 #
 # last modified:   Danyang Su - Nov. 13, 2019
 #
+# URL: https://github.com/min3p-ubc/min3p/blob/main/src/project/makefile_hybrid/makefile
+#
 
 # Conditional parameters, please leave the variable empty (DO NOT PUT FALSE instead) if the given condition is FALSE.
 # e.g., 'with-debug = true' or 'with-debug = false' or 'with-debug = xxx' means debug is turned on.

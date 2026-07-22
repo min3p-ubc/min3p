@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/usg/outputrt_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/outputrt_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -2562,13 +2562,13 @@
 
           call updtsvap(cnew(:,inode),cxnew(:,inode),gamma(:,inode),   &
                         gamma(nc+1,inode),sionnew(inode),              &
-                        actvset(:,inode),0,tid)
+                        actvset(:,inode),tid)
           
           if (hmulti_diff) then
           
             call updtsvap(cold(:,inode),cxold(:,inode),gammaold(:,inode), &
                           gammaold(nc+1,inode),sionold(inode),            &
-                          actvset(:,inode),0,tid)  
+                          actvset(:,inode),tid)  
           end if       !MX test
      
 !c  free species and aqueous complex concentrations

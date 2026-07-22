@@ -4,7 +4,7 @@
 !> $Revision: 884 $
 !> $Author: dsu $
 !> $Date: 2024-03-29 21:02:17 -0700 (Fri, 29 Mar 2024) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/mimicMassDisp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mimicMassDisp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

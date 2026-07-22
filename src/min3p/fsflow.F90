@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/min3p/fsflow.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/fsflow.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -211,11 +211,7 @@
       if (i_solver_type_flow == 0) then
         if (.not. allocated(afvs)) then
           allocate (afvs(njafvs), stat = ierr)
-          if (nngl > 1) then
-            afvs = 0.0d0
-          else
-            afvs = 1.0d0
-          end if
+          afvs=0.0d0 
           call checkerr(ierr,'afvs',ilog)
           call memory_monitor(sizeof(afvs),'afvs',.true.)
         end if
@@ -228,7 +224,6 @@
         call zero_r8(bvs,nngl,1,1)  
         call zero_r8(uvs,nngl,1,1)
       end if
-      
 
 !c  assemble matrix and rhs-vector
       prt_flow_jac = cputime()

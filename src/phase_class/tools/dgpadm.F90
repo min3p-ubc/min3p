@@ -4,7 +4,7 @@
 !> $Revision: 3 $
 !> $Author: dsu $
 !> $Date: 2012-12-09 18:46:07 -0800 (Sun, 09 Dec 2012) $
-!> $URL: https://github.com/min3p-ubc/min3p/src/phase_class/tools/dgpadm.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/phase_class/tools/dgpadm.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

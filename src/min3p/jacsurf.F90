@@ -413,19 +413,13 @@
 !c  off-diagonal entries
 
           elseif (component_type(ibl).eq.'surface'.and.ibl.ne.jbl) then
-            if (elect_correction) then
-              if (component_type(jbl)=='electro') then
-                alc(ibl,jbl,tid) = alc(ibl,jbl,tid) + sw*por*           &
-                                   (dtotsb_surf(ibl,tid))
-                alc(ibl,jbl,tid) = cnew(jbl) * alc(ibl,jbl,tid)
-              else
-                alc(ibl,jbl,tid)=r0
-              end if
-            else
-              alc(ibl,jbl,tid) = alc(ibl,jbl,tid) + sw*por*            &
+            if (component_type(jbl)=='electro') then
+              alc(ibl,jbl,tid) = alc(ibl,jbl,tid) + sw*por*           &
                                  (dtotsb_surf(ibl,tid))
               alc(ibl,jbl,tid) = cnew(jbl) * alc(ibl,jbl,tid)
-          end if
+            else
+              alc(ibl,jbl,tid)=r0
+            end if
 
 !c  put 1 on diagonal for component type 'fixed'
 

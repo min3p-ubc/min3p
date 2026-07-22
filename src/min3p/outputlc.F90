@@ -577,13 +577,13 @@
             sorption_group.eq.'surface-complex and ion-exchange')) then
 
           write(igen,'(2a)')'species          [meq/100g]     ',       &
-     &                      '[mol/l bulk]'                             
+                            '[mol/l bulk]'                             
           write(igen,'(2a)')'--------------------------------',       &
-     &                      '------------'                             
+                            '------------'                             
           do isb = 1,nsb_ion                                               
             write(igen,'(a12,2(3x,1pe15.6e3))')                       &
-     &        namesb_ion(isb),csb_ion(isb,tid),                       &
-     &        rhobulk/r100*csb_ion(isb,tid)/chargesb_ion(isb)
+              namesb_ion(isb),csb_ion(isb,tid),                       &
+              rhobulk/r100*csb_ion(isb,tid)/chargesb_ion(isb)
           end do
         end if
 
@@ -641,9 +641,9 @@
         end do
         if (reactive_minerals) then
           write(igen,'(2a)')'mineral               SI',               &
-     &                      '               phi              area'     
+                            '               phi              area'     
           write(igen,'(2a)')'------------------------',               &
-     &                      '------------------------------------'     
+                            '------------------------------------'     
           do im = 1,nm                                                 
             if (.not.far_from_equil(im)) then                          
               satlog = dlog10(satm(im,tid))                                
@@ -651,7 +651,7 @@
               satlog = r0                                              
             end if                                                     
             write(igen,'(a12,1x,f12.3,2(6x,1pe15.6e3))')               &
-    &             namem(im),satlog, phic(im,tid),areac(im)
+                  namem(im),satlog, phic(im,tid),areac(im)
           end do
         else
           write(igen,'(a)')'mineral               SI'
@@ -673,8 +673,7 @@
         write(igen,'(/a)')'excluded minerals:'
         write(igen,'(a)') '------------------'
         do imx = 1,nmx
-          satmx(imx) = satindex(c,eqmx(imx,tid),gammac,xnumx,         &
-     &                            iamx,jamx,imx)
+          satmx(imx) = satindex(c,eqmx(imx,tid),gammac,xnumx,iamx,jamx,imx)
         end do
         write(igen,'(a)')'mineral               SI'
         write(igen,'(a)')'------------------------'
@@ -690,11 +689,11 @@
       write(igen,'(/,a)')'charge balance:'
       write(igen,'(a)')'---------------'
       write(igen,'(a,1pe15.6e3,3x,a,1pe15.6e3)')                  &
-     &          'sum of positive charge: ',zpos,                  &
-     &          'sum of negative charge: ',zneg                    
+                'sum of positive charge: ',zpos,                  &
+                'sum of negative charge: ',zneg                    
       write(igen,'(a,4x,1pe15.6e3,1x,a)') 'charge balance error:',&
-     &                                   zbal,'%'
- 
+                                         zbal,'%'
+
 !c  write run specific statistics to screen and output file
 
       if (rank == 0) then

@@ -160,9 +160,6 @@
 
       dimension c(*),cx(*),gammac(*),gammax(*),actvt(*)
 
-!c  update ionic strength 
-      call ionstr(c,cx,strion,chargec,chargex,nc-1,nx,namec)
-
 !c  activity coefficients for free species
       if (update_activity(tid).eq.'double_update') then
 !cprovi----------------------------------------------      
@@ -180,6 +177,7 @@
  !c           write(ilog,*) ' in updatesvap c(nc)=',nc,c(1:nc)
 
             if (component_type(ic).eq.'aqueous') then
+
               gammac(ic) = acoff(c,cx,strion,chargec(ic),dhac(ic),   &
                                  dhbc(ic),dhad(tid),dhbd(tid),adav,bdav,&
                                  acth2omin,nc,nx,namec(ic),namec,ic,    &
@@ -224,19 +222,19 @@
       end if
 
 !c  compute concentrations of aqueous complexes
- 
+
       do ix = 1,nx
         call secspec(c,cx(ix),eqx(ix,tid),gammac,gammax(ix),xnux,     &
                      iax,jax,ix)
       end do
- 
-!c  update ionic strength
- 
+
+!c  update ionic strength again after updating concentrations of free species and secondary aqueous species
+
       call ionstr(c,cx,strion,chargec,chargex,nc-1,nx,namec)
- 
+
 !c  make sure new ionic strength is not larger than maximum
 !c  allowed ionic strength to avoid convergence problems
- 
+
       strion = dmin1(strion,sionmax)
 
       return

@@ -99,8 +99,8 @@
         write(ilog,*) 'error reading nodal gas tortuosity field ',     &
                       'from file'
         write(ilog,*) 'subroutine read_tau'
+        close(ilog)
       end if
-      close(ilog)
 #ifdef PETSC
       call petsc_mpi_finalize
 #endif

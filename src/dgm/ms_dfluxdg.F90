@@ -332,7 +332,7 @@
 
 !c     calculate derivative of flux of ng-th gas species
 
-!cdsu  stupid intel compiler 2018.2 & 2018.3 on Niagara/Graham cluster report
+!cdsu  intel compiler 2018.2 & 2018.3 on Niagara/Graham cluster report
 !cdsu  "catastrophic error: **Internal compiler error: internal abort**"
 !cdsu  if use ymat and /beta(ng) in a different location, move ymat and /beta(ng) out of loop
 

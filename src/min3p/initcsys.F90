@@ -913,6 +913,11 @@
             else  ! if the electrostatic model is not recognized...
               goto 999 
             end if 
+
+            if (b_enable_output .and. b_enable_output_gen) then
+              write(igen,'(/72a)')('-',i=1,72)
+              write(igen,'(2a)') 'electrostatic correction method: ',trim(name_elect_correction)
+            end if
 !c ----------------------------------------------------------------------
 !c Read the constant capacitances        
 !c ----------------------------------------------------------------------
@@ -921,10 +926,18 @@
               allocate (cap_surf(nlayer), stat = ierr)
               cap_surf = r1 
               call checkerr(ierr,'cap_surf',ilog)
+
+              if (b_enable_output .and. b_enable_output_gen) then
+                write(igen,'(a)')'layer        cap_surf'
+              end if
+
               ! Read the constant capacitance
               do ilayer = 1, nlayer
                 ierrcd = 64
                 read(itmp,*,err=999,end=999) cap_surf(ilayer)
+                if (b_enable_output .and. b_enable_output_gen) then
+                  write(igen,'(i0,12x,1pe15.6e3)') ilayer, cap_surf(ilayer)
+                end if
               end do
             else
               !c the following is just to avoid passing uninitialized array
@@ -939,6 +952,7 @@
 
 !c  number of components including biomass and surface compelxation sites
 
+        na = n
         n = n+nbio+nna+nelect
 
 
@@ -1877,15 +1891,15 @@
             ierrcd = 47
             read(itmp,*,err=999,end=999) output_unit_sb_surf
                                   
-            if ((trim(output_unit_sb_surf) .ne. 'mol/l h2o') .and.&
+            if ((trim(output_unit_sb_surf) .ne. 'mol/l h2o') .and.     &
                 (trim(output_unit_sb_surf) .ne. 'mol/l bulk')) then
                 l_string = index(subsection,' ')-1
               if (rank == 0) then  
                 write(ilog,*) 'SIMULATION TERMINATED'
                 write(ilog,*) 'error reading input file'
                 write(ilog,*) 'subsection "',trim(subsection), '"'
-                write(ilog,*) 'The specified SCM sepcies unit: ''', &
-                              trim(output_unit_sb_surf),            &
+                write(ilog,*) 'The specified SCM sepcies unit: ''',    &
+                              trim(output_unit_sb_surf),               &
                               '''is not valid.'
                 write(ilog,*) 'This should be ''mol/L H2O'' or ''mol/L bulk''.'
               end if

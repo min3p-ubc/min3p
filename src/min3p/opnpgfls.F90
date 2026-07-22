@@ -1297,6 +1297,7 @@
                                            'mg/L CaCO3'
                     write(ifls,'(a,22x,a)')'11       alkalinity','mg/L CaCO3'
                     write(ifls,'(a,21x,a)')'12       temperature','C'
+                    write(ifls,'(a,18x,a)')'13       charge balance','%'
                   elseif ((.not.ph_output).and.(pe_output)) then
                     write(ifls,'(a,30x,a)')'2        pe','-'
                     write(ifls,'(a,30x,a)')'3        Eh','-'
@@ -1312,6 +1313,7 @@
                                            'mg/L CaCO3'
                     write(ifls,'(a,22x,a)')'10       alkalinity','mg/L CaCO3'
                     write(ifls,'(a,21x,a)')'11       temperature','C'
+                    write(ifls,'(a,18x,a)')'12       charge balance','%'
                   elseif ((ph_output).and.(.not.pe_output)) then
                     write(ifls,'(a,30x,a)')'2        pH','-'
                     write(ifls,'(a,18x,a)')'3        ionic strength','-'
@@ -1326,6 +1328,7 @@
                                            'mg/L CaCO3'
                     write(ifls,'(a,22x,a)')'9        alkalinity','mg/L CaCO3'
                     write(ifls,'(a,21x,a)')'10       temperature','C'
+                    write(ifls,'(a,18x,a)')'11       charge balance','%'
                   end if
 
                 end if

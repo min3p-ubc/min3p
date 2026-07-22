@@ -62,6 +62,7 @@
 !c                                reactions
 !c           nc                 = number of components including h2o
 !c           nbio               = number of biomass components
+!c           na                 = number of aqueous components
 !c           nna                = number of non-aqueous components
 !c           ncorder(nc)        = ordering array for components
 !c                                ncorder(old order) = new order 
@@ -240,6 +241,7 @@
       integer (type_i4), allocatable :: iter_lc(:)
       integer (type_i4) :: naq
       integer (type_i4) :: nbio
+      integer (type_i4) :: na
       integer (type_i4) :: nna
       integer (type_i4) :: nc
       integer (type_i4) :: nx

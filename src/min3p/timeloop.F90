@@ -1702,39 +1702,106 @@
         time_io = time/time_factor
         delt_io = delt/time_factor
         
-!cdsu Update boundary condition here because temperature and uvsnew is reset to 
-!cdsu the value of old timestep, which is not consistent with the updated 
-!cdsu boundary condition. Only flow and heat boundary condition is required.
-!cdsu fix bug here by Danyang Su on May 22, 2020 
-        if (b_updtbc_recall) then
+!cdsu Update boundary condition here 
 
-!cdsu update boundary conditions for variably saturated flow      
-          if (update_bcvs .and. .not.tran_steady_flow) then
-            if (density_dependence) then
-              call updtbcdd
-            else 
-              call updtbcvs
-            end if
-          end if
+!cprovi----------------------------------------------------
+!cprovi Update atmospheric parameters  
+!cprovi----------------------------------------------------       
+        if (evaporation .and. variably_saturated .and. .not.tran_steady_flow) then
+          call updtbcatm
+        end if  
 
-!cdsu update boundary conditions for heat transport 
-          if (update_bcheat .and. .not.tran_steady_flow) then
-            call updtbcenergybal
+!cprovi----------------------------------------------------
+!cprovi Update root length density zones  
+!cprovi----------------------------------------------------       
+        if (rootparam_trans .and. variably_saturated .and. .not.tran_steady_flow) then
+          call updtRootParams
+        end if  
+
+!cprovi----------------------------------------------------
+!cprovi update boundary conditions for variably 
+!cprovi saturated flow
+!cprovi----------------------------------------------------        
+        if (update_bcvs .and. .not.tran_steady_flow) then
+          if (density_dependence) then
+            call updtbcdd
+          else 
+            call updtbcvs
           end if
+        end if
+
+!cprovi----------------------------------------------------
+!cprovi update boundary conditions for heat transport 
+!cprovi----------------------------------------------------        
+        if (update_bcheat .and. .not.tran_steady_flow) then
+          call updtbcenergybal
+        end if  
 
 !cdsu update boundary conditions for reactive transport
-          if (update_bcrt .and. .not.tran_steady_flow) then
-            call updtbcrt
-          end if
+        if (update_bcrt .and. .not.tran_steady_flow) then
+          call updtbcrt
+        end if
 
 !c update transient dispersivity
-          if (reactive_transport .and. update_disprt .and.             &
-              .not. tran_steady_flow) then
-            call updtdisprt
-          end if
-
-          b_updtbc_recall = .false.
+        if (reactive_transport .and. update_disprt .and.               &
+            .not. tran_steady_flow) then
+          call updtdisprt
         end if
+
+!c CBF RLD 
+!c FG July 2017 - root density update (see previous comment on an alternative position for this call,
+!c FG set from Feb 2015).
+        if (root_uptake .and. .not.tran_steady_flow) then
+
+          if (coupled_as.or.coupled_rt.or.inside_rld.or.rootparam_trans) then
+            call updtrootdensity
+          else
+            if(rootlengthdens_field)then
+              if (rld_field_update .and. b_rld_update) then
+                !c update root length density
+                call updtrootdensity_ext
+                if (b_enable_output .and. rank == 0) then
+                  write(*,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
+                  write(ilog,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
+                end if
+
+                rld_update_index = rld_update_index + 1
+                if (rld_update_index > rld_update_num) then
+                  close(irld)
+                  call lun_free(irld)
+                end if
+              end if
+            end if
+          endif
+        end if
+
+!c  update etp and canopy dependent parameters    !CBF
+        if ((root_uptake .or. pure_evap) .and. .not.tran_steady_flow) then
+          call updtetp
+        end if
+
+
+!c  update temperature field
+        if (temp_field .and. .not.tran_steady_flow) then  
+          call readtemp
+
+          if (update_temp) then
+            call intpolt
+          end if
+        end if
+
+!c  update noble gas ingrowth related variables
+        if (b_use_ngi) then
+          !c this function only updates the concentration of radioelements 
+          !c that are used to generate noble gas
+          !call update_ngi_conc
+
+          !c this function updates the concentration of all radioelements 
+          !c that are specified in the input file
+          call update_ngi_conc_all
+        end if
+
+        b_updtbc_recall = .false.
 
 
 !cprovi----------------------------------------------------
@@ -3437,103 +3504,6 @@
 !cprovi----------------------------------------------------
         if(b_enable_output .and. .not.tran_steady_flow)  then
           call restart_w
-        end if
-
-!cprovi----------------------------------------------------
-!cprovi Update atmospheric parameters  
-!cprovi----------------------------------------------------       
-        if (evaporation .and. variably_saturated .and. .not.tran_steady_flow) then
-          call updtbcatm
-        end if  
-
-!cprovi----------------------------------------------------
-!cprovi Update root length density zones  
-!cprovi----------------------------------------------------       
-        if (rootparam_trans .and. variably_saturated .and. .not.tran_steady_flow) then
-          call updtRootParams
-        end if  
-
-!cprovi----------------------------------------------------
-!cprovi update boundary conditions for variably 
-!cprovi saturated flow
-!cprovi----------------------------------------------------        
-        if (update_bcvs .and. .not.tran_steady_flow) then
-          if (density_dependence) then
-            call updtbcdd
-          else 
-            call updtbcvs
-          end if
-        end if
-
-!cprovi----------------------------------------------------
-!cprovi update boundary conditions for heat transport 
-!cprovi----------------------------------------------------        
-        if (update_bcheat .and. .not.tran_steady_flow) then
-          call updtbcenergybal
-        end if  
-
-!cdsu update boundary conditions for reactive transport
-        if (update_bcrt .and. .not.tran_steady_flow) then
-          call updtbcrt
-        end if
-
-!c update transient dispersivity
-        if (reactive_transport .and. update_disprt .and.               &
-            .not. tran_steady_flow) then
-          call updtdisprt
-        end if
-
-!c CBF RLD 
-!c FG July 2017 - root density update (see previous comment on an alternative position for this call,
-!c FG set from Feb 2015).
-        if (root_uptake .and. .not.tran_steady_flow) then
-
-          if (coupled_as.or.coupled_rt.or.inside_rld.or.rootparam_trans) then
-            call updtrootdensity
-          else
-            if(rootlengthdens_field)then
-              if (rld_field_update .and. b_rld_update) then
-                !c update root length density
-                call updtrootdensity_ext
-                if (b_enable_output .and. rank == 0) then
-                  write(*,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
-                  write(ilog,'(/1x,a/)') 'RLD UPDATED FROM EXTERNAL *.rld FILE'
-                end if
-
-                rld_update_index = rld_update_index + 1
-                if (rld_update_index > rld_update_num) then
-                  close(irld)
-                  call lun_free(irld)
-                end if
-              end if
-            end if
-          endif
-        end if
-
-!c  update etp and canopy dependent parameters    !CBF
-        if ((root_uptake .or. pure_evap) .and. .not.tran_steady_flow) then
-          call updtetp
-        end if
-
-
-!c  update temperature field
-        if (temp_field .and. .not.tran_steady_flow) then  
-          call readtemp
-
-          if (update_temp) then
-            call intpolt
-          end if
-        end if
-
-!c  update noble gas ingrowth related variables
-        if (b_use_ngi) then
-          !c this function only updates the concentration of radioelements 
-          !c that are used to generate noble gas
-          !call update_ngi_conc
-
-          !c this function updates the concentration of all radioelements 
-          !c that are specified in the input file
-          call update_ngi_conc_all
         end if
 
 !cdsu ------------------------------------------------------------------------

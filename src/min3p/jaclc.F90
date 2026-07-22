@@ -443,7 +443,7 @@
 !c  unit activity coefficients
 !c  -> update only concentrations of secondary aqueous species
 !c     and compute ionic strength as a secondary variable 
-        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,idm,tid)
+        call updtsvap(cnew,cx,gammac,gammax,sion1(tid),actvt,tid)
 
 !c  following iterations
 

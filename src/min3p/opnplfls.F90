@@ -433,20 +433,20 @@
       if (rank == 0) then
           
       write(ifls,'(/a/72a)')                                          &
-     &      'Master variables',                                       &
-     &      ('-',i=1,72)
+            'Master variables',                                       &
+            ('-',i=1,72)
                                                                        
       write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                      &
-     &                    suffix(:l_sufx)//'.lbm'
+                          suffix(:l_sufx)//'.lbm'
                                                                        
       write(ifls,'(2a)')  'column   entry                           ',&
-     &                    'unit'                                       
+                          'unit'                                       
       if (ph_sweep) then                                               
         write(ifls,'(a)')                                             &
-     &  '1        pH                              -'                   
+        '1        pH                              -'                   
       else                                                             
         write(ifls,'(2a)')                                            &
-     &  '1        time                            ',time_unit_lc       
+        '1        time                            ',time_unit_lc       
       end if                                                           
       if ((ph_output).and.(pe_output)) then                            
         write(ifls,'(a,30x,a)')  '2        pH','-'                     
@@ -454,45 +454,48 @@
         write(ifls,'(a,30x,a)')  '4        Eh','-'                     
         write(ifls,'(a,18x,a)')  '5        ionic strength','-'         
         write(ifls,'(a,12x,a)')  '6        carbonate alkalinity',     &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,8x,a)')   '7        non-carbonate alkalinity', &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,22x,a)')  '8        alkalinity','eq/L'          
         write(ifls,'(a,12x,a)')  '9        carbonate alkalinity',     &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,8x,a)')   '10       non-carbonate alkalinity', &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,22x,a)')  '11       alkalinity','mg/L CaCO3'    
-        write(ifls,'(a,21x,a)')  '12       temperature','C'            
+        write(ifls,'(a,21x,a)')  '12       temperature','C'
+        write(ifls,'(a,18x,a)')  '13       charge balance','%'
       elseif ((.not.ph_output).and.(pe_output)) then                   
         write(ifls,'(a,30x,a)')  '2        pe','-'                     
         write(ifls,'(a,30x,a)')  '3        Eh','-'                     
         write(ifls,'(a,18x,a)')  '4        ionic strength','-'         
         write(ifls,'(a,12x,a)')  '5        carbonate alkalinity',     &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,8x,a)')   '6        non-carbonate alkalinity', &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,22x,a)')  '7        alkalinity','eq/L'          
         write(ifls,'(a,12x,a)')  '8        carbonate alkalinity',     &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,8x,a)')   '90       non-carbonate alkalinity', &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,22x,a)')  '10       alkalinity','mg/L CaCO3'    
-        write(ifls,'(a,21x,a)')  '11       temperature','C'            
+        write(ifls,'(a,21x,a)')  '11       temperature','C'
+        write(ifls,'(a,18x,a)')  '12       charge balance','%'
       elseif ((ph_output).and.(.not.pe_output)) then                   
         write(ifls,'(a,30x,a)')  '2        pH','-'                     
         write(ifls,'(a,18x,a)')  '3        ionic strength','-'         
         write(ifls,'(a,12x,a)')  '4        carbonate alkalinity',     &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,8x,a)')   '5        non-carbonate alkalinity', &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,22x,a)')  '6        alkalinity','eq/L'          
         write(ifls,'(a,12x,a)')  '7        carbonate alkalinity',     &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,8x,a)')   '8        non-carbonate alkalinity', &
-     &                           'mg/L CaCO3'
+                                 'mg/L CaCO3'
         write(ifls,'(a,22x,a)')  '9        alkalinity','mg/L CaCO3'
         write(ifls,'(a,21x,a)')  '10       temperature','C'
+        write(ifls,'(a,18x,a)')  '11       charge balance','%'
       end if
       
       end if

@@ -31,7 +31,7 @@ real*8, parameter     ::  &
  secondhour=3600.0d0,     & ! Seconds per hour 
  !rgas=8.3144621d0,        & ! Universal constant of gases J/mol K 
  rgas=8.3145d0,           & ! Universal constant of gases J/mol K 
- faraday=96490.0d0,       & ! Faraday constant 
+ faraday=96485.0d0,       & ! Faraday constant 
  epsiz=8.854d-13,         & ! 
  cwater=55.50837d0,       & ! Water concentration per water kilogram 
  mpaatm=0.0980665d0,      & ! Megapascal per atmosphere

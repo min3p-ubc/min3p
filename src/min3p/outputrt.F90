@@ -1056,24 +1056,24 @@
                                                                         
           if (initial_condition) then                                     
             write(ifls,'(/2a/72a)')'Master variables, initial ',       &
-     &                             'condition',('-',i=1,72)             
+                                   'condition',('-',i=1,72)             
           else                                                          
             write(ifls,'(/a,1pe15.6e3,1x,a/72a)')                      &
-     &            'Master variables, T = ',                            &
-     &            time_io,time_unit(:l_time_unit),('-',i=1,72)          
+                  'Master variables, T = ',                            &
+                  time_io,time_unit(:l_time_unit),('-',i=1,72)          
           end if
                                                                         
           write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                   &
-     &                        suffix(:l_sufx)//'.gsm'
+                              suffix(:l_sufx)//'.gsm'
                                                                         
           write(ifls,'(2a)')                                           &
-     &          'column   entry                           ','unit'      
+                'column   entry                           ','unit'      
           write(ifls,'(2a)')                                           &
-     &          '1        x                               ','m'         
+                '1        x                               ','m'         
           write(ifls,'(2a)')                                           &
-     &          '2        y                               ','m'         
+                '2        y                               ','m'         
           write(ifls,'(2a)')                                           &
-     &          '3        z                               ','m'  
+                '3        z                               ','m'  
          
           if ((ph_output).and.(pe_output)) then                           
             write(ifls,'(a,30x,a)')  '4        pH','-'                    
@@ -1081,45 +1081,48 @@
             write(ifls,'(a,30x,a)')  '6        Eh','mV'                   
             write(ifls,'(a,18x,a)')  '7        ionic strength','-'        
             write(ifls,'(a,12x,a)')  '8        carbonate alkalinity',    &
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,8x,a)')   '9        non-carbonate alkalinity',&
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,22x,a)')  '10       alkalinity','eq/L'         
             write(ifls,'(a,12x,a)')  '11       carbonate alkalinity',    &
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,8x,a)')   '12       non-carbonate alkalinity',&
-     &                               'mg/L CaCO3'
+                                     'mg/L CaCO3'
             write(ifls,'(a,22x,a)')  '13       alkalinity','mg/L CaCO3'
             write(ifls,'(a,21x,a)')  '14       temperature','C'
+            write(ifls,'(a,18x,a)')  '15       charge balance','%'
           elseif ((.not.ph_output).and.(pe_output)) then
             write(ifls,'(a,30x,a)')  '4        pe','-'
             write(ifls,'(a,30x,a)')  '5        Eh','mV'
             write(ifls,'(a,18x,a)')  '6        ionic strength','-'
             write(ifls,'(a,12x,a)')  '7        carbonate alkalinity',    &
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,8x,a)')   '8        non-carbonate alkalinity',&
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,22x,a)')  '9        alkalinity','eq/L'         
             write(ifls,'(a,12x,a)')  '10       carbonate alkalinity',    &
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,8x,a)')   '11       non-carbonate alkalinity',&
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,22x,a)')  '12       alkalinity','mg/L CaCO3'   
-            write(ifls,'(a,21x,a)')  '13       temperature','C'           
+            write(ifls,'(a,21x,a)')  '13       temperature','C'
+            write(ifls,'(a,18x,a)')  '14       charge balance','%'
           elseif ((ph_output).and.(.not.pe_output)) then                  
             write(ifls,'(a,30x,a)')  '4        pH','-'                    
             write(ifls,'(a,18x,a)')  '5        ionic strength','-'        
             write(ifls,'(a,12x,a)')  '6        carbonate alkalinity',    &
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,8x,a)')   '7        non-carbonate alkalinity',&
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,22x,a)')  '8        alkalinity','eq/L'         
             write(ifls,'(a,12x,a)')  '9        carbonate alkalinity',    &
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,8x,a)')   '10       non-carbonate alkalinity',&
-     &                               'mg/L CaCO3'
+                                     'mg/L CaCO3'
             write(ifls,'(a,22x,a)')  '11       alkalinity','mg/L CaCO3'
             write(ifls,'(a,21x,a)')  '12       temperature','C'
+            write(ifls,'(a,18x,a)')  '13       charge balance','%'
           end if
           
           end if
@@ -1512,42 +1515,42 @@
 
 !c  primary surface species
 
-            do isites = 1,nsites
-              ic = iaic(isites)
-              if (isites+nanc.lt.7) then
-                write(ifls,'(i1,8x,a30,2x,a)')isites+nanc+3,namec(ic),&
-                                              output_unit_sb_surf           
-              else                                                     
-                write(ifls,'(i2,7x,a30,2x,a)')isites+nanc+3,namec(ic),&
-                                              output_unit_sb_surf
-              end if
-            end do
+              do isites = 1,nsites
+                ic = iaic(isites)
+                if (isites+nanc.lt.7) then
+                  write(ifls,'(i1,8x,a30,2x,a)')isites+nanc+3,namec(ic),&
+                                                output_unit_sb_surf           
+                else                                                     
+                  write(ifls,'(i2,7x,a30,2x,a)')isites+nanc+3,namec(ic),&
+                                                output_unit_sb_surf
+                end if
+              end do
 
 !c  secondary surface species
 
-            do isb = 1,nsb_ion
-              if (isb+nanc+nsites.lt.7) then
-                write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_ion(isb),        &
-                                              output_unit_sb_ion           
-              else                                                     
-                write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_ion(isb),        &
-                                              output_unit_sb_ion
-              end if
-            end do
+              do isb = 1,nsb_ion
+                if (isb+nanc+nsites.lt.7) then
+                  write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_ion(isb),        &
+                                                output_unit_sb_ion           
+                else                                                     
+                  write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_ion(isb),        &
+                                                output_unit_sb_ion
+                end if
+              end do
             
-            do isb = 1,nsb_surf
-              if (isb+nanc+nsites.lt.7) then
-                write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_surf(isb),       &
-                                              output_unit_sb_surf           
-              else                                                     
-                write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_surf(isb),       &
-                                              output_unit_sb_surf
-              end if
-            end do
+              do isb = 1,nsb_surf
+                if (isb+nanc+nsites.lt.7) then
+                  write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_surf(isb),       &
+                                                output_unit_sb_surf           
+                else                                                     
+                  write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_surf(isb),       &
+                                                output_unit_sb_surf
+                end if
+              end do
          
             end if          !nsb.gt.0
             
@@ -2562,7 +2565,7 @@
             
             do isb = 1,nsb_surf
               call sorbspc(dummy,csb_surf(isb,tid),                   &
-                   cnew(n-nelect+1:n,ivol),cec_g(ivol),               &
+                   cnew(nc-nelect:nc-1,ivol),cec_g(ivol),             &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                  &
                    gamma(:,ivol),cnew(:,ivol),                        &
                    xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,           &
@@ -3536,26 +3539,52 @@
                            b_output_mpiio_single,.false.)
                
               tec_variables(1:3) = [character(len=72):: "x", "y", "z"]
-              do ianc=1,nanc
-                tec_variables(3+ianc) = nameanc(ianc)(:l_nameanc(ianc))  
-              end do
+
+              if (nsb_ion.eq.0.and.nsb_surf.eq.0) then
+                do ianc=1,nanc
+                  tec_variables(3+ianc) = nameanc(ianc)(:l_nameanc(ianc))  
+                end do                
+              
+                nvarsgsb = 3+nanc
+              elseif (.not.noncompetitive_sorption) then                
+                do isites=1,nsites
+                  tec_variables(3+isites) =                            &
+                      namec(iaic(isites))(:l_namec(iaic(isites)))   
+                end do
+              
+                do isb=1,nsb_ion
+                  tec_variables(3+nsites+isb) =                        &
+                      namesb_ion(isb)(:l_namesb_ion(isb))  
+                end do
+              
+                do isb=1,nsb_surf
+                  tec_variables(3+nsites+nsb_ion+isb) =                &
+                      namesb_surf(isb)(:l_namesb_surf(isb))
+                end do
+              
+                nvarsgsb = 3+nsites+nsb_ion+nsb_surf
+              else
+                do ianc=1,nanc
+                  tec_variables(3+ianc) = nameanc(ianc)(:l_nameanc(ianc))  
+                end do
                 
-              do isites=1,nsites
-                tec_variables(3+nanc+isites) =                         &
-                    namec(iaic(isites))(:l_namec(iaic(isites)))   
-              end do
+                do isites=1,nsites
+                  tec_variables(3+nanc+isites) =                       &
+                      namec(iaic(isites))(:l_namec(iaic(isites)))   
+                end do
               
-              do isb=1,nsb_ion
-                tec_variables(3+nanc+nsites+isb) =                     &
-                    namesb_ion(isb)(:l_namesb_ion(isb))  
-              end do
+                do isb=1,nsb_ion
+                  tec_variables(3+nanc+nsites+isb) =                   &
+                      namesb_ion(isb)(:l_namesb_ion(isb))  
+                end do
               
-              do isb=1,nsb_surf
-                tec_variables(3+nanc+nsites+nsb_ion+isb) =             &
-                    namesb_surf(isb)(:l_namesb_surf(isb))
-              end do
+                do isb=1,nsb_surf
+                  tec_variables(3+nanc+nsites+nsb_ion+isb) =           &
+                      namesb_surf(isb)(:l_namesb_surf(isb))
+                end do
               
-              nvarsgsb = 3+nanc+nsites+nsb_ion+nsb_surf
+                nvarsgsb = 3+nanc+nsites+nsb_ion+nsb_surf
+              end if
               
               call tecplot_binary_write_variable(Petsc_Comm_World,     &
                            igsb,nvarsgsb, tec_variables(1:nvarsgsb),   &
@@ -4919,7 +4948,7 @@
           zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
  
 !c  update secondary variables before output
- 
+
           call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
                         gamma(nc+1,ivol),sionnew(ivol),                &
                         actvset(:,ivol),0,tid)
@@ -4929,7 +4958,7 @@
                           gammaold(nc+1,ivol),sionold(ivol),           &
                           actvset(:,ivol),0,tid)  
           end if       !MX test
-     
+
 !c  free species and aqueous complex concentrations
           if (extended_output_gs) then
             if (b_output_binary) then
@@ -5224,7 +5253,7 @@
                         
             do isb = 1,nsb_surf
               call sorbspc(dummy,csb_surf(isb,tid),                   &
-                   cnew(n-nelect+1:n,ivol),cec_g(ivol),               &
+                   cnew(nc-nelect:nc-1,ivol),cec_g(ivol),             &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                  &
                    gamma(:,ivol),cnew(:,ivol),                        &
                    xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,           &

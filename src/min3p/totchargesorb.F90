@@ -30,7 +30,7 @@
 !c integer, intent(in)                                 :: nelect_surf             ! Number of electrostatic terms
 !c integer, intent(in)                                 :: nlayer_surf             ! Number of layers
 !c integer, intent(in)                                 :: ncap_surf               ! Number of constant capacitances
-!c real*8, intent(inout), dimension(nelect_surf)       :: chargebal_surf          ! Electric charge balance on the layers 
+!c real*8, intent(inout), dimension(nelect_surf)       :: chargebal_surf          ! Electric charge balance on the layers, [C/Lw] 
 !c real*8, intent(in), dimension(nsb_surf)             :: csb_surf                ! Molality of surface complexes 
 !c real*8, intent(in), dimension(nlayer_surf,nsb_surf) :: charge_surf             ! Electric charge of species in each layer
 !c real*8, intent(in)                                  :: temp                    ! Temperature [K]
@@ -53,7 +53,7 @@ integer, intent(in)                                 :: nsb_surf                !
 integer, intent(in)                                 :: nelect_surf             ! Number of electrostatic terms
 integer, intent(in)                                 :: nlayer_surf             ! Number of layers
 integer, intent(in)                                 :: ncap_surf               ! Number of constant capacitances
-real*8, intent(inout), dimension(nelect_surf)       :: chargebal_surf          ! Electric charge balance on the layers 
+real*8, intent(inout), dimension(nelect_surf)       :: chargebal_surf          ! Electric charge balance on the layers, [C/Lw]  
 real*8, intent(in), dimension(nsb_surf)             :: csb_surf                ! Molality of surface complexes 
 real*8, intent(in), dimension(nlayer_surf,nsb_surf) :: charge_surf             ! Electric charge of species in each layer
 real*8, intent(in)                                  :: temp                    ! Temperature [K]
@@ -67,7 +67,7 @@ real*8, intent(in), dimension(ncap_surf)            :: cap_surf                !
 !c----------------------------------------------------------------------------------------------------
 real*8, parameter :: r0=0.0d0,                 &
                      r2=2.0d0,                 &
-                     faraday=96493.0d0,        &   ! Faraday constant 
+                     faraday=96485.0d0,        &   ! Faraday constant, [C/mol e-] or [C/eq] 
                      r8000=8.0d3,              &
                      rgas=8.314d0,             &   ! Universal gas constant 
                      epsilon=78.5d0,           &

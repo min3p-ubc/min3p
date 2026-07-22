@@ -96,7 +96,7 @@
 
 !c  faraday constant
 
-      farad_const = 96487.0d0
+      farad_const = 96485.0d0
 
 !c  dielectric constant of water
 
@@ -127,6 +127,9 @@
       pres_atm = 1.0d0           !atm
       rho_w = 1000.0d0           !kg m^-3
       pa_atm = 1.01325d5         !Pa atm^-1
+
+!c  bulk density 2.65 g/cm^3 if not specified in input file, to be checked later
+      rhobulk = 2.65d0           !g/cm^3
 
       return
       end

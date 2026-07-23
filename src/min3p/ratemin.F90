@@ -178,15 +178,14 @@
  
       implicit none
       
-      real*8 :: totc, c, cx, gammac, gammax, ratem, phim, phimold, aream
+      real*8 :: c(*),cx(*),gammac(*),gammax(*),totc(*)
+      real*8 :: ratem, phim, phimold, aream
       integer :: im, tid
       
       integer :: i1, ic, ireac, istart, istop, istart2, istop2,       &
                  ix, info_debug
       
       real*8 :: r1_iap_k, prodrc, prodrcinc, termmdm, termmdi
-
-      dimension c(*),cx(*),gammac(*),gammax(*),totc(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       

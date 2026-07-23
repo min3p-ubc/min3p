@@ -475,14 +475,15 @@
                  l_indep_var,l_prfx,l_zone_name,ntstp,ngb_tstep  
 
       integer :: i_append_sim, mtime_append
-      
-      real*8 :: c, cx, gammac, gammax, actvt, strion, totc, time,      &
-                rootdens, zbal, zpos, zneg, ph, pe, eh, tempkel,       &
-                xg, yg, zg, alk_carb, alk_noncarb, alk_tot,            &
+
+      real*8 :: totc(*),c(*),cx(*),cm(*),g(*),distcoff(*),gammac(*),   &
+                gammax(*),actvt(*),aream(*),phim(*),phimold(*)
+
+      real*8 :: strion, time, rootdens, zbal, zpos, zneg, ph, pe, eh,  &
+                tempkel, xg, yg, zg, alk_carb, alk_noncarb, alk_tot,   &
                 alk_carb_mg, alk_noncarb_mg, alk_tot_mg,               &
-                pres_tot, g, hhead, phim, distcoff, sw, porvol,        &
-                dummy, cec_l, phimold, conc_mol, frac_mol,             &
-                ratem, aream, cm, deltat, gammatemp, tottemp
+                pres_tot, hhead, sw, porvol, dummy, cec_l,             &
+                conc_mol, frac_mol, ratem, deltat, gammatemp, tottemp
       real*8, external :: satindex, pressure_melt_k
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r1d3 = 1.0d3
@@ -497,8 +498,6 @@
                                                                        
       logical tec_header,update_porosity
                                                                        
-      dimension totc(*),c(*),cx(*),cm(*),g(*),distcoff(*),gammac(*),   &
-                gammax(*),actvt(*),aream(*),phim(*),phimold(*)
       real*8 :: rdummys(200)
       
       character*72, allocatable :: nametemp(:)

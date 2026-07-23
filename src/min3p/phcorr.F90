@@ -95,11 +95,10 @@
 #endif 
       implicit none
       
-      real*8 :: cnew, cold, tempkel
+      real*8 :: cnew(*), cold(*)
+      real*8 :: tempkel
       integer :: ilog, tid
       
-      dimension cnew(*),cold(*)
-
       real*8, parameter :: r2 = 2.0d0, r4 = 4.0d0, r10 = 10.0d0
       
       integer :: ic

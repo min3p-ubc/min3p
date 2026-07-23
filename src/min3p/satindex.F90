@@ -68,11 +68,11 @@
  
       implicit none
       
-      real*8 :: c, eqsp, gammac, xnusp
-      integer :: ia, ja, isp
- 
-      dimension c(*),gammac(*),xnusp(*),ia(*),ja(*)
-      
+      real*8 :: eqsp
+      real*8 :: c(*),gammac(*),xnusp(*)
+      integer :: ia(:),ja(:)
+      integer :: isp 
+     
       !local variables
       real*8 :: r1, prodiap
       integer :: i, ic, istart, iend

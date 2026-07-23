@@ -148,7 +148,9 @@
 
       implicit none
       
-      real*8 :: c,cx,gammac,gammax,strion,actvt 
+      real*8 :: c(*), cx(*), gammac(*), gammax(*), actvt(*)
+
+      real*8 :: strion
 
       integer :: tid 
       
@@ -157,8 +159,6 @@
       real*8, external :: acoff
 
       external secspec, ionstr
-
-      dimension c(*),cx(*),gammac(*),gammax(*),actvt(*)
 
 !c  activity coefficients for free species
       if (update_activity(tid).eq.'double_update') then

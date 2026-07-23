@@ -70,10 +70,8 @@
  
       implicit none
       
-      real*8 :: totc
+      real*8 :: totc(*)
 
-      dimension totc(*)
-      
       integer :: i, ic, ir, istart, iend
  
 !c  compress system - add up excluded total concentrations to remaining 

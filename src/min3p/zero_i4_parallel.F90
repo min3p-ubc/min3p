@@ -53,10 +53,10 @@
  
       implicit none
 
-      integer*4 i4(*), i0, i
-      integer :: n1, n2, n3, nentries
+      integer*4 :: i4(*)
+      integer*4 :: i, n1, n2, n3, nentries
 
-      parameter (i0 = 0)
+      integer*4, parameter :: i0 = 0
  
       nentries = n1*n2*n3
 

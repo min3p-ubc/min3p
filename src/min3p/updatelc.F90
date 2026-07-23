@@ -110,9 +110,8 @@
       
       integer :: tid
       
-      real*8 :: c, ulc, por
-
-      dimension c(*),ulc(*)
+      real*8 :: c(*), ulc(*)
+      real*8 :: por
 
       logical not_converged
       character*72 name

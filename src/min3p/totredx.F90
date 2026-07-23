@@ -86,11 +86,9 @@
  
       implicit none
       
-      real*8 :: totoxrd
+      real*8 :: totoxrd(*)
       
       integer :: tid, idbg
-
-      dimension totoxrd(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       integer :: i, ic, ir, info_debug, istart, istop

@@ -66,9 +66,7 @@
 
       implicit none
       
-      real*8 :: cx, totc
-
-      dimension cx(*), totc(*)
+      real*8 :: cx(*), totc(*)
       
       integer :: ic, ix
 

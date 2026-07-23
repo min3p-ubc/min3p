@@ -125,15 +125,12 @@
                                                                        
       implicit none
                                                                        
-      character*72 namec                                               
+      character*72 :: namec(:)                                               
       real*8 :: rhobulk 
-      real*8 :: csb_ion, csb_surf, chargesb_ion,                       &
-                totcsb_ion, totcsb_surf, xnusb_ion, xnusb_surf     
-      integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nc,nsb_ion,     &
-                 nsb_surf
-      dimension csb_ion(*),csb_surf(*),chargesb_ion(*),                &
-                totcsb_ion(*),totcsb_surf(*),xnusb_ion(*),xnusb_surf(*), &
-                iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*),namec(*)
+      real*8 :: csb_ion(*), csb_surf(*), chargesb_ion(*),                       &
+                totcsb_ion(*), totcsb_surf(*), xnusb_ion(*), xnusb_surf(*)
+      integer :: iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*)
+      integer :: nc,nsb_ion,nsb_surf
       
       !local variables
       real*8 :: r0, r100

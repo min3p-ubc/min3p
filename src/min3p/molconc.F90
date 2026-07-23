@@ -71,13 +71,11 @@
  
       implicit none
       
-      real*8 :: phim
+      real*8 :: phim(*)
       
       integer :: tid, im
       
       real*8 :: conc_mol_add
-
-      dimension phim(*)
 
       real*8, parameter :: r0 = 0.0d0, r2 = 2.0d0, huge = 1.0d300   
       

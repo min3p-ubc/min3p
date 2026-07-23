@@ -83,9 +83,8 @@
  
       implicit none
       
-      real*8 :: c, cx, totcf
+      real*8 :: c(*), cx(*), totcf(*)
 
-      dimension c(*),cx(*),totcf(*)
       integer izn
       
       integer :: i, ic, ix, istart, iend

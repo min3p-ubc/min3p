@@ -73,9 +73,7 @@
  
       implicit none
       
-      real*8 :: g, totg
-
-      dimension g(*),totg(*)
+      real*8 :: g(*), totg(*)
 
       real*8 :: r0
       

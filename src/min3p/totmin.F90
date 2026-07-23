@@ -78,9 +78,7 @@
 
       external zero_r8
       
-      real*8 :: ratem, totm
- 
-      dimension ratem(*),totm(*)
+      real*8 :: ratem(*), totm(*)
 
       call zero_r8(totm,nc-1,1,1)
  

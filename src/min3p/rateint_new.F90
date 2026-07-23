@@ -214,8 +214,8 @@
 #endif 
       implicit none
       
-      real*8 :: rate,totc,c,cx,gammac,gammax,phim, scalfacaq,          &
-                saqvol, porvol
+      real*8 :: rate, scalfacaq, saqvol, porvol
+      real*8 :: totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
       
       integer :: iaq, tid
       
@@ -224,8 +224,6 @@
                  istart2, istop2, istart3, istop3, ibottom, itop,      &
                  itemp, iaqhst, iaqe, info_debug, next
       real*8 :: sumic, alphar, alphartot, alphartop, prodrc, term_bordeaux
-
-      dimension totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       

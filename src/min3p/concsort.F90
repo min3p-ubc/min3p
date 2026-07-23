@@ -72,11 +72,11 @@
       
       implicit none
 
-      logical done      
-      character*72 name, nametemp
-      real*8 :: conc, gamma
+      logical :: done      
+      character*72 :: nametemp      
       integer :: n
-      dimension conc(*),gamma(*),name(*)
+      real*8 :: conc(*),gamma(*)
+      character*72 :: name(*)
       
       !local variables
       integer :: i, ip1, npairs

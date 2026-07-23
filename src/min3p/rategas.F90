@@ -78,14 +78,11 @@
       
       integer :: tid
       
-      real*8 :: g, tkel, hhead, zg, sg_loc
+      real*8 :: g(*)
+      real*8 :: tkel, hhead, zg, sg_loc
       
-      real*8 :: r0, r1
-
-      parameter (r0 = 0.0d0, r1 = 1.0d0)
-
-      dimension g(*)
-      
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+     
       integer :: ig, info_debug
       
       real*8 :: pres_tot, pres_conf, rate

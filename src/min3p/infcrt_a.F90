@@ -152,8 +152,9 @@
                  nvzgls, nvzgle, nvzgbl, ivxgbl, ivygbl, ivzgbl,       &
                  ivxpgbl, ivypgbl, ivzpgbl, ivxngbl, ivyngbl, ivzngbl, & 
                  nvx, nvy, nvz, ia(nmax+1), ja(njamxc), isymm(njamxc), &
-                 idbg, ilog, nzn, mprop(*), nc, type_diffu,            &
-                 type_diff_ic
+                 idbg, ilog, nzn, nc, type_diffu, type_diff_ic
+
+      integer :: mprop(*)
 
       logical :: half_cells, fully_saturated, variably_saturated,      &
                  upstream, tortuosity_corr,comp_dep_diff_coff,         &

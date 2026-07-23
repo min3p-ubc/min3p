@@ -217,7 +217,7 @@
       implicit none
       
       integer :: igen, ilog, tid
-      real*8 :: c, cx, gammac, gammax, g
+      real*8 :: c(*), cx(*), gammac(*), gammax(*), g(*)
       
       integer :: i, i1, i2, i3, ii, ic, ic2, icount, icur, ireac,      &
                  istart, istop, istart2, istop2, next, ix, ig, im, imx,&
@@ -235,10 +235,7 @@
 
       logical found
 
-      character*72 section_header
- 
-      dimension c(*), cx(*), gammac(*), gammax(*), g(*)
-      
+      character*72 section_header     
 
       totsitec = r0
       namet(:) = ''

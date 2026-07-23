@@ -38,7 +38,7 @@
 			<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
 			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Release|x64" UseCompiler="ifortCompiler">
+		<Configuration Name="Release|x64" UseCompiler="ifxCompiler">
 			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE;RELEASE_X64;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true" FloatingPointModel="source"/>
 			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-x64-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" SubSystem="subSystemConsole"/>
 			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_X64"/>
@@ -65,7 +65,8 @@
 			</File>
 		</Filter>
 		<Filter Name="Source Files">
-			<File RelativePath="..\..\min3p\acoff.F90"/>
+			<File RelativePath="..\..\min3p\acoff.F90">
+			</File>
 			<File RelativePath="..\..\min3p\alkcalc.F90"/>
 			<File RelativePath="..\..\min3p\aratemin.F90"/>
 			<File RelativePath="..\..\min3p\assngaspc.F90"/>
@@ -277,8 +278,10 @@
 			<File RelativePath="..\..\min3p\jacddvs.F90"/>
 			<File RelativePath="..\..\min3p\jacfs.F90"/>
 			<File RelativePath="..\..\min3p\jacheat.F90"/>
-			<File RelativePath="..\..\min3p\jaclc.F90"/>
-			<File RelativePath="..\..\min3p\jacrt.F90"/>
+			<File RelativePath="..\..\min3p\jaclc.F90">
+			</File>
+			<File RelativePath="..\..\min3p\jacrt.F90">
+			</File>
 			<File RelativePath="..\..\min3p\jacsurf.F90"/>
 			<File RelativePath="..\..\min3p\jacvs.F90"/>
 			<File RelativePath="..\..\dgm\lennard_jones.F90"/>

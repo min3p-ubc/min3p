@@ -72,9 +72,9 @@
 
       implicit none
       
-      real*8 :: ratem, totm_w
+      real*8 :: totm_w
 
-      dimension ratem(*)
+      real*8 :: ratem(*)
       
       integer :: i, ic, im, istart, iend
 

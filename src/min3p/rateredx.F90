@@ -163,7 +163,8 @@
 #endif 
       implicit none
       
-      real*8 :: c,cx,gammac,gammax,rate,totc
+      real*8 :: rate
+      real*8 :: c(*),cx(*),gammac(*),gammax(*),totc(*)
       
       integer :: ir, tid
       
@@ -171,8 +172,6 @@
                  istart2, istop2, info_debug
       
       real*8 :: prodrc, aprod
-
-      dimension c(*),cx(*),gammac(*),gammax(*),totc(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0      
 

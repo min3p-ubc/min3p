@@ -77,12 +77,11 @@
       implicit none
  
  
-      character*72 :: namec
       integer :: nc, ng, jbl
       real*8 :: drtinc
-      real*8 :: g, ginc, dtotg, xnug
-      integer :: iaga, jaga
-      dimension :: g(*),ginc(*),dtotg(*),xnug(*),iaga(*),jaga(*),namec(*)
+      real*8 :: g(*),ginc(*),dtotg(*),xnug(*)
+      integer :: iaga(*),jaga(*)
+      character*72 :: namec(*)
       
       !local variable
       real*8 :: r0

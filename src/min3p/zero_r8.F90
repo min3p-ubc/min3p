@@ -55,8 +55,7 @@
       integer :: n1, n2, n3
       
       integer :: i, nentries
-      real*8 :: r0
-      parameter (r0 = 0.0d0)
+      real*8, parameter :: r0 = 0.0d0
  
       nentries = n1*n2*n3
 

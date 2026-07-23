@@ -121,7 +121,9 @@
       implicit none
 
       integer :: nvx, nvy, nvz, ia(nmax+1), ja(njamxc),               &
-                 isymm(njamxc), idbg, ilog, nzn, mprop(*)
+                 isymm(njamxc), idbg, ilog, nzn
+                 
+      integer :: mprop(*)
 
       logical :: half_cells, fully_saturated, variably_saturated,     &
                  comp_dep_diff_coff, av_dens_z,radial_coord,          &

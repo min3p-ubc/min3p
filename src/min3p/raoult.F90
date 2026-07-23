@@ -116,7 +116,8 @@
  
       implicit none
       
-      real*8 :: c, gammac, ratem, phim, phimold, aream 
+      real*8 :: c(*),gammac(*)
+      real*8 :: ratem, phim, phimold, aream 
       integer :: im, tid
       
       integer :: istart, istop, ireac
@@ -124,8 +125,6 @@
       real*8 :: conc_mol, frac_mol
       real*8, external :: satindex
       
-      dimension c(*),gammac(*)
-
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0      
 
 !c  compute effective dissolution rate

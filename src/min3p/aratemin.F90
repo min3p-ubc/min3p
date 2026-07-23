@@ -193,7 +193,7 @@
  
       implicit none
       
-      real*8 :: totc,c,cx,gammac,gammax,ratem,phim,phimold,aream
+      real*8 :: ratem,phim,phimold,aream
       integer :: im, jbl, ivol, tid
       
       integer :: i1, ic, istart, istop, istart2, istop2, iend,         &
@@ -202,7 +202,7 @@
       real*8 :: xnum_jbl, prod_dc, orddc_jbl, prodrc, drtinc,          &
                 prodrcinc, satminc
 
-      dimension totc(*),c(*),cx(*),gammac(*),gammax(*)
+      real*8 :: totc(*),c(*),cx(*),gammac(*),gammax(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
 

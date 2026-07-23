@@ -56,10 +56,9 @@
  
       implicit none
       
-      real*8 :: c, gammac, g, totcg, tempkel
+      real*8 :: c(*), gammac(*), g(*), totcg(*)
+      real*8 :: tempkel
       integer :: tid
-
-      dimension c(*),gammac(*),g(*),totcg(*)
  
       external totconcg, gasconc
       

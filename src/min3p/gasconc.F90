@@ -82,13 +82,13 @@
  
       implicit none
       
-      real*8 :: c, gammac, g, tempkel
+      real*8 :: g, tempkel
       
       integer :: ig, tid
       
       integer :: i, ic, istart, iend
 
-      dimension c(*),gammac(*)
+      real*8 :: c(*), gammac(*)
 
       real*8, parameter :: r1 = 1.0d0
       

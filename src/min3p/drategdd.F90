@@ -84,9 +84,9 @@
  
       implicit none
       
-      real*8 :: g, tkel, phead, drtinc
+      real*8 :: tkel, phead, drtinc
       
-      dimension :: g(*)
+      real*8 :: g(*)
       
       integer :: tid
 

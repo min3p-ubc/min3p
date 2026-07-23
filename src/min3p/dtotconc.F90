@@ -90,13 +90,13 @@
 
       implicit none
       
-      real*8 :: c, cx, drtinc
+      real*8 :: drtinc
       
       integer :: jbl, tid
 
       integer :: izn
       
-      dimension c(*),cx(*)
+      real*8 :: c(*),cx(*)
       
       integer :: i, ibl, ix, istart, istop
      

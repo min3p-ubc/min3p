@@ -69,15 +69,15 @@
  
       implicit none
       
-      real*8 :: c, c2, gammac1, gammac2, xnuc2
-      integer :: ia, ja, i2
+      real*8 :: c(*),gammac1(*),xnuc2(*)
+      real*8 :: c2, gammac2
+      integer :: ia(*), ja(*)
+      integer :: i2
 
-      dimension c(*),gammac1(*),xnuc2(*),ia(*),ja(*)
-      
       !local variables
       integer :: i, i1, istart, iend
-      real*8 :: r1, eqc2      
-      parameter (r1 = 1.0d0)
+      real*8 :: eqc2      
+      real*8, parameter :: r1 = 1.0d0
       
 
 

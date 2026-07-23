@@ -77,7 +77,8 @@
  
       implicit none
       
-      real*8 :: g, tkel, phead, sg_loc
+      real*8 :: g(*)
+      real*8 :: tkel, phead, sg_loc
 
       integer :: tid
       
@@ -87,8 +88,6 @@
       
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
 
-      dimension g(*)
-      
 !c  initialize array for degassing rates
 
       do ig = 1,ng

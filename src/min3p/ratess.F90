@@ -51,16 +51,16 @@ implicit none
 
 
 
-real*8, intent(inout) :: ratem_loc(:)               ! Reaction rates for all minerals               
-real*8, intent(in) :: aream_loc(:)                
-real*8, intent(in) :: cnew_loc(:)                   
-real*8, intent(in) :: cx_loc(:)                 
-real*8, intent(in) :: gammac_loc(:)             
-real*8, intent(in) :: gammax_loc(:)             
-real*8, intent(in) :: cmold_loc(:)                  ! Previous mineral concentrations
-real*8, intent(in) :: cmin_loc(:)
-real*8, intent(in) :: delt_loc                      ! Time increment
-integer, intent(in) :: iter_rt_loc                  ! Iteration level for reactive transport
+real*8 :: ratem_loc(*)               ! Reaction rates for all minerals               
+real*8 :: aream_loc(*)                
+real*8 :: cnew_loc(*)                   
+real*8 :: cx_loc(*)                 
+real*8 :: gammac_loc(*)             
+real*8 :: gammax_loc(*)             
+real*8 :: cmold_loc(*)                  ! Previous mineral concentrations
+real*8 :: cmin_loc(*)
+real*8 :: delt_loc                      ! Time increment
+integer :: iter_rt_loc                  ! Iteration level for reactive transport
 
       
 integer            :: im, iss, tid, i, i1, ic, ic2,       & 

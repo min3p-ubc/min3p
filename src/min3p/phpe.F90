@@ -68,11 +68,10 @@
 
       implicit none
       
-      real*8 :: c, gammac, ph, pe, eh, tempkel
-      
-      integer :: ic
+      real*8 :: c(*), gammac(*)
+      real*8 :: ph, pe, eh, tempkel
 
-      dimension c(*), gammac(*)
+      integer :: ic
 
 !c  initialize the value, for some compiler, if ph or pe is never calculated in the following
 !c  steps, it will return NaN. DSU, 2013-10-17

@@ -234,8 +234,7 @@
  
       implicit none
       
-      real*8 :: rate, totc, c, cx, gammac, gammax, phim, drtinc,       &
-                scalfacaq, saqvol, porvol
+      real*8 :: rate, drtinc, scalfacaq, saqvol, porvol
       
       integer :: iaq, tid
       
@@ -248,7 +247,7 @@
                 sumicinc, alphartot, alphartop, alphartotinc,          &
                 alphartopinc, term_bordeaux
       
-      dimension c(*),cx(*),gammac(*),gammax(*),totc(*),phim(*)
+      real*8 :: c(*),cx(*),gammac(*),gammax(*),totc(*),phim(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       

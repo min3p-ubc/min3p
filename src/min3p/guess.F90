@@ -98,7 +98,7 @@
 
       implicit none
       
-      real*8 :: cnew, cold, tempkel
+      real*8 ::  tempkel
       
       integer :: ilog
       
@@ -108,7 +108,7 @@
 
       external phcorr
 
-      dimension cnew(*),cold(*)
+      real*8 :: cnew(*),cold(*)
 
       real*8, parameter :: r_100 = 1.d-2, r10 = 10.0d0
       

@@ -316,7 +316,7 @@
  
       implicit none
       
-      real*8 :: cnew,cold,cx,gammac,gammax,actvt,gnew,sw,sa,por
+      real*8 :: sw,sa,por
       
       integer :: igen,ilog,tid,idbg,l_prfx,l_zone_name,mtime
       
@@ -344,7 +344,7 @@
       character*72 :: zone_name
       character*72 :: update_activity_save
 
-      dimension cnew(*),cold(*),cx(*),gammac(*),gammax(*),gnew(*),actvt(*)
+      real*8 :: cnew(*),cold(*),cx(*),gammac(*),gammax(*),gnew(*),actvt(*)
 
       !real*8 :: alc_bk(nc-1,nc-1), blc_bk(nc-1), rnorm
 

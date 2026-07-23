@@ -1148,7 +1148,7 @@
 #endif
 
         call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),        & 
-                      gamma(nc+1,ivol),sionnew(ivol),                  &
+                      gamma(nc+1:,ivol),sionnew(ivol),                  &
                       actvset(:,ivol),tid)
         
 #ifdef DEBUG
@@ -1187,7 +1187,7 @@
 
         if (update_activity(tid).eq.'double_update') then
           call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &     
-                        gamma(nc+1,ivol),sionnew(ivol),                &
+                        gamma(nc+1:,ivol),sionnew(ivol),                &
                         actvset(:,ivol),tid)
 #ifdef DEBUG
           if(info_debug > 10) then
@@ -1438,11 +1438,10 @@
               else
                 rootdens = r1
               end if
-              call ratemin_new(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol), &
-                               gamma(:,ivol),gamma(nc+1,ivol),sanew(ivol), &
-                               ratemdp(im,ivol),phi(:,ivol),               &
-                               phiold(im,ivol),area(im,ivol),              &
-                               rootdens,im,tid)
+              call ratemin_new(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol),  &
+                               gamma(:,ivol),gamma(nc+1:,ivol),sanew(ivol), &
+                               ratemdp(im,ivol),phi(:,ivol),phiold(im,ivol),&
+                               area(im,ivol),rootdens,im,tid)
               
             else
 
@@ -3141,8 +3140,9 @@
 !cprovi----------------------------------------------------------------------------------
               if (elect_correction) then  
                 area_surf = site_area(1)*site_mass(1)
-                call ionstr(cinc(:,tid),cxinc(:,tid),strioninc,chargec,chargex, &
-                            nc-1-nelect,nx,namec)
+                call ionstr(cinc(:,tid),cxinc(:,tid),strioninc,       &
+                            chargec(:),chargex(:),nc-1-nelect,nx,     &
+                            namec(:))
                 call totchargesorb(dtotcharge_surf(n-nelect+1:n,tid),strioninc,        &
                         cinc(n-nelect+1:n,tid),dcsb_surf(:,tid),charge_surf,nsb_surf,  &
                         tkel(ivol),area_surf,cap_surf,name_elect_correction,           &
@@ -3311,7 +3311,7 @@
 
                   call aratemin(totcnew(:,ivol),cnew(:,ivol),         &
                                 cxnew(:,ivol),gamma(:,ivol),          &
-                                gamma(nc+1,ivol),dratedp(im,tid),     &
+                                gamma(nc+1:,ivol),dratedp(im,tid),    &
                                 phi(im,ivol),phiold(im,ivol),         &
                                 area(im,ivol),im,jbl,ivol,tid)
 
@@ -3328,7 +3328,7 @@
                     end if
                     call dratemin_new(totcnew(:,ivol),cnew(:,ivol),    &  
                                       cxnew(:,ivol),gamma(:,ivol),     &
-                                      gamma(nc+1,ivol),sanew(ivol),    &
+                                      gamma(nc+1:,ivol),sanew(ivol),   &
                                       dratedp(im,tid),                 &
                                       phi(:,ivol),phiold(im,ivol),     &
                                       area(im,ivol),drtinc,rootdens,   &

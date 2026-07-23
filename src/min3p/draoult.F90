@@ -122,7 +122,7 @@
  
       implicit none
       
-      real*8 :: c,gammac,ratem,phim,phimold,aream,drtinc
+      real*8 :: ratem,phim,phimold,aream,drtinc
       
       integer :: im, tid
       
@@ -132,7 +132,7 @@
 
       real*8, external :: satindex
 
-      dimension c(*),gammac(*)
+      real*8 :: c(*),gammac(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
     

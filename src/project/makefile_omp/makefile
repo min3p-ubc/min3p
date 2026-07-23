@@ -10,7 +10,7 @@
 # Conditional parameters, please leave the variable empty (DO NOT PUT FALSE instead) if the given condition is FALSE.
 # e.g., 'with-debug = true' or 'with-debug = false' or 'with-debug = xxx' means debug is turned on.
 #       'with-debug = ' means debug is turned off. The provided value does not mean anything here.
-with-debug = true
+with-debug =
 
 with-openmp = true
 

@@ -76,9 +76,7 @@
       
       integer :: i, ic, ix, istart, iend
       
-      real*8 :: c, cx, totc
-
-      dimension c(*),cx(*),totc(*)
+      real*8 :: c(*), cx(*), totc(*)
  
 !c  free species
  

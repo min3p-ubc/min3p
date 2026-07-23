@@ -71,9 +71,7 @@
       
       integer :: tid
       
-      real*8 :: cmnewm,phim,aream
-
-      dimension cmnewm(*),phim(*),aream(*)
+      real*8 :: cmnewm(*),phim(*),aream(*)
       
       integer :: i1, im, im2, istart, istop
       

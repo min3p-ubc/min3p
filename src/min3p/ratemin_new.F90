@@ -258,17 +258,16 @@
                  itemp, info_debug, ireac, istart, istop, istart2,     &
                  istop2, istart3, istop3, itop, ibottom, next, ix, im3 
       
-      real*8 :: totc, c, cx, gammac, gammax, sw, ratem, phim, phimold      
+      real*8 :: totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
+      real*8 :: sw, ratem, phimold      
       real*8 :: aream, rootdens, r1_iap_k, prodrc, prodrcinc, conc_m
       real*8 :: alphar, alphartot, alphartop, gammatemp, sumic, sumix
       real*8 :: salinity, sar
       real*8 :: a, b
       logical :: summed_species
 
-      dimension c(*),cx(*),gammac(*),gammax(*),totc(*),phim(*)
-
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
-      real, parameter  :: pi = 3.141592653589793d0
+      real*8, parameter :: pi = 3.141592653589793d0
       
       external :: raoult
 

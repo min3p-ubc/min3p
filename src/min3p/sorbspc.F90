@@ -145,22 +145,19 @@
 
       implicit none
       
-      real*8 :: csb_ion,csb_surf,cec,eqsb_ion,eqsb_surf,gammac,c,      &
-                xnusb_ion,xnusb_surf,elect_surf,dz_surf,totc
-      integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,        &
-                 nsb_surf,isb_ion,isb_surf,nelect,nlayer
+      real*8 :: csb_ion,csb_surf,cec
+      integer :: nsb_ion,nsb_surf,isb_ion,isb_surf,nelect,nlayer
+      real*8 :: c(*),eqsb_ion(*),eqsb_surf(*),gammac(*),               &
+                xnusb_ion(*),xnusb_surf(*),elect_surf(*),totc(*)
+      real*8 :: dz_surf(nlayer,nsb_surf)                
+      integer :: iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*)
                                                                         
       character*72 :: sorption_type_ion,sorption_type_surf,            &
                       sorption_group,name_elect_correction                         
-      character*12, dimension(*) :: component_type
+      character*12 :: component_type(:)
                                                                         
       logical :: isactcexch, elect_correction, mol_frac_ads
-                                                                        
-      dimension c(*),eqsb_ion(*),eqsb_surf(*),gammac(*),               &
-                xnusb_ion(*),xnusb_surf(*), iasb_ion(*),iasb_surf(*),  &
-                jasb_ion(*),jasb_surf(*),elect_surf(*),totc(*)
-      dimension dz_surf(nlayer,nsb_surf)
-                                                                        
+                                                                       
       real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0,      &
                            r2 = 2.0d0, r3 = 3.0d0, r4 = 4.0d0,         &
                            rtol = 1.0d-15, pi = 3.141592653589793d0
@@ -387,8 +384,10 @@
 
       implicit none
 
-      real*8 :: csb_ion,csb_surf,cec,cec_fraction,eqsb_ion,eqsb_surf,gammac,c,xnusb_ion,xnusb_surf
-      integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,nsb_surf,isb_ion,isb_surf
+      real*8 :: csb_ion,csb_surf,cec,cec_fraction
+      integer :: nsb_ion,nsb_surf,isb_ion,isb_surf
+      integer :: iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*)
+      real*8 :: c(*),eqsb_ion(*),eqsb_surf(*),gammac(*),xnusb_ion(*),xnusb_surf(*)
 
       integer :: i1, ic, istart, istop, iend, isb, itemp, ksb, nss,    &
                  nroots, nits
@@ -400,9 +399,6 @@
       character*72 sorption_type_ion,sorption_type_surf,sorption_group                         
                                                                         
       logical isactcexch
-                                                                        
-      dimension c(*),eqsb_ion(*),eqsb_surf(*),gammac(*),xnusb_ion(*),xnusb_surf(*), &
-                iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*)
                                                                         
       real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0, r1 = 1.0d0,      &
                            r2 = 2.0d0, r3 = 3.0d0, r4 = 4.0d0,         &

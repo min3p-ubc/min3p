@@ -88,9 +88,9 @@
 
       integer :: ilog
 
-      real*8 :: tota, totc, distcoff, sw, por
+      real*8 :: sw, por
 
-      dimension totc(*),tota(*),distcoff(*)
+      real*8 :: totc(*),tota(*),distcoff(*)
 
       real*8, parameter :: r0 = 0.0d0
 

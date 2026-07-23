@@ -66,9 +66,7 @@
       
       integer :: tid
 
-      real*8 :: cnew, cold, ulc
-      
-      dimension cnew(*),cold(*),ulc(*)
+      real*8 :: cnew(*), cold(*), ulc(*)
 
       real*8, parameter :: rhalf = 0.5d0, r3half = 1.5d0, tiny = 1.0d-20  
       

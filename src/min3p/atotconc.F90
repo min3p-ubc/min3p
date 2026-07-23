@@ -89,12 +89,11 @@
  
       implicit none
       
-      real*8 :: c, cx
       integer :: jbl
       
       integer :: tid
 
-      dimension c(*),cx(*)
+      real*8 :: c(*),cx(*)
  
       real*8, parameter :: r0 = 0.0d0
 

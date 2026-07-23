@@ -64,9 +64,9 @@
  
       implicit none
       
-      real*8 :: c,cx,zbal,zpos,zneg
+      real*8 :: zbal,zpos,zneg
  
-      dimension c(*),cx(nx)
+      real*8 :: c(*),cx(*)
 
       real*8, parameter :: r0 = 0.0d0, r100 = 1.0d2, tiny = 1.d-100
       

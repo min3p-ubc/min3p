@@ -251,16 +251,15 @@
       
       real*8 :: r1_iap_k, prodrc, prodrcinc
       
-      real*8 :: totc, c, cx, gammac, gammax, sw, ratem, phim, phimod,  &
-                aream, drtinc, rootdens, conc_m
+      real*8 :: sw, ratem, phimold, aream, drtinc, rootdens, conc_m
       
       real*8 :: sar, sarinc
 
-      dimension totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
+      real*8 :: totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
 
       real*8 :: alphar, alphartot, alphartop, alphartotinc,            &
                 alphartopinc, alpharinc, gammatemp, gammatempinc,      &
-                sumic, sumicinc, phimold, satminc, sumix, sumixinc
+                sumic, sumicinc, satminc, sumix, sumixinc
                 
       real*8, external :: satcorr_curve
       

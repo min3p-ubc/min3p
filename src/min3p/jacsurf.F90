@@ -206,9 +206,8 @@
       
       external comptotc, sorbspc, totsorb, totchargesorb
       
-      real*8 :: cnew, gammac, sw, por, area
-
-      dimension cnew(*),gammac(*)
+      real*8 :: cnew(*),gammac(*)
+      real*8 :: sw, por, area
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       

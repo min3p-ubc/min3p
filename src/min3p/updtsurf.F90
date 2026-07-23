@@ -109,12 +109,9 @@
       
       implicit none
       
-      real*8 :: c, ulc
+      real*8 :: c(*), ulc(*)
       integer :: ilog, tid
-      
-      dimension c(*),ulc(*)
-      
-      
+           
       logical not_converged, over_flow_lc
       character*72 name
  

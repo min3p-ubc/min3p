@@ -93,7 +93,7 @@
       integer :: iax(*), jax(*)
       
       character*72 :: namec(*), namex(*)
-      logical carb_alkalinity
+      logical :: carb_alkalinity
                
       
       !local variables

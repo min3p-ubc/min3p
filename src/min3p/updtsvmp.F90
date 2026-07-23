@@ -123,13 +123,12 @@
 
       implicit none
       
-      real*8 :: cmnewm, cmoldm, phim, aream, ratem, satindex, deltsv
+      real*8 :: cmnewm(*), cmoldm(*), phim(*), aream(*), ratem(*), satindex(*)
+      real*8 :: deltsv
       integer :: ivol, tid
       
       integer :: i1, im, im2, info_dbg, istart, istop
       real*8 :: ratio, rtemp, tpvf, ratio_por
-       
-      dimension cmnewm(*),cmoldm(*),phim(*),aream(*),ratem(*), satindex(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r2 = 2.0d0,         &
                  r3 = 3.0d0, r1000 = 1.0d3, rzero = 1.0d-11      

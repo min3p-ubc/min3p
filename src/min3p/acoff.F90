@@ -104,11 +104,13 @@
 
       intrinsic dabs,dsqrt
  
-      character*72 name,namec
-      real*8 :: c, cx, strion, charge, dha, dhb, dhad,dhbd,adav,bdav,  &
-                acth2omin,asit,bsit,coepsil,etemp 
-      integer :: nc,nx, icx, istart, iend,jtemp,iasit,jasit
-      dimension c(*),cx(*),namec(*),coepsil(*),iasit(*),jasit(*)
+      character*72 name
+      real*8 :: strion, charge, dha, dhb, dhad,dhbd,adav,bdav,  &
+                acth2omin,asit,bsit,etemp 
+      integer :: nc,nx, icx, istart, iend,jtemp
+      real*8 :: c(*),cx(*),coepsil(*)
+      integer :: iasit(*),jasit(*)
+      character*72 :: namec(*)
  
       !local variables
       real*8 :: tiny, rtenth, r0, r1, r10, c1, rstrion, sumc, dtemp

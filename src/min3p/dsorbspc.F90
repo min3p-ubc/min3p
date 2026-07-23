@@ -91,10 +91,11 @@
                          nsb,isb,kc)
  
       implicit none
-      real*8 :: dcsb, cec, eqsb, gammac, c, xnusb
-      integer :: iasb, jasb, nsb, isb, kc
+      real*8 :: dcsb, cec
+      integer :: nsb, isb, kc
 
-      dimension c(*),eqsb(*),gammac(*),xnusb(*),iasb(*),jasb(*)
+      real*8 :: c(*),eqsb(*),gammac(*),xnusb(*)
+      integer :: iasb(*),jasb(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r2 = 2.0d0
 

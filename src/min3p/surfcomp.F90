@@ -162,7 +162,8 @@
  
       implicit none
       
-      real*8 :: cnew, gammac, sw, por, strion
+      real*8 :: cnew(*), gammac(*)
+      real*8 :: sw, por, strion
       
       integer :: ilog, tid
       
@@ -175,8 +176,6 @@
       logical not_converged, over_flow_lc
 
       character*72 zone_name 
-
-      dimension cnew(*), gammac(*)
 
       !real*8 :: alc_bk(nc-1,nc-1), blc_bk(nc-1), rnorm
       

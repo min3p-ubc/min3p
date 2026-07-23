@@ -109,11 +109,10 @@
 
       implicit none
       
-      real*8 :: rate, totc, c, gammac, phim,scalfacaq
+      real*8 :: rate, scalfacaq
+      real*8 :: totc(*),c(*),gammac(*),phim(*)
       
       integer :: iaq, tid
-
-      dimension totc(*),c(*),gammac(*),phim(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       

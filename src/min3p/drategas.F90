@@ -86,7 +86,7 @@
 #endif 
       implicit none
       
-      real*8 :: g, tkel, hhead, zg, drtinc
+      real*8 :: tkel, hhead, zg, drtinc
       
       integer :: tid
 
@@ -96,7 +96,7 @@
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
 
-      dimension g(*)
+      real*8 :: g(*)
       
 !c  initialize array for degassing rates
 

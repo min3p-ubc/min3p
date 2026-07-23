@@ -194,7 +194,7 @@
  
       implicit none
       
-      real*8 :: c,cx,gammac,gammax,drate,totc,drtinc
+      real*8 :: drate,drtinc
       
       integer :: ir, tid, idbg
       
@@ -203,7 +203,7 @@
       
       real*8 :: rate, rateinc, prodrc, prodrcinc, aprod, aprodinc
       
-      dimension c(*),cx(*),gammac(*),gammax(*),totc(*)
+      real*8 :: c(*),cx(*),gammac(*),gammax(*),totc(*)
 
       real*8, parameter :: eps = 1.d-300,r0 = 0.0d0, r1 = 1.0d0
       

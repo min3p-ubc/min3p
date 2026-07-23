@@ -379,7 +379,8 @@
 #endif 
       implicit none
       
-      real*8 :: cnew, cxnew, gammac, gammax, actvt, sw, sa, por
+      real*8 :: cnew(*),cxnew(*),gammac(*),gammax(*),actvt(*)
+      real*8 :: sw, sa, por
       
       integer :: tid 
       
@@ -390,7 +391,6 @@
                dratemin_new, dtotconc, rateint, rateint_new,         &
                ratemin, ratemin_new, totint, updtsvap
 
-      dimension cnew(*),cxnew(*),gammac(*),gammax(*),actvt(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       

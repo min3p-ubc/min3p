@@ -57,14 +57,13 @@
 
       implicit none
 
-      character*72 namec
-      real*8 :: c, cx, chargec, chargex
+      character*72 :: namec(*)
+      real*8 :: c(*), cx(*), chargec(*), chargex(*)
       integer :: nc, nx
-      dimension c(*),cx(*),chargec(*),chargex(*),namec(*)
       
-      real*8 :: r0, rhalf, strion
+      real*8 :: strion
       integer :: ic, ix
-      parameter (r0 = 0.0d0, rhalf = 0.5d0)
+      real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0
 
 !c  initialize ionic strength
 

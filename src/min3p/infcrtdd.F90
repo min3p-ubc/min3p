@@ -147,9 +147,10 @@
       integer :: nvxgls, nvxgle, nvxgbl, nvygls, nvygle, nvygbl,       &
                  nvzgls, nvzgle, nvzgbl, ivxgbl, ivygbl, ivzgbl,       &
                  ivxpgbl, ivypgbl, ivzpgbl, ivxngbl, ivyngbl, ivzngbl, &
-                 nvx, nvy, nvz, type_diffu, type_diff_ic,              &
-                 idbg, ilog, nzn, nc, mprop(*), isymm(njamxc),         &
-                 ia(nmax+1), ja(njamxc)
+                 nvx, nvy, nvz, type_diffu, type_diff_ic, idbg, ilog,  &
+                 nzn, nc, isymm(njamxc), ia(nmax+1), ja(njamxc)
+
+      integer :: mprop(*)
 
       logical :: half_cells, fully_saturated, variably_saturated,      &
                  tortuosity_corr,comp_dep_diff_coff,assigned_tau,      &

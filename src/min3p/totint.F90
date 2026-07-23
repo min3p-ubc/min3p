@@ -91,13 +91,11 @@
  
       implicit none
       
-      real*8 :: totintaq
+      real*8 :: totintaq(*)
       
       integer :: tid, idbg
       
       integer :: i, ic, iaq, istart, istop, info_debug
-
-      dimension totintaq(*)
 
       real*8, parameter :: r0 = 0.0d0      
  

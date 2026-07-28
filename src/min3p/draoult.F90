@@ -146,7 +146,6 @@
         frac_mol = conc_mol/conc_mol_avg(tid)
 
 !c  compute free phase saturation indices (unshifted and shifted)
-
         satm(im,tid) = satindex(c,eqm(im,tid),gammac,xnum,iam,jam,im)
         satminc = satindex(cinc(:,tid),eqm(im,tid),gammac,xnum,iam,   &
                   jam,im)

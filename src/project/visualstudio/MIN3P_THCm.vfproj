@@ -7,7 +7,7 @@
 	<Configurations>
 		<Configuration Name="Debug|Win32" UseCompiler="ifortCompiler">
 			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_WIN32;DEBUG;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-win32d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Debug" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-win32d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Debug" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
 			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_WIN32"/>
 			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
 			<Tool Name="VFCustomBuildTool"/>
@@ -18,7 +18,7 @@
 		</Configuration>
 		<Configuration Name="Release|Win32" UseCompiler="ifortCompiler">
 			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/fp:strict" SuppressStartupBanner="true" OmitFramePointers="false" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE_WIN32;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-win32-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Release" SubSystem="subSystemConsole"/>
+			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-win32-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName);.\Release" SubSystem="subSystemConsole"/>
 			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_WIN32"/>
 			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
 			<Tool Name="VFCustomBuildTool"/>
@@ -27,9 +27,9 @@
 			<Tool Name="VFPostBuildEventTool" CommandLine="..\..\version\post_build_win.bat"/>
 			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Debug|x64" UseCompiler="ifxCompiler" TargetName="min3p-td-x64d-seq">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_X64;DEBUG;INTEL;USG;MEMORY_MONITOR;" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-x64d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+		<Configuration Name="Debug|x64" UseCompiler="ifxCompiler" TargetName="min3p-hpc-x64d-seq">
+			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;DEBUG_X64;DEBUG;INTEL;USG;GPL;ARCHISIMPLE;MEMORY_MONITOR" EnableRecursion="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-x64d-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
 			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="DEBUG_X64"/>
 			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
 			<Tool Name="VFCustomBuildTool"/>
@@ -39,8 +39,8 @@
 			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
 		<Configuration Name="Release|x64" UseCompiler="ifxCompiler">
-			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE;RELEASE_X64;INTEL;USG;MEMORY_MONITOR" EnableRecursion="true" FloatingPointModel="source"/>
-			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-td-x64-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" SubSystem="subSystemConsole"/>
+			<Tool Name="VFFortranCompilerTool" AdditionalOptions="/Z7 /fp:strict" SuppressStartupBanner="true" MultiProcessorCompilation="true" Preprocess="preprocessYes" PreprocessorDefinitions="WINDOWS;RELEASE;RELEASE_X64;INTEL;USG;GPL;ARCHISIMPLE;MEMORY_MONITOR" EnableRecursion="true" FloatingPointModel="source"/>
+			<Tool Name="VFLinkerTool" OutputFile="$(OutDir)\min3p-hpc-x64-seq.exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="$(PlatformName)\$(ConfigurationName)" GenerateManifest="false" SubSystem="subSystemConsole"/>
 			<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions="RELEASE_X64"/>
 			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
 			<Tool Name="VFCustomBuildTool"/>
@@ -65,8 +65,7 @@
 			</File>
 		</Filter>
 		<Filter Name="Source Files">
-			<File RelativePath="..\..\min3p\acoff.F90">
-			</File>
+			<File RelativePath="..\..\min3p\acoff.F90"/>
 			<File RelativePath="..\..\min3p\alkcalc.F90"/>
 			<File RelativePath="..\..\min3p\aratemin.F90"/>
 			<File RelativePath="..\..\min3p\assngaspc.F90"/>
@@ -75,7 +74,8 @@
 			<File RelativePath="..\..\min3p\batreac.F90"/>
 			<File RelativePath="..\..\min3p\bbls.F90"/>
 			<File RelativePath="..\..\min3p\bdryflux.F90"/>
-			<File RelativePath="..\..\min3p\binmatevap.F90"/>
+			<File RelativePath="..\..\min3p\binmatevap.F90">
+			</File>
 			<File RelativePath="..\..\min3p\binmattransp.F90"/>
 			<File RelativePath="..\..\min3p\biol.F90"/>
 			<File RelativePath="..\..\min3p\boundary_func.F90"/>
@@ -91,7 +91,8 @@
 			<File RelativePath="..\..\min3p\clsgfls.F90"/>
 			<File RelativePath="..\..\min3p\clstpfls.F90"/>
 			<File RelativePath="..\..\icesheet\comp_bc_ice_sheet.F90"/>
-			<File RelativePath="..\..\min3p\comptotc.F90"/>
+			<File RelativePath="..\..\min3p\comptotc.F90">
+			</File>
 			<File RelativePath="..\..\min3p\compute_sensible.F90"/>
 			<File RelativePath="..\..\min3p\concsort.F90"/>
 			<File RelativePath="..\..\min3p\constnts.F90"/>
@@ -278,12 +279,11 @@
 			<File RelativePath="..\..\min3p\jacddvs.F90"/>
 			<File RelativePath="..\..\min3p\jacfs.F90"/>
 			<File RelativePath="..\..\min3p\jacheat.F90"/>
-			<File RelativePath="..\..\min3p\jaclc.F90">
-			</File>
-			<File RelativePath="..\..\min3p\jacrt.F90">
-			</File>
+			<File RelativePath="..\..\min3p\jaclc.F90"/>
+			<File RelativePath="..\..\min3p\jacrt.F90"/>
 			<File RelativePath="..\..\min3p\jacsurf.F90"/>
-			<File RelativePath="..\..\min3p\jacvs.F90"/>
+			<File RelativePath="..\..\min3p\jacvs.F90">
+			</File>
 			<File RelativePath="..\..\dgm\lennard_jones.F90"/>
 			<File RelativePath="..\..\phase_class\tools\lubksb.F90"/>
 			<File RelativePath="..\..\phase_class\phase\m_aqueousphase.F90"/>

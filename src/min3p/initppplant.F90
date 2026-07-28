@@ -739,7 +739,7 @@
 
 !c  specified minimum aqueous concentration to activate solute uptake.
 !c  **********************************************
-!c  to be checked later, deprecated, to be removed
+!c  to be further checked, deprecated, to be removed
 !c  **********************************************
             if (.not. found_subsection) then
               subsection = 'inhibition parameter for active solute uptake'

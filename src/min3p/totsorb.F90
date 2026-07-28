@@ -125,7 +125,7 @@
                                                                        
       implicit none
                                                                        
-      character*72 :: namec(:)                                               
+      character*72 :: namec(*)                                               
       real*8 :: rhobulk 
       real*8 :: csb_ion(*), csb_surf(*), chargesb_ion(*),                       &
                 totcsb_ion(*), totcsb_surf(*), xnusb_ion(*), xnusb_surf(*)

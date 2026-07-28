@@ -28,7 +28,7 @@ with-lis =
 with-metis =
 with-cgal = 
 with-gpl = true
-with-archisimple = 
+with-archisimple = true
 with-usg = true
 with-mem-monitor = true
 
@@ -46,8 +46,8 @@ ifdef with-intel
 FFLAGS := -g -check all -check bounds -traceback
 CXXFLAGS := -g -check all  -check bounds -traceback
 else
-FFLAGS := -g -fcheck=all -fbacktrace -Wall -Wextra -Wimplicit-interface -Wsurprising
-CXXFLAGS := -g -fcheck=all -fbacktrace -Wall -Wextra -Wimplicit-interface -Wsurprising
+FFLAGS := -g -fcheck=all -fbacktrace -Wall
+CXXFLAGS := -g -fcheck=all -fbacktrace -Wall
 endif
 
 FPPFLAGS := -DLINUX -DDEBUG -DDEBUG_X64 -DSTANDARD_FORTRAN
@@ -720,6 +720,8 @@ SOURCES = $(SRC)min3p/parm.o\
 	$(SRC)min3p/rew.o\
 	$(SRC)min3p/evapo.o\
 	$(SRC)min3p/updtetp.o\
+	$(SRC)min3p/ArchiSimple.o\
+	$(SRC)min3p/RootTyp1.o\
 	$(SRC)min3p/updtrootdensity.o
 
 min3p: $(SOURCES)

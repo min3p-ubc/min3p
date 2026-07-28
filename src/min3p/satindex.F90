@@ -70,7 +70,7 @@
       
       real*8 :: eqsp
       real*8 :: c(*),gammac(*),xnusp(*)
-      integer :: ia(:),ja(:)
+      integer :: ia(*),ja(*)
       integer :: isp 
      
       !local variables

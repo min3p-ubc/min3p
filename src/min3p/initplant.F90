@@ -281,7 +281,7 @@
       section_header = 'plant transpiration and passive/rejective uptake'
 
       call readbloc (idat,itmp,section_header,found_section,.true.)
-
+      
 !c  define length of section header
 
       l_string = index(section_header,'  ')-1
@@ -363,7 +363,7 @@
 !c
 !c suite of option that can operate with transient flow only !FG feb 2016 - ! CBF RLD
 !c
-
+        
         if (.not.steady_flow) then
           
 !c Update root length density either internally ...
@@ -381,18 +381,19 @@
               write(*,*) 'UPDATE INTERNAL a, b, c, d =',arld,brld,crld,drld 
             end if
           end if
-
+          
+       
 !c DSU: Root upscale factor for ArchiSimple code
 #ifdef ARCHISIMPLE
           subsection = 'root upscale factor - archisimple'
           call findstrg(subsection,itmp,found_subsection)
-
+          
           if(.not. found_subsection) then
             subsection = 'root upscale factor - AS'
             call makelowercase(subsection)
             call findstrg(subsection,itmp,found_subsection)
           end if
-
+          
           if (found_subsection) then
             read(itmp,*,err=996,end=996) rootUpscFact_x, rootUpscFact_y, rootUpscFact_z
           else
@@ -400,7 +401,7 @@
             rootUpscFact_y = 1.0d0 
             rootUpscFact_z = 1.0d0
           end if
-
+          
           if (b_enable_output .and. b_enable_output_gen) then
             write(igen,'(1x,a,3(1x,1pe15.6e3))')                       &
                   'Root upscale factor in X, Y, Z directions:',        &
@@ -408,7 +409,7 @@
           end if
 
           call SetRootUpscaleFactor(rootUpscFact_x, rootUpscFact_y, rootUpscFact_z)
-
+          
 !c DSU: Random generator control. By default, srand((unsigned) time(NULL)) is used.
           subsection = 'random generator seed - AS'
           call makelowercase(subsection)
@@ -435,19 +436,19 @@
             read(itmp,*,err=996,end=996) rand_seed_roottyp
 
           end if
+          
 
-        
 !c ... or update by coupling with the root architecture software 'ArchiSimple' :
-
+          
           subsection = 'update - coupled - AS'
           call makelowercase(subsection)
           call findstrg(subsection,itmp,found_subsection)
-
+          
           if (.not. found_subsection) then
             subsection = 'archisimple'    !FG August 2021 - shorter keyword => less source of mistake
             call findstrg(subsection,itmp,found_subsection)
           end if
-
+          
           if(found_subsection) then
 
             coupled_as = .true. 

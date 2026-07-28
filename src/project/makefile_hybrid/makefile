@@ -28,7 +28,7 @@ with-lis =
 with-metis =
 with-cgal = 
 with-gpl = true
-with-archisimple = 
+with-archisimple = true
 with-usg = true
 with-mem-monitor = true
 
@@ -741,6 +741,8 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/rew.o\
 	$(SRC)min3p/evapo.o\
 	$(SRC)min3p/updtetp.o\
+	$(SRC)min3p/ArchiSimple.o\
+	$(SRC)min3p/RootTyp1.o\
 	$(SRC)min3p/updtrootdensity.o
 
 # min3p: $(OBJS) chkopts

@@ -128,7 +128,7 @@
       rho_w = 1000.0d0           !kg m^-3
       pa_atm = 1.01325d5         !Pa atm^-1
 
-!c  bulk density 2.65 g/cm^3 if not specified in input file, to be checked later
+!c  bulk density 2.65 g/cm^3 if not specified in input file
       rhobulk = 2.65d0           !g/cm^3
 
       return

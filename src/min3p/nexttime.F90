@@ -650,7 +650,7 @@
             
             if (noncompetitive_sorption) then
               totaold(ic,ivol) = totanew(ic,ivol)
-              !c to be checked later, decay
+              !c to be further checked, decay
               if (b_use_sorption_decay) then
                 totaold(ic,ivol) = totaold(ic,ivol)*enat**(-sorptiondecayconst(ic)*delt)
               end if

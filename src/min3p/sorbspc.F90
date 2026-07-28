@@ -154,7 +154,7 @@
                                                                         
       character*72 :: sorption_type_ion,sorption_type_surf,            &
                       sorption_group,name_elect_correction                         
-      character*12 :: component_type(:)
+      character*12 :: component_type(*)
                                                                         
       logical :: isactcexch, elect_correction, mol_frac_ads
                                                                        
@@ -348,7 +348,7 @@
         end do
         
         if (elect_correction.and.mol_frac_ads) then
-          !c to be checked later, totloc is assigned to the last value in the previous loop
+          !c to be further checked, totloc is assigned to the last value in the previous loop
           csb_surf = csb_surf * totloc    
         end if 
 

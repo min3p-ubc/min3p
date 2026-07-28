@@ -576,7 +576,7 @@
         if (varsat_flow) then
           call mem_etr
 
-          if (root_uptake) then
+          if (root_uptake) then             
             call initplant
             call initppplant
 #ifdef ARCHISIMPLE

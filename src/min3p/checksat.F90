@@ -163,7 +163,6 @@
             frac_mol = conc_mol / conc_mol_avg(tid) 
                                                                         
 !  pure phase saturation index                                          
-                                                                        
             satm(im,tid) = satindex(cnew(:,ivol),eqm(im,tid),gamma(1, &
                        ivol),xnum,iam,jam,im)                                  
                                                                         

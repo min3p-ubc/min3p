@@ -22,3 +22,13 @@ min3p_env/
 src/version/Resource.rc
 
 src/version/RepoParams.h
+src/project/archisimple/archisimple.vcxproj.filters
+src/project/archisimple/archisimple.vcxproj.user
+src/project/archisimple/x64/Debug/archisimple.Build.CppClean.log
+src/project/archisimple/x64/Debug/archisimple.lib.recipe
+src/project/archisimple/x64/Debug/archisimple.log
+src/project/archisimple/x64/Debug/archisimple.vcxproj.FileListAbsolute.txt
+src/project/archisimple/x64/Release/archisimple.Build.CppClean.log
+src/project/archisimple/x64/Release/archisimple.lib.recipe
+src/project/archisimple/x64/Release/archisimple.log
+src/project/archisimple/x64/Release/archisimple.vcxproj.FileListAbsolute.txt

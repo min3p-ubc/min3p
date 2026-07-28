@@ -589,7 +589,7 @@
             write(ilog,'(/1x,a)')'output is disabled, please wait ...'
         end if
       end if                  !end if MPI rank 0
-
+      
       tiny_delt = max(min((deltmax-deltmin)/r10,deltmin),tinytime_global)
 
 !cdsu for steady state flow running in transient mode, mark the start time and final time
@@ -1752,7 +1752,7 @@
 !c FG July 2017 - root density update (see previous comment on an alternative position for this call,
 !c FG set from Feb 2015).
         if (root_uptake .and. .not.tran_steady_flow) then
-
+            
           if (coupled_as.or.coupled_rt.or.inside_rld.or.rootparam_trans) then
             call updtrootdensity
           else

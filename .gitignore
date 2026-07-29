@@ -15,6 +15,7 @@ src/project/visualstudio_omp/.vs/*
 min3p/src/project/visualstudio_omp/MIN3P_THCm.u2d
 src/project/visualstudio/x64/*
 src/project/visualstudio_omp/x64/*
+src/project/archisimple/x64/*
 updates.txt
 min3p_env/
 

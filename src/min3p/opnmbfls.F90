@@ -776,11 +776,11 @@
           end do
 
           do ic = 1,nc-1
-            if (ic.lt.9) then
-              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+            if (ic+nc.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+nc,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             else
-              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+              write(ifls,'(i2,7x,a30,2x,a)') ic+nc,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             end if
           end do     
@@ -899,11 +899,11 @@
           end do
 
           do ic = 1,nc-1
-            if (ic.lt.9) then
-              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+            if (ic+nc.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+nc,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             else
-              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+              write(ifls,'(i2,7x,a30,2x,a)') ic+nc,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             end if
           end do  
@@ -1022,11 +1022,11 @@
           end do
 
           do ic = 1,nc-1
-            if (ic.lt.9) then
-              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic)//        &
+            if (ic+nc.lt.9) then
+              write(ifls,'(i1,8x,a30,2x,a)') ic+nc,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             else
-              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic)//        &
+              write(ifls,'(i2,7x,a30,2x,a)') ic+nc,namec(ic)//        &
                     ' accumulative solute uptake','mol'
             end if
           end do      

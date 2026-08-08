@@ -19,7 +19,7 @@ with-intel =
 with-intel-after2018 =
 with-pgi =
 
-with-fallow-mismatch =
+with-fallow-mismatch = true
 
 with-repo-info = true
 with-build-info = true
@@ -745,7 +745,6 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/RootTyp1.o\
 	$(SRC)min3p/updtrootdensity.o
 
-# min3p: $(OBJS) chkopts
 min3p: $(OBJS)
 	-${FLINKER} $(FFLAGS) $(FPPFLAGS) $(CPPFLAGS) -o $(EXENAME) $(OBJS) ${PETSC_LIB} ${LIS_LIB} ${DLIB} ${SLIB}
 ifdef with-clean

@@ -394,9 +394,6 @@
                 call binary_file_close(igbd_mpi(igb),.true.)
                 call binary_file_close(igbs_mpi(igb),.true.)
                 call binary_file_close(igbv_mpi(igb),.true.)
-                if (ntpsd > 0) then
-                  call binary_file_close(igbvpsd_mpi(igb),.true.)
-                end if
               end if
               if (nmx.gt.0) then
                 call binary_file_close(igbx_mpi(igb),.true.)

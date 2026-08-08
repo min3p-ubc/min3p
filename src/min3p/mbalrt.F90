@@ -5213,20 +5213,43 @@
 
           do ic = 1, n
             imrtm2c(isub) = imrtm2c_first(isub)+ic-1
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imrtm2c(isub),irecord)
-            end if
-            if (i_append_sim < 1 .or.                                     &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
 
-              write(imrtm2c(isub),ascii_fmt) time_io,                            &
-                    sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).gt.r0),           &
-                    sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).lt.r0),           &
-                    sum(dpdiff_m2c(:,ic)), dpdiff_m2c(:,ic),                     &
-                    sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).gt.r0), &
-                    sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).lt.r0), &
-                    sum(accu_dpdiff_m2c(:,ic)), accu_dpdiff_m2c(:,ic)
-            end if
+            if(rank == 0 .and. b_enable_output .and.                      &
+               .not.(skip_time.gt.0 .and. nskip_time.lt.skip_time)) then
+              
+              if (b_output_trans_binary) then
+                nvarsimrt = 7+nm*2
+                realbuffer_gb(1:nvarsimrt) = (/time_io,                      &
+                sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).gt.r0),           &
+                sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).lt.r0),           &
+                sum(dpdiff_m2c(:,ic)), dpdiff_m2c(:,ic),                     &
+                sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).gt.r0), &
+                sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).lt.r0), &
+                sum(accu_dpdiff_m2c(:,ic)), accu_dpdiff_m2c(:,ic)/)
+                call binary_write_data(imrt_mpi(imrtm2c(isub)), 1,           &
+                             (/mtime/),offset_imrt_ijk(imrtm2c(isub)),.true.)
+                call binary_write_data(imrt_mpi(imrtm2c(isub)), nvarsimrt,&
+                             realbuffer_gb,offset_imrt(imrtm2c(isub)),.true.) 
+
+                offset_imrt(imrtm2c(isub)) = offset_imrt(imrtm2c(isub)) + nvarsimrt*nfloatbit
+  
+              else
+                if (mtime == mtime_append .and. i_append_sim >= 1) then
+                  call reposition_file(imrtm2c(isub),irecord)
+                end if
+                if (i_append_sim < 1 .or.                                     &
+                   (mtime >= mtime_append .and. i_append_sim >= 1)) then
+    
+                  write(imrtm2c(isub),ascii_fmt) time_io,                            &
+                        sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).gt.r0),           &
+                        sum(dpdiff_m2c(:,ic),mask=dpdiff_m2c(:,ic).lt.r0),           &
+                        sum(dpdiff_m2c(:,ic)), dpdiff_m2c(:,ic),                     &
+                        sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).gt.r0), &
+                        sum(accu_dpdiff_m2c(:,ic),mask=accu_dpdiff_m2c(:,ic).lt.r0), &
+                        sum(accu_dpdiff_m2c(:,ic)), accu_dpdiff_m2c(:,ic)
+                end if
+              end if
+            end if            
           end do
  
         end if      !(nm.gt.0)

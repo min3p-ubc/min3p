@@ -629,7 +629,7 @@
 !c  total system mass for components
 
           imrt_first(isub) = lun_get()
-          nlun = 5+2*n+nmb+naq+ng+nm+ntmsb*(n+ng)
+          nlun = 5+2*n+nmb+naq+ng+nm+ntmsb*(n+ng)+(7+nm*2)
           do ilun = 1, nlun
             call lun_set(imrt_first(isub)+ilun)
           end do

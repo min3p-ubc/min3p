@@ -5082,25 +5082,7 @@
     !$omp end parallel
 #endif
 
-          do im = 1, nm
-
-            accudpdiff(im,isub) = accudpdiff(im,isub) + dpdiff(im)*delt
-          
-            istart = iamd(im)
-            istop = iamd(im+1)-1
-          
-            do ireac = istart,istop
-              accudpdiffp(ireac,isub) = accudpdiffp(ireac,isub) + dpdiffp(ireac)*delt
-            end do
-
-          end do
-
-#ifdef PETSC
-          call MPI_Allreduce(accudpdiff(:,isub),mpireduce_nm,nm,       &
-                             MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
-          CHKERRQ(ierrcode)
-          accudpdiff(1:nm,isub) = mpireduce_nm(1:nm) 
-        
+#ifdef PETSC       
           call MPI_Allreduce(cstordiff, mpireduce_nm,nm,MPI_REAL8,       &
                              MPI_SUM,Petsc_Comm_World,ierrcode)
           CHKERRQ(ierrcode)
@@ -5120,16 +5102,20 @@
               call MPI_Allreduce(dpdiffp(ireac), mpireduce_gbl,1,MPI_REAL8,MPI_SUM,     &
                                  Petsc_Comm_World,ierrcode)
               CHKERRQ(ierrcode)
-              dpdiffp(ireac) = mpireduce_gbl 
-            
-              call MPI_Allreduce(accudpdiffp(ireac,isub), mpireduce_gbl,1,MPI_REAL8,MPI_SUM,     &
-                                 Petsc_Comm_World,ierrcode)
-              CHKERRQ(ierrcode)
-              accudpdiffp(ireac,isub) = mpireduce_gbl
-          
+              dpdiffp(ireac) = mpireduce_gbl           
             end do       
           end do 
 #endif      
+
+          do im = 1, nm
+            accudpdiff(im,isub) = accudpdiff(im,isub) + dpdiff(im)*delt
+          
+            istart = iamd(im)
+            istop = iamd(im+1)-1          
+            do ireac = istart,istop
+              accudpdiffp(ireac,isub) = accudpdiffp(ireac,isub) + dpdiffp(ireac)*delt
+            end do
+          end do
         
 !c  write results to output file
  
@@ -5201,6 +5187,7 @@
           do im = 1,nm
             istart = iam(im)
             iend = iam(im+1)-1
+
 
             do i1 = istart, iend    ! loop through components in mineral
               ic = jam(i1)

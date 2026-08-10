@@ -339,7 +339,7 @@
             if (.not.multi_diff) then 
               read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw                  !c note, alkfac is calculated internally later
             else      
-              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,null,diffcoff2   !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff            
+              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,diffcoff2        !c note, for multi_diff, the last parameter is diffusion coeff            
             end if                           !  .not.multi_diff
             
             read(ixdbs,'(a)',end=9998,err=9999) strbuffer
@@ -377,8 +377,8 @@
               read(ixdbs,100,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw              !c note, alkfac is calculated internally later
               read(ixdbs,101,end=9998,err=9999) nv,(namet(iv),xnuxt(iv),iv=1,nv)
             else
-              read(ixdbs,102,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,null,  &     !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff
-                   diffcoff2                
+              read(ixdbs,102,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,  &          !c note, for multi_diff, the last parameter is diffusion coeff            
+                                                diffcoff2                
               read(ixdbs,101,end=9998,err=9999) nv,(namet(iv),xnuxt(iv),iv=1,nv)
             end if ! multi_diff  
             call makelowercase(name)

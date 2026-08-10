@@ -32,9 +32,9 @@ Module Version
 #include "RepoParams.h"
 #endif
     
-    Character(4) :: MajorVersionNumber = "2"             !< Major version, manually replaced
-    Character(4) :: MinorVersionNumber = "19"            !< Minor version, manually replaced
-    Character(10) :: PatchVersionNumber = "23"           !< Patch number, manually replaced
+    Character(4) :: MajorVersionNumber = "3"             !< Major version, manually replaced
+    Character(4) :: MinorVersionNumber = "0"             !< Minor version, manually replaced
+    Character(10) :: PatchVersionNumber = "0"            !< Patch number, manually replaced
     
 #if defined(GITVERSION)
     Character(32) :: GlobalRevisionNumber = GITVERSION

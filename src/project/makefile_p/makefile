@@ -11,7 +11,7 @@
 # e.g., 'with-debug = true' or 'with-debug = false' or 'with-debug = xxx' means debug is turned on.
 #       'with-debug = ' means debug is turned off. The provided value does not mean anything here.
 with-debug =
-with-clean =
+with-clean = true
 
 with-intel =
 with-intel-after2018 =

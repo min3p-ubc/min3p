@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf>
+  <Domain>
+    <Grid Name="Mesh">
+      <Time Value = "0.00000E+00" />
+      <Topology Type="Mixed" NumberOfElements="8268">
+        <DataItem Format="HDF" DataType="Int" Dimensions="57876">
+          stripf.h5:/Domain/Cells
+        </DataItem>
+      </Topology>
+      <Geometry GeometryType="XYZ">
+        <DataItem Format="HDF" Dimensions="8500 3">
+          stripf.h5:/Domain/Vertices
+        </DataItem>
+      </Geometry>
+      <Attribute Name="XC" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+          stripf.h5:/Domain/XC
+        </DataItem>
+      </Attribute>
+      <Attribute Name="YC" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+          stripf.h5:/Domain/YC
+        </DataItem>
+      </Attribute>
+      <Attribute Name="ZC" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+          stripf.h5:/Domain/ZC
+        </DataItem>
+      </Attribute>
+      <Attribute Name="Liquid Pressure [Pa]" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+        stripf.h5:/   0 Time  0.00000E+00 d/Liquid Pressure [Pa]
+        </DataItem>
+      </Attribute>
+      <Attribute Name="Liquid Saturation" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+        stripf.h5:/   0 Time  0.00000E+00 d/Liquid Saturation
+        </DataItem>
+      </Attribute>
+      <Attribute Name="Total Tracer [M]" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+        stripf.h5:/   0 Time  0.00000E+00 d/Total Tracer [M]
+        </DataItem>
+      </Attribute>
+      <Attribute Name="Material ID" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+        stripf.h5:/   0 Time  0.00000E+00 d/Material ID
+        </DataItem>
+      </Attribute>
+      <Attribute Name="Liquid X-Velocity [m_per_day]" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+        stripf.h5:/   0 Time  0.00000E+00 d/Liquid X-Velocity [m_per_day]
+        </DataItem>
+      </Attribute>
+      <Attribute Name="Liquid Y-Velocity [m_per_day]" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+        stripf.h5:/   0 Time  0.00000E+00 d/Liquid Y-Velocity [m_per_day]
+        </DataItem>
+      </Attribute>
+      <Attribute Name="Liquid Z-Velocity [m_per_day]" AttributeType="Scalar"  Center="Cell">
+        <DataItem Dimensions="8268 1" Format="HDF">
+        stripf.h5:/   0 Time  0.00000E+00 d/Liquid Z-Velocity [m_per_day]
+        </DataItem>
+      </Attribute>
+    </Grid>
+  </Domain>
+</Xdmf>

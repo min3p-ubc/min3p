@@ -1,0 +1,1593 @@
+! Mont Terri DR-A Task 3.2b_A10  Diffusion of Co Sr I and Br during overcoring
+
+!  Detailed information on page 114 in the report by Xie et al. 2014 (NWMO-TR-2014-25)
+
+ 
+
+ 
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Title: Task 3.1b diffusion and linear sorption'
+
+.true.                        ;varsat_flow
+
+.true.                        ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'hybrid multicomponent diffusion'
+
+
+
+'restart'
+
+
+
+'parallel solver configuration file'
+
+'solver.cfg'
+
+
+
+'backup frequency' 
+
+100 
+
+ 
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+ 
+
+'..\database\MCDSr85'
+
+ 
+
+
+
+'define input units'
+
+'mol/l'
+
+
+
+'components'
+
+17                             ;number of components (nc-1)
+
+'cs+1'			; Cs
+
+'na+1'                  ;component names
+
+'k+1'
+
+'mg+2'
+
+'ca+2'
+
+'sr+2'
+
+'cl-1'
+
+'h+1'
+
+'o2(aq)'
+
+'so4-2'
+
+'co3-2'
+
+'i-1'
+
+'br-1'
+
+'hto'
+
+'co_60+2'
+
+'eu+3'
+
+'sr_85+2'
+
+ 
+
+'secondary aqueous species'
+
+23
+
+'khso4(aq)'
+
+'h2so4(aq)'
+
+'oh-'
+
+'mgoh+'
+
+'mgco3aq'
+
+'mghco3+'
+
+'mgso4aq'
+
+'caoh+'
+
+'cahco3+'
+
+'caco3aq'
+
+'caso4aq'
+
+'cahso4+'
+
+'naco3-'
+
+'nahco3aq'
+
+'naso4-'
+
+'kso4-'
+
+'sroh+'
+
+'hco3-'
+
+'h2co3aq'
+
+'hso4-'
+
+'cscl(aq)'
+
+'csi(aq)'
+
+'csbr(aq)'
+
+ 
+
+
+
+ 
+
+'minerals'
+
+0                             ;number of minerals (nm)
+
+
+
+'excluded minerals'
+
+0
+
+'linear sorption'
+
+3
+
+'sr_85+2'						  ; THIS IS Weakly Sorbing case      
+
+'co_60+2'
+
+'sr+2'
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+11                            ;number of discretization intervals in x
+
+     80 
+
+     0.0000E+00     30.000d-03
+
+     100                       
+
+     30.000d-03     31.000d-03
+
+     100                       
+
+     31.000d-03     32.000d-03
+
+     40                        
+
+     32.000d-03     34.000d-03
+
+     100                       
+
+     34.000d-03     35.000d-03
+
+     100                       
+
+     35.000d-03     36.000d-03
+
+     100                        
+
+     36.000d-03     38.000d-03
+
+     100                        
+
+     38.000d-03     40.000d-03
+
+     330                        
+
+     40.000d-03     68.000d-03
+
+     500                         
+
+     68.000d-03     2.0000d-01
+
+     100				
+
+     2.0000d-01     6.1500d-01
+
+      
+
+     
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in interval
+
+0.0  1.0                      ;ymin,ymax 
+
+     
+
+     
+
+1                             ;number of discretization intervals in z
+
+1                             ;number of control volumes in interval
+
+0.0  1.0                      ;zmin,zmax 
+
+
+
+
+
+'radial coordinates'
+
+
+
+'done'
+
+
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'days'                         ;time unit
+
+728.0                            ;time at start of solution
+
+735.33   ;450.0                       ;final solution time
+
+1.0d0                          ;maximum time step
+
+1.0d-3                        ;minimum time step
+
+
+
+
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-6                         ;factor for num. differentiation
+
+1.d-5                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+2.0d0                         ;max. ionic stength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'days'                       ;time unit (local chemistry)
+
+
+
+
+
+'done'
+
+
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'solver settings'
+
+0                             ;level_vs, incomplete factorization level
+
+100                           ;msolvit_vs, max. number of solver iterations
+
+0                             ;idetail_vs, solver information level
+
+1.0d-6                        ;restol_vs, solver residual tolerance
+
+1.0d-6                        ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+
+
+
+
+'spatial weighting'
+
+'upstream'
+
+!'centered'                    ;spatial weighting
+
+
+
+'activity update settings'
+
+'time_lagged'                   ;type of activity update
+
+!'no update'
+
+
+
+'tortuosity correction'
+
+'assigned tau'
+
+!'no correction'
+
+!'millington'
+
+!'archie'
+
+!1.0
+
+
+
+'update porosity'
+
+'harmonic average in porosity'   ;newly
+
+
+
+'mass balance'
+
+
+
+'averaging diffusion'
+
+!'arithmetic'
+
+'harmonic'
+
+
+
+'newton iteration settings'
+
+1.d-6                         ;increment h for numerical differentiation
+
+12                            ;anticipted number of Newton iterations
+
+100                           ;max. number of Newton iterations
+
+0.5d0                         ;anticipated update in log cycles
+
+1.0d0                         ;maximum update in log cycles
+
+1.0d-5                        ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+1                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+0                             ;solver information level
+
+1.d-6                         ;solver residual tolerance
+
+1.d-6                         ;solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+3
+
+728.00001  728.10 735.33
+
+!8                            ;number of output times (spatial data)
+
+!189.001d0  190.0  250.0 300.0   ;specified output times (spatial data)
+
+!365.0  413.0  450.0	 728.0	 
+
+
+
+
+
+			     		   
+
+            
+
+
+
+'output of transient data'
+
+13                             	;number of output locations (transient data)
+
+1                              	;time steps between output (transient data)
+
+1 18 19 20 			;control volume number for transient data, centre
+
+28 29 30 43
+
+44 45 63 64
+
+65
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+4                             ;number of property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'circulation chamber'
+
+1.0  ;3.262  ;     ;porosity, calculated considering the circulation system
+
+1.0    ;0.01			;tortuosity, for the effective mixing in bohrhole, <=1
+
+
+
+'extent of zone'
+
+0.0 0.0339  0.0 1.0 0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'filter'
+
+1.0   ;0.45     ;porosity, 0.3
+
+1.0   ;0.01  ;0.004	 ;tortuosity, (=0.4/100)
+
+
+
+'extent of zone'
+
+0.0339 0.0383 0.0 1.0 0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'gap'
+
+1.0    ;0.60          ;porosity
+
+1.0  ;0.01   ;2.75d-3	 ;tortuosity, 1.0 (use this data to match Deff =4.45e-10m^2/s)
+
+
+
+'extent of zone'
+
+0.0383 0.0416 0.0 1.0 0.0 1.0
+
+;0.035 0.038 0.0 1.0 0.0 1.0
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+4
+
+'background 1'			    ;clay
+
+0.19  ;0.15                               ;porosity  
+
+0.15  ;0.15e-2  ;0.11739e-2  ;2.70E-03    !1.0  		   ;tortuosity Deff=n*tau*D0, tau=0.1
+
+
+
+'extent of zone'
+
+0.0416 0.615 0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!# Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------------------------------------
+
+
+
+'circulation chamber'
+
+
+
+'hydraulic conductivity in x-direction'
+
+2.0d-13                       ;K_xx   Wersin et all (2008), Applied Geochemistry, P681
+
+
+
+'hydraulic conductivity in y-direction'
+
+2.0d-13                       ;K_yy
+
+
+
+'hydraulic conductivity in z-direction'
+
+2.0d-13                       ;K_zz
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+
+
+'filter'
+
+
+
+'hydraulic conductivity in x-direction'
+
+2.0d-13                       ;K_xx   Wersin et all (2008), Applied Geochemistry, P681
+
+
+
+'hydraulic conductivity in y-direction'
+
+2.0d-13                       ;K_yy
+
+
+
+'hydraulic conductivity in z-direction'
+
+2.0d-13                       ;K_zz
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'gap'
+
+
+
+
+
+'hydraulic conductivity in x-direction'
+
+2.0d-13                       ;K_xx 
+
+
+
+'hydraulic conductivity in y-direction'
+
+2.0d-13                       ;K_yy
+
+
+
+'hydraulic conductivity in z-direction'
+
+2.0d-13                       ;K_zz
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'background 1'                              ;Opalinus clay
+
+
+
+
+
+'hydraulic conductivity in x-direction'     ; Wersin et all (2008), Applied Geochemistry, P681
+
+2.0d-13                       ;K_xx 
+
+
+
+'hydraulic conductivity in y-direction'
+
+2.0d-13                       ;K_yy
+
+
+
+'hydraulic conductivity in z-direction'
+
+2.0d-13                       ;K_zz
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+1.0d-9    !1.0d-7  !2.70d-10                ;aqueous phase D0=1.6e-9 (Deff=tau*n*Dp)
+
+0.0d0                          ;gaseous phase
+
+
+
+! ---------------------------------------------------------------------------
+
+!
+
+'circulation chamber'
+
+
+
+'longitudinal dispersivity'
+
+0.0
+
+
+
+'transverse horizontal dispersivity'
+
+0.0
+
+
+
+'transverse vertical dispersivity'
+
+0.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+!
+
+'filter'
+
+
+
+'longitudinal dispersivity'
+
+0.0
+
+
+
+'transverse horizontal dispersivity'
+
+0.0
+
+
+
+'transverse vertical dispersivity'
+
+0.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+!
+
+'gap'
+
+
+
+'longitudinal dispersivity'
+
+0.0
+
+
+
+'transverse horizontal dispersivity'
+
+0.0
+
+
+
+'transverse vertical dispersivity'
+
+0.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+!
+
+'background 1'
+
+
+
+'longitudinal dispersivity'
+
+0.0
+
+
+
+'transverse horizontal dispersivity'
+
+0.0
+
+
+
+'transverse vertical dispersivity'
+
+0.0
+
+
+
+'porosity correction factor of primary species for hMCD diffusion'
+
+1.0    ;'cs+'  
+
+1.0    ;'na+1'
+
+1.0    ;'k+1'
+
+1.0    ;'mg+2'
+
+1.0    ;'ca+2'
+
+1.0   ;1.0    ;'sr+2'=0.15/0.11739 
+
+0.667              ;'cl-1' 'free'
+
+1.0    ;'h+1'
+
+1.0    ;'o2(aq)'
+
+0.667              ;'so4-2'
+
+0.667             ;'co3-1'
+
+0.533  ;0.333   ;0.533              ;'i-1' =0.08/0.15
+
+0.667   ;0.533   ;0.3     ;0.667              ;'br-1' 0.1/0.15
+
+1.0    ;'HTO'
+
+1.0    ;'co_60+2'
+
+1.0    ;'eu+3'
+
+1.0    ;'sr_85+2'
+
+1.0    ;'=soh(s)'
+
+1.0    ;'=soh(w)'
+
+1.0    ;'=toh'
+
+
+
+
+
+'tortuosity correction factor of primary species for hMCD diffusion'
+
+4.81   ;'cs+'   best fitted Dp for Cs in clay was 1.3e-9m^2/s, Dp of HTO as used is 0.11739*2.3e-9=2.7e-10m2/s, f_tau=1.3/0.27=4.81
+
+1.0    ;'na+1'
+
+1.0    ;'k+1'
+
+1.0    ;'mg+2'
+
+1.0    ;'ca+2'
+
+0.20   ;0.25  ;0.35  0.7   ;3.5   ;1.277791975   ;1.0    ;'sr+2'=0.15/0.11739 
+
+0.38              ;'cl-1' 'free'
+
+1.0    ;'h+1'
+
+1.0    ;'o2(aq)'
+
+0.38   ;1.0              ;'so4-2'
+
+0.38  ;1.0             ;'co3-1'
+
+0.55  ;1.0   ;0.533              ;'i-1'
+
+0.40  ;0.38  ;0.278  ;0.45   ;1.0     ;0.667              ;'br-1'
+
+1.0    ;'HTO'
+
+10.0  ;3.0   ;1.280    ;'co_60+2'
+
+1.0    ;'eu+3'
+
+0.20  ;0.25  ;0.20  ;0.25  ;0.35  0.4   ;0.5    ;3.5    ;0.7    ;0.5   ;0.9  ;1.0    ;'sr_85+2'
+
+1.0    ;'=soh(s)'
+
+1.0    ;'=soh(w)'
+
+1.0    ;'=toh'
+
+
+
+'porosity correction factor of secondary species for hMCD diffusion'
+
+ 1.0       	;'khso4(aq)'
+
+ 1.0       	;'h2so4(aq)'
+
+ 1.0   ;0.667          ;'oh-'
+
+ 1.0       	;'mgoh+'
+
+ 1.0       	;'mgco3aq'
+
+ 1.0       	;'mghco3+'
+
+ 1.0       	;'mgso4aq'
+
+ 1.0       	;'caoh+'
+
+ 1.0       	;'cahco3+'
+
+ 1.0       	;'caco3aq'
+
+ 1.0       	;'caso4aq'
+
+ 1.0       	;'cahso4+'
+
+ 1.0         	;'naco3-'
+
+ 1.0       	;'nahco3aq'
+
+ 1.0   ;0.667          ;'naso4-'
+
+ 1.0   ;0.667          ;'kso4-'
+
+ 1.0       	;'sroh+'
+
+ 1.0   ;0.667          ;'hco3-'
+
+ 1.0       	;'h2co3aq'
+
+ 1.0   ;0.667          ;'hso4-'
+
+ 1.0       	;'cscl(aq)'
+
+ 1.0       	;'csi(aq)'
+
+ 1.0       	;'csbr(aq)'
+
+
+
+'tortuosity correction factor of secondary species for hMCD diffusion'
+
+ 1.0   		;'khso4(aq)'
+
+ 1.0   		;'h2so4(aq)'
+
+ 1.0   		;'oh-'
+
+ 1.0   		;'mgoh+'
+
+ 1.0   		;'mgco3aq'
+
+ 1.0   		;'mghco3+'
+
+ 1.0   		;'mgso4aq'
+
+ 1.0   		;'caoh+'
+
+ 1.0   		;'cahco3+'
+
+ 1.0   		;'caco3aq'
+
+ 1.0   		;'caso4aq'
+
+ 1.0   		;'cahso4+'
+
+ 1.0   		;'naco3-'
+
+ 1.0   		;'nahco3aq'
+
+ 1.0   		;'naso4-'
+
+ 1.0   		;'kso4-'
+
+ 1.0   		;'sroh+'
+
+ 1.0   		;'hco3-'
+
+ 1.0   		;'h2co3aq'
+
+ 1.0   		;'hso4-'
+
+ 1.0   		;'cscl(aq)'
+
+ 1.0   		;'csi(aq)'
+
+ 1.0   		;'csbr(aq)'
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'entire domain'
+
+
+
+'initial condition'
+
+1.0
+
+
+
+'extent of zone'
+
+0.0 0.615 0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'first'  1.0               ;hydraulic head in [m]; for advection test h=1.01
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'first' 1.0                  ;hydraulic head
+
+
+
+'extent of zone'
+
+0.615 0.615 0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 14: initial condition - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+4                             ;number of zones
+
+
+
+! Circulation Chamber
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'circulation chamber'
+
+
+
+'concentration input'
+
+1.0d-10    'free'              ;'cs+'  
+
+2.4d-1     'free'              ;'na+1'
+
+1.6d-3     'free'              ;'k+1'
+
+1.7d-2     'free'              ;'mg+2'
+
+2.6d-2     'free'              ;'ca+2'
+
+0.000510   'free'              ;'sr+2'
+
+3.0d-1     'charge'              ;'cl-1' 'free'
+
+7.6d0      'ph'                ;'h+1'
+
+12.5       'pe'                ;'o2(aq)'
+
+1.4d-2     'free'              ;'so4-2'
+
+4.76d-4    'free'              ;'co3-1'
+
+1.00d-10   'free'              ;'i-1'
+
+1.00d-10   'free'              ;'br-1'
+
+1.10d-20   'free'              ;'HTO'
+
+1.0d-20    'free'              ;'co_60+2'
+
+1.0E-20   'free'              ;'eu+3'
+
+1.0d-20     'free'              ;'sr_85+2'
+
+
+
+ 
+
+ 
+
+'linear sorption input'
+
+'sr_85+2'   0.0
+
+'co_60+2'   0.0
+
+'sr+2'   0.0
+
+
+
+'extent of zone'
+
+0.0 0.0339 0.0 1.0  0.0 1.0 
+
+
+
+'end of zone'
+
+
+
+! Filter
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+2
+
+'filter'
+
+
+
+'concentration input'
+
+1.0d-10    'free'              ;'cs+'  
+
+2.4d-1     'free'              ;'na+1'
+
+1.6d-3     'free'              ;'k+1'
+
+1.7d-2     'free'              ;'mg+2'
+
+2.6d-2     'free'              ;'ca+2'
+
+0.00051     'free'              ;'sr+2'
+
+3.0d-1     'charge'              ;'cl-1'  
+
+7.6d0      'ph'                ;'h+1'
+
+12.5       'pe'                ;'o2(aq)'
+
+1.4d-2     'free'              ;'so4-2'
+
+4.76d-4    'free'              ;'co3-1'
+
+1.00d-10   'free'              ;'i-1'
+
+1.00d-10   'free'              ;'br-1'
+
+1.10d-20    'free'              ;'hto'
+
+1.0d-20    'free'              ;'co_60+2'
+
+1.0E-20   'free'              ;'eu+3'
+
+1.0d-20     'free'              ;'sr_85+2'
+
+
+
+ 
+
+ 
+
+'linear sorption input'
+
+'sr_85+2'   0.0
+
+'co_60+2'   0.0
+
+'sr+2'   0.0
+
+
+
+
+
+'extent of zone'
+
+0.0339 0.0383 0.0 1.0  0.0 1.0 
+
+
+
+'end of zone'
+
+
+
+! Gap
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+3
+
+'Gap'
+
+
+
+'concentration input'
+
+1.0d-10    'free'              ;'cs+'  
+
+2.4d-1     'free'              ;'na+1'
+
+1.6d-3     'free'              ;'k+1'
+
+1.7d-2     'free'              ;'mg+2'
+
+2.6d-2     'free'              ;'ca+2'
+
+0.00051    'free'              ;'sr+2'
+
+3.0d-1     'charge'              ;'cl-1' 
+
+7.6d0      'ph'                ;'h+1'
+
+12.5       'pe'                ;'o2(aq)'
+
+1.4d-2     'free'              ;'so4-2'
+
+4.76d-4    'free'              ;'co3-1'
+
+1.00d-10   'free'              ;'i-1'
+
+1.00d-10   'free'              ;'br-1'
+
+1.10d-20   'free'              ;'HTO'
+
+1.0d-20    'free'              ;'co_60+2'
+
+1.0E-20    'free'              ;'eu+3'
+
+1.0d-20    'free'              ;'sr_85+2'
+
+
+
+ 
+
+'linear sorption input'
+
+'sr_85+2'   0.0
+
+'co_60+2'   0.0
+
+'sr+2'   0.0
+
+
+
+'extent of zone'
+
+0.0383 0.0416 0.0 1.0  0.0 1.0 
+
+;0.035 0.038 0.0 1.0  0.0 1.0 
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+4
+
+'background chemistry - aquifer 1'
+
+
+
+'concentration input'
+
+1.0d-10    'free'              ;'cs+'  
+
+2.4d-1     'free'              ;'na+1'
+
+1.6d-3     'free'              ;'k+1'
+
+1.7d-2     'free'              ;'mg+2'
+
+2.6d-2     'free'              ;'ca+2'
+
+0.00051    'free'              ;'sr+2'
+
+3.0d-1     'charge'            ;'cl-1'  
+
+7.6d0      'ph'                ;'h+1'
+
+12.5       'pe'                ;'o2(aq)'
+
+1.4d-2     'free'              ;'so4-2'
+
+4.76d-4    'free'              ;'co3-1'
+
+1.00d-10   'free'              ;'i-1'
+
+1.00d-10   'free'              ;'br-1'
+
+1.00d-20   'free'              ;'HTO'
+
+1.0d-20    'free'              ;'co_60+2'
+
+1.0E-20   'free'              ;'eu+3'
+
+1.0d-20     'free'              ;'sr_85+2'
+
+
+
+ 
+
+'linear sorption input'
+
+'sr_85+2'   15.4
+
+'co_60+2'   3080.00
+
+'sr+2'  15.4
+
+
+
+'extent of zone'          
+
+0.0416 0.615 0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+                             
+
+'extent of zone'
+
+0.615 0.615 0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'

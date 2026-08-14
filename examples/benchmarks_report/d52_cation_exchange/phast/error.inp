@@ -1,0 +1,17 @@
+END
+SOLUTION 0
+	units  mol/kgw
+	temp   25.0
+	pH      6.99935
+	pe     13.61066
+	water   1.00000
+	Ca      6.00040e-004
+	Cl      1.20008e-003
+	K       1.00007e-009
+	N(5)    1.00007e-009
+	Na      1.00007e-009
+	O(0)    4.57984e-004
+EXCHANGE 1
+	X                1.093750e+000
+	-equil  1
+END

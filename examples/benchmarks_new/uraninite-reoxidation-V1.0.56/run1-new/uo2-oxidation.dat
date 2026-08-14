@@ -1,0 +1,1220 @@
+! uo2-oxidation.dat
+
+! Benchmark example - uraninite re-oxidation
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Benchmark example - uraninite re-oxidation'
+
+.true.                        ;varsat_flow
+
+.true.                        ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'..\database\tk-ureox2.3-dbs-conversion'
+
+
+
+!'compute alkalinity'
+
+
+
+'components'
+
+15                            ;number of components (nc-1)
+
+'h+1'                         ;component names
+
+'lactate-'                     
+
+'acetate-'
+
+'so4--'
+
+'hs-'
+
+'fe++'
+
+'fe+++'
+
+'uo2++'
+
+'ca++'
+
+'mg++'
+
+'hco3-'
+
+'u++++'
+
+'na+'
+
+'cl-'
+
+'pipes-'
+
+
+
+'biomass components' 
+
+2
+
+'biomass'
+
+'biomass-d'
+
+
+
+'secondary aqueous species'
+
+80                            ;number of secondary aqueous species
+
+'oh-'                         ;names of secondary aqueous species
+
+'h(acetate)(a'
+
+'h(lactate)(a'
+
+'co2(aq)'
+
+'co3--'
+
+'caco3(aq)'
+
+'cacl+'
+
+'cacl2(aq)'
+
+'cahco3+'
+
+'caoh+'
+
+'caso4(aq)'
+
+'fe(co3)2--'
+
+'fe(oh)3-'
+
+'fe(oh)4--'
+
+'fe(so4)2-'
+
+'fe2(oh)2++++'
+
+'fe3(oh)4(5+)'
+
+'feco3(aq)'
+
+'fecl+'
+
+'fecl++'
+
+'fecl2(aq)'
+
+'fehco3+'
+
+'feo(aq)'
+
+'feo+'
+
+'feo2-'
+
+'feoh+'
+
+'feoh++'
+
+'fes(aq)'
+
+'feso4(aq)'
+
+'feso4+'
+
+'h2s(aq)'
+
+'h2so4(aq)'
+
+'hfeo2(aq)'
+
+'hfeo2-'
+
+'hso4-'
+
+'mg4(oh)4++++'
+
+'mgco3(aq)'
+
+'mgcl+'
+
+'mghco3+'
+
+'mgoh+'
+
+'mgso4(aq)'
+
+'naco3-'
+
+'nacl(aq)'
+
+'nahco3(aq)'
+
+'naoh(aq)'
+
+'naso4-'
+
+'s--'
+
+'(uo2)11(co3)'
+
+'(uo2)2(oh)2+'
+
+'(uo2)2co3(oh'
+
+'(uo2)2oh+++'
+
+'(uo2)3(co3)6'
+
+'(uo2)3(oh)4+'
+
+'(uo2)3(oh)5+'
+
+'(uo2)3(oh)7-'
+
+'(uo2)3o(oh)2'
+
+'(uo2)4(oh)7+'
+
+'u(co3)4----'
+
+'u(co3)5(6-)'
+
+'u(so4)2(aq)'
+
+'ucl+++'
+
+'uo2(so4)2--'
+
+'uo2cl+'
+
+'uo2cl2(aq)'
+
+'uo2so4(aq)'
+
+'uo2oh+'
+
+'uo2(oh)2(aq)'
+
+'uo2(oh)3-'
+
+'uo2(oh)4--'
+
+'uoh+++'
+
+'u(oh)2++'
+
+'u(oh)3+'
+
+'u(oh)4(aq)'
+
+'uso4++'
+
+'uo2co3(aq)'
+
+'uo2(co3)2--'
+
+'uo2(co3)3---'
+
+'cauo2(co3)3-'
+
+'ca2uo2(co3)3'
+
+'h(pipes)(aq)'
+
+
+
+'intra-aqueous kinetic reactions'
+
+6
+
+'so4-red-lac'
+
+'fe-red-lac-2'
+
+'u-red-hs'
+
+'hs-ox-fe'
+
+'u-ox-fe'
+
+'biomass-dec'
+
+
+
+'scaling for intra-aqueous kinetic reactions'
+
+5.0d-3       ;'so4-red-lac'
+
+2.5d-6       ;'fe-red-lac'
+
+8.0d-11      ;'u-red-hs'
+
+1.8d-11      ;'hs-ox-fe'
+
+2.0d-11      ;'u-ox-fe'
+
+1.0d-8       ;'biomass-dec'
+
+
+
+'gases'
+
+1                             ;number of gases
+
+'co2(g)'                      ;names of gases
+
+
+
+'sorbed species'
+
+0
+
+
+
+'minerals'
+
+5                             ;number of minerals
+
+'hematite'                    ;mineral names
+
+'uraninite'
+
+'sulfur'
+
+'fes_m'
+
+'siderite'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+1
+
+3
+
+0.0 1.0
+
+1
+
+1
+
+0.0 1.0
+
+1
+
+1
+
+0.0 1.0
+
+!3                             ;number of discretization intervals in x
+
+!1                             ;number of control volumes in x
+
+!0. 0.5                        ;xmin,xmax
+
+!34
+
+!0.5 17.5
+
+!1
+
+!17.5 18.0                     
+
+!3                             ;number of discretization intervals in y
+
+!1                             ;number of control volumes in y
+
+!0. 0.5                        ;ymin,ymax
+
+!19
+
+!0.5 10.0
+
+!1
+
+!10.0 10.5
+
+!1                             ;number of discretization intervals in z
+
+!1                             ;number of control volumes in z
+
+!0. 1.0                        ;zmin,zmax
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'days'                      ;time unit
+
+0.0                         ;time at start of solution
+
+60.0                        ;final solution time
+
+0.1                         ;maximum time step
+
+1.d-20                      ;minimum time step
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+1.0d0                         ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'years'                       ;time unit (local chemistry)
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'compute underrelaxation factor'
+
+100.0                         ;max. allowed update
+
+
+
+'newton iteration settings'
+
+1.0d-6                        ;increment for numerical differentiation
+
+80                            ;max. number of newton iterations
+
+1.0d-4                        ;convergence tolerance
+
+0.3                           ;sw_star
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+0                             ;solver information level
+
+1.0d-7                        ;solver residual tolerance
+
+1.0d-7                        ;solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'
+
+
+
+'activity update settings'
+
+'time_lagged'
+
+
+
+'tortuosity correction'
+
+'millington'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;increment h for numerical differentiation
+
+12                            ;anticipated number of Newton iterations
+
+60                            ;max. number of Newton iterations
+
+2.0d0                         ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.d-6                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+1                             ;information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+1                             ;number of output times (spatial data)
+
+60.0d0                        ;specified output times (spatial data)
+
+
+
+'output of transient data'
+
+1                             ;number of output locations (transient data)
+
+1                             ;timesteps between output (transient data)
+
+2   !375 384                       ;control volume numbers for transient data
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                             ;number of material property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+1.0   !0.25                         ;porosity
+
+
+
+'extent of zone'
+
+0.0  1.0   0.0  1.0   0.0  1.0
+
+!0.0 18.0  0.0 10.5  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+
+
+! ---------------------------------------------------------------------------
+
+'aquifer'
+
+
+
+'hydraulic conductivity in x-direction'
+
+5.0d-6                        ;K_xx
+
+
+
+'hydraulic conductivity in y-direction'
+
+5.0d-6                        ;K_zz
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+0.0d0                       ;free diffusion coefficient in water
+
+0.0d0                       ;free diffusion coefficient in air
+
+
+
+! ---------------------------------------------------------------------------
+
+'aquifer'
+
+
+
+'longitudinal dispersivity'
+
+1.0                         ;longitudinal dispersivity
+
+
+
+'transverse horizontal dispersivity'
+
+0.1                         ;transverse dispersivity
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer flow IC'
+
+
+
+'initial condition'
+
+8.0                          ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 1.0
+
+!0.0 18.0  0.0 10.5  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'first' 8.0    !8.75d0                 ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  0.0 1.0
+
+!0.0 0.0  0.0 10.5  0.0 1.0     ;extent of zone
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'first' 8.0                   ;hydraulic head
+
+
+
+'extent of zone'
+
+1.0 1.0  0.0 1.0  0.0 1.0
+
+!18.0 18.0  0.0 10.5  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'injection'
+
+
+
+'boundary type'
+
+'point'   1.0d-5               ;flux  !!!set flux
+
+
+
+'extent of zone'
+
+7.0 7.5  5.0 5.5  0.0 1.0
+
+
+
+'end of zone'
+
+'done'
+
+
+
+! Section 15: initial condition - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer RT IC'       ,!from PHRREQC simulations
+
+
+
+'concentration input'
+
+7.2        'ph'     ;'h+1'                   
+
+0.03008    'free'   ;'lactate-' 
+
+1.0003d-23 'free'   ;'acetate-' 
+
+0.02005    'free'   ;'so4--'
+
+1.003d-23  'free'   ;'hs-'    
+
+1.003d-23  'free'   ;'fe++'  
+
+1.300d-12  'free'   ;'fe+++'     - equilibrium with hematite
+
+9.024d-5   'free'   ;'uo2++'
+
+4.01d-4    'free'   ;'ca++'
+
+4.01e-3    'free'   ;'mg++'
+
+1.642d-4   'free'   ;'hco3-'
+
+1.003d-23  'free'   ;'u++++'     
+
+7.939d-2   'free'   ;'na+'
+
+8.221d-4   'free'   ;'cl-'
+
+3.008d-2   'free'   ;'pipes-'
+
+6.0d-6     'free'   ;'biomass'
+
+1.0d-20    'free'   ;'biomass-d'
+
+!  from Sevinc
+
+!	C                 1.642e-04   1.642e-04  Equilibrium with CO2(g)
+
+!	Ca                4.010e-04   4.010e-04
+
+!	Cl                8.221e-04   8.221e-04
+
+!	Fe(3)             1.300e-12   1.300e-12  Equilibrium with Hematite
+
+!	Feii              1.003e-23   1.003e-23
+
+!	Lac               3.008e-02   3.008e-02
+
+!	Mg                4.010e-03   4.010e-03
+
+!	Na                7.939e-02   7.939e-02  Charge balance
+
+!	Pip               3.008e-02   3.008e-02
+
+!	S                 1.003e-23   1.003e-23
+
+!	Sulfate           2.005e-02   2.005e-02
+
+!	U(4)              1.003e-23   1.003e-23
+
+!	Uranyl            9.024e-05   9.024e-05
+
+!1.0d-20   'free'   ;'lactate-'  
+
+!1.0d-20   'free'   ;'acetate-'  
+
+!0.02      'free'   ;'so4--'
+
+!1.0d-20   'free'   ;'hs-'     
+
+!1.0d-20   'free'   ;'fe++'     
+
+!1.292d-12 'free'   ;'fe+++'     - equilibrium with hematite
+
+!9.0d-5    'free'   ;'uo2++'
+
+!4.0d-4    'free'   ;'ca++'
+
+!4.0e-3    'free'   ;'mg++'
+
+!1.558d-4  'free'   ;'hco3-'
+
+!1.0d-20   'free'   ;'u++++'      
+
+!5.22d-2   'free'   ;'na+'
+
+!8.2d-4    'free'   ;'cl-'
+
+!6.0d-3    'free'   ;'biomass'
+
+!1.0d-20   'free'   ;'biomass-d'
+
+
+
+'mineral input'               
+
+2.195d-4  .true.   'constant' ;phim, minequil, update_type  - hematite
+
+1.d-10    1.0d-6    0.00d0    ;phimin, scalfac, supsatm
+
+0.0d0     .false.  'constant' ;phim, minequil, update_type  - uraninite
+
+1.d-10    1.0d-6    0.00d0    ;phimin, area, supsatm
+
+0.0d0     .false.  'constant' ;phim, minequil, update_type  - sulfur
+
+1.d-10    1.4d-11    0.00d0    ;phimin, area, supsatm
+
+0.0d0     .false.  'constant' ;phim, minequil, update_type  - fes_m
+
+1.d-10    1.0d-6    0.00d0    ;phimin, area, supsatm
+
+0.0d0     .false.  'constant' ;phim, minequil, update_type  - siderite
+
+1.d-10    1.0d-6    0.00d0    ;phimin, area, supsatm
+
+
+
+'extent of zone'
+
+0.0 1.0 0.0 1.0 0.0 1.0
+
+!0.0 18.0  0.0 10.5  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+2  !3                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'third'  !'first'
+
+
+
+'concentration input'
+
+7.2       'ph'     ;'h+1'                   
+
+1.0d-10   'free'   ;'lactate-' 
+
+1.0d-10   'free'   ;'acetate-' 
+
+0.02      'free'   ;'so4--'
+
+1.0d-10   'free'   ;'hs-'    
+
+1.0d-10   'free'   ;'fe++'    
+
+1.292d-12 'free'   ;'fe+++'    -  equilibrium with hematite
+
+9.0d-5    'free'   ;'uo2++'
+
+4.0d-4    'free'   ;'ca++'
+
+4.0e-3    'free'   ;'mg++'
+
+1.558d-4  'free'   ;'hco3-'
+
+1.0d-15   'free'   ;'u++++'      
+
+5.22d-2   'free'   ;'na+'
+
+8.2d-4    'free'   ;'cl-'
+
+3.008d-2  'free'   ;'pipes-'
+
+1.0d-20   'free'   ;'biomass'
+
+1.0d-20   'free'   ;'biomass-d'
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  0.0 1.0
+
+!0.0 0.0  0.0 10.5  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+'extent of zone'
+
+1.0 1.0  0.0 1.0  0.0 1.0
+
+!18.0 18.0  0.0 10.5  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'injection boundary'
+
+
+
+'boundary type'
+
+'first'             !!!change to third, after including water injection
+
+
+
+'concentration input'
+
+7.2       'ph'     ;'h+1'                   
+
+0.03      'free'   ;'lactate-' 
+
+1.0d-20   'free'   ;'acetate-' 
+
+0.02      'free'   ;'so4--'
+
+1.0d-20   'free'   ;'hs-'    
+
+1.0d-20   'free'   ;'fe++'  
+
+1.299d-12 'free'   ;'fe+++'     - equilibrium with hematite
+
+1.0d-20   'free'   ;'uo2++'
+
+4.0d-4    'free'   ;'ca++'
+
+4.0e-3    'free'   ;'mg++'
+
+1.558d-4  'free'   ;'hco3-'
+
+1.0d-20   'free'   ;'u++++'     
+
+8.235d-2  'free'   ;'na+'
+
+8.2d-4    'free'   ;'cl-'
+
+3.008d-2  'free'   ;'pipes-'
+
+1.0d-20   'free'   ;'biomass'
+
+1.0d-20   'free'   ;'biomass-d'
+
+
+
+'extent of zone'
+
+7.25 7.25  5.25 5.25  0.0 1.0     - !!!SS location?
+
+
+
+'end of zone'
+
+
+
+'done'
+

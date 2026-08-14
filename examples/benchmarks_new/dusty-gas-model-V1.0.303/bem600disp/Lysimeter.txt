@@ -1,0 +1,6 @@
+title = "dataset thor"
+variables = "z","pH 9014"
+zone t = "Amos data", i =   3, j =    1, k =    1,  f=point
+1.336	6.7
+2.836	7.03
+4.336	6.81

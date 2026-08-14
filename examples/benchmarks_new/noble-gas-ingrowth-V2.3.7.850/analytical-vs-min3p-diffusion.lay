@@ -1,0 +1,430 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"4He-ingrowth-diffusion-a/analytical.gst" "4He-ingrowth-diffusion-a/4He-ingrowth-diffusion_8.gst"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "4he(aq)"'
+$!VarSet |LFDSFN2| = '"4He-ingrowth-diffusion-b/analytical.gst" "4He-ingrowth-diffusion-b/4He-ingrowth-diffusion_8.gst" "4He-ingrowth-diffusion-c/analytical.gst" "4He-ingrowth-diffusion-c/4He-ingrowth-diffusion_8.gst"'
+$!VarSet |LFDSVL2| = '"x" "y" "z" "4he(aq)"'
+$!VarSet |LFDSFN3| = '"4He-ingrowth-diffusion-c/analytical-1.0e7.gst" "4He-ingrowth-diffusion-c/4He-ingrowth-diffusion_7.gst"'
+$!VarSet |LFDSVL3| = '"x" "y" "z" "4he(aq)"'
+$!SetStyleBase Factory
+$!GlobalPaper 
+  PaperSizeInfo
+    {
+    Letter
+      {
+      Width = 8.5
+      Height = 11
+      LeftHardClipOffset = 0.125
+      RightHardClipOffset = 0.125
+      TopHardClipOffset = 0.125
+      BottomHardClipOffset = 0.125
+      }
+    }
+$!Page 
+  Name = 'Untitled'
+  PaperAttributes
+    {
+    BackgroundColor = White
+    IsTransparent = Yes
+    OrientPortrait = No
+    ShowGrid = Yes
+    ShowRuler = No
+    ShowPaper = No
+    PaperSize = Letter
+    RulerSpacing = OneInch
+    PaperGridSpacing = HalfInch
+    RegionInWorkArea
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!ReadDataSet  '|LFDSFN1|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  ResetStyle = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL1|'
+$!RemoveVar |LFDSVL1|
+$!RemoveVar |LFDSFN1|
+$!ReadDataSet  '|LFDSFN2|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  ReadDataOption = Append
+  ResetStyle = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL2|'
+$!RemoveVar |LFDSVL2|
+$!RemoveVar |LFDSFN2|
+$!ReadDataSet  '|LFDSFN3|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  ReadDataOption = Append
+  ResetStyle = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL3|'
+$!RemoveVar |LFDSVL3|
+$!RemoveVar |LFDSFN3|
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 0.25
+    }
+  Width = 6
+  Height = 9
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [1-8]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    Show = Yes
+    TextShape
+      {
+      SizeUnits = Point
+      Height = 14
+      }
+    Box
+      {
+      BoxType = None
+      }
+    RowSpacing = 1
+    XYPos
+      {
+      X = 91.703
+      Y = 99.837
+      }
+    }
+$!LineMap  [1]
+  Name = 'S1 - Analytical, D 1.0e-7, T 1.0e8 '
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Black
+    FillColor = Red
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = 'S1 - MIN3P, D 1.0e-7, T 1.0e8 '
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Show = No
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Color = Black
+    FillColor = Green
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = 'S2 - Analytical, D 5.0e-7, T 1.0e8 '
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Black
+    FillColor = Blue
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = 'S2 - MIN3P, D 5.0e-7, T 1.0e8 '
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Show = No
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Del
+      }
+    Color = Black
+    FillColor = Custom1
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [5]
+  Name = 'S3 - Analytical, D 1.0e-6, T 1.0e8 '
+  Assign
+    {
+    Zone = 5
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Black
+    FillColor = Custom3
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [6]
+  Name = 'S3 - MIN3P, D 1.0e-6, T 1.0e8 '
+  Assign
+    {
+    Zone = 6
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Show = No
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Grad
+      }
+    Color = Black
+    FillColor = Purple
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [7]
+  Name = 'S4 - Analytical, D 1.0e-6, T 1.0e7 '
+  Assign
+    {
+    Zone = 7
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Black
+    FillColor = Red
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [8]
+  Name = 'S4 - MIN3P, D 1.0e-6, T 1.0e7 '
+  Assign
+    {
+    Zone = 8
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Show = No
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Circle
+      }
+    Color = Black
+    FillColor = Green
+    Size = 2
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+  ViewportPosition
+    {
+    X1 = 17.622
+    Y1 = 10.519
+    X2 = 94.332
+    Y2 = 74.978
+    }
+  ViewportTopSnapTarget = 74.9782833876
+$!XYLineAxis 
+  XDetail 1
+    {
+    CoordScale = Log
+    RangeMin = 1.0000000000000000209E-08
+    RangeMax = 9.9999999999999995475E-07
+    GRSpacing = 5E-07
+    Title
+      {
+      TitleMode = UseText
+      Text = '<sup>4</sup>He concnetration (mol L<sup>-1</sup>)'
+      Offset = 5
+      }
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = 0
+    RangeMax = 50
+    IsReversed = Yes
+    AutoGrid = No
+    GRSpacing = 10
+    Title
+      {
+      TitleMode = UseText
+      Text = 'Depth (m)'
+      Offset = 10
+      }
+    }
+$!LinePlotLayers 
+  ShowSymbols = Yes
+$!FrameControl ActivateByNumber
+  Frame = 1
+$!SetStyleBase Config

@@ -1,0 +1,291 @@
+   Input file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\gas\phreeqc_n\O2dh60.pqi
+  Output file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\gas\phreeqc_n\O2dh60.pqo
+Database file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\gas\database\phreeqc\minteq-simple.dat
+
+------------------
+Reading data base.
+------------------
+
+	SOLUTION_MASTER_SPECIES
+	SOLUTION_SPECIES
+	SOLUTION_SPECIES
+	PHASES
+	PHASES
+	END
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	DATABASE D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\gas\database\phreeqc\minteq-simple.dat
+	TITLE Temperature - gas exchange benchmarking
+	SOLUTION_SPECIES
+	 1.0000 H2O  =  H2 +0.5000 O2   
+	      log_k        -44.61  #   -46.1066
+		delta_h	65.636  kcal  #  275.588	kJ/mol	# Calculated enthalpy of reaction	H2
+	PHASES
+	O2(g) 
+	   O2 = O2
+	        log_k   -2.8980
+	        delta_h  -1.844    kcal  # from MIN3P database gases.dbs
+	SOLUTION 1
+	    temp      5.0
+	    pH        7.0
+	    units     mol/kgw
+	    density   1
+	     O(0)    2.0e-3
+	     Na	 1.0e-5
+	     Cl	 1.0e-5	
+	    water    1 # kg
+	END
+-----
+TITLE
+-----
+
+ Temperature - gas exchange benchmarking
+
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-005  1.000e-005
+	Na               1.000e-005  1.000e-005
+	O(0)             2.000e-003  2.000e-003
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+       Specific Conductance (uS/cm, 5 oC) = 0
+                          Density (g/cm3)  =   1.00000
+                               Volume (L)  =   1.00004
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.006e-005
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -8.040e-008
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =   5.00
+                  Electrical balance (eq)  =  8.040e-008
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =   0.40
+                               Iterations  =   2
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550822e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          15.5460      0.8580
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   H+             1.004e-007  1.000e-007    -6.998    -7.000    -0.002      0.00
+   OH-            1.996e-008  1.989e-008    -7.700    -7.701    -0.002     (0)  
+   H2O            5.551e+001  1.000e+000     1.744    -0.000     0.000     18.02
+Cl           1.000e-005
+   Cl-            1.000e-005  9.964e-006    -5.000    -5.002    -0.002     (0)  
+H(0)         6.664e-024
+   H2             3.332e-024  3.332e-024   -23.477   -23.477     0.000     (0)  
+Na           1.000e-005
+   Na+            1.000e-005  9.964e-006    -5.000    -5.002    -0.002     29.29
+O(0)         2.000e-003
+   O2             1.000e-003  1.000e-003    -3.000    -3.000     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(278 K,   1 atm)
+
+  O2(g)            -0.20     -3.00   -2.80  O2
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+	SOLUTION 2
+	    temp      25.0
+	    pH        7.0
+	    units     mol/kgw
+	    density   1
+	     O(0)    2.0e-3 
+	     Na	 1.0e-5
+	     Cl	 1.0e-5	
+	    water    1 # kg
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 2.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-005  1.000e-005
+	Na               1.000e-005  1.000e-005
+	O(0)             2.000e-003  2.000e-003
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+       Specific Conductance (uS/cm, 25 oC) = 0
+                          Density (g/cm3)  =   0.99708
+                               Volume (L)  =   1.00297
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.010e-005
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  4.637e-010
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.00
+                  Electrical balance (eq)  = -4.637e-010
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  -0.00
+                               Iterations  =   2
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550822e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          13.7700      0.8146
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   OH-            1.008e-007  1.005e-007    -6.996    -6.998    -0.002     (0)  
+   H+             1.004e-007  1.000e-007    -6.998    -7.000    -0.002      0.00
+   H2O            5.551e+001  1.000e+000     1.744    -0.000     0.000     18.07
+Cl           1.000e-005
+   Cl-            1.000e-005  9.963e-006    -5.000    -5.002    -0.002     (0)  
+H(0)         5.383e-024
+   H2             2.692e-024  2.692e-024   -23.570   -23.570     0.000     (0)  
+Na           1.000e-005
+   Na+            1.000e-005  9.963e-006    -5.000    -5.002    -0.002     29.29
+O(0)         2.000e-003
+   O2             1.000e-003  1.000e-003    -3.000    -3.000     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(298 K,   1 atm)
+
+  O2(g)            -0.10     -3.00   -2.90  O2
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 3.
+------------------------------------
+
+	SOLUTION 3
+	    temp      60.0
+	    pH        7.0
+	    units     mol/kgw
+	    density   1
+	     O(0)    2.0e-3
+	     Na	 1.0e-5
+	     Cl	 1.0e-5	
+	    water    1 # kg
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 3.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-005  1.000e-005
+	Na               1.000e-005  1.000e-005
+	O(0)             2.000e-003  2.000e-003
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+       Specific Conductance (uS/cm, 60 oC) = 1
+                          Density (g/cm3)  =   0.98322
+                               Volume (L)  =   1.01710
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.059e-005
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  9.746e-007
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  60.00
+                  Electrical balance (eq)  = -9.746e-007
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  -4.60
+                               Iterations  =   2
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550822e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          11.1751      0.7387
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   OH-            1.075e-006  1.071e-006    -5.969    -5.970    -0.002     (0)  
+   H+             1.004e-007  1.000e-007    -6.998    -7.000    -0.002      0.00
+   H2O            5.551e+001  1.000e+000     1.744    -0.000     0.000     18.32
+Cl           1.000e-005
+   Cl-            1.000e-005  9.959e-006    -5.000    -5.002    -0.002     (0)  
+H(0)         3.941e-024
+   H2             1.970e-024  1.970e-024   -23.705   -23.705     0.000     (0)  
+Na           1.000e-005
+   Na+            1.000e-005  9.959e-006    -5.000    -5.002    -0.002     29.29
+O(0)         2.000e-003
+   O2             1.000e-003  1.000e-003    -3.000    -3.000     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(333 K,   1 atm)
+
+  O2(g)             0.04     -3.00   -3.04  O2
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 4.
+------------------------------------
+
+-------------------------------
+End of Run after 0.056 Seconds.
+-------------------------------
+

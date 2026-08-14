@@ -1,0 +1,1106 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"c2a_1.mac"'
+$!VarSet |LFDSVL1| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]"'
+$!VarSet |LFDSFN2| = '"HP1-Results-solute-flux-C2a.txt"'
+$!VarSet |LFDSVL2| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]" "time" "actual soulte flux top [mol/d]" "actual solute flux bottom [mol/d]" "cumulative solute flux top" "cumulative solute flux bottom"'
+$!VarSet |LFDSFN3| = '"c2a_1.mac"'
+$!VarSet |LFDSVL3| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]"'
+$!VarSet |LFDSFN4| = '"HP1-Results-solute-flux-C2a.txt"'
+$!VarSet |LFDSVL4| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]" "time" "actual soulte flux top [mol/d]" "actual solute flux bottom [mol/d]" "cumulative solute flux top" "cumulative solute flux bottom"'
+$!VarSet |LFDSFN5| = '"c2a_1.mac"'
+$!VarSet |LFDSVL5| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]"'
+$!VarSet |LFDSFN6| = '"HP1-Results-solute-flux-C2a.txt"'
+$!VarSet |LFDSVL6| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]" "time" "actual soulte flux top [mol/d]" "actual solute flux bottom [mol/d]" "cumulative solute flux top" "cumulative solute flux bottom"'
+$!VarSet |LFDSFN7| = '"c2a_1.mac"'
+$!VarSet |LFDSVL7| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]"'
+$!VarSet |LFDSFN8| = '"HP1-Results-solute-flux-C2a.txt"'
+$!VarSet |LFDSVL8| = '"time [days]" "mass influx [mol/d]" "mass outflux [mol/d]" "change in storage [mol/d]" "source/sink from intra-aqueous reactns [mol/d]" "source/sink from mineral phase [mol/d]" "source/sink from gas phase [mol/d]" "mass influx (gas phase) [mol/d]" "mass outflux (gas phase) [mol/d]" "change in storage (gas phase) [mol/d]" "mass loss - degassing [mol/d]" "source/sink from sorbed phase [mol/d]" "total mass influx [mol/elapsed time]" "total mass outflux [mol/elapsed time]" "total change in storage [mol/elapsed time]" "total source/sink intra-aqueous reactns [mol/elapsed time]" "total source/sink from mineral phase [mol/elapsed time]" "total source/sink from gas phase [mol/elapsed time]" "total mass influx (gas phase) [mol/elapsed time]" "total mass outflux (gas phase) [mol/elapsed time]" "total change in storage (gas phase) [mol/elapsed time]" "total mass loss - degassing [mol/elapsed time]" "total source/sink from sorbed phase [mol/elapsed time]" "time" "actual soulte flux top [mol/d]" "actual solute flux bottom [mol/d]" "cumulative solute flux top" "cumulative solute flux bottom"'
+$!VarSet |LFDSFN9| = '"c2a_o.mvc"'
+$!VarSet |LFDSVL9| = '"time" "inflow" "outflow" "change in storage" "root water uptake"'
+$!VarSet |LFDSFN10| = '"HP1-Results-water-flux-C2a.txt"'
+$!VarSet |LFDSVL10| = '"time" "inflow" "outflow" "change in storage" "root water uptake" "actual water flux top" "actual water flux bottom" "cumulative water flux top" "cumulative water flux bottom"'
+$!VarSet |LFDSFN11| = '"c2a_o.mvc"'
+$!VarSet |LFDSVL11| = '"time" "inflow" "outflow" "change in storage" "root water uptake"'
+$!VarSet |LFDSFN12| = '"HP1-Results-water-flux-C2a.txt"'
+$!VarSet |LFDSVL12| = '"time" "inflow" "outflow" "change in storage" "root water uptake" "actual water flux top" "actual water flux bottom" "cumulative water flux top" "cumulative water flux bottom"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL2|' 
+$!REMOVEVAR |LFDSVL2|
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = BLUE
+  XYPOS
+    {
+    X = 0.5
+    Y = 3
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 003' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'Map 1' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'Map 2' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 24
+    YAXISVAR = 25
+    }
+  LINES
+    {
+    COLOR = CUSTOM11
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 13.792
+    Y1 = 14.977
+    X2 = 90.774
+    Y2 = 91.977
+    }
+  VIEWPORTTOPSNAPTARGET = 91.9768786127
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 366.5
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = -5
+    RANGEMAX = 45
+    GRSPACING = 10
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Actual solute influx [mol/m2/day]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 86.1351364117
+    Y = 86.6497890295
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 11
+    }
+  TEXT = '(c)' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL3|' 
+$!REMOVEVAR |LFDSVL3|
+$!REMOVEVAR |LFDSFN3|
+$!READDATASET  '|LFDSFN4|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL4|' 
+$!REMOVEVAR |LFDSVL4|
+$!REMOVEVAR |LFDSFN4|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = YELLOW
+  XYPOS
+    {
+    X = 5.5
+    Y = 3
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 005' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'Map 1' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'Map 2' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 24
+    YAXISVAR = 26
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.349
+    Y1 = 14.266
+    X2 = 90.349
+    Y2 = 91.266
+    }
+  VIEWPORTTOPSNAPTARGET = 91.2658227848
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 366.5
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = -0.5
+    RANGEMAX = 7.5
+    GRSPACING = 2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Actual solute outflux [mol/m2/day] [mol/m2/day]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 85.9250148388
+    Y = 85.5611814346
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 11
+    }
+  TEXT = '(d)' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN5|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL5|' 
+$!REMOVEVAR |LFDSVL5|
+$!REMOVEVAR |LFDSFN5|
+$!READDATASET  '|LFDSFN6|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL6|' 
+$!REMOVEVAR |LFDSVL6|
+$!REMOVEVAR |LFDSFN6|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = CYAN
+  XYPOS
+    {
+    X = 0.5
+    Y = 5.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 004' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'Map 1' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'Map 2' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 24
+    YAXISVAR = 27
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.575
+    Y1 = 14.977
+    X2 = 90.575
+    Y2 = 92.375
+    }
+  VIEWPORTTOPSNAPTARGET = 92.374566474
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 1.000000013351432E-010
+    RANGEMAX = 365.03649999999999
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 800
+    GRSPACING = 200
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Cum solute influx [mol/m2]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 83.9666817786
+    Y = 86.4978902954
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 11
+    }
+  TEXT = '(e)' 
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN7|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL7|' 
+$!REMOVEVAR |LFDSVL7|
+$!REMOVEVAR |LFDSFN7|
+$!READDATASET  '|LFDSFN8|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL8|' 
+$!REMOVEVAR |LFDSVL8|
+$!REMOVEVAR |LFDSFN8|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = PURPLE
+  XYPOS
+    {
+    X = 5.5
+    Y = 5.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'Map 1' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'Map 2' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 24
+    YAXISVAR = 28
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.53
+    Y1 = 14.266
+    X2 = 90.53
+    Y2 = 91.266
+    }
+  VIEWPORTTOPSNAPTARGET = 91.2658227848
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 365.5
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 6
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = -25
+    RANGEMAX = 300
+    GRSPACING = 50
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Cum solute influx [mol/m2]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 86.2864239443
+    Y = 85.7721518987
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 11
+    }
+  TEXT = '(f)' 
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN9|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL9|' 
+$!REMOVEVAR |LFDSVL9|
+$!REMOVEVAR |LFDSFN9|
+$!READDATASET  '|LFDSFN10|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL10|' 
+$!REMOVEVAR |LFDSVL10|
+$!REMOVEVAR |LFDSFN10|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.5
+    Y = 0.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    TEXTSHAPE
+      {
+      HEIGHT = 6
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    XYPOS
+      {
+      X = 56.572
+      Y = 93.934
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'MIN3P-THCm' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'HP1' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 14.387
+    Y1 = 15.772
+    X2 = 90.575
+    Y2 = 90.784
+    }
+  VIEWPORTTOPSNAPTARGET = 90.7838150289
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 366.5
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = -0.0050000000000000001
+    RANGEMAX = 0.044999999999999998
+    GRSPACING = 0.01
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Actual water influx [m/day]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 86.3158409645
+    Y = 84.9873417721
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 11
+    }
+  TEXT = '(a)' 
+### Frame Number 6 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN11|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL11|' 
+$!REMOVEVAR |LFDSVL11|
+$!REMOVEVAR |LFDSFN11|
+$!READDATASET  '|LFDSFN12|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL12|' 
+$!REMOVEVAR |LFDSVL12|
+$!REMOVEVAR |LFDSFN12|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = GREEN
+  XYPOS
+    {
+    X = 5.5
+    Y = 0.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 002' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'Map 1' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'Map 2' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 15.377
+    Y1 = 15.772
+    X2 = 89.981
+    Y2 = 91.579
+    }
+  VIEWPORTTOPSNAPTARGET = 91.5791907514
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 366.5
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = -0.0050000000000000001
+    RANGEMAX = 0.044999999999999998
+    GRSPACING = 0.01
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Actual water outflux  [m/day]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        HEIGHT = 6
+        }
+      OFFSET = 8
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 85.744310286
+    Y = 85.7130801688
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 11
+    }
+  TEXT = '(b)' 
+$!SETSTYLEBASE CONFIG

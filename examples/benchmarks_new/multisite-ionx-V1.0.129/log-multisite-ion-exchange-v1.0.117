@@ -1,0 +1,68 @@
+Summary of branch (Revision 124 and 128): Major work in this branch is the multisite ion-exchange model.
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxx Summary of branch: Revision 124 and 128
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+***New features***
+1. Multisite ion-exchange reaction for Gaines Thomas convention
+
+***Usage of new features***
+1. Usage of feature:
+   To use this function, two keywords are needed: 'surface sites of ion-exchange' in data block 2: geochemical 
+   system and 'CEC fraction of multisite ion exchange' in Data Block 14: initial condition - reactive transport 
+   for the specification of the amount of each site.
+   The new input files can be found in the new-added benchmarks, see benchmarks_new_added\ionx-2domains-V1.0.117.
+
+1.1 Define number and names of surface sites and sorbed species, add the following input command/data to Data 
+	Block 2: geochemical system. 
+	
+	'surface sites of ion-exchange'
+	2
+	'-x'
+	'-Y'
+	
+	'sorbed species of ion-exchange'
+	12
+	'mg-x(na)'
+	'na-x(na)'
+	'k-x(na)'
+	'zn-x(na)'
+	'pb-x(na)'
+	'ca-x(na)'
+	'mg-Y(na)'
+	'na-Y(na)'
+	'k-Y(na)'
+	'zn-Y(na)'
+	'pb-Y(na)'
+	'ca-Y(na)'
+	
+	The name of each site should include ‘-‘. The sorbed species name has to use the site name plus (na). 
+	For example mg-Y(na) stands for the sorbed species of Mg+2 on –Y and exchanges with Na+. The exact reaction 
+	will be defined in the database in the same way for single site ion excahnge reactions (see user manual).
+
+1.2 Define the amount of each sites, add the following input command/data to Data Block 14: initial 
+	condition - reactive transport
+	
+	'sorption parameter input of ion-exchange'
+	0.733                      		;total cation exchange capacity (CEC) [meq/100 g solid]
+	1.875d0                        	;dry bulk density [g/cm^3]
+	
+	'CEC fraction of multisite ion exchange'
+	0.9                         	;'-x'
+	0.1                           	;'-Y'
+	
+	The input format and units for the total CEC value and dry bulk density parameters remain the same as the
+	single site ion excahnge reaction. But the keyword must be updated as the one in revision 94 as shown above.
+	The amount of each sites are specified by the CEC fractions. They should be given in the same order as given
+	under the keyword 'surface sites of ion-exchange'. The total CEC fraction should be 1.0. 
+
+
+***Benchmarks Updates***
+1. New benchmark added, see benchmarks_new_added\surfx-ionx-V1.0.117.
+
+***Bug fixes***
+1. Fix bug of pe, pH and Eh initialization which may cause NaN value in the output file e.g *.gbm, *.gsm, phpe.F90.
+
+***Notes***
+1. Multisite ion-exchange reaction for Gapon convention is not verified yet.

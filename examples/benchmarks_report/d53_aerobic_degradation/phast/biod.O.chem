@@ -1,0 +1,501 @@
+------------------
+Reading data base.
+------------------
+
+	SOLUTION_MASTER_SPECIES
+	SOLUTION_SPECIES
+	PHASES
+	EXCHANGE_MASTER_SPECIES
+	EXCHANGE_SPECIES
+	SURFACE_MASTER_SPECIES
+	SURFACE_SPECIES
+	RATES
+	END
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	SOLUTION_MASTER_SPECIES
+	Toluene   Toluene       0     C7H8  92.13
+	SOLUTION_SPECIES
+	Toluene = Toluene
+	 log_k   0.0
+	SOLUTION 1 Influent water
+	 units mol/l
+	 temp        25.0
+	 pH          7.0 charge
+	 O(0)        2e-10
+	 Toluene     0.001
+	 Cl          0.001
+	 C           1e-10
+	 Na          0.001
+	SOLUTION 2 Background water
+	 units mol/l
+	 temp        25.0
+	 pH          7.0 charge
+	 O(0)        2e-3
+	 Toluene     1e-10
+	 Cl          1e-10
+	 C           1e-10
+	 Na          1e-10
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	Influent water
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	C                1.000e-010  1.000e-010
+	Cl               1.000e-003  1.000e-003
+	Na               1.000e-003  1.000e-003
+	O(0)             2.000e-010  2.000e-010
+	Toluene          1.000e-003  1.000e-003
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   6.999      Charge balance
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.000e-003
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  8.979e-020
+                       Total CO2 (mol/kg)  =  1.000e-010
+                      Temperature (deg C)  =  25.000
+                  Electrical balance (eq)  = -2.009e-017
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  -0.00
+                               Iterations  =   3
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550622e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          12.0210      0.7111
+
+----------------------------Distribution of species----------------------------
+
+	                                           Log       Log         Log 
+	Species            Molality    Activity  Molality  Activity     Gamma
+
+	H+               1.037e-007  1.002e-007    -6.984    -6.999    -0.015
+	OH-              1.035e-007  9.989e-008    -6.985    -7.000    -0.016
+	H2O              5.551e+001  9.999e-001     1.744    -0.000     0.000
+C(-4)           0.000e+000
+	CH4              0.000e+000  0.000e+000   -74.351   -74.350     0.000
+C(4)            1.000e-010
+	HCO3-            8.208e-011  7.924e-011   -10.086   -10.101    -0.015
+	CO2              1.785e-011  1.786e-011   -10.748   -10.748     0.000
+	NaHCO3           4.301e-014  4.302e-014   -13.366   -13.366     0.000
+	CO3-2            4.268e-014  3.708e-014   -13.370   -13.431    -0.061
+	NaCO3-           6.907e-016  6.666e-016   -15.161   -15.176    -0.015
+Cl              1.000e-003
+	Cl-              1.000e-003  9.650e-004    -3.000    -3.015    -0.016
+H(0)            1.422e-025
+	H2               7.108e-026  7.110e-026   -25.148   -25.148     0.000
+Na              1.000e-003
+	Na+              1.000e-003  9.653e-004    -3.000    -3.015    -0.015
+	NaOH             6.362e-011  6.364e-011   -10.196   -10.196     0.000
+	NaHCO3           4.301e-014  4.302e-014   -13.366   -13.366     0.000
+	NaCO3-           6.907e-016  6.666e-016   -15.161   -15.176    -0.015
+O(0)            2.000e-010
+	O2               1.000e-010  1.000e-010   -10.000   -10.000     0.000
+Toluene         1.000e-003
+	Toluene          1.000e-003  1.000e-003    -3.000    -3.000     0.000
+
+------------------------------Saturation indices-------------------------------
+
+	Phase               SI log IAP  log KT
+
+	CH4(g)          -71.49 -115.42  -43.93  CH4
+	CO2(g)           -9.28  -27.43  -18.15  CO2
+	H2(g)           -22.00  -22.00    0.00  H2
+	H2O(g)           -1.51   -0.00    1.51  H2O
+	Halite           -7.61   -6.03    1.58  NaCl
+	O2(g)            -7.04  -10.00   -2.96  O2
+
+Initial solution 2.	Background water
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	C                1.000e-010  1.000e-010
+	Cl               1.000e-010  1.000e-010
+	Na               1.000e-010  1.000e-010
+	O(0)             2.000e-003  2.000e-003
+	Toluene          1.000e-010  1.000e-010
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000      Charge balance
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.002e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -1.323e-022
+                       Total CO2 (mol/kg)  =  1.000e-010
+                      Temperature (deg C)  =  25.000
+                  Electrical balance (eq)  =  1.323e-022
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =   0.00
+                               Iterations  =   3
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550822e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          13.7704      0.8146
+
+----------------------------Distribution of species----------------------------
+
+	                                           Log       Log         Log 
+	Species            Molality    Activity  Molality  Activity     Gamma
+
+	H+               1.001e-007  1.001e-007    -6.999    -7.000    -0.000
+	OH-              1.000e-007  1.000e-007    -7.000    -7.000    -0.000
+	H2O              5.551e+001  1.000e+000     1.744    -0.000     0.000
+C(-4)           0.000e+000
+	CH4              0.000e+000  0.000e+000   -74.343   -74.343     0.000
+C(4)            1.000e-010
+	HCO3-            8.161e-011  8.158e-011   -10.088   -10.088    -0.000
+	CO2              1.836e-011  1.836e-011   -10.736   -10.736     0.000
+	CO3-2            3.828e-014  3.822e-014   -13.417   -13.418    -0.001
+	NaHCO3           4.586e-021  4.586e-021   -20.339   -20.339     0.000
+	NaCO3-           7.117e-023  7.115e-023   -22.148   -22.148    -0.000
+Cl              1.000e-010
+	Cl-              1.000e-010  9.997e-011   -10.000   -10.000    -0.000
+H(0)            1.419e-025
+	H2               7.093e-026  7.093e-026   -25.149   -25.149     0.000
+Na              1.000e-010
+	Na+              1.000e-010  9.997e-011   -10.000   -10.000    -0.000
+	NaOH             6.598e-018  6.598e-018   -17.181   -17.181     0.000
+	NaHCO3           4.586e-021  4.586e-021   -20.339   -20.339     0.000
+	NaCO3-           7.117e-023  7.115e-023   -22.148   -22.148    -0.000
+O(0)            2.000e-003
+	O2               1.000e-003  1.000e-003    -3.000    -3.000     0.000
+Toluene         1.000e-010
+	Toluene          1.000e-010  1.000e-010   -10.000   -10.000     0.000
+
+------------------------------Saturation indices-------------------------------
+
+	Phase               SI log IAP  log KT
+
+	CH4(g)          -71.48 -115.41  -43.93  CH4
+	CO2(g)           -9.27  -27.42  -18.15  CO2
+	H2(g)           -22.00  -22.00    0.00  H2
+	H2O(g)           -1.51   -0.00    1.51  H2O
+	Halite          -21.58  -20.00    1.58  NaCl
+	O2(g)            -0.04   -3.00   -2.96  O2
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+	KINETICS 1
+	C7H8_degradation
+	 formula Toluene 1.0 C7H8 -1.0
+	 m0  0.0
+	 runge_kutta 6
+	RATES
+	C7H8_degradation
+	start
+	10 Ks = 1.0d-5
+	15 Ks2 = 1.0d-10
+	20 Ka = 3.125d-6
+	25 Ka2 = 1.0d-10
+	30 qm = 1.0e-9
+	40 f1 = MOL("Toluene")/(Ks + MOL("Toluene"))
+	45 f1 = f1 * (MOL("Toluene")/(Ks2 + MOL("Toluene")))^2
+	50 f2 = MOL("O2")/(Ka + MOL("O2"))
+	55 f2 = f2*(MOL("O2")/(Ka2 + MOL("O2")))^2
+	60 rate = -qm * f1 * f2
+	70 moles = rate * TIME
+	80 PUT(rate, 1)
+	90 SAVE moles
+	end
+	SELECTED_OUTPUT
+	        file biod.sel
+	        reset false
+	USER_PUNCH
+	headings Toluene O2(aq) C reaction_increment
+	10 PUNCH TOT("Toluene"),  MOL("O2"), TOT("C")
+	20 rate = GET(1)*86400
+	30 rate2 = -rate
+	40 PUNCH rate2
+	END
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 3.
+------------------------------------
+
+List of Components:
+	1	H
+	2	O
+	3	C
+	4	Cl
+	5	Na
+	6	Toluene
+	7	Charge
+List of master species:
+	1	C(-4)
+	2	C(4)
+	3	Cl
+	4	Na
+	5	Toluene
+WARNING: Element C has negative moles in solution, -1.595268e-004. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.595268e-004. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.595268e-004. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.595268e-004. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.750606e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -3.603575e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.261894e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.441944e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -6.690543e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.660775e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -4.731999e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.081855e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -6.980760e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.252008e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -7.543515e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -9.664480e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.127614e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.275437e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -3.865645e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.911777e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -4.622520e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.805186e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -5.746204e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -7.037992e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -8.147013e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.093266e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.499794e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.873376e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -7.162761e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -5.981139e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -9.889335e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.857916e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -3.877048e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.289732e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.530544e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -4.205099e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.078932e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -6.014015e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -7.720873e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.247435e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -7.441240e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.384193e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -9.444404e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -3.009141e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -5.472114e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -7.622066e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -6.371587e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -4.123590e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -8.325555e-010. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.108843e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -3.270414e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.283604e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -4.629932e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.501800e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -5.155656e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -9.021805e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -3.032352e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.914055e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -7.351580e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -1.110025e-008. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.
+WARNING: Element C has negative moles in solution, -2.535232e-009. 
+	Erroneous mole balance occurs as moles are added to produce zero moles.
+	Usually caused by KINETICS, REACTION, or diffuse layer calculation.
+	May be due to large time steps in early part of KINETICS simulation or negative concentrations in the diffuse layer.

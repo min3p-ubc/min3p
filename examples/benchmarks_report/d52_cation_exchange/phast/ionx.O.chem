@@ -1,0 +1,333 @@
+Output file:    ionx.O.chem
+Chemistry file: ionx.chem.dat
+Database file:  phast.dat
+
+------------------
+Reading data base.
+------------------
+
+	SOLUTION_MASTER_SPECIES
+	SOLUTION_SPECIES
+	PHASES
+	EXCHANGE_MASTER_SPECIES
+	EXCHANGE_SPECIES
+	SURFACE_MASTER_SPECIES
+	SURFACE_SPECIES
+	RATES
+	END
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	TITLE  1D ion exchange
+	SOLUTION 0  CaCl2
+	        units   mol/l
+	        pH      7.0     charge
+	        pe      12.5   O2(g)  -0.68
+	        temp    25.0
+	        Ca      0.0006
+	        Cl      0.0012
+	        Na      1e-9
+	        K       1e-9
+	        N(+5)   1e-9
+	SOLUTION 1  Initial solution for column
+	        units   mol/l
+	        pH      7.0     charge
+	        pe      12.5   O2(g)  -0.68
+	        temp    25.0
+	        Na      0.001
+	        K       0.0002
+	        N(+5)   0.0012
+	        Ca      1e-9
+	        Cl      1e-9
+	EXCHANGE 1
+	        equilibrate 1
+	        X       1.09375
+	END
+-----
+TITLE
+-----
+
+  1D ion exchange
+
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 0.	CaCl2
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Ca               6.000e-004  6.000e-004
+	Cl               1.200e-003  1.200e-003
+	K                1.000e-009  1.000e-009
+	N(5)             1.000e-009  1.000e-009
+	Na               1.000e-009  1.000e-009
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   6.999      Charge balance
+                                       pe  =  13.611      Equilibrium with O2(g)
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.800e-003
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  1.000e-009
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.000
+                  Electrical balance (eq)  =  4.719e-018
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =   0.00
+                               Iterations  =   4
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550667e+001
+
+----------------------------Distribution of species----------------------------
+
+                                                   Log       Log         Log 
+   Species                 Molality    Activity  Molality  Activity     Gamma
+
+   OH-                   1.048e-007  9.995e-008    -6.980    -7.000    -0.021
+   H+                    1.047e-007  1.001e-007    -6.980    -6.999    -0.019
+   H2O                   5.551e+001  1.000e+000     1.744    -0.000     0.000
+Ca              6.000e-004
+   Ca+2                  6.000e-004  4.985e-004    -3.222    -3.302    -0.081
+   CaOH+                 8.659e-010  8.260e-010    -9.063    -9.083    -0.020
+Cl              1.200e-003
+   Cl-                   1.200e-003  1.145e-003    -2.921    -2.941    -0.021
+H(0)            0.000e+000
+   H2                    0.000e+000  0.000e+000   -44.370   -44.370     0.000
+K               1.000e-009
+   K+                    1.000e-009  9.538e-010    -9.000    -9.021    -0.021
+   KOH                   3.301e-017  3.302e-017   -16.481   -16.481     0.000
+N(5)            1.000e-009
+   NO3-                  1.000e-009  9.534e-010    -9.000    -9.021    -0.021
+Na              1.000e-009
+   Na+                   1.000e-009  9.543e-010    -9.000    -9.020    -0.020
+   NaOH                  6.293e-017  6.295e-017   -16.201   -16.201     0.000
+O(0)            4.580e-004
+   O2                    2.290e-004  2.291e-004    -3.640    -3.640     0.000
+
+------------------------------Saturation indices-------------------------------
+
+	Phase               SI log IAP  log KT
+
+	H2(g)           -41.22  -44.37   -3.15  H2
+	H2O(g)           -1.51   -0.00    1.51  H2O
+	Halite          -13.54  -11.96    1.58  NaCl
+	O2(g)            -0.68   -3.64   -2.96  O2
+
+Initial solution 1.	Initial solution for column
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Ca               1.000e-009  1.000e-009
+	Cl               1.000e-009  1.000e-009
+	K                2.000e-004  2.000e-004
+	N(5)             1.200e-003  1.200e-003
+	Na               1.000e-003  1.000e-003
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.001      Charge balance
+                                       pe  =  13.609      Equilibrium with O2(g)
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.200e-003
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  1.000e-009
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.000
+                  Electrical balance (eq)  = -7.653e-017
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  -0.00
+                               Iterations  =   3
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.551028e+001
+
+----------------------------Distribution of species----------------------------
+
+                                                   Log       Log         Log 
+   Species                 Molality    Activity  Molality  Activity     Gamma
+
+   OH-                   1.044e-007  1.004e-007    -6.981    -6.998    -0.017
+   H+                    1.035e-007  9.972e-008    -6.985    -7.001    -0.016
+   H2O                   5.551e+001  1.000e+000     1.744    -0.000     0.000
+Ca              1.000e-009
+   Ca+2                  1.000e-009  8.579e-010    -9.000    -9.067    -0.067
+   CaOH+                 1.484e-015  1.428e-015   -14.828   -14.845    -0.017
+Cl              1.000e-009
+   Cl-                   1.000e-009  9.618e-010    -9.000    -9.017    -0.017
+H(0)            0.000e+000
+   H2                    0.000e+000  0.000e+000   -44.370   -44.370     0.000
+K               2.000e-004
+   K+                    2.000e-004  1.924e-004    -3.699    -3.716    -0.017
+   KOH                   6.686e-012  6.688e-012   -11.175   -11.175     0.000
+N(5)            1.200e-003
+   NO3-                  1.200e-003  1.154e-003    -2.921    -2.938    -0.017
+Na              1.000e-003
+   Na+                   1.000e-003  9.621e-004    -3.000    -3.017    -0.017
+   NaOH                  6.373e-011  6.375e-011   -10.196   -10.196     0.000
+O(0)            4.580e-004
+   O2                    2.290e-004  2.291e-004    -3.640    -3.640     0.000
+
+------------------------------Saturation indices-------------------------------
+
+	Phase               SI log IAP  log KT
+
+	H2(g)           -41.22  -44.37   -3.15  H2
+	H2O(g)           -1.51   -0.00    1.51  H2O
+	Halite          -13.62  -12.03    1.58  NaCl
+	O2(g)            -0.68   -3.64   -2.96  O2
+
+-------------------------------------------------------
+Beginning of initial exchange-composition calculations.
+-------------------------------------------------------
+
+Exchange 1.	
+
+X               1.094e+000 mol
+
+	                               Equiv-    Equivalent      Log 
+	Species             Moles      alents      Fraction     Gamma
+
+	KX               5.467e-001  5.467e-001  4.998e-001    -0.017
+	NaX              5.454e-001  5.454e-001  4.986e-001    -0.017
+	CaX2             8.579e-004  1.716e-003  1.569e-003    -0.067
+
+-----------------------------------------
+Beginning of batch-reaction calculations.
+-----------------------------------------
+
+Reaction step 1.
+
+-----------------------------Exchange composition------------------------------
+
+X               1.094e+000 mol
+
+	                               Equiv-    Equivalent      Log 
+	Species             Moles      alents      Fraction     Gamma
+
+	KX               5.465e-001  5.465e-001  4.996e-001    -0.017
+	NaX              5.444e-001  5.444e-001  4.977e-001    -0.017
+	CaX2             1.458e-003  2.916e-003  2.666e-003    -0.067
+	NH4X             3.394e-066  3.394e-066  3.103e-066    -0.017
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Ca               1.705e-009  1.705e-009
+	Cl               1.200e-003  1.200e-003
+	K                2.003e-004  2.003e-004
+	N                1.000e-009  1.000e-009
+	Na               9.998e-004  9.998e-004
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.001      Charge balance
+                                       pe  =  13.609      Adjusted to redox equilibrium
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.200e-003
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  1.000e-009
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.000
+                  Electrical balance (eq)  =  6.078e-016
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =   0.00
+                               Iterations  =  10
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550667e+001
+
+----------------------------Distribution of species----------------------------
+
+                                                   Log       Log         Log 
+   Species                 Molality    Activity  Molality  Activity     Gamma
+
+   OH-                   1.044e-007  1.004e-007    -6.981    -6.998    -0.017
+   H+                    1.035e-007  9.972e-008    -6.985    -7.001    -0.016
+   H2O                   5.551e+001  1.000e+000     1.744    -0.000     0.000
+Ca              1.705e-009
+   Ca+2                  1.705e-009  1.463e-009    -8.768    -8.835    -0.067
+   CaOH+                 2.531e-015  2.434e-015   -14.597   -14.614    -0.017
+Cl              1.200e-003
+   Cl-                   1.200e-003  1.154e-003    -2.921    -2.938    -0.017
+H(0)            0.000e+000
+   H2                    0.000e+000  0.000e+000   -44.370   -44.370     0.000
+K               2.003e-004
+   K+                    2.003e-004  1.926e-004    -3.698    -3.715    -0.017
+   KOH                   6.695e-012  6.697e-012   -11.174   -11.174     0.000
+N(-3)           0.000e+000
+   NH4+                  0.000e+000  0.000e+000   -68.805   -68.822    -0.017
+   NH3                   0.000e+000  0.000e+000   -71.066   -71.065     0.000
+N(0)            1.756e-031
+   N2                    8.780e-032  8.783e-032   -31.056   -31.056     0.000
+N(3)            2.239e-022
+   NO2-                  2.239e-022  2.153e-022   -21.650   -21.667    -0.017
+N(5)            1.000e-009
+   NO3-                  1.000e-009  9.615e-010    -9.000    -9.017    -0.017
+Na              9.998e-004
+   Na+                   9.998e-004  9.619e-004    -3.000    -3.017    -0.017
+   NaOH                  6.371e-011  6.373e-011   -10.196   -10.196     0.000
+O(0)            4.580e-004
+   O2                    2.290e-004  2.291e-004    -3.640    -3.640     0.000
+
+------------------------------Saturation indices-------------------------------
+
+	Phase               SI log IAP  log KT
+
+	H2(g)           -41.22  -44.37   -3.15  H2
+	H2O(g)           -1.51   -0.00    1.51  H2O
+	Halite           -7.54   -5.95    1.58  NaCl
+	N2(g)           -27.80  -31.06   -3.26  N2
+	NH3(g)          -72.84  -71.07    1.77  NH3
+	O2(g)            -0.68   -3.64   -2.96  O2
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+	SELECTED_OUTPUT
+	    file  ionx.out
+	    reset      true
+	USER_PUNCH
+	headings Ca Cl Na K CaX2 NaX KX  
+	10 PUNCH TOT("Ca"), TOT("Cl"), TOT("Na"), TOT("K")
+	20 ca_x2 = MOL("CaX2")*100/1.875*0.3*2
+	30 na_x = MOL("NaX")*100/1.875*0.3
+	40 k_x = MOL("KX")*100/1.875*0.3
+	50 PUNCH ca_x2 na_x k_x
+	END
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 3.
+------------------------------------
+
+List of Components:
+	1	H
+	2	O
+	3	Ca
+	4	Cl
+	5	K
+	6	N
+	7	Na
+	8	Charge
+List of master species:
+	1	Ca
+	2	Cl
+	3	K
+	4	N(-3)
+	5	N(0)
+	6	N(3)
+	7	N(5)
+	8	Na

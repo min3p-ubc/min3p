@@ -1,0 +1,537 @@
+!
+! This database stores the name-alias for database conversion.
+! Format: original name followed by alias, seperated by semicolon ";"
+! If the species name does not include blank space, you can also use 
+! blank space as separator.
+! e.g., Bunsenite(alpha) ; Bunsenite_a
+! e.g., Bunsenite(beta)  ; Bunsenite_b
+! e.g., Bunsenite(gama)    Bunsenite_c
+! The alias can be useful for the program that can not support long name
+! as automatically truncation by the program sometimes make the name meaningless.
+!
+! Please note that the maximum length for the name/alias is 60 characters each.
+! The database is free form, name and alias are separated by space (no matter how many blank spaces).
+! The maximum line length is 260 characters.
+! All the name and alias is case-insensitive.
+!
+! Line start with "!" is comment line. Skip in reading.
+! 
+h+                                         ;                    h+1
+fe+++                                      ;                    fe+3
+so4--                                      ;                    so4-2
+zn++                                       ;                    zn+2
+fe++                                       ;                    fe+2
+cu++                                       ;                    cu+2
+ca++                                       ;                    ca+2
+mg++                                       ;                    mg+2
+k+                                         ;                    k+1
+na+                                        ;                    na+1
+ca4h(po4)3:3h2o                            ;                    ca4h(po4)3:3
+chlorite(cca-2)                            ;                    chlorite(cca
+epidote(ordered)                           ;                    epido(orded)
+fluorapatite(pp)                           ;                    fluor(pp)
+fluorapatite(synth)                        ;                    fluor(synth)
+hbeidellite(ca)                            ;                    hbeidell(ca)
+hbeidellite(k)                             ;                    hbeidell(k)
+hbeidellite(mg)                            ;                    hbeidell(mg)
+hbeidellite(na)                            ;                    hbeidell(na)
+hmontmorillonite(hcca)                     ;                    hmontm(hcca)
+hmontmorillonite(hck)                      ;                    hmontm(hck)
+hmontmorillonite(hcmg)                     ;                    hmontm(hcmg)
+hmontmorillonite(hcna)                     ;                    hmontm(hcna)
+hmontmorillonite(mgca)                     ;                    hmontm(mgca)
+hmontmorillonite(mgk)                      ;                    hmontm(mgk)
+hmontmorillonite(mgmg)                     ;                    hmontm(mgmg)
+hmontmorillonite(mgna)                     ;                    hmontm(mgna)
+hnontronite(ca)                            ;                    hnontron(ca)
+hnontronite(k)                             ;                    hnontron(k)
+hnontronite(mg)                            ;                    hnontron(mg)
+hnontronite(na)                            ;                    hnontron(na)
+hsaponite(ca)                              ;                    hsapon(ca)
+hsaponite(feca)                            ;                    hsapon(feca)
+hsaponite(fek)                             ;                    hsapon(fek)
+hsaponite(femg)                            ;                    hsapon(femg)
+hsaponite(fena)                            ;                    hsapon(fena)
+hsaponite(mg)                              ;                    hsapon(mg)
+hsaponite(na)                              ;                    hsapon(na)
+hvermiculite(ca)                           ;                    hvermicu(ca)
+hvermiculite(k)                            ;                    hvermicu(k)
+hvermiculite(mg)                           ;                    hvermicu(mg)
+hvermiculite(na)                           ;                    hvermicu(na)
+hydroxyapatite(pp)                         ;                    hydro(pp)
+hydroxyapatite(synth)                      ;                    hydro(synth)
+i/s(iscz-1:2.966h2o)                       ;                    i/s(iscz-1:2
+magnesite(synth)                           ;                    magnesite(sy
+cr(oh)3(h2po4)-                            ;                    cr(oh)3(h2_-
+cr(oh)3(hpo4)-2                            ;                    cr(oh)3(h_-2
+cr(oh)3(po4)-3                             ;                    cr(oh)3(po4)
+cr(oh)4(hpo4)(h2po4)-4                     ;                    cr(oh)4(h_-4
+2k2so4.fe2(so4)3:14h2o                     ;                    2k2so4.fe2(s
+2kcl.fecl3:h2o                             ;                    2kcl.fecl3:h
+acanthite(alpha)                           ;                    acanthite(al
+acanthite(beta)                            ;                    acanthite(be
+acanthite(gamma)                           ;                    acanthite(ga
+aegerine(alpha)                            ;                    aegerine(alp
+almandine(alpha)                           ;                    almandine(al
+amorphous_silica                           ;                    amorphous_si
+anthophyllite                              ;                    anthophyllit
+argutite(alpha)                            ;                    argutite(alp
+argutite(beta)                             ;                    argutite(bet
+arsenocrandallite                          ;                    arsenocranda
+arsenoflorencite(ce)                       ;                    arsenofl(ce)
+arsenoflorencite(la)                       ;                    arsenofl(la)
+arsenogorceixite                           ;                    arsenogorcei
+arsenogoyazite                             ;                    arsenogoyazi
+beidellite(ca)                             ;                    beidellite(c
+beidellite(k)                              ;                    beidellite(k
+beidellite(mg)                             ;                    beidellite(m
+beidellite(na)                             ;                    beidellite(n
+beidellitesbid                             ;                    beidellitesb
+beidellitesbid(4.576h2o)                   ;                    beidell_h2o)
+berthierine(th)                            ;                    berthier_th
+bornite(alpha)                             ;                    bornite(alph
+bornite(beta)                              ;                    bornite(beta
+bornite(gamma)                             ;                    bornite(gamm
+bunsenite(alpha)                           ;                    bunsenite(al
+bunsenite(beta)                            ;                    bunsenite(be
+ca3(aso4)2:3.66h2o                         ;                    ca3(aso4)2:3
+ca4(oh)2(aso4)2:4h2o                       ;                    ca4(oh)2(aso
+ca4h(po4)3:2.5h2o                          ;                    ca4h(po4)3:2
+caalh(po4)2:6h2o                           ;                    caalh(po4)2:
+celadonite(fe)                             ;                    celadonite(f
+chalcocite(alpha)                          ;                    chalcocite(a
+chalcocyanite                              ;                    chalcocyanit
+chalcopyrite(alpha)                        ;                    chalcopyri_a
+chalcopyrite(beta)                         ;                    chalcopyri_b
+chalcopyrite(gamma)                        ;                    chalcopyri_c
+chamosite(daphnite)                        ;                    chamosite(da
+chlorapatite(pp)                           ;                    chlorapat_pp
+chlorapatite(synth)                        ;                    chlorapat_th
+chlorargyrite                              ;                    chlorargyrit
+chloromagnesite                            ;                    chloromagnes
+cinnabar(alpha)                            ;                    cinnabar(alp
+cinnabar(beta)                             ;                    cinnabar(bet
+clinoptilolite(ca)                         ;                    clinoptil_ca
+clinoptilolite(k)                          ;                    clinoptilo_k
+clinoptilolite(na)                         ;                    clinoptil_na
+co(feo2)2(alpha)                           ;                    co(feo2)2(al
+co(oh)2(blue)                              ;                    co(oh)2(blue
+co(oh)2(pink-pc)                           ;                    co(oh)2(p_pc
+co(oh)2(pink-wc)                           ;                    co(oh)2(p_wc
+coesite(alpha)                             ;                    coesite(alph
+cordierite(hydrated)                       ;                    cordierite(h
+corundum(alpha)                            ;                    corundum(alp
+corundum(gamma)                            ;                    corundum(gam
+cristobalite(alpha)                        ;                    cristobali_a
+cristobalite(beta)                         ;                    cristobali_b
+cronstedtite(th)                           ;                    cronstedti_c
+crpo4(purple)                              ;                    crpo4(purple
+cu3(po4)2:3h2o                             ;                    cu3(po4)2:3h
+cummingtonite                              ;                    cummingtonit
+dolomite(disordered)                       ;                    dolomite(dis
+dolomite(ordered)                          ;                    dolomite(ord
+edenite(alpha)                             ;                    edenite(alph
+enstatite(alpha)                           ;                    enstatite(al
+ettringite(cr)                             ;                    ettringite(c
+ettringite(fe)                             ;                    ettringite(f
+farringtonite                              ;                    farringtonit
+ferricopiapite                             ;                    ferricopiapi
+ferrihydrite(2l)                           ;                    ferrihydr_21
+ferrihydrite(6l)                           ;                    ferrihydr_61
+ferrohexahydrite                           ;                    ferrohexahyd
+ferropargasite                             ;                    ferropargasi
+ferrosilite(alpha)                         ;                    ferrosilit_a
+ferrosilite(beta)                          ;                    ferrosilit_b
+ferrotremolite                             ;                    ferrotremoli
+florencite(la)                             ;                    florencite(l
+fluorapatite(natur)                        ;                    fluora_natur
+fluorphlogopite                            ;                    fluorphlogop
+gallobeudantite                            ;                    gallobeudant
+greenrust(cl)                              ;                    greenrust(cl
+greenrust(co3)                             ;                    greenrust(co
+greenrust(oh)                              ;                    greenrust(oh
+greenrust(so3)                             ;                    greenrust(so
+greenrust2(so4)                            ;                    greenrust2(s
+hemicarboaluminate                         ;                    hemicarboalu
+hemihydroxichloride(ca)                    ;                    hemihydroxic
+heulandite(ca)                             ;                    heulandite(c
+heulandite(na)                             ;                    heulandite(n
+hilgenstockite                             ;                    hilgenstocki
+hillebrandite                              ;                    hillebrandit
+hopeite(alpha)                             ;                    hopeite(alph
+hopeite(beta)                              ;                    hopeite(beta
+hydrocalumnite(cr)                         ;                    hydrocalumni
+hydrocerussite                             ;                    hydrocerussi
+hydromagnesite                             ;                    hydromagnesi
+hydrotalcite(co3)                          ;                    hydrotal_co3
+hydroxichloride(ca)                        ;                    hydroxichl_a
+hydroxichloride(ca:13h2o)                  ;                    hydroxichl_b
+hydroxichloride(ca:h2o)                    ;                    hydroxichl_c
+hydroxichloride(mg:4h2o)                   ;                    hydroxichl_d
+hydroxyapatite(natur)                      ;                    hydroxyapati
+illite(feiii)                              ;                    illite(feiii
+jarosite(nh4)                              ;                    jarosite(nh4
+k2so4.feso4:6h2o                           ;                    k2so4.feso4:
+kalsilite(alpha)                           ;                    kalsilite(al
+kalsilite(beta)                            ;                    kalsilite(be
+kcl.mgcl2:6h2o                             ;                    kcl.mgcl2:6h
+larnite(alpha)                             ;                    larnite(alph
+larnite(beta)                              ;                    larnite(beta
+larnite(gamma)                             ;                    larnite(gamm
+lawsonite(alpha)                           ;                    lawsonite(al
+lepidocrocite                              ;                    lepidocrocit
+maghemite(disordered)                      ;                    maghemite(di
+magnesiochromite                           ;                    magnesiochro
+magnesioferrite                            ;                    magnesioferr
+magnesite(natur)                           ;                    magnesite(na
+magnetite(am)                              ;                    magnetite(am
+merlinoite(k)                              ;                    merlinoite(k
+merlinoite(na)                             ;                    merlinoite(n
+mg3(po4)2:22h2o                            ;                    mg3(po4)2:22
+mgcl2.fecl2:8h2o                           ;                    mgcl2.fecl2:
+monocarboaluminate                         ;                    monocarboalu
+monohydrocalcite                           ;                    monohydrocal
+monosulfate(fe)                            ;                    monosulfa_fe
+monosulfoaluminate                         ;                    monosulfoalu
+montmorillonite(hcca)                      ;                    montmorill_a
+montmorillonite(hck)                       ;                    montmorill_b
+montmorillonite(hcmg)                      ;                    montmorill_c
+montmorillonite(hcna)                      ;                    montmorill_d
+montmorillonite(mgca)                      ;                    montmorill_e
+montmorillonite(mgk)                       ;                    montmorill_f
+montmorillonite(mgmg)                      ;                    montmorill_g
+montmorillonite(mgna)                      ;                    montmorill_h
+mordeniteb(ca)                             ;                    mordeniteb(c
+muscovite(disordered)                      ;                    muscovite(di
+muscovite(ordered)                         ;                    muscovite(or
+na2so4.feso4:4h2o                          ;                    na2so4.feso4
+nesquehonite(alpha)                        ;                    nesquehoni_a
+nesquehonite(beta)                         ;                    nesquehoni_b
+nontronite(ca)                             ;                    nontronite(c
+nontronite(k)                              ;                    nontronite(k
+nontronite(mg)                             ;                    nontronite(m
+nontronite(na)                             ;                    nontronite(n
+philipsbornite                             ;                    philipsborni
+phillipsite(ca)                            ;                    phillipsi_ca
+phillipsite(k)                             ;                    phillipsit_k
+phillipsite(na)                            ;                    phillipsi_na
+phlogopite(na)                             ;                    phlogopit_na
+plumbogummite                              ;                    plumbogummit
+plumbonacrite                              ;                    plumbonacrit
+pseudomalachite                            ;                    pseudomalach
+pyromorphite(br)                           ;                    pyromorph_br
+pyromorphite(cl)                           ;                    pyromorph_cl
+pyromorphite(f)                            ;                    pyromorphi_f
+pyrope(alpha)                              ;                    pyrope(alpha
+pyroxene(caal)                             ;                    pyroxene(caa
+quartz(alpha)                              ;                    quartz(alpha
+rhodochrosite                              ;                    rhodochrosit
+rockbridgite(zn)                           ;                    rockbridgite
+saponite(feca)                             ;                    saponite(fec
+saponite(fek)                              ;                    saponite(fek
+saponite(femg)                             ;                    saponite(fem
+saponite(fena)                             ;                    saponite(fen
+schwertmannite                             ;                    schwertmanni
+scorodite(am)                              ;                    scorodite(am
+siderophyllite                             ;                    siderophylli
+smectite(mx80)                             ;                    smectite(m_a
+smectite(mx80:3.989h2o)                    ;                    smectite(m_b
+smectite(mx80:5.189h2o)                    ;                    smectite(m_c
+spessartine(alpha)                         ;                    spessartin_a
+sphaerocobaltite                           ;                    sphaerocobal
+spingcreekite                              ;                    spingcreekit
+sr5(po4)3(oh)                              ;                    sr5(po4)3(oh
+sterlinghillite                            ;                    sterlinghill
+straetlingite                              ;                    straetlingit
+thermonatrite                              ;                    thermonatrit
+tobermorite(11a)                           ;                    tobermor_11a
+tobermorite(14a)                           ;                    tobermor_14a
+vermiculite(ca)                            ;                    vermiculi_ca
+vermiculite(k)                             ;                    vermiculit_k
+vermiculite(mg)                            ;                    vermiculi_mg
+vermiculite(na)                            ;                    vermiculi_na
+westerveldite                              ;                    westerveldit
+whitlockite(high)                          ;                    whitlockit_h
+whitlockite(low)                           ;                    whitlockit_l
+zn3(po4)2:2h2o                             ;                    zn3(po4)2:2h
+zn3(po4)2:h2o                              ;                    zn3(po4)2:h2
+h(acetate)(aq)                             ;                    h(acetate)(a
+h(lactate)(aq)                             ;                    h(lactate)(a
+(uo2)11(co3)6(oh)12--                      ;                    (uo2)11(co3)
+(uo2)2(oh)2++                              ;                    (uo2)2(oh)2+
+(uo2)2co3(oh)3-                            ;                    (uo2)2co3(oh
+(uo2)3(co3)6(6-)                           ;                    (uo2)3(co3)6
+(uo2)3(oh)4++                              ;                    (uo2)3(oh)4+
+(uo2)3o(oh)2(hco3)+                        ;                    (uo2)3o(oh)2
+uo2(co3)3----                              ;                    uo2(co3)3---
+cauo2(co3)3--                              ;                    cauo2(co3)3-
+uo2(co3)3(5-)                              ;                    uo2(co3)3(5-
+antigorite(am)                             ;                    antigorite(a
+bellite (c2s)                              ;                    bellite (c2s
+boltwoodite-na                             ;                    boltwoodite-
+ca2cl2(oh)2:h2o                            ;                    ca2cl2(oh)2:
+ca4cl2(oh)6:13h2o                          ;                    ca4cl2(oh)6:
+caso4:0.5h2o(beta)                         ;                    caso4:0.5h2o
+compreignacite                             ;                    compreignaci
+cronstedtite-7a                            ;                    cronstedtite
+dicalcium_silicate                         ;                    dicalcium_si
+ferrite-dicalcium                          ;                    ferrite-dica
+ferroceladonite                            ;                    ferroceladon
+k8h4(co3)6:3h2o                            ;                    k8h4(co3)6:3
+na2uo4(alpha)                              ;                    na2uo4(alpha
+na4ca(so4)3:2h2o                           ;                    na4ca(so4)3:
+oxychloride-mg                             ;                    oxychloride-
+pseudowollastonite                         ;                    pseudowollas
+rutherfordine                              ;                    rutherfordin
+sepiolite(am)                              ;                    sepiolite(am
+sr(no3)2:4h2o                              ;                    sr(no3)2:4h2
+uo2(no3)2:2h2o                             ;                    uo2(no3)2:2h
+uo2(no3)2:3h2o                             ;                    uo2(no3)2:3h
+uo2(no3)2:6h2o                             ;                    uo2(no3)2:6h
+uo2(no3)2:h2o                              ;                    uo2(no3)2:h2
+uo2(oh)2(beta)                             ;                    uo2(oh)2(bet
+uo2so4:2.5h2o                              ;                    uo2so4:2.5h2
+uo2so4:3.5h2o                              ;                    uo2so4:3.5h2
+schoepite(dehyd,0.9)                       ;                    schoepite0.9
+schoepite(dehyd,1.0)                       ;                    schoepite1.0
+uranophane(alpha)                          ;                    uranophane(a
+un1.59(alpha)                              ;                    un1.59(alpha
+un1.73(alpha)                              ;                    un1.73(alpha
+uc1.94(alpha)                              ;                    uc1.94(alpha
+amesite_14a,alpha                                           ; amesit_14a_a
+amesite_14a,beta                                            ; amesit_14a_b
+anthophyllite,alpha                                         ; anthophyll_a
+anthophyllite,beta                                          ; anthophyll_b
+anthophyllite,gamma                                         ; anthophyll_c
+chalcopyrite,alpha                                          ; chalcopyri,a
+chalcopyrite,beta                                           ; chalcopyri,b
+chalcopyrite,gamma                                          ; chalcopyri,c
+co(oh)2,pink-pc                                             ; co(oh)2,p-pc
+co(oh)2,pink-wc                                             ; co(oh)2,p-wc
+cristobalite,alpha                                          ; cristobali,a
+cristobalite,beta                                           ; cristobali,b
+cronstedtite_7a,alpha                                       ; cronstedti,a
+cronstedtite_7a,beta                                        ; cronstedti,b
+cronstedtite_7a,gamma                                       ; cronstedti,c
+ettringite_fe                                               ; ettringite_f
+fe-montmorilloniteca                                        ; fe-montmo_ca
+fe-montmorillonitek                                         ; fe-montmo_k
+fe-montmorillonitemg                                        ; fe-montmo_mg
+fe-montmorillonitena                                        ; fe-montmo_na
+ferrosilite,alpha                                           ; ferrosilit,a
+ferrosilite,beta                                            ; ferrosilit,b
+hydroxichloride_ca:13h2o                                    ; hde_ca:13h2o
+hydroxichloride_ca:h2o                                      ; hde_ca:h2o
+hydroxichloride_mg:4h2o                                     ; hde_mg:4h2o
+hydroxy_apatite(natur)                                      ; hydro_apa_na
+hydroxy_apatite(pp)                                         ; hydro_apa_pp
+hydroxy_apatite(synth)                                      ; hydro_apa_sy
+whitlockite_high                                            ; whitloc_high
+whitlockite_low                                             ; whitloc_low
+tobermorite_11a                                             ; tobermo(11a)
+tobermorite_14a                                             ; tobermo(14a)
+spessartine,alpha                                           ; spessartin,a
+spessartine,beta                                            ; spessartin,b
+smectitemx80_4.183h2o                                       ; smectitemx_a
+smectitemx80_5.441h2o                                       ; smectitemx_b
+smectitemx80_des                                            ; smectitemx_c
+phillipsitek,alpha                                          ; phillipsit,a
+phillipsitek,beta                                           ; phillipsit,b
+phillipsiteca,alpha                                         ; phillip_ca,a
+phillipsiteca,beta                                          ; phillip_ca,b
+nesquehonite,alpha                                          ; nesquehoni,a
+nesquehonite,beta                                           ; nesquehoni,b
+mg-montmorillonite-ca                                       ; mg-montmoril
+mg-montmo-ca_b                                              ; mg-montmo-ca
+mg-montmorillonite-k                                        ; mg-montmo-k
+mg-montmorillonite-mg                                       ; mg-montmo-mg
+mg-montmorillonite-na                                       ; mg-montmo-na
+monosulfoaluminate_fe                                       ; monosulfo-fe
+phillipsitena,alpha                                         ; phillip_na_a
+phillipsitena,beta                                          ; phillip_na_b
+hydrotalciteFe                                              ; hydrotalc_fe
+hydrotalciteC                                               ; hydrotalc_c
+(uranyl)3(co3)(oh)3+										; uranyl)3_3+
+(uranyl)3(oh)5+												; uranyl)3_5+
+(uranyl)3(oh)7-												; uranyl)3_7-
+(npo2)2(oh)2++              								;(npo2)2(oh)2
+(npo2)3(oh)5+               								;(npo2)3(oh)5
+(puo2)2(oh)2++              								;(puo2)2(oh)2
+(puo2)3(oh)5+               								;(puo2)3(oh)5
+(uo2)11(co3)6(oh)12-2       								;(uo2)11(c-2
+(uo2)3(aso4)2               								;(uo2)3(aso4)
+(uo2)3(co3)6-6              								;(uo2)3(co3-6
+(uo2)3(oh)5co2+             								;(uo2)3(oh)5c
+(uo2)3(po4)2:4h2o           								;(uo2)3(po4)2
+ag(acetate)2-               								;ag(acetate)2
+al(acetate)2+               								;al(acetate)2
+al13o4(oh)24+7              								;al13o4(oh)24
+al2(so4)3:6h2o              								;al2(so4)3:6h
+analcime-dehy               								;analcime-deh
+au(acetate)2-               								;au(acetate)2
+ba(o_phthalate)             								;ba(o_phthala
+barytocalcite               								;barytocalcit
+beidellite-ca               								;beidelliteca
+beidellite-cs               								;beidellitecs
+beidellite-mg               								;beidellite-m
+beidellite-na               								;beidellite-n
+ca(o_phthalate)             								;ca(o_phthala
+ca2al2o5:8h2o               								;ca2al2o5:8h2
+ca4al2o7:13h2o              								;ca4al2o7:13h
+ca4al2o7:19h2o              								;ca4al2o7:19h
+ca-al_pyroxene              								;ca-al_pyroxe
+caal2o4:10h2o               								;caal2o4:10h2
+cd(acetate)3-               								;cd(acetate)3
+cd(acetate)4--              								;cd(acetate)4
+cd(cyanide)3-               								;cd(cyanide)3
+cd(cyanide)4--              								;cd(cyanide)4
+cd(thiocyanate)2            								;cd(thiocya2
+cd(thiocyanate)3-           								;cd(thiocya3-
+cd3(so4)(oh)4               								;cd3(so4)(oh)
+cd3(so4)2(oh)2              								;cd3(so4)2(oh
+cdso4:2.667h2o              								;cdso4:2.667h
+cdthiocyanate+              								;cdthiocyanat
+ce(acetate)2+               								;ce(acetate)2
+ce2(co3)3:8h2o              								;ce2(co3)3:8h
+clinochalcomenite           								;clinochalcom
+clinochlore-14a             								;clinochl-14a
+clinochlore-7a              								;clinochl-7a
+clinoptilolite              								;clinoptiloli
+clinoptilolite-ca           								;clinoptil-ca
+clinoptilolite-cs           								;clinoptil-cs
+clinoptilolite-k            								;clinoptil-k
+clinoptilolite-nh4          								;clinopt-nh4
+clinoptilolite-na           								;clinopt-na
+clinoptilolite-sr           								;clinopt-sr
+clinoptilolite-dehy         								;clinopt-dy
+clinoptilolite-dehy-ca      								;clinopt-dyca
+clinoptilolite-dehy-cs      								;clinopt-dycs
+clinoptilolite-dehy-k       								;clinopt-dyk
+clinoptilolite-dehy-nh4     								;clinopt-dynh
+clinoptilolite-dehy-na      								;clinopt-dyna
+clinoptilolite-dehy-sr      								;clinopt-dysr
+clinoptilolite-hy-ca        								;clinopt-hrca
+clinoptilolite-hy-cs        								;clinopt-hycs
+clinoptilolite-hy-k         								;clinopt-hyk
+clinoptilolite-hy-na        								;clinopt-hyna
+clinoptilolite-hy-sr        								;clinopt-hysr
+co(acetate)3-               								;co(acetate)3
+cordierite_anhyd            								;cordierite_a
+cordierite_hydr             								;cordierite_h
+coso4.3co(oh)2              								;coso4.3co(oh
+cs(acetate)2-               								;cs(acetate)2
+cu(acetate)2-               								;cu(acetate)2
+cu(acetate)3-               								;cu(acetate)3
+dy(acetate)2+               								;dy(acetate)2
+er(acetate)2+               								;er(acetate)2
+eu(acetate)2+               								;eu(acetate)2
+eu(io3)3:2h2o               								;eu(io3)3:2h2
+eu(no3)3:6h2o               								;eu(no3)3:6h2
+eu(oh)2.5cl.5               								;eu(oh)2.5cl.
+eu2(co3)3:3h2o              								;eu2(co3)3:3h
+eu2(so4)3:8h2o              								;eu2(so4)3:8h
+eu2o3(monoclinic)           								;eu2o3(monocl
+frankdicksonite             								;frankdickson
+gd(acetate)2+               								;gd(acetate)2
+h(o_phthalate)-             								;h(o_phthalat
+h2o_phthalate               								;h2o_phthalat
+h4(h2sio4)4----             								;h4(h2sio4)4-
+h6(h2sio4)4--               								;h6(h2sio4)4-
+heazlewoodite               								;heazlewoodit
+herzenbergite               								;herzenbergit
+hg(acetate)3-               								;hg(acetate)3
+ho(acetate)2+               								;ho(acetate)2
+hydroboracite               								;hydroboracit
+hydroxylapatite             								;hydroxylapat
+la(acetate)2+               								;la(acetate)2
+la2(co3)3:8h2o              								;la2(co3)3:8h
+li(acetate)2-               								;li(acetate)2
+lu(acetate)2+               								;lu(acetate)2
+maximum_microcline          								;maximum_micr
+mg1.25so4(oh)0.5:0.5h2o     								;mg1.25so4(oh
+mn(acetate)3-               								;mn(acetate)3
+mordenite-dehy              								;mordenite-de
+na(acetate)2-               								;na(acetate)2
+na(o_phthalate)-            								;na(o_phthala
+nanpo2co3:3.5h2o            								;nanpo2co3:3.
+nd(acetate)2+               								;nd(acetate)2
+nh4(acetate)2-              								;nh4(acetate)
+ni(acetate)3-               								;ni(acetate)3
+nickelbischofite            								;nickelbischo
+niso4:6h2o(alpha)           								;niso4:6h2o(a
+nontronite-ca               								;nontronit-ca
+nontronite-cs               								;nontronit-cs
+nontronite-mg               								;nontronit-mg
+nontronite-na               								;nontronit-na
+np(hpo4)4----               								;np(hpo4)4---
+npo2(co3)2---               								;npo2(co3)2--
+npo2(co3)3----              								;npo2(co3)3--
+o_phthalate-2               								;o_phthalate-
+o-phthalic_acid             								;o-phthalic_a
+paralaurionite              								;paralaurioni
+pb(acetate)3-               								;pb(acetate)3
+pb(n3)2(mono)               								;pb(n3)2(mono
+pb(n3)2(orth)               								;pb(n3)2(orth
+pb(thiocyanate)2            								;pb(thiocyana
+pbthiocyanate+              								;pbthiocyanat
+pr(acetate)2+               								;pr(acetate)2
+przhevalskite               								;przhevalskit
+pu(hpo4)4----               								;pu(hpo4)4---
+pyromorphite-oh             								;pyromorphite
+rb(acetate)2-               								;rb(acetate)2
+ripidolite-14a              								;ripidolite-1
+ripidolite-7a               								;ripidolite-7
+ru(oh)3:h2o(am)             								;ru(oh)3:h2o(
+ru4(oh)12++++               								;ru4(oh)12+++
+ruo2:2h2o(am)               								;ruo2:2h2o(am
+sanidine_high               								;sanidine_hig
+sb4o6(orthorhombic)         								;sb4o6(orthor
+sc(acetate)2+               								;sc(acetate)2
+schoepite-dehy(.393)        								;schoepit.393
+schoepite-dehy(.648)        								;schoepit.648
+schoepite-dehy(.85)         								;schoepit.85
+schoepite-dehy(.9)          								;schoepit.9
+schoepite-dehy(1.0)         								;schoepit1.0
+shcherbinaite               								;shcherbinait
+sm(acetate)2+               								;sm(acetate)2
+smectite-high-fe-mg         								;smectite-hig
+smectite-low-fe-mg          								;smectite-low
+tb(acetate)2+               								;tb(acetate)2
+tco2:2h2o(am)               								;tco2:2h2o(am
+th(no3)4:5h2o               								;th(no3)4:5h2
+tl(acetate)2-               								;tl(acetate)2
+tm(acetate)2+               								;tm(acetate)2
+tobermorite-11a             								;tobermor-11a
+tobermorite-14a             								;tobermor-14a
+tobermorite-9a              								;tobermor-9a
+u(hpo4)2:4h2o               								;u(hpo4)2:4h2
+u(thiocyanate)2++           								;u(thiocyanat
+uo2(h2po4)(h3po4)+          								;uo2(h2po4)(h
+uo2(thiocyanate)2           								;uo2(thiocya2
+uo2(thiocyanate)3-          								;uo2(thiocya3
+uo2.3333(beta)              								;uo2.3333(bet
+uo2thiocyanate+             								;uo2thiocyana
+uo3:.9h2o(alpha)            								;uo3:.9h2o(al
+uranium-selenide            								;uranium-sele
+uthiocyanate+++             								;uthiocyanate
+vo2(hpo4)2---               								;vo2(hpo4)2--
+yb(acetate)2+               								;yb(acetate)2
+zn(acetate)3-               								;zn(acetate)3
+zn(clo4)2:6h2o              								;zn(clo4)2:6h
+zn(cyanide)4--              								;zn(cyanide)4
+zn(no3)2:6h2o               								;zn(no3)2:6h2
+zn(oh)2(beta)               								;zn(oh)2(beta
+zn(oh)2(epsilon)            								;zn(oh)2(epsi
+zn(oh)2(gamma)              								;zn(oh)2(gamm
+zn(thiocyanate)2            								;zn(thiocyan2
+zn(thiocyanate)4--          								;zn(thiocyan4
+zn5(no3)2(oh)8              								;zn5(no3)2(oh
+!h2so4														;h2so4(aq)
+!feso4														;feso4aq
+feoh++														;feoh+2
+fe2(oh)2++++												;fe2(oh)2+4
+!zn(oh)2														;zn(oh)2aq
+zn(oh)4--													;n(oh)4-2
+!znso4														;znso4aq
+cuo2--														;cuo2-2
+!cuso4														;cuso4aq

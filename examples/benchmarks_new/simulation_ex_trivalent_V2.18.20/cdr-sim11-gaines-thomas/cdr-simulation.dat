@@ -1,0 +1,2018 @@
+! 
+
+! CDR-ERW basic simulation based on Beerling et al. (2024) paper:
+
+! Enhanced weathering in the U.S. Corn Belt delivers carbon removal with agronomic benefits.
+
+! 
+
+! Section 1: global control parameters                                      			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'global control parameters'                                                 			
+
+'CDR-ERW basic simulation - soil respiration only'                                        			
+
+.true.                        ;varsat_flow                                  			
+
+.true                         ;steady_flow               erw_comm: to get started! once the model is set up, transient flow, can be included, of course                             			
+
+.false.                       ;fully_saturated                              			
+
+.true.                        ;reactive_transport        erw_comm: this simulation includes water and solute uptake
+
+.true.                        ;root_uptake
+
+
+
+'biomixing diffusion'
+
+
+
+'done' 
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'database\default'
+
+
+
+'compute alkalinity'
+
+
+
+!erw_comm: removed ch2o here, since it was applied for DOM in entire domain, but only at a low rate. Include soil respiration locally through minerals, see below
+
+'components'
+
+16                             ;number of components (nc-1)
+
+'ca+2'                         ;component names
+
+'mg+2'
+
+'al+3'
+
+'cl-1' 
+
+'na+1'
+
+'k+1'                          ;erw_comm: added potassium, as it is important for plant growth, for future link with APSIM
+
+'h4sio4'
+
+'h+1'
+
+'o2(aq)'
+
+'co3-2'
+
+'po4-3'                        ;erw_comm: added phosphate, as it is important for plant growth - for future link with APSIM
+
+'no3-1'                        ;erw_comm: added nitrate, as it is important for plant growth - for future link with APSIM, @Jony: add other N-species
+
+'fe+2'
+
+'fe+3'                         ;erw_comm: added Fe3+, need to consider oxidized form of Fe in soils
+
+'mn+3'                         ;erw_comm: added Fe3+, need to consider oxidized form of Mn in soils
+
+'ti(oh)4'		       ;erw_comm: added for the presence a minor component in the feedstock titanite
+
+        
+
+'secondary aqueous species'
+
+51                             ;number of secondary aqueous species; erw_comm: updated list based on revised set of components
+
+'feco3+'
+
+'oh-'
+
+'h3sio4-'
+
+'h2sio4-2'
+
+'mgoh+'
+
+'mgco3aq'
+
+'mghco3+'
+
+'mgpo4-'
+
+'mgh2po4+'
+
+'mghpo4aq'
+
+'koh'
+
+'naoh'
+
+'caoh+'
+
+'cahco3+'
+
+'caco3aq'
+
+'cahpo4aq'
+
+'capo4-'
+
+'cah2po4+'
+
+'co2(aq)'
+
+'naco3-'
+
+'nahco3aq'
+
+'nahpo4-'
+
+'khpo4-'
+
+'aloh+2'
+
+'al(oh)2+'
+
+'al(oh)4-'
+
+'al(oh)3aq'
+
+'feoh+'
+
+'feoh3-1'
+
+'fehco3+'
+
+'feco3aq'
+
+'feh2po4+'
+
+'feoh2aq'
+
+'fehpo4aq'
+
+'feoh+2'
+
+'fehpo4+'
+
+'fecl+2'
+
+'fecl+'
+
+'fecl2+'
+
+'fecl3aq'
+
+'feoh2+'
+
+'feoh3aq'
+
+'feoh4-'
+
+'feh2po4+2'
+
+'fe2(oh)2+4'
+
+'fe3(oh)4+5'
+
+'hco3-'
+
+'h2co3aq'
+
+'hpo4-2'
+
+'h2po4-'
+
+'h3po4'
+
+
+
+'redox couples'
+
+1                             ;number of redox couples (nr)
+
+'fe+2'  'fe+3'                ;names of redox couples   erw_comm: added Fe(II)/Fe(III) redox couples, as we expect Fe to be present in oxidized state in aerated soils
+
+
+
+'gases'
+
+2                             ;number of gases
+
+'o2(g)'                       ;names of gases
+
+'co2(g)' 
+
+
+
+'sorbed species of ion-exchange'
+
+4
+
+'na-x(na)'
+
+'ca-x(na)'        
+
+'mg-x(na)'  
+
+'al-x(na)'  
+
+
+
+'minerals'
+
+11                             ;number of minerals
+
+'calcite-ch'                   ;erw_comm: reported to be present in the amendment in supplementary material in Beerling et al. (2024)
+
+'actinolite-2-td'              ;erw_comm: reported to be present in the amendment in supplementary material in Beerling et al. (2024)
+
+'epidote-td'                   ;erw_comm: reported to be present in the amendment in supplementary material in Beerling et al. (2024)
+
+'albite-ph-d'                  ;erw_comm: reported to be present in the amendment in supplementary material in Beerling et al. (2024)  
+
+'quartz-td'                    ;erw_comm: reported to be present in the amendment in supplementary material in Beerling et al. (2024)
+
+'chlorite-2-td'                ;erw_comm: reported to be present in the amendment in supplementary material in Beerling et al. (2024)
+
+'titanite-td'                  ;erw_comm: reported to be present in the amendment in supplementary material in Beerling et al. (2024)
+
+'ch2o-o2-td'                   ;erw_comm: soil respiration added, SOM oxidation by O2, this can be subdvided in the future into hetereotrophic and autotrophic respiration (incl.root respiration), as needed                    
+
+'ferrihydrite'                 ;erw_comm: added secondary phases to provide solubility controls for Fe
+
+'gibbsite(c)'                  ;erw_comm: added secondary phases to provide solubility controls for Al
+
+'sio2(a,pt)'                   ;erw_comm: added secondary phases to provide solubility controls for Si 
+
+
+
+'excluded minerals'            ;erw_comm: compute SIs for selected minerals to evaluate whether they might precipitate
+
+3
+
+'aragonite'
+
+'magnesite'
+
+'pyrolusite'
+
+
+
+'done'                                                                   			
+
+!   			
+
+! Section 3: spatial discretization                                         			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'spatial discretization'                                                    			
+
+1                             ;number of discretization intervals in x			
+
+1                             ;number of control volumes in x			
+
+0.0  1.0                      ;xmin,xmax"			
+
+1                             ;number of discretization intervals in y      			
+
+1                             ;number of control volumes in y               			
+
+0.0 1.0                       ;ymin,ymax                                    "			
+
+3                             ;number of discretization intervals in z
+
+50                            ;erw_comm: split this up to exactly define soil zones and delineate locations of material properties below.
+
+0.0d0  1.0d0
+
+25
+
+1.0d0  1.5d0
+
+25
+
+1.5d0  2.0d0
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 4: time step control - global system                              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'time step control - global system'                                         			
+
+'years'                      ;time unit    erw_comm: changed to years to make this easier to process for output, can be changed as needed                                			
+
+0.0                          ;time at start of solution                     			
+
+4.0                          ;final solution time                           			
+
+0.1d0                        ;maximum time step			
+
+1.0d-10                      ;minimum time step			
+
+
+
+'done'			
+
+			
+
+!   			
+
+! Section 5: control parameters - local geochemistry                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - local geochemistry'                                   			
+
+			
+
+'finite minerals'                                                           			
+
+.true.                        ;update geometrical parameters of minerals    			
+
+			
+
+'newton iteration settings'                                                 			
+
+1.d-4                         ;factor for numerical differentiation         			
+
+1.d-6                         ;convergence tolerance                        			
+
+			
+
+'maximum ionic strength'                                                    			
+
+100.0d0                       ;max. ionic strength                          			
+
+			
+
+'minimum activity for h2o'                                                  			
+
+0.01d0                        ;min. activity for h2o
+
+
+
+'output time unit'                                                          			
+
+'days'                        ;time unit (local chemistry)                  			
+
+			
+
+'done'                                                                      					
+
+!   			
+
+! Section 6: control parameters - variably saturated flow                   			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - variably saturated flow' 
+
+	
+
+'mass balance'		
+
+
+
+'iterative solver'
+
+			
+
+'input units for boundary and initial conditions'                           			
+
+'hydraulic head'              ;input unit      erw_comm: changed to hydraulic head
+
+
+
+'input units for media permeability'
+
+'hydraulic conductivity'
+
+			
+
+'upstream weighting'                                                        			
+
+.true.                       .true.                        ;upstream weight			
+
+			
+
+'newton iteration settings'			
+
+1.0d-5                        ;increment for numerical differentiation			
+
+200                           ;max. number of newton iterations			
+
+1.0d-6                        ;convergence tolerance			
+
+0.5                           ;sw_star			
+
+			
+
+'solver settings'			
+
+1                             ;incomplete factorization level			
+
+1000                           ;max. number of solver iterations			
+
+2                             ;solver information level			
+
+1.0d-11                       ;solver residual tolerance			
+
+1.0d-11                       ;solver update tolerance			
+
+.true.                        ;rcm ordering			
+
+			
+
+'done'	
+
+
+
+!   			
+
+! Section 7: control parameters - reactive transport                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - reactive transport'   
+
+
+
+'tortuosity correction'
+
+'millington'
+
+			
+
+'mass balance settings'                                                     			
+
+.true.                        ;compute mass balance                         			
+
+			
+
+'spatial weighting'                                                         			
+
+'upstream'                    ;spatial weighting        'centered'         			
+
+			
+
+'activity update settings'                                                  			
+
+'time_lagged'                 ;type of activity update                      			
+
+							
+
+'newton iteration settings'
+
+1.0d-5                        ;increment h for numerical differentiation
+
+15                            ;anticipated number of Newton iterations
+
+50                            ;max. number of Newton iterations
+
+1.0d0  ;2.0d0                         ;anticipated update in log cycles
+
+2.0d0  ;5.0d0                         ;maximum update in log cycles
+
+1.0d-5                        ;convergence tolerance (global system)
+
+			
+
+'solver settings'                                                           			
+
+1                             ;incomplete factorization level               			
+
+1000                           ;max. number of solver iterations             			
+
+2                             ;solver information level                     			
+
+1.d-9                         ;solver residual tolerance                    			
+
+1.d-9                         ;solver update tolerance                      			
+
+.true.                        ;rcm ordering                                 			
+
+			
+
+'done'                                                                      			
+
+!   			
+
+! Section 8: output control                                                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'output control'                                                            			
+
+			
+
+'output of spatial data'                                                    			
+
+4                            ;number of output times (spatial data)    erw_comm: for the time being reduced number of output times
+
+1.0  2.0  3.0  4.0
+
+				
+
+'coordinate output'			
+
+			
+
+'output of transient data'                                                  			
+
+3                              ;number of output locations (transient data)  			
+
+1                              ;timesteps between output (transient data)			
+
+0.0   0.0     1.95d0 
+
+0.0   0.0     1.8d0 
+
+0.0   0.0     0.0d0 
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 9: physical parameters - porous medium                            			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - porous medium'                                       			
+
+4                             ;number of property zones      erw_comm: reduced number of layers to 4: top soil - upper layer 1: soil + amendment (116 tn/ha/y), top soil - upper layer 2: soil + amendment (84 tn/ha/y), top soil - lower layer: soil, mineral soil below               						
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+1			
+
+'top soil - upper layer 1'                                                                   			
+
+			
+
+0.547  ;porosity               erw_comm: Based on bulk density used for CDR calculations in Beerling et al. (2024) (dens_b=1.2 kg/L_soil) 
+
+	
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.9 2.0			
+
+			
+
+'end of zone'
+
+
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+2			
+
+'top soil - upper layer 2'                                                                   			
+
+			
+
+0.547  ;porosity               erw_comm: Based on bulk density used for CDR calculations in Beerling et al. (2024) (dens_b=1.2 kg/L_soil) 
+
+	
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.7 1.9			
+
+			
+
+'end of zone'
+
+	
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+3			
+
+'top soil - lower layer'                                                                   			
+
+			
+
+0.547  ;porosity               erw_comm: Based on bulk density used for CDR calculations in Beerling et al. (2024) (dens_b=1.2 kg/L_soil) 
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.0 1.8			
+
+			
+
+'end of zone' 
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+4			
+
+'mineral soil'                                                                   			
+
+			
+
+0.547  ;porosity               erw_comm: Based on bulk density used for CDR calculations in Beerling et al. (2024) (dens_b=1.2 kg/L_soil) 
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 1.0			
+
+			
+
+'end of zone' 
+
+
+
+'done'			
+
+!   			
+
+! Section 10: physical parameters - variably saturated flow                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - variably saturated flow'			
+
+	
+
+! --------------------------------------------------------------------------			
+
+'top soil - upper layer 1'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+1.0e-5                        ;K_zz  m/s  erw_comm: set to typical soil value for now
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.1                            ;S_r  erw_comm: residual saturation
+
+4.0                            ;van genuchten - alpha    erw_comm: set to arbitray values for now. I increased it since the original value made the soil very wet, which is normally not liked by plants (no oxygen)
+
+1.5                            ;van genuchten - n
+
+0.5d0                          ;expn
+
+0.0                            ;air  entry  pressure     erw_comm: set tp 0 for now
+
+
+
+'end of zone'
+
+
+
+! --------------------------------------------------------------------------			
+
+'top soil - upper layer 2'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+1.0e-5                        ;K_zz  m/s  erw_comm: set to typical soil value for now
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.1                            ;S_r  erw_comm: residual saturation
+
+4.0                            ;van genuchten - alpha    erw_comm: set to arbitray values for now. I increased it since the original value made the soil very wet, which is normally not liked by plants (no oxygen)
+
+1.5                            ;van genuchten - n
+
+0.5d0                          ;expn
+
+0.0                            ;air  entry  pressure     erw_comm: set tp 0 for now
+
+
+
+'end of zone'
+
+
+
+! --------------------------------------------------------------------------			
+
+'top soil - lower layer'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+1.0e-5                        ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.1                            ;S_r  
+
+4.0                            ;van genuchten - alpha
+
+1.5                            ;van genuchten - n
+
+0.5d0                          ;expn
+
+0.0                            ;air  entry  pressure  
+
+
+
+'end of zone'
+
+
+
+! --------------------------------------------------------------------------			
+
+'mineral soil'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+1.0e-5                       ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.1                            ;S_r  
+
+4.0                            ;van genuchten - alpha
+
+1.5                            ;van genuchten - n
+
+0.5d0                          ;expn
+
+0.0                            ;air  entry  pressure  
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!   			
+
+! Section 11: physical parameters - reactive transport                      			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - reactive transport'                                  			
+
+			
+
+'diffusion coefficients'                                                    			
+
+2.4d-09                       ;free diffusion coefficient in water
+
+2.1d-05                       ;free diffusion coefficient in air
+
+! --------------------------------------------------------------------------			
+
+
+
+'top soil - upper layer 1'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.01d0			              ;erw_comm: set to small value since dispersion can gove "odd" results when presenting results on log scale, as is common in geochemistry
+
+
+
+'biomixing diffusion coefficient in z-direction'
+
+5.0d-11
+
+			
+
+'end of zone'			
+
+	
+
+! --------------------------------------------------------------------------			
+
+
+
+'top soil - upper layer 2'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.01d0		
+
+
+
+'biomixing diffusion coefficient in z-direction'
+
+5.0d-11
+
+			
+
+'end of zone'
+
+
+
+! --------------------------------------------------------------------------			
+
+
+
+'top soil - lower layer'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.01d0	
+
+
+
+'biomixing diffusion coefficient in z-direction'
+
+5.0d-11
+
+			
+
+'end of zone'
+
+
+
+! --------------------------------------------------------------------------			
+
+
+
+'mineral soil'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.01d0		
+
+
+
+'biomixing diffusion coefficient in z-direction'
+
+5.0d-11
+
+			
+
+'end of zone'		
+
+				
+
+'done'			
+
+!			
+
+! Data Block 12: initial condition - variably saturated flow                			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'initial condition - variably saturated flow'                               			
+
+1                             ;number of zones   
+
+	
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'entire domain'                                                                    			
+
+			
+
+'initial condition'                                                         			
+
+2.0           ;hydraulic head  erw_comm: assumed initially saturated, easier numerically to simulate drain down, but no impact on results at this time, since steady state
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 2.00			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+'done'   
+
+!			
+
+! Data Block 13: boundary conditions - variably saturated flow              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'boundary conditions - variably saturated flow'                             			
+
+2                            ;number of zones                              			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'bottom boundary'                                                           			
+
+			
+
+'boundary type'                                                             			
+
+'first'  -1.0              ;erw_comm: assumed water table at 1 m below base of domain
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 0.0                                                    			
+
+			
+
+'end of zone'   
+
+
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+2			
+
+'inflow boundary'                                                           			
+
+			
+
+'boundary type'                                                             			
+
+'second'       1.98895E-08     ;erw_comm: effective infiltration rate of 627 mm/yr (rainfall-evaporation-run-off). 
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  2.00 2.00                                                     			
+
+			
+
+'end of zone'
+
+			
+
+'done'	
+
+!   			
+
+! Section 14: initial conditions - reactive transport                       			
+
+! --------------------------------------------------------------------------			
+
+!   
+
+'initial condition - reactive transport'                                    			
+
+4                             ;number of zones 
+
+
+
+'update mineral volume fraction and rate from file'    ; erw_comm: update the amendement loading 50 tn/year
+
+
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'top soil - upper layer 1'                                                      			
+
+			
+
+'concentration input'
+
+5.0e-05       'free'         ;ca+2 erw_comm: placeholder, enter actual data, when available
+
+2.0e-04       'free'         ;mg+2
+
+5.0e-06       'free'         ;al+3
+
+1.0e-05       'charge'       ;cl-1
+
+2.0e-02       'free'         ;na+1  erw_comm, removed charge, better to use actual data, when available
+
+1.0e-05       'free'         ;k+1
+
+1.0e-07       'free'         ;h4sio4
+
+6.2           'ph'           ;h+1
+
+0.21e0        'po2'          ;o2(aq)
+
+4.2e-4        'pco2'         ;co3-2  
+
+1.0e-10       'free'         ;po4-3
+
+1.0e-10       'free'         ;no3-1
+
+1.0e-10       'free'         ;fe+2
+
+1.0e-10       'free'         ;fe+3
+
+1.0e-10       'free'         ;mn+3
+
+1.0e-10       'free'         ;ti(oh)4
+
+
+
+'guess for ph'
+
+5.5
+
+
+
+'mineral input'
+
+ 1.000000e-07 .true.  'twothird'      !     calcite
+
+ 1.000000e-07 1.000000e-08  0.000000 
+
+  1.000000e-07 .true.  'twothird'         !     actinolite
+
+ 1.000000e-07 36.470658  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !        epidote
+
+ 1.000000e-07 80.486970  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !         albite
+
+ 1.000000e-07 61.622837  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !         quartz
+
+ 1.000000e-07 16.348916  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !       chlorite
+
+ 1.000000e-07 114.128009  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !       titanite
+
+ 1.000000e-07  5.344838  0.000000
+
+        0.2e0 .true.  'constant'      !      ch2o adjusted accroding to heterotrophic respiration rate Kantol's paper
+
+1.000000e-07  1.8e-09  0.000000  
+
+ 1.000000e-07 .true.  'twothird'      !      mineral 9
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 10
+
+ 1.000000e-07 1.000000e-10  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 11
+
+ 1.000000e-07 1.000000e-08  0.0000000
+
+ 
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.9 2.0	    		
+
+
+
+'sorption parameter input of ion-exchange'
+
+77.0e0                        ;cation exchange capacity [meq/100 g solid]  erw_comm: based on texture (organic soil)
+
+1.2e0            	      ;dry bulk density [g/cm^3]     erw_comm: Bulk density corresponding to Beerling et al. (2024) is used.  
+
+ 
+
+'equilibrate with fixed solution composition of ion-exchange'
+
+
+
+			
+
+'end of zone' 
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+2			
+
+'top soil - lower layer 2'                                                      			
+
+			
+
+'concentration input'
+
+5.0e-05       'free'         ;ca+2 erw_comm: placeholder, enter actual data, when available
+
+2.0e-04       'free'         ;mg+2
+
+5.0e-06       'free'         ;al+3
+
+1.0e-05       'charge'       ;cl-1
+
+2.0e-02       'free'         ;na+1  erw_comm, removed charge, better to use actual data, when available
+
+1.0e-05       'free'         ;k+1
+
+1.0e-07       'free'         ;h4sio4
+
+6.2           'ph'           ;h+1
+
+0.21e0        'po2'          ;o2(aq)
+
+4.2e-4        'pco2'         ;co3-2  
+
+1.0e-10       'free'         ;po4-3
+
+1.0e-10       'free'         ;no3-1
+
+1.0e-10       'free'         ;fe+2
+
+1.0e-10       'free'         ;fe+3
+
+1.0e-10       'free'         ;mn+3
+
+1.0e-10       'free'         ;ti(oh)4
+
+
+
+'guess for ph'
+
+5.5
+
+
+
+'mineral input' 
+
+ 1.000000e-07 .true.  'twothird'      !     calcite
+
+ 1.000000e-07 1.000000e-08  0.000000 
+
+ 1.000000e-07 .true.  'twothird'         !     actinolite
+
+ 1.000000e-07 13.204894  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !        epidote
+
+ 1.000000e-07 29.141834  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !         albite
+
+ 1.000000e-07 22.311717  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !         quartz
+
+ 1.000000e-07  5.919435  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !       chlorite
+
+ 1.000000e-07 41.322210  0.000000
+
+ 1.000000e-07 .true.  'twothird'         !       titanite
+
+ 1.000000e-07  1.935200  0.000000
+
+        0.2e0 .true.  'constant'      !      ch2o adjusted accroding to heterotrophic respiration rate Kantola's paper
+
+1.000000e-07  1.8e-09  0.000000  
+
+ 1.000000e-07 .true.  'twothird'      !      mineral 9
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 10
+
+ 1.000000e-07 1.000000e-10  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 11
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.7 1.9
+
+
+
+'sorption parameter input of ion-exchange'
+
+77.0e0                        ;cation exchange capacity [meq/100 g solid]  erw_comm: based on texture (organic soil)
+
+1.2e0            	      ;dry bulk density [g/cm^3]     erw_comm: Bulk density corresponding to Beerling et al. (2024) is used.  
+
+ 
+
+'equilibrate with fixed solution composition of ion-exchange'
+
+			
+
+'end of zone' 
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+3			
+
+'mineral soil top'                                                      			
+
+			
+
+'concentration input'
+
+5.0e-05       'free'         ;ca+2 erw_comm: placeholder, enter actual data, when available
+
+2.0e-04       'free'         ;mg+2
+
+5.0e-06       'free'         ;al+3
+
+1.0e-05       'charge'       ;cl-1
+
+2.0e-02       'free'         ;na+1  erw_comm, removed charge, better to use actual data, when available
+
+1.0e-05       'free'         ;k+1
+
+1.0e-07       'free'         ;h4sio4
+
+6.2           'ph'           ;h+1
+
+0.21e0        'po2'          ;o2(aq)
+
+4.2e-4        'pco2'         ;co3-2  
+
+1.0e-10       'free'         ;po4-3
+
+1.0e-10       'free'         ;no3-1
+
+1.0e-10       'free'         ;fe+2
+
+1.0e-10       'free'         ;fe+3
+
+1.0e-10       'free'         ;mn+3
+
+1.0e-10       'free'         ;ti(oh)4
+
+
+
+'guess for ph'
+
+5.5
+
+
+
+'mineral input'
+
+ 1.000000e-07 .true.  'twothird'      !     calcite
+
+ 1.000000e-07 1.000000e-08  0.000000      
+
+ 1.000000e-07 .true.  'twothird'      !     actinolite
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !        epidote
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+         0.01 .true.  'twothird'      !         albite
+
+ 1.000000e-07          2.0  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !         quartz
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !       chlorite
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !       titanite
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+        0.2e0 .true.  'constant'      !      ch2o adjusted accroding to heterotrophic respiration rate Kantola's paper
+
+1.000000e-07  1.8e-09  0.000000  
+
+ 1.000000e-07 .true.  'twothird'      !      mineral 9
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 10
+
+ 1.000000e-07 1.000000e-10  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 11
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.0 1.7	
+
+
+
+'sorption parameter input of ion-exchange'
+
+77.0e0                        ;cation exchange capacity [meq/100 g solid]  erw_comm: based on texture (organic soil)
+
+1.2e0            	      ;dry bulk density [g/cm^3]     erw_comm: Bulk density corresponding to Beerling et al. (2024) is used.  
+
+ 
+
+'equilibrate with fixed solution composition of ion-exchange'
+
+			
+
+'end of zone' 
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+4			
+
+'mineral soil bottom'                                                      			
+
+			
+
+'concentration input'
+
+5.0e-05       'free'         ;ca+2 erw_comm: placeholder, enter actual data, when available
+
+2.0e-04       'free'         ;mg+2
+
+5.0e-06       'free'         ;al+3
+
+1.0e-05       'charge'       ;cl-1
+
+2.0e-02       'free'         ;na+1  erw_comm, removed charge, better to use actual data, when available
+
+1.0e-05       'free'         ;k+1
+
+1.0e-07       'free'         ;h4sio4
+
+6.2           'ph'           ;h+1
+
+0.21e0        'po2'          ;o2(aq)
+
+4.2e-4        'pco2'         ;co3-2  
+
+1.0e-10       'free'         ;po4-3
+
+1.0e-10       'free'         ;no3-1
+
+1.0e-10       'free'         ;fe+2
+
+1.0e-10       'free'         ;fe+3
+
+1.0e-10       'free'         ;mn+3
+
+1.0e-10       'free'         ;ti(oh)4
+
+
+
+'guess for ph'
+
+5.5
+
+
+
+'mineral input'
+
+ 1.000000e-07 .true.  'twothird'      !     calcite
+
+ 1.000000e-07 1.000000e-08  0.000000     
+
+ 1.000000e-07 .true.  'twothird'      !     actinolite
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !        epidote
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+         0.05 .true.  'twothird'      !         albite
+
+ 1.000000e-07          2.0  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !         quartz
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !       chlorite
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !       titanite
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'constant'      !      ch2o not soil respiration 
+
+ 1.000000e-07 1.000000e-08  0.000000        
+
+ 1.000000e-07 .true.  'twothird'      !      mineral 9
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 10
+
+ 1.000000e-07 1.000000e-10  0.000000
+
+ 1.000000e-07 .true.  'twothird'      !     mineral 11
+
+ 1.000000e-07 1.000000e-08  0.000000
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 1.0	
+
+
+
+'sorption parameter input of ion-exchange'
+
+77.0e0                        ;cation exchange capacity [meq/100 g solid]  erw_comm: based on texture (organic soil)
+
+1.2e0            	      ;dry bulk density [g/cm^3]     erw_comm: Bulk density corresponding to Beerling et al. (2024) is used.  
+
+ 
+
+'equilibrate with fixed solution composition of ion-exchange'
+
+			
+
+'end of zone' 
+
+
+
+'done'		
+
+			
+
+!			
+
+! Section 15: boundary conditions - reactive transport			
+
+! --------------------------------------------------------------------------			
+
+!			
+
+'boundary conditions - reactive transport'			
+
+2                             ;number of zones			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'			
+
+1			
+
+'influx boundary'			
+
+			
+
+'boundary type'			
+
+'mixed'			
+
+
+
+'concentration input'
+
+5.0e-05       'free'         ;ca+2 erw_comm: placeholder, enter actual data, when available
+
+2.0e-04       'free'         ;mg+2
+
+5.0e-06       'free'         ;al+3
+
+1.0e-05       'charge'       ;cl-1
+
+2.0e-02       'free'         ;na+1  erw_comm, removed charge, better to use actual data, when available
+
+1.0e-05       'free'         ;k+1
+
+1.0e-07       'free'         ;h4sio4
+
+5.5           'ph'           ;h+1
+
+0.21e0        'po2'          ;o2(aq)
+
+4.2e-4        'pco2'         ;co3-2  
+
+1.0e-10       'free'         ;po4-3
+
+1.0e-10       'free'         ;no3-1
+
+1.0e-10       'free'         ;fe+2
+
+1.0e-10       'free'         ;fe+3
+
+1.0e-10       'free'         ;mn+3
+
+1.0e-10       'free'         ;ti(oh)4
+
+
+
+'extent of zone'			
+
+0.0 1.0  0.0 1.0  2.00 2.00 			
+
+			
+
+'end of zone'			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'			
+
+2			
+
+'bottom'			
+
+			
+
+'boundary type'			
+
+'second'			         ;erw_comm: set free exit boundary condition, assuming no root water uptake from groundwater. 
+
+
+
+'extent of zone'			
+
+0.0 1.0  0.0 1.0  0.0 0.0			
+
+			
+
+'end of zone'  
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 17: plant transpiration and passive/rejective uptake
+
+! ---------------------------------------------------------------------------
+
+!
+
+'plant transpiration and passive/rejective uptake'
+
+
+
+'transpiration global parameters'
+
+ 2.0                        ;rew_0
+
+-2.0                        ;p1
+
+ 0.1                        ;f_i
+
+
+
+'correction method for water stress'
+
+1                        !method for calc alpha
+
+
+
+'done'
+
+!
+
+! Data Block 10: physical parameters - root uptake
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - root uptake'
+
+
+
+! ---------------------------------------------------------------------------
+
+! ---------------------------------------------------------------------------
+
+!'read root length density from file'    erw_comm: for now we don't neeed to read root length density from file
+
+
+
+!'update root length density from file'
+
+!4                   ;number of times to update root density
+
+!10                  ;first time to update root density
+
+!20                  ;second time to update root density
+
+!30                  ;third time to update root density
+
+!40                  ;fourth time to update root density
+
+
+
+! ---------------------------------------------------------------------------
+
+! It is the first zone for root uptake
+
+! ---------------------------------------------------------------------------
+
+'top soil - upper layer 1'
+
+
+
+'root water uptake'
+
+160.0                      ;water pressure wilting point
+
+0.5                        ;water pressure field capacity
+
+1.0                        ;water pressure optimal value (used in Feddes and VG)
+
+0.7                        ;root length density, m/m^3 bulk
+
+
+
+'passive solute uptake'
+
+0
+
+
+
+'root respiration and exudation of aqueous phase'
+
+  4.0e-09      !'ca+2'   respiration rate mol/m^2 s     
+
+  3.5e-09      !'mg+2'
+
+  1.0e-15      !'al+3'
+
+  1.0e-15      !'cl-1' 
+
+  1.0e-15      !'na+1'
+
+  1.0e-15      !'k+1'    
+
+  1.0e-15      !'h4sio4'
+
+ -2.5e-06      !'h+1'
+
+ 1.25e-06      !'o2(aq)'
+
+-1.25e-06      !'co3-2'
+
+  1.0e-15      !'po4-3'  
+
+  1.0e-15      !'no3-1'  
+
+  1.0e-15      !'fe+2'
+
+  1.0e-15      !'fe+3'   
+
+  1.0e-15      !'mn+3'   
+
+  1.0e-15      !'ti(oh)4'
+
+  
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+! It is the second zone for root uptake
+
+! ---------------------------------------------------------------------------
+
+'top soil - upper layer 2'
+
+
+
+'root water uptake'
+
+160.0                      ;water pressure wilting point
+
+0.5                        ;water pressure field capacity
+
+1.0                        ;water pressure optimal value (used in Feddes and VG)
+
+0.7                        ;root length density, m/m^3 bulk
+
+
+
+'passive solute uptake'
+
+0
+
+
+
+'root respiration and exudation of aqueous phase'
+
+  4.0e-09      !'ca+2'   respiration rate mol/m^2 s     
+
+  3.5e-09      !'mg+2'
+
+  1.0e-15      !'al+3'
+
+  1.0e-15      !'cl-1' 
+
+  1.0e-15      !'na+1'
+
+  1.0e-15      !'k+1'    
+
+  1.0e-15      !'h4sio4'
+
+ -2.5e-06      !'h+1'
+
+ 1.25e-06      !'o2(aq)'
+
+-1.25e-06      !'co3-2'
+
+  1.0e-15      !'po4-3'  
+
+  1.0e-15      !'no3-1'   
+
+  1.0e-15      !'fe+2'
+
+  1.0e-15      !'fe+3'   
+
+  1.0e-15      !'mn+3'   
+
+  1.0e-15      !'ti(oh)4'
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+! It is the third zone for root uptake
+
+! ---------------------------------------------------------------------------
+
+'top soil - lower layer'
+
+
+
+'root water uptake'
+
+160.0                      ;water pressure wilting point
+
+0.5                        ;water pressure field capacity
+
+1.0                        ;water pressure optimal value (used in Feddes and VG)
+
+0.3                        ;root length density, m/m^3 bulk
+
+
+
+'passive solute uptake'
+
+0
+
+
+
+'root respiration and exudation of aqueous phase'
+
+  4.0e-09      !'ca+2'   respiration rate mol/m^2 s     
+
+  3.5e-09      !'mg+2'
+
+  1.0e-15      !'al+3'
+
+  1.0e-15      !'cl-1' 
+
+  1.0e-15      !'na+1'
+
+  1.0e-15      !'k+1'    
+
+  1.0e-15      !'h4sio4'
+
+ -2.5e-06      !'h+1'
+
+ 1.25e-06      !'o2(aq)'
+
+-1.25e-06      !'co3-2'
+
+  1.0e-15      !'po4-3'  
+
+  1.0e-15      !'no3-1'  
+
+  1.0e-15      !'fe+2'
+
+  1.0e-15      !'fe+3'   
+
+  1.0e-15      !'mn+3'   
+
+  1.0e-15      !'ti(oh)4'
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+! It is the fourth zone for root uptake
+
+! ---------------------------------------------------------------------------
+
+'mineral zone'
+
+
+
+'root water uptake'
+
+160.0                      ;water pressure wilting point
+
+0.5                        ;water pressure field capacity
+
+1.0                        ;water pressure optimal value (used in Feddes and VG)
+
+0.0                        ;root length density, m/m^3 bulk
+
+
+
+'passive solute uptake'
+
+0
+
+
+
+'root respiration and exudation of aqueous phase'
+
+0.0            !'ca+2'   respiration rate mol/m^2 s     
+
+0.0            !'mg+2'
+
+0.0            !'al+3'
+
+0.0            !'cl-1' 
+
+0.0            !'na+1'
+
+0.0            !'k+1'    
+
+0.0            !'h4sio4'
+
+0.0            !'h+1'
+
+0.0            !'o2(aq)'
+
+0.0            !'co3-2'
+
+0.0            !'po4-3'  
+
+0.0            !'no3-1'  
+
+0.0            !'fe+2'
+
+0.0	       !'fe+3'   
+
+0.0	       !'mn+3'   
+
+0.0	       !'ti(oh)4'
+
+
+
+'end of zone'
+
+
+
+'done'
+

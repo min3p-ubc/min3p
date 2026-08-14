@@ -1,0 +1,112 @@
+!
+!This input file contains parameters used in database conversion.
+!Current support database conversion from toughreact to min3p
+
+!--------------------------------
+!Block 1: Database settings
+!--------------------------------
+
+!set source database type, required
+source database type
+phreeqc
+!crunchflow
+!toughreact
+
+!set source database path, required
+!for toughreact or crunchflow database, this is a file path
+!for min3p, this is a folder
+source database path
+llnl.dat
+
+!--------------------------------
+!Block 2: Conversion settings
+!--------------------------------
+
+!set target database temperature, required
+target database temperature 
+25
+
+!set target master variable, optional
+!can be h2(aq), o2(aq) or 'same as source database'
+!if not provided, use the master variable in the source database
+!note: if the target master variable is the same as the 
+!the master varialbe in the source database, you can comment out 
+!the command or provide same as source database.
+target database master variable
+h2(aq)
+
+!--------------------------------
+!Block 3: Output settings
+!--------------------------------
+
+!set target database type, required
+target database type
+min3p
+
+!set targer database path, optional
+!if not provided, use the path of the program
+!for toughreact or crunchflow database, this is a file path
+!for min3p, this is a folder
+target database path
+Phreeqc2min3p
+
+!Sort components by ascending lexical order.
+!This is useful when you need to compare the databases converted
+!from different database
+!sort data by lexical order
+
+
+!Export the following species only
+!This is useful when you need to compare the databases converted
+!from different database.
+!
+export following species only
+48
+'h+1'  
+'fe+3'
+'so4-2'
+'zn+2'
+'fe+2'
+'cu+2'
+'ca+2'
+'mg+2'
+'k+1'
+'na+1'
+'oh-'         
+'h2so4(aq)'
+'feoh+'
+'feoh3-1'
+'feso4aq'
+'fehso4+'
+'feoh2aq'
+'feoh+2'
+'feso4+'
+'fehso42+'
+'feoh2+'
+'feoh3aq'
+'feoh4-'
+'fe(so4)2-'
+'fe2(oh)2+4'
+'fe3(oh)4+5'
+'znoh+'
+'zn(oh)2aq'
+'zn(oh)3-'
+'zn(oh)4-2'
+'znso4aq'
+'zn(so4)2-2'
+'cuo2-2'
+'cuoh+'
+'cu(oh)2aq'
+'cu(oh)3-'
+'cu(oh)4-2'
+'cu2(oh)2+2'
+'cuso4aq'
+'hso4-'
+'mg-x(na)'
+'fe-x(na)'
+'na-x(na)'
+'k-x(na)'
+'zn-x(na)'
+'cu-x(na)'
+'ca-x(na)'
+'=feoh(s)'

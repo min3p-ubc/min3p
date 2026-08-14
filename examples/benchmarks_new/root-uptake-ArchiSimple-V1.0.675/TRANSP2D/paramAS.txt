@@ -1,0 +1,24 @@
+0.5 # X position of the seed (old : 0.0mm)  (in MIN3P domain, meters) 
+0 # Y position of the seed (old : 0.0mm) 0.0 (in MIN3P domain, meters)    
+1 # Z position of the seed (old : 0.0mm) 20.0  (in MIN3P domain, meters)             
+1 #vitEmissionPrim
+1 #nbMaxPrim
+100 #ageEmissionAdv
+30 #dBaseMaxAdv
+0.5 #vitEmissionAdv : vitesse d'emission des adventives (jour-1)
+1 #propDiamAdv
+5 #nbMaxAdv : nombre maximal d'adventives
+0.2 #diamMin : Minimum diameter (mm)
+1 #diamMax : Maximum diameter (mm)
+25 #penteVitDiam : elongation, pente vitesse vs diametre (mm.mm-1.jour-1)
+1 #tendanceDirTropisme : type de tropisme
+0.005 #intensiteTropisme
+5.3 #ageMaturitePointe
+7 #distRamif
+0.18 #propDiamRamif
+0.17 #coeffVarDiamRamif
+0.1 #TMD  - Root Tissue mass density
+1000.0 penteDureeCroissDiam2 coefficient de duree de croissance (jour/(diam²)
+8000 # penteDureeVieDiamTMD coefficient d'espérance de vie 
+0.4 #coeffCroissRad : parametre croissance radiale, relie la section des meres aux sections des filles
+

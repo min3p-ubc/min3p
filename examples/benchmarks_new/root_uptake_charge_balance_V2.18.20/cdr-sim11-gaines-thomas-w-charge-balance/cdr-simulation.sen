@@ -1,0 +1,76 @@
+                   PARAMETER SENSITIVITIES: CASE cdr_simulation
+
+
+ OPTIMISATION ITERATION NO.  1 ----->
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              120.730         0.661706    
+   chlorite_1      rsa              256.788         0.194308    
+   actinolite_1    rsa              54.7060         0.501472    
+   titanite_1      rsa              8.01726         0.549332    
+
+
+ OPTIMISATION ITERATION NO.  2 ----->
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              146.643         0.628126    
+   chlorite_1      rsa              247.662         0.128626    
+   actinolite_1    rsa              34.3634         0.537252    
+   titanite_1      rsa              23.5575          1.07201    
+
+
+ OPTIMISATION ITERATION NO.  3 ----->
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              147.750         0.582967    
+   chlorite_1      rsa              246.875         0.128621    
+   actinolite_1    rsa              31.7471         0.718158    
+   titanite_1      rsa              26.0545         0.374227    
+
+
+ OPTIMISATION ITERATION NO.  4 ----->
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              150.714         0.646161    
+   chlorite_1      rsa              246.982         0.124979    
+   actinolite_1    rsa              32.1504         0.876267    
+   titanite_1      rsa              27.2689         0.375004    
+
+
+ OPTIMISATION ITERATION NO.  5 ----->
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              150.849         0.619299    
+   chlorite_1      rsa              247.093         0.126053    
+   actinolite_1    rsa              32.0869         0.721681    
+   titanite_1      rsa              27.0570         0.518985    
+
+
+
+                        COMPLETION OF OPTIMISATION PROCESS
+
+ Composite sensitivities for observation group "tot" ----->
+
+ Number of observations with non-zero weight =    10
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              150.849         0.904625    
+   chlorite_1      rsa              247.093         0.174971    
+   actinolite_1    rsa              32.0869          1.22677    
+   titanite_1      rsa              27.0570         0.525006    
+
+
+
+ Composite sensitivities for observation group "resp" ----->
+
+ Number of observations with non-zero weight =     4
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              150.849         3.244957E-04
+   chlorite_1      rsa              247.093         1.339520E-04
+   actinolite_1    rsa              32.0869         1.031778E-03
+   titanite_1      rsa              27.0570         2.797731E-04
+
+
+
+ Composite sensitivities for all observations/prior info ----->
+
+ Number of observations with non-zero weight =    14
+ Parameter name    Group          Current value    Sensitivity
+   epidote_1       rsa              150.849         0.646161    
+   chlorite_1      rsa              247.093         0.124979    
+   actinolite_1    rsa              32.0869         0.876267    
+   titanite_1      rsa              27.0570         0.375004    

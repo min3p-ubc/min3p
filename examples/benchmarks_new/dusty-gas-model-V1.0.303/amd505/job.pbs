@@ -1,0 +1,7 @@
+#PBS -N amd505
+#PBS -q ice
+#PBS -m bea
+#PBS -M smolins@eos.ubc.ca
+#PBS -l nodes=1,walltime=5:00:00
+cd $PBS_O_WORKDIR
+/global/home/smolins/min3p-source/source500/min3p.e < ./prefix.in > nohup.out

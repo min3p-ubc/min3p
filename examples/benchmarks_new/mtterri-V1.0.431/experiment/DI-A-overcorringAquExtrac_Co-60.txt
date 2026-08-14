@@ -1,0 +1,24 @@
+title = "Overcoring data (AqPSI)"
+variables = "r [m]", "Co-60-exp-oc [mol/L]"
+zone t = "11.60-A", i =  3, j =    1, k =    1,  f=point
+0.0466	1.83493E-13
+0.0566	1.31256E-15
+0.0666	7.964E-16
+variables = "r [m]", "Co-60-exp-oc [mol/L]"
+zone t = "11.80-A", i =  1, j =    1, k =    1,  f=point
+0.0466	6.69588E-14
+variables = "r [m]", "Co-60-exp-oc [mol/L]"
+zone t = "11.85-A", i =  1, j =    1, k =    1,  f=point
+0.0466	4.36095E-14
+variables = "r [m]", "Co-60-exp-oc [mol/L]"
+zone t = "11.60-D", i =  4, j =    1, k =    1,  f=point
+0.0436	2.7421E-13
+0.0471	5.86095E-14
+0.0501	1.70353E-14
+0.0531	9.955E-15
+variables = "r [m]", "Co-60-exp-oc [mol/L]"
+zone t = "11.80-D", i =  4, j =    1, k =    1,  f=point
+0.0431	1.97159E-13
+0.0461	4.40116E-14
+0.0491	1.90628E-14
+0.0521	7.964E-15

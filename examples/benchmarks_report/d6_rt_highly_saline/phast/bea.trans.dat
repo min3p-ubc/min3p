@@ -1,0 +1,150 @@
+TITLE
+
+ biodegradation of toluene - uniform flow
+
+UNITS
+
+        -time                   year
+
+        -horizontal_grid        meters
+
+        -vertical_grid          meters
+
+        -head                   meters
+
+        -hydraulic_conductivity m/day
+
+        -specific_storage       1/m
+
+        -dispersivity           m
+
+SOLUTION_METHOD
+
+        -direct_solver       true
+
+        -space_differencing     0
+
+        -time_differencing      1.
+
+SOLUTE_TRANSPORT	true
+
+	diffusivity		0.0		
+
+STEADY_FLOW     true
+
+	-head_tolerance   		1e-8
+
+	-flow_balance_tolerance 	0.001
+
+	-minimum_time_step   		1 
+
+	-maximum_time_step   		10.0 
+
+	-head_change_limit   		100.0
+
+GRID
+
+        -uniform x  0.00000      1.0   101
+
+        -uniform y  0.00000      1.0     2
+
+        -uniform z  0.00000      1.0     2
+
+        -print_orientation XY
+
+FLUID_PROPERTIES
+
+        -compressibility        0.0             #1/Pa
+
+        -density                1000.           #kg/m^3
+
+        -viscosity              0.001           #Pa-s
+
+        -diffusivity            0.0             #m^2/s        
+
+MEDIA
+
+        -zone   0 0 0 1  1 1
+
+                -porosity                    0.4
+
+                -long_dispersivity           0.01
+
+                -horizontal_dispersivity     0.000001
+
+                -vertical_dispersivity       0.000001
+
+                -Kx                     1
+
+                -Ky                     1
+
+                -Kz                     1       # m/d
+
+                -storage                0
+
+SPECIFIED_HEAD_BC
+
+        -zone   0 0 0 0 1 1
+
+                -head                   0   3.456e-5
+
+                -associated_solution    0          1
+
+        -zone   1 0 0 1 1 1
+
+                -head          0     0.0
+
+                -associated_solution  0    2
+
+FREE_SURFACE_BC         false
+
+HEAD_IC
+
+        -zone   0. 0. 0. 1. 1. 1.
+
+                -head   0.
+
+CHEMISTRY_IC
+
+        -zone   0. 0. 0. 1. 1. 1.
+
+                -solution               2
+
+        -equilibrium_phases	1
+
+TIME_CONTROL
+
+        -delta_time    0       0.1     year
+
+        -end_time              100     year
+
+PRINT_INITIAL
+
+        -velocities             true
+
+        -xyz_head               true
+
+        -xyz_chemistry          false 
+
+        -HDF_heads              true
+
+PRINT_FREQUENCY
+
+        0 
+
+        -hdf_chemistry          10        year
+
+        -xyz_chemistry          10        year
+
+        -bc_flow_rates          10        year
+
+        -xyz_components         10        year
+
+        -xyz_head               10        year
+
+        -xyz_velocity           10        year
+
+        -save_final_heads       true
+
+END
+

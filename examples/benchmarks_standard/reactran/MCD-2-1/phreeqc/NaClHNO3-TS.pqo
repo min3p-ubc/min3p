@@ -1,0 +1,197 @@
+   Input file: C:\Users\prasouli.multidiff\Dropbox\UM-PR\benchmarks\Steefel-Benchmark 2-1\phreeqc\NaClHNO3_TS.pqi
+  Output file: C:\Users\prasouli.multidiff\Dropbox\UM-PR\benchmarks\Steefel-Benchmark 2-1\phreeqc\NaClHNO3_TS.pqo
+Database file: C:\Program Files (x86)\USGS\Phreeqc Interactive 2.17.4799\database\phreeqc.dat
+
+------------------
+Reading data base.
+------------------
+
+	SOLUTION_MASTER_SPECIES
+	SOLUTION_SPECIES
+	PHASES
+	EXCHANGE_MASTER_SPECIES
+	EXCHANGE_SPECIES
+	SURFACE_MASTER_SPECIES
+	SURFACE_SPECIES
+	RATES
+	END
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	DATABASE C:\Program Files (x86)\USGS\Phreeqc Interactive 2.17.4799\database\phreeqc.dat
+	SOLUTION 0
+	    temp      25
+	    pH        6 charge
+	    pe        4
+	    redox     pe
+	    units     mmol/kgw
+	    density   1
+	    N(5)      0.001
+	    Na        0.1
+	    Cl        0.1
+	    water    1 # kg
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 0.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-004  1.000e-004
+	N(5)             1.000e-006  1.000e-006
+	Na               1.000e-004  1.000e-004
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   6.001      Charge balance
+                                       pe  =   4.000    
+       Specific Conductance (uS/cm, 25 oC) = 12
+                          Density (g/cm3)  =   0.99705
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.010e-004
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -1.000e-006
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.000
+                  Electrical balance (eq)  = -1.139e-014
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  -0.00
+                               Iterations  =   2
+                                  Total H  = 1.110124e+002
+                                  Total O  = 5.550622e+001
+
+----------------------------Distribution of species----------------------------
+
+                                                   Log       Log         Log 
+   Species                 Molality    Activity  Molality  Activity     Gamma
+
+   H+                    1.010e-006  9.986e-007    -5.996    -6.001    -0.005
+   OH-                   1.014e-008  1.002e-008    -7.994    -7.999    -0.005
+   H2O                   5.551e+001  1.000e+000     1.744    -0.000     0.000
+Cl              1.000e-004
+   Cl-                   1.000e-004  9.884e-005    -4.000    -4.005    -0.005
+H(0)            1.412e-023
+   H2                    7.060e-024  7.060e-024   -23.151   -23.151     0.000
+N(5)            1.000e-006
+   NO3-                  1.000e-006  9.884e-007    -6.000    -6.005    -0.005
+Na              1.000e-004
+   Na+                   1.000e-004  9.885e-005    -4.000    -4.005    -0.005
+   NaOH                  6.539e-013  6.539e-013   -12.184   -12.184     0.000
+O(0)            0.000e+000
+   O2                    0.000e+000  0.000e+000   -46.078   -46.078     0.000
+
+------------------------------Saturation indices-------------------------------
+
+	Phase               SI log IAP  log KT
+
+	H2(g)           -20.00  -23.15   -3.15  H2
+	H2O(g)           -1.51   -0.00    1.51  H2O
+	Halite           -9.59   -8.01    1.58  NaCl
+	O2(g)           -43.19  -46.08   -2.89  O2
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+	SOLUTION 1-100
+	    temp      25
+	    pH        4
+	    pe        4
+	    redox     pe
+	    units     mmol/kgw
+	    density   1
+	    N(5)      0.1
+	    Na        0.1
+	    Cl        0.1
+	    water    1 # kg
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-004  1.000e-004
+	N(5)             1.000e-004  1.000e-004
+	Na               1.000e-004  1.000e-004
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   4.000    
+                                       pe  =   4.000    
+       Specific Conductance (uS/cm, 25 oC) = 54
+                          Density (g/cm3)  =   0.99705
+                        Activity of water  =   1.000
+                           Ionic strength  =  2.008e-004
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -1.016e-004
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.000
+                  Electrical balance (eq)  =  1.608e-006
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =   0.40
+                               Iterations  =   3
+                                  Total H  = 1.110125e+002
+                                  Total O  = 5.550652e+001
+
+----------------------------Distribution of species----------------------------
+
+                                                   Log       Log         Log 
+   Species                 Molality    Activity  Molality  Activity     Gamma
+
+   H+                    1.016e-004  1.000e-004    -3.993    -4.000    -0.007
+   OH-                   1.018e-010  1.001e-010    -9.992   -10.000    -0.007
+   H2O                   5.551e+001  1.000e+000     1.744    -0.000     0.000
+Cl              1.000e-004
+   Cl-                   1.000e-004  9.838e-005    -4.000    -4.007    -0.007
+H(0)            1.416e-019
+   H2                    7.079e-020  7.079e-020   -19.150   -19.150     0.000
+N(5)            1.000e-004
+   NO3-                  1.000e-004  9.837e-005    -4.000    -4.007    -0.007
+Na              1.000e-004
+   Na+                   1.000e-004  9.839e-005    -4.000    -4.007    -0.007
+   NaOH                  6.500e-015  6.500e-015   -14.187   -14.187     0.000
+O(0)            0.000e+000
+   O2                    0.000e+000  0.000e+000   -54.080   -54.080     0.000
+
+------------------------------Saturation indices-------------------------------
+
+	Phase               SI log IAP  log KT
+
+	H2(g)           -16.00  -19.15   -3.15  H2
+	H2O(g)           -1.51   -0.00    1.51  H2O
+	Halite           -9.60   -8.01    1.58  NaCl
+	O2(g)           -51.19  -54.08   -2.89  O2
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 3.
+------------------------------------
+
+	SELECTED_OUTPUT
+	    file                 NaClHNO3_TS.out
+	    reset                false
+	    distance             true
+	    time                 true
+	    charge_balance       true
+	    totals               Cl  Na  N(5)
+	    molalities           H+
+	PRINT
+	    echo_input            false
+WARNING: No dispersivities were read; disp = 0 assumed.

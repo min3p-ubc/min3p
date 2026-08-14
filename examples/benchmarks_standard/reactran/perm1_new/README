@@ -1,0 +1,13 @@
+README:      this file
+diff_t7:     diff file
+plot_test7:  plot all figures for program testing
+plot_test7a: plot species concentrations
+plot_test7b: plot mineral volume fractions
+test7.dat:   input file
+test7.gsc:   old output file for species concentrations
+test7.gsv:   old output file for mineral volume fractions
+test7.in:    input file for batch simulation
+test7a.par:  parameter file for plot_test7a
+test7b.par:  parameter file for plot_test7b
+test7a.xmgr: species concentrations
+test7b.xmgr: mineral volume fractions

@@ -1,0 +1,2168 @@
+! ---------------------------------------------------------------------------
+
+! Reactive transport modeling in sedimenatry basins
+
+! Pitzer model are included
+
+! This simulations de oxygen consumption 
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Sedimentary basin'
+
+.true.                        ;varsat_flow
+
+.false.                       ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'density dependent flow'
+
+
+
+'compute ice sheet loading/unloading'
+
+
+
+'energy balance' 
+
+
+
+'type of coupling for flow and heat equations'
+
+!'coupled'
+
+!'semi-coupled'
+
+'decoupled'
+
+
+
+'parallel solver configuration file'
+
+'solver.cfg'
+
+
+
+!'disable output'
+
+'disable output of all gen files'  
+
+'enable output of master gen file'
+
+
+
+!'restart' 
+
+!'use distributed restart files to read'
+
+!'use distributed restart files to write'
+
+'use binary restart file to read'
+
+'use binary restart file to write'
+
+
+
+'restart at maximum timestep'
+
+
+
+!'ignore restart time'
+
+
+
+'append results'
+
+
+
+'read spatial data using master processor'
+
+
+
+'backup frequency' 
+
+100 
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+'geochemical system'
+
+
+
+'compute alkalinity'
+
+
+
+'use pitzer model'
+
+
+
+'use macinnes convention' 
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'database'
+
+
+
+'components'
+
+1  ;11                            ;number of components (nc-1)
+
+'tracer-h'
+
+'cl-1'
+
+'br-1'
+
+'na+1'
+
+'k+1'
+
+'h+1'  
+
+'co3-2' 
+
+'ca+2'  
+
+'mg+2'  
+
+'so4-2' 
+
+'o2(aq)'
+
+
+
+
+
+'secondary aqueous species'
+
+0  ;11                ;number of secondary aqueous species
+
+'hso4-' 
+
+'co2(aq)' 
+
+'oh-'
+
+'hco3-'
+
+'mgoh+'  
+
+'caco3aq' 
+
+'mgco3aq' 
+
+'caso4aq'
+
+'mghco3+'
+
+'caoh+'
+
+'cacl+'
+
+
+
+'gases'
+
+0                             ;number of gases 
+
+
+
+'minerals'
+
+0  ;8                             ;number of minerals (nm)
+
+'halite'
+
+'calcite'
+
+'dolomite_diss'
+
+'anhydrite'
+
+'pyrite-o2'
+
+'biotite-o2'
+
+'chlorite-o2'
+
+'ch2o-o2'
+
+
+
+'sorbed species'
+
+0  ;4
+
+'na-x(na)'
+
+'ca-x(na)'
+
+'mg-x(na)'
+
+'k-x(na)'
+
+
+
+'excluded minerals'
+
+0
+
+
+
+'scaling factors of mineral reactivity'
+
+1.0
+
+1.0
+
+1.0
+
+1.0
+
+1.0e0
+
+1.0e0
+
+1.0e0
+
+1.0e0
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+
+
+'read unstructured grid from file'
+
+
+
+'gradient reconstruction method'
+
+'least square'
+
+
+
+'two-point flux approximation'
+
+
+
+'control volume method'
+
+'median dual'
+
+
+
+'allow obtuse cells'
+
+
+
+'use layered mesh structure'
+
+
+
+'method to calculate number of node layers'
+
+'user specified'    101
+
+
+
+'scale factor for mesh output'
+
+1.0 1.0 25.0
+
+
+
+'done'
+
+
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+'time step control - global system'
+
+'years'                       ;time unit
+
+0.0                           ;time at start of solution
+
+4.0d4                         ;final solution time
+
+1.0d2                         ;maximum time step
+
+1.0d-8                        ;minimum time step
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+20.0d0                        ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.2d0                         ;min. activity for h2o
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+!'update viscosity'
+
+
+
+'density model' 
+
+'pitzer' 
+
+
+
+!'natural ordering'
+
+
+
+'update porosity'
+
+1.0d-1               ! 1.0d-6, Factor for minimum porosity 
+
+
+
+'iterative solver'
+
+
+
+
+
+'upstream factor for flow equation'
+
+1.0d0
+
+
+
+!'user specified underrelaxation factor'
+
+!0.25d0
+
+
+
+!'compute underrelaxation factor'
+
+
+
+'compute pressure melting point' 
+
+
+
+'water freezing relative conductivity curve'
+
+0.01273  22.47  2.002    1.002  ;parameter a, b, c and d for relative conductivity curve relcond=d+(a-d)/(1.0+((temperatureC+2.0)/c)^b)
+
+-1.0     1.0    1.0d-6   1.0    ;minimum temperature, maximum temperature, minimum relcond, maximum relcond
+
+ 
+
+'variable density parameters'
+
+1000.0d0                      ;freshwater density g/L
+
+0.0d0  ;0.688d0                       ;linear density coefficient d(rho)/d(TDS)
+
+6                             ;max # Picard flow-RT iterations
+
+3                             ;Picard iteration target (# iterations)
+
+0.1d0                         ;maximum density update: Picard convergence g/L
+
+1.0d100  ;1.0d3                         ;Courant criteria target
+
+
+
+ 
+
+'input units for media permeability'
+
+'hydraulic conductivity'  
+
+ 
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'input units for newton increment and tolerance'
+
+'hydraulic head'
+
+
+
+'allow maximum density update at first timestep'
+
+
+
+'anticipated number of newton iterations'
+
+20
+
+
+
+'newton iteration settings'
+
+1.0d-3                        ;increment for numerical differentiation
+
+60                            ;max. number of newton iterations
+
+1.0d-4                        ;convergence tolerance
+
+0.1                           ;sw_star
+
+
+
+'solver settings'
+
+1                             ;level_vs, incomplete factorization level
+
+1000                          ;msolvit_vs, max. number of solver iterations
+
+1                             ;idetail_vs, solver information level
+
+1.0d-9                        ;restol_vs, solver residual tolerance
+
+1.0d-9                        ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6B: control parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - energy balance'
+
+
+
+'update viscosity' 
+
+ 
+
+'viscosity model'
+
+'sutra' 
+
+
+
+'compute source/sink term due reactions'
+
+
+
+!'update water thermal conductivity' 
+
+
+
+!'non-linear density'  
+
+
+
+!'centered weighting'
+
+
+
+!'non-advection'
+
+
+
+!'non-conduction'
+
+
+
+!'non-dispersion'
+
+
+
+!'logarithm in unknowns'
+
+ 
+
+'reference temperature for density'
+
+25.0    ;0.0d0 to be modified
+
+ 
+
+'energy balance parameters'
+
+0.0d0  ;-0.375d0                      ;linear density coefficient d(rho)/d(T)
+
+
+
+!'user specified underrelaxation factor'
+
+!0.25d0
+
+
+
+'anticipated number of newton iterations'
+
+20
+
+
+
+'newton iteration settings'
+
+1.0d-3                        ;increment for numerical differentiation
+
+60                            ;max. number of newton iterations
+
+1.0d-4                        ;convergence tolerance
+
+10.0d0                        ;maximum update in log cycles 
+
+
+
+ 
+
+'solver settings'
+
+1                             ;level_vs, incomplete factorization level
+
+1000                           ;msolvit_vs, max. number of solver iterations
+
+1                             ;idetail_vs, solver information level
+
+1.0d-9                        ;restol_vs, solver residual tolerance
+
+1.0d-9                        ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'                      ;spatial weighting
+
+
+
+'activity update settings'
+
+'time_lagged'                    ;type of activity update
+
+
+
+'tortuosity correction'
+
+'no correction'
+
+
+
+'update porosity'
+
+
+
+'update permeability'
+
+
+
+'porosity threshold'
+
+0.001  0.999
+
+
+
+'output fluxes'
+
+
+
+!'user specified underrelaxation factor'
+
+!0.25d0
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;increment h for numerical differentiation
+
+20                            ;anticipted number of Newton iterations
+
+60                            ;max. number of Newton iterations
+
+2.0d0                         ;anticipated update in log cycles
+
+4.0d0                         ;maximum update in log cycles
+
+1.d-4                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+1                             ;incomplete factorization level
+
+500                           ;max. number of solver iterations
+
+1                             ;solver information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'limited output of spatial data'
+
+
+
+'limited output of transient data'
+
+
+
+'use binary format'
+
+!'use separated file for spatial subdomain output'
+
+!'use multizone data format for spatial output'
+
+
+
+'use ascii data format for transient output'
+
+'use separated mesh and result data'
+
+
+
+'output of spatial data'
+
+40
+
+1.0d3  2.0d3  3.0d3  4.0d3
+
+5.0d3  6.0d3  7.0d3  8.0d3
+
+9.0d3  10.0d3  11.0d3  12.0d3
+
+13.0d3  14.0d3  15.0d3  16.0d3
+
+17.0d3  18.0d3  19.0d3  20.0d3
+
+21.0d3  22.0d3  23.0d3  24.0d3
+
+25.0d3  26.0d3  27.0d3  28.0d3
+
+29.0d3  30.0d3  31.0d3  32.0d3
+
+33.0d3  34.0d3  35.0d3  36.0d3
+
+37.0d3  38.0d3  39.0d3  40.0d3
+
+
+
+'coordinate output'			
+
+			
+
+'output of transient data'
+
+4
+
+1
+
+208000.0  0.0  4000.0
+
+164000.0  0.0  4000.0
+
+136000.0  0.0  4000.0
+
+86000.0   0.0  4000.0
+
+                                                  			
+
+!81   ;108                       ;number of output locations (transient data)     
+
+1                               ;timesteps between output (transient data)   
+
+194000.0 0.0 3950.0 50          ;sand unit
+
+188000.0 0.0 3900.0 100
+
+176000.0 0.0 3800.0 200
+
+166000.0 0.0 3700.0 300
+
+158000.0 0.0 3600.0 400
+
+150000.0 0.0 3500.0 500
+
+144000.0 0.0 3400.0 600
+
+134000.0 0.0 3200.0 800
+
+126000.0 0.0 3000.0 1000
+
+162000.0 0.0 3950.0 50   
+
+156000.0 0.0 3900.0 100
+
+148000.0 0.0 3800.0 200
+
+140000.0 0.0 3700.0 300
+
+132000.0 0.0 3600.0 400
+
+126000.0 0.0 3500.0 500
+
+120000.0 0.0 3400.0 600
+
+108000.0 0.0 3200.0 800
+
+100000.0 0.0 3000.0 1000            
+
+106000.0 0.0 3950.0 50
+
+100000.0 0.0 3900.0 100
+
+92000.0 0.0 3800.0 200
+
+84000.0 0.0 3700.0 300
+
+76000.0 0.0 3600.0 400
+
+70000.0 0.0 3500.0 500
+
+64000.0 0.0 3400.0 600
+
+54000.0 0.0 3200.0 800
+
+44000.0 0.0 3000.0 1000 
+
+72000.0 0.0 3950.0 50
+
+68000.0 0.0 3900.0 100
+
+62000.0 0.0 3800.0 200
+
+54000.0 0.0 3700.0 300
+
+46000.0 0.0 3600.0 400
+
+40000.0 0.0 3500.0 500
+
+34000.0 0.0 3400.0 600
+
+20000.0 0.0 3200.0 800
+
+4000.0 0.0 3100.0 900           ;sand unit
+
+214000.0 0.0 3950.0 50.0        ;other unit
+
+208000.0 0.0 3900.0 100.0
+
+196000.0 0.0 3800.0 200.0
+
+186000.0 0.0 3700.0 300.0
+
+176000.0 0.0 3600.0 400.0
+
+168000.0 0.0 3500.0 500.0
+
+160000.0 0.0 3400.0 600.0
+
+150000.0 0.0 3200.0 800.0
+
+142000.0 0.0 3000.0 1000.0
+
+178000.0 0.0 3950.0 50.0
+
+172000.0 0.0 3900.0 100.0
+
+162000.0 0.0 3800.0 200.0
+
+152000.0 0.0 3700.0 300.0
+
+146000.0 0.0 3600.0 400.0
+
+138000.0 0.0 3500.0 500.0
+
+132000.0 0.0 3400.0 600.0
+
+122000.0 0.0 3200.0 800.0
+
+112000.0 0.0 3000.0 1000.0          
+
+134000.0 0.0 3950.0 50.0
+
+128000.0 0.0 3900.0 100.0
+
+120000.0 0.0 3800.0 200.0
+
+112000.0 0.0 3700.0 300.0
+
+104000.0 0.0 3600.0 400.0
+
+98000.0 0.0 3500.0 500.0
+
+92000.0 0.0 3400.0 600.0
+
+80000.0 0.0 3200.0 800.0
+
+70000.0 0.0 3000.0 1000.0 
+
+88000.0 0.0 3950.0 50.0
+
+82000.0 0.0 3900.0 100.0
+
+74000.0 0.0 3800.0 200.0
+
+66000.0 0.0 3700.0 300.0
+
+60000.0 0.0 3600.0 400.0
+
+54000.0 0.0 3500.0 500.0
+
+48000.0 0.0 3400.0 600.0
+
+36000.0 0.0 3200.0 800.0
+
+30000.0 0.0 3100.0 900.0
+
+62000.0 0.0 3950.0 50.0
+
+56000.0 0.0 3900.0 100.0
+
+48000.0 0.0 3800.0 200.0
+
+40000.0 0.0 3700.0 300.0
+
+34000.0 0.0 3600.0 400.0
+
+26000.0 0.0 3500.0 500.0
+
+18000.0 0.0 3400.0 600.0
+
+10000.0 0.0 3350.0 650.0
+
+0.0 0.0 3300.0 700.0            ;other unit
+
+
+
+'output of mass through specified boundary'
+
+4                                       ;total number of specified boundary segments
+
+  
+
+'allow overlap in specified boundary'
+
+
+
+  
+
+'number and name of zone'               ;keyword for zone
+
+1                                       ;number of specified boundary segments
+
+'sand-c1'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+192000.0  204000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -0.001 0.001  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+
+
+'number and name of zone'               ;keyword for zone
+
+2                                       ;number of specified boundary segments
+
+'sand-c2'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+162000.0  174000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -0.001 0.001  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+
+
+'number and name of zone'               ;keyword for zone
+
+3                                       ;number of specified boundary segments
+
+'sand-c3'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+100000.0  120000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -0.001 0.001  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+
+
+'number and name of zone'               ;keyword for zone
+
+4                                       ;number of specified boundary segments
+
+'sand-c4'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+70000.0  82000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -0.001 0.001  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+  
+
+'number and name of zone'               ;keyword for zone
+
+5                                       ;number of specified boundary segments
+
+'sand-w1'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+192000.0  204000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -1.0d10 1.0d10  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+
+
+'number and name of zone'               ;keyword for zone
+
+6                                       ;number of specified boundary segments
+
+'sand-w2'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+162000.0  174000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -1.0d10 1.0d10  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+
+
+'number and name of zone'               ;keyword for zone
+
+7                                       ;number of specified boundary segments
+
+'sand-w3'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+100000.0  120000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -1.0d10 1.0d10  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+
+
+'number and name of zone'               ;keyword for zone
+
+8                                       ;number of specified boundary segments
+
+'sand-w4'                               ;name of specified boundary segments
+
+'extent of zone: boundary nodes within distance to point'
+
+0.0  0.0  0.0
+
+70000.0  82000.0
+
+
+
+'extent of zone: coordinates constraint'
+
+-1.0d10 1.0d10  -1.0d10 1.0d10  -3999.999 4000.001
+
+
+
+'end of zone'                           ;end of current zone
+
+
+
+'done'
+
+!
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                                ;number of property zones
+
+! ---------------------------------------------------------------------------
+
+!'read porosity field from vtk file'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'basin'
+
+0.01                          ;porosity
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  0.0 4000.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------------------------------------
+
+!'read hydraulic conductivity field from vtk file'
+
+!'read specific storage coefficient from vtk file'
+
+!'read skempton coefficient from vtk file'
+
+
+
+! ---------------------------------------------------------------------------
+
+'basin'                  ;name of zone
+
+
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.0e-9
+
+ 
+
+'hydraulic conductivity in y-direction'
+
+1.0e-9
+
+ 
+
+'hydraulic conductivity in z-direction'
+
+1.0e-9
+
+ 
+
+'specific storage coefficient'
+
+1.0d-5
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 10B: physical parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - energy balance'
+
+1
+
+!'read energy balance parameters from vtk file'
+
+
+
+'specific heat of water'
+
+4182.0d0
+
+
+
+'number and name of zone'
+
+1
+
+'pepe rompe' 
+
+ 
+
+ 
+
+'specific heat of solid'
+
+840.0d0 
+
+
+
+'water thermal conductivity in x-direction'
+
+0.6d0 
+
+
+
+'water thermal conductivity in y-direction'
+
+0.6d0
+
+
+
+'water thermal conductivity in z-direction'
+
+0.6d0
+
+
+
+'solid thermal conductivity in x-direction'
+
+3.5d0 
+
+
+
+'solid thermal conductivity in y-direction'
+
+3.5d0
+
+
+
+'solid thermal conductivity in z-direction'
+
+3.5d0
+
+
+
+'longitudinal dispersivity'
+
+0.0
+
+
+
+'transverse vertical dispersivity'
+
+0.0
+
+
+
+'transverse horizontal dispersivity'
+
+0.0
+
+
+
+'solid bulk density'
+
+2650.0d0 
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  0.0 4000.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+1.0d-9                       ;aqueous phase
+
+0.d0                         ;gaseous phase
+
+
+
+! ---------------------------------------------------------------------------
+
+'basin'
+
+
+
+'longitudinal dispersivity'
+
+0.0d0
+
+
+
+'transverse vertical dispersivity'
+
+0.0d0
+
+ 
+
+'transverse horizontal dispersivity'
+
+0.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                              ;number of zones
+
+!'read initial condition from vtk file'
+
+
+
+'number and name of zone'
+
+1
+
+'whole'
+
+
+
+!'hydrostatic condition'
+
+!0.0d0                       ;freshwater column
+
+!284.883d0                   ;tot tds
+
+!4000.0                      ;hydro top
+
+
+
+'initial condition'
+
+4000.0    ;4658.59                          ;hydraulic head
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  0.0 4000.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+1
+
+'number and name of zone'
+
+1
+
+'top'                                                                   
+
+   
+
+'boundary type'
+
+'first' 4000.0    ;4658.59
+
+
+
+!'gradient-radius' 0.0d0
+
+!'r' 0.0, 0.0, 0.0
+
+!4097.1517
+
+!-4.1705d-4
+
+   
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  4000.0d0 4000.0d0
+
+   
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 12: initial condition - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+
+
+'initial condition - energy balance'
+
+1                              ;number of zones
+
+
+
+!'read initial condition from vtk file'
+
+
+
+'geothermic gradient'
+
+0.0233d0   ! gethermic gradient oC m-1
+
+0.0d0      ! temperature in the top 
+
+
+
+'number and name of zone'
+
+1
+
+'whole' 
+
+
+
+'initial condition'
+
+!25.0d0
+
+'gradient' 0.0d0
+
+'z'
+
+14.5        !;14.5+0.0192*depth, Raymond Vugrinovich, 1989
+
+-0.0192
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  0.0 4000.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 13B: boundary conditions - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - energy balance'
+
+2
+
+ 
+
+'number and name of zone'
+
+1
+
+'inflow'                                                                   
+
+                      
+
+ 
+
+'boundary type'
+
+'second' 0.05d0
+
+ 
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  0.0d0 0.0d0
+
+'end of zone'
+
+
+
+ 
+
+'number and name of zone'
+
+2
+
+'outflow'
+
+
+
+'boundary type'
+
+'first' 14.5
+
+
+
+!'gradient-radius' 0.0d0
+
+!'r' 0.0, 0.0, 0.0
+
+!5.3
+
+!-2.4d-5
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  4000.0d0 4000.0d0 
+
+
+
+'end of zone'
+
+
+
+'transient boundary conditions: values only'
+
+
+
+'linear interpolation of boundary conditions'
+
+
+
+'done'
+
+
+
+
+
+!
+
+! Data Block 15: initial conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+!'read initial aqueous component concentrations from vtk file'
+
+!'read initial mineral volume fractions from vtk file'
+
+!'read initial mineral areas from vtk file'
+
+!'read cec from vtk file'
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'background'
+
+
+
+'concentration input'     ! rain water composition equilibrated with pco2=0.00034 [atm]
+
+1.0d-20         'free'    ;tracer-h
+
+0.2915E-02      'charge'  ;cl
+
+0.4000E-04      'free'    ;br
+
+0.5220E-03      'free'    ;na
+
+0.6400E-04      'free'    ;k     
+
+6.0             'ph'      ;h
+
+0.1722E-04      'free'    ;hco3
+
+0.6240E-03      'free'    ;ca
+
+0.8230E-03      'free'    ;mg
+
+0.2600E-03      'free'    ;so4
+
+1.0E-10         'free'    ;o2(aq)
+
+
+
+'mineral input'
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+
+1.0d-7  1.0d-9  0.00d0      ;phimin, scalfac, supsatm
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+
+1.0d-7 1.0d-11  0.00d0      ;phimin, scalfac, supsatm
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+
+1.0d-7  1.0d-5  0.00d0      ;phimin, scalfac, supsatm
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+
+1.0d-7 1.0d-10   0.00d0     ;phimin, scalfac, supsatm
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-sergio'
+
+1.0d-7  6.0d-3  0.00d0      ;phimin, scalfac, supsatm
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-sergio'
+
+1.0d-7  3.9d-2  0.00d0      ;phimin, scalfac, supsatm
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-sergio' 
+
+1.0d-7  3.9d-2  0.00d0      ;phimin, scalfac, supsatm
+
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-sergio' 
+
+1.0d-7   1.0d0  0.00d0      ;phimin, scalfac, supsatm
+
+
+
+
+
+'sorption parameter input'
+
+17.5d0                       ;cation exchange capacity [meq/100 g solid]
+
+1.0d0                        ;dry bulk density [g/cm^3]
+
+
+
+'equilibrate with fixed solution composition'
+
+
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  0.0 4000.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+
+
+ Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'third'
+
+
+
+'concentration input'     ! rain water composition equilibrated with pco2=0.00034 [atm]
+
+1.0d-20         'free'    ;tracer-h
+
+0.2915E-02      'charge'  ;cl
+
+0.4000E-04      'free'    ;br
+
+0.5220E-03      'free'    ;na
+
+0.6400E-04      'free'    ;k     
+
+6.0             'ph'      ;h
+
+0.1722E-04      'free'    ;hco3
+
+0.6240E-03      'free'    ;ca
+
+0.8230E-03      'free'    ;mg
+
+0.2600E-03      'free'    ;so4
+
+0.21d0          'po2'     ;o2(aq)
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  4000.0 4000.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+
+
+! Data Block 17: control parameter of ice Sheet loading/unloading
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - ice sheet loading/unloading' 
+
+
+
+'density of ice'
+
+920.0
+
+
+
+'scaling factor of ice thickness'
+
+3.0
+
+
+
+'scaling factor of pressure head and pore stress'
+
+0.0d0                       ;scaling factor of pressure head due to ice sheet growth
+
+1.0d0                       ;scaling factor of pore stress due to ice sheet growth
+
+0.95d0                      ;scaling factor of pressure head due to ice sheet decay
+
+1.0d0                       ;scaling factor of pore stress due to ice sheet decay
+
+
+
+!!!New, updated keyword
+
+!'ice sheet basal temperature'  ;updated from 'basal temperature of ice'
+
+!0.0d0                       ;basal temperature during ice sheet growth
+
+!0.0d0                       ;basal temperature during ice sheet decay
+
+
+
+!!!New, use 1D steady state heat equation for double layer medium to estimate ice sheet basal temperature 
+
+'double layer basal temperature model'    
+
+2.22                        ;W/mK, 1D thermal conductivity of ice sheet 
+
+3.50                        ;W/mK, 1D thermal conductivity of porous media (sedimentary rock)
+
+-0.006                      ;oC per meter, temperature change per meter elevation increase
+
+
+
+'done'
+
+
+
+! Data Block 18: physical parameter of ice Sheet loading/unloading
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - ice sheet loading/unloading' 
+
+2
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'top-nodes'
+
+
+
+'extent of zone: boundary nodes by layer id'
+
+'read data'
+
+1
+
+1
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'top-cells'
+
+
+
+'extent of zone: boundary cells by layer id'
+
+'read data'
+
+1
+
+1
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 19: initial condition of ice sheet loading/unloading
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - ice sheet loading/unloading' 
+
+1
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'top'
+
+
+
+'initial condition'
+
+
+
+'ellipsoid fitting ice sheet model'
+
+240000.0                    ! center of ellipsoid, X0, unit is same as input coordinates
+
+0.0                         ! center of ellipsoid, Y0, unit is same as input coordinates
+
+0.0                         ! center of ellipsoid, Z0, unit is same as input coordinates
+
+1000.0                      ! principal semiaxes in X axis, unit is same as input coordinates
+
+1000.0                      ! principal semiaxes in Y axis, unit is same as input coordinates
+
+1000.0                      ! principal semiaxes in Z axis, unit is same as input coordinates
+
+0.0                         ! counterclockwise rotation angle (along Z axis) in degree
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  4000.0 4000.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 20: boundary conditions of ice sheet loading/unloading
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - ice sheet loading/unloading' 
+
+1
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'top'
+
+
+
+'concentration input'
+
+1.0d-20         'free'    ;tracer-h
+
+0.2915E-02      'charge'  ;cl
+
+0.4000E-04      'free'    ;br                        
+
+0.5220E-03      'free'    ;na
+
+0.6400E-04      'free'    ;k     
+
+6.0             'ph'      ;h
+
+0.1722E-04      'free'    ;hco3
+
+0.6240E-03      'free'    ;ca
+
+0.8230E-03      'free'    ;mg
+
+0.2600E-03      'free'    ;so4
+
+1.0d0           'po2'     ;o2(aq) 
+
+
+
+'boundary type'
+
+
+
+'ellipsoid fitting ice sheet model'
+
+240000.0                    ! center of ellipsoid, X0, unit is same as input coordinates
+
+0.0                         ! center of ellipsoid, Y0, unit is same as input coordinates
+
+0.0                         ! center of ellipsoid, Z0, unit is same as input coordinates
+
+1000.0                      ! principal semiaxes in X axis, unit is same as input coordinates
+
+1000.0                      ! principal semiaxes in Y axis, unit is same as input coordinates
+
+1000.0                      ! principal semiaxes in Z axis, unit is same as input coordinates
+
+0.0                         ! counterclockwise rotation angle (along Z axis) in degree
+
+
+
+'extent of zone'
+
+-220000.1 220000.1  -220000.1 220000.1  4000.0 4000.0
+
+
+
+'end of zone'
+
+
+
+'transient boundary conditions: values only'
+
+
+
+'linear interpolation of boundary conditions'
+
+
+
+'done'
+

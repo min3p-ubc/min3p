@@ -1,0 +1,84 @@
+TITLE reemplazamiento de yeso por polihalita
+
+# flujo= shifts*length/time   time=time_step*shifts
+
+#flujo=0.05/0.78e7 m3/m2/s
+
+SOLUTION 1  salmuera evolucionada
+
+        units            mol/kgw
+
+        temp             25.0
+
+        pH               7.3
+
+#        pe               12.5    O2(g)   -0.68
+
+        Ca               0.0038
+
+        Cl               6.292 halite 0.0 
+
+        Na               2.723
+
+        C                1.0  magnesite 0.0
+
+        Mg               2.195
+
+        K                0.3762 polyhalite 0.0 
+
+        S                0.5565       
+
+	Br               1.0e-6
+
+SOLUTION 2  Initial solution for column
+
+        units            mol/kgw
+
+        temp             25.0
+
+        pH               8.1 #cinetica
+
+#        pe                12.5    O2(g)   -0.68
+
+        Ca                0.01066  gypsum
+
+        Cl               6.102 halite 0.0
+
+        Na               5.178
+
+        C                1.0 magnesite 0.0
+
+        Mg               0.6282
+
+        K                0.1208
+
+        S                0.2250
+
+ 	Br               1.0e-9   	
+
+EQUILIBRIUM_PHASES 1
+
+        polyhalite 0.0  0.0
+
+        gypsum     0.0  0.1
+
+        halite     0.0  1.0
+
+SELECTED_OUTPUT
+
+	-file	Chem.sel
+
+	-totals		 Br	Na	Cl	K	Ca	S  Mg  	C(4)	Cl   
+
+	-temperature
+
+	-equilibrium_phases	Halite		Polyhalite	Gypsum
+
+	-saturation_indices	Halite		Polyhalite 	Gypsum
+
+
+
+END
+
+
+

@@ -1,0 +1,290 @@
+!
+
+! This is a 1D batch reaction at 5 degC to verify temperature effect on redox reaction defined in   
+
+!  the database redox.dbs against PHREEQC.
+
+! 
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'redox temperature - batch problem'
+
+.false.                       ;varsat_flow
+
+.false.                       ;steady_flow
+
+.false.                       ;fully_saturated
+
+.false.                       ;reactive_transport
+
+
+
+'energy balance'
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+!'use pitzer model'
+
+
+
+!'use macinnes convention' 
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'.\database\default'
+
+
+
+'define input units'
+
+'mol/l'
+
+
+
+'define temperature'
+
+5.0 
+
+
+
+'components'
+
+5   ;10                            ;number of components (nc-1)
+
+'h+1'
+
+'o2(aq)'
+
+'fe+2'
+
+'cl-1'
+
+'fe+3'
+
+
+
+
+
+'secondary aqueous species'
+
+15                              ;number of secondary aqueous species
+
+'h2(aq)'
+
+'oh-'
+
+'feoh+'
+
+'feoh3-1'
+
+'feoh2aq'
+
+'feoh+2'
+
+'fecl+2'
+
+'fecl+'
+
+'fecl2+'
+
+'fecl3aq'
+
+'feoh2+'
+
+'feoh3aq'
+
+'feoh4-'
+
+'fe2(oh)2+4'
+
+'fe3(oh)4+5'
+
+
+
+'redox couples'
+
+1                             ;number of redox couples (nr)
+
+'fe+2'  'fe+3'                ;names of redox couples
+
+
+
+
+
+!'intra-aqueous kinetic reactions'
+
+!1                             ;number of intra-aqueous kinetic reactions
+
+!'ch2o-so4'
+
+
+
+'minerals'
+
+0				;number of minerals (nm)
+
+!'ch2o-h2s'
+
+'calcite'
+
+!'anhydrite'
+
+!'halite'
+
+
+
+'excluded minerals'
+
+0
+
+
+
+
+
+'gases'
+
+1					;number of gases
+
+'o2(g)'					;names of gases
+
+'h2(g)'
+
+
+
+
+
+'done'
+
+
+
+
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'activity update settings'
+
+'no_update'
+
+!'double_update'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for num. differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+0.5d0    !4.d0                          ;max. ionic stength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'years'                       ;time unit (local chemistry)
+
+
+
+'done'
+
+
+
+
+
+
+
+
+
+! Data Block 14: initial condition - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - local geochemistry'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'background chemistry - aquifer'
+
+
+
+'concentration input'                
+
+6.703	'ph'	'h+1'            7.0
+
+1.0e-007	'free'	'o2(aq)'
+
+9.0e-008	'free'	'fe+2'
+
+9.0e-008	'free'	'cl-1'
+
+1.0e-015	'free'	'fe+3'
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+
+

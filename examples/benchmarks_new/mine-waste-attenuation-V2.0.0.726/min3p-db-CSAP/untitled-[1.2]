@@ -1,0 +1,92 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:st1="urn:schemas-microsoft-com:office:smarttags" xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=us-ascii">
+<meta name=Generator content="Microsoft Word 11 (filtered medium)">
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="PostalCode"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="City"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="Street"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="address"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="place"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="State"/>
+<!--[if !mso]>
+<style>
+st1\:*{behavior:url(#default#ieooui) }
+</style>
+<![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoAutoSig, li.MsoAutoSig, div.MsoAutoSig
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=Section1>
+
+<p class=MsoNormal><font size=2 face=Arial><span style='font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=MsoNormal><font size=2 face=Arial><span style='font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=MsoAutoSig><font size=3 face="Times New Roman"><span style='font-size:
+12.0pt'>Ulrich Mayer<o:p></o:p></span></font></p>
+
+<p class=MsoAutoSig><font size=3 face="Times New Roman"><span style='font-size:
+12.0pt'>Associate Professor<o:p></o:p></span></font></p>
+
+<p class=MsoAutoSig><font size=3 face="Times New Roman"><span style='font-size:
+12.0pt'>Univ. <st1:State w:st="on"><st1:place w:st="on">British Columbia</st1:place></st1:State><o:p></o:p></span></font></p>
+
+<p class=MsoAutoSig><font size=3 face="Times New Roman"><span style='font-size:
+12.0pt'>Dept. of Earth and Ocean Sciences<o:p></o:p></span></font></p>
+
+<p class=MsoAutoSig><st1:Street w:st="on"><st1:address w:st="on"><font size=3
+  face="Times New Roman"><span style='font-size:12.0pt'>6339 Stores Road</span></font></st1:address></st1:Street><o:p></o:p></p>
+
+<p class=MsoAutoSig><st1:place w:st="on"><st1:City w:st="on"><font size=3
+  face="Times New Roman"><span style='font-size:12.0pt'>Vancouver</span></font></st1:City>,
+ <st1:State w:st="on">BC</st1:State>, <st1:PostalCode w:st="on">V6T 1Z4</st1:PostalCode></st1:place><o:p></o:p></p>
+
+<p class=MsoNormal><font size=3 face="Times New Roman"><span style='font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>

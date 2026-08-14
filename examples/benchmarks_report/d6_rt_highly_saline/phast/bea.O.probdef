@@ -1,0 +1,194 @@
+                                    ****************************************************
+                                    *                                                  *
+                                    *    PHAST: A Three Dimensional Flow and Solute    *
+                                    *         Reactive Transport Simulator             *
+                                    *                 Version: 1.2                     *
+                                    *                                                  *
+                                    ****************************************************
+
+
+
+
+
+
+                          . biodegradation of toluene - uniform flow                                      
+                          .                                                                               
+
+                         *** Fundamental Information ***
+                    Isothermal simulation
+                    Solute transport simulation
+                    Cartesian coordinates
+                    Data is in metric units
+                    Time unit selected is years   
+                    Solute concentration is expressed as mass fraction
+
+          Direct D4 solver is selected
+
+                         *** Problem Dimension Information ***
+          Number of nodes in x-direction .................................. NX ...    101
+          Number of nodes in y-direction .................................. NY ...      2
+          Number of nodes in z-direction .................................. NZ ...      2
+          Total number of nodes ........................................... NXYZ .    404
+
+          Number of porous media zones .................................... NPMZ .    100
+          Number of specified pressure or mass fraction b.c. .............. NSBC .      8
+          Number of specified flux b.c. cells ............................. NFBC .      0
+          Number of leakage cells ......................................... NLBC .      0
+          Number of river leakage cells ................................... NRBC .      0
+          Number of wells ................................................. NWEL .      0
+
+          A4 array dimension requirement (D4 direct solver)................ NRAL .        0 elements
+ ------------------------------------------------------------------------------------------------------------------------
+
+
+                              ***  Static Data ***
+
+
+                              X-Direction Node Coordinates    (m)
+
+           1           2           3           4           5           6           7           8           9          10
+           0.00        0.01        0.02        0.03        0.04        0.05        0.06        0.07        0.08        0.09
+
+
+
+          11          12          13          14          15          16          17          18          19          20
+           0.10        0.11        0.12        0.13        0.14        0.15        0.16        0.17        0.18        0.19
+
+
+
+          21          22          23          24          25          26          27          28          29          30
+           0.20        0.21        0.22        0.23        0.24        0.25        0.26        0.27        0.28        0.29
+
+
+
+          31          32          33          34          35          36          37          38          39          40
+           0.30        0.31        0.32        0.33        0.34        0.35        0.36        0.37        0.38        0.39
+
+
+
+          41          42          43          44          45          46          47          48          49          50
+           0.40        0.41        0.42        0.43        0.44        0.45        0.46        0.47        0.48        0.49
+
+
+
+          51          52          53          54          55          56          57          58          59          60
+           0.50        0.51        0.52        0.53        0.54        0.55        0.56        0.57        0.58        0.59
+
+
+
+          61          62          63          64          65          66          67          68          69          70
+           0.60        0.61        0.62        0.63        0.64        0.65        0.66        0.67        0.68        0.69
+
+
+
+          71          72          73          74          75          76          77          78          79          80
+           0.70        0.71        0.72        0.73        0.74        0.75        0.76        0.77        0.78        0.79
+
+
+
+          81          82          83          84          85          86          87          88          89          90
+           0.80        0.81        0.82        0.83        0.84        0.85        0.86        0.87        0.88        0.89
+
+
+
+          91          92          93          94          95          96          97          98          99         100
+           0.90        0.91        0.92        0.93        0.94        0.95        0.96        0.97        0.98        0.99
+
+
+
+         101
+           1.00
+
+
+
+
+                              Y-Direction Node Coordinates   (m)
+
+           1           2
+           0.00        1.00
+
+
+
+
+                              Z-Direction Node Coordinates   (m)
+
+           1           2
+           0.00        1.00
+
+
+
+
+                              Z-Axis is Positive Vertically Upward
+
+
+                                        *** Fluid Properties ***
+                                             Physical
+                         Fluid compressibility ...................................... BP ...   0.00E+00  (1/Pa )
+
+                         Reference pressure for density ............................. P0 ..         0.0  (Pa )
+                         Reference temperature for density .......................... T0 ..        15.0  (Deg.C)
+                         Fluid density .............................................. DENF0  1000.0      (kg/m^3)
+                         Fluid density at solute  mass fraction of  0.0500........... DENF1  1000.0      (kg/m^3)
+
+                         Viscosity factor ........................................... VISFAC -1.000E-03
+
+                                        *** Calculation Information ***
+          Backwards-in-time (implicit) differencing for temporal derivative
+          Backwards-in-space (upstream) differencing for advective terms
+          The cross-derivative solute flux terms will NOT BE calculated
+
+                           Row scaling only, using L-inf norm, will be done
+
+ ------------------------------------------------------------------------------------------------------------------------
+
+                    Automatic Time Step Control Parameters for Steady Flow
+          Maximum pressure change allowed per time step.................... DPTAS    9.81E+05  (Pa )
+          Minimum time step required ...................................... DTIMMN    1.0      (yr )
+          Maximum time step allowed ....................................... DTIMMX    10.      (yr )
+
+
+                    Initial fluid in region ...............................  4.000000E+02  (kg) ;  4.000000E-01  (m^3)
+
+                    Initial solute in region:H         ....................  3.753387E-04  (kg)
+
+                    Initial solute in region:O         ....................  5.766312E+00  (kg)
+
+                    Initial solute in region:Br        ....................  3.196160E-08  (kg)
+
+                    Initial solute in region:C         ....................  8.225806E-05  (kg)
+
+                    Initial solute in region:Ca        ....................  1.776699E-01  (kg)
+
+                    Initial solute in region:Cl        ....................  8.435541E+01  (kg)
+
+                    Initial solute in region:K         ....................  1.889230E+00  (kg)
+
+                    Initial solute in region:Mg        ....................  6.107360E+00  (kg)
+
+                    Initial solute in region:Na        ....................  4.761647E+01  (kg)
+
+                    Initial solute in region:S         ....................  2.885760E+00  (kg)
+
+                    Initial solute in region:Charge    ....................  7.120065E-02  (kg)
+
+ ------------------------------------------------------------------------------------------------------------------------
+ ------------------------------------------------------------------------------------------------------------------------
+
+
+                                        *** Transient Data ***
+
+     Time ..............................    0.00      (yr )
+
+
+                                        *** Calculation Information ***
+
+          Fixed time step length .......................................... DELTIM  0.100      (yr )
+          Time at which next set of transient
+               parameters will be read .................................... TIMCHG   100.      (yr)
+
+ ------------------------------------------------------------------------------------------------------------------------
+
+
+                                       ***** Simulation Completed *****
+               Last time value calculated ......................................  100.0     (yr)
+               Last time step index ............................................    1000

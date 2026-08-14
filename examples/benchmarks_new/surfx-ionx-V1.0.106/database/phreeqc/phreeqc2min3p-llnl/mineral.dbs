@@ -1,0 +1,20 @@
+! 
+! feso4aq
+! equilibrium constant and formula weight are calculated from other database
+! enthalpy change is set to 0 if not available
+! Lack density, set this value to  1.0 instead
+'feso4aq'
+'surface'
+  151.9076      1.0000
+ 2  'fe+2'   1.000 'so4-2'   1.000
+'reversible'       -2.6565    73.0878
+! 
+! znso4aq
+! equilibrium constant and formula weight are calculated from other database
+! enthalpy change is set to 0 if not available
+! Lack density, set this value to  1.0 instead
+'znso4aq'
+'surface'
+  161.4526      1.0000
+ 2  'so4-2'   1.000 'zn+2'   1.000
+'reversible'       -3.5452    80.1320

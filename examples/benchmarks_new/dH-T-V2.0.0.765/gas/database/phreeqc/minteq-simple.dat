@@ -1,0 +1,575 @@
+#  $Id: minteq.dat 3568 2009-07-13 16:15:14Z dlpark $
+
+SOLUTION_MASTER_SPECIES
+
+#######################################################
+
+#               essential definitions
+
+#######################################################
+
+Alkalinity	CO3-2		2.0     61.0173         61.0173
+
+E               e-		0       0               0
+
+H               H+		-1.     1.008           1.008
+
+H(0)            H2		0.0     1.008
+
+H(1)            H+		-1.     1.008
+
+O               H2O		0       16.00           16.00
+
+O(-2)           H2O		0       16.00           16.00
+
+O(0)            O2		0       16.00           16.00
+
+#######################################################
+
+C               CO3-2		2.0     61.0173         12.0111
+
+C(+4)           CO3-2		2.0     61.0173
+
+#C(-4)          CH4		0.0     16.042
+
+#DOM            DOM-2.8		0       0               0
+
+#ClIG2          ClIG2		0       0               0
+
+Ca              Ca+2		0       40.08           40.08
+
+Cl              Cl-		0       35.453          35.453
+
+Fe              Fe+3		0.0     55.847          55.847
+
+Fe(+2)          Fe+2		0.0     55.847
+
+Fe(+3)          Fe+3		-2.0    55.847
+
+N				NO3-	0	N		14.0067
+
+N(+5)			NO3-	0	N
+
+N(+3)			NO2-	0	N
+
+Na              Na+		0       22.9898         22.9898
+
+N(0)			N2		0	N
+
+SOLUTION_SPECIES
+
+#######################################################
+
+#             essential definitions
+
+#######################################################
+
+e- = e-
+
+        log_k   0
+
+        delta_h 0       kcal
+
+H+ = H+
+
+        log_k   0
+
+        delta_h 0       kcal
+
+        -gamma  9.0  0.0
+
+H2O = H2O
+
+        log_k   0
+
+        delta_h 0       kcal
+
+2H2O = O2 + 4H+ + 4e- 
+
+        log_k           -86.08
+
+        delta_h 134.79 kcal
+
+2 H+ + 2 e- = H2
+
+        log_k           -3.15
+
+        delta_h -1.759  kcal
+
+CO3-2 = CO3-2
+
+        log_k   0
+
+        delta_h 0       kcal
+
+        -gamma 5.4  0.0
+
+#######################################################
+
+Ca+2 = Ca+2
+
+        log_k   0
+
+        delta_h 0       kcal
+
+        -gamma  6.0  .165
+
+Cl- = Cl-
+
+        log_k   0
+
+        delta_h 0       kcal
+
+        -gamma  3.0  .015
+
+Fe+3 = Fe+3
+
+        log_k   0
+
+        delta_h 0       kcal
+
+        -gamma  9.0  0.0
+
+Fe+3 + e- = Fe+2
+
+        log_k   13.032
+
+        delta_h -10     kcal
+
+        -gamma  6.0  0.0
+
+NO3- + 2 H+ + 2 e- = NO2- + H2O
+
+	-log_k	28.570
+
+	-delta_h -43.760 kcal
+
+	-gamma	3.0	0
+
+	-dw	 1.91e-9
+
+	-Vm  5.5864  5.8590  3.4472  -3.0212  1.1847 # supcrt
+
+NO3- = NO3-
+
+	-gamma	3.0	0
+
+	-dw	 1.9e-9
+
+	-Vm  6.32  6.78  0  -3.06  0.346  0  0.93  0  -0.012  1 # ref. 1
+
+2 NO3- + 12 H+ + 10 e- = N2 + 6 H2O
+
+	-log_k	207.08
+
+Na+ = Na+
+
+        log_k   0
+
+        delta_h 0       kcal
+
+        -gamma  4.0  .075
+
+	-delta_h -312.130	kcal
+
+	-dw	 1.96e-9
+
+	-Vm 7 # Pray et al., 1952, IEC 44. 1146
+
+SOLUTION_SPECIES
+
+H2O = OH- + H+
+
+        log_k   -13.998
+
+        delta_h 13.345  kcal
+
+        -gamma  3.5     0
+
+Ca+2 + H2O = CaOH+ + H+
+
+        log_k   -12.598
+
+        delta_h 140.535  kcal
+
+        -gamma  6       0
+
+Ca+2 + CO3-2 + H+ = CaHCO3+
+
+        log_k   11.33
+
+        delta_h 1.179    kcal
+
+        -gamma  6       0
+
+        -analytical -9.448     0.03709    2902.39
+
+Ca+2 + CO3-2 = CaCO3
+
+        log_k   3.15
+
+        delta_h 4.03    kcal
+
+        -analytical -27.393    0.05617    4114.0
+
+Fe+2 + H2O = FeOH+ + H+
+
+        log_k   -9.5
+
+        delta_h 13.199  kcal
+
+        -gamma  5       0
+
+Fe+2 + 3H2O = Fe(OH)3- + 3H+
+
+        log_k   -31
+
+        delta_h 30.3    kcal
+
+        -gamma  5       0
+
+Fe+3 + H2O = FeOH+2 + H+
+
+        log_k   -2.19
+
+        delta_h 10.399  kcal
+
+        -gamma  5       0
+
+Fe+3 + 3H2O = Fe(OH)3 + 3H+
+
+        log_k   -13.6
+
+        delta_h 0       kcal
+
+Fe+3 + 4H2O = Fe(OH)4- + 4H+
+
+        log_k   -21.6
+
+        delta_h 0       kcal
+
+        -gamma  5.4     0
+
+3Fe+3 + 4H2O = Fe3(OH)4+5 + 4H+
+
+        log_k   -6.3
+
+        delta_h 14.3    kcal
+
+CO3-2 + H+ = HCO3-
+
+        log_k   10.33
+
+        delta_h -3.617  kcal
+
+        -gamma  5.4     0
+
+        -analytical -6.498     0.02379    2902.39
+
+CO3-2 + 2H+ = H2CO3
+
+        log_k   16.681
+
+        delta_h -2.247  kcal
+
+PHASES
+
+#CH2O-H2S
+
+#	CH2O + 0.5 SO4-2  =   HCO3-  +  0.5 HS-  +  0.5 H+
+
+#	-log_k	14.58
+
+#	-Vm 34.145  # =30.0/0.8786 
+
+#Anhydrite
+
+#        CaSO4 = Ca+2 + SO4-2
+
+#        log_k   -4.637
+
+#        delta_h -3.769  kcal	
+
+Calcite
+
+        CaCO3 = Ca+2 + CO3-2
+
+        log_k   -8.475
+
+        delta_h -2.585  kcal
+
+        -analytical_expression 13.543    -0.0401     -3000.0    
+
+#CH4(g)
+
+#        CH4 + 3H2O = CO3-2 + 8e- + 10H+
+
+#        log_k   -40.1
+
+#        delta_h 61      kcal
+
+CO2(g)
+
+        CO2 + H2O = CO3-2 + 2H+
+
+        log_k   -18.16
+
+        delta_h 0.53    kcal
+
+O2(g)
+
+        O2 + 4H+ + 4e- = 2H2O
+
+        log_k   83.12
+
+        delta_h -133.83 kcal
+
+N2(g)
+
+	N2 = N2
+
+	-log_k		 -3.1864
+
+	-analytic -58.453 1.818e-3  3199  17.909 -27460
+
+#	-T_c  126.2
+
+#	-P_c   33.50
+
+#	-Omega 0.039
+
+#SURFACE_MASTER_SPECIES
+
+#        Hfo_s  Hfo_sOH
+
+#        Hfo_w  Hfo_wOH
+
+#SURFACE_SPECIES
+
+#Hfo_wOH = Hfo_wOH 
+
+#        log_k 0.0
+
+#Hfo_sOH = Hfo_sOH 
+
+#        log_k 0.0
+
+#Hfo_wOH = Hfo_wO- + H+ 
+
+#        log_k   -8.93
+
+#Hfo_wOH + H+  = Hfo_wOH2+
+
+#        log_k   7.29
+
+#Hfo_sOH = Hfo_sO- + H+ 
+
+#        log_k   -8.93
+
+#Hfo_sOH + H+  = Hfo_sOH2+
+
+#        log_k   7.29
+
+#Hfo_wOH  + Zn+2 = Hfo_wOZn+ + H+
+
+#        log_k   -1.99
+
+#Hfo_sOH  + Zn+2 = Hfo_sOZn+ + H+
+
+#        log_k   0.97
+
+#Hfo_wOH  + Cd+2 = Hfo_wOCd+ + H+
+
+#        log_k   -2.9
+
+#Hfo_sOH  + Cd+2 = Hfo_sOCd+ + H+
+
+#        log_k   0.43
+
+#Hfo_sOH  + Cu+2 = Hfo_sOCu+ + H+
+
+#        log_k   2.85
+
+#Hfo_wOH  + Cu+2 = Hfo_wOCu+ + H+
+
+#        log_k   0.6
+
+#Hfo_sOH  + Be+2 = Hfo_sOBe+ + H+
+
+#        log_k   1.898
+
+#Hfo_wOH  + Be+2 = Hfo_wOBe+ + H+
+
+#        log_k   -0.8626
+
+#Hfo_sOH  + Ni+2 = Hfo_sONi+ + H+
+
+#        log_k   0.15
+
+#Hfo_wOH  + Ni+2 = Hfo_wONi+ + H+
+
+#        log_k   -2.5
+
+#Hfo_sOH  + Pb+2 = Hfo_sOPb+ + H+
+
+#        log_k   4.71
+
+#Hfo_wOH  + Pb+2 = Hfo_wOPb+ + H+
+
+#        log_k   0.3
+
+#Hfo_wOH  + Ca+2 = Hfo_wOCa+ + H+
+
+#        log_k   -5.85
+
+#Hfo_sOH + Ca+2 = Hfo_sOHCa+2
+
+#        log_k   4.97
+
+#Hfo_sOH + Ba+2 = Hfo_sOHBa+2
+
+#        log_k   5.46
+
+#Hfo_wOH + Ba+2 = Hfo_wOBa+ + H+
+
+#        log_k   -7.2
+
+#Hfo_sOH + H+ + SO4-2 = Hfo_sSO4-  + H2O
+
+#        log_k   7.78
+
+#Hfo_wOH + H+ + SO4-2 = Hfo_wSO4-  + H2O
+
+#        log_k   7.78
+
+#Hfo_sOH + SO4-2 = Hfo_sOHSO4-2
+
+#        log_k   0.79
+
+#Hfo_wOH + SO4-2 = Hfo_wOHSO4-2
+
+#        log_k   0.79
+
+#Hfo_sOH + PO4-3 + 3H+ = Hfo_sH2PO4 + H2O
+
+#        log_k   31.29
+
+#Hfo_wOH + PO4-3 + 3H+ = Hfo_wH2PO4 + H2O
+
+#        log_k   31.29
+
+#Hfo_sOH + PO4-3 + 2H+ = Hfo_sHPO4-  + H2O
+
+#        log_k   25.39
+
+#Hfo_wOH + PO4-3 + 2H+ = Hfo_wHPO4-  + H2O
+
+#        log_k   25.39
+
+#Hfo_sOH + PO4-3 + H+ = Hfo_sPO4-2 + H2O
+
+#        log_k   17.72
+
+#Hfo_wOH + PO4-3 + H+ = Hfo_wPO4-2 + H2O
+
+#        log_k   17.72
+
+#Hfo_sOH + H3AsO3 = Hfo_sH2AsO3 + H2O
+
+#        log_k   5.41
+
+#Hfo_wOH + H3AsO3 = Hfo_wH2AsO3 + H2O
+
+#        log_k   5.41
+
+#Hfo_sOH + H3AsO4 = Hfo_sH2AsO4 + H2O
+
+#        log_k   8.67
+
+#Hfo_wOH + H3AsO4 = Hfo_wH2AsO4 + H2O
+
+#        log_k   8.67
+
+#Hfo_sOH + H3AsO4 = Hfo_sHAsO4- + H2O + H+ 
+
+#        log_k   2.99
+
+#Hfo_wOH + H3AsO4 = Hfo_wHAsO4- + H2O + H+  
+
+#        log_k   2.99
+
+#Hfo_sOH + H3AsO4 = Hfo_sAsO4-2 + H2O + 2H+ 
+
+#        log_k   -4.7
+
+#Hfo_wOH + H3AsO4 = Hfo_wAsO4-2 + H2O + 2H+ 
+
+#        log_k   -4.7
+
+#Hfo_sOH + H3AsO4 = Hfo_sOHAsO4-3 + 3H+
+
+#        log_k   -10.15
+
+#Hfo_wOH + H3AsO4 = Hfo_wOHAsO4-3 + 3H+
+
+#        log_k   -10.15
+
+#Hfo_sOH + H3BO3 = Hfo_sH2BO3 + H2O
+
+#        log_k   0.62
+
+#Hfo_wOH + H3BO3 = Hfo_wH2BO3 + H2O
+
+#        log_k   0.62
+
+
+
+PHASES
+
+Calcite
+
+        CaCO3 = Ca+2 + CO3-2
+
+        log_k   -8.475
+
+        delta_h -2.585  kcal
+
+        -analytical_expression 13.543    -0.0401     -3000.0  
+
+
+
+Ferrihydrite
+
+        Fe(OH)3 + 3H+ = Fe+3 + 3H2O
+
+        log_k   4.891
+
+        delta_h -0      kcal
+
+Fe3(OH)8
+
+        Fe3(OH)8 + 8H+ = 2Fe+3 + Fe+2 + 8H2O
+
+        log_k   20.222
+
+        delta_h -0      kcal
+
+
+
+Goethite
+
+        FeOOH + 3H+ = Fe+3 + 2H2O
+
+        log_k   0.5
+
+        delta_h -14.48  kcal
+
+Hematite
+
+        Fe2O3 + 6H+ = 2Fe+3 + 3H2O
+
+        log_k   -4.008
+
+        delta_h -30.845 kcal
+
+END

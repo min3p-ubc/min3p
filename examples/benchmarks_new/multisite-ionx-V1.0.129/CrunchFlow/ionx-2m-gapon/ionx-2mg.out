@@ -1,0 +1,525 @@
+ 
+  ************************** CRUNCH ******************************
+  ************************ VERSION 1.0 ***************************
+ 
+                      Author:  C.I. STEEFEL 
+  COPYRIGHT (c) 2000. The Regents of the University of California. 
+                       All Rights Reserved 
+ 
+  ****************************************************************
+  This work was produced at the University of California, Lawrence 
+  Livermore National Laboratory (UC LLNL) under contract no. W-7405-ENG-48 
+  (Contract 48) between the U.S. Department of Energy (DOE) and The Regents 
+  of the University of California (University) for the operation of UC LLNL. 
+  Copyright is reserved to the University for purposes of controlled dissem- 
+  ination, commercialization through formal licensing, or other disposition 
+  under terms of Contract 48; DOE policies, regulations and orders; and U.S. 
+  statutes. The rights of the Federal Government are reserved under Contract 
+  48 subject to the restrictions agreed upon by the DOE and University as 
+  allowed under DOE Acquisition Letter 97-1. 
+ 
+                                DISCLAIMER                            
+  This work was prepared as an account of work sponsored by an agency of the
+  United States Government. Neither the United States Government nor the 
+  University of California nor any of their employees, makes any warranty, 
+  express or implied, or assumes any liability or responsibility for the 
+  accuracy, completeness, or usefulness of any information, apparatus, product,
+  or process disclosed, or represents that its use would not infringe 
+  privately-owned rights.  Reference herein to any specific commercial products,
+  process, or service by trade name, trademark, manufacturer or otherwise does 
+  not necessarily constitute or imply its endorsement, recommendation, or 
+  favoring by the United States Government or the University of California. 
+  The views and opinions of authors expressed herein do not necessarily state 
+  or reflect those of the United States Government or the University of 
+  California, and shall not be used for advertising or product endorsement 
+  purposes. 
+  ****************************************************************
+ 
+ 
+                                                                          
+ 
+ 
+ 
+   ---> Using database: datacom_mingliang_simple_new.dbs                                                                    
+ 
+ 
+ Number of components =                     8
+ 
+  1 H+                
+  2 SO4--             
+  3 Zn++              
+  4 Pb++              
+  5 Ca++              
+  6 Mg++              
+  7 K+                
+  8 Na+               
+ 
+ Number of secondary species in input file =           24
+ 
+  1 OH-               
+  2 HSO4-             
+  3 CaSO4(aq)         
+  4 CaOH+             
+  5 CaHSO4+           
+  6 KSO4-             
+  7 KOH(aq)           
+  8 MgSO4(aq)         
+  9 MgOH+             
+ 10 NaSO4-            
+ 11 NaOH(aq)          
+ 12 PbOH+             
+ 13 PbSO4(aq)         
+ 14 Pb(OH)2(aq)       
+ 15 Pb(SO4)2--        
+ 16 Pb(OH)3-          
+ 17 Pb2OH+++          
+ 18 Pb(OH)4--         
+ 19 ZnOH+             
+ 20 ZnSO4(aq)         
+ 21 Zn(OH)2(aq)       
+ 22 Zn(SO4)2--        
+ 23 Zn(OH)3-          
+ 24 Zn(OH)4--         
+ 
+ Number of kinetic minerals =            0
+ 
+ 
+  Using database file: datacom_mingliang_simple_new.dbs
+ 
+  temperature interpolation coefficients
+                  ln(T+Tk)        1         T+Tk      (T+Tk)**-1   (t+tk)**-2
+ 
+    HOMOGENEOUS REACTIONS
+ 
+ Species         log K         Stoichiometric Coefficients
+                            H+     SO4--  Zn++   Pb++   Ca++   Mg++   K+     Na+    
+ OH-           1.3998E+01  -1.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00
+ HSO4-        -1.9870E+00   1.00   1.00   0.00   0.00   0.00   0.00   0.00   0.00
+ CaSO4(aq)    -2.3090E+00   0.00   1.00   0.00   0.00   1.00   0.00   0.00   0.00
+ CaOH+         1.2780E+01  -1.00   0.00   0.00   0.00   1.00   0.00   0.00   0.00
+ CaHSO4+      -3.0680E+00   1.00   1.00   0.00   0.00   1.00   0.00   0.00   0.00
+ KSO4-        -8.5000E-01   0.00   1.00   0.00   0.00   0.00   0.00   1.00   0.00
+ KOH(aq)       1.4460E+01  -1.00   0.00   0.00   0.00   0.00   0.00   1.00   0.00
+ MgSO4(aq)    -2.3763E+00   0.00   1.00   0.00   0.00   0.00   1.00   0.00   0.00
+ MgOH+         1.1440E+01  -1.00   0.00   0.00   0.00   0.00   1.00   0.00   0.00
+ NaSO4-       -7.0000E-01   0.00   1.00   0.00   0.00   0.00   0.00   0.00   1.00
+ NaOH(aq)      1.4799E+01  -1.00   0.00   0.00   0.00   0.00   0.00   0.00   1.00
+ PbOH+         7.7100E+00  -1.00   0.00   0.00   1.00   0.00   0.00   0.00   0.00
+ PbSO4(aq)    -2.7500E+00   0.00   1.00   0.00   1.00   0.00   0.00   0.00   0.00
+ Pb(OH)2(aq)   1.7120E+01  -2.00   0.00   0.00   1.00   0.00   0.00   0.00   0.00
+ Pb(SO4)2--   -3.4700E+00   0.00   2.00   0.00   1.00   0.00   0.00   0.00   0.00
+ Pb(OH)3-      2.8060E+01  -3.00   0.00   0.00   1.00   0.00   0.00   0.00   0.00
+ Pb2OH+++      6.3600E+00  -1.00   0.00   0.00   2.00   0.00   0.00   0.00   0.00
+ Pb(OH)4--     3.9700E+01  -4.00   0.00   0.00   1.00   0.00   0.00   0.00   0.00
+ ZnOH+         8.9598E+00  -1.00   0.00   1.00   0.00   0.00   0.00   0.00   0.00
+ ZnSO4(aq)    -2.3637E+00   0.00   1.00   1.00   0.00   0.00   0.00   0.00   0.00
+ Zn(OH)2(aq)   1.6900E+01  -2.00   0.00   1.00   0.00   0.00   0.00   0.00   0.00
+ Zn(SO4)2--   -3.2800E+00   0.00   2.00   1.00   0.00   0.00   0.00   0.00   0.00
+ Zn(OH)3-      2.8400E+01  -3.00   0.00   1.00   0.00   0.00   0.00   0.00   0.00
+ Zn(OH)4--     4.1200E+01  -4.00   0.00   1.00   0.00   0.00   0.00   0.00   0.00
+ 
+  ***KINETIC INPUTS***
+ 
+   MINERAL
+ 
+ 
+  ******  GEOCHEMICAL CONDITIONS INPUT  ******
+ 
+ Number of geochemical conditions specified =            3
+ 
+  Condition Label: infiltration_solution
+ 
+ 
+  Primary species    itype     guess      Total conc.  Constraint phase
+  H+                   7    1.0029E-03    0.0000E+00                       
+  SO4--                1    1.0029E-06    3.6542E-03                       
+  Zn++                 1    1.0029E-06    1.0029E-03                       
+  Pb++                 1    1.0029E-06    1.0029E-03                       
+  Ca++                 1    1.0029E-06    1.0029E-03                       
+  Mg++                 1    1.0029E-06    1.0029E-10                       
+  K+                   1    1.0029E-06    1.0029E-10                       
+  Na+                  1    1.0029E-06    1.0029E-10                       
+ 
+  Porosity for this chemical condition =   0.2500
+ 
+ 
+ 
+  Condition Label: initial_condition
+ 
+ 
+  Primary species    itype     guess      Total conc.  Constraint phase
+  H+                   7    1.0029E-08    0.0000E+00                       
+  SO4--                1    5.1621E-04    5.1621E-04                       
+  Zn++                 1    1.0029E-06    1.0029E-07                       
+  Pb++                 1    1.0029E-06    1.0029E-07                       
+  Ca++                 1    1.0029E-06    1.0029E-10                       
+  Mg++                 1    1.0029E-06    1.0029E-05                       
+  K+                   1    1.0029E-06    1.0029E-05                       
+  Na+                  1    1.0029E-06    1.0029E-03                       
+ 
+  Porosity for this chemical condition =   0.2500
+ 
+ 
+ 
+  Condition Label: initial_condition_right
+ 
+ 
+  Primary species    itype     guess      Total conc.  Constraint phase
+  H+                   7    1.0029E-08    0.0000E+00                       
+  SO4--                1    5.1621E-04    5.1621E-04                       
+  Zn++                 1    1.0029E-06    1.0029E-07                       
+  Pb++                 1    1.0029E-06    1.0029E-07                       
+  Ca++                 1    1.0029E-06    1.0029E-10                       
+  Mg++                 1    1.0029E-06    1.0029E-05                       
+  K+                   1    1.0029E-06    1.0029E-05                       
+  Na+                  1    1.0029E-06    1.0029E-03                       
+ 
+  Porosity for this chemical condition =   0.2500
+ 
+ 
+ 
+   ********  SPECIATION OF GEOCHEMICAL CONDITIONS  ********
+ 
+ 
+ *********************************************
+  ---> GEOCHEMICAL CONDITION: infiltration_solution
+ 
+  Temperature (C)         =     25.000
+  Porosity                =      0.250
+  Liquid Saturation       =      1.000
+  Liquid Density (kg/m^3) =    997.075
+  Solid Density (kg/m^3)  =      0.000
+  Solid:Solution Ratio    =      0.000
+  Ionic Strength          =      0.010
+  Conversion (M->m)       =      1.003
+  Solution pH             =      2.999
+  Total Charge            = -2.351E-06
+ 
+ Total Aqueous Concentrations of Primary Species  
+ --------------------------------------- 
+ 
+ Species                Molality     Constraint    Constraint Phase 
+ H+                   1.2884E-03     Activity                        
+ SO4--                3.6542E-03     Total                           
+ Zn++                 1.0029E-03     Total                           
+ Pb++                 1.0029E-03     Total                           
+ Ca++                 1.0029E-03     Total                           
+ Mg++                 1.0029E-10     Total                           
+ K+                   1.0029E-10     Total                           
+ Na+                  1.0029E-10     Total                           
+ 
+ Exchangers        Equiv/kgw        Equiv/g solid  Equiv/m^3 bulk
+X-                 0.0000E+00       0.0000E+00
+Y-                 0.0000E+00       0.0000E+00
+ 
+ Total Concentrations in Exchange Sites 
+ -------------------------------------- 
+ 
+ Primary Species   Moles/kgw       Moles/g solid   Equiv/g solid
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  NaX                     -Inf     -9.073     0.000E+00     8.451E-10                Exchange
+  NaY                     -Inf     -9.073     0.000E+00     8.451E-10                Exchange
+  KX                      -Inf     -8.376     0.000E+00     4.207E-09                Exchange
+  KY                      -Inf     -8.376     0.000E+00     4.207E-09                Exchange
+  CaX2                    -Inf     -0.514     0.000E+00     3.059E-01                Exchange
+  CaY2                    -Inf     -0.514     0.000E+00     3.059E-01                Exchange
+  MgX2                    -Inf     -7.720     0.000E+00     1.904E-08                Exchange
+  MgY2                    -Inf     -7.720     0.000E+00     1.904E-08                Exchange
+  ZnX2                    -Inf     -0.527     0.000E+00     2.972E-01                Exchange
+  ZnY2                    -Inf     -0.527     0.000E+00     2.972E-01                Exchange
+  PbX2                    -Inf     -0.401     0.000E+00     3.969E-01                Exchange
+  PbY2                    -Inf     -0.401     0.000E+00     3.969E-01                Exchange
+  H+                    -2.959     -2.999     1.100E-03     1.003E-03     9.122E-01  Aqueous 
+  SO4--                 -2.577     -2.760     2.650E-03     1.738E-03     6.557E-01  Aqueous 
+  Zn++                  -3.104     -3.277     7.865E-04     5.280E-04     6.713E-01  Aqueous 
+  Pb++                  -3.217     -3.398     6.068E-04     4.004E-04     6.598E-01  Aqueous 
+  Ca++                  -3.092     -3.265     8.097E-04     5.436E-04     6.713E-01  Aqueous 
+  Mg++                 -10.107    -10.271     7.819E-11     5.361E-11     6.856E-01  Aqueous 
+  K+                   -10.004    -10.051     9.908E-11     8.888E-11     8.970E-01  Aqueous 
+  Na+                  -10.002    -10.048     9.943E-11     8.948E-11     8.999E-01  Aqueous 
+  OH-                  -10.953    -10.999     1.115E-11     1.002E-11     8.985E-01  Aqueous 
+  HSO4-                 -3.727     -3.772     1.877E-04     1.691E-04     9.013E-01  Aqueous 
+  CaSO4(aq)             -3.717     -3.716     1.920E-04     1.924E-04     1.002E+00  Aqueous 
+  CaOH+                -13.003    -13.046     9.937E-14     8.995E-14     9.052E-01  Aqueous 
+  CaHSO4+               -5.903     -5.955     1.249E-06     1.108E-06     8.872E-01  Aqueous 
+  KSO4-                -11.917    -11.961     1.210E-12     1.093E-12     9.037E-01  Aqueous 
+  KOH(aq)              -21.514    -21.512     3.065E-22     3.073E-22     1.002E+00  Aqueous 
+  MgSO4(aq)            -10.655    -10.654     2.211E-11     2.216E-11     1.002E+00  Aqueous 
+  MgOH+                -18.669    -18.712     2.141E-19     1.941E-19     9.064E-01  Aqueous 
+  NaSO4-               -12.064    -12.108     8.624E-13     7.793E-13     9.037E-01  Aqueous 
+  NaOH(aq)             -21.849    -21.848     1.415E-22     1.418E-22     1.002E+00  Aqueous 
+  PbOH+                 -8.063     -8.109     8.650E-09     7.784E-09     8.999E-01  Aqueous 
+  PbSO4(aq)             -3.409     -3.408     3.903E-04     3.913E-04     1.002E+00  Aqueous 
+  Pb(OH)2(aq)          -14.521    -14.520     3.012E-15     3.019E-15     1.002E+00  Aqueous 
+  Pb(SO4)2--            -5.240     -5.448     5.758E-06     3.568E-06     6.197E-01  Aqueous 
+  Pb(OH)3-             -22.416    -22.461     3.841E-23     3.457E-23     8.999E-01  Aqueous 
+  Pb2OH+++              -9.756    -10.156     1.755E-10     6.977E-11     3.976E-01  Aqueous 
+  Pb(OH)4--            -30.895    -31.103     1.274E-31     7.895E-32     6.197E-01  Aqueous 
+  ZnOH+                 -9.193     -9.238     6.418E-10     5.776E-10     8.999E-01  Aqueous 
+  ZnSO4(aq)             -3.675     -3.674     2.115E-04     2.120E-04     1.002E+00  Aqueous 
+  Zn(OH)2(aq)          -14.181    -14.180     6.593E-15     6.609E-15     1.002E+00  Aqueous 
+  Zn(SO4)2--            -5.310     -5.517     4.903E-06     3.039E-06     6.197E-01  Aqueous 
+  Zn(OH)3-             -22.635    -22.681     2.316E-23     2.084E-23     8.999E-01  Aqueous 
+  Zn(OH)4--            -32.299    -32.482     5.022E-33     3.293E-33     6.557E-01  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ****** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ *********************************************
+  ---> GEOCHEMICAL CONDITION: initial_condition
+ 
+  Temperature (C)         =     25.000
+  Porosity                =      0.250
+  Liquid Saturation       =      1.000
+  Liquid Density (kg/m^3) =    997.075
+  Solid Density (kg/m^3)  =   2500.000
+  Solid:Solution Ratio    =   7522.001
+  Ionic Strength          =      0.002
+  Conversion (M->m)       =      1.003
+  Solution pH             =      7.999
+  Total Charge            = -1.219E-07
+ 
+ Total Aqueous Concentrations of Primary Species  
+ --------------------------------------- 
+ 
+ Species                Molality     Constraint    Constraint Phase 
+ H+                  -1.1250E-06     Activity                        
+ SO4--                5.1621E-04     Total                           
+ Zn++                 1.0029E-07     Total                           
+ Pb++                 1.0029E-07     Total                           
+ Ca++                 1.0029E-10     Total                           
+ Mg++                 1.0029E-05     Total                           
+ K+                   1.0029E-05     Total                           
+ Na+                  1.0029E-03     Total                           
+ 
+ Exchangers        Equiv/kgw        Equiv/g solid  Equiv/m^3 bulk
+X-                 4.9623E-02       6.5970E-06     1.2369E+01
+Y-                 5.5136E-03       7.3300E-07     1.3744E+00
+ 
+ Total Concentrations in Exchange Sites 
+ -------------------------------------- 
+ 
+ Primary Species   Moles/kgw       Moles/g solid   Equiv/g solid
+Zn++               3.2749E-04       4.3538E-08     8.7075E-08
+Pb++               2.4868E-04       3.3060E-08     6.6121E-08
+Ca++               3.9212E-07       5.2129E-11     1.0426E-10
+Mg++               2.4543E-02       3.2628E-06     6.5256E-06
+K+                 2.3341E-04       3.1031E-08     3.1031E-08
+Na+                4.6639E-03       6.2003E-07     6.2003E-07
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  NaX                   -2.377     -0.809     4.197E-03     1.554E-01                Exchange
+  NaY                   -3.331     -0.809     4.664E-04     1.554E-01                Exchange
+  KX                    -3.678     -2.109     2.101E-04     7.776E-03                Exchange
+  KY                    -4.632     -2.109     2.334E-05     7.776E-03                Exchange
+  CaX2                  -6.452     -4.884     3.529E-07     1.306E-05                Exchange
+  CaY2                  -7.407     -4.884     3.921E-08     1.306E-05                Exchange
+  MgX2                  -1.656     -0.087     2.209E-02     8.176E-01                Exchange
+  MgY2                  -2.610     -0.087     2.454E-03     8.176E-01                Exchange
+  ZnX2                  -3.531     -1.962     2.947E-04     1.091E-02                Exchange
+  ZnY2                  -4.485     -1.962     3.275E-05     1.091E-02                Exchange
+  PbX2                  -3.650     -2.082     2.238E-04     8.285E-03                Exchange
+  PbY2                  -4.604     -2.082     2.487E-05     8.285E-03                Exchange
+  H+                    -7.981     -7.999     1.045E-08     1.003E-08     9.594E-01  Aqueous 
+  SO4--                 -3.290     -3.366     5.132E-04     4.304E-04     8.386E-01  Aqueous 
+  Zn++                  -7.108     -7.182     7.801E-08     6.569E-08     8.422E-01  Aqueous 
+  Pb++                  -7.472     -7.548     3.374E-08     2.832E-08     8.395E-01  Aqueous 
+  Ca++                 -10.030    -10.104     9.340E-11     7.866E-11     8.422E-01  Aqueous 
+  Mg++                  -5.035     -5.108     9.228E-06     7.803E-06     8.456E-01  Aqueous 
+  K+                    -5.000     -5.019     9.999E-06     9.563E-06     9.564E-01  Aqueous 
+  Na+                   -3.000     -3.019     1.001E-03     9.577E-04     9.570E-01  Aqueous 
+  OH-                   -5.980     -5.999     1.047E-06     1.002E-06     9.567E-01  Aqueous 
+  HSO4-                 -9.359     -9.378     4.376E-10     4.189E-10     9.572E-01  Aqueous 
+  CaSO4(aq)            -11.162    -11.161     6.894E-12     6.896E-12     1.000E+00  Aqueous 
+  CaOH+                -14.867    -14.886     1.359E-15     1.302E-15     9.580E-01  Aqueous 
+  CaHSO4+              -18.381    -18.401     4.159E-19     3.971E-19     9.548E-01  Aqueous 
+  KSO4-                 -7.517     -7.536     3.043E-08     2.914E-08     9.577E-01  Aqueous 
+  KOH(aq)              -11.481    -11.481     3.305E-12     3.306E-12     1.000E+00  Aqueous 
+  MgSO4(aq)             -6.098     -6.098     7.985E-07     7.988E-07     1.000E+00  Aqueous 
+  MgOH+                 -8.530     -8.549     2.948E-09     2.825E-09     9.582E-01  Aqueous 
+  NaSO4-                -5.666     -5.685     2.157E-06     2.066E-06     9.577E-01  Aqueous 
+  NaOH(aq)              -9.819     -9.819     1.518E-10     1.518E-10     1.000E+00  Aqueous 
+  PbOH+                 -7.240     -7.259     5.754E-08     5.507E-08     9.570E-01  Aqueous 
+  PbSO4(aq)             -8.164     -8.164     6.853E-09     6.855E-09     1.000E+00  Aqueous 
+  Pb(OH)2(aq)           -8.671     -8.670     2.135E-09     2.136E-09     1.000E+00  Aqueous 
+  Pb(SO4)2--           -10.730    -10.810     1.863E-11     1.548E-11     8.310E-01  Aqueous 
+  Pb(OH)3-             -11.593    -11.612     2.555E-12     2.445E-12     9.570E-01  Aqueous 
+  Pb2OH+++             -13.287    -13.457     5.164E-14     3.492E-14     6.763E-01  Aqueous 
+  Pb(OH)4--            -15.173    -15.253     6.722E-16     5.586E-16     8.310E-01  Aqueous 
+  ZnOH+                 -8.124     -8.144     7.509E-09     7.186E-09     9.570E-01  Aqueous 
+  ZnSO4(aq)             -8.185     -8.185     6.530E-09     6.532E-09     1.000E+00  Aqueous 
+  Zn(OH)2(aq)           -8.085     -8.085     8.219E-09     8.222E-09     1.000E+00  Aqueous 
+  Zn(SO4)2--           -10.554    -10.635     2.790E-11     2.319E-11     8.310E-01  Aqueous 
+  Zn(OH)3-             -11.567    -11.586     2.709E-12     2.592E-12     9.570E-01  Aqueous 
+  Zn(OH)4--            -16.311    -16.388     4.885E-17     4.097E-17     8.386E-01  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ****** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ *********************************************
+  ---> GEOCHEMICAL CONDITION: initial_condition_right
+ 
+  Temperature (C)         =     25.000
+  Porosity                =      0.250
+  Liquid Saturation       =      1.000
+  Liquid Density (kg/m^3) =    997.075
+  Solid Density (kg/m^3)  =   2500.000
+  Solid:Solution Ratio    =   7522.001
+  Ionic Strength          =      0.002
+  Conversion (M->m)       =      1.003
+  Solution pH             =      7.999
+  Total Charge            = -1.219E-07
+ 
+ Total Aqueous Concentrations of Primary Species  
+ --------------------------------------- 
+ 
+ Species                Molality     Constraint    Constraint Phase 
+ H+                  -1.1250E-06     Activity                        
+ SO4--                5.1621E-04     Total                           
+ Zn++                 1.0029E-07     Total                           
+ Pb++                 1.0029E-07     Total                           
+ Ca++                 1.0029E-10     Total                           
+ Mg++                 1.0029E-05     Total                           
+ K+                   1.0029E-05     Total                           
+ Na+                  1.0029E-03     Total                           
+ 
+ Exchangers        Equiv/kgw        Equiv/g solid  Equiv/m^3 bulk
+X-                 2.2055E-02       2.9320E-06     5.4975E+00
+Y-                 3.3082E-02       4.3980E-06     8.2462E+00
+ 
+ Total Concentrations in Exchange Sites 
+ -------------------------------------- 
+ 
+ Primary Species   Moles/kgw       Moles/g solid   Equiv/g solid
+Zn++               3.2749E-04       4.3538E-08     8.7075E-08
+Pb++               2.4868E-04       3.3060E-08     6.6121E-08
+Ca++               3.9212E-07       5.2129E-11     1.0426E-10
+Mg++               2.4543E-02       3.2628E-06     6.5256E-06
+K+                 2.3341E-04       3.1031E-08     3.1031E-08
+Na+                4.6639E-03       6.2003E-07     6.2003E-07
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  NaX                   -2.729     -0.809     1.866E-03     1.554E-01                Exchange
+  NaY                   -2.553     -0.809     2.798E-03     1.554E-01                Exchange
+  KX                    -4.030     -2.109     9.336E-05     7.776E-03                Exchange
+  KY                    -3.854     -2.109     1.400E-04     7.776E-03                Exchange
+  CaX2                  -6.805     -4.884     1.568E-07     1.306E-05                Exchange
+  CaY2                  -6.628     -4.884     2.353E-07     1.306E-05                Exchange
+  MgX2                  -2.008     -0.087     9.817E-03     8.176E-01                Exchange
+  MgY2                  -1.832     -0.087     1.473E-02     8.176E-01                Exchange
+  ZnX2                  -3.883     -1.962     1.310E-04     1.091E-02                Exchange
+  ZnY2                  -3.707     -1.962     1.965E-04     1.091E-02                Exchange
+  PbX2                  -4.002     -2.082     9.947E-05     8.285E-03                Exchange
+  PbY2                  -3.826     -2.082     1.492E-04     8.285E-03                Exchange
+  H+                    -7.981     -7.999     1.045E-08     1.003E-08     9.594E-01  Aqueous 
+  SO4--                 -3.290     -3.366     5.132E-04     4.304E-04     8.386E-01  Aqueous 
+  Zn++                  -7.108     -7.182     7.801E-08     6.569E-08     8.422E-01  Aqueous 
+  Pb++                  -7.472     -7.548     3.374E-08     2.832E-08     8.395E-01  Aqueous 
+  Ca++                 -10.030    -10.104     9.340E-11     7.866E-11     8.422E-01  Aqueous 
+  Mg++                  -5.035     -5.108     9.228E-06     7.803E-06     8.456E-01  Aqueous 
+  K+                    -5.000     -5.019     9.999E-06     9.563E-06     9.564E-01  Aqueous 
+  Na+                   -3.000     -3.019     1.001E-03     9.577E-04     9.570E-01  Aqueous 
+  OH-                   -5.980     -5.999     1.047E-06     1.002E-06     9.567E-01  Aqueous 
+  HSO4-                 -9.359     -9.378     4.376E-10     4.189E-10     9.572E-01  Aqueous 
+  CaSO4(aq)            -11.162    -11.161     6.894E-12     6.896E-12     1.000E+00  Aqueous 
+  CaOH+                -14.867    -14.886     1.359E-15     1.302E-15     9.580E-01  Aqueous 
+  CaHSO4+              -18.381    -18.401     4.159E-19     3.971E-19     9.548E-01  Aqueous 
+  KSO4-                 -7.517     -7.536     3.043E-08     2.914E-08     9.577E-01  Aqueous 
+  KOH(aq)              -11.481    -11.481     3.305E-12     3.306E-12     1.000E+00  Aqueous 
+  MgSO4(aq)             -6.098     -6.098     7.985E-07     7.988E-07     1.000E+00  Aqueous 
+  MgOH+                 -8.530     -8.549     2.948E-09     2.825E-09     9.582E-01  Aqueous 
+  NaSO4-                -5.666     -5.685     2.157E-06     2.066E-06     9.577E-01  Aqueous 
+  NaOH(aq)              -9.819     -9.819     1.518E-10     1.518E-10     1.000E+00  Aqueous 
+  PbOH+                 -7.240     -7.259     5.754E-08     5.507E-08     9.570E-01  Aqueous 
+  PbSO4(aq)             -8.164     -8.164     6.853E-09     6.855E-09     1.000E+00  Aqueous 
+  Pb(OH)2(aq)           -8.671     -8.670     2.135E-09     2.136E-09     1.000E+00  Aqueous 
+  Pb(SO4)2--           -10.730    -10.810     1.863E-11     1.548E-11     8.310E-01  Aqueous 
+  Pb(OH)3-             -11.593    -11.612     2.555E-12     2.445E-12     9.570E-01  Aqueous 
+  Pb2OH+++             -13.287    -13.457     5.164E-14     3.492E-14     6.763E-01  Aqueous 
+  Pb(OH)4--            -15.173    -15.253     6.722E-16     5.586E-16     8.310E-01  Aqueous 
+  ZnOH+                 -8.124     -8.144     7.509E-09     7.186E-09     9.570E-01  Aqueous 
+  ZnSO4(aq)             -8.185     -8.185     6.530E-09     6.532E-09     1.000E+00  Aqueous 
+  Zn(OH)2(aq)           -8.085     -8.085     8.219E-09     8.222E-09     1.000E+00  Aqueous 
+  Zn(SO4)2--           -10.554    -10.635     2.790E-11     2.319E-11     8.310E-01  Aqueous 
+  Zn(OH)3-             -11.567    -11.586     2.709E-12     2.592E-12     9.570E-01  Aqueous 
+  Zn(OH)4--            -16.311    -16.388     4.885E-17     4.097E-17     8.386E-01  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ****** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+                SPECIATION OF  
+      INITIAL AND BOUNDARY CONDITIONS 
+           SUCCESSFULLY COMPLETED
+ 
+ 
+   NZ =            1
+ 
+  Cell  Distance (m)
+   1    5.000E-01
+ 
+ 
+ Number of heterogeneities =            2
+ 
+ 
+ Parameters for this run:
+ 
+  Maximum timestep (yrs) =    2.283E-06
+  Maximum timestep (yrs) =    1.142E-21
+ 
+ --> Porosity set by "fix_porosity" or "set_porosity" keywords
+ ----> No update of porosity
+ --> Extended Debye-Huckel activity model used
+ --> Activity coefficients only computed
+     at beginning of time step 
+ 
+  Temperature (C) at J = 1            25.00
+  Temperature gradient (C/m) =         0.00
+ 
+ Graphics files printed at (yrs)
+   1.1416E-03
+   2.2831E-03
+   5.7078E-03
+   2.2831E-02
+
+ 
+  Constant velocities have been specified
+ 
+   X Darcy velocity =   8.750000000000000E-005
+   Y Darcy velocity =   0.000000000000000E+000
+ 
+ 
+ 
+ 
+   Using constant diffusion coefficient
+  Diffusion coefficient (m**2/yr) =       0.0000E+00
+ 
+ 
+  Longitudinal dispersivity (m) =     0.0000E+00
+  Transverse dispersivity (m) =       0.0000E+00
+ 
+ 
+         INITIALIZATION COMPLETED 
+          STARTING TIMESTEPPING 
+ 

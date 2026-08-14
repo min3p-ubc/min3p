@@ -1,0 +1,1136 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"P2_4.gbp"'
+$!VarSet |LFDSVL1| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root"'
+$!VarSet |LFDSFN2| = '"HP1-Results-P2-water-content.txt"'
+$!VarSet |LFDSVL2| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "p3" "p6" "p10" "p25" "p50" "p100"'
+$!VarSet |LFDSFN3| = '"P2_6.gbp"'
+$!VarSet |LFDSVL3| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root"'
+$!VarSet |LFDSFN4| = '"HP1-Results-P2-water-content.txt"'
+$!VarSet |LFDSVL4| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "p3" "p6" "p10" "p25" "p50" "p100"'
+$!VarSet |LFDSFN5| = '"P2_5.gbp"'
+$!VarSet |LFDSVL5| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root"'
+$!VarSet |LFDSFN6| = '"HP1-Results-P2-water-content.txt"'
+$!VarSet |LFDSVL6| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "p3" "p6" "p10" "p25" "p50" "p100"'
+$!VarSet |LFDSFN7| = '"P2_3.gbp"'
+$!VarSet |LFDSVL7| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root"'
+$!VarSet |LFDSFN8| = '"HP1-Results-P2-water-content.txt"'
+$!VarSet |LFDSVL8| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "p3" "p6" "p10" "p25" "p50" "p100"'
+$!VarSet |LFDSFN9| = '"P2_2.gbp"'
+$!VarSet |LFDSVL9| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root"'
+$!VarSet |LFDSFN10| = '"HP1-Results-P2-water-content.txt"'
+$!VarSet |LFDSVL10| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "p3" "p6" "p10" "p25" "p50" "p100"'
+$!VarSet |LFDSFN11| = '"P2_1.gbp"'
+$!VarSet |LFDSVL11| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root"'
+$!VarSet |LFDSFN12| = '"HP1-Results-P2-water-content.txt"'
+$!VarSet |LFDSVL12| = '"time" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "p3" "p6" "p10" "p25" "p50" "p100"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL2|' 
+$!REMOVEVAR |LFDSVL2|
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = CYAN
+  XYPOS
+    {
+    X = 5.5
+    Y = 3
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 004' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'min3p-p25' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'hp1-p25' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 10.47
+    Y1 = 13.672
+    X2 = 93.06
+    Y2 = 93.212
+    }
+  VIEWPORTTOPSNAPTARGET = 93.2117477237
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 370
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0.14999999999999999
+    RANGEMAX = 0.45000000000000001
+    GRSPACING = 0.05
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'WC [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 13.8238982864
+    Y = 84.4725738397
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    }
+  TEXT = 'd = 25 cm' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL3|' 
+$!REMOVEVAR |LFDSVL3|
+$!REMOVEVAR |LFDSFN3|
+$!READDATASET  '|LFDSFN4|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL4|' 
+$!REMOVEVAR |LFDSVL4|
+$!REMOVEVAR |LFDSFN4|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = PURPLE
+  XYPOS
+    {
+    X = 5.5
+    Y = 5.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 006' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'min3p-p100' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'hp1-p100' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 10.651
+    Y1 = 13.903
+    X2 = 92.879
+    Y2 = 90.54
+    }
+  VIEWPORTTOPSNAPTARGET = 90.5400843882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 370
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0.14999999999999999
+    RANGEMAX = 0.45000000000000001
+    GRSPACING = 0.05
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'WC [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 14.5467164974
+    Y = 82.8691983122
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    }
+  TEXT = 'd = 100 cm' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN5|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL5|' 
+$!REMOVEVAR |LFDSVL5|
+$!REMOVEVAR |LFDSFN5|
+$!READDATASET  '|LFDSFN6|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL6|' 
+$!REMOVEVAR |LFDSVL6|
+$!REMOVEVAR |LFDSFN6|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = YELLOW
+  XYPOS
+    {
+    X = 0.5
+    Y = 5.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 005' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'min3p-p50' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'hp1-p50' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 9.5666
+    Y1 = 14.266
+    X2 = 92.518
+    Y2 = 91.266
+    }
+  VIEWPORTTOPSNAPTARGET = 91.2658227848
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 370
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0.14999999999999999
+    RANGEMAX = 0.45000000000000001
+    GRSPACING = 0.05
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'WC [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 13.3846855807
+    Y = 82.3085826988
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    }
+  TEXT = 'd = 50 cm' 
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN7|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL7|' 
+$!REMOVEVAR |LFDSVL7|
+$!REMOVEVAR |LFDSFN7|
+$!READDATASET  '|LFDSFN8|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL8|' 
+$!REMOVEVAR |LFDSVL8|
+$!REMOVEVAR |LFDSFN8|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = BLUE
+  XYPOS
+    {
+    X = 0.5
+    Y = 3
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 003' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'min3p-p10' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'hp1-p10' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 11
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 9.5666
+    Y1 = 13.177
+    X2 = 92.156
+    Y2 = 91.992
+    }
+  VIEWPORTTOPSNAPTARGET = 91.9915611814
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 370
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0.14999999999999999
+    RANGEMAX = 0.45000000000000007
+    GRSPACING = 0.05
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'WC [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 13.5873523785
+    Y = 84.3877102276
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    }
+  TEXT = 'd = 10 cm' 
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN9|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL9|' 
+$!REMOVEVAR |LFDSVL9|
+$!REMOVEVAR |LFDSFN9|
+$!READDATASET  '|LFDSFN10|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL10|' 
+$!REMOVEVAR |LFDSVL10|
+$!REMOVEVAR |LFDSFN10|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = GREEN
+  XYPOS
+    {
+    X = 5.5
+    Y = 0.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 002' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'min3p-p6' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'hp1-p6' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 10.161
+    Y1 = 15.717
+    X2 = 92.709
+    Y2 = 94.169
+    }
+  VIEWPORTTOPSNAPTARGET = 94.1687763713
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 370
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time [days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0.14999999999999999
+    RANGEMAX = 0.45000000000000007
+    GRSPACING = 0.05
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'WC [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 14.1071653039
+    Y = 85.9272151899
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    }
+  TEXT = 'd = 6 cm' 
+### Frame Number 6 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN11|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL11|' 
+$!REMOVEVAR |LFDSVL11|
+$!REMOVEVAR |LFDSFN11|
+$!READDATASET  '|LFDSFN12|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  READDATAOPTION = APPEND
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL12|' 
+$!REMOVEVAR |LFDSVL12|
+$!REMOVEVAR |LFDSFN12|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.5
+    Y = 0.5
+    }
+  WIDTH = 5.0202
+  HEIGHT = 2.5
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-2]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    TEXTSHAPE
+      {
+      SIZEUNITS = POINT
+      HEIGHT = 11
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    XYPOS
+      {
+      X = 92.47
+      Y = 44.801
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'MIN3P-THCm' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = 'HP1' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 9.7995
+    Y1 = 16.08
+    X2 = 91.614
+    Y2 = 93.806
+    }
+  VIEWPORTTOPSNAPTARGET = 93.805907173
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 370
+    GRSPACING = 100
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time[days]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0.15000000000000005
+    RANGEMAX = 0.45000000000000007
+    GRSPACING = 0.05
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'WC [-]' 
+      TEXTSHAPE
+        {
+        FONT = HELV
+        SIZEUNITS = POINT
+        HEIGHT = 8
+        }
+      }
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 12.8819076922
+    Y = 86.4229957806
+    }
+  TEXTSHAPE
+    {
+    FONT = HELV
+    }
+  TEXT = 'd = 3 cm' 
+$!SETSTYLEBASE CONFIG

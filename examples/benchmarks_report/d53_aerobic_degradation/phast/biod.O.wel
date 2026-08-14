@@ -1,0 +1,219 @@
+
+
+                          . biodegradation of toluene - uniform flow                                      
+                          .                                                                               
+
+
+                                        *** Well Data ***
+     -------------------------------------------------------------------------------------------------------------------
+     Well       Location            Screen Interval          Screen Interval              Calculation     Well Diameter
+     No.      X          Y           Z1          Z2       Top Depth  Bottom Depth             Type             (m)
+            (m)       (m)        (m)        (m)        (m)         (m)
+     -------------------------------------------------------------------------------------------------------------------
+       2   10.0       0.00       0.00       1.00                                              11               5.000E-02
+
+  Well No.   2
+    Specified Flow Rate                              
+    Allocation by Mobility                           
+    Explicit Layer Rates                    
+
+                    Node Layer   Effective Ambient Permeability           Well Flow Factor
+                         No.      Below the node  Above the node
+                                      (m^2)           (m^2)                    (m^3)
+        ------------------------------------------------------------------------------------------
+
+        Well No.   2
+                         2           2.951E-13          0.000E+00                  3.877E-13
+                         1           0.000E+00          2.951E-13                  3.877E-13
+
+
+                                        *** Transient Well Data ***
+          Well      Flow Rate     Surface     Well Datum     Head          Injection or Limiting
+          No.        (m ^3/d  )     Head          Head      Limited?          Solution Index No.
+                                   (m )          (m )                              (-)
+        ------------------------------------------------------------------------------------------
+            2       0.000                                    No                        
+
+                              *** Output at End of Steady State Iteration No.     2 ***
+
+     Time .......................................................    0.00      (d)
+
+                                        *** Well Summary ***
+
+                           Flow Rates (positive is injection)
+  Well                    Fluid
+  No.                    (kg/d)
+ ----------------------------------------------------------------------
+   2                       0.000    
+ ----------------------------------------------------------------------
+ Total - Production        0.000                                  
+       - Injection         0.000                                  
+
+
+          Current Fluid Production(-)/Injection(+) Rates per layer (kg/d)
+
+ Layer                         Well Sequence Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+ ------------------------------------------------------------------------------------------------------------------------
+
+
+                              *** Output at End of Time Step No.    40 ***
+
+     Time .......................................................    10.0      (d)
+
+                                        *** Well Summary ***
+
+                           Flow Rates (positive is injection)
+  Well                    Fluid
+  No.                    (kg/d)
+ ----------------------------------------------------------------------
+   2                       0.000    
+ ----------------------------------------------------------------------
+ Total - Production        0.000                                  
+       - Injection         0.000                                  
+
+                           Solute Flow Rates (positive is injection)
+  Well                                       Solute Component: 
+  No.                                           (kg/d)
+             H           O           C           Cl          Na          Toluene     Charge    
+ -------------------------------------------------------------------------------------------------------------------
+   1       0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+ -------------------------------------------------------------------------------------------------------------------
+ Total - Production
+           0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+       - Injection
+           0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+
+                Cumulative Production   Cumulative Injection
+  Well                 Fluid                    Fluid
+  No.                  (kg)                     (kg)
+ ------------------------------------------------------------------------------------------
+    2                 0.000                    0.000    
+ ------------------------------------------------------------------------------------------
+ Total - Production   0.000    
+       - Injection                             0.000    
+
+                           Cumulative Production
+  Well                                       Solute Component: 
+  No.                                           (kg)
+             H           O           C           Cl          Na          Toluene     Charge    
+ -------------------------------------------------------------------------------------------------------------------
+   1       0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+ -------------------------------------------------------------------------------------------------------------------
+ Total - Production
+           0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+
+                           Cumulative Injection
+  Well                                       Solute Component: 
+  No.                                           (kg)
+             H           O           C           Cl          Na          Toluene     Charge    
+ -------------------------------------------------------------------------------------------------------------------
+   1       0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+ -------------------------------------------------------------------------------------------------------------------
+ Total - Injection
+           0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+
+                           The following parameters are averages over the time step just completed
+  Well                                       Well Datum Solute Component Molality
+  No.                                           (mol/kgw)
+             H           O           C           Cl          Na          Toluene     Charge    
+ -------------------------------------------------------------------------------------------------------------------
+   1       0.000       0.000       0.000       0.000       0.000       0.000       0.000    
+
+
+          Current Fluid Production(-)/Injection(+) Rates per layer (kg/d)
+
+ Layer                         Well Sequence Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+
+          Current Solute Production(-)/Injection(+) Rates per layer (kg/d)
+
+          Component: H         
+
+ Layer                         Well Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+
+          Current Solute Production(-)/Injection(+) Rates per layer (kg/d)
+
+          Component: O         
+
+ Layer                         Well Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+
+          Current Solute Production(-)/Injection(+) Rates per layer (kg/d)
+
+          Component: C         
+
+ Layer                         Well Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+
+          Current Solute Production(-)/Injection(+) Rates per layer (kg/d)
+
+          Component: Cl        
+
+ Layer                         Well Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+
+          Current Solute Production(-)/Injection(+) Rates per layer (kg/d)
+
+          Component: Na        
+
+ Layer                         Well Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+
+          Current Solute Production(-)/Injection(+) Rates per layer (kg/d)
+
+          Component: Toluene   
+
+ Layer                         Well Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+
+          Current Solute Production(-)/Injection(+) Rates per layer (kg/d)
+
+          Component: Charge    
+
+ Layer                         Well Number
+ No.        2
+ ------------------------------------------------------------------------------------------------------------------------
+   2      0.00    
+   1      0.00    
+
+ ------------------------------------------------------------------------------------------------------------------------
+
+
+
+                                       ***** Simulation Completed *****
+               Last time value calculated ......................................  10.00     (d)
+               Last time step index ............................................      40

@@ -1,0 +1,2646 @@
+! !
+
+! Modelacion flujo y transporte reactivo Mina Concordia 
+
+!
+
+! Section 1: global control parameters                                      			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'global control parameters'                                                 			
+
+'Soil evaporation and salinization in soil'                                        			
+
+.true.                        ;varsat_flow                                  			
+
+.false.                       ;steady_flow                                  			
+
+.false.                       ;fully_saturated                              			
+
+.true.                        ;reactive_transport                           			
+
+.true.                        ;plant_uptake and physical evaporation	
+
+
+
+'root water uptake'
+
+
+
+'done' 
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'database\default'
+
+
+
+'compute alkalinity'
+
+
+
+'components'
+
+11                         ;number of components (nc-1)
+
+'ca+2'                     ;component names
+
+'mg+2'
+
+'al+3'
+
+'fe+2'
+
+'cl-1' 
+
+'na+1'
+
+'h4sio4'
+
+'h+1'
+
+'o2(aq)'
+
+'co3-2'
+
+'ch2o' 
+
+
+
+'secondary aqueous species'
+
+19                             ;number of secondary aqueous species
+
+'oh-'
+
+'h3sio4-'
+
+'h2sio4-2'
+
+'mgoh+'
+
+'mgco3aq'
+
+'mghco3+'
+
+'naoh'
+
+'caoh+'
+
+'cahco3+'
+
+'caco3aq'
+
+'co2(aq)'
+
+'naco3-'
+
+'nahco3aq'
+
+'hco3-'
+
+'h2co3aq'
+
+'aloh+2'
+
+'al(oh)2+'
+
+'al(oh)4-'
+
+'al(oh)3aq'
+
+
+
+'define sorption type'
+
+'surface-complex'
+
+
+
+'non-aqueous components'
+
+1                             ;number of non-aqueous components
+
+'=feoh(s)'   'surface'        ;names of non-aqueous components
+
+
+
+'intra-aqueous kinetic reactions'
+
+1                             ;number of intra-aqueous kinetic reactions
+
+'ch2o-o2'                     ;names of intra-aqueous kinetic reactions
+
+
+
+'scaling for intra-aqueous kinetic reactions'
+
+1.0e-12
+
+
+
+!'sorbed species of ion-exchange'
+
+!3
+
+!'na-x(na)'
+
+!'ca-x(na)'        
+
+!'mg-x(na)'  
+
+
+
+'sorbed species of surface-complex'
+
+3                             ;number of sorbed species
+
+'=feoh2+(s)'                  ;names of sorbed species
+
+'=feo-(s)'
+
+'=feoca+(s)'
+
+
+
+'use molar fractions for surface complexes'
+
+
+
+!'use electrostatic correction'
+
+!'diffuse layer model' 
+
+!1.06d0                        
+
+!1.02d0
+
+
+
+'gases'
+
+2                             ;number of gases
+
+'o2(g)'                       ;names of gases
+
+'co2(g)' 
+
+
+
+'minerals'
+
+6                              ;number of minerals
+
+'anorthite-ph'                 ;mineral names     
+
+'albite-ph-d'
+
+'augite-ph'
+
+'ca-olivine_terr'
+
+'ch2o(f)-2'
+
+'calcite'   
+
+
+
+'done'                                                                   			
+
+!   			
+
+! Section 3: spatial discretization                                         			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'spatial discretization'                                                    			
+
+1                             ;number of discretization intervals in x			
+
+1                             ;number of control volumes in x			
+
+0.0  1.0                      ;xmin,xmax"			
+
+1                             ;number of discretization intervals in y      			
+
+1                             ;number of control volumes in y               			
+
+0. 1.0                        ;ymin,ymax                                    "			
+
+1                             ;number of discretization intervals in z
+
+200                           
+
+0.0d0  2.0d0
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 4: time step control - global system                              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'time step control - global system'                                         			
+
+'days'                       ;time unit                                     			
+
+0.0                          ;time at start of solution                     			
+
+365.0  ;7300.0                       ;final solution time                           			
+
+1.0d0                        ;maximum time step			
+
+1.0d-10                      ;minimum time step			
+
+
+
+'done'			
+
+			
+
+!   			
+
+! Section 5: control parameters - local geochemistry                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - local geochemistry'                                   			
+
+			
+
+'finite minerals'                                                           			
+
+.true.                        ;update geometrical parameters of minerals    			
+
+			
+
+'newton iteration settings'                                                 			
+
+1.d-4                         ;factor for numerical differentiation         			
+
+1.d-6                         ;convergence tolerance                        			
+
+			
+
+'maximum ionic strength'                                                    			
+
+100.0d0                       ;max. ionic strength                          			
+
+			
+
+'minimum activity for h2o'                                                  			
+
+0.01d0                        ;min. activity for h2o                        			
+
+			
+
+'output time unit'                                                          			
+
+'days'                        ;time unit (local chemistry)                  			
+
+			
+
+'done'                                                                      					
+
+!   			
+
+! Section 6: control parameters - variably saturated flow                   			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - variably saturated flow' 
+
+	
+
+'mass balance'		
+
+
+
+'iterative solver'
+
+			
+
+'input units for boundary and initial conditions'                           			
+
+'pressure head'              ;input unit 
+
+
+
+'input units for media permeability'
+
+'hydraulic conductivity'
+
+			
+
+'upstream weighting'                                                        			
+
+.true.                       .true.                        ;upstream weight			
+
+			
+
+'newton iteration settings'			
+
+1.0d-5                        ;increment for numerical differentiation			
+
+200                           ;max. number of newton iterations			
+
+1.0d-6                        ;convergence tolerance			
+
+0.5                           ;sw_star			
+
+			
+
+'solver settings'			
+
+0                             ;incomplete factorization level			
+
+100                           ;max. number of solver iterations			
+
+0                             ;solver information level			
+
+1.0d-11                       ;solver residual tolerance			
+
+1.0d-11                       ;solver update tolerance			
+
+.true.                        ;rcm ordering			
+
+			
+
+'done'	
+
+!		
+
+! Data Block 16: Plant transpiration and passive/rejective uptake
+
+! ---------------------------------------------------------------------------
+
+!
+
+'plant transpiration and passive/rejective uptake'
+
+ 
+
+!'growing vegetation'
+
+
+
+'potential evaporation in mm per day'
+
+ 
+
+ 
+
+'correction method for water stress'
+
+1
+
+
+
+
+
+'done'
+
+
+
+
+
+
+
+! Data Block 18: physical parameters - root uptake
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - root uptake'
+
+
+
+!'read root length density from file'
+
+
+
+'transient root parameters'
+
+
+
+! --------------------------------		
+
+'soil_0_5cm'
+
+
+
+'water uptake parameters'
+
+0.433386838  !  satwlim(izn)  ;saturacion  en  el  punto  de  marchitez  permanente  
+
+0.605136437  !  satwfield(izn)  ;saturacion  a  capacidad  de  campo  soil  water  characteristics  
+
+0.433386838  !  satwdry(izn)  ;saturacion  residual  
+
+0.0			 ! root_length_dens(izn)  	;densidad de racices [m de raiz/m3suelo]
+
+1.0  			! rew0(izn)  			;agua extractable relativa a un 50% de la maxima capacidad de extraccion
+
+1.0 			! p1(izn)   			;parametro de fiteo
+
+1.0   			! tree_trans_factor(izn)  	;
+
+0.0   			! canopy_evap_factor(izn) 	;
+
+1.0   			! uptakefactor(izn)   		;	
+
+1.0                     ! omegafactor(izn)
+
+0.1                     ! root radius (izn)[m]
+
+                                                                 			
+
+'solute uptake parameters'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+
+
+!1.0d0   1.0d-13   1.0d-2  0.0d0  1.0d-10   0.0d0   100.0d0  !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!1.0d0     0.0d0   1.0d-2  0.0d0  1.0d-10   1.0d-8  0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0  0.02d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   1.0d-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0    0.8d-9   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.05d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.29d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.5d-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+!0.0d0   1.1d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+!0.0d0   0.6d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+!0.0d0    0.4d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+
+
+'end of zone' 
+
+	
+
+! --------------------------------
+
+'soil_5_15cm'
+
+
+
+'water uptake parameters'
+
+0.506566604  !  satwlim(izn)  ;saturacion  en  el  punto  de  marchitez  permanente  
+
+0.694183865  !  satwfield(izn)  ;saturacion  a  capacidad  de  campo  soil  water  characteristics  
+
+0.506566604  !  satwdry(izn)  ;saturacion  residual  
+
+0.0			! root_length_dens(izn)  	;densidad de racices [m de raiz/m3suelo]
+
+1.0  			! rew0(izn)  			;agua extractable relativa a un 50% de la maxima capacidad de extraccion
+
+1.0 			! p1(izn)   			;parametro de fiteo
+
+1.0   			! tree_trans_factor(izn)  	;
+
+0.0   			! canopy_evap_factor(izn) 	;
+
+1.0   			! uptakefactor(izn)   		;	
+
+1.0                     ! omegafactor(izn)
+
+0.1                     ! root radius (izn)[m]                                                                   			
+
+
+
+'solute uptake parameters'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+
+
+!1.0d0   1.0d-13   1.0d-2  0.0d0  1.0d-10   0.0d0   100.0d0  !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!1.0d0     0.0d0   1.0d-2  0.0d0  1.0d-10   1.0d-8  0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0  0.02d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   1.0d-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0    0.8d-9   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.05d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.29d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.5d-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+!0.0d0   1.1d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+!0.0d0   0.6d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+!0.0d0    0.4d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+			
+
+'end of zone' 
+
+		
+
+! --------------------------------
+
+'soil_15_30cm'   
+
+
+
+'water uptake parameters'
+
+0.528046422  !  satwlim(izn)  ;saturacion  en  el  punto  de  marchitez  permanente  
+
+0.705996132  !  satwfield(izn)  ;saturacion  a  capacidad  de  campo  soil  water  characteristics  
+
+0.528046422  !  satwdry(izn)  ;saturacion  residual  
+
+0.0			! root_length_dens(izn)  	;densidad de racices [m de raiz/m3suelo]
+
+1.0  			! rew0(izn)  			;agua extractable relativa a un 50% de la maxima capacidad de extraccion
+
+1.0 			! p1(izn)   			;parametro de fiteo
+
+1.0   			! tree_trans_factor(izn)  	;
+
+0.0   			! canopy_evap_factor(izn) 	;
+
+1.0   			! uptakefactor(izn)   		;	
+
+1.0                     ! omegafactor(izn)
+
+0.1                     ! root radius (izn)[m]                                                                			
+
+
+
+'solute uptake parameters'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+
+
+!1.0d0   1.0d-13   1.0d-2  0.0d0  1.0d-10   0.0d0   100.0d0  !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!1.0d0     0.0d0   1.0d-2  0.0d0  1.0d-10   1.0d-8  0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0  0.02d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   1.0d-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0    0.8d-9   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.05d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.29d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.5d-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+!0.0d0   1.1d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+!0.0d0   0.6d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+!0.0d0    0.4d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'		
+
+			
+
+'end of zone' 
+
+
+
+! --------------------------------		
+
+'soil_30_60cm' 
+
+
+
+'water uptake parameters'
+
+0.536679537  !  satwlim(izn)  ;saturacion  en  el  punto  de  marchitez  permanente  
+
+0.706563707  !  satwfield(izn)  ;saturacion  a  capacidad  de  campo  soil  water  characteristics  
+
+0.536679537  !  satwdry(izn)  ;saturacion  residual  
+
+0.0			! root_length_dens(izn)  	;densidad de racices [m de raiz/m3suelo]
+
+1.0  			! rew0(izn)  			;agua extractable relativa a un 50% de la maxima capacidad de extraccion
+
+1.0 			! p1(izn)   			;parametro de fiteo
+
+1.0   			! tree_trans_factor(izn)  	;
+
+0.0   			! canopy_evap_factor(izn) 	;
+
+1.0   			! uptakefactor(izn)   		;	
+
+1.0                     ! omegafactor(izn)
+
+0.1                     ! root radius (izn)[m]                                                                  			
+
+
+
+'solute uptake parameters'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+
+
+!1.0d0   1.0d-13   1.0d-2  0.0d0  1.0d-10   0.0d0   100.0d0  !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!1.0d0     0.0d0   1.0d-2  0.0d0  1.0d-10   1.0d-8  0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0  0.02d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   1.0d-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0    0.8d-9   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.05d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.29d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.5d-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+!0.0d0   1.1d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+!0.0d0   0.6d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+!0.0d0    0.4d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'		
+
+			
+
+'end of zone'
+
+	
+
+! --------------------------------	
+
+'soil_60_100cm'
+
+
+
+'water uptake parameters'
+
+0.552268245  !  satwlim(izn)  ;saturacion  en  el  punto  de  marchitez  permanente  
+
+0.721893491  !  satwfield(izn)  ;saturacion  a  capacidad  de  campo  soil  water  characteristics  
+
+0.552268245  !  satwdry(izn)  ;saturacion  residual  
+
+0.0			! root_length_dens(izn)  	;densidad de racices [m de raiz/m3suelo]
+
+1.0  			! rew0(izn)  			;agua extractable relativa a un 50% de la maxima capacidad de extraccion
+
+1.0 			! p1(izn)   			;parametro de fiteo
+
+1.0   			! tree_trans_factor(izn)  	;
+
+0.0   			! canopy_evap_factor(izn) 	;
+
+1.0   			! uptakefactor(izn)   		;	
+
+1.0                     ! omegafactor(izn)
+
+0.1                     ! root radius (izn)[m]                                                                   			
+
+			
+
+'solute uptake parameters'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+
+
+!1.0d0   1.0d-13   1.0d-2  0.0d0  1.0d-10   0.0d0   100.0d0  !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!1.0d0     0.0d0   1.0d-2  0.0d0  1.0d-10   1.0d-8  0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0  0.02d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   1.0d-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0    0.8d-9   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.05d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.29d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.5d-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+!0.0d0   1.1d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+!0.0d0   0.6d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+!0.0d0    0.4d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+			
+
+'end of zone'
+
+	
+
+! --------------------------------
+
+'soil_100_200cm'
+
+
+
+'water uptake parameters'
+
+0.449438202  !  satwlim(izn)  ;saturacion  en  el  punto  de  marchitez  permanente  
+
+0.587479936  !  satwfield(izn)  ;saturacion  a  capacidad  de  campo  soil  water  characteristics  
+
+0.449438202  !  satwdry(izn)  ;saturacion  residual  
+
+0.0			! root_length_dens(izn)  	;densidad de racices [m de raiz/m3suelo]
+
+1.0  			! rew0(izn)  			;agua extractable relativa a un 50% de la maxima capacidad de extraccion
+
+1.0 			! p1(izn)   			;parametro de fiteo
+
+1.0   			! tree_trans_factor(izn)  	;
+
+0.0   			! canopy_evap_factor(izn) 	;
+
+1.0   			! uptakefactor(izn)   		;	
+
+1.0                     ! omegafactor(izn)
+
+0.1                     ! root radius (izn)[m]                                                                  			
+
+
+
+'solute uptake parameters'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+1.0d0   1.0e-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+1.0d0   1.0e-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+
+
+!1.0d0   1.0d-13   1.0d-2  0.0d0  1.0d-10   0.0d0   100.0d0  !'h+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!1.0d0     0.0d0   1.0d-2  0.0d0  1.0d-10   1.0d-8  0.0d0    !'co3-2'    fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0  0.02d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'cl-1'    	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   1.0d-10   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'na+1'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0    0.8d-9   1.0e-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'ca+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.05d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'mg+2'   	fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.29d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'k+1'      fac_uptake(ic), fm_uptake(mol/m2/s), km_uptake(mol/lw), first-order rate(m/s), tot_min_uptake(mol/lw), exudation_rate(mol/m2/s), fchargebal_coeff(-) 
+
+!0.0d0   0.5d-10   5.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'so4-2'
+
+!0.0d0   1.1d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'po4-3'
+
+!0.0d0   0.6d-10   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'no3-1'
+
+!0.0d0    0.4d-9   1.0d-2  0.0d0  1.0d-10   0.0d0   0.0d0    !'nh4+1'
+
+			
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!   			
+
+! Section 7: control parameters - reactive transport                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - reactive transport'   
+
+
+
+!'user specified underrelaxation factor'
+
+!10.0d0
+
+
+
+'tortuosity correction'
+
+'millington'
+
+			
+
+!'update porosity'
+
+
+
+!'update permeability'    			
+
+			
+
+'mass balance settings'                                                     			
+
+.true.                        ;compute mass balance                         			
+
+			
+
+'spatial weighting'                                                         			
+
+'upstream'                    ;spatial weighting        'centered'         			
+
+			
+
+'activity update settings'                                                  			
+
+'time_lagged'                 ;type of activity update                      			
+
+							
+
+'newton iteration settings'
+
+1.0d-5                        ;increment h for numerical differentiation
+
+15                            ;anticipated number of Newton iterations
+
+50                            ;max. number of Newton iterations
+
+2.0d0                         ;anticipated update in log cycles
+
+5.0d0                         ;maximum update in log cycles
+
+1.0d-5                        ;convergence tolerance (global system)
+
+			
+
+'solver settings'                                                           			
+
+1                             ;incomplete factorization level               			
+
+100                           ;max. number of solver iterations             			
+
+0                             ;solver information level                     			
+
+1.d-9                         ;solver residual tolerance                    			
+
+1.d-9                         ;solver update tolerance                      			
+
+.true.                        ;rcm ordering                                 			
+
+			
+
+'done'                                                                      			
+
+!   			
+
+! Section 8: output control                                                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'output control'                                                            			
+
+			
+
+'output of spatial data'                                                    			
+
+4  ;74                            ;number of output times (spatial data)
+
+  0.0  1.0 200.0 300.0
+
+ 400.0 500.0 600.0 700.0
+
+ 800.0 900.0 1000.0 1100.0
+
+ 1200.0 1300.0 1400.0 1500.0
+
+ 1600.0 1700.0 1800.0 1900.0
+
+ 2000.0 2100.0 2200.0 2300.0
+
+ 2400.0 2500.0 2600.0 2700.0
+
+ 2800.0 2900.0 3000.0 3100.0
+
+ 3200.0 3300.0 3400.0 3500.0
+
+ 3600.0 3700.0 3800.0 3900.0
+
+ 4000.0 4100.0 4200.0 4300.0
+
+ 4400.0 4500.0 4600.0 4700.0
+
+ 4800.0 4900.0 5000.0 5100.0
+
+ 5200.0 5300.0 5400.0 5500.0
+
+ 5600.0 5700.0 5800.0 5900.0
+
+ 6000.0 6100.0 6200.0 6300.0
+
+ 6400.0 6500.0 6600.0 6700.0
+
+ 6800.0 6900.0 7000.0 7100.0
+
+ 7200.0 7300.0
+
+				
+
+'coordinate output'			
+
+			
+
+'output of transient data'                                                  			
+
+6                              ;number of output locations (transient data)  			
+
+1                              ;timesteps between output (transient data)			
+
+0.0   0.0     1.975d0 
+
+0.0   0.0     1.9d0 
+
+0.0   0.0     1.775d0 
+
+0.0   0.0     1.55d0 
+
+0.0   0.0     1.2d0 
+
+0.0   0.0     0.5d0 
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 9: physical parameters - porous medium                            			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - porous medium'                                       			
+
+6                             ;number of property zones                     						
+
+! --------------------------------		
+
+! --------------------------------		
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+1			
+
+'soil_0_5cm'                                                                   			
+
+			
+
+0.623  ;porosity  
+
+	
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.95 2.00			
+
+			
+
+'end of zone' 
+
+! --------------------------------		
+
+! --------------------------------		
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+2			
+
+'soil_5_15cm'                                                                   			
+
+			
+
+0.533  ;porosity  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.85 1.95			
+
+			
+
+'end of zone' 
+
+! --------------------------------		
+
+! --------------------------------		
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+3			
+
+'soil_15_30cm'                                                                   			
+
+			
+
+0.517  ;porosity  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.70 1.85			
+
+			
+
+'end of zone' 
+
+! --------------------------------		
+
+! --------------------------------		
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+4			
+
+'soil_30_60cm'                                                                   			
+
+			
+
+0.518  ;porosity  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.40 1.70			
+
+			
+
+'end of zone'
+
+! --------------------------------		
+
+! --------------------------------		
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+5			
+
+'soil_60_100cm'                                                                   			
+
+			
+
+0.507  ;porosity  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.0 1.40			
+
+			
+
+'end of zone'
+
+! --------------------------------		
+
+! --------------------------------		
+
+! --------------------------------		
+
+'number and name of zone'                                                   			
+
+6			
+
+'soil_100_200cm'                                                                   			
+
+			
+
+0.623  ;porosity  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 1.00			
+
+			
+
+'end of zone'
+
+
+
+'done'			
+
+
+
+!   			
+
+! Section 10: physical parameters - variably saturated flow                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - variably saturated flow'			
+
+'dual permeability off'			
+
+'dual porosity off'
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_0_5cm'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+1.49e-07  ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.433386838  !  satwlim(izn)  
+
+0.40923                        ;van genuchten - alpha
+
+1.51227                        ;van genuchten - n
+
+0.5d0                          ;expn
+
+-2.0  ;air  entry  pressure  
+
+
+
+'end of zone'
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_5_15cm'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+1.23e-07  ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+!'oven-drying parameters'
+
+1.0d5           ! hm  
+
+1.0d-10         ! w0
+
+1.0             ! beta
+
+0.025d0         ! cte p0 
+
+
+
+'soil hydraulic function parameters'
+
+0.506566604  !  satwlim(izn)  
+
+0.48403                        ;van genuchten - alpha
+
+1.51045                        ;van genuchten - n
+
+0.5d0                          ;expn
+
+-2.0  ;air  entry  pressure  
+
+
+
+'end of zone'
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_15_30cm'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+9.48e-08  ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.528046422  !  satwlim(izn)  
+
+0.58177                        ;van genuchten - alpha
+
+1.50207                        ;van genuchten - n
+
+0.5d0                          ;expn
+
+-2.0  ;air  entry  pressure  
+
+
+
+'end of zone'
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_30_60cm'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+7.1e-08  ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.536679537  !  satwlim(izn)  
+
+0.69157                        ;van genuchten - alpha
+
+1.49585                        ;van genuchten - n
+
+0.5d0                          ;expn
+
+-2.0  ;air  entry  pressure  
+
+
+
+'end of zone'
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_60_100cm'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+5.96e-08  ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.552268245  !  satwlim(izn)  
+
+0.7154                         ;van genuchten - alpha
+
+1.4862                         ;van genuchten - n
+
+0.5d0                          ;expn
+
+-2.0  ;air  entry  pressure  
+
+
+
+'end of zone'
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_100_200cm'			
+
+			
+
+'hydraulic conductivity in z-direction'       		
+
+5.63e-08  ;K_zz  m/s  
+
+			
+
+'specific storage coefficient'			
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.449438202  !  satwlim(izn)  
+
+0.50898                        ;van genuchten - alpha
+
+1.509446352                    ;van genuchten - n
+
+0.5d0                          ;expn
+
+-2.0  ;air  entry  pressure  
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!   			
+
+! Section 11: physical parameters - reactive transport                      			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - reactive transport'                                  			
+
+			
+
+'diffusion coefficients'                                                    			
+
+2.38d-09                       ;free diffusion coefficient in water
+
+2.07d-05                       ;free diffusion coefficient in air
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_0_5cm'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.1d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.1d0						
+
+			
+
+'end of zone'			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_5_15cm'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.1d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.1d0						
+
+			
+
+'end of zone'				
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_15_30cm'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.1d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.1d0						
+
+			
+
+'end of zone'			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_30_60cm'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.1d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.1d0						
+
+			
+
+'end of zone'				
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_60_100cm'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.1d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.1d0						
+
+			
+
+'end of zone'			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+! --------------------------------------------------------------------------			
+
+'soil_100_200cm'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.1d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.1d0						
+
+			
+
+'end of zone'	
+
+			
+
+'done'			
+
+!			
+
+! Data Block 12: initial condition - variably saturated flow                			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'initial condition - variably saturated flow'                               			
+
+1                             ;number of zones   
+
+
+
+'read initial condition from file'                                        			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'all domain'                                                                    			
+
+			
+
+'initial condition'                                                         			
+
+-45.0  ;pressure  head  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 2.00			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+'done'   
+
+!			
+
+! Data Block 13: boundary conditions - variably saturated flow              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'boundary conditions - variably saturated flow'                             			
+
+2                            ;number of zones                              			
+
+			
+
+!'read atmospheric boundary conditions'
+
+'transient boundary conditions'
+
+
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'bottom boundary'                                                           			
+
+			
+
+'boundary type'                                                             			
+
+'first'  -10.0  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 0.0                                                    			
+
+			
+
+'end of zone'   
+
+
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+2			
+
+'inflow boundary'                                                           			
+
+			
+
+'boundary type'                                                             			
+
+'second'       4.8d-9  
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  2.00 2.00                                                     			
+
+			
+
+'end of zone'
+
+			
+
+'done'	
+
+!   			
+
+! Section 14: initial conditions - reactive transport                       			
+
+! --------------------------------------------------------------------------			
+
+!   
+
+'initial condition - reactive transport'                                    			
+
+1                            ;number of zones   1
+
+'read initial aqueous component concentrations from file'
+
+'read initial mineral volume fractions from file'
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'soil_amendment'                                                      			
+
+			
+
+'concentration input'
+
+7.638e-04     'free'         ;ca+2
+
+5.000e-04     'free'         ;mg+2
+
+1.0e-7        'free'         ;al+3
+
+1.0e-7        'free'         ;fe+2
+
+5.000e-02     'charge'       ;cl-1
+
+8.000e-03     'free'         ;na+1
+
+1.0d-05       'free'         ;h4sio4
+
+5.5d0         'ph'           ;h+1
+
+0.21d0        'po2'          ;o2(aq)
+
+3.2e-3        'pco2'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+	
+
+'guess for ph'
+
+5.0
+
+
+
+
+
+'mineral input'
+
+   0.00000 .true.  'twothird' !        anorthite-ph
+
+ 1.00000e-07   0.00101   0.00000
+
+   0.00000 .true.  'twothird' !           albite-ph
+
+ 1.00000e-07   0.00002   0.00000
+
+   0.00000 .true.  'twothird' !           augite-ph
+
+ 1.00000e-07   0.00654   0.00000
+
+   0.00000 .true.  'twothird' !          ca-olivine
+
+ 1.00000e-07   0.00000   0.00000
+
+  0.1742E-01    .true.     'twothird'      ! Organic matter                  
+
+  0.1000E-06     1.00+00 0.0000E+00
+
+         0.0 .true.  'twothird' !          ca-olivine
+
+ 1.00000e-07         0.0 0.00000e+00
+
+
+
+!'mineral input'
+
+! 2.17543e-02 .true.  'twothird' !        anorthite-ph
+
+! 1.00000e-07 3.84269e2 0.00000e+00
+
+! 9.32328e-03 .true.  'twothird' !           albite-ph
+
+! 1.00000e-07 2.76025e2 0.00000e+00
+
+! 2.71929e-02 .true.  'twothird' !           augite-ph
+
+! 1.00000e-07 1.01402e2 0.00000e+00
+
+! 7.76940e-03 .true.  'twothird' !          ca-olivine
+
+! 1.00000e-07 9.56973e1 0.00000e+00
+
+!  0.1742E-01    .true.     'twothird'      ! Organic matter                  
+
+!  0.1000E-06     1.00+00 0.0000E+00
+
+!         0.0 .true.  'twothird' !          ca-olivine
+
+! 1.00000e-07         0.0 0.00000e+00
+
+
+
+  
+
+!'sorption parameter input of ion-exchange'
+
+!0.0                           ;cation exchange capacity [meq/100 g solid]
+
+!1.139471358           	      ;dry bulk density [g/cm^3]
+
+
+
+'sorption parameter input of surface-complex'
+
+'=feoh(s)'  1.0d0  1.0d0  180660.0e0     ;surface site, mass, area, site density (the results should be 15 cmol/dm3_soil)
+
+ 
+
+'equilibrate with fixed solution composition of surface-complex'
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0d0 2.0d0			
+
+			
+
+'end of zone' 
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+'number and name of zone'                                                   			
+
+2			
+
+'oc_5_15cm'                                                      			
+
+			
+
+'concentration input'
+
+7.638e-04     'free'         ;ca+2
+
+5.000e-04     'free'         ;mg+2
+
+1.0e-7        'free'         ;al+3
+
+1.0e-7        'free'         ;fe+2
+
+5.000e-02     'charge'       ;cl-1
+
+8.000e-03     'free'         ;na+1
+
+1.0d-05       'free'         ;h4sio4
+
+5.5d0         'ph'           ;h+1
+
+0.21d0        'po2'          ;o2(aq)
+
+3.2e-3        'pco2'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+	
+
+'guess for ph'
+
+5.0
+
+
+
+'mineral input'
+
+   0.00000 .true.  'twothird' !        anorthite-ph
+
+ 1.00000e-07   0.00101   0.00000
+
+   0.00000 .true.  'twothird' !           albite-ph
+
+ 1.00000e-07   0.00002   0.00000
+
+   0.00000 .true.  'twothird' !           augite-ph
+
+ 1.00000e-07   0.00654   0.00000
+
+   0.00000 .true.  'twothird' !          ca-olivine
+
+ 1.00000e-07   0.00000   0.00000
+
+  0.1737E-01    .true.     'twothird'    !!!!=>oc                  
+
+  0.1000E-06   1.00+00 0.0000E+00
+
+   0.00000 .true.  'twothird' !             calcite
+
+ 1.00000e-07   0.00000   0.00000
+
+ 
+
+!'sorption parameter input of ion-exchange'
+
+!0.0                           ;cation exchange capacity [meq/100 g solid]
+
+!1.139471358           	      ;dry bulk density [g/cm^3]
+
+
+
+'sorption parameter input of surface-complex'
+
+'=feoh(s)'  1.0d0  1.0d0  180660.0e0     ;surface site, mass, area, site density (the results should be 15 cmol/dm3_soil)
+
+ 
+
+'equilibrate with fixed solution composition of surface-complex'
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.85d0 1.95d0			
+
+			
+
+'end of zone'
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+'number and name of zone'                                                   			
+
+3			
+
+'oc_15_30cm'                                                      			
+
+			
+
+'concentration input'
+
+7.638e-04     'free'         ;ca+2
+
+5.000e-04     'free'         ;mg+2
+
+1.0e-7        'free'         ;al+3
+
+1.0e-7        'free'         ;fe+2
+
+5.000e-02     'charge'       ;cl-1
+
+8.000e-03     'free'         ;na+1
+
+1.0d-05       'free'         ;h4sio4
+
+5.5d0         'ph'           ;h+1
+
+0.21d0        'po2'          ;o2(aq)
+
+3.2e-3        'pco2'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+	
+
+'guess for ph'
+
+5.0
+
+
+
+'mineral input'
+
+   0.00000 .true.  'twothird' !        anorthite-ph
+
+ 1.00000e-07   0.00101   0.00000
+
+   0.00000 .true.  'twothird' !           albite-ph
+
+ 1.00000e-07   0.00002   0.00000
+
+   0.00000 .true.  'twothird' !           augite-ph
+
+ 1.00000e-07   0.00654   0.00000
+
+   0.00000 .true.  'twothird' !          ca-olivine
+
+ 1.00000e-07   0.00000   0.00000
+
+  0.1354E-01    .true.     'twothird'    !!!!=>oc                  
+
+  0.1000E-06     1.00+00 0.0000E+00
+
+   0.00000 .true.  'twothird' !             calcite
+
+ 1.00000e-07   0.00000   0.00000
+
+
+
+
+
+!'sorption parameter input of ion-exchange'
+
+!0.0                           ;cation exchange capacity [meq/100 g solid]
+
+!1.139471358           	      ;dry bulk density [g/cm^3]
+
+
+
+'sorption parameter input of surface-complex'
+
+'=feoh(s)'  1.0d0  1.0d0  180660.0e0     ;surface site, mass, area, site density (the results should be 15 cmol/dm3_soil)
+
+ 
+
+'equilibrate with fixed solution composition of surface-complex'
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.7d0 1.85d0			
+
+			
+
+'end of zone'
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+'number and name of zone'                                                   			
+
+4			
+
+'oc_30_60cm'                                                      			
+
+			
+
+'concentration input'
+
+7.638e-04     'free'         ;ca+2
+
+5.000e-04     'free'         ;mg+2
+
+1.0e-7        'free'         ;al+3
+
+1.0e-7        'free'         ;fe+2
+
+5.000e-02     'charge'       ;cl-1
+
+8.000e-03     'free'         ;na+1
+
+1.0d-05       'free'         ;h4sio4
+
+5.5d0         'ph'           ;h+1
+
+0.21d0        'po2'          ;o2(aq)
+
+3.2e-3        'pco2'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+	
+
+'guess for ph'
+
+5.0
+
+
+
+'mineral input'
+
+   0.00000 .true.  'twothird' !        anorthite-ph
+
+ 1.00000e-07   0.00101   0.00000
+
+   0.00000 .true.  'twothird' !           albite-ph
+
+ 1.00000e-07   0.00002   0.00000
+
+   0.00000 .true.  'twothird' !           augite-ph
+
+ 1.00000e-07   0.00654   0.00000
+
+   0.00000 .true.  'twothird' !          ca-olivine
+
+ 1.00000e-07   0.00000   0.00000
+
+  0.9075E-02    .true.     'twothird'    !!!!=>oc                  
+
+  0.1000E-06     1.00+00 0.0000E+00
+
+   0.00000 .true.  'twothird' !             calcite
+
+ 1.00000e-07   0.00000   0.00000
+
+
+
+!'sorption parameter input of ion-exchange'
+
+!0.0                           ;cation exchange capacity [meq/100 g solid]
+
+!1.139471358           	      ;dry bulk density [g/cm^3]
+
+
+
+'sorption parameter input of surface-complex'
+
+'=feoh(s)'  1.0d0  1.0d0  180660.0e0     ;surface site, mass, area, site density (the results should be 15 cmol/dm3_soil)
+
+ 
+
+'equilibrate with fixed solution composition of surface-complex'
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.4d0 1.7d0			
+
+			
+
+'end of zone'
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+'number and name of zone'                                                   			
+
+5			
+
+'oc_60_100cm'                                                      			
+
+			
+
+'concentration input'
+
+7.638e-04     'free'         ;ca+2
+
+5.000e-04     'free'         ;mg+2
+
+1.0e-7        'free'         ;al+3
+
+1.0e-7        'free'         ;fe+2
+
+5.000e-02     'charge'       ;cl-1
+
+8.000e-03     'free'         ;na+1
+
+1.0d-05       'free'         ;h4sio4
+
+5.5d0         'ph'           ;h+1
+
+0.21d0        'po2'          ;o2(aq)
+
+3.2e-3        'pco2'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+	
+
+'guess for ph'
+
+5.0
+
+
+
+  
+
+'mineral input'
+
+   0.00000 .true.  'twothird' !        anorthite-ph
+
+ 1.00000e-07   0.00101   0.00000
+
+   0.00000 .true.  'twothird' !           albite-ph
+
+ 1.00000e-07   0.00002   0.00000
+
+   0.00000 .true.  'twothird' !           augite-ph
+
+ 1.00000e-07   0.00654   0.00000
+
+   0.00000 .true.  'twothird' !          ca-olivine
+
+ 1.00000e-07   0.00000   0.00000
+
+  0.9075E-02    .true.     'twothird'    !!!!=>oc                  
+
+  0.1000E-06     1.00+00 0.0000E+00
+
+   0.00000 .true.  'twothird' !             calcite
+
+ 1.00000e-07   0.00000   0.00000
+
+
+
+
+
+!'sorption parameter input of ion-exchange'
+
+!0.0                           ;cation exchange capacity [meq/100 g solid]
+
+!1.139471358           	      ;dry bulk density [g/cm^3]
+
+
+
+'sorption parameter input of surface-complex'
+
+'=feoh(s)'  1.0d0  1.0d0  180660.0e0     ;surface site, mass, area, site density (the results should be 15 cmol/dm3_soil)
+
+ 
+
+'equilibrate with fixed solution composition of surface-complex'
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  1.0d0 1.4d0			
+
+			
+
+'end of zone'
+
+
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+!------------------------------------------------------------------
+
+'number and name of zone'                                                   			
+
+6			
+
+'oc_100_200cm'                                                      			
+
+			
+
+'concentration input'
+
+7.638e-04     'free'         ;ca+2
+
+5.000e-04     'free'         ;mg+2
+
+1.0e-7        'free'         ;al+3
+
+1.0e-7        'free'         ;fe+2
+
+5.000e-02     'charge'       ;cl-1
+
+8.000e-03     'free'         ;na+1
+
+1.0d-05       'free'         ;h4sio4
+
+5.5d0         'ph'           ;h+1
+
+0.21d0        'po2'          ;o2(aq)
+
+3.2e-3        'pco2'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+	
+
+'guess for ph'
+
+5.0
+
+
+
+  
+
+'mineral input'
+
+   0.00000 .true.  'twothird' !        anorthite-ph
+
+ 1.00000e-07   0.000101   0.00000
+
+   0.00000 .true.  'twothird' !           albite-ph
+
+ 1.00000e-07   0.000002   0.00000
+
+   0.00000 .true.  'twothird' !           augite-ph
+
+ 1.00000e-07   0.000654   0.00000
+
+   0.00000 .true.  'twothird' !          ca-olivine
+
+ 1.00000e-07   0.00001   0.00000
+
+  0.3559E-02    .true.     'twothird'    !!!!=>oc                  
+
+  0.1000E-06     1.00+00 0.0000E+00
+
+   0.00000 .true.  'twothird' !             calcite
+
+ 1.00000e-07   0.00000   0.00000
+
+
+
+!'sorption parameter input of ion-exchange'
+
+!0.0                           ;cation exchange capacity [meq/100 g solid]
+
+!1.139471358           	      ;dry bulk density [g/cm^3]
+
+
+
+'sorption parameter input of surface-complex'
+
+'=feoh(s)'  1.0d0  1.0d0  180660.0e0     ;surface site, mass, area, site density (the results should be 15 cmol/dm3_soil)
+
+ 
+
+'equilibrate with fixed solution composition of surface-complex'
+
+
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0d0 1.0d0			
+
+			
+
+'end of zone'
+
+		
+
+'done'		
+
+			
+
+!			
+
+! Section 15: boundary conditions - reactive transport			
+
+! --------------------------------------------------------------------------			
+
+!			
+
+'boundary conditions - reactive transport'			
+
+2                             ;number of zones			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'			
+
+1			
+
+'influx boundary'			
+
+			
+
+'boundary type'			
+
+'mixed'			
+
+
+
+'exclude diffusive flux for boundary condition'
+
+
+
+'concentration input'
+
+1.0e-10       'free'         ;ca+2
+
+1.0e-10       'free'         ;mg+2
+
+1.0e-10       'free'         ;al+3
+
+1.0e-10       'free'         ;fe+2
+
+1.0e-10       'free'         ;cl-1
+
+1.0e-10       'charge'       ;na+1
+
+1.0d-10       'free'         ;h4sio4
+
+5.5d0         'ph'           ;h+1
+
+0.21d0        'po2'          ;o2(aq)
+
+3.2e-3        'pco2'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+	
+
+'extent of zone'			
+
+0.0 1.0  0.0 1.0  2.00 2.00 			
+
+			
+
+'end of zone'			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'			
+
+2			
+
+'bottom'			
+
+			
+
+'boundary type'			
+
+'second'			
+
+
+
+'concentration input'
+
+7.638e-03     'free'         ;ca+2
+
+5.000e-02     'free'         ;mg+2
+
+1.0e-7        'free'         ;al+3
+
+1.0e-7        'free'         ;fe+2
+
+5.000e-02     'charge'       ;cl-1
+
+8.000e-02     'free'         ;na+1
+
+1.0d-05       'free'         ;h4sio4
+
+7.0d0         'ph'           ;h+1
+
+1.0d-10       'free'         ;o2(aq)
+
+1.0d-10       'free'         ;co3-2
+
+1.0d-10       'free'         ;ch2o
+
+
+
+'extent of zone'			
+
+0.0 1.0  0.0 1.0  0.0 0.0			
+
+			
+
+'end of zone'  
+
+
+
+'done'
+

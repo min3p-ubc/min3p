@@ -1,0 +1,22 @@
+! **********************************************************************
+! intra.dbs
+! **********************************************************************
+! MIN3P database file for equilibrium oxidation-reduction reactions
+! and intra-aqueous kinetic reactions
+!
+! ----------------------------------------------------------------------
+! redox reactions - computed from MINTEQ/WATEQ databases
+! ----------------------------------------------------------------------
+!
+! fe+3
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+! activation energy undefined
+!
+'fe+3'
+4  'fe+2'           1.000 'o2(aq)'       0.250 'h+1'          1.000 'h2o'    -0.500
+'equilibrium'  -8.4725   23.4570
+!
+
+
+!end of database

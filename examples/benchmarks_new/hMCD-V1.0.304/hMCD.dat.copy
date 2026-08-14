@@ -1,0 +1,818 @@
+! DR-A Task 2.2e_og Diffusion of Cs+ 
+!        Based on the approach of PSI in the presentation at Mont Terri workshop (Dec. 2012)      
+!    effective porosity 0.15
+!    composition of pore water 
+!   and sorption properties see paper van Loon et al. (2009),
+!   applied geochemistry 24, 999-1004, model II.
+!
+! set up on Dec 3, 2012 MX   
+!   
+!    
+!    1. dry bulk density of clay 2.4 -> 2.2295 (similiar to Mt Terri TR 2009-04) 
+!    2. The gap between filter and clay is open, no filling, no sorption in gap
+
+! 
+! list modified. April 21, 2013 MX, correct radius of BH, 
+!              Filter and gap by factor alpha = 4.16/3.80
+!              r'_BH=0.0339m, r'_filter=0.0383, por_BH=2.976
+!  modified April 16, 2013 after meeting: Porosity of iBH=3.567
+! last modified: according to PSI, use Cl- for charge balance, 
+!     
+!    scaling according to PSI, Porosity of iBH=3.262 (using solution volume 10.243)
+!  Tau correction according to PSI	
+!    for Cs simulation: D0=1.0e-9m^2/s, Dp=2.7e-10m^2/s	
+!    tau=Dp/D0=	0.27
+!    Ion exchange (one site - type II model only)
+!
+!  Increase Dp of Cs to 1.3e-9m^2/s (i.e. tau=0.5, D0=2.6e-9m^2/s)	
+!
+!! last modified, Oct 21, 2013: according to PSI, multisite ion exchange model, 
+!     with site fractions FES 1.05e-4 eq/kg, type-II 8.4e-3 eq/kg, and PS 0.095eq/kg
+
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Title: Task 2.2e_og Diffusion of HTO and Co-60'
+.true.                        ;varsat_flow
+.true.                        ;steady_flow
+.true.                        ;fully_saturated
+.true.                        ;reactive_transport
+
+'hybrid multicomponent diffusion'
+
+'parallel solver configuration file'
+'solver.cfg'
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+
+!'.\database\default'
+'.\database\MCD'
+
+
+'define input units'
+'mol/l'
+
+'components'
+15                             ;number of components (nc-1)
+'cs+1'			; Cs
+'na+1'                  ;component names
+'k+1'
+'mg+2'
+'ca+2'
+'sr+2'
+'cl-1'
+'h+1'
+'o2(aq)'
+'so4-2'
+'co3-2'
+'i-1'
+'br-1'
+'hto'
+'co_60+2'
+
+'secondary aqueous species'
+23
+'khso4(aq)'
+'h2so4(aq)'
+'oh-'
+'mgoh+'
+'mgco3aq'
+'mghco3+'
+'mgso4aq'
+'caoh+'
+'cahco3+'
+'caco3aq'
+'caso4aq'
+'cahso4+'
+'naco3-'
+'nahco3aq'
+'naso4-'
+'kso4-'
+'sroh+'
+'hco3-'
+'h2co3aq'
+'hso4-'
+'cscl(aq)'
+'csi(aq)'
+'csbr(aq)'
+
+!'linear sorption'
+!3
+!'hto'				  ; THIS IS  Sorbing case      
+!'sr+2'
+!'co_60+2'
+
+'surface sites of ion-exchange'
+3
+'-FES'
+'-II'
+'-PS'
+
+
+'sorbed species of ion-exchange'
+12
+'mg-PS(na)'
+'na-PS(na)'
+'k-PS(na)'
+'cs-PS(na)'
+'ca-PS(na)'
+'na-FES(na)'
+'k-FES(na)'
+'cs-FES(na)'
+'na-II(na)'
+'k-II(na)'
+'cs-II(na)'
+'sr-PS(na)'
+
+'minerals'
+0                             ;number of minerals (nm)
+
+'excluded minerals'
+0
+
+'done'
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+11                            ;number of discretization intervals in x
+     8 
+     0.0000E+00     30.000d-03
+     10                       
+     30.000d-03     31.000d-03
+     10                       
+     31.000d-03     32.000d-03
+     4                        
+     32.000d-03     34.000d-03
+     10                       
+     34.000d-03     35.000d-03
+     10                       
+     35.000d-03     36.000d-03
+     10                        
+     36.000d-03     38.000d-03
+     10                        
+     38.000d-03     40.000d-03
+     330                        
+     40.000d-03     68.000d-03
+     50                         
+     68.000d-03     2.0000d-01
+     100				
+     2.0000d-01     6.1500d-01
+      
+     
+1                             ;number of discretization intervals in y
+1                             ;number of control volumes in interval
+0.0  1.0                      ;ymin,ymax 
+     
+     
+1                             ;number of discretization intervals in z
+1                             ;number of control volumes in interval
+0.0  1.0                      ;zmin,zmax 
+
+
+'radial coordinates'
+
+'done'
+
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'days'                         ;time unit
+0.0                            ;time at start of solution
+10.0                          ;final solution time
+1.0d0                          ;maximum time step
+1.0d-5                        ;minimum time step
+
+
+'done'
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-6                         ;factor for num. differentiation
+1.d-5                         ;convergence tolerance
+
+'maximum ionic strength'
+2.0d0                         ;max. ionic stength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'output time unit'
+'days'                       ;time unit (local chemistry)
+
+
+'done'
+
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'hydraulic head'              ;input unit
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+100                           ;msolvit_vs, max. number of solver iterations
+0                             ;idetail_vs, solver information level
+1.0d-6                        ;restol_vs, solver residual tolerance
+1.0d-6                        ;deltol_vs, solver update tolerance
+
+'done'
+
+! Data Block 7: control parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'control parameters - reactive transport'
+
+
+
+'spatial weighting'
+'upstream'
+!'centered'                    ;spatial weighting
+
+'activity update settings'
+'time_lagged'                   ;type of activity update
+!'no update'
+
+'tortuosity correction'
+'assigned tau'
+!'no correction'
+!'millington'
+!'archie'
+!1.0
+
+'update porosity'
+'harmonic average in porosity'   ;newly
+
+'mass balance'
+
+'averaging diffusion'
+!'arithmetic'
+'harmonic'
+
+'newton iteration settings'
+1.d-6                         ;increment h for numerical differentiation
+12                            ;anticipted number of Newton iterations
+100                           ;max. number of Newton iterations
+0.5d0                         ;anticipated update in log cycles
+1.0d0                         ;maximum update in log cycles
+1.0d-5                        ;convergence tolerance (global system)
+
+'solver settings'
+1                             ;incomplete factorization level
+100                           ;max. number of solver iterations
+0                             ;solver information level
+1.d-6                         ;solver residual tolerance
+1.d-6                         ;solver update tolerance
+
+'done'
+
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'output of spatial data'
+1                             ;number of output times (spatial data)
+10  100  180  189             ;specified output times (spatial data)
+
+			     		   
+            
+
+'output of transient data'
+13                             	;number of output locations (transient data)
+1                              	;time steps between output (transient data)
+1 18 19 20 			;control volume number for transient data, centre
+28 29 30 43
+44 45 63 64
+65
+
+'done'
+
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+4                             ;number of property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'circulation chamber'
+3.262  ;3.567  ;3.709751015     ;2.37     ;porosity, calculated considering the circulation system
+!0.61725                    ; this 'representative' porosity =11.2 liter/V1.04meter bohrhole -filter-gap
+!1.2345
+1			;tortuosity, for the effective mixing in bohrhole, <=1
+
+'extent of zone'
+0.0 0.0339  0.0 1.0 0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'filter'
+0.45     ;porosity, 0.3
+0.01  ;0.004	 ;tortuosity, (=0.4/100)
+
+'extent of zone'
+0.0339 0.0383 0.0 1.0 0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'gap'
+1.0    ;0.60          ;porosity
+0.01   ;2.75d-3	 ;tortuosity, 1.0 (use this data to match Deff =4.45e-10m^2/s)
+
+'extent of zone'
+0.0383 0.0416 0.0 1.0 0.0 1.0
+;0.035 0.038 0.0 1.0 0.0 1.0
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'background 1'			    ;clay
+0.15                               ;porosity  
+0.11739e-2  ;2.70E-03    !1.0  		   ;tortuosity Deff=n*tau*D0, tau=0.1
+
+'extent of zone'
+0.0416 0.615 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+!# Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+! ---------------------------------------------------------------------------
+
+'circulation chamber'
+
+'hydraulic conductivity in x-direction'
+2.0d-13                       ;K_xx   Wersin et all (2008), Applied Geochemistry, P681
+
+'hydraulic conductivity in y-direction'
+2.0d-13                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+2.0d-13                       ;K_zz
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'filter'
+
+'hydraulic conductivity in x-direction'
+2.0d-13                       ;K_xx   Wersin et all (2008), Applied Geochemistry, P681
+
+'hydraulic conductivity in y-direction'
+2.0d-13                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+2.0d-13                       ;K_zz
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'gap'
+
+
+'hydraulic conductivity in x-direction'
+2.0d-13                       ;K_xx 
+
+'hydraulic conductivity in y-direction'
+2.0d-13                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+2.0d-13                       ;K_zz
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'background 1'                              ;Opalinus clay
+
+
+'hydraulic conductivity in x-direction'     ; Wersin et all (2008), Applied Geochemistry, P681
+2.0d-13                       ;K_xx 
+
+'hydraulic conductivity in y-direction'
+2.0d-13                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+2.0d-13                       ;K_zz
+
+'end of zone'
+
+'done'
+
+
+! Data Block 11: physical parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'physical parameters - reactive transport'
+
+'diffusion coefficients'
+1.0d-7    !0d-7  !2.70d-10                ;aqueous phase D0=1.6e-9 (Deff=tau*n*Dp)
+0.0d0                          ;gaseous phase
+
+
+! ---------------------------------------------------------------------------
+!
+'circulation chamber'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+!
+'filter'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+!
+'gap'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+!
+'background 1'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'effective porosity factor for MCD diffusion'
+1.0    ;'cs+'  
+1.0    ;'na+1'
+1.0    ;'k+1'
+1.0    ;'mg+2'
+1.0    ;'ca+2'
+1.0   ;1.0    ;'sr+2'=0.15/0.11739 
+0.667              ;'cl-1' 'free'
+1.0    ;'h+1'
+1.0    ;'o2(aq)'
+0.667              ;'so4-2'
+0.667             ;'co3-1'
+0.533  ;0.333   ;0.533              ;'i-1' =0.08/0.15
+0.667   ;0.533   ;0.3     ;0.667              ;'br-1' 0.1/0.15
+1.0    ;'HTO'
+1.0    ;'co_60+2'
+
+'effective tortuosity factor for MCD diffusion'
+1.0    ;'cs+'  
+1.0    ;'na+1'
+1.0    ;'k+1'
+1.0    ;'mg+2'
+1.0    ;'ca+2'
+3.5   ;1.277791975   ;1.0    ;'sr+2'=0.15/0.11739 
+1.0              ;'cl-1' 'free'
+1.0    ;'h+1'
+1.0    ;'o2(aq)'
+1.0              ;'so4-2'
+1.0             ;'co3-1'
+0.55  ;1.0   ;0.533              ;'i-1'
+0.38  ;0.278  ;0.45   ;1.0     ;0.667              ;'br-1'
+1.0    ;'HTO'
+300.0    ;'co_60+2'
+
+
+'end of zone'
+
+
+'done'
+
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'entire domain'
+
+'initial condition'
+1.0
+
+'extent of zone'
+0.0 0.615 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'inflow boundary'
+
+'boundary type'
+'first'  1.0               ;hydraulic head in [m]; for advection test h=1.01
+
+'extent of zone'
+0.0 0.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'outflow boundary'
+
+'boundary type'
+'first' 1.0                  ;hydraulic head
+
+'extent of zone'
+0.615 0.615 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+! Data Block 14: initial condition - reactive transport
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+4                             ;number of zones
+
+! Circulation Chamber
+! ---------------------------------------------------------------------------
+!
+'number and name of zone'
+1
+'circulation chamber'
+
+'concentration input'
+2.02d-4     'free'              ;'cs+'  2.09d-4
+2.4d-1     'free'              ;'na+1'
+1.6d-3     'free'              ;'k+1'
+1.7d-2     'free'              ;'mg+2'
+2.6d-2     'free'              ;'ca+2'
+5.84E-14    'free'              ;'sr+2'  5.1d-4 
+0.2778     'charge'              ;'cl-1'
+7.6d0      'ph'                ;'h+1'
+12.5       'pe'                ;'o2(aq)'
+1.4d-2     'free'              ;'so4-2'
+4.76d-4    'free'              ;'co3-1'
+1.09d-02   'free'              ;'i-1'  1.11d-02
+1.09d-02   'free'              ;'br-1' 1.11d-02
+1.20d-10   'free'              ;'hto'  1.22d-10
+2.15d-13   'free'              ;'co_60+2'  2.18d-13
+
+!'linear sorption input'
+!'hto'	0.0
+!'sr+2'       0.0
+!'co_60+2'  0.0
+!'sorption parameter input'
+'sorption parameter input of ion-exchange'
+0.00d0                         ;cation exchange capacity [meq/100 g solid] 
+0.00d0                         ;dry bulk density [g/cm^3]
+
+'CEC fraction of multisite ion exchange'
+ 1.01E-03         !0.0025                         ;'-FES'
+ 8.12E-02         !0.20                           ;'-II'
+ 0.917874396      !0.7975                         ;'-PS'
+
+!'equilibrate with fixed solution composition'
+'equilibrate with fixed solution composition of ion-exchange'
+
+'extent of zone'
+0.0 0.0339 0.0 1.0  0.0 1.0 
+
+'end of zone'
+
+! Filter
+! ---------------------------------------------------------------------------
+!
+'number and name of zone'
+2
+'filter'
+
+'concentration input'
+1.0d-10    'free'              ;'cs+'  
+2.4d-1     'free'              ;'na+1'
+1.6d-3     'free'              ;'k+1'
+1.7d-2     'free'              ;'mg+2'
+2.6d-2     'free'              ;'ca+2'
+1.0d-20     'free'              ;'sr+2'
+3.0d-1     'charge'              ;'cl-1'  'free'
+7.6d0      'ph'                ;'h+1'
+12.5       'pe'                ;'o2(aq)'
+1.4d-2     'free'              ;'so4-2'
+4.76d-4    'free'              ;'co3-1'
+1.00d-10   'free'              ;'i-1'
+1.00d-10   'free'              ;'br-1'
+1.10d-20    'free'              ;'hto'
+1.0d-20    'free'              ;'co_60+2'
+
+!'linear sorption input'
+!'hto'	0.0
+!'sr+2'       0.0
+!'co_60+2'  0.0
+!'sorption parameter input'
+'sorption parameter input of ion-exchange'
+0.00d0                         ;cation exchange capacity [meq/100 g solid] 
+0.00d0                         ;dry bulk density [g/cm^3]
+
+'CEC fraction of multisite ion exchange'
+ 1.01E-03         !0.0025                         ;'-FES'
+ 8.12E-02         !0.20                           ;'-II'
+ 0.917874396      !0.7975                         ;'-PS'
+
+!'equilibrate with fixed solution composition'
+'equilibrate with fixed solution composition of ion-exchange'
+
+!'linear sorption input'
+!'sr+2'	0.0
+
+
+'extent of zone'
+0.033901 0.0383 0.0 1.0  0.0 1.0 
+
+'end of zone'
+
+! Gap
+! ---------------------------------------------------------------------------
+!
+'number and name of zone'
+3
+'Gap'
+
+'concentration input'
+1.0d-10    'free'              ;'cs+'  
+2.4d-1     'free'              ;'na+1'
+1.6d-3     'free'              ;'k+1'
+1.7d-2     'free'              ;'mg+2'
+2.6d-2     'free'              ;'ca+2'
+1.0d-20    'free'              ;'sr+2'
+3.0d-1     'charge'              ;'cl-1' 'free'
+7.6d0      'ph'                ;'h+1'
+12.5       'pe'                ;'o2(aq)'
+1.4d-2     'free'              ;'so4-2'
+4.76d-4    'free'              ;'co3-1'
+1.00d-10   'free'              ;'i-1'
+1.00d-10   'free'              ;'br-1'
+1.10d-20   'free'              ;'HTO'
+1.0d-20    'free'              ;'co_60+2'
+
+!'linear sorption input'
+!'hto'	0.0
+!'sr+2'       0.0
+!'co_60+2'  0.0
+
+!'sorption parameter input'
+'sorption parameter input of ion-exchange'
+0.0    ;4.0d0                         ;cation exchange capacity [meq/100 g solid] 
+0.0    ;1.08d0                        ;dry bulk density [g/cm^3]
+
+'CEC fraction of multisite ion exchange'
+ 1.01E-03         !0.0025                         ;'-FES'
+ 8.12E-02         !0.20                           ;'-II'
+ 0.917874396      !0.7975                         ;'-PS'
+
+'equilibrate with fixed solution composition of ion-exchange'
+
+'extent of zone'
+0.038301 0.0416 0.0 1.0  0.0 1.0 
+;0.035 0.038 0.0 1.0  0.0 1.0 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'background chemistry - aquifer 1'
+
+'concentration input'
+1.0d-10    'free'              ;'cs+'  
+2.4d-1     'free'              ;'na+1'
+1.6d-3     'free'              ;'k+1'
+1.7d-2     'free'              ;'mg+2'
+2.6d-2     'free'              ;'ca+2'
+1.0d-20    'free'              ;'sr+2'
+3.0d-1     'charge'            ;'cl-1'   'free'
+7.6d0      'ph'                ;'h+1'
+12.5       'pe'                ;'o2(aq)'
+1.4d-2     'free'              ;'so4-2'
+4.76d-4    'free'              ;'co3-1'
+1.00d-10   'free'              ;'i-1'
+1.00d-10   'free'              ;'br-1'
+1.00d-20   'free'              ;'HTO'
+1.0d-20    'free'              ;'co_60+2'
+
+!'sorption parameter input'
+!4.0d0                          ;cation exchange capacity [meq/100 g solid]
+!2.295d0                        ;dry bulk density [g/cm^3]
+
+!'equilibrate with fixed solution composition'
+
+!'sorption parameter input'
+'sorption parameter input of ion-exchange'
+10.35    !20.0                         ;cation exchange capacity (CEC) [meq/100 g solid], total According to Gimmi 2012 (Oral presentation)
+1.875d0                        ;dry bulk density [g/cm^3]
+
+'CEC fraction of multisite ion exchange'
+ 1.01E-03         !0.0025                         ;'-FES'
+ 8.12E-02         !0.20                           ;'-II'
+ 0.917874396      !0.7975                         ;'-PS'
+
+!'equilibrate with fixed solution composition'
+'equilibrate with fixed solution composition of ion-exchange'
+
+'extent of zone'          
+0.041601 0.615 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - reactive transport'
+1                             ;number of zones
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'outflow boundary'
+
+'boundary type'
+'second'
+
+                             
+'extent of zone'
+0.615 0.615 0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'

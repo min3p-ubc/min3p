@@ -1,0 +1,168 @@
+!
+!Self-described unstructured grid generation file
+!This example is for mesh generation test only
+!
+
+!**********************************************************************
+!example input parameters for polygon 2d delaunay mesh
+!**********************************************************************
+
+'polygon 2d delaunay mesh'
+
+'coordinate projection'
+'xz'                    !'xy' or 'yz' or 'xz'
+
+'number of constraints'
+7
+
+!constraint 1: outer boundary
+'constraint type'
+'closed polygon with sub discretization interval'
+
+'number of vertices'
+16
+
+'vertices coordinate'
+0.0     0.0
+900.0   0.0
+900.0   9.0909091
+900.0   18.1818182
+900.0   27.2727273
+900.0   272.7272727
+900.0   281.8181818
+900.0   290.9090909
+900.0   300.0
+0.0     300.0
+0.0     290.9090909
+0.0     281.8181818
+0.0     272.7272727
+0.0     27.2727273
+0.0     18.1818182
+0.0     9.0909091 
+
+
+'segment discretization interval'
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+9.0909091
+
+'end of constraint'
+
+!constraint 2: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0       9.0909091
+900.0     9.0909091
+
+'segment discretization interval'
+9.0909091
+
+'end of constraint'
+
+!constraint 3: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0       18.1818182
+900.0     18.1818182
+
+'segment discretization interval'
+9.0909091
+
+'end of constraint'
+
+!constraint 4: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0       27.2727273
+900.0     27.2727273
+
+'segment discretization interval'
+9.0909091
+
+'end of constraint'
+
+!constraint 5: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0       272.7272727
+900.0     272.7272727
+
+'segment discretization interval'
+9.0909091
+
+'end of constraint'
+
+
+!constraint 6: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0       281.8181818
+900.0     281.8181818
+
+'segment discretization interval'
+9.0909091
+
+'end of constraint'
+
+!constraint 7: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0       290.9090909
+900.0     290.9090909
+
+'segment discretization interval'
+9.0909091
+
+'end of constraint'
+
+
+'global domain mesh criteria'
+32.0, 10.0    ;shape criterion bound, size bound
+
+'mesh optimization iterations'
+10
+
+

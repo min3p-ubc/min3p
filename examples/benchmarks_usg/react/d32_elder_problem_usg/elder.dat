@@ -1,0 +1,720 @@
+! MIN3P Test Problem
+
+! Elder Convection Problem
+
+! March 2006
+
+! Data Block 1: global control parameters
+
+!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! Dtrac concentration scaled so that 1 M/L = 1200 kg !
+
+! dtrac gfw = 285.7 g/M in database\kmno4\comp.dbs   !
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Elder Convection Problem' 
+
+.true.                        ;varsat_flow
+
+.false.                       ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'density dependent flow'
+
+
+
+!'restart'
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+'geochemical system'
+
+
+
+'database directory'
+
+'database\kmno4_unix'
+
+
+
+'components'
+
+1                            ;number of components (nc-1)
+
+'dtrac'                       ;component names
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+'spatial discretization'
+
+
+
+!'generate unstructured grid from structured parameters'
+
+!'generate unstructured grid from structured boundary'
+
+!'generate unstructured grid from file'
+
+
+
+'read unstructured grid from file'
+
+
+
+'control volume method'
+
+'voronoi diagram'
+
+!'median dual'
+
+
+
+'allow obtuse cells'
+
+
+
+'structured spatial discretization'
+
+
+
+1                             ;number of discretization intervals in x
+
+128                           ;number of control volumes in x
+
+0.0 300.0                     ;xmin,xmax
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in y
+
+0.0 1.0                       ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+64                            ;number of control volumes in z
+
+0.0 150.0                     ;zmin,zmax
+
+
+
+'done'
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+'time step control - global system'
+
+'days'                        ;time unit
+
+0.0                           ;time at start of solution
+
+7300.0                        ;final solution time
+
+5.0                           ;maximum time step
+
+1.0d-6                        ;minimum time step
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+0.0d0                         ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'done'
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'variable density parameters'
+
+1.0d+3                      ;ref_dens
+
+0.7                         ;dro/dc
+
+4                           ;maxit_sia
+
+2                           ;iter_target
+
+1.0d-1                      ;tol_sia
+
+1.0                         ;courant
+
+
+
+'input units for media permeability'
+
+'hydraulic conductivity'
+
+
+
+'input units for boundary and initial conditions'
+
+'freshwater head'              ;input unit
+
+
+
+'newton iteration settings'
+
+1.d-3                         ;increment h for numerical differentiation
+
+12                            ;max. number of Newton iterations
+
+1.d-5                         ;convergence tolerance
+
+0.1                           ;anticipated saturation change
+
+
+
+'solver settings'
+
+0                             ;level_vs, incomplete factorization level
+
+500                           ;msolvit_vs, max. number of solver iterations
+
+0                             ;idetail_vs, solver information level
+
+1.0d-9                        ;restol_vs, solver residual tolerance
+
+1.0d-9                        ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'van leer'                    ;spatial weighting
+
+
+
+'activity update settings'
+
+'no_update'                 ;type of activity update
+
+
+
+'tortuosity correction'
+
+'no correction'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;increment h for numerical differentiation
+
+20                            ;anticipated number of Newton iterations
+
+30                            ;max. number of Newton iterations
+
+0.2d0                         ;anticipated update in log cycles
+
+0.5d0                         ;maximum update in log cycles
+
+1.d-6                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+500                           ;max. number of solver iterations
+
+0                             ;solver information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+'done'
+
+!
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+7                              ;number of output times (spatial data)     
+
+100.0  200.0  500.0   1000.0
+
+1460.0 2555.0 7300.0
+
+
+
+'done'
+
+!
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                             ;number of property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+0.1                          ;porosity
+
+
+
+'extent of zone'
+
+0.0 300.0  0.0 1.0  0.0 150.0
+
+
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+
+
+! ---------------------------------------------------------------------------
+
+'aquifer'
+
+
+
+'hydraulic conductivity in x-direction'
+
+4.753d-6                          ;K_xx
+
+
+
+'hydraulic conductivity in z-direction'
+
+4.753d-6                         ;K_zz
+
+
+
+'specific storage coefficient'
+
+0.0                          ;S_s
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+3.565d-6                         ;aqueous phase
+
+
+
+! ---------------------------------------------------------------------------
+
+'aquifer'
+
+
+
+'longitudinal dispersivity'
+
+0.0
+
+
+
+'transverse vertical dispersivity'
+
+0.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                              ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'zone 1'
+
+
+
+'initial condition'
+
+150.0                         ;freshwater head
+
+
+
+'extent of zone'
+
+0.0 300.0  0.0 1.0  0.0 150.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'left corner'
+
+
+
+'boundary type'
+
+'first' 150.0            ;freshwater head
+
+
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  150.0 150.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 15: initial conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'background chemistry'
+
+
+
+'concentration input'
+
+   
+
+1.0d-5     'free'            ;'dtrac'     ;component names
+
+
+
+'extent of zone'
+
+0.0 300.0  0.0 1.0  0.0 150.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'source boundary'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+'concentration input'
+
+1.0       'free'            ;'dtrac'
+
+
+
+'extent of zone'
+
+150.0 300.0  0.0 1.0  150.0 150.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'bottom boundary'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+'concentration input'
+
+1.0d-5        'free'            ;'dtrac'
+
+
+
+'extent of zone'
+
+0.0 300.0  0.0 1.0  0.0 0.0
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+!'number and name of zone'
+
+!3
+
+'left corner'
+
+
+
+'boundary type'
+
+'third' 
+
+
+
+'concentration input'
+
+1.0d-15        'free'            ;'dtrac'
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  150.0 150.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+
+
+
+
+
+

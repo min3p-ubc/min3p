@@ -1,0 +1,4636 @@
+! MIN3P Test Problem
+
+! Salt dome thermohaline problem
+
+! DT=133
+
+! B=3
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Salt dome thermohaline Problem' 
+
+.true.                        ;varsat_flow
+
+.false.                       ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'density dependent flow'
+
+
+
+'energy balance'
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+'geochemical system'
+
+
+
+'database directory'
+
+'database\kmno4_unix'
+
+
+
+'components'
+
+1                            ;number of components (nc-1)
+
+'dtrac'                       ;component names
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+'spatial discretization'
+
+1                             ;number of discretization intervals in x
+
+100                           ;number of control volumes in x
+
+0.0 900.0                     ;xmin,xmax
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in y
+
+0.0 1.0                       ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+34                            ;number of control volumes in z
+
+0.0 300.0                     ;zmin,zmax
+
+
+
+'done'
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+'time step control - global system'
+
+'days'                        ;time unit
+
+0.0                           ;time at start of solution
+
+73000.d0                    ;final solution time
+
+5.0                           ;maximum time step
+
+1.0d-5                        ;minimum time step
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+0.0d0                         ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'done'
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'update viscosity'
+
+
+
+'reference viscosity'
+
+1.0d-3 
+
+
+
+'iterative solver'
+
+
+
+'variable density parameters'
+
+1000.0d0                    ;ref_dens
+
+200.0d0                     ;dro/dc
+
+15                          ;maxit_sia
+
+5                           ;iter_target
+
+1.0d-1                      ;tol_sia
+
+1.0d50                      ;courant
+
+
+
+'input units for media permeability'
+
+'hydraulic conductivity'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'newton iteration settings'
+
+1.0d-4                        ;increment h for numerical differentiation
+
+100                            ;max. number of Newton iterations
+
+1.d-5                         ;convergence tolerance
+
+0.1                           ;anticipated saturation change
+
+
+
+'solver settings'
+
+0                             ;level_vs, incomplete factorization level
+
+50                            ;msolvit_vs, max. number of solver iterations
+
+0                             ;idetail_vs, solver information level
+
+1.0d-7                       ;restol_vs, solver residual tolerance
+
+1.0d-7                       ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6B: control parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - energy balance'
+
+
+
+'update viscosity' 
+
+
+
+'upstream factor for flow equation'
+
+1.0
+
+
+
+'upstream factor for heat equation'
+
+1.0
+
+
+
+'reference tds'
+
+0.0d0 
+
+
+
+'reference temperature for density'
+
+0.0d0
+
+ 
+
+'energy balance parameters'
+
+-0.5d0     ! ;linear density coefficient d(rho)/d(T)
+
+
+
+
+
+
+
+'newton iteration settings'
+
+1.0d-4                        ;increment for numerical differentiation
+
+50                            ;max. number of newton iterations
+
+1.0d-7                        ;convergence tolerance
+
+5.0d0                         ;maximum update in log cycles
+
+
+
+ 
+
+'solver settings'
+
+1                             ;level_vs, incomplete factorization level
+
+500                           ;msolvit_vs, max. number of solver iterations
+
+0                             ;idetail_vs, solver information level
+
+1.0d-10                       ;restol_vs, solver residual tolerance
+
+1.0d-10                       ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'                    ;spatial weighting
+
+
+
+'activity update settings'
+
+'no_update'                 ;type of activity update
+
+
+
+'tortuosity correction'
+
+'no correction'
+
+
+
+'newton iteration settings'
+
+1.0d-2                        ;increment h for numerical differentiation
+
+20                            ;anticipated number of Newton iterations
+
+30                            ;max. number of Newton iterations
+
+2.0d0                         ;anticipated update in log cycles
+
+2.0d0                         ;maximum update in log cycles
+
+1.d-6                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+50                            ;max. number of solver iterations
+
+1                             ;solver information level
+
+1.d-7                         ;solver residual tolerance
+
+1.d-7                         ;solver update tolerance
+
+
+
+'done'
+
+!
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+5                              ;number of output times (spatial data)     
+
+3650.0  7300.0 18500.0 36500.0  
+
+73000.0 
+
+
+
+
+
+'done'
+
+!
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                             ;number of property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+0.2d0                         ;porosity
+
+
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  0.0 300.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+
+
+! ---------------------------------------------------------------------------
+
+'aquifer'
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.0985252d-5
+
+
+
+'hydraulic conductivity in z-direction'
+
+1.0985252d-5
+
+
+
+'specific storage coefficient'
+
+0.0                          ;S_s
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 10B: physical parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - energy balance'
+
+1
+
+!'read energy balance parameters from file'
+
+
+
+'specific heat of water'
+
+4200.0d0
+
+
+
+
+
+'number and name of zone'
+
+1
+
+'pepe rompe' 
+
+ 
+
+
+
+ 
+
+'specific heat of solid'
+
+2520.0d0 
+
+
+
+
+
+'water thermal conductivity in x-direction'
+
+0.65d0 
+
+
+
+'water thermal conductivity in y-direction'
+
+0.65d0 
+
+
+
+'water thermal conductivity in z-direction'
+
+0.65d0 
+
+
+
+'solid thermal conductivity in x-direction'
+
+3.0 
+
+
+
+'solid thermal conductivity in y-direction'
+
+3.0
+
+
+
+'solid thermal conductivity in z-direction'
+
+3.0
+
+
+
+'solid bulk density'
+
+1000.0d0 
+
+
+
+
+
+'longitudinal dispersivity'
+
+20.0d0
+
+
+
+'transverse vertical dispersivity'
+
+2.0d0
+
+
+
+'transverse horizontal dispersivity'
+
+2.0d0
+
+
+
+
+
+
+
+
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  0.0 300.0
+
+
+
+
+
+
+
+
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+'done'
+
+
+
+
+
+!
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+1.39d-8                         ;aqueous phase
+
+
+
+! ---------------------------------------------------------------------------
+
+'aquifer'
+
+
+
+'longitudinal dispersivity'
+
+20.0d0
+
+
+
+'transverse vertical dispersivity'
+
+2.0d0
+
+
+
+'transverse horizontal dispersivity'
+
+2.0d0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                              ;number of zones
+
+!'read initial condition from file' 
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'hydrostatic condition'
+
+'hydrostatic condition'
+
+0.0d0                       ;freshwater column
+
+0.0d0                       ;tot tds
+
+300.0                       ;hydro top
+
+
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0   0.0 300.0
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+'number and name of zone'
+
+1
+
+'zone 1'
+
+
+
+'initial condition'
+
+0.0                         ;freshwater head
+
+
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  0.0 300.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 12B: initial condition - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+
+
+'initial condition - energy balance'
+
+1                              ;number of zones
+
+
+
+
+
+'number and name of zone'
+
+1
+
+'pepe rompe' 
+
+
+
+'initial condition'
+
+0.0d0
+
+
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  0.0 300.0
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+
+
+
+
+'done'
+
+
+
+
+
+
+
+!
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+149                             ;number of zones
+
+
+
+ 
+
+ 'number and name of zone'
+
+    1
+
+ 'inflow   1'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.31028E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.00000E+00 0.60403E+01 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    2
+
+ 'inflow   2'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3101617E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.60403E+01 0.12081E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    3
+
+ 'inflow   3'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3100926E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.12081E+02 0.18121E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    4
+
+ 'inflow   4'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3100235E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.18121E+02 0.24161E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    5
+
+ 'inflow   5'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3099544E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.24161E+02 0.30201E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    6
+
+ 'inflow   6'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3098852E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.30201E+02 0.36242E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    7
+
+ 'inflow   7'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3098161E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.36242E+02 0.42282E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    8
+
+ 'inflow   8'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3097470E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.42282E+02 0.48322E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+    9
+
+ 'inflow   9'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3096779E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.48322E+02 0.54362E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   10
+
+ 'inflow  10'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3096087E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.54362E+02 0.60403E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   11
+
+ 'inflow  11'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3095396E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.60403E+02 0.66443E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   12
+
+ 'inflow  12'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3094705E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.66443E+02 0.72483E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   13
+
+ 'inflow  13'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3094013E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.72483E+02 0.78523E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   14
+
+ 'inflow  14'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3093322E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.78523E+02 0.84564E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   15
+
+ 'inflow  15'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3092631E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.84564E+02 0.90604E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   16
+
+ 'inflow  16'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3091940E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.90604E+02 0.96644E+02 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   17
+
+ 'inflow  17'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3091248E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.96644E+02 0.10268E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   18
+
+ 'inflow  18'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3090557E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.10268E+03 0.10872E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   19
+
+ 'inflow  19'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3089866E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.10872E+03 0.11477E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   20
+
+ 'inflow  20'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3089174E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.11477E+03 0.12081E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   21
+
+ 'inflow  21'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3088483E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.12081E+03 0.12685E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   22
+
+ 'inflow  22'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3087792E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.12685E+03 0.13289E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   23
+
+ 'inflow  23'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3087101E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.13289E+03 0.13893E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   24
+
+ 'inflow  24'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3086409E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.13893E+03 0.14497E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   25
+
+ 'inflow  25'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3085718E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.14497E+03 0.15101E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   26
+
+ 'inflow  26'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3085027E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.15101E+03 0.15705E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   27
+
+ 'inflow  27'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3084336E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.15705E+03 0.16309E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   28
+
+ 'inflow  28'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3083644E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.16309E+03 0.16913E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   29
+
+ 'inflow  29'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3082953E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.16913E+03 0.17517E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   30
+
+ 'inflow  30'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3082262E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.17517E+03 0.18121E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   31
+
+ 'inflow  31'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3081570E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.18121E+03 0.18725E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   32
+
+ 'inflow  32'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3080879E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.18725E+03 0.19329E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   33
+
+ 'inflow  33'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3080188E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.19329E+03 0.19933E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   34
+
+ 'inflow  34'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3079497E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.19933E+03 0.20537E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   35
+
+ 'inflow  35'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3078805E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.20537E+03 0.21141E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   36
+
+ 'inflow  36'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3078114E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.21141E+03 0.21745E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   37
+
+ 'inflow  37'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3077423E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.21745E+03 0.22349E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   38
+
+ 'inflow  38'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3076732E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.22349E+03 0.22953E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   39
+
+ 'inflow  39'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3076040E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.22953E+03 0.23557E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   40
+
+ 'inflow  40'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3075349E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.23557E+03 0.24161E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   41
+
+ 'inflow  41'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3074658E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.24161E+03 0.24765E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   42
+
+ 'inflow  42'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3073966E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.24765E+03 0.25369E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   43
+
+ 'inflow  43'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3073275E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.25369E+03 0.25973E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   44
+
+ 'inflow  44'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3072584E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.25973E+03 0.26577E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   45
+
+ 'inflow  45'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3071893E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.26577E+03 0.27181E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   46
+
+ 'inflow  46'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3071201E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.27181E+03 0.27785E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   47
+
+ 'inflow  47'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3070510E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.27785E+03 0.28389E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   48
+
+ 'inflow  48'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3069819E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.28389E+03 0.28993E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   49
+
+ 'inflow  49'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3069128E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.28993E+03 0.29597E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   50
+
+ 'inflow  50'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3068436E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.29597E+03 0.30201E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   51
+
+ 'inflow  51'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3067745E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.30201E+03 0.30805E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   52
+
+ 'inflow  52'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3067054E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.30805E+03 0.31409E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   53
+
+ 'inflow  53'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3066362E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.31409E+03 0.32013E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   54
+
+ 'inflow  54'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3065671E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.32013E+03 0.32617E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   55
+
+ 'inflow  55'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3064980E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.32617E+03 0.33221E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   56
+
+ 'inflow  56'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3064289E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.33221E+03 0.33826E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   57
+
+ 'inflow  57'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3063597E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.33826E+03 0.34430E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   58
+
+ 'inflow  58'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3062906E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.34430E+03 0.35034E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   59
+
+ 'inflow  59'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3062215E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.35034E+03 0.35638E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   60
+
+ 'inflow  60'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3061523E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.35638E+03 0.36242E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   61
+
+ 'inflow  61'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3060832E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.36242E+03 0.36846E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   62
+
+ 'inflow  62'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3060141E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.36846E+03 0.37450E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   63
+
+ 'inflow  63'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3059450E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.37450E+03 0.38054E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   64
+
+ 'inflow  64'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3058758E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.38054E+03 0.38658E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   65
+
+ 'inflow  65'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3058067E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.38658E+03 0.39262E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   66
+
+ 'inflow  66'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3057376E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.39262E+03 0.39866E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   67
+
+ 'inflow  67'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3056685E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.39866E+03 0.40470E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   68
+
+ 'inflow  68'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3055993E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.40470E+03 0.41074E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   69
+
+ 'inflow  69'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3055302E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.41074E+03 0.41678E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   70
+
+ 'inflow  70'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3054611E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.41678E+03 0.42282E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   71
+
+ 'inflow  71'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3053919E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.42282E+03 0.42886E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   72
+
+ 'inflow  72'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3053228E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.42886E+03 0.43490E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   73
+
+ 'inflow  73'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3052537E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.43490E+03 0.44094E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   74
+
+ 'inflow  74'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3051846E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.44094E+03 0.44698E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   75
+
+ 'inflow  75'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3051154E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.44698E+03 0.45302E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   76
+
+ 'inflow  76'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3050463E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.45302E+03 0.45906E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   77
+
+ 'inflow  77'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3049772E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.45906E+03 0.46510E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   78
+
+ 'inflow  78'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3049081E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.46510E+03 0.47114E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   79
+
+ 'inflow  79'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3048389E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.47114E+03 0.47718E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   80
+
+ 'inflow  80'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3047698E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.47718E+03 0.48322E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   81
+
+ 'inflow  81'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3047007E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.48322E+03 0.48926E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   82
+
+ 'inflow  82'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3046315E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.48926E+03 0.49530E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   83
+
+ 'inflow  83'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3045624E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.49530E+03 0.50134E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   84
+
+ 'inflow  84'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3044933E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.50134E+03 0.50738E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   85
+
+ 'inflow  85'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3044242E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.50738E+03 0.51342E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   86
+
+ 'inflow  86'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3043550E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.51342E+03 0.51946E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   87
+
+ 'inflow  87'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3042859E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.51946E+03 0.52550E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   88
+
+ 'inflow  88'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3042168E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.52550E+03 0.53154E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   89
+
+ 'inflow  89'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3041477E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.53154E+03 0.53758E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   90
+
+ 'inflow  90'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3040785E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.53758E+03 0.54362E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   91
+
+ 'inflow  91'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3040094E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.54362E+03 0.54966E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   92
+
+ 'inflow  92'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3039403E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.54966E+03 0.55570E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   93
+
+ 'inflow  93'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3038711E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.55570E+03 0.56174E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   94
+
+ 'inflow  94'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3038020E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.56174E+03 0.56779E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   95
+
+ 'inflow  95'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3037329E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.56779E+03 0.57383E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   96
+
+ 'inflow  96'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3036638E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.57383E+03 0.57987E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   97
+
+ 'inflow  97'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3035946E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.57987E+03 0.58591E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   98
+
+ 'inflow  98'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3035255E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.58591E+03 0.59195E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+   99
+
+ 'inflow  99'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3034564E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.59195E+03 0.59799E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  100
+
+ 'inflow 100'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3033872E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.59799E+03 0.60403E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  101
+
+ 'inflow 101'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3033181E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.60403E+03 0.61007E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  102
+
+ 'inflow 102'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3032490E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.61007E+03 0.61611E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  103
+
+ 'inflow 103'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3031799E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.61611E+03 0.62215E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  104
+
+ 'inflow 104'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3031107E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.62215E+03 0.62819E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  105
+
+ 'inflow 105'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3030416E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.62819E+03 0.63423E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  106
+
+ 'inflow 106'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3029725E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.63423E+03 0.64027E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  107
+
+ 'inflow 107'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3029034E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.64027E+03 0.64631E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  108
+
+ 'inflow 108'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3028342E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.64631E+03 0.65235E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  109
+
+ 'inflow 109'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3027651E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.65235E+03 0.65839E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  110
+
+ 'inflow 110'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3026960E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.65839E+03 0.66443E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  111
+
+ 'inflow 111'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3026268E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.66443E+03 0.67047E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  112
+
+ 'inflow 112'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3025577E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.67047E+03 0.67651E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  113
+
+ 'inflow 113'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3024886E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.67651E+03 0.68255E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  114
+
+ 'inflow 114'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3024195E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.68255E+03 0.68859E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  115
+
+ 'inflow 115'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3023503E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.68859E+03 0.69463E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  116
+
+ 'inflow 116'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3022812E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.69463E+03 0.70067E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  117
+
+ 'inflow 117'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3022121E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.70067E+03 0.70671E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  118
+
+ 'inflow 118'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3021430E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.70671E+03 0.71275E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  119
+
+ 'inflow 119'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3020738E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.71275E+03 0.71879E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  120
+
+ 'inflow 120'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3020047E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.71879E+03 0.72483E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  121
+
+ 'inflow 121'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3019356E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.72483E+03 0.73087E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  122
+
+ 'inflow 122'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3018664E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.73087E+03 0.73691E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  123
+
+ 'inflow 123'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3017973E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.73691E+03 0.74295E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  124
+
+ 'inflow 124'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3017282E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.74295E+03 0.74899E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  125
+
+ 'inflow 125'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3016591E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.74899E+03 0.75503E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  126
+
+ 'inflow 126'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3015899E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.75503E+03 0.76107E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  127
+
+ 'inflow 127'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3015208E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.76107E+03 0.76711E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  128
+
+ 'inflow 128'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3014517E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.76711E+03 0.77315E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  129
+
+ 'inflow 129'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3013826E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.77315E+03 0.77919E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  130
+
+ 'inflow 130'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3013134E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.77919E+03 0.78523E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  131
+
+ 'inflow 131'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3012443E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.78523E+03 0.79128E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  132
+
+ 'inflow 132'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3011752E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.79128E+03 0.79732E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  133
+
+ 'inflow 133'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3011060E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.79732E+03 0.80336E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  134
+
+ 'inflow 134'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3010369E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.80336E+03 0.80940E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  135
+
+ 'inflow 135'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3009678E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.80940E+03 0.81544E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  136
+
+ 'inflow 136'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3008987E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.81544E+03 0.82148E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  137
+
+ 'inflow 137'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3008295E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.82148E+03 0.82752E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  138
+
+ 'inflow 138'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3007604E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.82752E+03 0.83356E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  139
+
+ 'inflow 139'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3006913E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.83356E+03 0.83960E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  140
+
+ 'inflow 140'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3006221E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.83960E+03 0.84564E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  141
+
+ 'inflow 141'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3005530E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.84564E+03 0.85168E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  142
+
+ 'inflow 142'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3004839E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.85168E+03 0.85772E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  143
+
+ 'inflow 143'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3004148E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.85772E+03 0.86376E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  144
+
+ 'inflow 144'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3003456E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.86376E+03 0.86980E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  145
+
+ 'inflow 145'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3002765E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.86980E+03 0.87584E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  146
+
+ 'inflow 146'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3002074E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.87584E+03 0.88188E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  147
+
+ 'inflow 147'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3001383E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.88188E+03 0.88792E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  148
+
+ 'inflow 148'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3000691E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.88792E+03 0.89396E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  149
+
+ 'inflow 149'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'first'  0.3000000E+03
+
+ 
+
+ 'extent of zone'
+
+ 0.89396E+03 0.90000E+03 0.00000E+00 0.10000E+01 0.30000E+03 0.30000E+03
+
+ 'end of zone'
+
+ 
+
+
+
+ 
+
+
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 13B: boundary conditions - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - energy balance'
+
+2
+
+ 
+
+
+
+'number and name of zone'
+
+1
+
+'bottom'                                                                   
+
+                       
+
+  
+
+'boundary type'
+
+'first' 133.33d0
+
+  
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  0.0 0.0
+
+  
+
+'end of zone'
+
+
+
+
+
+
+
+'number and name of zone'
+
+2
+
+'top'                                                                   
+
+                      
+
+ 
+
+'boundary type'
+
+'first' 0.0d0
+
+ 
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  300.0 300.0
+
+ 
+
+'end of zone'
+
+ 
+
+
+
+ 
+
+ 
+
+'done'
+
+
+
+
+
+
+
+!
+
+! Data Block 15: initial conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'background chemistry'
+
+
+
+'concentration input'
+
+   
+
+1.0d-20     'free'            ;'dtrac'     ;component names
+
+
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  0.0 300.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'source boundary'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+'concentration input'
+
+1.0d0       'free'            ;'dtrac'
+
+
+
+'extent of zone'
+
+300.0 600.0  0.0 1.0  0.0 0.0
+
+
+
+'end of zone'
+
+
+
+
+
+'number and name of zone'
+
+2
+
+'second'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+'concentration input'
+
+1.0d-20       'free'            ;'dtrac'
+
+
+
+'extent of zone'
+
+0.0 900.0  0.0 1.0  300.0 300.0
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+'done'
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,866 @@
+generic output file for dataset verif_pitzer                                                            
+
+------------------------------------------------------------------------
+global control parameters
+------------------------------------------------------------------------
+
+redox equilibrium mixing at plume front                                 
+
+simulation of:
+batch test with kinetically controlled dissolution-
+precipitation reactions
+
+
+------------------------------------------------------------------------
+geochemical system
+------------------------------------------------------------------------
+
+database: database\default                                                                                                                                                                                                                                                
+redox master variable: o2(aq)
+input units: moles/l     
+temperature =  25.00 deg C
+
+number of components:                           =          9
+
+aqueous components:
+-------------------
+h+1         
+cl-1        
+so4-2       
+k+1         
+na+1        
+ca+2        
+co3-2       
+mg+2        
+h2o         
+
+number of aqueous complexes:                    =         12
+
+aqueous complexes:
+------------------
+hso4-       
+co2(aq)     
+oh-         
+hco3-       
+mgoh+       
+caco3(aq)   
+mgco3(aq)   
+cacl+       
+caso4(aq)   
+mghco3+     
+caoh+       
+cacl2(aq)   
+
+number of gases:                                =          1
+
+gases:
+------
+co2(g)      
+
+number of minerals:                             =         31
+
+minerals:
+---------
+halite      
+anhydrite   
+aragonite   
+sylvite     
+gypsum      
+epsomite    
+arcanite    
+glauberite  
+hexahydrite 
+bloedite    
+antarcticite
+calcite     
+bischofite  
+carnallite  
+dolomite    
+brucite     
+thenardite  
+kainite     
+hydromagnesi
+polyhalite  
+mirabilite  
+kieserite   
+lansfordite 
+pentahydrite
+oxychloride-
+pentasalt   
+nesquehonite
+natron      
+syngenite   
+leonhardite 
+magnesite   
+
+------------------------------------------------------------------------
+control parameters - local geochemistry
+------------------------------------------------------------------------
+
+finite mineral masses
+factor for numerical differentiation            =  1.000E-04
+convergence tolerance                           =  1.000E-06
+max. ionic strength                             =  2.000E+00
+min. activity for h2o                           =  5.000E-01
+minimum reaction rate considered                =  0.000E+00
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ Aqueous Phase Object                                               
+ HMW model (Harvie et al., 1984) implemented according to           
+ Bea et al. (2009)                                                  
+ -------------------------------------------------------------------
+ MacInnes convention to scale activity coefficients is used
+ -------------------------------------------------------------------
+ Phase information
+ Name:
+ aqueous phase                                                                  
+                      
+Numsp:   21
+Reference temperature: 25.00  C
+   Reference pressure:  0.00MPa
+ -------------------------------------------------------------------
+ Phase property:
+ dielectriccte                                                                  
+                      
+ Model property:
+ Helgeson and Kirkham(1974)                                                     
+                      
+ Value property:   78.4567100961376     
+ -------------------------------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+h+1                 
+ ------------------------------------------
+charge              =      1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+cl-1                
+ ------------------------------------------
+charge              =     -1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+so4-2               
+ ------------------------------------------
+charge              =     -2.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+k+1                 
+ ------------------------------------------
+charge              =      1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+na+1                
+ ------------------------------------------
+charge              =      1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+ca+2                
+ ------------------------------------------
+charge              =      2.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+co3-2               
+ ------------------------------------------
+charge              =     -2.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+mg+2                
+ ------------------------------------------
+charge              =      2.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+h2o                 
+ ------------------------------------------
+charge              =      0.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+hso4-               
+ ------------------------------------------
+charge              =     -1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+co2(aq)             
+ ------------------------------------------
+charge              =      0.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+oh-                 
+ ------------------------------------------
+charge              =     -1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+hco3-               
+ ------------------------------------------
+charge              =     -1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+mgoh+               
+ ------------------------------------------
+charge              =      1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+caco3(aq)           
+ ------------------------------------------
+charge              =      0.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+mgco3(aq)           
+ ------------------------------------------
+charge              =      0.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+cacl+               
+ ------------------------------------------
+charge              =      1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+caso4(aq)           
+ ------------------------------------------
+charge              =      0.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+mghco3+             
+ ------------------------------------------
+charge              =      1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+caoh+               
+ ------------------------------------------
+charge              =      1.00                     
+ ------------------------------------------
+ ------------------------------------------
+                Species object             
+ ------------------------------------------
+cacl2(aq)           
+ ------------------------------------------
+charge              =      0.00                     
+ ------------------------------------------
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ Debye-Huckel limiting slope (aphi): 0.3915
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ Beta virial coefficients                                           
+ -------------------------------------------------------------------
+ sps      sps         B0        B1        B2        Alpha1    Alpha2
+ -------------------------------------------------------------------
+na+1     cl-1        0.07456   0.27524   0.00000   2.00000  12.00000
+k+1      cl-1        0.04778   0.21551   0.00000   2.00000  12.00000
+mg+2     cl-1        0.35114   1.65325   0.00000   2.00000  12.00000
+ca+2     cl-1        0.30382   1.70143   0.00000   2.00000  12.00000
+cacl+    cl-1        0.35684   4.81235   0.00000   2.00000  12.00000
+mgoh+    cl-1       -0.10000   1.65800   0.00000   2.00000  12.00000
+h+1      cl-1        0.17700   0.29292   0.00000   2.00000  12.00000
+na+1     so4-2       0.01206   1.11538   0.00000   2.00000  12.00000
+k+1      so4-2       0.05554   0.79638   0.00000   2.00000  12.00000
+mg+2     so4-2       0.22282   3.37713 -35.25878   1.40000  12.00000
+ca+2     so4-2       0.15000   3.00000   0.00000   1.40000  12.00000
+h+1      so4-2       0.09862   0.00000   0.00000   2.00000  12.00000
+na+1     hso4-       0.07343   0.29994   0.00000   2.00000  12.00000
+k+1      hso4-      -0.00030   0.17350   0.00000   2.00000  12.00000
+mg+2     hso4-       0.47460   1.72880   0.00000   2.00000  12.00000
+ca+2     hso4-       0.21450   2.52750   0.00000   2.00000  12.00000
+h+1      hso4-       0.20909   0.44092   0.00000   2.00000  12.00000
+na+1     oh-         0.08834   0.24442   0.00000   2.00000  12.00000
+k+1      oh-         0.12980   0.32000   0.00000   2.00000  12.00000
+ca+2     oh-        -0.17470  -0.23030  -5.72000   2.00000  12.00000
+na+1     hco3-       0.02800   0.04401   0.00000   2.00000  12.00000
+mg+2     hco3-       0.03300   0.84980   0.00000   2.00000  12.00000
+k+1      hco3-      -0.01070   0.04780   0.00000   2.00000  12.00000
+ca+2     hco3-       0.40000   2.97700   0.00000   2.00000  12.00000
+na+1     co3-2       0.03620   1.51207   0.00000   2.00000  12.00000
+k+1      co3-2       0.12880   1.43330   0.00000   2.00000  12.00000
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ C terms                                                            
+ Cij =       Cij0  <======    these coefficients are read from      
+       -------------------    data base                             
+       2 aqrt( (abs(zizj) )                                         
+ -------------------------------------------------------------------
+ sps      sps         C
+ -------------------------------------------------------------------
+na+1     cl-1       0.00077
+k+1      cl-1      -0.00037
+mg+2     cl-1       0.00231
+ca+2     cl-1       0.00042
+cacl+    cl-1      -0.00339
+h+1      cl-1       0.00018
+na+1     so4-2      0.00232
+k+1      so4-2     -0.00665
+mg+2     so4-2      0.00609
+h+1      so4-2      0.02097
+na+1     hso4-     -0.00231
+na+1     oh-        0.00200
+k+1      oh-        0.00205
+na+1     co3-2      0.00184
+k+1      co3-2      0.00018
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ Theta virial coefficients                                          
+ -------------------------------------------------------------------
+ sps      sps        theta
+ -------------------------------------------------------------------
+k+1      na+1      -0.00320
+mg+2     na+1       0.07000
+ca+2     na+1       0.05000
+h+1      na+1       0.03600
+ca+2     k+1        0.11560
+h+1      k+1        0.00500
+ca+2     mg+2       0.00700
+h+1      mg+2       0.10000
+h+1      ca+2       0.09200
+so4-2    cl-1       0.07033
+hso4-    cl-1      -0.00600
+hso4-    so4-2     -0.11684
+oh-      cl-1      -0.05000
+hco3-    cl-1       0.03590
+co3-2    cl-1      -0.09200
+oh-      so4-2     -0.01300
+hco3-    so4-2      0.01000
+co3-2    so4-2      0.02000
+co3-2    oh-        0.10000
+co3-2    hco3-     -0.04000
+h+1      mgoh+      0.00000
+h+1      cacl+      0.00000
+h+1      mghco3+    0.00000
+h+1      caoh+      0.00000
+k+1      mg+2       0.00000
+k+1      mgoh+      0.00000
+k+1      cacl+      0.00000
+k+1      mghco3+    0.00000
+k+1      caoh+      0.00000
+na+1     mgoh+      0.00000
+na+1     cacl+      0.00000
+na+1     mghco3+    0.00000
+na+1     caoh+      0.00000
+ca+2     mgoh+      0.00000
+ca+2     cacl+      0.00000
+ca+2     mghco3+    0.00000
+ca+2     caoh+      0.00000
+co3-2    hso4-      0.00000
+mg+2     mgoh+      0.00000
+mg+2     cacl+      0.00000
+mg+2     mghco3+    0.00000
+mg+2     caoh+      0.00000
+hso4-    oh-        0.00000
+hso4-    hco3-      0.00000
+oh-      hco3-      0.00000
+mgoh+    cacl+      0.00000
+mgoh+    mghco3+    0.00000
+mgoh+    caoh+      0.00000
+cacl+    mghco3+    0.00000
+cacl+    caoh+      0.00000
+mghco3+  caoh+      0.00000
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ Lambda virial coefficients                                         
+ -------------------------------------------------------------------
+ sps      sps         lambda
+ -------------------------------------------------------------------
+cl-1     co2(aq)   -0.00500
+na+1     co2(aq)    0.11544
+k+1      co2(aq)    0.11544
+ca+2     co2(aq)    0.23088
+mg+2     co2(aq)    0.23088
+so4-2    co2(aq)    0.09386
+hso4-    co2(aq)   -0.00300
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ Psi virial coefficients                                            
+ -------------------------------------------------------------------
+ sps      sps      sps           psi
+ -------------------------------------------------------------------
+na+1     k+1      cl-1      -0.00369
+na+1     k+1      so4-2      0.00732
+na+1     k+1      hco3-     -0.00300
+na+1     k+1      co3-2      0.00300
+na+1     ca+2     cl-1      -0.00300
+na+1     ca+2     so4-2     -0.01200
+na+1     mg+2     cl-1      -0.01200
+na+1     mg+2     so4-2     -0.01500
+na+1     h+1      cl-1      -0.00400
+na+1     h+1      hso4-     -0.01290
+k+1      ca+2     cl-1      -0.04319
+k+1      mg+2     cl-1      -0.02200
+k+1      mg+2     so4-2     -0.04800
+k+1      h+1      cl-1      -0.01100
+k+1      h+1      so4-2      0.19700
+k+1      h+1      hso4-     -0.02650
+ca+2     mg+2     cl-1      -0.01200
+ca+2     mg+2     so4-2      0.02400
+ca+2     h+1      cl-1      -0.01500
+mg+2     mgoh+    cl-1       0.02800
+mg+2     h+1      cl-1      -0.01100
+mg+2     h+1      hso4-     -0.01780
+cl-1     so4-2    na+1      -0.00909
+cl-1     so4-2    k+1       -0.00162
+cl-1     so4-2    ca+2      -0.01800
+cl-1     so4-2    mg+2      -0.00796
+cl-1     hso4-    na+1      -0.00600
+cl-1     hso4-    h+1        0.01300
+cl-1     oh-      na+1      -0.00601
+cl-1     oh-      k+1       -0.00600
+cl-1     oh-      ca+2      -0.02500
+cl-1     hco3-    na+1      -0.01430
+cl-1     hco3-    mg+2      -0.09600
+cl-1     co3-2    na+1       0.01600
+cl-1     co3-2    k+1        0.00400
+so4-2    hso4-    na+1       0.01437
+so4-2    hso4-    k+1       -0.06770
+so4-2    hso4-    mg+2      -0.04250
+so4-2    hso4-    h+1        0.02781
+so4-2    oh-      na+1      -0.00910
+so4-2    oh-      k+1       -0.05000
+so4-2    hco3-    na+1      -0.00500
+so4-2    hco3-    mg+2      -0.16100
+so4-2    co3-2    na+1      -0.00500
+so4-2    co3-2    k+1       -0.00900
+oh-      co3-2    na+1      -0.01700
+oh-      co3-2    k+1       -0.01000
+hco3-    co3-2    na+1       0.00200
+hco3-    co3-2    k+1        0.01200
+ -------------------------------------------------------------------
+ Total number of virial coefficients:  175
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+
+------------------------------------------------------------------------
+initial condition - local geochemistry
+------------------------------------------------------------------------
+ 
+number of zones                                 =          1
+
+************************************************************************
+background chemistry - aquifer                                          
+************************************************************************
+
+control parameters: 
+------------------------------------------------------------------------
+
+equilibration with minerals specified
+no output of c.vs.t profiles
+time step for local chemistry computations    =   1.000E+00 days        
+
+input parameters: 
+------------------------------------------------------------------------
+
+total aqueous component concentrations:
+---------------------------------------
+component             conc.
+---------------------------
+cl-1             5.8100E+00
+so4-2            6.3000E-03
+k+1              1.7390E-01
+na+1             1.7520E+00
+ca+2             4.2740E-01
+co3-2            3.9200E-03
+mg+2             1.5550E+00
+
+aqueous components with fixed activities:
+-----------------------------------------
+species               actv.
+---------------------------
+h+1              1.0000E-07
+
+guess for pH of solution:          pH =  7.0000
+
+minerals:
+---------
+halite      
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+anhydrite   
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+aragonite   
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+sylvite     
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+gypsum      
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+epsomite    
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+arcanite    
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+glauberite  
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+hexahydrite 
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+bloedite    
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+antarcticite
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+calcite     
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+bischofite  
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+carnallite  
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+dolomite    
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+brucite     
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+thenardite  
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+kainite     
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+hydromagnesi
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+polyhalite  
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+mirabilite  
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+kieserite   
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+lansfordite 
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+pentahydrite
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+oxychloride-
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+pentasalt   
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+nesquehonite
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+natron      
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+syngenite   
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+leonhardite 
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+magnesite   
+type of reaction control: surface     
+type of surface area update: twothird    
+volume fraction                                     =   1.0000E-20
+min. volume fraction                                =   1.0000E-20
+level of supersaturation required for precipitation =   0.0000E+00
+reactive surface area                               =   1.0000E-07
+------------------------------------------------------------------------
+
+results:
+------------------------------------------------------------------------
+
+computed pH of solution:           pH =       7.0000
+ionic strength:                     I =   2.0000E+00
+
+total concentrations - aqueous phase:
+--------------------------------------
+species               conc.
+---------------------------
+h+1              3.4799E-03
+cl-1             5.8100E+00
+so4-2            6.3000E-03
+k+1              1.7390E-01
+na+1             1.7520E+00
+ca+2             4.2740E-01
+co3-2            3.9200E-03
+mg+2             1.5550E+00
+
+components as species in solution:
+----------------------------------
+species               conc.          gamma
+------------------------------------------
+h+1              1.0391E-08     9.6238E+00
+cl-1             5.8088E+00     6.5551E-01
+so4-2            4.1070E-03     5.5017E-03
+k+1              1.7390E-01     1.0876E+00
+na+1             1.7520E+00     2.4862E+00
+ca+2             4.2394E-01     5.1217E+00
+co3-2            4.3345E-05     1.6372E-04
+mg+2             1.5510E+00     9.9733E+00
+h2o              1.0000E+00     7.5293E-01
+
+secondary aqueous species:
+--------------------------
+species               conc.          gamma
+------------------------------------------
+mghco3+          3.5937E-03     7.0709E-01
+caso4(aq)        2.1930E-03     1.0000E+00
+cacl+            1.2265E-03     1.1556E+03
+mgoh+            2.5586E-04     9.4561E-01
+hco3-            1.4448E-04     1.0473E-01
+mgco3(aq)        1.0457E-04     1.0000E+00
+caco3(aq)        3.2724E-05     1.0000E+00
+caoh+            3.3939E-06     7.0709E-01
+oh-              1.4517E-06     5.2454E-02
+co2(aq)          1.2120E-06     3.6668E+00
+hso4-            2.7935E-10     7.7086E-01
+cacl2(aq)        1.0724E-15     1.0000E+00
+
+gases:
+-------
+species               conc.  partial pres.
+------------------------------------------
+co2(g)           5.3474E-06     1.3083E-04
+
+minerals:
+---------
+mineral               SI               phi              area
+------------------------------------------------------------
+halite            -0.366        1.0000E-20        1.0000E-07
+anhydrite          0.010        1.0000E-20        1.0000E-07
+aragonite          0.548        1.0000E-20        1.0000E-07
+sylvite           -1.057        1.0000E-20        1.0000E-07
+gypsum            -0.036        1.0000E-20        1.0000E-07
+epsomite          -2.348        1.0000E-20        1.0000E-07
+arcanite          -4.301        1.0000E-20        1.0000E-07
+glauberite        -2.494        1.0000E-20        1.0000E-07
+hexahydrite       -2.525        1.0000E-20        1.0000E-07
+bloedite          -4.970        1.0000E-20        1.0000E-07
+antarcticite      -3.329        1.0000E-20        1.0000E-07
+calcite            0.698        1.0000E-20        1.0000E-07
+bischofite        -2.746        1.0000E-20        1.0000E-07
+carnallite        -2.761        1.0000E-20        1.0000E-07
+dolomite           3.372        1.0000E-20        1.0000E-07
+brucite           -2.157        1.0000E-20        1.0000E-07
+thenardite        -3.113        1.0000E-20        1.0000E-07
+kainite           -3.776        1.0000E-20        1.0000E-07
+hydromagnesi      -2.927        1.0000E-20        1.0000E-07
+polyhalite        -4.670        1.0000E-20        1.0000E-07
+mirabilite        -3.382        1.0000E-20        1.0000E-07
+kieserite         -3.556        1.0000E-20        1.0000E-07
+lansfordite       -2.088        1.0000E-20        1.0000E-07
+pentahydrite      -2.645        1.0000E-20        1.0000E-07
+oxychloride-      -2.933        1.0000E-20        1.0000E-07
+pentasalt         -3.207        1.0000E-20        1.0000E-07
+nesquehonite      -1.996        1.0000E-20        1.0000E-07
+natron            -7.289        1.0000E-20        1.0000E-07
+syngenite         -3.140        1.0000E-20        1.0000E-07
+leonhardite       -2.914        1.0000E-20        1.0000E-07
+magnesite          1.086        1.0000E-20        1.0000E-07
+
+charge balance:
+---------------
+sum of positive charge:   5.881E+00   sum of negative charge:  5.817E+00
+charge balance error:     5.449E-01 %
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =          8
+total number of time steps              =          0
+
+------------------------------------------------------------------------
+
+         ***************** normal exit ******************
+
+

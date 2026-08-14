@@ -1,0 +1,7161 @@
+! basin-3d.dat
+! modified 3d variably-saturated flow and reactive transport after:
+! Sykes, J.; Normani, S. and Yin, Y. 2011, 
+! TechReport: Hydrogeologic Modelling, University of Waterloo, 2011
+! 
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Infiltration and 3-dimensional transient water table mounding'
+.true.                        ;varsat_flow
+.false.                       ;steady_flow
+.false.                       ;fully_saturated
+.true.                        ;reactive_transport
+
+'density dependent flow'
+
+'compute ice sheet loading/unloading'
+
+'energy balance' 
+
+'type of coupling for flow and heat equations'
+'coupled'
+!'semi-coupled'
+!'decoupled'
+
+!'output sparse matrix data set and rhs'
+!'output sparse matrix data set and rhs at timestep'
+!1
+
+!'parallel solver configuration file'
+!'solver.cfg'
+
+!'disable output'
+!'disable output of all gen files'
+!'enable output of master gen file'
+
+!'restart'
+!'use distributed restart files to read'
+!'use distributed restart files to write'
+'use binary restart file to read'
+'use binary restart file to write'
+
+!'ignore restart time'
+
+'append results'
+
+'backup frequency'
+100
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'compute alkalinity'
+
+'use pitzer model'
+
+!'use macinnes convention' 
+
+'use new database format'
+
+'database directory'
+'database'
+
+'components'
+10  ;11                            ;number of components (nc-1)
+!'tracer'
+'cl-1'
+'br-1'
+'na+1'
+'k+1'
+'h+1'  
+'co3-2' 
+'ca+2'  
+'mg+2'  
+'so4-2' 
+'o2(aq)'
+
+
+'secondary aqueous species'
+11                ;number of secondary aqueous species
+'hso4-' 
+'co2(aq)' 
+'oh-'
+'hco3-'
+'mgoh+'  
+'caco3aq' 
+'mgco3aq' 
+'caso4aq'
+'mghco3+'
+'caoh+'
+'cacl+'
+  
+
+'gases'
+0                             ;number of gases 
+
+'minerals'
+8                             ;number of minerals (nm)
+'halite'
+'calcite'
+'dolomite_diss'
+'anhydrite'
+'pyrite-o2'
+'biotite-o2'
+'chlorite-o2'
+'ch2o-o2'
+
+'sorbed species'
+4
+'na-x(na)'
+'ca-x(na)'
+'mg-x(na)'
+'k-x(na)'
+
+'excluded minerals'
+0 
+
+'done'
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+
+!'generate unstructured grid from structured parameters'
+!'generate unstructured grid from structured boundary'
+!'generate unstructured grid from file'
+
+'read unstructured grid from file'
+!'read unstructured grid from gid mesh file'
+
+'control volume method'
+'voronoi diagram'
+!'median dual'
+
+'allow obtuse cells'
+
+'use layered mesh structure'
+
+'cell based hydraulic conductivity'
+!'cell based dispersivity for reactive transport'
+
+'scale factor for mesh output'
+1.0 1.0 25.0
+
+'done'
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'years'                       ;time unit
+0.0d0   ;-1.00d6              ;time at start of solution
+1.0d0   ;1.20d5               ;final solution time
+1.0d-1  ;1.00d2               ;maximum time step
+1.0d-8                        ;minimum time step
+
+'transient maximum time step'
+8
+-1.0d5  -9.0d4  1.0d1
+-9.0d4  -5.0d4  2.0d1
+-5.0d4  0.0d0   1.0d2
+0.0d0    2.0d2   1.0d-1
+2.0d2    1.0d3   2.0d-1
+1.0d3    2.0d3   5.0d-1
+2.0d3    8.0d3   5.0d-1
+8.0d3    1.2d5   1.0d-1
+
+'done'
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-4                          ;factor for numerical differentiation
+1.d-6                          ;convergence tolerance
+
+'maximum ionic strength'
+20.0d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.2d0                          ;min. activity for h2o
+
+'output time unit'
+'hours'                        ;time unit (local chemistry)
+
+'done'
+
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'hydraulic head'              ;input unit
+
+!'update viscosity'
+
+'density model' 
+'pitzer' 
+
+'upstream factor for flow equation'
+1.0d0
+
+'user specified underrelaxation factor'
+0.25d0
+
+!'user specified underrelaxation range'
+!0.0  1.0d2
+
+!'compute underrelaxation factor'
+!1000
+
+'input units for media permeability'
+'hydraulic conductivity'  
+ 
+'input units for boundary and initial conditions'
+'hydraulic head'              ;input unit
+
+'input units for newton increment and tolerance'
+'freshwater head'
+
+!'run steady state flow in transient mode'
+
+'tolerance for steady state'
+1.0d-4                        ;relative tolerance
+1.0d-4                        ;absolute tolerance
+
+'disable density change in transient mode'
+
+'maximum time of transient steady state'
+1.0d5
+
+'stop after transient steady state'
+
+!'specific density change over temperature'
+!0.0d0
+
+!'use old storage derivative'
+
+!'decouple porosity pressure change'
+
+'allow maximum density update at first timestep'
+
+'variable density parameters'
+1000.0d0                      ;freshwater density g/L
+0.688d0                       ;linear density coefficient d(rho)/d(TDS)
+12                            ;max # Picard flow-RT iterations
+5                             ;Picard iteration target (# iterations)
+0.1d0                         ;maximum density update: Picard convergence g/L
+1.0d50                        ;Courant criteria target
+
+'newton iteration settings'
+5.0d-3                        ;increment for numerical differentiation
+60                            ;maxit_vs, max. number of newton iterations
+5.0d-3                        ;tol_vs, convergence tolerance
+0.001                         ;sw_star
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+1000                          ;msolvit_vs, max. number of solver iterations
+1                             ;idetail_vs, solver information level
+1.0d-9                        ;restol_vs, solver residual tolerance
+1.0d-9                        ;deltol_vs, solver update tolerance
+
+'done'
+
+!
+! Data Block 6B: control parameters - energy balance
+! ---------------------------------------------------------------------------
+!
+'control parameters - energy balance'
+
+'update viscosity' 
+ 
+'viscosity model'
+'sutra' 
+
+'compute source/sink term due reactions'
+
+!'update water thermal conductivity' 
+
+!'non-linear density'  
+
+!'centered weighting'
+
+!'non-advection'
+
+!'non-conduction'
+
+!'non-dispersion'
+
+!'logarithm in unknowns'
+ 
+'reference temperature for density'
+25.0d0
+
+!'use old storage derivative'
+
+!'decouple density temperature change'
+
+'user specified underrelaxation factor'
+0.25d0
+
+'energy balance parameters'
+-0.375d0                      ;linear density coefficient d(rho)/d(T)
+
+!'temperature correction for solution'
+!-20.0  100.0
+
+!'maximum iterations of temperature correction'
+!10
+
+'tolerance for steady state'
+1.0d-4                        ;relative tolerance
+1.0d-4                        ;absolute tolerance
+
+
+'newton iteration settings'
+5.0d-3                        ;increment for numerical differentiation
+60                            ;max. number of newton iterations
+5.0d-3                        ;convergence tolerance
+10.0d0                        ;maximum update in log cycles 
+
+ 
+'solver settings'
+1                             ;level_vs, incomplete factorization level
+1000                          ;msolvit_vs, max. number of solver iterations
+1                             ;idetail_vs, solver information level
+1.0d-9                        ;restol_vs, solver residual tolerance
+1.0d-9                        ;deltol_vs, solver update tolerance
+
+'done'
+
+! Data Block 7: control parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'control parameters - reactive transport'
+
+'mass balance'
+
+'spatial weighting'
+'upstream'
+!'centered'                    ;spatial weighting
+
+'activity update settings'
+'time_lagged'                 ;type of activity update
+
+'tortuosity correction'
+'millington'
+
+'update porosity'
+0.1
+
+'update permeability'
+
+'porosity threshold'
+0.001  0.999
+
+'output fluxes'
+
+!'user specified underrelaxation factor'
+!0.25d0
+
+'newton iteration settings'
+1.d-4                         ;increment h for numerical differentiation
+20                            ;anticipted number of Newton iterations
+60                            ;max. number of Newton iterations
+2.0d0                         ;anticipated update in log cycles
+4.0d0                         ;maximum update in log cycles
+1.d-4                         ;convergence tolerance (global system)
+
+'solver settings'
+0                             ;incomplete factorization level
+1000                          ;max. number of solver iterations
+1                             ;solver information level
+1.d-9                         ;solver residual tolerance
+1.d-9                         ;solver update tolerance
+
+'done'
+
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'use binary format'
+'use ascii data format for transient output'
+'use separated mesh and result data'
+
+'output of spatial data'
+1                            ;number of output times (spatial data)
+1.0d0
+
+!120                            ;number of output times (spatial data)
+!1.00E+03  2.00E+03  3.00E+03  4.00E+03
+!5.00E+03  6.00E+03  7.00E+03  8.00E+03
+!9.00E+03  1.00E+04  1.10E+04  1.20E+04
+!1.30E+04  1.40E+04  1.50E+04  1.60E+04
+!1.70E+04  1.80E+04  1.90E+04  2.00E+04
+!2.10E+04  2.20E+04  2.30E+04  2.40E+04
+!2.50E+04  2.60E+04  2.70E+04  2.80E+04
+!2.90E+04  3.00E+04  3.10E+04  3.20E+04
+!3.30E+04  3.40E+04  3.50E+04  3.60E+04
+!3.70E+04  3.80E+04  3.90E+04  4.00E+04
+!4.10E+04  4.20E+04  4.30E+04  4.40E+04
+!4.50E+04  4.60E+04  4.70E+04  4.80E+04
+!4.90E+04  5.00E+04  5.10E+04  5.20E+04
+!5.30E+04  5.40E+04  5.50E+04  5.60E+04
+!5.70E+04  5.80E+04  5.90E+04  6.00E+04
+!6.10E+04  6.20E+04  6.30E+04  6.40E+04
+!6.50E+04  6.60E+04  6.70E+04  6.80E+04
+!6.90E+04  7.00E+04  7.10E+04  7.20E+04
+!7.30E+04  7.40E+04  7.50E+04  7.60E+04
+!7.70E+04  7.80E+04  7.90E+04  8.00E+04
+!8.10E+04  8.20E+04  8.30E+04  8.40E+04
+!8.50E+04  8.60E+04  8.70E+04  8.80E+04
+!8.90E+04  9.00E+04  9.10E+04  9.20E+04
+!9.30E+04  9.40E+04  9.50E+04  9.60E+04
+!9.70E+04  9.80E+04  9.90E+04  1.00E+05
+!1.01E+05  1.02E+05  1.03E+05  1.04E+05
+!1.05E+05  1.06E+05  1.07E+05  1.08E+05
+!1.09E+05  1.10E+05  1.11E+05  1.12E+05
+!1.13E+05  1.14E+05  1.15E+05  1.16E+05
+!1.17E+05  1.18E+05  1.19E+05  1.20E+05
+
+
+'done'
+
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+80   ;including drift                             ;number of material property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'all layers'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9     !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.0d3     !density of fluid in the unit of [kg/m^3]
+
+
+'extent of zone'
+400000.0 600000.0  4000000.0 6000000.0  -2000.0 1000.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'layer n39'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.008d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+39
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+ 'layer n38'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.005d3     !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+38
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'layer c38'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.005d3     !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+38
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+ 'layer n37'
+0.077                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.0006d3  !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+37
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+6
+'layer c37'
+0.077                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.0006d3  !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+37
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+7
+ 'layer n36'
+0.077                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.002d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+36
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+8
+'layer c36'
+0.077                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+7.7d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.18      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.002d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+36
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+9
+ 'layer n35'
+0.056                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+4.0d9     !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.004d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+35
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+10
+'layer c35'
+0.056                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+4.0d9     !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.004d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+35
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+11
+ 'layer n34'
+0.172                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.22      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.010d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+34
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+12
+'layer c34'
+0.172                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.22      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.010d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+34
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+13
+ 'layer n33'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.22      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.040d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+33
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+14
+'layer c33'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.22      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.040d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+33
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+15
+ 'layer n32'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.22      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.040d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+32
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+16
+'layer c32'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.22      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.040d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+32
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+17
+ 'layer n31'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.083d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+31
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+18
+'layer c31'
+0.10                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.083d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+31
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+19
+ 'layer n30'
+0.089                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.133d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+30
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+20
+'layer c30'
+0.089                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.133d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+30
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+21
+ 'layer n29'
+0.175                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.190d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+29
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+22
+'layer c29'
+0.175                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.190d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+29
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+23
+ 'layer n28'
+0.089                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.214d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+28
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+24
+'layer c28'
+0.089                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.214d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+28
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+25
+ 'layer n27'
+0.120                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.091d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+27
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+26
+'layer c27'
+0.120                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.091d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+27
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+27
+ 'layer n26'
+0.089                          ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.030d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+26
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+28
+'layer c26'
+0.089                          ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.030d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+26
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+29
+ 'layer n25'
+0.070                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.019d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+25
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+30
+'layer c25'
+0.070                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.019d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+25
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+31
+ 'layer n24'
+0.019                         ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.128d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+24
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+32
+'layer c24'
+0.019                         ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.128d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+24
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+33
+ 'layer n23'
+0.007                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.217d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+23
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+34
+'layer c23'
+0.007                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.217d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+23
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+35
+ 'layer n22'
+0.032                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.240d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+22
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+36
+'layer c22'
+0.032                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+22.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.32      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.240d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+22
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+37
+ 'layer n21'
+0.057                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.247d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+21
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+38
+'layer c21'
+0.057                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.247d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+21
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+39
+ 'layer n20'
+0.020                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+20
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+40
+'layer c20'
+0.020                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+20
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+41
+ 'layer n19'
+0.020                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+19
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+42
+'layer c19'
+0.020                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+19
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+43
+ 'layer n18'
+0.031                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+18
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+44
+'layer c18'
+0.031                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+18
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+45
+ 'layer n17'
+0.031                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+17
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+46
+'layer c17'
+0.031                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.0d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.37      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+17
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+47
+ 'layer n16'
+0.116                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.204d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+16
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+48
+'layer c16'
+0.116                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.204d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+16
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+49
+ 'layer n15'
+0.028                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.233d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+15
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+50
+'layer c15'
+0.028                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.233d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+15
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+51
+ 'layer n14'
+0.073                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.207d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+14
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+52
+'layer c14'
+0.073                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.207d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+14
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+53
+ 'layer n13'
+0.071                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.201d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+13
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+54
+'layer c13'
+0.071                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+13.8d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.3       !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.201d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+13
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+55
+ 'layer n12'
+0.015                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.1d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.33      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.181d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+12
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+56
+'layer c12'
+0.015                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+37.1d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.33      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.181d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+12
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+57
+ 'layer n11'
+0.016                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.180d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+11
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+58
+'layer c11'
+0.016                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.180d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+11
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+59
+ 'layer n10'
+0.021                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.156d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+10
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+60
+'layer c10'
+0.021                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.156d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+10
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+61
+ 'layer n9'
+0.009                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.170d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+9
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+62
+'layer c9'
+0.009                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.170d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+9
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+63
+ 'layer n8'
+0.022                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.135d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+8
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+64
+'layer c8'
+0.022                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.135d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+8
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+65
+ 'layer n7'
+0.097                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.133d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+7
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+66
+'layer c7'
+0.097                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+23.9d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.21      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.133d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+7
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+67
+ 'layer n6'
+0.071                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.157d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+6
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+68
+'layer c6'
+0.071                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.157d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+6
+
+'extent of zone: layer depth constraint'
+5.0d2  1.0d10 
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+69
+ 'layer n5'
+0.038                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+70
+'layer c5'
+0.038                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+71
+ 'layer n4'
+0.038                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+4
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+72
+'layer c4'
+0.038                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+4
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+73
+ 'layer n3'
+0.005                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+3
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+74
+'layer c3'
+0.005                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+3
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+75
+ 'layer n2'
+1.0d-6                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+2
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+76
+'layer c2'
+1.0d-6                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+2
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+77
+ 'layer n1'
+1.0d-6                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data'
+1
+1
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+78
+'layer c1'
+1.0d-6                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data'
+1
+1
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+79
+ 'drift n1'
+0.001                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+9, 39
+
+'extent of zone: layer thickness constraint'
+0.0d0, 20.0d0
+
+'extent of zone: layer depth constraint'
+0.0d0, 20.0d0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+80
+'drift c1'
+0.001                           ;porosity
+
+'calculate porosity'
+
+'calculate skempton coefficient'
+
+'calculate specific storage coefficient'
+
+'calculate loading efficiency coefficient'
+
+'mechanical parameters'
+76.6d9    !Young's modulus E in the unit of [Pa]
+1.0d300   !Mineral grain modulus Ks for the rock formation [Pa]
+3.0d9     !Pore fluid modulus Kf for the rock formation [Pa]
+0.25      !Poisson's ratio ν in the unit of [-]
+1.0d-8    !coefficient of vertical compressibility beta [Pa^-1]
+2.65d3    !density of rock in the unit of [kg/m^3]
+1.200d3   !density of fluid in the unit of [kg/m^3]
+
+'extent of zone: all cells by material id'
+'read data range'
+1
+9, 38
+
+'extent of zone: layer thickness constraint'
+0.0d0, 20.0d0
+
+'extent of zone: layer depth constraint'
+0.0d0, 20.0d0
+
+'end of zone'
+
+'done'
+
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------
+! zone 1
+'all layers'
+'hydraulic conductivity in x-direction'
+1.0d-8
+'hydraulic conductivity in y-direction'
+1.0d-8
+'hydraulic conductivity in z-direction'
+1.0d-9
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 2
+ 'layer n39'
+'hydraulic conductivity in x-direction'
+2.2d-11
+'hydraulic conductivity in y-direction'
+2.2d-11
+'hydraulic conductivity in z-direction'
+2.2d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 3
+ 'layer n38'
+'hydraulic conductivity in x-direction'
+8.4d-8
+'hydraulic conductivity in y-direction'
+8.4d-8
+'hydraulic conductivity in z-direction'
+8.4d-9
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 4
+'layer c38'
+'hydraulic conductivity in x-direction'
+8.4d-8
+'hydraulic conductivity in y-direction'
+8.4d-8
+'hydraulic conductivity in z-direction'
+8.4d-9
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 5
+ 'layer n37'
+'hydraulic conductivity in x-direction'
+5.0d-7
+'hydraulic conductivity in y-direction'
+5.0d-7
+'hydraulic conductivity in z-direction'
+5.0d-8
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 6
+'layer c37'
+'hydraulic conductivity in x-direction'
+5.0d-7
+'hydraulic conductivity in y-direction'
+5.0d-7
+'hydraulic conductivity in z-direction'
+5.0d-8
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 7
+ 'layer n36'
+'hydraulic conductivity in x-direction'
+1.0d-7
+'hydraulic conductivity in y-direction'
+1.0d-7
+'hydraulic conductivity in z-direction'
+1.0d-8
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 8
+'layer c36'
+'hydraulic conductivity in x-direction'
+1.0d-7
+'hydraulic conductivity in y-direction'
+1.0d-7
+'hydraulic conductivity in z-direction'
+1.0d-8
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 9
+'layer n35'
+'hydraulic conductivity in x-direction'
+5.0d-5
+'hydraulic conductivity in y-direction'
+5.0d-5
+'hydraulic conductivity in z-direction'
+1.67d-6
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+!******Bass Islands layer, lack soil parameters, convergence problem******
+!'hydraulic conductivity in x-direction'
+!5.0d-5
+!'hydraulic conductivity in y-direction'
+!5.0d-5
+!'hydraulic conductivity in z-direction'
+!1.67d-6
+!!'specific storage coefficient'
+!0.0d0
+!
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+!0.14
+!0.098
+!3.2
+!0.718
+!0
+'end of zone'
+
+! ---------------------------------------------
+! zone 10
+'layer c35'
+'hydraulic conductivity in x-direction'
+5.0d-5
+'hydraulic conductivity in y-direction'
+5.0d-5
+'hydraulic conductivity in z-direction'
+1.67d-6
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+
+!******Bass Islands layer, lack soil parameters, convergence problem******
+!'hydraulic conductivity in x-direction'
+!5.0d-5
+!'hydraulic conductivity in y-direction'
+!5.0d-5
+!'hydraulic conductivity in z-direction'
+!1.67d-6
+!!'specific storage coefficient'
+!0.0d0
+!
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+!0.14
+!0.098
+!3.2
+!0.718
+!0
+'end of zone'
+
+! ---------------------------------------------
+! zone 11
+ 'layer n34'
+'hydraulic conductivity in x-direction'
+1.0d-11
+'hydraulic conductivity in y-direction'
+1.0d-11
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 12
+'layer c34'
+'hydraulic conductivity in x-direction'
+1.0d-11
+'hydraulic conductivity in y-direction'
+1.0d-11
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 13
+ 'layer n33'
+'hydraulic conductivity in x-direction'
+5.0d-14
+'hydraulic conductivity in y-direction'
+5.0d-14
+'hydraulic conductivity in z-direction'
+5.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 14
+'layer c33'
+'hydraulic conductivity in x-direction'
+5.0d-14
+'hydraulic conductivity in y-direction'
+5.0d-14
+'hydraulic conductivity in z-direction'
+5.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 15
+ 'layer n32'
+'hydraulic conductivity in x-direction'
+5.0d-14
+'hydraulic conductivity in y-direction'
+5.0d-14
+'hydraulic conductivity in z-direction'
+5.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 16
+'layer c32'
+'hydraulic conductivity in x-direction'
+5.0d-14
+'hydraulic conductivity in y-direction'
+5.0d-14
+'hydraulic conductivity in z-direction'
+5.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 17
+ 'layer n31'
+'hydraulic conductivity in x-direction'
+2.0d-13
+'hydraulic conductivity in y-direction'
+2.0d-13
+'hydraulic conductivity in z-direction'
+2.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 18
+'layer c31'
+'hydraulic conductivity in x-direction'
+2.0d-13
+'hydraulic conductivity in y-direction'
+2.0d-13
+'hydraulic conductivity in z-direction'
+2.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 19
+ 'layer n30'
+'hydraulic conductivity in x-direction'
+2.0d-13
+'hydraulic conductivity in y-direction'
+2.0d-13
+'hydraulic conductivity in z-direction'
+2.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 20
+'layer c30'
+'hydraulic conductivity in x-direction'
+2.0d-13
+'hydraulic conductivity in y-direction'
+2.0d-13
+'hydraulic conductivity in z-direction'
+2.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 21
+ 'layer n29'
+'hydraulic conductivity in x-direction'
+4.0d-13
+'hydraulic conductivity in y-direction'
+4.0d-13
+'hydraulic conductivity in z-direction'
+4.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 22
+'layer c29'
+'hydraulic conductivity in x-direction'
+4.0d-13
+'hydraulic conductivity in y-direction'
+4.0d-13
+'hydraulic conductivity in z-direction'
+4.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 23
+ 'layer n28'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 24
+'layer c28'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 25
+ 'layer n27'
+'hydraulic conductivity in x-direction'
+3.0d-10
+'hydraulic conductivity in y-direction'
+3.0d-10
+'hydraulic conductivity in z-direction'
+3.0d-11
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 26
+'layer c27'
+'hydraulic conductivity in x-direction'
+3.0d-10
+'hydraulic conductivity in y-direction'
+3.0d-10
+'hydraulic conductivity in z-direction'
+3.0d-11
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 27
+ 'layer n26'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 28
+'layer c26'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 29
+ 'layer n25'
+'hydraulic conductivity in x-direction'
+2.0d-7
+'hydraulic conductivity in y-direction'
+2.0d-7
+'hydraulic conductivity in z-direction'
+2.0d-7
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 30
+'layer c25'
+'hydraulic conductivity in x-direction'
+2.0d-7
+'hydraulic conductivity in y-direction'
+2.0d-7
+'hydraulic conductivity in z-direction'
+2.0d-7
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 31
+ 'layer n24'
+'hydraulic conductivity in x-direction'
+9.0d-12
+'hydraulic conductivity in y-direction'
+9.0d-12
+'hydraulic conductivity in z-direction'
+9.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 32
+'layer c24'
+'hydraulic conductivity in x-direction'
+9.0d-12
+'hydraulic conductivity in y-direction'
+9.0d-12
+'hydraulic conductivity in z-direction'
+9.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 33
+ 'layer n23'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 34
+'layer c23'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 35
+ 'layer n22'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 36
+'layer c22'
+'hydraulic conductivity in x-direction'
+3.0d-13
+'hydraulic conductivity in y-direction'
+3.0d-13
+'hydraulic conductivity in z-direction'
+3.0d-14
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 37
+ 'layer n21'
+'hydraulic conductivity in x-direction'
+3.0d-8
+'hydraulic conductivity in y-direction'
+3.0d-8
+'hydraulic conductivity in z-direction'
+3.0d-8
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 38
+'layer c21'
+'hydraulic conductivity in x-direction'
+3.0d-8
+'hydraulic conductivity in y-direction'
+3.0d-8
+'hydraulic conductivity in z-direction'
+3.0d-8
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 39
+ 'layer n20'
+'hydraulic conductivity in x-direction'
+2.0d-12
+'hydraulic conductivity in y-direction'
+2.0d-12
+'hydraulic conductivity in z-direction'
+2.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 40
+'layer c20'
+'hydraulic conductivity in x-direction'
+2.0d-12
+'hydraulic conductivity in y-direction'
+2.0d-12
+'hydraulic conductivity in z-direction'
+2.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 41
+ 'layer n19'
+'hydraulic conductivity in x-direction'
+2.0d-12
+'hydraulic conductivity in y-direction'
+2.0d-12
+'hydraulic conductivity in z-direction'
+2.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 42
+'layer c19'
+'hydraulic conductivity in x-direction'
+2.0d-12
+'hydraulic conductivity in y-direction'
+2.0d-12
+'hydraulic conductivity in z-direction'
+2.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 43
+ 'layer n18'
+'hydraulic conductivity in x-direction'
+5.0d-12
+'hydraulic conductivity in y-direction'
+5.0d-12
+'hydraulic conductivity in z-direction'
+5.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 44
+'layer c18'
+'hydraulic conductivity in x-direction'
+5.0d-12
+'hydraulic conductivity in y-direction'
+5.0d-12
+'hydraulic conductivity in z-direction'
+5.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 45
+ 'layer n17'
+'hydraulic conductivity in x-direction'
+5.0d-12
+'hydraulic conductivity in y-direction'
+5.0d-12
+'hydraulic conductivity in z-direction'
+5.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 46
+'layer c17'
+'hydraulic conductivity in x-direction'
+5.0d-12
+'hydraulic conductivity in y-direction'
+5.0d-12
+'hydraulic conductivity in z-direction'
+5.0d-13
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 47
+ 'layer n16'
+'hydraulic conductivity in x-direction'
+9.0d-14
+'hydraulic conductivity in y-direction'
+9.0d-14
+'hydraulic conductivity in z-direction'
+9.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 48
+'layer c16'
+'hydraulic conductivity in x-direction'
+9.0d-14
+'hydraulic conductivity in y-direction'
+9.0d-14
+'hydraulic conductivity in z-direction'
+9.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 49
+ 'layer n15'
+'hydraulic conductivity in x-direction'
+9.0d-14
+'hydraulic conductivity in y-direction'
+9.0d-14
+'hydraulic conductivity in z-direction'
+9.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 50
+'layer c15'
+'hydraulic conductivity in x-direction'
+9.0d-14
+'hydraulic conductivity in y-direction'
+9.0d-14
+'hydraulic conductivity in z-direction'
+9.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 51
+ 'layer n14'
+'hydraulic conductivity in x-direction'
+2.0d-14
+'hydraulic conductivity in y-direction'
+2.0d-14
+'hydraulic conductivity in z-direction'
+2.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 52
+'layer c14'
+'hydraulic conductivity in x-direction'
+2.0d-14
+'hydraulic conductivity in y-direction'
+2.0d-14
+'hydraulic conductivity in z-direction'
+2.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 53
+ 'layer n13'
+'hydraulic conductivity in x-direction'
+4.0d-14
+'hydraulic conductivity in y-direction'
+4.0d-14
+'hydraulic conductivity in z-direction'
+4.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 54
+'layer c13'
+'hydraulic conductivity in x-direction'
+4.0d-14
+'hydraulic conductivity in y-direction'
+4.0d-14
+'hydraulic conductivity in z-direction'
+4.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 55
+ 'layer n12'
+'hydraulic conductivity in x-direction'
+2.0d-14
+'hydraulic conductivity in y-direction'
+2.0d-14
+'hydraulic conductivity in z-direction'
+2.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 56
+'layer c12'
+'hydraulic conductivity in x-direction'
+2.0d-14
+'hydraulic conductivity in y-direction'
+2.0d-14
+'hydraulic conductivity in z-direction'
+2.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 57
+ 'layer n11'
+'hydraulic conductivity in x-direction'
+1.0d-14
+'hydraulic conductivity in y-direction'
+1.0d-14
+'hydraulic conductivity in z-direction'
+1.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 58
+'layer c11'
+'hydraulic conductivity in x-direction'
+1.0d-14
+'hydraulic conductivity in y-direction'
+1.0d-14
+'hydraulic conductivity in z-direction'
+1.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 59
+ 'layer n10'
+'hydraulic conductivity in x-direction'
+8.0d-15
+'hydraulic conductivity in y-direction'
+8.0d-15
+'hydraulic conductivity in z-direction'
+8.0d-16
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 60
+'layer c10'
+'hydraulic conductivity in x-direction'
+8.0d-15
+'hydraulic conductivity in y-direction'
+8.0d-15
+'hydraulic conductivity in z-direction'
+8.0d-16
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 61
+ 'layer n9'
+'hydraulic conductivity in x-direction'
+4.0d-12
+'hydraulic conductivity in y-direction'
+4.0d-12
+'hydraulic conductivity in z-direction'
+4.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 62
+'layer c9'
+'hydraulic conductivity in x-direction'
+4.0d-12
+'hydraulic conductivity in y-direction'
+4.0d-12
+'hydraulic conductivity in z-direction'
+4.0d-15
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 63
+ 'layer n8'
+'hydraulic conductivity in x-direction'
+7.0d-13
+'hydraulic conductivity in y-direction'
+7.0d-13
+'hydraulic conductivity in z-direction'
+7.0d-16
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 64
+'layer c8'
+'hydraulic conductivity in x-direction'
+7.0d-13
+'hydraulic conductivity in y-direction'
+7.0d-13
+'hydraulic conductivity in z-direction'
+7.0d-16
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 65
+ 'layer n7'
+'hydraulic conductivity in x-direction'
+1.0d-9
+'hydraulic conductivity in y-direction'
+1.0d-9
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 66
+'layer c7'
+'hydraulic conductivity in x-direction'
+1.0d-9
+'hydraulic conductivity in y-direction'
+1.0d-9
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 67
+ 'layer n6'
+'hydraulic conductivity in x-direction'
+3.0d-6
+'hydraulic conductivity in y-direction'
+3.0d-6
+'hydraulic conductivity in z-direction'
+3.0d-7
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 68
+'layer c6'
+'hydraulic conductivity in x-direction'
+3.0d-6
+'hydraulic conductivity in y-direction'
+3.0d-6
+'hydraulic conductivity in z-direction'
+3.0d-7
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 69
+ 'layer n5'
+'hydraulic conductivity in x-direction'
+1.0d-10
+'hydraulic conductivity in y-direction'
+1.0d-10
+'hydraulic conductivity in z-direction'
+1.0d-10
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 70
+'layer c5'
+'hydraulic conductivity in x-direction'
+1.0d-10
+'hydraulic conductivity in y-direction'
+1.0d-10
+'hydraulic conductivity in z-direction'
+1.0d-10
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 71
+ 'layer n4'
+'hydraulic conductivity in x-direction'
+1.0d-10
+'hydraulic conductivity in y-direction'
+1.0d-10
+'hydraulic conductivity in z-direction'
+1.0d-10
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 72
+'layer c4'
+'hydraulic conductivity in x-direction'
+1.0d-10
+'hydraulic conductivity in y-direction'
+1.0d-10
+'hydraulic conductivity in z-direction'
+1.0d-10
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 73
+ 'layer n3'
+'hydraulic conductivity in x-direction'
+1.0d-12
+'hydraulic conductivity in y-direction'
+1.0d-12
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 74
+'layer c3'
+'hydraulic conductivity in x-direction'
+1.0d-12
+'hydraulic conductivity in y-direction'
+1.0d-12
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 75
+ 'layer n2'
+'hydraulic conductivity in x-direction'
+1.0d-10
+'hydraulic conductivity in y-direction'
+1.0d-10
+'hydraulic conductivity in z-direction'
+1.0d-10
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 76
+'layer c2'
+'hydraulic conductivity in x-direction'
+1.0d-10
+'hydraulic conductivity in y-direction'
+1.0d-10
+'hydraulic conductivity in z-direction'
+1.0d-10
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 77
+ 'layer n1'
+'hydraulic conductivity in x-direction'
+1.0d-12
+'hydraulic conductivity in y-direction'
+1.0d-12
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 78
+'layer c1'
+'hydraulic conductivity in x-direction'
+1.0d-12
+'hydraulic conductivity in y-direction'
+1.0d-12
+'hydraulic conductivity in z-direction'
+1.0d-12
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 79
+'drift n1'
+'hydraulic conductivity in x-direction'
+1.0d-8
+'hydraulic conductivity in y-direction'
+1.0d-8
+'hydraulic conductivity in z-direction'
+5.0d-9
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+! ---------------------------------------------
+! zone 80
+'drift c1'
+'hydraulic conductivity in x-direction'
+1.0d-8
+'hydraulic conductivity in y-direction'
+1.0d-8
+'hydraulic conductivity in z-direction'
+5.0d-9
+!'specific storage coefficient'
+1.0d-6
+
+'hydraulic conductivity change over depth'
+4.5  0.002469  4.5
+
+'soil hydraulic function parameters'
+0.14
+0.098
+3.2
+0.718
+0
+'end of zone'
+
+'done'
+
+!
+! Data Block 10B: physical parameters - energy balance
+! ---------------------------------------------------------------------------
+!
+'physical parameters - energy balance'
+1
+
+'specific heat of water'
+4182.0d0
+
+'number and name of zone'
+1
+'whole-basin' 
+ 
+'specific heat of solid'
+840.0d0 
+
+'water thermal conductivity in x-direction'
+0.6d0 
+
+'water thermal conductivity in y-direction'
+0.6d0
+
+'water thermal conductivity in z-direction'
+0.6d0
+
+'solid thermal conductivity in x-direction'
+3.5d0 
+
+'solid thermal conductivity in y-direction'
+3.5d0
+
+'solid thermal conductivity in z-direction'
+3.5d0
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'solid bulk density'
+2650.0d0 
+
+'extent of zone'
+-1.0E10 1.0E10 -1.0E10 1.0E10 -1.0E10 1.0E10
+
+'end of zone'
+
+'done'
+
+! Data Block 11: physical parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'physical parameters - reactive transport'
+
+'diffusion coefficients'
+1.484d-9                       ;aqueous phase
+1.0d-6                         ;gaseous phase
+
+! ---------------------------------------------------------------------------
+'all layers'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n39'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n38'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n37'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n36'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n35'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n34'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n33'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n32'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n31'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n30'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n29'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n28'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n27'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n26'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n25'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n24'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n23'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n22'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n21'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n20'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n19'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n18'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n17'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n16'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n15'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n14'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n13'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n12'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n11'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n10'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n9'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n8'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n7'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n6'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n5'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n4'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n3'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n2'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer n1'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'drift n1'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c38'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c37'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c36'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c35'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c34'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c33'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c32'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c31'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c30'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c29'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c28'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c27'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c26'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c25'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c24'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c23'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c22'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c21'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c20'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c19'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c18'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c17'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c16'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c15'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c14'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c13'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c12'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c11'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c10'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c9'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c8'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c7'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c6'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c5'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c4'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c3'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c2'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'layer c1'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'drift c1'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'transverse horizontal dispersivity'
+0.0
+
+'end of zone'
+
+'done'
+
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+!'read initial condition from vtk file'
+3                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'lake'
+
+'initial condition'
+176.0                          ;hydraulic head
+
+'extent of zone'
+-1.0E10 1.0E10 -1.0E10 1.0E10 -1.0E10 176.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'around lake'
+
+'initial condition'
+'gradient-top' 0.0d0
+'z'
+0.0d0
+1.0
+
+
+'extent of zone'
+-1.0E10 1.0E10 -1.0E10 1.0E10 176.0 179.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'above lake'
+
+'initial condition'
+'gradient-top' 0.0d0
+'z'
+-3.0d0
+1.0
+
+
+'extent of zone'
+-1.0E10 1.0E10 -1.0E10 1.0E10 179.0 1.0E10
+
+'end of zone'
+
+'done'
+
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+3                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'lake'
+
+'boundary type'
+'first'   176.0             ;hydraulic head
+
+'extent of zone: boundary nodes by material id'
+'read data range'
+1
+39,39
+
+
+'extent of zone: coordinates constraint'
+-1.0E10 1.0E10 -1.0E10 1.0E10 -1.0E10 176.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'around lake'
+
+'boundary type'
+'gradient-top' 0.0d0
+'z'
+0.0d0
+1.0
+
+'extent of zone: boundary nodes by material id'
+'read data range'
+1
+39,39
+
+'extent of zone: coordinates constraint'
+-1.0E10 1.0E10 -1.0E10 1.0E10 176.0 179.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'above lake'
+
+'boundary type'
+'gradient-top' 0.0d0
+'z'
+-3.0d0
+1.0
+
+'extent of zone: boundary nodes by material id'
+'read data range'
+1
+39,39
+
+'extent of zone: coordinates constraint'
+-1.0E10 1.0E10 -1.0E10 1.0E10 179.0 1.0E10
+
+'end of zone'
+
+'done'
+
+!
+! Data Block 12: initial condition - energy balance
+! ---------------------------------------------------------------------------
+!
+'initial condition - energy balance'
+!'read initial condition from vtk file'
+1                              ;number of zones
+
+!'geothermic gradient'
+!0.0233d0    ! gethermic gradient oC m-1
+!25.0d0       ! temperature in the top 
+
+'number and name of zone'
+1
+'whole-basin' 
+
+'initial condition'
+'gradient' 0.0d0
+'z'
+14.5
+-0.0192
+
+'extent of zone'
+-1.0E10 1.0E10 -1.0E10 1.0E10 -1.0E10 1.0E10
+
+'end of zone'
+
+
+'done'
+
+!
+! Data Block 13B: boundary conditions - energy balance
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - energy balance'
+2
+ 
+'number and name of zone'
+1
+'inflow'                                                                   
+                      
+'boundary type'
+'first'  45.22d0    ;14.5+0.0192*depth, Raymond Vugrinovich, 1989
+
+ 
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+1
+
+'end of zone' 
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'outflow'                                                                   
+                       
+'boundary type'
+'gradient' 0.0d0
+'z'
+14.5
+-0.0192
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+39
+
+'end of zone' 
+
+!'transient boundary conditions: values only'
+
+!'linear interpolation of boundary conditions'
+
+
+'done'
+
+! Data Block 15: initial condition - reactive transport
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+13                       ;number of zones without drift
+! ---------------------------------------------------------------------------
+!'read initial aqueous component concentrations from vtk file'
+!'read initial mineral volume fractions from vtk file'
+!'read initial mineral areas from file'
+!'read cec from file'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'dol3'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+6.75932E-01     'charge'  ;cl
+9.43780E-04     'free'    ;br
+5.60655E-01     'free'    ;na
+2.40170E-02     'free'    ;k
+5.93464E+00     'ph'      ;h
+6.41303E-07     'free'    ;co3
+4.18413E-02     'free'    ;ca
+4.97980E-03     'free'    ;mg
+1.17096E-04     'free'    ;so4
+3.75982E-16     'free'    ;o2(aq) 
+  
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.899   .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.001   .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  9.71d-3 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+2.5d0                       ;cation exchange capacity [meq/100 g solid]
+2.9d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+34, 39
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'sh3'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+3.30211E+00     'charge'  ;cl
+5.62775E-03     'free'    ;br
+2.77892E+00     'free'    ;na
+1.24976E-01     'free'    ;k     
+6.34820E+00     'ph'      ;h
+2.58535E-06     'free'    ;hco3
+1.88904E-01     'free'    ;ca
+1.34443E-02     'free'    ;mg
+4.67646E-05     'free'    ;so4
+4.72465E-16     'free'    ;o2(aq)  
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.09    .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.01    .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  8.99d-5 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  2.32d-4 0.00d0      ;phimin, scalfac, supsatm
+0.01    .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  1.25d-1 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+5.0d0                       ;cation exchange capacity [meq/100 g solid]
+2.65d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+31, 33
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'dol2'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+3.30308E+00     'charge'  ;cl
+5.62950E-03     'free'    ;br
+2.78006E+00     'free'    ;na
+1.25016E-01     'free'    ;k     
+6.34825E+00     'ph'      ;h
+2.73335E-06     'free'    ;hco3
+1.91347E-01     'free'    ;ca
+1.10749E-02     'free'    ;mg
+4.71612E-05     'free'    ;so4
+2.94336E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.899   .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  2.80d-6 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.001   .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  3.29d-2 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+2.5d0                       ;cation exchange capacity [meq/100 g solid]
+2.9d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+30, 30
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'sh2'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+3.30516E+00     'charge'  ;cl
+5.65154E-03     'free'    ;br
+2.77859E+00     'free'    ;na
+1.25055E-01     'free'    ;k     
+6.34884E+00     'ph'      ;h
+2.67622E-06     'free'    ;hco3
+1.90542E-01     'free'    ;ca
+1.38200E-02     'free'    ;mg
+6.54931E-05     'free'    ;so4
+3.67689E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.09    .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.01    .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.02    .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  9.46d-5 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  2.45d-4 0.00d0      ;phimin, scalfac, supsatm
+0.004    .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  1.25d-1 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+5.0d0                       ;cation exchange capacity [meq/100 g solid]
+2.65d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+29, 29
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'ev-back'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+3.30516E+00     'charge'  ;cl
+5.65154E-03     'free'    ;br
+2.77859E+00     'free'    ;na
+1.25055E-01     'free'    ;k     
+6.34884E+00     'ph'      ;h
+2.67622E-06     'free'    ;hco3
+1.90542E-01     'free'    ;ca
+1.38200E-02     'free'    ;mg
+6.54931E-05     'free'    ;so4
+3.67689E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.09    .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.01    .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.02    .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  9.46d-5 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  2.45d-4 0.00d0      ;phimin, scalfac, supsatm
+0.004    .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  1.25d-1 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+5.0d0                       ;cation exchange capacity [meq/100 g solid]
+2.65d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+28, 28
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+6
+'ev-1'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+6.06281E+00     'charge'  ;cl
+7.75566E-03     'free'    ;br
+5.45747E+00     'free'    ;na
+6.39666E-02     'free'    ;k     
+6.86842E+00     'ph'      ;h
+1.02791E-06     'free'    ;hco3
+2.68990E-01     'free'    ;ca
+1.71088E-02     'free'    ;mg
+1.15670E-02     'free'    ;so4
+9.57248E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.5     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.04    .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.36    .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+
+'sorption parameter input'
+2.5d0                       ;cation exchange capacity [meq/100 g solid]
+2.9d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+28, 28
+
+'extent of zone: layer depth constraint'
+400.0d0, 1600.0d0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+7
+'dol1'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+3.48905E+00     'charge'  ;cl
+9.70429E-03     'free'    ;br
+1.83021E+00     'free'    ;na
+5.72094E-02     'free'    ;k     
+6.41293E+00     'ph'      ;h
+1.86245E-06     'free'    ;hco3
+7.44056E-01     'free'    ;ca
+6.42039E-02     'free'    ;mg
+3.09211E-03     'free'    ;so4
+3.09625E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.899   .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.001   .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  9.90d-3 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+2.5d0                       ;cation exchange capacity [meq/100 g solid]
+2.9d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+17, 27
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+8
+'sh1'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+3.51415E+00     'charge'  ;cl
+9.81529E-03     'free'    ;br
+1.84029E+00     'free'    ;na
+5.77367E-02     'free'    ;k     
+6.41787E+00     'ph'      ;h
+1.79203E-06     'free'    ;hco3
+7.47842E-01     'free'    ;ca
+6.76881E-02     'free'    ;mg
+3.07390E-03     'free'    ;so4
+3.02502E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.09    .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.01    .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.02    .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  9.65d-5 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  2.50d-4 0.00d0      ;phimin, scalfac, supsatm
+0.004   .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  1.25d-1 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+5.0d0                       ;cation exchange capacity [meq/100 g solid]
+2.65d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+13, 16
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+9
+'lim1'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+3.51324E+00     'charge'  ;cl
+9.81042E-03     'free'    ;br
+1.83896E+00     'free'    ;na
+5.78476E-02     'free'    ;k     
+6.41843E+00     'ph'      ;h
+1.46667E-06     'free'    ;hco3
+7.34374E-01     'free'    ;ca
+8.13828E-02     'free'    ;mg
+3.14795E-03     'free'    ;so4
+1.93043E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.89    .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.01    .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  9.95d-2 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+2.5d0                       ;cation exchange capacity [meq/100 g solid]
+2.7d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+8, 12
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+10
+'sand1'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+5.23265E+00     'charge'  ;cl
+1.80053E-02     'free'    ;br
+2.09186E+00     'free'    ;na
+3.45708E-02     'free'    ;k     
+6.77381E+00     'ph'      ;h
+6.23744E-07     'free'    ;hco3
+1.41235E+00     'free'    ;ca
+1.48527E-01     'free'    ;mg
+3.09940E-04     'free'    ;so4
+3.29019E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.09    .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.01    .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.001   .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  2.80d-6 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.001   .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  3.29d-2 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+1.0d0                       ;cation exchange capacity [meq/100 g solid]
+2.8d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+6, 7
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+11
+'gneiss-w'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+5.23253E+00     'charge'  ;cl
+1.80049E-02     'free'    ;br
+2.09193E+00     'free'    ;na
+3.45892E-02     'free'    ;k     
+6.77409E+00     'ph'      ;h
+5.85133E-07     'free'    ;hco3
+1.40697E+00     'free'    ;ca
+1.53809E-01     'free'    ;mg
+3.12838E-04     'free'    ;so4
+3.15445E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.04    .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.1d-4  0.00d0      ;phimin, scalfac, supsatm
+0.007   .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.93d-5 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+1.0d0                       ;cation exchange capacity [meq/100 g solid]
+2.75d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+4, 5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+12
+'gneiss'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+5.23410E+00     'charge'  ;cl
+1.80109E-02     'free'    ;br
+2.09400E+00     'free'    ;na
+3.43764E-02     'free'    ;k     
+6.76920E+00     'ph'      ;h
+1.14593E-06     'free'    ;hco3
+1.49606E+00     'free'    ;ca
+6.44968E-02     'free'    ;mg
+3.06969E-04     'free'    ;so4
+1.63341E-16     'free'    ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.04    .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.1d-4  0.00d0      ;phimin, scalfac, supsatm
+0.007   .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2' 
+1.0d-7  1.93d-5 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2' 
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+1.0d0                       ;cation exchange capacity [meq/100 g solid]
+2.75d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+1, 3
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+13
+'top-20'
+
+'concentration input'      ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d-10         'free'    ;tracer
+0.2915E-02      'charge'  ;cl
+0.4000E-04      'free'    ;br
+0.5220E-03      'free'    ;na
+0.6400E-04      'free'    ;k
+    6.0         'ph'      ;h
+0.1722E-04      'free'    ;hco3
+0.6240E-03      'free'    ;ca
+0.8230E-03      'free'    ;mg
+0.2600E-03      'free'    ;so4
+0.21d0          'po2'     ;o2(aq)
+
+'mineral input'
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - halite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.1     .false. 'twothird'  ;phim, minequil, update_type  - calcite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.899   .false. 'twothird'  ;phim, minequil, update_type  - dolomite_diss
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - anhydrite
+1.0d-7  1.0d-7  0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'pyrite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'biotite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.0     .false. 'twothird'  ;phim, minequil, update_type  - 'chlorite-o2'
+1.0d-7  1.0d-20 0.00d0      ;phimin, scalfac, supsatm
+0.001   .false. 'twothird'  ;phim, minequil, update_type  - 'ch2o-o2'
+1.0d-7  9.71d-3 0.00d0      ;phimin, scalfac, supsatm
+
+
+'sorption parameter input'
+2.5d0                       ;cation exchange capacity [meq/100 g solid]
+2.9d0                        ;dry bulk density [g/cm^3]
+
+'equilibrate with fixed solution composition'
+
+'extent of zone: all nodes by material id'
+'read data range'
+1
+1, 39
+
+'extent of zone: layer depth constraint'
+0.0d0, 20.0d0
+
+'end of zone'
+
+
+'done'
+
+! Data Block 16: boundary conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - reactive transport'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'inflow boundary'
+
+'boundary type'
+'third'
+
+'concentration input'   ! rain water composition equilibrated with pco2=0.00034 [atm]
+!1.0d0           'free'    ;tracer
+0.2915E-02      'charge'  ;cl
+0.4000E-04      'free'    ;br
+0.5220E-03      'free'    ;na
+0.6400E-04      'free'    ;k     
+    6.0         'ph'      ;h
+0.1722E-04      'free'    ;hco3
+0.6240E-03      'free'    ;ca
+0.8230E-03      'free'    ;mg
+0.2600E-03      'free'    ;so4
+0.21d0          'po2'     ;o2(aq)
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+39
+
+'end of zone'
+
+'done'
+
+
+! Data Block 17: control parameter of ice Sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'control parameters - ice sheet loading/unloading' 
+
+'density of ice'
+920.0
+
+'scaling factor of pressure head and pore stress'
+0.0d0           ;scaling factor of pressure head due to ice sheet growth
+1.0d0           ;scaling factor of pore stress due to ice sheet growth
+0.95d0          ;scaling factor of pressure head due to ice sheet decay
+1.0d0           ;scaling factor of pore stress due to ice sheet decay
+
+'basal temperature of ice'
+0.0d0           ;basal temperature during ice sheet growth
+0.0d0           ;basal temperature during ice sheet decay
+
+
+!c isbc, add boundary condition indicator, relation with surface temperature
+!c facpw, Scale factor for pw, used to adjust pressure head
+!c facpice, Scale factor for pice, used to adjust por_stress
+!c 'concentration input', reactive transport bd when ice sheet is applied
+
+
+!.false.                     !constant ice sheet, NOT required
+!440000.0d0                  !lsource, NOT required
+!4000.0d0                    !zsource, NOT required
+!2.5d0                       ! a, NOT required
+!1.0d0                       ! b, NOT require
+!0.0d0	                    ! logkxx, NOT required
+!0.0d0	                    ! logkyy, NOT required
+!0.0d0	                    ! logkzz, NOT required
+!0.0d0                       ! temperature in the permafrost zone, NOT required
+!1.0d3                       ! ice density, added
+!1.0d3                       ! fresh water density, NOT required, already exists
+!3                           ! number of stages, NOT required
+!1			                 ! istage, NOT requried
+!.false.                     ! boundary condition of icesheet head bd, added to surface termperature bd
+!0.0d0                       ! Factor for pw, TO BE added
+!1.0d0                       ! Factor for pice, TO BE added
+!0.0d0   12500.0d0           ! time(1,i),time(2,i), NOT required
+!0.0d0   439950.0d0          ! l(1,i),l(2,i), NOT required
+!0.0d0   2000.0d0            ! h(1,i),h(2,i), NOT required 
+!140000.0d0  540000.0d0      ! l1perm(1,i),l1perm(2,i), NOT required
+!0.0d0   200000.0d0          ! l2perm(1,i),l2perm(2,i), NOT required
+!100.0d0    100.0d0          ! thickperm(1,i),thickperm(2,i), NOT required
+!2                           ! istage 
+!.false.
+!0.0d0                       ! Factor for pw
+!1.0d0                       ! Factor for pice 
+!12500.0d0  17500.0d0        ! time(1,i),time(2,i)
+!439950.0d0   439950.0d0     ! l(1,i),l(2,i)
+!2000.0d0   2000.0d0         ! h(1,i),h(2,i) 
+!540000.0d0  540000.0d0      ! l1perm(1,i),l1perm(2,i) 
+!200000.0d0   200000.0d0     ! l2perm(1,i),l2perm(2,i) 
+!100.0d0    100.0d0          ! thickperm(1,i),thickperm(2,i) 
+!3			    ! istage
+!.true.
+!0.95d0                      ! Factor for pw
+!1.0d0                       ! Factor for pice 
+!17500.0d0  22500.0d0        ! time(1,i),time(2,i)
+!439950.0d0 0.0d0            ! l(1,i),l(2,i)
+!2000.0d0   0.0d0            ! h(1,i),h(2,i) 
+!0.0d0      0.0d0            ! l1perm(1,i),l1perm(2,i) 
+!0.0d0      0.0d0            ! l2perm(1,i),l2perm(2,i) 
+!0.0d0      0.0d0            ! thickperm(1,i),thickperm(2,i) 
+
+!'concentration input'       ! NOT required, use transient boundary from react bd
+!0.2915E-02      'charge'  ;cl
+!0.4000E-04      'free'    ;br                        
+!0.5220E-03      'free'    ;na
+!0.6400E-04      'free'    ;k     
+!       6.0      'ph'      ;h
+!0.1722E-04      'free'    ;hco3
+!0.6240E-03      'free'    ;ca
+!0.8230E-03      'free'    ;mg
+!0.2600E-03      'free'    ;so4
+!1.0d0           'po2'     ;o2(aq) 
+
+!'compute permafrost'       ! used to adjust kxx, kyy, kzz, NOT required
+'done'
+
+! Data Block 18: physical parameter of ice Sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'physical parameters - ice sheet loading/unloading' 
+2
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'ice sheet basal nodes'
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+39
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'ice sheet basal cells'
+
+'extent of zone: boundary cells by material id'
+'read data'
+1
+38
+
+'end of zone'
+
+'done'
+
+! Data Block 19: initial condition of ice sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'initial condition - ice sheet loading/unloading' 
+!'read initial condition from file'
+!'read initial condition from vtk file'
+!'read initial condition from hdf5 file'
+
+2
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'lake-ice'
+
+'initial condition'
+!'gradient-top'
+!'z'
+!0.0          ;ice thickness
+! 0.0         ;ice thickness gradient over z
+
+'curve fitting ice sheet model'
+5.0           ;[m] sea level change
+4.4           ;[m/T] sea level change per temperature change
+-10.0         ;[m/m] ice thickness change per sea level change
+-5.0          ;[m], threshold of sea level change to form ice sheet
+1000.0        ;[m], threshold of elevation to form ice sheet
+
+!specified ice temperature and ice thickness directly
+!'first' 20.0
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+39
+
+'extent of zone: coordinates constraint'
+-1.0E10 1.0E10 -1.0E10 1.0E10 -1.0E10 176.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'above-lake-ice'
+
+'initial condition'
+!'gradient-top'
+!'z'
+!0.0          ;ice thickness
+! 0.0         ;ice thickness gradient over z
+
+'curve fitting ice sheet model'
+5.0           ;[m] sea level change
+4.4           ;[m/T] sea level change per temperature change
+-10.0         ;[m/m] ice thickness change per sea level change
+-5.0          ;[m], threshold of sea level change to form ice sheet
+1000.0        ;[m], threshold of elevation to form ice sheet
+
+!specified ice temperature and ice thickness directly
+!'first' 20.0
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+39
+
+'extent of zone: coordinates constraint'
+-1.0E10 1.0E10 -1.0E10 1.0E10 176.0 1.0E10
+
+'end of zone'
+
+'done'
+
+! Data Block 20: boundary conditions of ice sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - ice sheet loading/unloading' 
+2
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'lake-ice'
+
+
+'concentration input'
+!1.0d0           'free'    ;tracer
+0.2915E-02      'charge'  ;cl
+0.4000E-04      'free'    ;br                        
+0.5220E-03      'free'    ;na
+0.6400E-04      'free'    ;k     
+       6.0      'ph'      ;h
+0.1722E-04      'free'    ;hco3
+0.6240E-03      'free'    ;ca
+0.8230E-03      'free'    ;mg
+0.2600E-03      'free'    ;so4
+1.0d0           'po2'     ;o2(aq) 
+
+'boundary type'
+!'gradient-top'
+!'z'
+!0.0          ;ice thickness
+! 0.0         ;ice thickness gradient over z
+
+'curve fitting ice sheet model'
+5.0           ;[m] sea level change
+4.4           ;[m/T] sea level change per temperature change
+-10.0         ;[m/m] ice thickness change per sea level change
+-5.0          ;[m], threshold of sea level change to form ice sheet
+1000.0        ;[m], threshold of elevation to form ice sheet
+
+!specified ice temperature and ice thickness directly
+!'first' 20.0
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+39
+
+'extent of zone: coordinates constraint'
+-1.0E10 1.0E10 -1.0E10 1.0E10 -1.0E10 176.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'above-lake-ice'
+
+
+'concentration input'
+!1.0d0           'free'    ;tracer
+0.2915E-02      'charge'  ;cl
+0.4000E-04      'free'    ;br                        
+0.5220E-03      'free'    ;na
+0.6400E-04      'free'    ;k     
+       6.0      'ph'      ;h
+0.1722E-04      'free'    ;hco3
+0.6240E-03      'free'    ;ca
+0.8230E-03      'free'    ;mg
+0.2600E-03      'free'    ;so4
+1.0d0           'po2'     ;o2(aq) 
+
+'boundary type'
+!'gradient-top'
+!'z'
+!0.0          ;ice thickness
+! 0.0         ;ice thickness gradient over z
+
+'curve fitting ice sheet model'
+5.0           ;[m] sea level change
+4.4           ;[m/T] sea level change per temperature change
+-10.0         ;[m/m] ice thickness change per sea level change
+-5.0          ;[m], threshold of sea level change to form ice sheet
+1000.0        ;[m], threshold of elevation to form ice sheet
+
+!specified ice temperature and ice thickness directly
+!'first' 20.0
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+39
+
+'extent of zone: coordinates constraint'
+-1.0E10 1.0E10 -1.0E10 1.0E10 176.0 1.0E10
+
+'end of zone'
+
+'transient boundary conditions: values only'
+
+'linear interpolation of boundary conditions'
+
+'done'

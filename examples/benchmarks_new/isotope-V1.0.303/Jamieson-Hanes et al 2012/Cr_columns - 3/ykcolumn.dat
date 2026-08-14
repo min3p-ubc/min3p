@@ -1,0 +1,1176 @@
+! ykcolumn.dat
+
+!
+
+! Cr(VI) reduction in an organic carbon column - Y.Kim
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'1D - reactive transport - Homogeneous and heterogeneous reactions'
+
+.true.                        ;varsat_flow   1-d, 2-d
+
+.false.                       ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'done'
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'compute alkalinity'
+
+
+
+'define temperature'
+
+25.0
+
+
+
+'database directory'
+
+'database'
+
+
+
+'define input units'
+
+'mg/l'
+
+
+
+'components'
+
+13                            ;number of components (nc-1)
+
+'h+1'                         ;component names
+
+'co3-2'
+
+'ca+2'
+
+'50cro4-2'
+
+'cro4-2'
+
+'53cro4-2'
+
+'54cro4-2'
+
+'50cr(oh)2+'
+
+'cr(oh)2+'
+
+'53cr(oh)2+'
+
+'54cr(oh)2+' 
+
+'k+1'
+
+'mg+2'
+
+
+
+'secondary aqueous species'
+
+45                           ;number of secondary aqueous species
+
+'oh-'			     ;names of secondary aqueous species
+
+'mgoh+'
+
+'mgco3aq'
+
+'mghco3+'
+
+'caoh+'
+
+'cahco3+'
+
+'caco3aq'
+
+'hco3-'
+
+'h2co3aq'
+
+'50cr+3'
+
+'cr+3'
+
+'53cr+3'
+
+'54cr+3'
+
+'50cr(oh)+2'
+
+'cr(oh)+2'
+
+'53cr(oh)+2'
+
+'54cr(oh)+2'
+
+'50cr(oh)3aq'
+
+'cr(oh)3aq'
+
+'53cr(oh)3aq'
+
+'54cr(oh)3aq'
+
+'50cr(oh)4-'
+
+'cr(oh)4-'
+
+'53cr(oh)4-'
+
+'54cr(oh)4-'
+
+'50cro2-'
+
+'cro2-'
+
+'53cro2-'
+
+'54cro2-'
+
+'50hcro4-'
+
+'hcro4-'
+
+'53hcro4-'
+
+'54hcro4-'
+
+'50h2cro4aq'
+
+'h2cro4aq'
+
+'53h2cro4aq'
+
+'54h2cro4aq'
+
+'50cr2o7-2'
+
+'cr2o7-2'
+
+'53cr2o7-2'
+
+'54cr2o7-2'
+
+'50kcro4-'
+
+'kcro4-'
+
+'53kcro4-'
+
+'54kcro4-'
+
+
+
+
+
+
+
+
+
+'minerals'
+
+22                         ;number of minerals (nm)
+
+'52ch2o-cr3'
+
+'50ch2o-cr3'
+
+'53ch2o-cr3'
+
+'54ch2o-cr3'
+
+'52ch2o-cr3_2'
+
+'50ch2o-cr3_2'
+
+'53ch2o-cr3_2'
+
+'54ch2o-cr3_2'
+
+'calcite'
+
+'52cr(oh)3(a)'
+
+'50cr(oh)3(a)'
+
+'53cr(oh)3(a)'
+
+'54cr(oh)3(a)'
+
+'52k2cr2o7'
+
+'50k2cr2o7'
+
+'53k2cr2o7'
+
+'54k2cr2o7'
+
+'52k2cro4'
+
+'50k2cro4'
+
+'53k2cro4'
+
+'54k2cro4'
+
+'dolomite'
+
+
+
+'combine mineralogical parameters'
+
+'52ch2o-cr3'
+
+'52ch2o-cr3'
+
+'52ch2o-cr3'
+
+'52ch2o-cr3'
+
+'52ch2o-cr3_2'
+
+'52ch2o-cr3_2'
+
+'52ch2o-cr3_2'
+
+'52ch2o-cr3_2'
+
+'calcite'
+
+'52cr(oh)3(a)'
+
+'50cr(oh)3(a)'
+
+'53cr(oh)3(a)'
+
+'54cr(oh)3(a)'
+
+'52k2cr2o7'
+
+'50k2cr2o7'
+
+'53k2cr2o7'
+
+'54k2cr2o7'
+
+'52k2cro4'
+
+'50k2cro4'
+
+'53k2cro4'
+
+'54k2cro4'
+
+'dolomite'
+
+
+
+'excluded minerals'
+
+15
+
+'aragonite'
+
+'artinite'
+
+'brucite'
+
+'huntite'
+
+'hydrmagnesit'
+
+'magnesite'
+
+'nesquehonite'
+
+'lime'
+
+'portlandite'
+
+'periclase'
+
+'mgcr2o4'
+
+'cr2o3'
+
+'mgcro4'
+
+'cro3'
+
+'cacro4'
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+1                             ;number of discretization intervals in x
+
+41                            ;number of control volumes in x
+
+0. 0.40                       ;xmin,xmax
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in y
+
+0. 0.05                       ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+1                             ;number of control volumes in z
+
+0. 0.05                       ;zmin,zmax
+
+
+
+'done'
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'days'                        ;time unit
+
+0.0                           ;time at start of solution
+
+90.0                          ;final solution time
+
+0.1                           ;maximum time step
+
+1.0d-8                        ;minimum time step
+
+
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for num. differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+4.d0                          ;max. ionic stength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'days'                        ;time unit (local chemistry)
+
+
+
+'done'
+
+
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'
+
+
+
+'solver settings'
+
+0                             ;level_vs, incomplete factorization level
+
+100                           ;msolvit_vs, max. number of solver iterations
+
+0                             ;idetail_vs, solver information level
+
+1.0d-7                        ;restol_vs, solver residual tolerance
+
+1.0d-7                        ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'                    ;spatial weighting
+
+
+
+'activity update settings'
+
+'time_lagged'                 ;type of activity update
+
+
+
+'tortuosity correction'
+
+'millington'                  ;Millington-Quirk tortuosity correction
+
+
+
+'newton iteration settings'
+
+1.d-6                         ;increment h for numerical differentiation
+
+12                            ;anticipted number of Newton iterations
+
+20                            ;max. number of Newton iterations
+
+1.0d0                         ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.d-6                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+1                             ;incomplete factorization level
+
+20                            ;max. number of solver iterations
+
+1                             ;solver information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+
+
+'update porosity'
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+8                              ;number of output times (spatial data)
+
+5 10 18 19                     ;specified output times (spatial data)
+
+23 25 27 32 
+
+
+
+'output of transient data'
+
+2                             ;number of output locations (transient data)
+
+1                             ;time steps between output (transient data)
+
+1 41                          ;control volume number for transient data
+
+
+
+'isotope output'
+
+2                               ;number of isotope component sets for output
+
+4 'cro4-2' '50cro4-2' '53cro4-2' '54cro4-2'               ;number of components in set, master isotope, other isotopes, 
+
+0.05185645 0.11339197 0.02822566                                   ; and ratios of standard
+
+4 'cr(oh)2+' '50cr(oh)2+' '53cr(oh)2+' '54cr(oh)2+'  
+
+0.05185645 0.11339197 0.02822566 
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                             ;number of property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'column'
+
+0.4                          ;porosity
+
+
+
+'extent of zone'
+
+0.0 0.4  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'column'       ;name of zone
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.20d-5                        ;K_xx
+
+
+
+'specific storage coefficient'
+
+0.0                           ;S_s
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+1.0d-9                        ;aqueous phase
+
+0.0d0                         ;gaseous phase
+
+
+
+
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'column'
+
+
+
+'longitudinal dispersivity'
+
+0.019
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'column'
+
+
+
+'initial condition'
+
+1.0
+
+
+
+'extent of zone'
+
+0.0 0.40  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'boundary type'
+
+'second' 1.6d-6                ;specified flux (m s-1)
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'top'
+
+
+
+'boundary type'
+
+'first' 1.0                   ;hydraulic head
+
+
+
+'extent of zone'
+
+0.4 0.4  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+!'transient boundary conditions'
+
+
+
+'done'
+
+
+
+! Data Block 15: initial condition - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'column'
+
+
+
+'concentration input'
+
+5.16      	'ph'              'h+1'
+
+1.0   		'free'            'co3-2'
+
+34.66   	'free'            'ca+2'
+
+4.345d-10   	'free'            '50cro4-2'
+
+8.3789d-9   	'free'            '52cro4-2'
+
+9.501d-10   	'free'            '53cro4-2'
+
+2.365d-10   	'free'            '54cro4-2'
+
+1.00d-2  	'free'            '52cr(oh)2+'
+
+1.00d-2  	'free'            '50cr(oh)2+'
+
+1.00d-2  	'free'            '53cr(oh)2+'
+
+1.00d-2  	'free'            '54cr(oh)2+'
+
+1.00d-2 	'free'            'k+1'
+
+1.00d-2   	'free'            'mg+2'
+
+
+
+'mineral input'		       ;reactive
+
+8.00d-05  .false.  'constant'  ;52ch2o-cr3
+
+1.00d-10  3.0d-4     0.00d0    ;
+
+8.00d-05  .false.  'constant'  ;50ch2o-cr3
+
+1.00d-10  3.0d-4     0.00d0    ;
+
+8.00d-05  .false.  'constant'  ;53ch2o-cr3
+
+1.00d-10  3.0d-4     0.00d0    ;
+
+8.00d-05  .false.  'constant'  ;54ch2o-cr3
+
+1.00d-10  3.0d-4     0.00d0    ;
+
+5.00d-05  .false.  'constant'  ;52ch2o-cr3_2
+
+1.00d-10  1.0d-5     0.00d0    ;
+
+5.00d-05   .false.  'constant'  ;50ch2o-cr3_2
+
+1.00d-10  1.0d-5     0.00d0    ;
+
+5.00d-05  .false.  'constant'  ;53ch2o-cr3_2
+
+1.00d-10  1.0d-5     0.00d0    ;
+
+5.00d-05   .false.  'constant'  ;54ch2o-cr3_2
+
+1.00d-10  1.0d-5     0.00d0    
+
+1.00d-03  .false.   'constant' ;calcite
+
+1.00d-10  4.0d-9     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;52cr(oh)3(a)
+
+1.00d-10  1.1574d-10 0.00d0    ;
+
+1.00d-10  .false.   'constant' ;50cr(oh)3(a)
+
+1.00d-10  1.1574d-10 0.00d0    ;
+
+1.00d-10  .false.   'constant' ;53cr(oh)3(a)
+
+1.00d-10  1.1574d-10 0.00d0    ;
+
+1.00d-10  .false.   'constant' ;54cr(oh)3(a)
+
+1.00d-10  1.1574d-10 0.00d0    ;
+
+1.00d-10  .false.   'constant' ;52k2cr2o7
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-10  .false.   'constant' ;50k2cr2o7
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-10  .false.   'constant' ;53k2cr2o7
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-10  .false.   'constant' ;54k2cr2o7
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-20 .false.   'constant'  ;52k2cro4
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-20 .false.   'constant'  ;50k2cro4
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-20 .false.   'constant'  ;53k2cro4
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-20 .false.   'constant'  ;54k2cro4
+
+1.00d-10  1.16d-11    0.00d0   ;
+
+1.00d-03  .false.   'constant' ;dolomite
+
+1.00d-10  4.0d-9     0.00d0    ;
+
+
+
+'extent of zone'
+
+0.00 0.4 0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+!
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+'concentration input'
+
+5.16      	'ph'              'h+1'
+
+1.0   		'free'            'co3-2'
+
+34.66   	'free'            'ca+2'
+
+4.345d-10   	'free'            '50cro4-2'
+
+8.3789d-9   	'free'            '52cro4-2'
+
+9.501d-10   	'free'            '53cro4-2'
+
+2.365d-10   	'free'            '54cro4-2'
+
+1.00d-2  	'free'            '52cr(oh)2+'
+
+1.00d-2  	'free'            '50cr(oh)2+'
+
+1.00d-2  	'free'            '53cr(oh)2+'
+
+1.00d-2  	'free'            '54cr(oh)2+'
+
+1.00d-2 	'free'            'k+1'
+
+1.00d-2   	'free'            'mg+2'
+
+
+
+
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 0.05  0.0 0.05    ;extent of zone
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'top'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+'extent of zone'
+
+0.4 0.4  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+
+
+! ---------------------------------------------------------------------------
+
+'update boundary conditions'
+
+1                                ;number of target read times
+
+3                                ;target read times
+
+
+
+
+
+
+
+! Cr-spiked input solution
+
+! ---------------------------------------------------------------------------
+
+
+
+'start of target read time input'
+
+1
+
+
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+6.01    	'ph'              'h+1'
+
+48   		'free'            'co3-2'
+
+34.66   	'free'            'ca+2'
+
+2.01597572  	'free'            '50cro4-2'
+
+38.87608506   	'free'            '52cro4-2'
+
+4.408235976   	'free'            '53cro4-2'
+
+1.09730324 	'free'            '54cro4-2'
+
+1.00d-7  	'free'            '52cr(oh)2+'
+
+1.00d-7  	'free'            '50cr(oh)2+'
+
+1.00d-7  	'free'            '53cr(oh)2+'
+
+1.00d-7  	'free'            '54cr(oh)2+'
+
+15.01   	'free'            'k+1'
+
+1.00d-7   	'free'            'mg+2'
+
+
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+'done'
+

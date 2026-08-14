@@ -1,0 +1,389 @@
+ 
+  ************************** CRUNCH ******************************
+  ************************ VERSION 1.0 ***************************
+ 
+                      Author:  C.I. STEEFEL 
+  COPYRIGHT (c) 2000. The Regents of the University of California. 
+                       All Rights Reserved 
+ 
+  ****************************************************************
+  This work was produced at the University of California, Lawrence 
+  Livermore National Laboratory (UC LLNL) under contract no. W-7405-ENG-48 
+  (Contract 48) between the U.S. Department of Energy (DOE) and The Regents 
+  of the University of California (University) for the operation of UC LLNL. 
+  Copyright is reserved to the University for purposes of controlled dissem- 
+  ination, commercialization through formal licensing, or other disposition 
+  under terms of Contract 48; DOE policies, regulations and orders; and U.S. 
+  statutes. The rights of the Federal Government are reserved under Contract 
+  48 subject to the restrictions agreed upon by the DOE and University as 
+  allowed under DOE Acquisition Letter 97-1. 
+ 
+                                DISCLAIMER                            
+  This work was prepared as an account of work sponsored by an agency of the
+  United States Government. Neither the United States Government nor the 
+  University of California nor any of their employees, makes any warranty, 
+  express or implied, or assumes any liability or responsibility for the 
+  accuracy, completeness, or usefulness of any information, apparatus, product,
+  or process disclosed, or represents that its use would not infringe 
+  privately-owned rights.  Reference herein to any specific commercial products,
+  process, or service by trade name, trademark, manufacturer or otherwise does 
+  not necessarily constitute or imply its endorsement, recommendation, or 
+  favoring by the United States Government or the University of California. 
+  The views and opinions of authors expressed herein do not necessarily state 
+  or reflect those of the United States Government or the University of 
+  California, and shall not be used for advertising or product endorsement 
+  purposes. 
+  ****************************************************************
+ 
+ 
+                                                                          
+ 
+ 
+ 
+   ---> Using database: datacom_mingliang_simple_new.dbs                                                                    
+ 
+ 
+ Number of components =                     6
+ 
+  1 H+                
+  2 Cs+               
+  3 Na+               
+  4 K+                
+  5 Ca++              
+  6 Cl-               
+ 
+ Number of secondary species in input file =            2
+ 
+  1 OH-               
+  2 CaOH+             
+ 
+ Number of kinetic minerals =            0
+ 
+ 
+  Using database file: datacom_mingliang_simple_new.dbs
+ 
+  temperature interpolation coefficients
+                  ln(T+Tk)        1         T+Tk      (T+Tk)**-1   (t+tk)**-2
+ 
+    HOMOGENEOUS REACTIONS
+ 
+ Species         log K         Stoichiometric Coefficients
+                            H+     Cs+    Na+    K+     Ca++   Cl-    
+ OH-           1.3998E+01  -1.00   0.00   0.00   0.00   0.00   0.00
+ CaOH+         1.2780E+01  -1.00   0.00   0.00   0.00   1.00   0.00
+ 
+  ***KINETIC INPUTS***
+ 
+   MINERAL
+ 
+ 
+  ******  GEOCHEMICAL CONDITIONS INPUT  ******
+ 
+ Number of geochemical conditions specified =            3
+ 
+  Condition Label: infiltration_solution
+ 
+ 
+  Primary species    itype     guess      Total conc.  Constraint phase
+  H+                   7    2.5193E-08    0.0000E+00                       
+  Cs+                  1    1.0029E-06    2.0259E-02                       
+  Na+                  1    1.0029E-06    1.6047E-03                       
+  K+                   1    1.0029E-06    2.4070E-01                       
+  Ca++                 1    1.0029E-06    1.0029E-04                       
+  Cl-                  1    1.0029E-06    2.6076E-01                       
+ 
+  Porosity for this chemical condition =   0.2500
+ 
+ 
+ 
+  Condition Label: initial_condition
+ 
+ 
+  Primary species    itype     guess      Total conc.  Constraint phase
+  H+                   7    2.5193E-08    0.0000E+00                       
+  Cs+                  1    1.0029E-06    1.0029E-04                       
+  Na+                  1    1.0029E-06    2.4070E-01                       
+  K+                   1    1.0029E-06    1.6047E-03                       
+  Ca++                 1    1.0029E-06    2.6076E-02                       
+  Cl-                  1    1.0029E-06    2.9456E-01                       
+ 
+  Porosity for this chemical condition =   0.2500
+ 
+ 
+ 
+  Condition Label: initial_condition_right
+ 
+ 
+  Primary species    itype     guess      Total conc.  Constraint phase
+  H+                   7    2.5193E-08    0.0000E+00                       
+  Cs+                  1    1.0029E-06    1.0029E-04                       
+  Na+                  1    1.0029E-06    2.4070E-01                       
+  K+                   1    1.0029E-06    1.6047E-03                       
+  Ca++                 1    1.0029E-06    2.6076E-02                       
+  Cl-                  1    1.0029E-06    2.9456E-01                       
+ 
+  Porosity for this chemical condition =   0.2500
+ 
+ 
+ 
+   ********  SPECIATION OF GEOCHEMICAL CONDITIONS  ********
+ 
+ 
+ *********************************************
+  ---> GEOCHEMICAL CONDITION: infiltration_solution
+ 
+  Temperature (C)         =     25.000
+  Porosity                =      0.250
+  Liquid Saturation       =      1.000
+  Liquid Density (kg/m^3) =    997.075
+  Solid Density (kg/m^3)  =      0.000
+  Solid:Solution Ratio    =      0.000
+  Ionic Strength          =      0.262
+  Conversion (M->m)       =      1.003
+  Solution pH             =      7.599
+  Total Charge            =  2.005E-03
+ 
+ Total Aqueous Concentrations of Primary Species  
+ --------------------------------------- 
+ 
+ Species                Molality     Constraint    Constraint Phase 
+ H+                  -5.5042E-07     Activity                        
+ Cs+                  2.0259E-02     Total                           
+ Na+                  1.6047E-03     Total                           
+ K+                   2.4070E-01     Total                           
+ Ca++                 1.0029E-04     Total                           
+ Cl-                  2.6076E-01     Total                           
+ 
+ Exchangers        Equiv/kgw        Equiv/g solid  Equiv/m^3 bulk
+FES-               0.0000E+00       0.0000E+00
+II-                0.0000E+00       0.0000E+00
+PS-                0.0000E+00       0.0000E+00
+ 
+ Total Concentrations in Exchange Sites 
+ -------------------------------------- 
+ 
+ Primary Species   Moles/kgw       Moles/g solid   Equiv/g solid
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  NaFES                   -Inf     -7.996     0.000E+00     1.008E-08                Exchange
+  NaII                    -Inf     -4.530     0.000E+00     2.954E-05                Exchange
+  NaPS                    -Inf     -3.344     0.000E+00     4.525E-04                Exchange
+  KFES                    -Inf     -3.438     0.000E+00     3.650E-04                Exchange
+  KII                     -Inf     -0.271     0.000E+00     5.359E-01                Exchange
+  KPS                     -Inf     -0.086     0.000E+00     8.209E-01                Exchange
+  CaPS2                   -Inf     -4.636     0.000E+00     2.313E-05                Exchange
+  CsFES                   -Inf      0.000     0.000E+00     9.996E-01                Exchange
+  CsII                    -Inf     -0.333     0.000E+00     4.641E-01                Exchange
+  CsPS                    -Inf     -0.748     0.000E+00     1.786E-01                Exchange
+  H+                    -7.495     -7.599     3.200E-08     2.519E-08     7.873E-01  Aqueous 
+  Cs+                   -1.693     -1.954     2.026E-02     1.111E-02     5.482E-01  Aqueous 
+  Na+                   -2.795     -2.951     1.605E-03     1.120E-03     6.982E-01  Aqueous 
+  K+                    -0.619     -0.792     2.407E-01     1.614E-01     6.707E-01  Aqueous 
+  Ca++                  -3.999     -4.518     1.003E-04     3.031E-05     3.022E-01  Aqueous 
+  Cl-                   -0.584     -0.748     2.608E-01     1.786E-01     6.850E-01  Aqueous 
+  OH-                   -6.235     -6.399     5.822E-07     3.988E-07     6.850E-01  Aqueous 
+  CaOH+                 -9.570     -9.700     2.693E-10     1.997E-10     7.415E-01  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ****** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ *********************************************
+  ---> GEOCHEMICAL CONDITION: initial_condition
+ 
+  Temperature (C)         =     25.000
+  Porosity                =      0.250
+  Liquid Saturation       =      1.000
+  Liquid Density (kg/m^3) =    997.075
+  Solid Density (kg/m^3)  =   2500.000
+  Solid:Solution Ratio    =   7522.001
+  Ionic Strength          =      0.321
+  Conversion (M->m)       =      1.003
+  Solution pH             =      7.599
+  Total Charge            = -2.940E-08
+ 
+ Total Aqueous Concentrations of Primary Species  
+ --------------------------------------- 
+ 
+ Species                Molality     Constraint    Constraint Phase 
+ H+                  -6.3116E-07     Activity                        
+ Cs+                  1.0029E-04     Total                           
+ Na+                  2.4070E-01     Total                           
+ K+                   1.6047E-03     Total                           
+ Ca++                 2.6076E-02     Total                           
+ Cl-                  2.9456E-01     Total                           
+ 
+ Exchangers        Equiv/kgw        Equiv/g solid  Equiv/m^3 bulk
+FES-               1.3788E-04       1.8330E-08     3.4369E-02
+II-                1.1027E-02       1.4660E-06     2.7488E+00
+PS-                4.3974E-02       5.8460E-06     1.0961E+01
+ 
+ Total Concentrations in Exchange Sites 
+ -------------------------------------- 
+ 
+ Primary Species   Moles/kgw       Moles/g solid   Equiv/g solid
+Cs+                2.8267E-03       3.7579E-07     3.7579E-07
+Na+                2.9167E-02       3.8776E-06     3.8776E-06
+K+                 5.8007E-03       7.7117E-07     7.7117E-07
+Ca++               8.6721E-03       1.1529E-06     2.3058E-06
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  NaFES                 -7.357     -3.497     4.392E-08     3.185E-04                Exchange
+  NaII                  -2.319     -0.362     4.796E-03     4.350E-01                Exchange
+  NaPS                  -1.613     -0.256     2.437E-02     5.542E-01                Exchange
+  KFES                  -7.153     -3.293     7.027E-08     5.097E-04                Exchange
+  KII                   -2.415     -0.457     3.846E-03     3.488E-01                Exchange
+  KPS                   -2.709     -1.352     1.954E-03     4.444E-02                Exchange
+  CaPS2                 -2.062     -0.404     8.672E-03     3.944E-01                Exchange
+  CsFES                 -3.861      0.000     1.378E-04     9.992E-01                Exchange
+  CsII                  -2.623     -0.665     2.385E-03     2.162E-01                Exchange
+  CsPS                  -3.517     -2.160     3.043E-04     6.921E-03                Exchange
+  H+                    -7.491     -7.599     3.230E-08     2.519E-08     7.799E-01  Aqueous 
+  Cs+                   -3.999     -4.288     1.003E-04     5.157E-05     5.142E-01  Aqueous 
+  Na+                   -0.619     -0.784     2.407E-01     1.644E-01     6.830E-01  Aqueous 
+  K+                    -2.795     -2.980     1.605E-03     1.047E-03     6.526E-01  Aqueous 
+  Ca++                  -1.584     -2.130     2.608E-02     7.420E-03     2.846E-01  Aqueous 
+  Cl-                   -0.531     -0.706     2.946E-01     1.969E-01     6.685E-01  Aqueous 
+  OH-                   -6.224     -6.399     5.965E-07     3.988E-07     6.685E-01  Aqueous 
+  CaOH+                 -7.174     -7.311     6.693E-08     4.888E-08     7.304E-01  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ****** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ *********************************************
+  ---> GEOCHEMICAL CONDITION: initial_condition_right
+ 
+  Temperature (C)         =     25.000
+  Porosity                =      0.250
+  Liquid Saturation       =      1.000
+  Liquid Density (kg/m^3) =    997.075
+  Solid Density (kg/m^3)  =   2500.000
+  Solid:Solution Ratio    =   7522.001
+  Ionic Strength          =      0.321
+  Conversion (M->m)       =      1.003
+  Solution pH             =      7.599
+  Total Charge            = -2.940E-08
+ 
+ Total Aqueous Concentrations of Primary Species  
+ --------------------------------------- 
+ 
+ Species                Molality     Constraint    Constraint Phase 
+ H+                  -6.3116E-07     Activity                        
+ Cs+                  1.0029E-04     Total                           
+ Na+                  2.4070E-01     Total                           
+ K+                   1.6047E-03     Total                           
+ Ca++                 2.6076E-02     Total                           
+ Cl-                  2.9456E-01     Total                           
+ 
+ Exchangers        Equiv/kgw        Equiv/g solid  Equiv/m^3 bulk
+FES-               5.5136E-03       7.3300E-07     1.3744E+00
+II-                1.1027E-02       1.4660E-06     2.7488E+00
+PS-                3.8595E-02       5.1310E-06     9.6206E+00
+ 
+ Total Concentrations in Exchange Sites 
+ -------------------------------------- 
+ 
+ Primary Species   Moles/kgw       Moles/g solid   Equiv/g solid
+Cs+                8.1607E-03       1.0849E-06     1.0849E-06
+Na+                2.6188E-02       3.4815E-06     3.4815E-06
+K+                 5.5644E-03       7.3975E-07     7.3975E-07
+Ca++               7.6115E-03       1.0119E-06     2.0238E-06
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  NaFES                 -5.755     -3.497     1.756E-06     3.185E-04                Exchange
+  NaII                  -2.319     -0.362     4.796E-03     4.350E-01                Exchange
+  NaPS                  -1.670     -0.256     2.139E-02     5.542E-01                Exchange
+  KFES                  -5.551     -3.293     2.810E-06     5.097E-04                Exchange
+  KII                   -2.415     -0.457     3.846E-03     3.488E-01                Exchange
+  KPS                   -2.766     -1.352     1.715E-03     4.444E-02                Exchange
+  CaPS2                 -2.119     -0.404     7.611E-03     3.944E-01                Exchange
+  CsFES                 -2.259      0.000     5.509E-03     9.992E-01                Exchange
+  CsII                  -2.623     -0.665     2.385E-03     2.162E-01                Exchange
+  CsPS                  -3.573     -2.160     2.671E-04     6.921E-03                Exchange
+  H+                    -7.491     -7.599     3.230E-08     2.519E-08     7.799E-01  Aqueous 
+  Cs+                   -3.999     -4.288     1.003E-04     5.157E-05     5.142E-01  Aqueous 
+  Na+                   -0.619     -0.784     2.407E-01     1.644E-01     6.830E-01  Aqueous 
+  K+                    -2.795     -2.980     1.605E-03     1.047E-03     6.526E-01  Aqueous 
+  Ca++                  -1.584     -2.130     2.608E-02     7.420E-03     2.846E-01  Aqueous 
+  Cl-                   -0.531     -0.706     2.946E-01     1.969E-01     6.685E-01  Aqueous 
+  OH-                   -6.224     -6.399     5.965E-07     3.988E-07     6.685E-01  Aqueous 
+  CaOH+                 -7.174     -7.311     6.693E-08     4.888E-08     7.304E-01  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ****** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+                SPECIATION OF  
+      INITIAL AND BOUNDARY CONDITIONS 
+           SUCCESSFULLY COMPLETED
+ 
+ 
+   NZ =            1
+ 
+  Cell  Distance (m)
+   1    5.000E-01
+ 
+ 
+ Number of heterogeneities =            2
+ 
+ 
+ Parameters for this run:
+ 
+  Maximum timestep (yrs) =    2.283E-06
+  Maximum timestep (yrs) =    1.142E-21
+ 
+ --> Porosity set by "fix_porosity" or "set_porosity" keywords
+ ----> No update of porosity
+ --> Extended Debye-Huckel activity model used
+ --> Activity coefficients only computed
+     at beginning of time step 
+ 
+  Temperature (C) at J = 1            25.00
+  Temperature gradient (C/m) =         0.00
+ 
+ Graphics files printed at (yrs)
+   1.1416E-21
+   1.1416E-04
+   2.2831E-04
+   5.7078E-04
+   2.2831E-03
+
+ 
+  Constant velocities have been specified
+ 
+   X Darcy velocity =   8.750000000000000E-005
+   Y Darcy velocity =   0.000000000000000E+000
+ 
+ 
+ 
+ 
+   Using constant diffusion coefficient
+  Diffusion coefficient (m**2/yr) =       0.0000E+00
+ 
+ 
+  Longitudinal dispersivity (m) =     0.0000E+00
+  Transverse dispersivity (m) =       0.0000E+00
+ 
+ 
+         INITIALIZATION COMPLETED 
+          STARTING TIMESTEPPING 
+ 

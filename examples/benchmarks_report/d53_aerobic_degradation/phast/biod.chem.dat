@@ -1,0 +1,128 @@
+SOLUTION_MASTER_SPECIES
+
+Toluene   Toluene       0     C7H8  92.13
+
+
+
+SOLUTION_SPECIES
+
+Toluene = Toluene
+
+ log_k   0.0
+
+
+
+SOLUTION 1 Influent water
+
+ units mol/l
+
+ temp        25.0
+
+ pH          7.0 charge
+
+ O(0)        2e-10
+
+ Toluene     0.001
+
+ Cl          0.001
+
+ C           1e-10
+
+ Na          0.001
+
+
+
+SOLUTION 2 Background water
+
+ units mol/l
+
+ temp        25.0
+
+ pH          7.0 charge
+
+ O(0)        2e-3
+
+ Toluene     1e-10
+
+ Cl          1e-10
+
+ C           1e-10
+
+ Na          1e-10
+
+
+
+END
+
+
+
+KINETICS 1
+
+C7H8_degradation
+
+ -formula Toluene 1.0 C7H8 -1.0
+
+ -m0  0.0
+
+ -runge_kutta 6
+
+
+
+RATES
+
+C7H8_degradation
+
+-start
+
+10 Ks = 1.0d-5
+
+15 Ks2 = 1.0d-10
+
+20 Ka = 3.125d-6
+
+25 Ka2 = 1.0d-10
+
+30 qm = 1.0e-9
+
+40 f1 = MOL("Toluene")/(Ks + MOL("Toluene"))
+
+45 f1 = f1 * (MOL("Toluene")/(Ks2 + MOL("Toluene")))^2
+
+50 f2 = MOL("O2")/(Ka + MOL("O2"))
+
+55 f2 = f2*(MOL("O2")/(Ka2 + MOL("O2")))^2
+
+60 rate = -qm * f1 * f2
+
+70 moles = rate * TIME
+
+80 PUT(rate, 1)
+
+90 SAVE moles
+
+-end
+
+
+
+SELECTED_OUTPUT
+
+        -file biod.sel
+
+        -reset false
+
+USER_PUNCH
+
+-headings Toluene O2(aq) C reaction_increment
+
+10 PUNCH TOT("Toluene"),  MOL("O2"), TOT("C")
+
+20 rate = GET(1)*86400
+
+30 rate2 = -rate
+
+40 PUNCH rate2
+
+
+
+END
+

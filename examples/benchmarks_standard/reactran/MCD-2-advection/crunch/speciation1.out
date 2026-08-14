@@ -1,0 +1,3902 @@
+# Time          4.0000E+01
+ 
+ **************************************************************
+ ------> GRID LOCATION:     1:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =     10.000
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0199E-04     Aqueous      
+ Cl-                  1.0005E-04     Aqueous      
+ Na+                  9.9976E-05     Aqueous      
+ NO3-                 4.4960E-10     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                   -10.000    -10.000     1.001E-10     1.001E-10     1.000E+00  Aqueous 
+  Cl-                   -4.000     -4.000     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     9.998E-05     9.998E-05     1.000E+00  Aqueous 
+  NO3-                  -9.347     -9.347     4.496E-10     4.496E-10     1.000E+00  Aqueous 
+  OH-                   -3.991     -3.991     1.020E-04     1.020E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     2:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.999
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0190E-04     Aqueous      
+ Cl-                  1.0011E-04     Aqueous      
+ Na+                  9.9945E-05     Aqueous      
+ NO3-                 9.5596E-10     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.999     -9.999     1.002E-10     1.002E-10     1.000E+00  Aqueous 
+  Cl-                   -4.000     -4.000     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     9.994E-05     9.994E-05     1.000E+00  Aqueous 
+  NO3-                  -9.020     -9.020     9.560E-10     9.560E-10     1.000E+00  Aqueous 
+  OH-                   -3.992     -3.992     1.019E-04     1.019E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     3:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.999
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0178E-04     Aqueous      
+ Cl-                  1.0019E-04     Aqueous      
+ Na+                  9.9904E-05     Aqueous      
+ NO3-                 1.6625E-09     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.999     -9.999     1.003E-10     1.003E-10     1.000E+00  Aqueous 
+  Cl-                   -3.999     -3.999     1.002E-04     1.002E-04     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     9.990E-05     9.990E-05     1.000E+00  Aqueous 
+  NO3-                  -8.779     -8.779     1.663E-09     1.663E-09     1.000E+00  Aqueous 
+  OH-                   -3.992     -3.992     1.018E-04     1.018E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     4:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.998
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0163E-04     Aqueous      
+ Cl-                  1.0029E-04     Aqueous      
+ Na+                  9.9853E-05     Aqueous      
+ NO3-                 2.6205E-09     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.998     -9.998     1.004E-10     1.004E-10     1.000E+00  Aqueous 
+  Cl-                   -3.999     -3.999     1.003E-04     1.003E-04     1.000E+00  Aqueous 
+  Na+                   -4.001     -4.001     9.985E-05     9.985E-05     1.000E+00  Aqueous 
+  NO3-                  -8.582     -8.582     2.621E-09     2.621E-09     1.000E+00  Aqueous 
+  OH-                   -3.993     -3.993     1.016E-04     1.016E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     5:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.997
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0145E-04     Aqueous      
+ Cl-                  1.0041E-04     Aqueous      
+ Na+                  9.9790E-05     Aqueous      
+ NO3-                 3.8893E-09     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.997     -9.997     1.006E-10     1.006E-10     1.000E+00  Aqueous 
+  Cl-                   -3.998     -3.998     1.004E-04     1.004E-04     1.000E+00  Aqueous 
+  Na+                   -4.001     -4.001     9.979E-05     9.979E-05     1.000E+00  Aqueous 
+  NO3-                  -8.410     -8.410     3.889E-09     3.889E-09     1.000E+00  Aqueous 
+  OH-                   -3.994     -3.994     1.014E-04     1.014E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     6:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.996
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0123E-04     Aqueous      
+ Cl-                  1.0055E-04     Aqueous      
+ Na+                  9.9712E-05     Aqueous      
+ NO3-                 5.5367E-09     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.996     -9.996     1.008E-10     1.008E-10     1.000E+00  Aqueous 
+  Cl-                   -3.998     -3.998     1.005E-04     1.005E-04     1.000E+00  Aqueous 
+  Na+                   -4.001     -4.001     9.971E-05     9.971E-05     1.000E+00  Aqueous 
+  NO3-                  -8.257     -8.257     5.537E-09     5.537E-09     1.000E+00  Aqueous 
+  OH-                   -3.995     -3.995     1.012E-04     1.012E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     7:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.995
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0097E-04     Aqueous      
+ Cl-                  1.0071E-04     Aqueous      
+ Na+                  9.9617E-05     Aqueous      
+ NO3-                 7.6393E-09     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.995     -9.995     1.011E-10     1.011E-10     1.000E+00  Aqueous 
+  Cl-                   -3.997     -3.997     1.007E-04     1.007E-04     1.000E+00  Aqueous 
+  Na+                   -4.002     -4.002     9.962E-05     9.962E-05     1.000E+00  Aqueous 
+  NO3-                  -8.117     -8.117     7.639E-09     7.639E-09     1.000E+00  Aqueous 
+  OH-                   -3.996     -3.996     1.010E-04     1.010E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     8:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.994
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0066E-04     Aqueous      
+ Cl-                  1.0090E-04     Aqueous      
+ Na+                  9.9503E-05     Aqueous      
+ NO3-                 1.0282E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.994     -9.994     1.014E-10     1.014E-10     1.000E+00  Aqueous 
+  Cl-                   -3.996     -3.996     1.009E-04     1.009E-04     1.000E+00  Aqueous 
+  Na+                   -4.002     -4.002     9.950E-05     9.950E-05     1.000E+00  Aqueous 
+  NO3-                  -7.988     -7.988     1.028E-08     1.028E-08     1.000E+00  Aqueous 
+  OH-                   -3.997     -3.997     1.007E-04     1.007E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:     9:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.992
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0030E-04     Aqueous      
+ Cl-                  1.0112E-04     Aqueous      
+ Na+                  9.9367E-05     Aqueous      
+ NO3-                 1.3556E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.992     -9.992     1.018E-10     1.018E-10     1.000E+00  Aqueous 
+  Cl-                   -3.995     -3.995     1.011E-04     1.011E-04     1.000E+00  Aqueous 
+  Na+                   -4.003     -4.003     9.937E-05     9.937E-05     1.000E+00  Aqueous 
+  NO3-                  -7.868     -7.868     1.356E-08     1.356E-08     1.000E+00  Aqueous 
+  OH-                   -3.999     -3.999     1.003E-04     1.003E-04     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    10:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.991
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.9881E-05     Aqueous      
+ Cl-                  1.0137E-04     Aqueous      
+ Na+                  9.9207E-05     Aqueous      
+ NO3-                 1.7563E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.991     -9.991     1.022E-10     1.022E-10     1.000E+00  Aqueous 
+  Cl-                   -3.994     -3.994     1.014E-04     1.014E-04     1.000E+00  Aqueous 
+  Na+                   -4.003     -4.003     9.921E-05     9.921E-05     1.000E+00  Aqueous 
+  NO3-                  -7.755     -7.755     1.756E-08     1.756E-08     1.000E+00  Aqueous 
+  OH-                   -4.001     -4.001     9.988E-05     9.988E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    11:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.989
+  Total Charge       = -1.021E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.9403E-05     Aqueous      
+ Cl-                  1.0166E-04     Aqueous      
+ Na+                  9.9020E-05     Aqueous      
+ NO3-                 2.2406E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.989     -9.989     1.027E-10     1.027E-10     1.000E+00  Aqueous 
+  Cl-                   -3.993     -3.993     1.017E-04     1.017E-04     1.000E+00  Aqueous 
+  Na+                   -4.004     -4.004     9.902E-05     9.902E-05     1.000E+00  Aqueous 
+  NO3-                  -7.650     -7.650     2.241E-08     2.241E-08     1.000E+00  Aqueous 
+  OH-                   -4.003     -4.003     9.940E-05     9.940E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    12:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.986
+  Total Charge       = -1.020E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.8856E-05     Aqueous      
+ Cl-                  1.0197E-04     Aqueous      
+ Na+                  9.8805E-05     Aqueous      
+ NO3-                 2.8195E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.986     -9.986     1.033E-10     1.033E-10     1.000E+00  Aqueous 
+  Cl-                   -3.992     -3.992     1.020E-04     1.020E-04     1.000E+00  Aqueous 
+  Na+                   -4.005     -4.005     9.880E-05     9.880E-05     1.000E+00  Aqueous 
+  NO3-                  -7.550     -7.550     2.820E-08     2.820E-08     1.000E+00  Aqueous 
+  OH-                   -4.005     -4.005     9.886E-05     9.886E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    13:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.983
+  Total Charge       = -1.020E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.8236E-05     Aqueous      
+ Cl-                  1.0232E-04     Aqueous      
+ Na+                  9.8559E-05     Aqueous      
+ NO3-                 3.5040E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.983     -9.983     1.039E-10     1.039E-10     1.000E+00  Aqueous 
+  Cl-                   -3.990     -3.990     1.023E-04     1.023E-04     1.000E+00  Aqueous 
+  Na+                   -4.006     -4.006     9.856E-05     9.856E-05     1.000E+00  Aqueous 
+  NO3-                  -7.455     -7.455     3.504E-08     3.504E-08     1.000E+00  Aqueous 
+  OH-                   -4.008     -4.008     9.824E-05     9.824E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    14:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.980
+  Total Charge       = -1.020E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.7535E-05     Aqueous      
+ Cl-                  1.0269E-04     Aqueous      
+ Na+                  9.8282E-05     Aqueous      
+ NO3-                 4.3049E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.980     -9.980     1.046E-10     1.046E-10     1.000E+00  Aqueous 
+  Cl-                   -3.988     -3.988     1.027E-04     1.027E-04     1.000E+00  Aqueous 
+  Na+                   -4.008     -4.008     9.828E-05     9.828E-05     1.000E+00  Aqueous 
+  NO3-                  -7.366     -7.366     4.305E-08     4.305E-08     1.000E+00  Aqueous 
+  OH-                   -4.011     -4.011     9.753E-05     9.753E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    15:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.977
+  Total Charge       = -1.019E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.6744E-05     Aqueous      
+ Cl-                  1.0309E-04     Aqueous      
+ Na+                  9.7975E-05     Aqueous      
+ NO3-                 5.2326E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.977     -9.977     1.055E-10     1.055E-10     1.000E+00  Aqueous 
+  Cl-                   -3.987     -3.987     1.031E-04     1.031E-04     1.000E+00  Aqueous 
+  Na+                   -4.009     -4.009     9.798E-05     9.798E-05     1.000E+00  Aqueous 
+  NO3-                  -7.281     -7.281     5.233E-08     5.233E-08     1.000E+00  Aqueous 
+  OH-                   -4.014     -4.014     9.674E-05     9.674E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    16:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.973
+  Total Charge       = -1.018E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.5856E-05     Aqueous      
+ Cl-                  1.0351E-04     Aqueous      
+ Na+                  9.7642E-05     Aqueous      
+ NO3-                 6.2969E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.973     -9.973     1.065E-10     1.065E-10     1.000E+00  Aqueous 
+  Cl-                   -3.985     -3.985     1.035E-04     1.035E-04     1.000E+00  Aqueous 
+  Na+                   -4.010     -4.010     9.764E-05     9.764E-05     1.000E+00  Aqueous 
+  NO3-                  -7.201     -7.201     6.297E-08     6.297E-08     1.000E+00  Aqueous 
+  OH-                   -4.018     -4.018     9.586E-05     9.586E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    17:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.968
+  Total Charge       = -1.016E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.4859E-05     Aqueous      
+ Cl-                  1.0395E-04     Aqueous      
+ Na+                  9.7287E-05     Aqueous      
+ NO3-                 7.5059E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.968     -9.968     1.076E-10     1.076E-10     1.000E+00  Aqueous 
+  Cl-                   -3.983     -3.983     1.039E-04     1.039E-04     1.000E+00  Aqueous 
+  Na+                   -4.012     -4.012     9.729E-05     9.729E-05     1.000E+00  Aqueous 
+  NO3-                  -7.125     -7.125     7.506E-08     7.506E-08     1.000E+00  Aqueous 
+  OH-                   -4.023     -4.023     9.486E-05     9.486E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    18:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.963
+  Total Charge       = -1.013E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.3743E-05     Aqueous      
+ Cl-                  1.0438E-04     Aqueous      
+ Na+                  9.6919E-05     Aqueous      
+ NO3-                 8.8662E-08     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.963     -9.963     1.089E-10     1.089E-10     1.000E+00  Aqueous 
+  Cl-                   -3.981     -3.981     1.044E-04     1.044E-04     1.000E+00  Aqueous 
+  Na+                   -4.014     -4.014     9.692E-05     9.692E-05     1.000E+00  Aqueous 
+  NO3-                  -7.052     -7.052     8.866E-08     8.866E-08     1.000E+00  Aqueous 
+  OH-                   -4.028     -4.028     9.374E-05     9.374E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    19:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.957
+  Total Charge       = -1.008E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.2493E-05     Aqueous      
+ Cl-                  1.0479E-04     Aqueous      
+ Na+                  9.6548E-05     Aqueous      
+ NO3-                 1.0382E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.957     -9.957     1.104E-10     1.104E-10     1.000E+00  Aqueous 
+  Cl-                   -3.980     -3.980     1.048E-04     1.048E-04     1.000E+00  Aqueous 
+  Na+                   -4.015     -4.015     9.655E-05     9.655E-05     1.000E+00  Aqueous 
+  NO3-                  -6.984     -6.984     1.038E-07     1.038E-07     1.000E+00  Aqueous 
+  OH-                   -4.034     -4.034     9.249E-05     9.249E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    20:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.951
+  Total Charge       = -1.002E-04
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.1096E-05     Aqueous      
+ Cl-                  1.0517E-04     Aqueous      
+ Na+                  9.6188E-05     Aqueous      
+ NO3-                 1.2055E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.951     -9.951     1.120E-10     1.120E-10     1.000E+00  Aqueous 
+  Cl-                   -3.978     -3.978     1.052E-04     1.052E-04     1.000E+00  Aqueous 
+  Na+                   -4.017     -4.017     9.619E-05     9.619E-05     1.000E+00  Aqueous 
+  NO3-                  -6.919     -6.919     1.205E-07     1.205E-07     1.000E+00  Aqueous 
+  OH-                   -4.040     -4.040     9.110E-05     9.110E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    21:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.943
+  Total Charge       = -9.931E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -8.9540E-05     Aqueous      
+ Cl-                  1.0549E-04     Aqueous      
+ Na+                  9.5856E-05     Aqueous      
+ NO3-                 1.3883E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.943     -9.943     1.140E-10     1.140E-10     1.000E+00  Aqueous 
+  Cl-                   -3.977     -3.977     1.055E-04     1.055E-04     1.000E+00  Aqueous 
+  Na+                   -4.018     -4.018     9.586E-05     9.586E-05     1.000E+00  Aqueous 
+  NO3-                  -6.858     -6.858     1.388E-07     1.388E-07     1.000E+00  Aqueous 
+  OH-                   -4.048     -4.048     8.954E-05     8.954E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    22:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.935
+  Total Charge       = -9.814E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -8.7811E-05     Aqueous      
+ Cl-                  1.0574E-04     Aqueous      
+ Na+                  9.5568E-05     Aqueous      
+ NO3-                 1.5862E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.935     -9.935     1.162E-10     1.162E-10     1.000E+00  Aqueous 
+  Cl-                   -3.976     -3.976     1.057E-04     1.057E-04     1.000E+00  Aqueous 
+  Na+                   -4.020     -4.020     9.557E-05     9.557E-05     1.000E+00  Aqueous 
+  NO3-                  -6.800     -6.800     1.586E-07     1.586E-07     1.000E+00  Aqueous 
+  OH-                   -4.056     -4.056     8.781E-05     8.781E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    23:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.925
+  Total Charge       = -9.662E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -8.5899E-05     Aqueous      
+ Cl-                  1.0588E-04     Aqueous      
+ Na+                  9.5343E-05     Aqueous      
+ NO3-                 1.7982E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.925     -9.925     1.188E-10     1.188E-10     1.000E+00  Aqueous 
+  Cl-                   -3.975     -3.975     1.059E-04     1.059E-04     1.000E+00  Aqueous 
+  Na+                   -4.021     -4.021     9.534E-05     9.534E-05     1.000E+00  Aqueous 
+  NO3-                  -6.745     -6.745     1.798E-07     1.798E-07     1.000E+00  Aqueous 
+  OH-                   -4.066     -4.066     8.590E-05     8.590E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    24:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.914
+  Total Charge       = -9.471E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -8.3800E-05     Aqueous      
+ Cl-                  1.0591E-04     Aqueous      
+ Na+                  9.5199E-05     Aqueous      
+ NO3-                 2.0232E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.914     -9.914     1.218E-10     1.218E-10     1.000E+00  Aqueous 
+  Cl-                   -3.975     -3.975     1.059E-04     1.059E-04     1.000E+00  Aqueous 
+  Na+                   -4.021     -4.021     9.520E-05     9.520E-05     1.000E+00  Aqueous 
+  NO3-                  -6.694     -6.694     2.023E-07     2.023E-07     1.000E+00  Aqueous 
+  OH-                   -4.077     -4.077     8.380E-05     8.380E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    25:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.902
+  Total Charge       = -9.238E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -8.1511E-05     Aqueous      
+ Cl-                  1.0580E-04     Aqueous      
+ Na+                  9.5152E-05     Aqueous      
+ NO3-                 2.2595E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.902     -9.902     1.252E-10     1.252E-10     1.000E+00  Aqueous 
+  Cl-                   -3.976     -3.976     1.058E-04     1.058E-04     1.000E+00  Aqueous 
+  Na+                   -4.022     -4.022     9.515E-05     9.515E-05     1.000E+00  Aqueous 
+  NO3-                  -6.646     -6.646     2.260E-07     2.260E-07     1.000E+00  Aqueous 
+  OH-                   -4.089     -4.089     8.151E-05     8.151E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    26:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.889
+  Total Charge       = -8.961E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -7.9038E-05     Aqueous      
+ Cl-                  1.0553E-04     Aqueous      
+ Na+                  9.5216E-05     Aqueous      
+ NO3-                 2.5054E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.889     -9.889     1.291E-10     1.291E-10     1.000E+00  Aqueous 
+  Cl-                   -3.977     -3.977     1.055E-04     1.055E-04     1.000E+00  Aqueous 
+  Na+                   -4.021     -4.021     9.522E-05     9.522E-05     1.000E+00  Aqueous 
+  NO3-                  -6.601     -6.601     2.505E-07     2.505E-07     1.000E+00  Aqueous 
+  OH-                   -4.102     -4.102     7.904E-05     7.904E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    27:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.874
+  Total Charge       = -8.638E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -7.6391E-05     Aqueous      
+ Cl-                  1.0512E-04     Aqueous      
+ Na+                  9.5402E-05     Aqueous      
+ NO3-                 2.7588E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.874     -9.874     1.336E-10     1.336E-10     1.000E+00  Aqueous 
+  Cl-                   -3.978     -3.978     1.051E-04     1.051E-04     1.000E+00  Aqueous 
+  Na+                   -4.020     -4.020     9.540E-05     9.540E-05     1.000E+00  Aqueous 
+  NO3-                  -6.559     -6.559     2.759E-07     2.759E-07     1.000E+00  Aqueous 
+  OH-                   -4.117     -4.117     7.639E-05     7.639E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    28:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.858
+  Total Charge       = -8.272E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -7.3588E-05     Aqueous      
+ Cl-                  1.0454E-04     Aqueous      
+ Na+                  9.5716E-05     Aqueous      
+ NO3-                 3.0177E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.858     -9.858     1.387E-10     1.387E-10     1.000E+00  Aqueous 
+  Cl-                   -3.981     -3.981     1.045E-04     1.045E-04     1.000E+00  Aqueous 
+  Na+                   -4.019     -4.019     9.572E-05     9.572E-05     1.000E+00  Aqueous 
+  NO3-                  -6.520     -6.520     3.018E-07     3.018E-07     1.000E+00  Aqueous 
+  OH-                   -4.133     -4.133     7.359E-05     7.359E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    29:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.840
+  Total Charge       = -7.864E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -7.0651E-05     Aqueous      
+ Cl-                  1.0382E-04     Aqueous      
+ Na+                  9.6159E-05     Aqueous      
+ NO3-                 3.2799E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.840     -9.840     1.445E-10     1.445E-10     1.000E+00  Aqueous 
+  Cl-                   -3.984     -3.984     1.038E-04     1.038E-04     1.000E+00  Aqueous 
+  Na+                   -4.017     -4.017     9.616E-05     9.616E-05     1.000E+00  Aqueous 
+  NO3-                  -6.484     -6.484     3.280E-07     3.280E-07     1.000E+00  Aqueous 
+  OH-                   -4.151     -4.151     7.065E-05     7.065E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    30:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.821
+  Total Charge       = -7.420E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -6.7609E-05     Aqueous      
+ Cl-                  1.0296E-04     Aqueous      
+ Na+                  9.6725E-05     Aqueous      
+ NO3-                 3.5436E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.821     -9.821     1.510E-10     1.510E-10     1.000E+00  Aqueous 
+  Cl-                   -3.987     -3.987     1.030E-04     1.030E-04     1.000E+00  Aqueous 
+  Na+                   -4.014     -4.014     9.673E-05     9.673E-05     1.000E+00  Aqueous 
+  NO3-                  -6.451     -6.451     3.544E-07     3.544E-07     1.000E+00  Aqueous 
+  OH-                   -4.170     -4.170     6.761E-05     6.761E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    31:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.801
+  Total Charge       = -6.946E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -6.4493E-05     Aqueous      
+ Cl-                  1.0199E-04     Aqueous      
+ Na+                  9.7406E-05     Aqueous      
+ NO3-                 3.8068E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.801     -9.801     1.583E-10     1.583E-10     1.000E+00  Aqueous 
+  Cl-                   -3.991     -3.991     1.020E-04     1.020E-04     1.000E+00  Aqueous 
+  Na+                   -4.011     -4.011     9.741E-05     9.741E-05     1.000E+00  Aqueous 
+  NO3-                  -6.419     -6.419     3.807E-07     3.807E-07     1.000E+00  Aqueous 
+  OH-                   -4.190     -4.190     6.449E-05     6.449E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    32:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.779
+  Total Charge       = -6.450E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -6.1335E-05     Aqueous      
+ Cl-                  1.0094E-04     Aqueous      
+ Na+                  9.8186E-05     Aqueous      
+ NO3-                 4.0683E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.779     -9.779     1.664E-10     1.664E-10     1.000E+00  Aqueous 
+  Cl-                   -3.996     -3.996     1.009E-04     1.009E-04     1.000E+00  Aqueous 
+  Na+                   -4.008     -4.008     9.819E-05     9.819E-05     1.000E+00  Aqueous 
+  NO3-                  -6.391     -6.391     4.068E-07     4.068E-07     1.000E+00  Aqueous 
+  OH-                   -4.212     -4.212     6.134E-05     6.134E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    33:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.756
+  Total Charge       = -5.938E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -5.8168E-05     Aqueous      
+ Cl-                  9.9827E-05     Aqueous      
+ Na+                  9.9046E-05     Aqueous      
+ NO3-                 4.3266E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.756     -9.756     1.755E-10     1.755E-10     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.983E-05     9.983E-05     1.000E+00  Aqueous 
+  Na+                   -4.004     -4.004     9.905E-05     9.905E-05     1.000E+00  Aqueous 
+  NO3-                  -6.364     -6.364     4.327E-07     4.327E-07     1.000E+00  Aqueous 
+  OH-                   -4.235     -4.235     5.817E-05     5.817E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    34:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.732
+  Total Charge       = -5.421E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -5.5024E-05     Aqueous      
+ Cl-                  9.8688E-05     Aqueous      
+ Na+                  9.9962E-05     Aqueous      
+ NO3-                 4.5810E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.732     -9.732     1.855E-10     1.855E-10     1.000E+00  Aqueous 
+  Cl-                   -4.006     -4.006     9.869E-05     9.869E-05     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     9.996E-05     9.996E-05     1.000E+00  Aqueous 
+  NO3-                  -6.339     -6.339     4.581E-07     4.581E-07     1.000E+00  Aqueous 
+  OH-                   -4.259     -4.259     5.502E-05     5.502E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    35:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.707
+  Total Charge       = -4.906E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -5.1930E-05     Aqueous      
+ Cl-                  9.7554E-05     Aqueous      
+ Na+                  1.0091E-04     Aqueous      
+ NO3-                 4.8310E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.707     -9.707     1.965E-10     1.965E-10     1.000E+00  Aqueous 
+  Cl-                   -4.011     -4.011     9.755E-05     9.755E-05     1.000E+00  Aqueous 
+  Na+                   -3.996     -3.996     1.009E-04     1.009E-04     1.000E+00  Aqueous 
+  NO3-                  -6.316     -6.316     4.831E-07     4.831E-07     1.000E+00  Aqueous 
+  OH-                   -4.285     -4.285     5.193E-05     5.193E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    36:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.681
+  Total Charge       = -4.401E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -4.8912E-05     Aqueous      
+ Cl-                  9.6453E-05     Aqueous      
+ Na+                  1.0186E-04     Aqueous      
+ NO3-                 5.0760E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.681     -9.681     2.087E-10     2.087E-10     1.000E+00  Aqueous 
+  Cl-                   -4.016     -4.016     9.645E-05     9.645E-05     1.000E+00  Aqueous 
+  Na+                   -3.992     -3.992     1.019E-04     1.019E-04     1.000E+00  Aqueous 
+  NO3-                  -6.294     -6.294     5.076E-07     5.076E-07     1.000E+00  Aqueous 
+  OH-                   -4.311     -4.311     4.891E-05     4.891E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    37:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.654
+  Total Charge       = -3.914E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -4.5988E-05     Aqueous      
+ Cl-                  9.5412E-05     Aqueous      
+ Na+                  1.0280E-04     Aqueous      
+ NO3-                 5.3162E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.654     -9.654     2.219E-10     2.219E-10     1.000E+00  Aqueous 
+  Cl-                   -4.020     -4.020     9.541E-05     9.541E-05     1.000E+00  Aqueous 
+  Na+                   -3.988     -3.988     1.028E-04     1.028E-04     1.000E+00  Aqueous 
+  NO3-                  -6.274     -6.274     5.316E-07     5.316E-07     1.000E+00  Aqueous 
+  OH-                   -4.337     -4.337     4.599E-05     4.599E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    38:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.626
+  Total Charge       = -3.450E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -4.3173E-05     Aqueous      
+ Cl-                  9.4452E-05     Aqueous      
+ Na+                  1.0368E-04     Aqueous      
+ NO3-                 5.5513E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.626     -9.626     2.364E-10     2.364E-10     1.000E+00  Aqueous 
+  Cl-                   -4.025     -4.025     9.445E-05     9.445E-05     1.000E+00  Aqueous 
+  Na+                   -3.984     -3.984     1.037E-04     1.037E-04     1.000E+00  Aqueous 
+  NO3-                  -6.256     -6.256     5.551E-07     5.551E-07     1.000E+00  Aqueous 
+  OH-                   -4.365     -4.365     4.317E-05     4.317E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    39:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.598
+  Total Charge       = -3.015E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -4.0479E-05     Aqueous      
+ Cl-                  9.3591E-05     Aqueous      
+ Na+                  1.0450E-04     Aqueous      
+ NO3-                 5.7816E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.598     -9.598     2.522E-10     2.522E-10     1.000E+00  Aqueous 
+  Cl-                   -4.029     -4.029     9.359E-05     9.359E-05     1.000E+00  Aqueous 
+  Na+                   -3.981     -3.981     1.045E-04     1.045E-04     1.000E+00  Aqueous 
+  NO3-                  -6.238     -6.238     5.782E-07     5.782E-07     1.000E+00  Aqueous 
+  OH-                   -4.393     -4.393     4.048E-05     4.048E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    40:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.570
+  Total Charge       = -2.611E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -3.7912E-05     Aqueous      
+ Cl-                  9.2840E-05     Aqueous      
+ Na+                  1.0524E-04     Aqueous      
+ NO3-                 6.0070E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.570     -9.570     2.692E-10     2.692E-10     1.000E+00  Aqueous 
+  Cl-                   -4.032     -4.032     9.284E-05     9.284E-05     1.000E+00  Aqueous 
+  Na+                   -3.978     -3.978     1.052E-04     1.052E-04     1.000E+00  Aqueous 
+  NO3-                  -6.221     -6.221     6.007E-07     6.007E-07     1.000E+00  Aqueous 
+  OH-                   -4.421     -4.421     3.791E-05     3.791E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    41:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.541
+  Total Charge       = -2.243E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -3.5474E-05     Aqueous      
+ Cl-                  9.2207E-05     Aqueous      
+ Na+                  1.0587E-04     Aqueous      
+ NO3-                 6.2277E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.541     -9.541     2.877E-10     2.877E-10     1.000E+00  Aqueous 
+  Cl-                   -4.035     -4.035     9.221E-05     9.221E-05     1.000E+00  Aqueous 
+  Na+                   -3.975     -3.975     1.059E-04     1.059E-04     1.000E+00  Aqueous 
+  NO3-                  -6.206     -6.206     6.228E-07     6.228E-07     1.000E+00  Aqueous 
+  OH-                   -4.450     -4.450     3.547E-05     3.547E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    42:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.512
+  Total Charge       = -1.910E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -3.3165E-05     Aqueous      
+ Cl-                  9.1696E-05     Aqueous      
+ Na+                  1.0640E-04     Aqueous      
+ NO3-                 6.4435E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.512     -9.512     3.078E-10     3.078E-10     1.000E+00  Aqueous 
+  Cl-                   -4.038     -4.038     9.170E-05     9.170E-05     1.000E+00  Aqueous 
+  Na+                   -3.973     -3.973     1.064E-04     1.064E-04     1.000E+00  Aqueous 
+  NO3-                  -6.191     -6.191     6.443E-07     6.443E-07     1.000E+00  Aqueous 
+  OH-                   -4.479     -4.479     3.316E-05     3.316E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    43:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.482
+  Total Charge       = -1.613E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -3.0982E-05     Aqueous      
+ Cl-                  9.1305E-05     Aqueous      
+ Na+                  1.0682E-04     Aqueous      
+ NO3-                 6.6542E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.482     -9.482     3.294E-10     3.294E-10     1.000E+00  Aqueous 
+  Cl-                   -4.040     -4.040     9.130E-05     9.130E-05     1.000E+00  Aqueous 
+  Na+                   -3.971     -3.971     1.068E-04     1.068E-04     1.000E+00  Aqueous 
+  NO3-                  -6.177     -6.177     6.654E-07     6.654E-07     1.000E+00  Aqueous 
+  OH-                   -4.509     -4.509     3.098E-05     3.098E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    44:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.452
+  Total Charge       = -1.351E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.8922E-05     Aqueous      
+ Cl-                  9.1030E-05     Aqueous      
+ Na+                  1.0712E-04     Aqueous      
+ NO3-                 6.8598E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.452     -9.452     3.529E-10     3.529E-10     1.000E+00  Aqueous 
+  Cl-                   -4.041     -4.041     9.103E-05     9.103E-05     1.000E+00  Aqueous 
+  Na+                   -3.970     -3.970     1.071E-04     1.071E-04     1.000E+00  Aqueous 
+  NO3-                  -6.164     -6.164     6.860E-07     6.860E-07     1.000E+00  Aqueous 
+  OH-                   -4.539     -4.539     2.892E-05     2.892E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    45:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.422
+  Total Charge       = -1.123E-05
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.6979E-05     Aqueous      
+ Cl-                  9.0863E-05     Aqueous      
+ Na+                  1.0732E-04     Aqueous      
+ NO3-                 7.0598E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.422     -9.422     3.783E-10     3.783E-10     1.000E+00  Aqueous 
+  Cl-                   -4.042     -4.042     9.086E-05     9.086E-05     1.000E+00  Aqueous 
+  Na+                   -3.969     -3.969     1.073E-04     1.073E-04     1.000E+00  Aqueous 
+  NO3-                  -6.151     -6.151     7.060E-07     7.060E-07     1.000E+00  Aqueous 
+  OH-                   -4.569     -4.569     2.698E-05     2.698E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    46:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.392
+  Total Charge       = -9.255E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.5148E-05     Aqueous      
+ Cl-                  9.0797E-05     Aqueous      
+ Na+                  1.0742E-04     Aqueous      
+ NO3-                 7.2539E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.392     -9.392     4.059E-10     4.059E-10     1.000E+00  Aqueous 
+  Cl-                   -4.042     -4.042     9.080E-05     9.080E-05     1.000E+00  Aqueous 
+  Na+                   -3.969     -3.969     1.074E-04     1.074E-04     1.000E+00  Aqueous 
+  NO3-                  -6.139     -6.139     7.254E-07     7.254E-07     1.000E+00  Aqueous 
+  OH-                   -4.599     -4.599     2.515E-05     2.515E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    47:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.361
+  Total Charge       = -7.570E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.3422E-05     Aqueous      
+ Cl-                  9.0822E-05     Aqueous      
+ Na+                  1.0742E-04     Aqueous      
+ NO3-                 7.4417E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.361     -9.361     4.358E-10     4.358E-10     1.000E+00  Aqueous 
+  Cl-                   -4.042     -4.042     9.082E-05     9.082E-05     1.000E+00  Aqueous 
+  Na+                   -3.969     -3.969     1.074E-04     1.074E-04     1.000E+00  Aqueous 
+  NO3-                  -6.128     -6.128     7.442E-07     7.442E-07     1.000E+00  Aqueous 
+  OH-                   -4.630     -4.630     2.342E-05     2.342E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    48:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.329
+  Total Charge       = -6.144E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.1795E-05     Aqueous      
+ Cl-                  9.0925E-05     Aqueous      
+ Na+                  1.0734E-04     Aqueous      
+ NO3-                 7.6227E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.329     -9.329     4.683E-10     4.683E-10     1.000E+00  Aqueous 
+  Cl-                   -4.041     -4.041     9.093E-05     9.093E-05     1.000E+00  Aqueous 
+  Na+                   -3.969     -3.969     1.073E-04     1.073E-04     1.000E+00  Aqueous 
+  NO3-                  -6.118     -6.118     7.623E-07     7.623E-07     1.000E+00  Aqueous 
+  OH-                   -4.662     -4.662     2.180E-05     2.180E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    49:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.298
+  Total Charge       = -4.950E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.0262E-05     Aqueous      
+ Cl-                  9.1097E-05     Aqueous      
+ Na+                  1.0719E-04     Aqueous      
+ NO3-                 7.7965E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.298     -9.298     5.037E-10     5.037E-10     1.000E+00  Aqueous 
+  Cl-                   -4.040     -4.040     9.110E-05     9.110E-05     1.000E+00  Aqueous 
+  Na+                   -3.970     -3.970     1.072E-04     1.072E-04     1.000E+00  Aqueous 
+  NO3-                  -6.108     -6.108     7.796E-07     7.796E-07     1.000E+00  Aqueous 
+  OH-                   -4.693     -4.693     2.026E-05     2.026E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    50:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.266
+  Total Charge       = -3.959E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.8817E-05     Aqueous      
+ Cl-                  9.1325E-05     Aqueous      
+ Na+                  1.0698E-04     Aqueous      
+ NO3-                 7.9627E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.266     -9.266     5.424E-10     5.424E-10     1.000E+00  Aqueous 
+  Cl-                   -4.039     -4.039     9.133E-05     9.133E-05     1.000E+00  Aqueous 
+  Na+                   -3.971     -3.971     1.070E-04     1.070E-04     1.000E+00  Aqueous 
+  NO3-                  -6.099     -6.099     7.963E-07     7.963E-07     1.000E+00  Aqueous 
+  OH-                   -4.725     -4.725     1.882E-05     1.882E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    51:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.233
+  Total Charge       = -3.144E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.7455E-05     Aqueous      
+ Cl-                  9.1601E-05     Aqueous      
+ Na+                  1.0672E-04     Aqueous      
+ NO3-                 8.1210E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.233     -9.233     5.847E-10     5.847E-10     1.000E+00  Aqueous 
+  Cl-                   -4.038     -4.038     9.160E-05     9.160E-05     1.000E+00  Aqueous 
+  Na+                   -3.972     -3.972     1.067E-04     1.067E-04     1.000E+00  Aqueous 
+  NO3-                  -6.090     -6.090     8.121E-07     8.121E-07     1.000E+00  Aqueous 
+  OH-                   -4.758     -4.758     1.746E-05     1.746E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    52:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.200
+  Total Charge       = -2.480E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.6172E-05     Aqueous      
+ Cl-                  9.1913E-05     Aqueous      
+ Na+                  1.0643E-04     Aqueous      
+ NO3-                 8.2711E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.200     -9.200     6.311E-10     6.311E-10     1.000E+00  Aqueous 
+  Cl-                   -4.037     -4.037     9.191E-05     9.191E-05     1.000E+00  Aqueous 
+  Na+                   -3.973     -3.973     1.064E-04     1.064E-04     1.000E+00  Aqueous 
+  NO3-                  -6.082     -6.082     8.271E-07     8.271E-07     1.000E+00  Aqueous 
+  OH-                   -4.791     -4.791     1.617E-05     1.617E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    53:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.166
+  Total Charge       = -1.943E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.4962E-05     Aqueous      
+ Cl-                  9.2252E-05     Aqueous      
+ Na+                  1.0611E-04     Aqueous      
+ NO3-                 8.4130E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.166     -9.166     6.821E-10     6.821E-10     1.000E+00  Aqueous 
+  Cl-                   -4.035     -4.035     9.225E-05     9.225E-05     1.000E+00  Aqueous 
+  Na+                   -3.974     -3.974     1.061E-04     1.061E-04     1.000E+00  Aqueous 
+  NO3-                  -6.075     -6.075     8.413E-07     8.413E-07     1.000E+00  Aqueous 
+  OH-                   -4.825     -4.825     1.496E-05     1.496E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    54:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.132
+  Total Charge       = -1.512E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.3824E-05     Aqueous      
+ Cl-                  9.2612E-05     Aqueous      
+ Na+                  1.0578E-04     Aqueous      
+ NO3-                 8.5464E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.132     -9.132     7.383E-10     7.383E-10     1.000E+00  Aqueous 
+  Cl-                   -4.033     -4.033     9.261E-05     9.261E-05     1.000E+00  Aqueous 
+  Na+                   -3.976     -3.976     1.058E-04     1.058E-04     1.000E+00  Aqueous 
+  NO3-                  -6.068     -6.068     8.546E-07     8.546E-07     1.000E+00  Aqueous 
+  OH-                   -4.859     -4.859     1.382E-05     1.382E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    55:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.097
+  Total Charge       = -1.170E-06
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.2752E-05     Aqueous      
+ Cl-                  9.2984E-05     Aqueous      
+ Na+                  1.0543E-04     Aqueous      
+ NO3-                 8.6714E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.097     -9.097     8.004E-10     8.004E-10     1.000E+00  Aqueous 
+  Cl-                   -4.032     -4.032     9.298E-05     9.298E-05     1.000E+00  Aqueous 
+  Na+                   -3.977     -3.977     1.054E-04     1.054E-04     1.000E+00  Aqueous 
+  NO3-                  -6.062     -6.062     8.671E-07     8.671E-07     1.000E+00  Aqueous 
+  OH-                   -4.894     -4.894     1.275E-05     1.275E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    56:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.061
+  Total Charge       = -8.997E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.1744E-05     Aqueous      
+ Cl-                  9.3362E-05     Aqueous      
+ Na+                  1.0508E-04     Aqueous      
+ NO3-                 8.7881E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.061     -9.061     8.691E-10     8.691E-10     1.000E+00  Aqueous 
+  Cl-                   -4.030     -4.030     9.336E-05     9.336E-05     1.000E+00  Aqueous 
+  Na+                   -3.978     -3.978     1.051E-04     1.051E-04     1.000E+00  Aqueous 
+  NO3-                  -6.056     -6.056     8.788E-07     8.788E-07     1.000E+00  Aqueous 
+  OH-                   -4.930     -4.930     1.174E-05     1.174E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    57:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      9.024
+  Total Charge       = -6.882E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.0796E-05     Aqueous      
+ Cl-                  9.3742E-05     Aqueous      
+ Na+                  1.0474E-04     Aqueous      
+ NO3-                 8.8966E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -9.024     -9.024     9.454E-10     9.454E-10     1.000E+00  Aqueous 
+  Cl-                   -4.028     -4.028     9.374E-05     9.374E-05     1.000E+00  Aqueous 
+  Na+                   -3.980     -3.980     1.047E-04     1.047E-04     1.000E+00  Aqueous 
+  NO3-                  -6.051     -6.051     8.897E-07     8.897E-07     1.000E+00  Aqueous 
+  OH-                   -4.967     -4.967     1.080E-05     1.080E-05     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    58:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.987
+  Total Charge       = -5.237E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.9061E-06     Aqueous      
+ Cl-                  9.4119E-05     Aqueous      
+ Na+                  1.0440E-04     Aqueous      
+ NO3-                 8.9971E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.987     -8.987     1.030E-09     1.030E-09     1.000E+00  Aqueous 
+  Cl-                   -4.026     -4.026     9.412E-05     9.412E-05     1.000E+00  Aqueous 
+  Na+                   -3.981     -3.981     1.044E-04     1.044E-04     1.000E+00  Aqueous 
+  NO3-                  -6.046     -6.046     8.997E-07     8.997E-07     1.000E+00  Aqueous 
+  OH-                   -5.004     -5.004     9.907E-06     9.907E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    59:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.949
+  Total Charge       = -3.968E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.0713E-06     Aqueous      
+ Cl-                  9.4489E-05     Aqueous      
+ Na+                  1.0407E-04     Aqueous      
+ NO3-                 9.0901E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.949     -8.949     1.125E-09     1.125E-09     1.000E+00  Aqueous 
+  Cl-                   -4.025     -4.025     9.449E-05     9.449E-05     1.000E+00  Aqueous 
+  Na+                   -3.983     -3.983     1.041E-04     1.041E-04     1.000E+00  Aqueous 
+  NO3-                  -6.041     -6.041     9.090E-07     9.090E-07     1.000E+00  Aqueous 
+  OH-                   -5.042     -5.042     9.072E-06     9.072E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    60:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.910
+  Total Charge       = -2.995E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -8.2890E-06     Aqueous      
+ Cl-                  9.4850E-05     Aqueous      
+ Na+                  1.0376E-04     Aqueous      
+ NO3-                 9.1756E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.910     -8.910     1.231E-09     1.231E-09     1.000E+00  Aqueous 
+  Cl-                   -4.023     -4.023     9.485E-05     9.485E-05     1.000E+00  Aqueous 
+  Na+                   -3.984     -3.984     1.038E-04     1.038E-04     1.000E+00  Aqueous 
+  NO3-                  -6.037     -6.037     9.176E-07     9.176E-07     1.000E+00  Aqueous 
+  OH-                   -5.081     -5.081     8.290E-06     8.290E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    61:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.870
+  Total Charge       = -2.255E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -7.5568E-06     Aqueous      
+ Cl-                  9.5200E-05     Aqueous      
+ Na+                  1.0346E-04     Aqueous      
+ NO3-                 9.2543E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.870     -8.870     1.350E-09     1.350E-09     1.000E+00  Aqueous 
+  Cl-                   -4.021     -4.021     9.520E-05     9.520E-05     1.000E+00  Aqueous 
+  Na+                   -3.985     -3.985     1.035E-04     1.035E-04     1.000E+00  Aqueous 
+  NO3-                  -6.034     -6.034     9.254E-07     9.254E-07     1.000E+00  Aqueous 
+  OH-                   -5.122     -5.122     7.558E-06     7.558E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    62:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.828
+  Total Charge       = -1.695E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -6.8723E-06     Aqueous      
+ Cl-                  9.5537E-05     Aqueous      
+ Na+                  1.0317E-04     Aqueous      
+ NO3-                 9.3263E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.828     -8.828     1.485E-09     1.485E-09     1.000E+00  Aqueous 
+  Cl-                   -4.020     -4.020     9.554E-05     9.554E-05     1.000E+00  Aqueous 
+  Na+                   -3.986     -3.986     1.032E-04     1.032E-04     1.000E+00  Aqueous 
+  NO3-                  -6.030     -6.030     9.326E-07     9.326E-07     1.000E+00  Aqueous 
+  OH-                   -5.163     -5.163     6.874E-06     6.874E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    63:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.786
+  Total Charge       = -1.274E-07
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -6.2331E-06     Aqueous      
+ Cl-                  9.5859E-05     Aqueous      
+ Na+                  1.0290E-04     Aqueous      
+ NO3-                 9.3921E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.786     -8.786     1.637E-09     1.637E-09     1.000E+00  Aqueous 
+  Cl-                   -4.018     -4.018     9.586E-05     9.586E-05     1.000E+00  Aqueous 
+  Na+                   -3.988     -3.988     1.029E-04     1.029E-04     1.000E+00  Aqueous 
+  NO3-                  -6.027     -6.027     9.392E-07     9.392E-07     1.000E+00  Aqueous 
+  OH-                   -5.205     -5.205     6.235E-06     6.235E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    64:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.742
+  Total Charge       = -9.592E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -5.6372E-06     Aqueous      
+ Cl-                  9.6167E-05     Aqueous      
+ Na+                  1.0265E-04     Aqueous      
+ NO3-                 9.4522E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.742     -8.742     1.810E-09     1.810E-09     1.000E+00  Aqueous 
+  Cl-                   -4.017     -4.017     9.617E-05     9.617E-05     1.000E+00  Aqueous 
+  Na+                   -3.989     -3.989     1.027E-04     1.027E-04     1.000E+00  Aqueous 
+  NO3-                  -6.024     -6.024     9.452E-07     9.452E-07     1.000E+00  Aqueous 
+  OH-                   -5.249     -5.249     5.639E-06     5.639E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    65:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.697
+  Total Charge       = -7.258E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -5.0823E-06     Aqueous      
+ Cl-                  9.6459E-05     Aqueous      
+ Na+                  1.0242E-04     Aqueous      
+ NO3-                 9.5068E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.697     -8.697     2.008E-09     2.008E-09     1.000E+00  Aqueous 
+  Cl-                   -4.016     -4.016     9.646E-05     9.646E-05     1.000E+00  Aqueous 
+  Na+                   -3.990     -3.990     1.024E-04     1.024E-04     1.000E+00  Aqueous 
+  NO3-                  -6.022     -6.022     9.507E-07     9.507E-07     1.000E+00  Aqueous 
+  OH-                   -5.294     -5.294     5.084E-06     5.084E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    66:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.651
+  Total Charge       = -5.536E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -4.5663E-06     Aqueous      
+ Cl-                  9.6735E-05     Aqueous      
+ Na+                  1.0220E-04     Aqueous      
+ NO3-                 9.5565E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.651     -8.651     2.234E-09     2.234E-09     1.000E+00  Aqueous 
+  Cl-                   -4.014     -4.014     9.674E-05     9.674E-05     1.000E+00  Aqueous 
+  Na+                   -3.991     -3.991     1.022E-04     1.022E-04     1.000E+00  Aqueous 
+  NO3-                  -6.020     -6.020     9.557E-07     9.557E-07     1.000E+00  Aqueous 
+  OH-                   -5.340     -5.340     4.569E-06     4.569E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    67:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.603
+  Total Charge       = -4.273E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -4.0872E-06     Aqueous      
+ Cl-                  9.6996E-05     Aqueous      
+ Na+                  1.0200E-04     Aqueous      
+ NO3-                 9.6016E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.603     -8.603     2.496E-09     2.496E-09     1.000E+00  Aqueous 
+  Cl-                   -4.013     -4.013     9.700E-05     9.700E-05     1.000E+00  Aqueous 
+  Na+                   -3.991     -3.991     1.020E-04     1.020E-04     1.000E+00  Aqueous 
+  NO3-                  -6.018     -6.018     9.602E-07     9.602E-07     1.000E+00  Aqueous 
+  OH-                   -5.388     -5.388     4.090E-06     4.090E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    68:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.553
+  Total Charge       = -3.351E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -3.6429E-06     Aqueous      
+ Cl-                  9.7241E-05     Aqueous      
+ Na+                  1.0181E-04     Aqueous      
+ NO3-                 9.6424E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.553     -8.553     2.800E-09     2.800E-09     1.000E+00  Aqueous 
+  Cl-                   -4.012     -4.012     9.724E-05     9.724E-05     1.000E+00  Aqueous 
+  Na+                   -3.992     -3.992     1.018E-04     1.018E-04     1.000E+00  Aqueous 
+  NO3-                  -6.016     -6.016     9.642E-07     9.642E-07     1.000E+00  Aqueous 
+  OH-                   -5.438     -5.438     3.646E-06     3.646E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    69:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.501
+  Total Charge       = -2.683E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -3.2315E-06     Aqueous      
+ Cl-                  9.7471E-05     Aqueous      
+ Na+                  1.0164E-04     Aqueous      
+ NO3-                 9.6794E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.501     -8.501     3.156E-09     3.156E-09     1.000E+00  Aqueous 
+  Cl-                   -4.011     -4.011     9.747E-05     9.747E-05     1.000E+00  Aqueous 
+  Na+                   -3.993     -3.993     1.016E-04     1.016E-04     1.000E+00  Aqueous 
+  NO3-                  -6.014     -6.014     9.679E-07     9.679E-07     1.000E+00  Aqueous 
+  OH-                   -5.490     -5.490     3.235E-06     3.235E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    70:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.447
+  Total Charge       = -2.200E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.8510E-06     Aqueous      
+ Cl-                  9.7686E-05     Aqueous      
+ Na+                  1.0149E-04     Aqueous      
+ NO3-                 9.7128E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.447     -8.447     3.576E-09     3.576E-09     1.000E+00  Aqueous 
+  Cl-                   -4.010     -4.010     9.769E-05     9.769E-05     1.000E+00  Aqueous 
+  Na+                   -3.994     -3.994     1.015E-04     1.015E-04     1.000E+00  Aqueous 
+  NO3-                  -6.013     -6.013     9.713E-07     9.713E-07     1.000E+00  Aqueous 
+  OH-                   -5.544     -5.544     2.855E-06     2.855E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    71:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.390
+  Total Charge       = -1.854E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.4998E-06     Aqueous      
+ Cl-                  9.7886E-05     Aqueous      
+ Na+                  1.0134E-04     Aqueous      
+ NO3-                 9.7429E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.390     -8.390     4.076E-09     4.076E-09     1.000E+00  Aqueous 
+  Cl-                   -4.009     -4.009     9.789E-05     9.789E-05     1.000E+00  Aqueous 
+  Na+                   -3.994     -3.994     1.013E-04     1.013E-04     1.000E+00  Aqueous 
+  NO3-                  -6.011     -6.011     9.743E-07     9.743E-07     1.000E+00  Aqueous 
+  OH-                   -5.601     -5.601     2.504E-06     2.504E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    72:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.330
+  Total Charge       = -1.606E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.1760E-06     Aqueous      
+ Cl-                  9.8073E-05     Aqueous      
+ Na+                  1.0121E-04     Aqueous      
+ NO3-                 9.7701E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.330     -8.330     4.681E-09     4.681E-09     1.000E+00  Aqueous 
+  Cl-                   -4.008     -4.008     9.807E-05     9.807E-05     1.000E+00  Aqueous 
+  Na+                   -3.995     -3.995     1.012E-04     1.012E-04     1.000E+00  Aqueous 
+  NO3-                  -6.010     -6.010     9.770E-07     9.770E-07     1.000E+00  Aqueous 
+  OH-                   -5.661     -5.661     2.181E-06     2.181E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    73:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.266
+  Total Charge       = -1.431E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.8778E-06     Aqueous      
+ Cl-                  9.8246E-05     Aqueous      
+ Na+                  1.0109E-04     Aqueous      
+ NO3-                 9.7946E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.266     -8.266     5.420E-09     5.420E-09     1.000E+00  Aqueous 
+  Cl-                   -4.008     -4.008     9.825E-05     9.825E-05     1.000E+00  Aqueous 
+  Na+                   -3.995     -3.995     1.011E-04     1.011E-04     1.000E+00  Aqueous 
+  NO3-                  -6.009     -6.009     9.795E-07     9.795E-07     1.000E+00  Aqueous 
+  OH-                   -5.725     -5.725     1.883E-06     1.883E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    74:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.198
+  Total Charge       = -1.306E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.6038E-06     Aqueous      
+ Cl-                  9.8407E-05     Aqueous      
+ Na+                  1.0098E-04     Aqueous      
+ NO3-                 9.8167E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.198     -8.198     6.339E-09     6.339E-09     1.000E+00  Aqueous 
+  Cl-                   -4.007     -4.007     9.841E-05     9.841E-05     1.000E+00  Aqueous 
+  Na+                   -3.996     -3.996     1.010E-04     1.010E-04     1.000E+00  Aqueous 
+  NO3-                  -6.008     -6.008     9.817E-07     9.817E-07     1.000E+00  Aqueous 
+  OH-                   -5.793     -5.793     1.610E-06     1.610E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    75:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.125
+  Total Charge       = -1.219E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.3523E-06     Aqueous      
+ Cl-                  9.8556E-05     Aqueous      
+ Na+                  1.0088E-04     Aqueous      
+ NO3-                 9.8365E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.125     -8.125     7.506E-09     7.506E-09     1.000E+00  Aqueous 
+  Cl-                   -4.006     -4.006     9.856E-05     9.856E-05     1.000E+00  Aqueous 
+  Na+                   -3.996     -3.996     1.009E-04     1.009E-04     1.000E+00  Aqueous 
+  NO3-                  -6.007     -6.007     9.837E-07     9.837E-07     1.000E+00  Aqueous 
+  OH-                   -5.867     -5.867     1.360E-06     1.360E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    76:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      8.045
+  Total Charge       = -1.158E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.1218E-06     Aqueous      
+ Cl-                  9.8693E-05     Aqueous      
+ Na+                  1.0079E-04     Aqueous      
+ NO3-                 9.8543E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -8.045     -8.045     9.026E-09     9.026E-09     1.000E+00  Aqueous 
+  Cl-                   -4.006     -4.006     9.869E-05     9.869E-05     1.000E+00  Aqueous 
+  Na+                   -3.997     -3.997     1.008E-04     1.008E-04     1.000E+00  Aqueous 
+  NO3-                  -6.006     -6.006     9.854E-07     9.854E-07     1.000E+00  Aqueous 
+  OH-                   -5.947     -5.947     1.131E-06     1.131E-06     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    77:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      7.956
+  Total Charge       = -1.115E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -9.1098E-07     Aqueous      
+ Cl-                  9.8819E-05     Aqueous      
+ Na+                  1.0071E-04     Aqueous      
+ NO3-                 9.8704E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -7.956     -7.956     1.107E-08     1.107E-08     1.000E+00  Aqueous 
+  Cl-                   -4.005     -4.005     9.882E-05     9.882E-05     1.000E+00  Aqueous 
+  Na+                   -3.997     -3.997     1.007E-04     1.007E-04     1.000E+00  Aqueous 
+  NO3-                  -6.006     -6.006     9.870E-07     9.870E-07     1.000E+00  Aqueous 
+  OH-                   -6.035     -6.035     9.220E-07     9.220E-07     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    78:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      7.856
+  Total Charge       = -1.085E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -7.1852E-07     Aqueous      
+ Cl-                  9.8935E-05     Aqueous      
+ Na+                  1.0063E-04     Aqueous      
+ NO3-                 9.8847E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -7.856     -7.856     1.394E-08     1.394E-08     1.000E+00  Aqueous 
+  Cl-                   -4.005     -4.005     9.893E-05     9.893E-05     1.000E+00  Aqueous 
+  Na+                   -3.997     -3.997     1.006E-04     1.006E-04     1.000E+00  Aqueous 
+  NO3-                  -6.005     -6.005     9.885E-07     9.885E-07     1.000E+00  Aqueous 
+  OH-                   -6.135     -6.135     7.325E-07     7.325E-07     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    79:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      7.740
+  Total Charge       = -1.065E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -5.4334E-07     Aqueous      
+ Cl-                  9.9041E-05     Aqueous      
+ Na+                  1.0056E-04     Aqueous      
+ NO3-                 9.8976E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -7.740     -7.740     1.818E-08     1.818E-08     1.000E+00  Aqueous 
+  Cl-                   -4.004     -4.004     9.904E-05     9.904E-05     1.000E+00  Aqueous 
+  Na+                   -3.998     -3.998     1.006E-04     1.006E-04     1.000E+00  Aqueous 
+  NO3-                  -6.004     -6.004     9.898E-07     9.898E-07     1.000E+00  Aqueous 
+  OH-                   -6.251     -6.251     5.615E-07     5.615E-07     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    80:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      7.603
+  Total Charge       = -1.051E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -3.8471E-07     Aqueous      
+ Cl-                  9.9138E-05     Aqueous      
+ Na+                  1.0050E-04     Aqueous      
+ NO3-                 9.9091E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -7.603     -7.603     2.492E-08     2.492E-08     1.000E+00  Aqueous 
+  Cl-                   -4.004     -4.004     9.914E-05     9.914E-05     1.000E+00  Aqueous 
+  Na+                   -3.998     -3.998     1.005E-04     1.005E-04     1.000E+00  Aqueous 
+  NO3-                  -6.004     -6.004     9.909E-07     9.909E-07     1.000E+00  Aqueous 
+  OH-                   -6.388     -6.388     4.096E-07     4.096E-07     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    81:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      7.437
+  Total Charge       = -1.041E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -2.4266E-07     Aqueous      
+ Cl-                  9.9225E-05     Aqueous      
+ Na+                  1.0045E-04     Aqueous      
+ NO3-                 9.9192E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -7.437     -7.437     3.656E-08     3.656E-08     1.000E+00  Aqueous 
+  Cl-                   -4.003     -4.003     9.922E-05     9.923E-05     1.000E+00  Aqueous 
+  Na+                   -3.998     -3.998     1.004E-04     1.004E-04     1.000E+00  Aqueous 
+  NO3-                  -6.004     -6.004     9.919E-07     9.919E-07     1.000E+00  Aqueous 
+  OH-                   -6.554     -6.554     2.792E-07     2.792E-07     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    82:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      7.238
+  Total Charge       = -1.034E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.1865E-07     Aqueous      
+ Cl-                  9.9302E-05     Aqueous      
+ Na+                  1.0040E-04     Aqueous      
+ NO3-                 9.9280E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -7.238     -7.238     5.783E-08     5.783E-08     1.000E+00  Aqueous 
+  Cl-                   -4.003     -4.003     9.930E-05     9.930E-05     1.000E+00  Aqueous 
+  Na+                   -3.998     -3.998     1.004E-04     1.004E-04     1.000E+00  Aqueous 
+  NO3-                  -6.003     -6.003     9.928E-07     9.928E-07     1.000E+00  Aqueous 
+  OH-                   -6.753     -6.753     1.765E-07     1.765E-07     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    83:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      7.026
+  Total Charge       = -1.030E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                  -1.4325E-08     Aqueous      
+ Cl-                  9.9367E-05     Aqueous      
+ Na+                  1.0036E-04     Aqueous      
+ NO3-                 9.9355E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -7.026     -7.026     9.412E-08     9.412E-08     1.000E+00  Aqueous 
+  Cl-                   -4.003     -4.003     9.937E-05     9.937E-05     1.000E+00  Aqueous 
+  Na+                   -3.998     -3.998     1.004E-04     1.004E-04     1.000E+00  Aqueous 
+  NO3-                  -6.003     -6.003     9.935E-07     9.935E-07     1.000E+00  Aqueous 
+  OH-                   -6.965     -6.965     1.084E-07     1.084E-07     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    84:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.842
+  Total Charge       = -1.027E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   7.2960E-08     Aqueous      
+ Cl-                  9.9423E-05     Aqueous      
+ Na+                  1.0033E-04     Aqueous      
+ NO3-                 9.9418E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.842     -6.842     1.439E-07     1.439E-07     1.000E+00  Aqueous 
+  Cl-                   -4.003     -4.003     9.942E-05     9.942E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.003E-04     1.003E-04     1.000E+00  Aqueous 
+  NO3-                  -6.003     -6.003     9.942E-07     9.942E-07     1.000E+00  Aqueous 
+  OH-                   -7.149     -7.149     7.093E-08     7.093E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    85:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.699
+  Total Charge       = -1.025E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   1.4896E-07     Aqueous      
+ Cl-                  9.9471E-05     Aqueous      
+ Na+                  1.0031E-04     Aqueous      
+ NO3-                 9.9472E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.699     -6.699     2.000E-07     2.000E-07     1.000E+00  Aqueous 
+  Cl-                   -4.002     -4.002     9.947E-05     9.947E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.003E-04     1.003E-04     1.000E+00  Aqueous 
+  NO3-                  -6.002     -6.002     9.947E-07     9.947E-07     1.000E+00  Aqueous 
+  OH-                   -7.292     -7.292     5.104E-08     5.104E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    86:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.589
+  Total Charge       = -1.023E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   2.1768E-07     Aqueous      
+ Cl-                  9.9515E-05     Aqueous      
+ Na+                  1.0028E-04     Aqueous      
+ NO3-                 9.9520E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.589     -6.589     2.573E-07     2.573E-07     1.000E+00  Aqueous 
+  Cl-                   -4.002     -4.002     9.952E-05     9.952E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.003E-04     1.003E-04     1.000E+00  Aqueous 
+  NO3-                  -6.002     -6.002     9.952E-07     9.952E-07     1.000E+00  Aqueous 
+  OH-                   -7.402     -7.402     3.966E-08     3.966E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    87:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.503
+  Total Charge       = -1.023E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   2.8116E-07     Aqueous      
+ Cl-                  9.9556E-05     Aqueous      
+ Na+                  1.0026E-04     Aqueous      
+ NO3-                 9.9564E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.503     -6.503     3.137E-07     3.137E-07     1.000E+00  Aqueous 
+  Cl-                   -4.002     -4.002     9.956E-05     9.956E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.003E-04     1.003E-04     1.000E+00  Aqueous 
+  NO3-                  -6.002     -6.002     9.956E-07     9.956E-07     1.000E+00  Aqueous 
+  OH-                   -7.488     -7.488     3.254E-08     3.254E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    88:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.434
+  Total Charge       = -1.022E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   3.4047E-07     Aqueous      
+ Cl-                  9.9593E-05     Aqueous      
+ Na+                  1.0024E-04     Aqueous      
+ NO3-                 9.9603E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.434     -6.434     3.682E-07     3.682E-07     1.000E+00  Aqueous 
+  Cl-                   -4.002     -4.002     9.959E-05     9.959E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.002E-04     1.002E-04     1.000E+00  Aqueous 
+  NO3-                  -6.002     -6.002     9.960E-07     9.960E-07     1.000E+00  Aqueous 
+  OH-                   -7.557     -7.557     2.772E-08     2.772E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    89:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.376
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   3.9631E-07     Aqueous      
+ Cl-                  9.9629E-05     Aqueous      
+ Na+                  1.0022E-04     Aqueous      
+ NO3-                 9.9640E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.376     -6.376     4.206E-07     4.206E-07     1.000E+00  Aqueous 
+  Cl-                   -4.002     -4.002     9.963E-05     9.963E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.002E-04     1.002E-04     1.000E+00  Aqueous 
+  NO3-                  -6.002     -6.002     9.964E-07     9.964E-07     1.000E+00  Aqueous 
+  OH-                   -7.615     -7.615     2.427E-08     2.427E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    90:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.327
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   4.4920E-07     Aqueous      
+ Cl-                  9.9662E-05     Aqueous      
+ Na+                  1.0020E-04     Aqueous      
+ NO3-                 9.9675E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.327     -6.327     4.709E-07     4.709E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.966E-05     9.966E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.002E-04     1.002E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.967E-07     9.967E-07     1.000E+00  Aqueous 
+  OH-                   -7.664     -7.664     2.168E-08     2.168E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    91:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.285
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   4.9961E-07     Aqueous      
+ Cl-                  9.9694E-05     Aqueous      
+ Na+                  1.0018E-04     Aqueous      
+ NO3-                 9.9707E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.285     -6.285     5.193E-07     5.193E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.969E-05     9.969E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.002E-04     1.002E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.971E-07     9.971E-07     1.000E+00  Aqueous 
+  OH-                   -7.706     -7.706     1.966E-08     1.966E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    92:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.247
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   5.4800E-07     Aqueous      
+ Cl-                  9.9724E-05     Aqueous      
+ Na+                  1.0016E-04     Aqueous      
+ NO3-                 9.9737E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.247     -6.247     5.660E-07     5.660E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.972E-05     9.972E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.002E-04     1.002E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.974E-07     9.974E-07     1.000E+00  Aqueous 
+  OH-                   -7.744     -7.744     1.803E-08     1.803E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    93:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.214
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   5.9483E-07     Aqueous      
+ Cl-                  9.9754E-05     Aqueous      
+ Na+                  1.0015E-04     Aqueous      
+ NO3-                 9.9766E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.214     -6.214     6.115E-07     6.115E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.975E-05     9.975E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.977E-07     9.977E-07     1.000E+00  Aqueous 
+  OH-                   -7.778     -7.778     1.669E-08     1.669E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    94:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.183
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   6.4061E-07     Aqueous      
+ Cl-                  9.9782E-05     Aqueous      
+ Na+                  1.0013E-04     Aqueous      
+ NO3-                 9.9794E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.183     -6.183     6.562E-07     6.562E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.978E-05     9.978E-05     1.000E+00  Aqueous 
+  Na+                   -3.999     -3.999     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.979E-07     9.979E-07     1.000E+00  Aqueous 
+  OH-                   -7.808     -7.808     1.556E-08     1.556E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    95:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.155
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   6.8591E-07     Aqueous      
+ Cl-                  9.9811E-05     Aqueous      
+ Na+                  1.0011E-04     Aqueous      
+ NO3-                 9.9821E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.155     -6.155     7.005E-07     7.005E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.981E-05     9.981E-05     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.982E-07     9.982E-07     1.000E+00  Aqueous 
+  OH-                   -7.836     -7.836     1.457E-08     1.457E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    96:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.128
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   7.3134E-07     Aqueous      
+ Cl-                  9.9839E-05     Aqueous      
+ Na+                  1.0010E-04     Aqueous      
+ NO3-                 9.9848E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.128     -6.128     7.450E-07     7.450E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.984E-05     9.984E-05     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.985E-07     9.985E-07     1.000E+00  Aqueous 
+  OH-                   -7.863     -7.863     1.370E-08     1.370E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    97:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.102
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   7.7762E-07     Aqueous      
+ Cl-                  9.9868E-05     Aqueous      
+ Na+                  1.0008E-04     Aqueous      
+ NO3-                 9.9875E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.102     -6.102     7.905E-07     7.905E-07     1.000E+00  Aqueous 
+  Cl-                   -4.001     -4.001     9.987E-05     9.987E-05     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  NO3-                  -6.001     -6.001     9.988E-07     9.988E-07     1.000E+00  Aqueous 
+  OH-                   -7.889     -7.889     1.291E-08     1.291E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    98:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.077
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   8.2556E-07     Aqueous      
+ Cl-                  9.9898E-05     Aqueous      
+ Na+                  1.0006E-04     Aqueous      
+ NO3-                 9.9904E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.077     -6.077     8.377E-07     8.377E-07     1.000E+00  Aqueous 
+  Cl-                   -4.000     -4.000     9.990E-05     9.990E-05     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     1.001E-04     1.001E-04     1.000E+00  Aqueous 
+  NO3-                  -6.000     -6.000     9.990E-07     9.990E-07     1.000E+00  Aqueous 
+  OH-                   -7.914     -7.914     1.218E-08     1.218E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:    99:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.052
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   8.7613E-07     Aqueous      
+ Cl-                  9.9929E-05     Aqueous      
+ Na+                  1.0004E-04     Aqueous      
+ NO3-                 9.9933E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.052     -6.052     8.876E-07     8.876E-07     1.000E+00  Aqueous 
+  Cl-                   -4.000     -4.000     9.993E-05     9.993E-05     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     1.000E-04     1.000E-04     1.000E+00  Aqueous 
+  NO3-                  -6.000     -6.000     9.993E-07     9.993E-07     1.000E+00  Aqueous 
+  OH-                   -7.939     -7.939     1.150E-08     1.150E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 
+ **************************************************************
+ ------> GRID LOCATION:   100:  1:  1
+ 
+  Temperature (C)    =     25.000
+  Porosity           =      0.250
+  Liquid Saturation  =      1.000
+  Liquid Density     =    997.075
+  Ionic Strength     =      0.000
+  Solution pH        =      6.026
+  Total Charge       = -1.021E-08
+ 
+ Total Aqueous Concentrations of Primary Species 
+ --------------------------------------- 
+ 
+   Species              Molality       Type 
+ H+                   9.3044E-07     Aqueous      
+ Cl-                  9.9963E-05     Aqueous      
+ Na+                  1.0002E-04     Aqueous      
+ NO3-                 9.9965E-07     Aqueous      
+ 
+ Concentrations of Individual Species, Exchangers, and Surface Complexes 
+ ----------------------------------------------------------------------- 
+ 
+                           Log        Log                 Concentration     
+ Species              Molality   Activity      Molality    Mol/m^3 blk  Type
+                           Log        Log                                 Activity
+ Species              Molality   Activity      Molality      Activity   Coefficient    Type
+  H+                    -6.026     -6.026     9.413E-07     9.413E-07     1.000E+00  Aqueous 
+  Cl-                   -4.000     -4.000     9.996E-05     9.996E-05     1.000E+00  Aqueous 
+  Na+                   -4.000     -4.000     1.000E-04     1.000E-04     1.000E+00  Aqueous 
+  NO3-                  -6.000     -6.000     9.997E-07     9.997E-07     1.000E+00  Aqueous 
+  OH-                   -7.965     -7.965     1.084E-08     1.084E-08     1.000E+00  Aqueous 
+ 
+  ****** Partial pressure of gases (bars) *****
+ 
+ 
+  ***** Saturation state of minerals (log[Q/K] *****
+ 
+ 

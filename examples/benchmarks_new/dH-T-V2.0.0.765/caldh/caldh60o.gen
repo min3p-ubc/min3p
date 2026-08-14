@@ -1,0 +1,156 @@
+#Program     : MIN3P-HPC.
+#Version     : 2.0.16.765
+#Commit date : 2020/03/16 17:06:38
+#Build date  : 2020/04/07 09:34:36
+#Repository  : https://biot.eos.ubc.ca/svn/min3p_thcm/branches/mxie_sulAq
+#Platform    : Debug_X64
+#System      : Windows
+#Solver      : WS209
+#Parallel    : Sequential
+generic output file for dataset caldh60
+
+------------------------------------------------------------------------
+global control parameters
+------------------------------------------------------------------------
+
+aqueous complex - batch problem                                         
+
+simulation of:
+batch test with kinetically controlled dissolution-
+precipitation reactions
+
+
+------------------------------------------------------------------------
+geochemical system
+------------------------------------------------------------------------
+
+database: ./database/default                                                                                                                                                                                                                                              
+redox master variable: o2(aq)
+input units: mol/l       
+temperature =  60.00 deg C
+
+number of components:                           =          4
+
+aqueous components:
+-------------------
+ca+2                                                                    
+h+1                                                                     
+co3-2                                                                   
+h2o                                                                     
+
+number of aqueous complexes:                    =          6
+
+aqueous complexes:
+------------------
+oh-                                                                     
+caoh+                                                                   
+cahco3+                                                                 
+caco3aq                                                                 
+hco3-                                                                   
+h2co3aq                                                                 
+
+number of excluded minerals:                    =          1
+
+excluded minerals:
+------------------
+calcite                                                                 
+
+------------------------------------------------------------------------
+control parameters - local geochemistry
+------------------------------------------------------------------------
+
+factor for numerical differentiation            =   1.000000E-004
+convergence tolerance                           =   1.000000E-006
+max. ionic strength                             =   5.500000E+000
+min. activity for h2o                           =   5.000000E-001
+minimum reaction rate considered                =   0.000000E+000
+
+------------------------------------------------------------------------
+initial condition - local geochemistry
+------------------------------------------------------------------------
+ 
+number of zones                                 =          1
+
+************************************************************************
+background chemistry - aquifer                                          
+************************************************************************
+
+control parameters: 
+------------------------------------------------------------------------
+
+equilibration only for aqueous species
+
+input parameters: 
+------------------------------------------------------------------------
+
+total aqueous component concentrations:
+---------------------------------------
+component             conc.
+---------------------------
+ca+2           1.266500E-007
+co3-2          2.566500E-007
+
+aqueous components with fixed activities:
+-----------------------------------------
+species               actv.
+---------------------------
+h+1            1.000000E-007
+
+guess for pH of solution:          pH =  7.0000
+
+results:
+------------------------------------------------------------------------
+
+computed pH of solution:           pH =       7.0000
+ionic strength:                     I =   7.488736E-007
+
+total concentrations - aqueous phase:
+--------------------------------------
+species               conc.
+---------------------------
+ca+2           1.266500E-007
+h+1           -7.840898E-007
+co3-2          2.566500E-007
+
+components as species in solution:
+----------------------------------
+species               conc.          gamma
+------------------------------------------
+ca+2           7.536792E-013  1.000000E+000
+h+1            1.000000E-007  1.000000E+000
+co3-2          1.771472E-010  1.000000E+000
+h2o            1.000000E+000  1.000000E+000
+
+secondary aqueous species:
+--------------------------
+species               conc.          gamma
+------------------------------------------
+oh-            1.070967E-006  1.000000E+000
+hco3-          1.994197E-007  1.000000E+000
+caoh+          1.266492E-007  1.000000E+000
+h2co3aq        5.705316E-008  1.000000E+000
+cahco3+        3.518215E-018  1.000000E+000
+caco3aq        3.853846E-019  1.000000E+000
+
+excluded minerals:
+------------------
+mineral               SI
+------------------------
+calcite           -13.200
+
+charge balance:
+---------------
+sum of positive charge:   2.266508E-007   sum of negative charge:   1.270741E-006
+charge balance error:      6.972725E+001 %
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =         12
+total number of time steps              =          0
+
+------------------------------------------------------------------------
+
+         ***************** normal exit ******************
+
+

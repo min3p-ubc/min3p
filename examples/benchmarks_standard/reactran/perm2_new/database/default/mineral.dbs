@@ -1,0 +1,35 @@
+! **********************************************************************
+! MINERAL.DBS
+! **********************************************************************
+! database file for MIN3P for kinetically controlled
+! dissolution-precipitation reactions
+! based on MINTEQA2 database entries
+! new rate data can be added
+! ************************************************************************
+!
+! calcite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'calcite'
+'surface'
+ 100.0894    2.7100
+ 2  'ca+2'    1.000  'co3-2'    1.000
+'reversible'    8.4750  2.5850
+!
+! gypsum
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'gypsum'
+'surface'
+ 172.1722    2.3200
+ 3  'ca+2'    1.000  'so4-2'    1.000  'h2o'    2.000
+'reversible'    4.5800  0.1090
+!
+!
+! end of database
+!
+'end'

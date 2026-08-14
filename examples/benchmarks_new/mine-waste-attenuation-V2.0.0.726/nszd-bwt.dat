@@ -1,0 +1,2040 @@
+! Based on simulations in Mayer et al. 2002 (demo10)
+
+!    and Molins et al. (2010)
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+"Natural attenuation of pet. hydrocarb's in variably-saturated media"
+
+.true.                        ;varsat_flow
+
+.true.                        ;steady_flow
+
+.false.                       ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+!'parallel solver configuration file'
+
+!'solver.cfg'
+
+
+
+!'restart' ;useful for long-time running simulations
+
+'backup frequency'
+
+20
+
+
+
+!'output sparse matrix data set and rhs'
+
+
+
+'done'
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'./min3p-db-CSAP'
+
+
+
+'define temperature'
+
+12
+
+
+
+'components'
+
+11                              ;number of components (nc-1)
+
+'c6h6'                         ;component names
+
+'c8h18(aq)'
+
+'o2(aq)'
+
+'co3-2'
+
+'h+1'
+
+'ch4(aq)'
+
+'fe+2'
+
+'ca+2'
+
+'fe+3'
+
+'n2(aq)'
+
+'ar(aq)'
+
+
+
+'intra-aqueous kinetic reactions'
+
+6                             ;number of intra-aqueous kinetic reactions
+
+'c6h6-o2'                     ;names of intra-aqueous kinetic reactions
+
+'c8h18-o2'
+
+'c6h6-ch4'
+
+'c8h18-ch4'
+
+'ch4-o2'
+
+'fe+2-o2'
+
+
+
+
+
+'scaling for intra-aqueous kinetic reactions'
+
+2.39d-8                       ;'c6h6-o2' mol/L/second   
+
+8.90d-9				   ;'c8h18-o2' mol/L/second
+
+2.5d-12                       ;'c6h6-ch4'    
+
+1.2d-9				   ;'c8h18-ch4'
+
+8.0d-8                        ;'ch4-o2' from API report (mol/L/s)      
+
+1.0d-8                        ;2.5d-9 as O2-consumption rate
+
+
+
+'secondary aqueous species'
+
+17                            ;number of secondary aqueous species
+
+'oh-'                         ;names of secondary aqueous species
+
+'hco3-'
+
+'h2co3aq'
+
+'caoh+'
+
+'cahco3+'
+
+'caco3aq'
+
+'feoh+'
+
+'feoh3-1'
+
+'feoh2aq'
+
+'fehco3+'
+
+'feco3aq'
+
+'feoh+2'
+
+'feoh2+'
+
+'feoh3aq'
+
+'feoh4-'
+
+'fe2(oh)2+4'
+
+'fe3(oh)4+5'
+
+
+
+'linear sorption'
+
+2
+
+'c6h6'
+
+'c8h18(aq)'
+
+
+
+'gases'
+
+7                             ;number of gases
+
+'o2(g)'						  ;names of gases
+
+'co2(g)'
+
+'n2(g)'
+
+'ar(g)'
+
+'c6h6(g)'                     
+
+'c8h18(g)'
+
+'ch4(g)'
+
+
+
+'minerals'
+
+11                             ;number of minerals
+
+'c6h6(l)'                     ;mineral names
+
+'c8h18(l)'
+
+'calcite'
+
+'ferrihydrite'
+
+'siderite(d)'
+
+'feooh-c6h6'
+
+'feoh3-c6h6'
+
+'feooh-c8h18'
+
+'feoh3-c8h18'
+
+'feooh-ch4'
+
+'feoh3-ch4'
+
+
+
+'combine mineralogical parameters'
+
+'c6h6(l)'                     ;mineral names
+
+'c8h18(l)'
+
+'calcite'
+
+'ferrihydrite'
+
+'siderite(d)'
+
+'feooh-c6h6'
+
+'ferrihydrite'
+
+'feooh-c6h6'
+
+'ferrihydrite'
+
+'feooh-c6h6'
+
+'ferrihydrite'
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'      ;approximate dimensions of Bemidji site
+
+3                             ;number of discretization intervals in x
+
+2                            ;number of control volumes in x
+
+0. 30.0                       ;xmin,xmax 153 total----------------------------
+
+5
+
+30.0 60.0
+
+10
+
+60.0 600.0
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in y
+
+0. 1.0                        ;ymin,ymax ------------------------------------
+
+4                             ;number of discretization intervals in z
+
+5                            ;number of control volumes in z
+
+0.0 9.0                       ;zmin,zmax 0.2 m disc
+
+5
+
+9.0 10.0                      ;0.1 m disc below plume
+
+10
+
+10.0 12.0                      ;0.05 m disc in plume 
+
+5
+
+12.0 15.0                      ;0.1 m disc above water table
+
+
+
+'done'
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'years'                       ;time unit
+
+0.0                           ;time at start of solution
+
+20.0d0                       ;final solution time
+
+0.1d0                         ;maximum time step
+
+1.d-8                         ;minimum time step
+
+
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+5.0d0                         ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'days'                        ;time unit (local chemistry)
+
+
+
+'done'
+
+
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'compute underrelaxation factor'
+
+1.0                           ;max. allowed update
+
+
+
+'newton iteration settings'
+
+1.0d-6                        ;increment for numerical differentiation
+
+1000                          ;max. number of newton iterations
+
+1.0d-6                        ;convergence tolerance
+
+0.3                           ;sw_star
+
+
+
+'solver settings'
+
+2                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+1                             ;solver information level
+
+1.0d-7                        ;solver residual tolerance
+
+1.0d-7                        ;solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'update porosity'
+
+
+
+'spatial weighting'
+
+'upstream'                    ;spatial weighting
+
+
+
+'activity update settings'
+
+'time-lagged'                 ;type of activity update
+
+
+
+'tortuosity correction'
+
+'millington'                  ;Millington-Quirk tortuosity correction
+
+
+
+'degassing'                   ;allow degassing
+
+1.0d-8                        ;rate constant
+
+
+
+'newton iteration settings'
+
+1.d-6                         ;increment h for numerical differentiation
+
+15                            ;anticipated number of Newton iterations
+
+30                            ;max. number of Newton iterations
+
+1.5d0                         ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.d-6                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+1                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+1                             ;solver information level
+
+1.d-7                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+
+
+'gas advection'	
+
+
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+6                             ;number of output times (spatial data)
+
+1.0   2.0  3.0  5.0        ;specified output times (spatial data)
+
+10.0  20.0  
+
+
+
+!'output of transient data'
+
+!4                             ;number of output locations (transient data)
+
+!10                             ;timesteps between output (transient data)
+
+!13044  14558  11651  18230     ;control volume numbers
+
+                              ;x=62.4; z=11.525 downgradient of source in dissolved plume
+
+                              ;x=44.5; z=12.05 just above source (slightly below water table)
+
+                              ;x=43.5; z=11.075 in center of source 
+
+                              ;x=44.5; z=14.49 above source in vapor plume - close to ground surface
+
+
+
+'output of mass through specified boundary'
+
+3
+
+
+
+'number and name of zone'
+
+1
+
+'inflow'
+
+'extent of zone: boundary nodes only'
+
+0.0 0.0  0.0 1.0  0.0 12.25
+
+'end of zone'
+
+
+
+'number and name of zone'
+
+2
+
+'outflow'
+
+'extent of zone: boundary nodes only'
+
+600.0 600.0  0.0 1.0  0.0 10.0
+
+'end of zone'
+
+
+
+'number and name of zone'
+
+3
+
+'recharge'
+
+'extent of zone: boundary nodes only'
+
+0.0 600.0  0.0 1.0  15.0 15.0
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+5                             ;number of property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+0.375                          ;porosity  - typical value
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 0.0  0.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'silty sand'
+
+0.387                          ;porosity  - typical value
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 0.0  12.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'layer 1'
+
+0.353                         ;porosity - reduced by oil volume fraction (0.387 - 6% LNAPL saturation)
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  11.4 12.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+4
+
+'layer 2'
+
+0.330                          ;porosity  - reduced by oil volume fraction (12%)
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  10.6 11.4
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+5
+
+'layer 3'
+
+0.353                          ;porosity  - reduced by oil volume fraction (6%)
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  10.0 10.6
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+5
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+
+
+'hydraulic conductivity in x-direction'
+
+7.4d-5                      ;K_xx  
+
+
+
+'hydraulic conductivity in z-direction'
+
+7.4d-5                      ;K_zz  
+
+
+
+'specific storage coefficient'
+
+0.d0
+
+
+
+'soil hydraulic function parameters'
+
+0.14                          ;residual saturation
+
+3.524                         ;van genuchten - alpha
+
+3.177                         ;van genuchten - n
+
+0.5                           ;expn
+
+0.0                           ;air entry pressure
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 0.0  0.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'silty sand'
+
+
+
+'hydraulic conductivity in x-direction'
+
+4.4d-6                      ;K_xx
+
+                             
+
+
+
+'hydraulic conductivity in z-direction'
+
+4.4d-6                      ;K_zz
+
+
+
+
+
+'specific storage coefficient'
+
+0.d0
+
+
+
+'soil hydraulic function parameters'
+
+0.10                          ;residual saturation
+
+2.667                         ;van genuchten - alpha
+
+1.449                         ;van genuchten - n
+
+0.5                           ;expn
+
+0.0                           ;air entry pressure
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 0.0  12.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'layer 1'
+
+
+
+'hydraulic conductivity in x-direction'
+
+5.9d-5                      ;K_xx Essaid et al., WRR, 1995
+
+                            ;reduced to 80% due to presence of residual oil, use 80% of aquifer properties
+
+
+
+'hydraulic conductivity in z-direction'
+
+5.9d-5                      ;K_zz Essaid et al., WRR, 1995
+
+                            ;reduced to 80% due to presence of residual oil
+
+
+
+'specific storage coefficient'
+
+0.d0
+
+
+
+'soil hydraulic function parameters'
+
+0.14                          ;residual saturation
+
+3.524                         ;van genuchten - alpha
+
+3.177                         ;van genuchten - n
+
+0.5                           ;expn
+
+0.0                           ;air entry pressure
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  11.4 12.0
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+4
+
+'layer 2'
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.85d-5                      ;K_xx Essaid et al., WRR, 1995
+
+                            ;reduced to 25% due to presence of oil for saturated zone and 80% for unsaturated zone plume_CASE: plume below water table
+
+
+
+'hydraulic conductivity in z-direction'
+
+1.85d-5                      ;K_zz Essaid et al., WRR, 1995
+
+                            ;reduced to 25% due to presence of oil
+
+
+
+'specific storage coefficient'
+
+0.d0
+
+
+
+'soil hydraulic function parameters'
+
+0.14                          ;residual saturation
+
+3.524                         ;van genuchten - alpha
+
+3.177                         ;van genuchten - n
+
+0.5                           ;expn
+
+0.0                           ;air entry pressure
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  10.6 11.4
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+5
+
+'layer 3'
+
+
+
+'hydraulic conductivity in x-direction'
+
+5.9d-5                      ;K_xx Essaid et al., WRR, 1995
+
+                            ;reduced to 80% due to presence of oil
+
+
+
+'hydraulic conductivity in z-direction'
+
+5.9d-5                      ;K_zz Essaid et al., WRR, 1995
+
+                            ;reduced to 80% due to presence of oil
+
+
+
+'specific storage coefficient'
+
+0.d0
+
+
+
+'soil hydraulic function parameters'
+
+0.14                          ;residual saturation
+
+3.524                         ;van genuchten - alpha
+
+3.177                         ;van genuchten - n
+
+0.5                           ;expn
+
+0.0                           ;air entry pressure
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  10.0 10.6
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+5
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+
+
+'diffusion coefficients'
+
+8.0d-10                       ;aqueous phase
+
+2.0d-5                        ;gaseous phase
+
+
+
+'dusty gas model'
+
+1.0d-5                       ;o2-co2
+
+1.0d-5                       ;o2-n2
+
+1.0d-5                       ;o2-ar		
+
+1.0d-5                       ;o2-benzene
+
+1.0d-5		                 ;o2-isooctane
+
+1.0d-5                       ;o2-ch4		
+
+1.0d-5                       ;co2-n2
+
+1.0d-5		                 ;co2-ar
+
+1.0d-5		                 ;co2-benzene
+
+1.0d-5                       ;co2-isooctane
+
+1.0d-5		                 ;co2-ch4
+
+1.0d-5		                 ;n2-ar
+
+1.0d-5                       ;n2-benzene
+
+1.0d-5                       ;n2-isooctane
+
+1.0d-5		             	 ;n2-ch4
+
+1.0d-5                       ;ar-benzene
+
+1.0d-5                       ;ar-isooctane
+
+1.0d-5		             	 ;ar-ch4
+
+1.0d-5                       ;benzene-isooctane
+
+1.0d-5		              	 ;benzene-ch4
+
+1.0d-5		             	 ;isooctane-ch4
+
+2.17d-5			     ;o2 (see Gas Transport tab) 
+
+1.45d-5			     ;co2 
+
+2.07d-5			     ;n2 
+
+2.48d-5			     ;ar 
+
+7.24d-6				 ;benzene
+
+5.58d-6				 ;isooctane
+
+1.11d-5				 ;ch4
+
+
+
+!over-written by calculated values based on lennard-jones parameters below 
+
+'lennard-jones'
+
+3.467d0   106.7d0   ;o2
+
+3.941d0   195.2d0   ;co2
+
+3.798d0   71.4d0    ;n2
+
+3.542d0   93.3d0    ;ar
+
+5.349d0   412.3d0    ;benzene
+
+6.475d0   458.4d0    ;isooctane
+
+3.758d0   148.6d0    ;ch4
+
+
+
+'wilke viscosity'
+
+2.17d-5			     ;o2 (see Gas Transport tab) 
+
+1.45d-5			     ;co2 
+
+2.07d-5			     ;n2 
+
+2.48d-5			     ;ar 
+
+7.24d-6				 ;benzene
+
+5.81d-6				 ;isooctane
+
+1.11d-5				 ;ch4
+
+
+
+'longitudinal dispersivity'
+
+0.1d0
+
+
+
+'transverse vertical dispersivity'
+
+0.001d0
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 0.0  0.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'silty sand'
+
+
+
+'longitudinal dispersivity'
+
+0.1d0
+
+
+
+'transverse vertical dispersivity'
+
+0.001d0
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 0.0  12.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'layer 1'
+
+
+
+'longitudinal dispersivity'
+
+0.1d0
+
+
+
+'transverse vertical dispersivity'
+
+0.001d0
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  11.4 12.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+4
+
+'layer 2'
+
+
+
+'longitudinal dispersivity'
+
+0.1d0
+
+
+
+'transverse vertical dispersivity'
+
+0.001d0
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  10.6 11.4
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+5
+
+'layer 3'
+
+
+
+'longitudinal dispersivity'
+
+0.1d0
+
+
+
+'transverse vertical dispersivity'
+
+0.001d0
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  10.0 10.6
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                              ;number of zones
+
+!'read initial condition from file'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'zone 1'
+
+
+
+'initial condition'
+
+14.9                         ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 1.0   0.0 15.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Section 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+3                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'first' 12.25d0              ;hydraulic head
+
+                           ;calculated from Essaid et al., WRR, 1995
+
+                           ;hydraulic gradient of 0.00375
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  0.0 12.25
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'first'  10.0               ;hydraulic head
+
+                           ;calculated from Essaid et al., WRR, 1995
+
+                           ;hydraulic gradient of 0.00375
+
+'extent of zone'
+
+600.0 600.0  0.0 1.0  0.0 10.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'recharge boundary'
+
+
+
+'boundary type'
+
+'second'  6.342d-9           ;recharge flux - 200mm/yr (units in m/s)
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 1.0  15.0 15.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 14: initial conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+4                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+
+
+'concentration input'
+
+1.00000d-12   'free'          ;c6h6  - component names
+
+1.00000d-12   'free'          ;c8h18
+
+3.05240d-04   'free'          ;o2(aq)
+
+4.00d-4     'pco2'            'co3-2'
+
+8.29d0      'ph'              'h+1'
+
+1.00000d-12   'free'          ;ch4(aq)
+
+1.00000d-10   'free'          ;fe+2
+
+4.72890d-04   'free'          ;ca+2
+
+3.75880d-09   'free'          ;fe+3
+
+5.72140d-04   'free'          ;n2(aq)
+
+1.45930d-05   'free'          ;ar(aq)
+
+
+
+'guess for ph'
+
+8.0d0
+
+
+
+'linear sorption input'
+
+'c6h6'      0.28d0             ;component name, distribution coefficient
+
+'c8h18(aq)' 1.31d0
+
+'mineral input'
+
+0.00d-00   .false.  'constant'  ;c6h6(l)
+
+1.00d-10   1.00d-7  0.00d0
+
+0.00d-00   .false.  'constant'  ;c8h18(l)
+
+1.00d-10   1.00d-7  0.00d0
+
+1.00d-01   .false.  'twothird'  ;calcite
+
+1.00d-10   1.0d-8    0.00d0
+
+1.00d-06   .false.  'twothird'  ;ferrihydrite
+
+1.00d-10   1.0d-11   0.00d0     
+
+1.00d-20   .false.  'constant'  ;siderite(d)
+
+1.00d-10   5.0d-20   0.00d0     
+
+1.00d-5   .false.  'twothird'  ;feooh-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   5.0d-12   0.00d0     ; 
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 0.0  0.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'layer 1'
+
+
+
+'concentration input'
+
+1.14582d-02   'free'          ;c6h6  - component names
+
+1.06803d-05   'free'          ;c8h18
+
+3.05240d-04   'free'          ;o2(aq)
+
+4.00d-4     'pco2'            'co3-2'
+
+8.29d0      'ph'              'h+1'
+
+1.00000d-12   'free'          ;ch4(aq)
+
+1.00000d-10   'free'          ;fe+2
+
+4.72890d-04   'free'          ;ca+2
+
+3.75880d-09   'free'          ;fe+3
+
+5.72140d-04   'free'          ;n2(aq)
+
+1.45930d-05   'free'          ;ar(aq)
+
+
+
+'guess for ph'
+
+8.0d0
+
+
+
+'linear sorption input'
+
+'c6h6'      0.28d0             ;component name, distribution coefficient
+
+'c8h18(aq)' 1.31d0
+
+'mineral input'
+
+8.10d-03   .false.  'constant'  ;c6h6(l) (3% saturation)
+
+1.00d-10   1.00d-7  0.00d0
+
+1.50d-02   .false.  'constant'  ;c8h18(l) (3% saturation)
+
+1.00d-10   1.00d-7  0.00d0
+
+1.00d-01   .false.  'twothird'  ;calcite
+
+1.00d-10   1.0d-8    0.00d0
+
+1.00d-06   .false.  'twothird'  ;ferrihydrite
+
+1.00d-10   1.0d-11   0.00d0     
+
+1.00d-20   .false.  'constant'  ;siderite(d)
+
+1.00d-10   5.0d-20   0.00d0     
+
+1.00d-5   .false.  'twothird'  ;feooh-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   5.0d-12   0.00d0     ; 
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 0.0  11.4 12.0
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'layer 2'
+
+
+
+'concentration input'
+
+1.14582d-02   'free'          ;c6h6  - component names
+
+1.06803d-05   'free'          ;c8h18
+
+3.05240d-04   'free'          ;o2(aq)
+
+4.00d-4     'pco2'            'co3-2'
+
+8.29d0      'ph'              'h+1'
+
+1.00000d-12   'free'          ;ch4(aq)
+
+1.00000d-10   'free'          ;fe+2
+
+4.72890d-04   'free'          ;ca+2
+
+3.75880d-09   'free'          ;fe+3
+
+5.72140d-04   'free'          ;n2(aq)
+
+1.45930d-05   'free'          ;ar(aq)
+
+
+
+'guess for ph'
+
+8.0d0
+
+
+
+'linear sorption input'
+
+'c6h6'      0.28d0             ;component name, distribution coefficient
+
+'c8h18(aq)' 1.31d0
+
+'mineral input'
+
+1.60d-02   .false.  'constant'  ;c6h6(l) (6% saturation)
+
+1.00d-10   1.00d-7  0.00d0
+
+2.90d-02   .false.  'constant'  ;c8h18(l) (6% saturation)
+
+1.00d-10   1.00d-7  0.00d0
+
+1.00d-01   .false.  'twothird'  ;calcite
+
+1.00d-10   1.0d-8    0.00d0
+
+1.00d-06   .false.  'twothird'  ;ferrihydrite
+
+1.00d-10   1.0d-11   0.00d0     
+
+0.00d-00   .false.  'constant'  ;siderite(d)
+
+1.00d-10   1.0d-11   0.00d0     
+
+1.00d-5   .false.  'twothird'  ;feooh-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   5.0d-12   0.00d0     ; 
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 1.0  10.6 11.4
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+4
+
+'layer 3'
+
+
+
+'concentration input'
+
+1.14582d-02   'free'          ;c6h6  - component names
+
+1.06803d-05   'free'          ;c8h18
+
+3.05240d-04   'free'          ;o2(aq)
+
+4.00d-4     'pco2'            'co3-2'
+
+8.29d0      'ph'              'h+1'
+
+1.00000d-12   'free'          ;ch4(aq)
+
+1.00000d-10   'free'          ;fe+2
+
+4.72890d-04   'free'          ;ca+2
+
+3.75880d-09   'free'          ;fe+3
+
+5.72140d-04   'free'          ;n2(aq)
+
+1.45930d-05   'free'          ;ar(aq)
+
+
+
+'guess for ph'
+
+8.0d0
+
+
+
+'linear sorption input'
+
+'c6h6'      0.28d0             ;component name, distribution coefficient
+
+'c8h18(aq)' 1.31d0
+
+
+
+'mineral input'
+
+7.90d-03   .false.  'constant'  ;c6h6(l) (3% saturation)
+
+1.00d-10   1.00d-7  0.00d0
+
+1.50d-02   .false.  'constant'  ;c8h18(l) (3% saturation)
+
+1.00d-10   1.00d-7  0.00d0
+
+1.00d-01   .false.  'twothird'  ;calcite
+
+1.00d-10   1.0d-8    0.00d0
+
+1.00d-06   .false.  'twothird'  ;ferrihydrite
+
+1.00d-10   1.0d-11   0.00d0     
+
+0.00d-00   .false.  'constant'  ;siderite(d)
+
+1.00d-10   1.0d-11   0.00d0     
+
+1.00d-5   .false.  'twothird'  ;feooh-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c6h6, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   2.0d-13   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-c8h18, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ; 
+
+1.00d-5   .false.  'twothird'  ;feooh-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   1.0d-12   0.00d0     ;
+
+1.00d-6   .false.  'twothird'  ;feoh3-ch4, rate mol Fe2+ / Lbulk/s Mayer et al 2002
+
+1.00d-10   5.0d-12   0.00d0     ; 
+
+
+
+'extent of zone'
+
+35.0 55.0  0.0 1.0  10.0 10.6
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 15: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+3                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'recharge boundary'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+'concentration input'
+
+1.00000d-12  'free'          ;c6h6  - component names
+
+1.00000d-12  'free'			 ;c8h18
+
+3.05240d-04   'free'          ;o2(aq)
+
+4.0d-04      'pco2'          ;co3-2  based on 0.04% for pco2 at standard temp.	
+
+6.093d0      'ph'             ;h+1
+
+1.0d-12	     'free'          ;ch4(aq)
+
+1.0000E-10   'free'          ;fe+2
+
+2.5d-6       'free'          ;ca+2'
+
+1.0000E-10   'free'          ;fe+3
+
+5.72140d-04   'free'          ;n2(aq)
+
+1.45930d-05   'free'          ;ar(aq)
+
+
+
+'extent of zone'
+
+0.0 600.0  0.0 1.0  15.0 15.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'inflow'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+'concentration input'
+
+1.00000d-12   'free'          ;c6h6  - component names
+
+1.00000d-12   'free'          ;c8h18
+
+3.05240d-04   'free'          ;o2(aq)
+
+4.00d-4     'pco2'            'co3-2'
+
+8.29d0      'ph'              'h+1'
+
+1.00000d-12   'free'          ;ch4(aq)
+
+1.00000d-10   'free'          ;fe+2
+
+4.72890d-04   'free'          ;ca+2
+
+3.75880d-09   'free'          ;fe+3
+
+5.72140d-04   'free'          ;n2(aq)
+
+1.45930d-05   'free'          ;ar(aq)
+
+
+
+
+
+'guess for ph'
+
+8.0d0
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  0.0 12.25
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'outflow'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+'extent of zone'
+
+600.0 600.0  0.0 1.0  0.0 10.0
+
+
+
+'end of zone'
+
+
+
+'done'
+

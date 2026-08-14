@@ -1,0 +1,81 @@
+DATABASE D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\aqueous_dh\database\phreeqc\minteq-simple.dat
+
+TITLE complex - temperature benchmarking 
+
+SOLUTION_SPECIES
+Ca+2 + CO3-2 = CaCO3
+        log_k   3.15
+        delta_h 4.03    kcal
+Ca+2 + CO3-2 + H+ = CaHCO3+
+        log_k   11.33
+        delta_h 1.179    kcal
+        -gamma  6       0
+Ca+2 + CO3-2 + H+ = CaHCO3+
+        log_k   11.33
+        delta_h 1.179    kcal
+        -gamma  6       0
+CO3-2 + H+ = HCO3-
+        log_k   10.33
+        delta_h -3.617  kcal
+        -gamma  5.4     0
+SOLUTION 1
+    temp     5
+    pH        7.0
+#    pe        -3.3471
+    redox     pe
+    units     mol/kgw
+    density   1
+	Ca	1.2665E-07    
+	C	 2.5665E-07		
+
+    -water    1 # kg
+
+#SOLUTION_MODIFY 1 Modified solution description
+#
+#	-temp              5
+#	-total_h           111.01243359981
+#	-total_o           55.506216800086
+#	-cb                3.72E-04
+#	-totals
+#	Ca	1.2665E-03    
+#	C	 2.5665E-03		
+#   -pH	7.0
+#   -pe	0
+#   -mu	3.58E-03
+#	-ah2o	1.0
+#	-activities
+#	Ca	 -2.902804
+#	C	 -6.189638
+
+END
+
+SOLUTION 2
+    temp      25
+    pH        7.0
+#    pe        -3.3471
+    redox     pe
+    units     mol/kgw
+    density   1
+	Ca	1.2665E-07    
+	C	 2.5665E-07		
+
+    -water    1 # kg
+
+END
+
+
+
+SOLUTION 3
+    temp      60
+    pH        7.0
+#    pe        -3.3471
+    redox     pe
+    units     mol/kgw
+    density   1
+	Ca	1.2665E-07    
+	C	 2.5665E-07		
+
+    -water    1 # kg
+
+
+END

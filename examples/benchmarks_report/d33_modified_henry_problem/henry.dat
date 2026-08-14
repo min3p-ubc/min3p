@@ -1,0 +1,588 @@
+! MIN3P Test Problem
+! Henry Salt Water Intrusion Problem
+! Simpson 2004 reduced freshwater flux
+! August 22, 2007
+!
+! Data Block 1: global control parameters
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Dtrac concentration scaled so that 1 M/L = 1025 kg/M !
+! dtrac gfw = 35 g/M in database\kmno4\comp.dbs        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! ---------------------------------------------------------------------------
+'global control parameters'
+'Henry Verification Problem'
+.true.                        ;varsat_flow
+.false.                       ;steady_flow
+.true.                       ;fully_saturated
+.true.                        ;reactive_transport
+
+'density dependent flow'
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+'geochemical system'
+
+'database directory'
+'database\kmno4_unix'
+
+'components'
+1                            ;number of components (nc-1)
+'dtrac'                       ;component names
+
+'done'
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+'spatial discretization'
+1                             ;number of discretization intervals in x
+41                             ;number of control volumes in x
+0.0 2.0                      ;xmin,xmax
+1                             ;number of discretization intervals in y
+1                             ;number of control volumes in y
+0.0 1.0                       ;ymin,ymax
+1                             ;number of discretization intervals in z
+21                            ;number of control volumes in z
+0.0 1.0                       ;zmin,zmax
+
+'done'
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+'time step control - global system'
+'days'                        ;time unit
+0.0                           ;time at start of solution
+0.833                         ;final solution time
+7.0d-4                        ;maximum time step
+1.0d-8                        ;minimum time step
+'done'
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-4                         ;factor for numerical differentiation
+1.d-6                         ;convergence tolerance
+
+'maximum ionic strength'
+5.0d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'done'
+!
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'variable density parameters'
+1000.00                      ;ref_dens
+0.7125                          ;dro/dc
+5                            ;maxit_sia
+4                            ;iter_target
+100.                          ;tol_sia
+1.0d10                        ;courant criteria
+
+'input units for media permeability'
+'hydraulic conductivity'
+
+'input units for boundary and initial conditions'
+'freshwater head'              ;input unit
+
+'newton iteration settings'
+1.d-3                         ;increment h for numerical differentiation
+30                            ;max. number of Newton iterations
+1.d-6                        ;convergence tolerance
+0.1                           ;anticipated saturation change
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+50                            ;msolvit_vs, max. number of solver iterations
+1                             ;idetail_vs, solver information level
+1.0d-8                      ;restol_vs, solver residual tolerance
+1.0d-8                      ;deltol_vs, solver update tolerance
+
+'done'
+
+!
+! Data Block 7: control parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'control parameters - reactive transport'
+
+'mass balance'
+
+'spatial weighting'
+'van leer'                    ;spatial weighting
+
+'activity update settings'
+'no_update'                  ;type of activity update
+
+'tortuosity correction'
+'no correction'
+
+'newton iteration settings'
+1.d-4                         ;increment h for numerical differentiation
+30                            ;anticipated number of Newton iterations
+80                            ;max. number of Newton iterations
+0.8d0                         ;anticipated update in log cycles
+3.0d0                         ;maximum update in log cycles
+1.d-5                         ;convergence tolerance (global system)
+
+'solver settings'
+0                             ;incomplete factorization level
+100                           ;max. number of solver iterations
+1                             ;solver information level
+1.d-7                         ;solver residual tolerance
+1.d-7                         ;solver update tolerance
+
+'done'
+!
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'output of spatial data'
+2                             ;number of output times (spatial data)
+0.07 0.833                    ;specified output times (spatial data)
+
+'done'
+!
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+1                             ;number of property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'aquifer'
+0.35                          ;porosity
+
+'extent of zone'
+0.0 2.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+!
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------------------------------------
+'aquifer'
+
+'hydraulic conductivity in x-direction'
+1.0d-2                          ;K_xx
+
+'hydraulic conductivity in z-direction'
+1.0d-2                          ;K_zz
+
+'specific storage coefficient'
+0.0                          ;S_s
+
+'soil hydraulic function parameters'
+0.2                           ;residual saturation
+3.4                           ;van genuchten - alpha
+4.7                           ;van genuchten - n
+0.5                           ;expn
+0.0                           ;air entry pressure
+
+'end of zone'
+
+'done'
+!
+! Data Block 11: physical parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'physical parameters - reactive transport'
+
+'diffusion coefficients'
+1.88571d-5                         ;aqueous phase
+0.0                                ;gas phase
+! ---------------------------------------------------------------------------
+'aquifer'
+
+'longitudinal dispersivity'
+0.0
+
+'transverse vertical dispersivity'
+0.0
+
+'end of zone'
+
+'done'
+!
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+1                              ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'zone 1'
+
+'initial condition'
+1.0d0                         ;freshwater head
+
+'extent of zone'
+0.0 2.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+!
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+22                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'inflow boundary'
+
+'boundary type'
+'second' 3.3d-5             ;freshwater flux m/s
+
+'extent of zone'
+0.0 0.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'obz0'
+
+'boundary type'
+'first'   1.025000500d+00          ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.0 0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'obz0.05'
+
+'boundary type'
+'first'   1.023750475d+00          ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.05 0.05
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'obz0.1'
+
+'boundary type'
+'first'   1.022500450d+00            ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.1 0.1
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'obz0.15'
+
+'boundary type'
+'first'   1.021250425d+00            ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.15 0.15
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+6
+'obz0.2'
+
+'boundary type'
+'first'   1.020000400d+00        ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.2 0.2
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+7
+'obz0.25'
+
+'boundary type'
+'first'   1.018750375d+00        ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.25 0.25
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+8
+'obz0.3'
+
+'boundary type'
+'first'   1.017500350d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.3 0.3
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+9
+'obz0.35'
+
+'boundary type'
+'first'   1.016250325d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.35 0.35
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+10
+'obz0.4'
+
+'boundary type'
+'first'   1.015000300d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.4 0.4
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+11
+'obz0.45'
+
+'boundary type'
+'first'   1.013750275d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.45 0.45
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+12
+'obz0.5'
+
+'boundary type'
+'first'   1.012500250d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.5 0.5
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+13
+'obz0.55'
+
+'boundary type'
+'first'   1.011250225d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.55 0.55
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+14
+'obz0.6'
+
+'boundary type'
+'first'   1.010000200d+00        ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.6 0.6
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+15
+'obz0.65'
+
+'boundary type'
+'first'   1.008750175d+00        ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.65 0.65
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+16
+'obz0.7'
+
+'boundary type'
+'first'   1.007500150d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.7 0.7
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+17
+'obz0.75'
+
+'boundary type'
+'first'   1.006250125d+00         ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.75 0.75
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+18
+'obz0.8'
+
+'boundary type'
+'first'   1.005000100d+00          ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.8 0.8
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+19
+'obz0.85'
+
+'boundary type'
+'first'   1.003750075d+00          ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.85 0.85
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+20
+'obz0.9'
+
+'boundary type'
+'first'   1.002500050d+00          ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.9 0.9
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+21
+'obz0.95'
+
+'boundary type'
+'first'   1.001250025d+00          ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.95 0.95
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+22
+'obz1.0'
+
+'boundary type'
+'first'   1.000000000d+00           ;freshwater head 
+
+'extent of zone'
+2.0 2.0  0.0 1.0  1.0 1.0
+
+'end of zone'
+'done'
+!
+! Data Block 15: initial conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+1                             ;number of zones
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'background chemistry'
+
+'concentration input'
+   
+1.0d-15     'free'            ;'dtrac'     ;component names
+
+'extent of zone'
+0.0 2.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+! Data Block 16: boundary conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - reactive transport'
+2                             ;number of zones
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'freshwater boundary'
+
+'boundary type'
+'first'
+
+'concentration input'
+1.0d-15     'free'            ;'dtrac'
+
+
+'extent of zone'
+0.0 0.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'sea water boundary'
+
+'boundary type'
+'first'
+
+'concentration input'
+1.0d0        'free'            ;'dtrac'
+
+
+'extent of zone'
+2.0 2.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+
+
+

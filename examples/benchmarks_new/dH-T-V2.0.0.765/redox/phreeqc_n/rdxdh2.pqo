@@ -1,0 +1,1126 @@
+   Input file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\redox\phreeqc_n\rdxdh2.pqi
+  Output file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\redox\phreeqc_n\rdxdh2.pqo
+Database file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\redox\database\phreeqc\llnl.dat
+
+------------------
+Reading data base.
+------------------
+
+	LLNL_AQUEOUS_MODEL_PARAMETERS
+	NAMED_EXPRESSIONS
+	SOLUTION_MASTER_SPECIES
+	SOLUTION_SPECIES
+	PHASES
+	EXCHANGE_MASTER_SPECIES
+	EXCHANGE_SPECIES
+	SURFACE_MASTER_SPECIES
+	SURFACE_SPECIES
+	RATES
+	END
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	DATABASE D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\redox\database\phreeqc\llnl.dat
+	TITLE Temperature - gas exchange benchmarking
+	SOLUTION_SPECIES
+	 1.0000 H2O  =  H2 +0.5000 O2   
+	      log_k        -44.61  #   -46.1066
+		delta_h	65.636  kcal/mol  #  275.588	kJ/mol	# Calculated enthalpy of reaction	H2
+	1.0000 H2O  =  OH- +1.0000 H+
+	        log_k           -13.9980
+		delta_h	13.3450   kcal/mol  #55.8146	kJ/mol	# Calculated enthalpy of reaction	OH-
+	      gamma 3.5  0.0
+	 1.0000 H+ + 1.0000 Fe++ + 0.2500 O2  =  Fe+++ +0.5000 H2O 
+	        log_k           +8.4725
+		delta_h	-23.4570 kcal/mol  #  -97.209	kJ/mol	# Calculated enthalpy of reaction	Fe+3
+	 1.0000 H2O  =  H2 +0.5000 O2   
+	        log_k           -46.1066
+		delta_h	275.588	kJ/mol	# Calculated enthalpy of reaction	H2
+	      gamma 0.0 0.0
+	1.0000 H2O + 1.0000 Fe++  =  FeOH+ +1.0000 H+
+	        log_k           -9.5
+		delta_h	13.20	   kcal/mol   	# Not possible to calculate enthalpy of reaction	FeOH+
+	      gamma 5.0 0.0
+	2.0000 H2O + 1.0000 Fe++  =  Fe(OH)2 +2.0000 H+
+	        log_k           -20.57
+		delta_h	28.565	  kcal/mol    	# Not possible to calculate enthalpy of reaction	Fe(OH)2
+	      gamma 0.0 0.0
+	3.0000 H2O + 1.0000 Fe++  =  Fe(OH)3- +3.0000 H+
+	        log_k           -31.0
+		delta_h	30.30	     kcal/mol 	# Not possible to calculate enthalpy of reaction	Fe(OH)3-
+	      gamma 5.0 0.0
+	2.0000 H2O + 1.0000 Fe+++  =  Fe(OH)2+ +2.0000 H+
+	        log_k           -5.67
+		delta_h	17.10	      kcal/mol	# Not possible to calculate enthalpy of reaction	Fe(OH)2+
+	      gamma 5.4 0.0
+	3.0000 H2O + 1.0000 Fe+++  =  Fe(OH)3 +3.0000 H+
+	        log_k           -12.56
+		delta_h	24.800	  kcal/mol    	# Not possible to calculate enthalpy of reaction	Fe(OH)3
+	      gamma 0.0  0.0
+	4.0000 H2O + 1.0000 Fe+++  =  Fe(OH)4- +4.0000 H+
+	        log_k           -21.6
+		delta_h	31.9000	kcal/mol      	# Not possible to calculate enthalpy of reaction	Fe(OH)4-
+	      gamma 5.4 0.0
+	4.0000 H2O + 1.0000 Fe++  =  Fe(OH)4-- +4.0000 H+
+	        log_k           -46
+		delta_h	0	      	# Not possible to calculate enthalpy of reaction	Fe(OH)4-2
+	      gamma 5.4 0.0
+	1.0000 Fe++ + 1.0000 Cl-  =  FeCl+
+	        log_k       0.14    #    -0.1605
+		delta_h	0.0   #3.02503	kJ/mol	# Calculated enthalpy of reaction	FeCl+
+	      gamma 5.0 0.0
+	1.0000 Fe+++ + 1.0000 Cl-  =  FeCl++
+	        log_k           1.48    #-0.8108
+		delta_h	5.60   kcal/mol #36.6421	kJ/mol	# Calculated enthalpy of reaction	FeCl+2
+	      gamma 5.0 0.0
+	2.0000 Cl- + 1.0000 Fe++  =  FeCl2
+	        log_k           -2.4541
+		delta_h	6.46846	kcal/mol	# Calculated enthalpy of reaction	FeCl2
+	      gamma 5.0 0.0 
+	3.0000 Cl- + 1.0000 Fe+++  =  FeCl3
+	        log_k          1.13    # -2.4541
+		delta_h	0.0	kJ/mol	# Calculated enthalpy of reaction	FeCl2
+	      gamma 0.0 0.0
+	4.0000 H2O + 3.0000 Fe+++  =  Fe3(OH)4+5 +4.0000 H+
+	        log_k           -6.3
+		delta_h	14.3	     kcal/mol 	# Not possible to calculate enthalpy of reaction	Fe3(OH)4+5
+	      gamma 0.0 0.0
+	2.0000 H2O + 2.0000 Fe+++  =  Fe2(OH)2++++ +2.0000 H+
+	        log_k           -2.95
+		delta_h	13.5	   kcal/mol   	# Not possible to calculate enthalpy of reaction	Fe2(OH)2+4
+	      gamma 0.0 0.0
+	1.0000 H2O + 1.0000 Fe+++  =  FeOH++ +1.0000 H+
+	        log_k           -2.19
+		delta_h	10.4000	 kcal/mol      	# Not possible to calculate enthalpy of reaction	FeOH+2
+	PHASES
+	O2(g) 
+	   O2 = O2
+	        log_k   -2.8980
+	        delta_h  -1.844    kcal  # from MIN3P database gases.dbs
+	SOLUTION 0
+	    temp      5.0
+	    pH        7.0
+	    pe        4
+	    units     mol/kgw
+	    density   1
+	     O(0)    2.0e-6
+	water    1.0 # kg
+	SAVE solution 0
+	END
+-----
+TITLE
+-----
+
+ Temperature - gas exchange benchmarking
+
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 0.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	O(0)             2.000e-006  2.000e-006
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  5.996e-008
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -8.013e-008
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =   5.00
+                  Electrical balance (eq)  =  8.013e-008
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  66.82
+                               Iterations  =   2
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          14.5130      0.8009
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   H+             1.000e-007  1.000e-007    -7.000    -7.000    -0.000      0.00
+   OH-            1.990e-008  1.989e-008    -7.701    -7.701    -0.000     (0)  
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.02
+H(0)         5.610e-026
+   H2             2.805e-026  2.805e-026   -25.552   -25.552     0.000     (0)  
+O(0)         2.000e-006
+   O2             1.000e-006  1.000e-006    -6.000    -6.000     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(278 K,   1 atm)
+
+  H2(g)           -22.52    -25.55   -3.03  H2
+  H2O(g)           -2.14     -0.00    2.14  H2O
+  Ice              -0.06     -0.00    0.06  H2O
+  O2(g)            -3.20     -6.00   -2.80  O2
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+	SOLUTION 1
+	    temp      5.0
+	    pH        7.0
+	    units     mol/kgw
+	    density   1
+	     Fe(+2)	 1.0e-7
+	     Cl	 1.0e-7	
+		 Fe(+3)  1.0e-15
+	    water    1.0 # kg
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-007  1.000e-007
+	Fe(2)            1.000e-007  1.000e-007
+	Fe(3)            1.000e-015  1.000e-015
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  3.099e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -8.010e-008
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =   5.00
+                  Electrical balance (eq)  =  1.801e-007
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  42.89
+                               Iterations  =   3
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	Fe(2)/Fe(3)         -2.3019     -0.1270
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   H+             1.001e-007  1.000e-007    -7.000    -7.000    -0.000      0.00
+   OH-            1.990e-008  1.989e-008    -7.701    -7.701    -0.000     (0)  
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.02
+Cl(-1)       1.000e-007
+   Cl-            1.000e-007  9.994e-008    -7.000    -7.000    -0.000     (0)  
+   FeCl+          1.376e-014  1.375e-014   -13.861   -13.862    -0.000     (0)  
+   HCl            2.106e-015  2.106e-015   -14.677   -14.677     0.000     (0)  
+   FeCl2          1.596e-024  1.596e-024   -23.797   -23.797     0.000     (0)  
+   FeCl+2         3.786e-029  3.776e-029   -28.422   -28.423    -0.001     (0)  
+   FeCl2+         3.328e-035  3.326e-035   -34.478   -34.478    -0.000     (0)  
+   FeCl4-2        9.984e-038  9.959e-038   -37.001   -37.002    -0.001     (0)  
+   FeCl3          0.000e+000  0.000e+000   -42.478   -42.478     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -51.398   -51.399    -0.000     (0)  
+Cl(1)        0.000e+000
+   HClO           0.000e+000  0.000e+000   -46.413   -46.413     0.000     (0)  
+   ClO-           0.000e+000  0.000e+000   -46.982   -46.982    -0.000     (0)  
+Cl(3)        0.000e+000
+   ClO2-          0.000e+000  0.000e+000   -79.615   -79.615    -0.000     (0)  
+   HClO2          0.000e+000  0.000e+000   -83.445   -83.445     0.000     (0)  
+Cl(5)        0.000e+000
+   ClO3-          0.000e+000  0.000e+000   -97.403   -97.403    -0.000     (0)  
+Cl(7)        0.000e+000
+   ClO4-          0.000e+000  0.000e+000  -119.651  -119.652    -0.000     (0)  
+Fe(2)        1.000e-007
+   Fe+2           9.994e-008  9.968e-008    -7.000    -7.001    -0.001     (0)  
+   FeOH+          6.356e-011  6.352e-011   -10.197   -10.197    -0.000     (0)  
+   FeCl+          1.376e-014  1.375e-014   -13.861   -13.862    -0.000     (0)  
+   Fe(OH)2        8.378e-016  8.378e-016   -15.077   -15.077     0.000     (0)  
+   Fe(OH)3-       2.523e-019  2.522e-019   -18.598   -18.598    -0.000     (0)  
+   FeCl2          1.596e-024  1.596e-024   -23.797   -23.797     0.000     (0)  
+   Fe(OH)4-2      9.993e-026  9.968e-026   -25.000   -25.001    -0.001     (0)  
+   FeCl4-2        9.984e-038  9.959e-038   -37.001   -37.002    -0.001     (0)  
+Fe(3)        1.000e-015
+   Fe(OH)2+       6.630e-016  6.626e-016   -15.179   -15.179    -0.000     (0)  
+   Fe(OH)3        3.353e-016  3.353e-016   -15.475   -15.475     0.000     (0)  
+   Fe(OH)4-       1.293e-018  1.292e-018   -17.889   -17.889    -0.000     (0)  
+   FeOH+2         4.523e-019  4.512e-019   -18.345   -18.346    -0.001     (0)  
+   Fe+3           2.483e-023  2.469e-023   -22.605   -22.608    -0.002     (0)  
+   FeCl+2         3.786e-029  3.776e-029   -28.422   -28.423    -0.001     (0)  
+   FeCl2+         3.328e-035  3.326e-035   -34.478   -34.478    -0.000     (0)  
+   Fe2(OH)2+4     1.342e-035  1.329e-035   -34.872   -34.877    -0.004     (0)  
+   FeCl3          0.000e+000  0.000e+000   -42.478   -42.478     0.000     (0)  
+   Fe3(OH)4+5     0.000e+000  0.000e+000   -46.869   -46.876    -0.007     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -51.398   -51.399    -0.000     (0)  
+H(0)         5.610e-026
+   H2             2.805e-026  2.805e-026   -25.552   -25.552     0.000     (0)  
+O(0)         0.000e+000
+   O2             0.000e+000  0.000e+000   -48.052   -48.052     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(278 K,   1 atm)
+
+  Cl2(g)          -55.68    -52.03    3.65  Cl2
+  Fe              -32.68     31.02   63.70  Fe
+  Fe(OH)2          -8.11      7.00   15.11  Fe(OH)2
+  Fe(OH)3          -8.32     -1.61    6.71  Fe(OH)3
+  FeO              -7.87      7.00   14.86  FeO
+  Goethite         -2.92     -1.61    1.31  FeOOH
+  H2(g)           -22.52    -25.55   -3.03  H2
+  H2O(g)           -2.14     -0.00    2.14  H2O
+  HCl(g)          -21.23    -14.00    7.23  HCl
+  Hematite         -4.92     -3.22    1.71  Fe2O3
+  Ice              -0.06     -0.00    0.06  H2O
+  Lawrencite      -31.12    -21.00   10.12  FeCl2
+  Magnetite        -9.37      3.78   13.16  Fe3O4
+  Molysite        -58.97    -43.61   15.36  FeCl3
+  O2(g)           -45.25    -48.05   -2.80  O2
+  Wustite          -7.98      5.72   13.70  Fe.947O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 3.
+------------------------------------
+
+	MIX 1
+	 0 0.1
+	 1 0.9
+	END
+-----------------------------------------
+Beginning of batch-reaction calculations.
+-----------------------------------------
+
+Reaction step 1.
+
+Using mix 1.	
+
+Mixture 1.	
+
+	 1.000e-001 Solution 0	                                                       
+	 9.000e-001 Solution 1	                                                       
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               9.000e-008  9.000e-008
+	Fe               9.000e-008  9.000e-008
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   6.703      Charge balance
+                                       pe  =  14.536      Adjusted to redox equilibrium
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.852e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -1.701e-007
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =   5.00
+                  Electrical balance (eq)  =  1.701e-007
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  45.94
+                               Iterations  =  21
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   H+             1.984e-007  1.983e-007    -6.703    -6.703    -0.000      0.00
+   OH-            1.004e-008  1.003e-008    -7.998    -7.999    -0.000     (0)  
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.02
+Cl(-1)       9.000e-008
+   Cl-            9.000e-008  8.996e-008    -7.046    -7.046    -0.000     (0)  
+   HCl            3.758e-015  3.758e-015   -14.425   -14.425     0.000     (0)  
+   FeCl+2         1.446e-020  1.443e-020   -19.840   -19.841    -0.001     (0)  
+   FeCl+          7.644e-023  7.640e-023   -22.117   -22.117    -0.000     (0)  
+   FeCl2+         1.145e-026  1.144e-026   -25.941   -25.941    -0.000     (0)  
+   FeCl2          7.982e-033  7.982e-033   -32.098   -32.098     0.000     (0)  
+   FeCl3          1.029e-034  1.029e-034   -33.987   -33.987     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -42.953   -42.953    -0.000     (0)  
+   FeCl4-2        0.000e+000  0.000e+000   -45.393   -45.394    -0.001     (0)  
+Cl(1)        2.349e-026
+   HClO           2.068e-026  2.068e-026   -25.685   -25.685     0.000     (0)  
+   ClO-           2.813e-027  2.812e-027   -26.551   -26.551    -0.000     (0)  
+Cl(3)        1.965e-039
+   ClO2-          1.965e-039  1.964e-039   -38.707   -38.707    -0.000     (0)  
+   HClO2          0.000e+000  0.000e+000   -42.240   -42.240     0.000     (0)  
+Cl(5)        9.588e-037
+   ClO3-          9.588e-037  9.583e-037   -36.018   -36.018    -0.000     (0)  
+Cl(7)        1.622e-038
+   ClO4-          1.622e-038  1.622e-038   -37.790   -37.790    -0.000     (0)  
+Fe(2)        6.167e-016
+   Fe+2           6.165e-016  6.153e-016   -15.210   -15.211    -0.001     (0)  
+   FeOH+          1.978e-019  1.977e-019   -18.704   -18.704    -0.000     (0)  
+   FeCl+          7.644e-023  7.640e-023   -22.117   -22.117    -0.000     (0)  
+   Fe(OH)2        1.315e-024  1.315e-024   -23.881   -23.881     0.000     (0)  
+   Fe(OH)3-       1.998e-028  1.997e-028   -27.699   -27.700    -0.000     (0)  
+   FeCl2          7.982e-033  7.982e-033   -32.098   -32.098     0.000     (0)  
+   Fe(OH)4-2      3.988e-035  3.981e-035   -34.399   -34.400    -0.001     (0)  
+   FeCl4-2        0.000e+000  0.000e+000   -45.393   -45.394    -0.001     (0)  
+Fe(3)        9.000e-008
+   Fe(OH)2+       7.160e-008  7.157e-008    -7.145    -7.145    -0.000     (0)  
+   Fe(OH)3        1.826e-008  1.826e-008    -7.738    -7.738     0.000     (0)  
+   FeOH+2         9.682e-011  9.663e-011   -10.014   -10.015    -0.001     (0)  
+   Fe(OH)4-       3.551e-011  3.549e-011   -10.450   -10.450    -0.000     (0)  
+   Fe+3           1.053e-014  1.048e-014   -13.978   -13.979    -0.002     (0)  
+   Fe2(OH)2+4     6.143e-019  6.095e-019   -18.212   -18.215    -0.003     (0)  
+   FeCl+2         1.446e-020  1.443e-020   -19.840   -19.841    -0.001     (0)  
+   Fe3(OH)4+5     6.669e-023  6.588e-023   -22.176   -22.181    -0.005     (0)  
+   FeCl2+         1.145e-026  1.144e-026   -25.941   -25.941    -0.000     (0)  
+   FeCl3          1.029e-034  1.029e-034   -33.987   -33.987     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -42.953   -42.953    -0.000     (0)  
+H(0)         0.000e+000
+   H2             0.000e+000  0.000e+000   -46.029   -46.029     0.000     (0)  
+O(0)         1.594e-007
+   O2             7.972e-008  7.972e-008    -7.098    -7.098     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(278 K,   1 atm)
+
+  Cl2(g)          -34.70    -31.05    3.65  Cl2
+  Fe              -61.96      1.74   63.70  Fe
+  Fe(OH)2         -16.91     -1.81   15.11  Fe(OH)2
+  Fe(OH)3          -0.58      6.13    6.71  Fe(OH)3
+  FeO             -16.67     -1.81   14.86  FeO
+  Goethite          4.82      6.13    1.31  FeOOH
+  H2(g)           -42.99    -46.03   -3.03  H2
+  H2O(g)           -2.14     -0.00    2.14  H2O
+  HCl(g)          -20.98    -13.75    7.23  HCl
+  Hematite         10.55     12.26    1.71  Fe2O3
+  Ice              -0.06     -0.00    0.06  H2O
+  Lawrencite      -39.42    -29.30   10.12  FeCl2
+  Magnetite        -2.71     10.45   13.16  Fe3O4
+  Molysite        -50.48    -35.12   15.36  FeCl3
+  O2(g)            -4.30     -7.10   -2.80  O2
+  Wustite         -14.57     -0.87   13.70  Fe.947O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 4.
+------------------------------------
+
+	SOLUTION 2
+	    temp      25.0
+	    pH        7.0
+	    units     mol/kgw
+	    density   1
+	     Fe(+2)	 1.0e-7
+	     Cl	 1.0e-7	
+	     Fe(+3)  1.0e-15
+	    water    1.0 # kg
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 2.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-007  1.000e-007
+	Fe(2)            1.000e-007  1.000e-007
+	Fe(3)            1.000e-015  1.000e-015
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  3.498e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  7.764e-010
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.00
+                  Electrical balance (eq)  =  9.922e-008
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  19.83
+                               Iterations  =   3
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	Fe(2)/Fe(3)         -3.6631     -0.2167
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   OH-            1.005e-007  1.005e-007    -6.998    -6.998    -0.000     (0)  
+   H+             1.001e-007  1.000e-007    -7.000    -7.000    -0.000      0.00
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.07
+Cl(-1)       1.000e-007
+   Cl-            1.000e-007  9.993e-008    -7.000    -7.000    -0.000     (0)  
+   FeCl+          1.372e-014  1.371e-014   -13.863   -13.863    -0.000     (0)  
+   HCl            2.244e-015  2.244e-015   -14.649   -14.649     0.000     (0)  
+   FeCl2          3.489e-024  3.489e-024   -23.457   -23.457     0.000     (0)  
+   FeCl+2         6.152e-030  6.135e-030   -29.211   -29.212    -0.001     (0)  
+   FeCl2+         2.740e-036  2.738e-036   -35.562   -35.563    -0.000     (0)  
+   FeCl4-2        1.123e-037  1.120e-037   -36.950   -36.951    -0.001     (0)  
+   FeCl3          0.000e+000  0.000e+000   -43.563   -43.563     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -52.483   -52.483    -0.000     (0)  
+Cl(1)        0.000e+000
+   HClO           0.000e+000  0.000e+000   -42.540   -42.540     0.000     (0)  
+   ClO-           0.000e+000  0.000e+000   -43.108   -43.109    -0.000     (0)  
+Cl(3)        0.000e+000
+   ClO2-          0.000e+000  0.000e+000   -72.112   -72.112    -0.000     (0)  
+   HClO2          0.000e+000  0.000e+000   -75.942   -75.942     0.000     (0)  
+Cl(5)        0.000e+000
+   ClO3-          0.000e+000  0.000e+000   -87.262   -87.263    -0.000     (0)  
+Cl(7)        0.000e+000
+   ClO4-          0.000e+000  0.000e+000  -106.715  -106.715    -0.000     (0)  
+Fe(2)        1.000e-007
+   Fe+2           9.969e-008  9.941e-008    -7.001    -7.003    -0.001     (0)  
+   FeOH+          3.146e-010  3.144e-010    -9.502    -9.503    -0.000     (0)  
+   Fe(OH)2        2.676e-014  2.676e-014   -13.573   -13.573     0.000     (0)  
+   FeCl+          1.372e-014  1.371e-014   -13.863   -13.863    -0.000     (0)  
+   Fe(OH)3-       9.948e-018  9.941e-018   -17.002   -17.003    -0.000     (0)  
+   FeCl2          3.489e-024  3.489e-024   -23.457   -23.457     0.000     (0)  
+   Fe(OH)4-2      9.968e-026  9.941e-026   -25.001   -25.003    -0.001     (0)  
+   FeCl4-2        1.123e-037  1.120e-037   -36.950   -36.951    -0.001     (0)  
+Fe(3)        1.000e-015
+   Fe(OH)3        5.599e-016  5.599e-016   -15.252   -15.252     0.000     (0)  
+   Fe(OH)2+       4.349e-016  4.346e-016   -15.362   -15.362    -0.000     (0)  
+   Fe(OH)4-       5.110e-018  5.106e-018   -17.292   -17.292    -0.000     (0)  
+   FeOH+2         1.316e-019  1.312e-019   -18.881   -18.882    -0.001     (0)  
+   Fe+3           2.045e-024  2.033e-024   -23.689   -23.692    -0.003     (0)  
+   FeCl+2         6.152e-030  6.135e-030   -29.211   -29.212    -0.001     (0)  
+   FeCl2+         2.740e-036  2.738e-036   -35.562   -35.563    -0.000     (0)  
+   Fe2(OH)2+4     4.688e-037  4.636e-037   -36.329   -36.334    -0.005     (0)  
+   FeCl3          0.000e+000  0.000e+000   -43.563   -43.563     0.000     (0)  
+   Fe3(OH)4+5     0.000e+000  0.000e+000   -49.368   -49.376    -0.008     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -52.483   -52.483    -0.000     (0)  
+H(0)         1.556e-025
+   H2             7.779e-026  7.779e-026   -25.109   -25.109     0.000     (0)  
+O(0)         0.000e+000
+   O2             0.000e+000  0.000e+000   -41.995   -41.995     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(298 K,   1 atm)
+
+  Cl2(g)          -51.99    -49.00    2.99  Cl2
+  Fe              -31.02     27.99   59.02  Fe
+  Fe(OH)2          -6.90      7.00   13.89  Fe(OH)2
+  Fe(OH)3          -8.33     -2.69    5.64  Fe(OH)3
+  FeO              -6.53      7.00   13.52  FeO
+  Goethite         -3.22     -2.69    0.53  FeOOH
+  H2(g)           -22.01    -25.11   -3.10  H2
+  H2O(g)           -1.59     -0.00    1.59  H2O
+  HCl(g)          -20.30    -14.00    6.30  HCl
+  Hematite         -5.46     -5.38    0.08  Fe2O3
+  Ice              -0.14     -0.00    0.14  H2O
+  Lawrencite      -30.06    -21.00    9.05  FeCl2
+  Magnetite        -8.80      1.61   10.42  Fe3O4
+  Molysite        -58.16    -44.69   13.47  FeCl3
+  O2(g)           -39.10    -42.00   -2.90  O2
+  Wustite          -6.80      5.60   12.40  Fe.947O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 5.
+------------------------------------
+
+	SOLUTION 0
+	    temp      25.0
+	    pH        7.0
+	    pe        4
+	    redox     O(-2)/O(0)
+	    units     mol/kgw
+	    density   1
+	     O(0)    2.0e-6
+	water    1.0 # kg
+	SAVE solution 0
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 0.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	O(0)             2.000e-006  2.000e-006
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.003e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  4.617e-010
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.00
+                  Electrical balance (eq)  = -4.617e-010
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  -0.23
+                               Iterations  =   2
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          12.9988      0.7690
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   OH-            1.005e-007  1.005e-007    -6.998    -6.998    -0.000     (0)  
+   H+             1.000e-007  1.000e-007    -7.000    -7.000    -0.000      0.00
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.07
+H(0)         0.000e+000
+   H2             0.000e+000  0.000e+000   -43.107   -43.107     0.000     (0)  
+O(0)         2.000e-006
+   O2             1.000e-006  1.000e-006    -6.000    -6.000     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(298 K,   1 atm)
+
+  H2(g)           -40.01    -43.11   -3.10  H2
+  H2O(g)           -1.59     -0.00    1.59  H2O
+  Ice              -0.14     -0.00    0.14  H2O
+  O2(g)            -3.10     -6.00   -2.90  O2
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 6.
+------------------------------------
+
+	MIX 2
+	 2 0.9
+	 0 0.1
+	END
+-----------------------------------------
+Beginning of batch-reaction calculations.
+-----------------------------------------
+
+Reaction step 1.
+
+Using mix 2.	
+
+Mixture 2.	
+
+	 1.000e-001 Solution 0	                                                       
+	 9.000e-001 Solution 2	                                                       
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               9.000e-008  9.000e-008
+	Fe               9.000e-008  9.000e-008
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   6.740      Charge balance
+                                       pe  =  12.981      Adjusted to redox equilibrium
+                        Activity of water  =   1.000
+                           Ionic strength  =  1.901e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  = -8.926e-008
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  25.00
+                  Electrical balance (eq)  =  8.926e-008
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  23.48
+                               Iterations  =  12
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   H+             1.820e-007  1.820e-007    -6.740    -6.740    -0.000      0.00
+   OH-            5.524e-008  5.521e-008    -7.258    -7.258    -0.000     (0)  
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.07
+Cl(-1)       9.000e-008
+   Cl-            9.000e-008  8.995e-008    -7.046    -7.046    -0.000     (0)  
+   HCl            3.676e-015  3.676e-015   -14.435   -14.435     0.000     (0)  
+   FeCl+2         2.215e-021  2.211e-021   -20.655   -20.655    -0.001     (0)  
+   FeCl+          1.122e-022  1.121e-022   -21.950   -21.950    -0.000     (0)  
+   FeCl2+         8.887e-028  8.883e-028   -27.051   -27.051    -0.000     (0)  
+   FeCl2          2.568e-032  2.568e-032   -31.590   -31.590     0.000     (0)  
+   FeCl3          7.990e-036  7.990e-036   -35.097   -35.097     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -44.063   -44.063    -0.000     (0)  
+   FeCl4-2        0.000e+000  0.000e+000   -45.174   -45.175    -0.001     (0)  
+Cl(1)        1.503e-025
+   HClO           1.309e-025  1.309e-025   -24.883   -24.883     0.000     (0)  
+   ClO-           1.941e-026  1.940e-026   -25.712   -25.712    -0.000     (0)  
+Cl(3)        5.334e-038
+   ClO2-          5.334e-038  5.331e-038   -37.273   -37.273    -0.000     (0)  
+   HClO2          0.000e+000  0.000e+000   -40.843   -40.843     0.000     (0)  
+Cl(5)        1.043e-035
+   ClO3-          1.043e-035  1.043e-035   -34.982   -34.982    -0.000     (0)  
+Cl(7)        1.018e-037
+   ClO4-          1.018e-037  1.018e-037   -36.992   -36.992    -0.000     (0)  
+Fe(2)        9.065e-016
+   Fe+2           9.049e-016  9.031e-016   -15.043   -15.044    -0.001     (0)  
+   FeOH+          1.570e-018  1.569e-018   -17.804   -17.804    -0.000     (0)  
+   FeCl+          1.122e-022  1.121e-022   -21.950   -21.950    -0.000     (0)  
+   Fe(OH)2        7.342e-023  7.342e-023   -22.134   -22.134     0.000     (0)  
+   Fe(OH)3-       1.500e-026  1.499e-026   -25.824   -25.824    -0.000     (0)  
+   FeCl2          2.568e-032  2.568e-032   -31.590   -31.590     0.000     (0)  
+   Fe(OH)4-2      8.256e-035  8.239e-035   -34.083   -34.084    -0.001     (0)  
+   FeCl4-2        0.000e+000  0.000e+000   -45.174   -45.175    -0.001     (0)  
+Fe(3)        9.000e-008
+   Fe(OH)2+       5.258e-008  5.255e-008    -7.279    -7.279    -0.000     (0)  
+   Fe(OH)3        3.721e-008  3.721e-008    -7.429    -7.429     0.000     (0)  
+   Fe(OH)4-       1.866e-010  1.865e-010    -9.729    -9.729    -0.000     (0)  
+   FeOH+2         2.894e-011  2.888e-011   -10.539   -10.539    -0.001     (0)  
+   Fe+3           8.175e-016  8.138e-016   -15.087   -15.089    -0.002     (0)  
+   Fe2(OH)2+4     2.263e-020  2.244e-020   -19.645   -19.649    -0.004     (0)  
+   FeCl+2         2.215e-021  2.211e-021   -20.655   -20.655    -0.001     (0)  
+   Fe3(OH)4+5     2.496e-025  2.464e-025   -24.603   -24.608    -0.006     (0)  
+   FeCl2+         8.887e-028  8.883e-028   -27.051   -27.051    -0.000     (0)  
+   FeCl3          7.990e-036  7.990e-036   -35.097   -35.097     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -44.063   -44.063    -0.000     (0)  
+H(0)         0.000e+000
+   H2             0.000e+000  0.000e+000   -42.551   -42.551     0.000     (0)  
+O(0)         1.550e-007
+   O2             7.750e-008  7.750e-008    -7.111    -7.111     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(298 K,   1 atm)
+
+  Cl2(g)          -34.12    -31.13    2.99  Cl2
+  Fe              -57.03      1.99   59.02  Fe
+  Fe(OH)2         -15.46     -1.56   13.89  Fe(OH)2
+  Fe(OH)3          -0.51      5.13    5.64  Fe(OH)3
+  FeO             -15.09     -1.56   13.52  FeO
+  Goethite          4.60      5.13    0.53  FeOOH
+  H2(g)           -39.45    -42.55   -3.10  H2
+  H2O(g)           -1.59     -0.00    1.59  H2O
+  HCl(g)          -20.09    -13.79    6.30  HCl
+  Hematite         10.19     10.26    0.08  Fe2O3
+  Ice              -0.14     -0.00    0.14  H2O
+  Lawrencite      -38.19    -29.14    9.05  FeCl2
+  Magnetite        -1.72      8.70   10.42  Fe3O4
+  Molysite        -49.70    -36.23   13.47  FeCl3
+  O2(g)            -4.21     -7.11   -2.90  O2
+  Wustite         -13.17     -0.77   12.40  Fe.947O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 7.
+------------------------------------
+
+	SOLUTION 3
+	    temp      60.0
+	    pH        7.0
+	    units     mol/kgw
+	    density   1
+	     Fe(+2)	 1.0e-7
+	     Cl	 1.0e-7	
+		 Fe(+3)  1.0e-15
+	    water    1.0 # kg
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 3.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               1.000e-007  1.000e-007
+	Fe(2)            1.000e-007  1.000e-007
+	Fe(3)            1.000e-015  1.000e-015
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  8.312e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  9.749e-007
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  60.00
+                  Electrical balance (eq)  = -8.749e-007
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  = -59.57
+                               Iterations  =   3
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	Fe(2)/Fe(3)         -5.8107     -0.3841
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   OH-            1.072e-006  1.071e-006    -5.970    -5.970    -0.000     (0)  
+   H+             1.001e-007  1.000e-007    -7.000    -7.000    -0.000      0.00
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.32
+Cl(-1)       1.000e-007
+   Cl-            1.000e-007  9.989e-008    -7.000    -7.000    -0.000     (0)  
+   FeCl+          1.330e-014  1.329e-014   -13.876   -13.876    -0.000     (0)  
+   HCl            2.192e-015  2.192e-015   -14.659   -14.659     0.000     (0)  
+   FeCl2          1.064e-023  1.064e-023   -22.973   -22.973     0.000     (0)  
+   FeCl+2         2.971e-031  2.957e-031   -30.527   -30.529    -0.002     (0)  
+   FeCl4-2        2.674e-037  2.662e-037   -36.573   -36.575    -0.002     (0)  
+   FeCl2+         4.894e-038  4.888e-038   -37.310   -37.311    -0.000     (0)  
+   FeCl3          0.000e+000  0.000e+000   -45.311   -45.311     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -54.231   -54.232    -0.000     (0)  
+Cl(1)        1.452e-037
+   HClO           1.143e-037  1.143e-037   -36.942   -36.942     0.000     (0)  
+   ClO-           3.086e-038  3.082e-038   -37.511   -37.511    -0.000     (0)  
+Cl(3)        0.000e+000
+   ClO2-          0.000e+000  0.000e+000   -61.219   -61.220    -0.000     (0)  
+   HClO2          0.000e+000  0.000e+000   -65.050   -65.050     0.000     (0)  
+Cl(5)        0.000e+000
+   ClO3-          0.000e+000  0.000e+000   -72.520   -72.521    -0.000     (0)  
+Cl(7)        0.000e+000
+   ClO4-          0.000e+000  0.000e+000   -87.903   -87.904    -0.000     (0)  
+Fe(2)        1.000e-007
+   Fe+2           9.683e-008  9.638e-008    -7.014    -7.016    -0.002     (0)  
+   FeOH+          3.169e-009  3.166e-009    -8.499    -8.500    -0.000     (0)  
+   Fe(OH)2        4.108e-012  4.108e-012   -11.386   -11.386     0.000     (0)  
+   FeCl+          1.330e-014  1.329e-014   -13.876   -13.876    -0.000     (0)  
+   Fe(OH)3-       2.079e-015  2.076e-015   -14.682   -14.683    -0.000     (0)  
+   FeCl2          1.064e-023  1.064e-023   -22.973   -22.973     0.000     (0)  
+   Fe(OH)4-2      9.683e-026  9.638e-026   -25.014   -25.016    -0.002     (0)  
+   FeCl4-2        2.674e-037  2.662e-037   -36.573   -36.575    -0.002     (0)  
+Fe(3)        1.000e-015
+   Fe(OH)3        8.126e-016  8.126e-016   -15.090   -15.090     0.000     (0)  
+   Fe(OH)2+       1.612e-016  1.610e-016   -15.793   -15.793    -0.000     (0)  
+   Fe(OH)4-       2.613e-017  2.610e-017   -16.583   -16.583    -0.000     (0)  
+   FeOH+2         1.489e-020  1.483e-020   -19.827   -19.829    -0.002     (0)  
+   Fe+3           3.670e-026  3.632e-026   -25.435   -25.440    -0.004     (0)  
+   FeCl+2         2.971e-031  2.957e-031   -30.527   -30.529    -0.002     (0)  
+   FeCl2+         4.894e-038  4.888e-038   -37.310   -37.311    -0.000     (0)  
+   Fe2(OH)2+4     1.651e-039  1.621e-039   -38.782   -38.790    -0.008     (0)  
+   FeCl3          0.000e+000  0.000e+000   -45.311   -45.311     0.000     (0)  
+   Fe3(OH)4+5     0.000e+000  0.000e+000   -53.506   -53.518    -0.012     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -54.231   -54.232    -0.000     (0)  
+H(0)         6.688e-025
+   H2             3.344e-025  3.344e-025   -24.476   -24.476     0.000     (0)  
+O(0)         1.526e-033
+   O2             7.631e-034  7.631e-034   -33.117   -33.117     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(333 K,   1 atm)
+
+  Cl2(g)          -46.50    -44.56    1.94  Cl2
+  Fe              -28.61     23.54   52.15  Fe
+  Fe(OH)2          -5.17      6.98   12.15  Fe(OH)2
+  Fe(OH)3          -8.54     -4.44    4.10  Fe(OH)3
+  FeO              -4.59      6.98   11.58  FeO
+  Goethite         -3.84     -4.44   -0.60  FeOOH
+  H2(g)           -21.34    -24.48   -3.14  H2
+  H2O(g)           -0.79     -0.00    0.79  H2O
+  HCl(g)          -18.90    -14.00    4.90  HCl
+  Hematite         -6.55     -8.88   -2.33  Fe2O3
+  Ice              -0.29     -0.00    0.29  H2O
+  Lawrencite      -28.43    -21.02    7.41  FeCl2
+  Magnetite        -8.31     -1.90    6.42  Fe3O4
+  Molysite        -56.97    -46.44   10.53  FeCl3
+  O2(g)           -30.08    -33.12   -3.04  O2
+  Wustite          -5.12      5.40   10.52  Fe.947O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 8.
+------------------------------------
+
+	SOLUTION 0
+	    temp      60.0
+	    pH        7.0
+	    pe        4
+	    redox     O(-2)/O(0)
+	    units     mol/kgw
+	    density   1
+	     O(0)    2.0e-6
+	water    1.0 # kg
+	SAVE solution 0
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 0.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	O(0)             2.000e-006  2.000e-006
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  5.859e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  9.716e-007
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  60.00
+                  Electrical balance (eq)  = -9.716e-007
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  = -82.92
+                               Iterations  =   2
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+---------------------------------Redox couples---------------------------------
+
+	Redox couple             pe  Eh (volts)
+
+	O(-2)/O(0)          10.7794      0.7125
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   OH-            1.072e-006  1.071e-006    -5.970    -5.970    -0.000     (0)  
+   H+             1.001e-007  1.000e-007    -7.000    -7.000    -0.000      0.00
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.32
+H(0)         1.847e-038
+   H2             9.237e-039  9.237e-039   -38.034   -38.034     0.000     (0)  
+O(0)         2.000e-006
+   O2             1.000e-006  1.000e-006    -6.000    -6.000     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(333 K,   1 atm)
+
+  H2(g)           -34.90    -38.03   -3.14  H2
+  H2O(g)           -0.79     -0.00    0.79  H2O
+  Ice              -0.29     -0.00    0.29  H2O
+  O2(g)            -2.96     -6.00   -3.04  O2
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 9.
+------------------------------------
+
+	MIX 3
+	 3 0.9
+	 0 0.1
+	END
+-----------------------------------------
+Beginning of batch-reaction calculations.
+-----------------------------------------
+
+Reaction step 1.
+
+Using mix 3.	
+
+Mixture 3.	
+
+	 1.000e-001 Solution 0	                                                       
+	 9.000e-001 Solution 3	                                                       
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Cl               9.000e-008  9.000e-008
+	Fe               9.000e-008  9.000e-008
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   6.936      Charge balance
+                                       pe  =  10.566      Adjusted to redox equilibrium
+                        Activity of water  =   1.000
+                           Ionic strength  =  5.747e-007
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  8.846e-007
+                    Total carbon (mol/kg)  =  0.000e+000
+                       Total CO2 (mol/kg)  =  0.000e+000
+                      Temperature (deg C)  =  60.00
+                  Electrical balance (eq)  = -8.846e-007
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  = -76.96
+                               Iterations  =   8
+                                  Total H  = 1.110507e+002
+                                  Total O  = 5.552533e+001
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   OH-            9.250e-007  9.241e-007    -6.034    -6.034    -0.000     (0)  
+   H+             1.160e-007  1.159e-007    -6.936    -6.936    -0.000      0.00
+   H2O            5.553e+001  1.000e+000     1.744    -0.000     0.000     18.32
+Cl(-1)       9.000e-008
+   Cl-            9.000e-008  8.991e-008    -7.046    -7.046    -0.000     (0)  
+   HCl            2.286e-015  2.286e-015   -14.641   -14.641     0.000     (0)  
+   FeCl+          6.895e-023  6.888e-023   -22.161   -22.162    -0.000     (0)  
+   FeCl+2         3.659e-023  3.645e-023   -22.437   -22.438    -0.002     (0)  
+   FeCl2+         5.429e-030  5.424e-030   -29.265   -29.266    -0.000     (0)  
+   FeCl2          4.965e-032  4.965e-032   -31.304   -31.304     0.000     (0)  
+   FeCl3          4.877e-038  4.877e-038   -37.312   -37.312     0.000     (0)  
+   FeCl4-2        0.000e+000  0.000e+000   -44.996   -44.997    -0.002     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -46.278   -46.278    -0.000     (0)  
+Cl(1)        1.481e-024
+   HClO           1.201e-024  1.201e-024   -23.920   -23.920     0.000     (0)  
+   ClO-           2.799e-025  2.796e-025   -24.553   -24.553    -0.000     (0)  
+Cl(3)        5.519e-036
+   ClO2-          5.518e-036  5.513e-036   -35.258   -35.259    -0.000     (0)  
+   HClO2          9.442e-040  9.442e-040   -39.025   -39.025     0.000     (0)  
+Cl(5)        2.779e-034
+   ClO3-          2.779e-034  2.776e-034   -33.556   -33.557    -0.000     (0)  
+Cl(7)        1.161e-036
+   ClO4-          1.161e-036  1.159e-036   -35.935   -35.936    -0.000     (0)  
+Fe(2)        5.729e-016
+   Fe+2           5.571e-016  5.550e-016   -15.254   -15.256    -0.002     (0)  
+   FeOH+          1.575e-017  1.573e-017   -16.803   -16.803    -0.000     (0)  
+   Fe(OH)2        1.762e-020  1.762e-020   -19.754   -19.754     0.000     (0)  
+   FeCl+          6.895e-023  6.888e-023   -22.161   -22.162    -0.000     (0)  
+   Fe(OH)3-       7.696e-024  7.688e-024   -23.114   -23.114    -0.000     (0)  
+   FeCl2          4.965e-032  4.965e-032   -31.304   -31.304     0.000     (0)  
+   Fe(OH)4-2      3.092e-034  3.081e-034   -33.510   -33.511    -0.002     (0)  
+   FeCl4-2        0.000e+000  0.000e+000   -44.996   -44.997    -0.002     (0)  
+Fe(3)        9.000e-008
+   Fe(OH)3        7.157e-008  7.157e-008    -7.145    -7.145     0.000     (0)  
+   Fe(OH)2+       1.645e-008  1.643e-008    -7.784    -7.784    -0.000     (0)  
+   Fe(OH)4-       1.986e-009  1.984e-009    -8.702    -8.702    -0.000     (0)  
+   FeOH+2         1.759e-012  1.752e-012   -11.755   -11.756    -0.002     (0)  
+   Fe+3           5.017e-018  4.974e-018   -17.300   -17.303    -0.004     (0)  
+   FeCl+2         3.659e-023  3.645e-023   -22.437   -22.438    -0.002     (0)  
+   Fe2(OH)2+4     2.300e-023  2.265e-023   -22.638   -22.645    -0.007     (0)  
+   FeCl2+         5.429e-030  5.424e-030   -29.265   -29.266    -0.000     (0)  
+   Fe3(OH)4+5     4.425e-030  4.321e-030   -29.354   -29.364    -0.010     (0)  
+   FeCl3          4.877e-038  4.877e-038   -37.312   -37.312     0.000     (0)  
+   FeCl4-         0.000e+000  0.000e+000   -46.278   -46.278    -0.000     (0)  
+H(0)         6.636e-038
+   H2             3.318e-038  3.318e-038   -37.479   -37.479     0.000     (0)  
+O(0)         1.550e-007
+   O2             7.750e-008  7.750e-008    -7.111    -7.111     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(333 K,   1 atm)
+
+  Cl2(g)          -33.46    -31.52    1.94  Cl2
+  Fe              -49.98      2.17   52.15  Fe
+  Fe(OH)2         -13.54     -1.38   12.15  Fe(OH)2
+  Fe(OH)3          -0.59      3.50    4.10  Fe(OH)3
+  FeO             -12.96     -1.38   11.58  FeO
+  Goethite          4.10      3.50   -0.60  FeOOH
+  H2(g)           -34.34    -37.48   -3.14  H2
+  H2O(g)           -0.79     -0.00    0.79  H2O
+  HCl(g)          -18.88    -13.98    4.90  HCl
+  Hematite          9.34      7.01   -2.33  Fe2O3
+  Ice              -0.29     -0.00    0.29  H2O
+  Lawrencite      -36.76    -29.35    7.41  FeCl2
+  Magnetite        -0.79      5.63    6.42  Fe3O4
+  Molysite        -48.97    -38.44   10.53  FeCl3
+  O2(g)            -4.07     -7.11   -3.04  O2
+  Wustite         -11.31     -0.79   10.52  Fe.947O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+-------------------------------------
+Reading input data for simulation 10.
+-------------------------------------
+
+-------------------------------
+End of Run after 0.575 Seconds.
+-------------------------------
+

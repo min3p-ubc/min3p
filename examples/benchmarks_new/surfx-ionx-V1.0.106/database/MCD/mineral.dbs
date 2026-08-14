@@ -1,0 +1,7391 @@
+! **********************************************************************
+! MINERAL.DBS
+! **********************************************************************
+! database file for MIN3P for kinetically controlled
+! dissolution-precipitation reactions
+! based on MINTEQA2 database entries
+! new rate data can be added
+! ************************************************************************
+!
+! uraninite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'uraninite'
+'surface'
+ 270.0278    8.6000
+ 3  'h+1'   -4.000  'u+4'    1.000  'h2o'    2.000
+'reversible'    4.7000  18.6300
+!
+! uo2(am)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'uo2(am)'
+'surface'
+ 270.0278    8.6000
+ 3  'h+1'   -4.000  'u+4'    1.000  'h2o'    2.000
+'reversible'   -0.9340  26.2300
+!
+! u4o9(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'u4o9(c)'
+'surface'
+1096.1106    1.0000
+ 4  'h+1'  -16.000  'o2(aq)'    0.500  'u+4'    4.000  'h2o'    8.000
+'reversible'   46.3930  34.3210
+!
+! u3o8(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'u3o8(c)'
+'surface'
+ 842.0822    1.0000
+ 4  'h+1'  -12.000  'o2(aq)'    1.000  'u+4'    3.000  'h2o'    6.000
+'reversible'   64.9110  -17.8081
+!
+! usio4(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'usio4(c)'
+'surface'
+ 330.1121    1.0000
+ 3  'h+1'   -4.000  'u+4'    1.000  'h4sio4'    1.000
+'reversible'    7.6400  14.3000
+!
+! uf4(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'uf4(c)'
+'surface'
+ 314.0226    6.6984
+ 2  'u+4'    1.000  'f-1'    4.000
+'reversible'   18.6060  18.9000
+!
+! uf4.2.5h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'uf4.2.5h2o'
+'surface'
+ 359.0606    1.0000
+ 3  'u+4'    1.000  'f-1'    4.000  'h2o'    2.500
+'reversible'   27.5700  0.5880
+!
+! uhpo4)2,4h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'uhpo4)2,4h2o'
+'surface'
+ 502.0486    1.0000
+ 4  'u+4'    1.000  'po4-3'    2.000  'h+1'    2.000  'h2o'    4.000
+'reversible'   53.3000  -3.8400
+!
+! ningyoite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'ningyoite'
+'surface'
+ 504.0822    4.7500
+ 4  'u+4'    1.000  'ca+2'    1.000  'po4-3'    2.000  'h2o'    2.000
+'reversible'   53.9060  2.2700
+!
+! uo3(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database - for uo3(gamma)
+! activation energy: undefined
+!
+'uo3(c)'
+'surface'
+ 286.0272    8.0435
+ 3  'h+1'   -2.000  'uo2+2'    1.000  'h2o'    1.000
+'reversible'   -7.7190  19.3150
+!
+! gummite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System - for fourm
+! activation energy: undefined
+!
+'gummite'
+'surface'
+ 286.0272    5.8900
+ 3  'h+1'   -2.000  'uo2+2'    1.000  'h2o'    1.000
+'reversible'  -10.4030  23.0150
+!
+! b-uo2(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'b-uo2(oh)2'
+'surface'
+ 304.0424    5.9256
+ 3  'h+1'   -2.000  'uo2+2'    1.000  'h2o'    2.000
+'reversible'   -5.5440  13.7300
+!
+! schoepite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'schoepite'
+'surface'
+ 322.0576    4.8737
+ 3  'h+1'   -2.000  'uo2+2'    1.000  'h2o'    3.000
+'reversible'   -5.4040  12.0450
+!
+! rutherfordin
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'rutherfordin'
+'surface'
+ 330.0370    5.7209
+ 2  'uo2+2'    1.000  'co3-2'    1.000
+'reversible'   14.4390  1.4400
+!
+! (uo2)3(po4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'(uo2)3(po4)2'
+'surface'
+1000.0262    1.0000
+ 2  'uo2+2'    3.000  'po4-3'    2.000
+'reversible'   49.0370  -94.9000
+!
+! h-autunite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'h-autunite'
+'surface'
+ 732.0144    1.0000
+ 3  'h+1'    2.000  'uo2+2'    2.000  'po4-3'    2.000
+'reversible'   47.9310  3.6000
+!
+! na-autunite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'na-autunite'
+'surface'
+ 775.9780    1.0000
+ 3  'na+1'    2.000  'uo2+2'    2.000  'po4-3'    2.000
+'reversible'   47.4090  0.4600
+!
+! k-autunite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k-autunite'
+'surface'
+ 808.2024    1.0000
+ 3  'k+1'    2.000  'uo2+2'    2.000  'po4-3'    2.000
+'reversible'   48.2440  -5.8600
+!
+! uramphite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'uramphite'
+'surface'
+ 766.0756    3.7000
+ 3  'uo2+2'    2.000  'nh4+1'    2.000  'po4-3'    2.000
+'reversible'   51.7490  -9.7000
+!
+! saleeite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'saleeite'
+'surface'
+ 754.3104    3.2700
+ 3  'uo2+2'    2.000  'mg+2'    1.000  'po4-3'    2.000
+'reversible'   43.6460  20.1800
+!
+! autunite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'autunite'
+'surface'
+ 770.0784    3.1500
+ 3  'uo2+2'    2.000  'ca+2'    1.000  'po4-3'    2.000
+'reversible'   43.9270  14.3400
+!
+! sr-autunite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sr-autunite'
+'surface'
+ 817.6184    1.0000
+ 3  'uo2+2'    2.000  'sr+2'    1.000  'po4-3'    2.000
+'reversible'   44.4570  13.0500
+!
+! uranocircite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'uranocircite'
+'surface'
+ 867.3384    3.4600
+ 3  'uo2+2'    2.000  'ba+2'    1.000  'po4-3'    2.000
+'reversible'   44.6310  10.1000
+!
+! bassetite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'bassetite'
+'surface'
+ 785.8454    3.6300
+ 3  'uo2+2'    2.000  'fe+2'    1.000  'po4-3'    2.000
+'reversible'   44.4850  19.9000
+!
+! torbernite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'torbernite'
+'surface'
+ 793.5444    3.2200
+ 3  'uo2+2'    2.000  'cu+2'    1.000  'po4-3'    2.000
+'reversible'   45.2790  15.9000
+!
+! przhevalskit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'przhevalskit'
+'surface'
+ 937.1883    1.0000
+ 3  'uo2+2'    2.000  'pb+2'    1.000  'po4-3'    2.000
+'reversible'   44.3650  11.0000
+!
+! uranophane
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'uranophane'
+'surface'
+ 766.5176    3.8566
+ 4  'h+1'   -6.000  'uo2+2'    2.000  'ca+2'    1.000  'h4sio4'    2.000
+'reversible'  -17.4900  0.0000
+!
+! uo2no3)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'uo2no3)2'
+'surface'
+ 394.0380    1.0000
+ 2  'uo2+2'    1.000  'no3-1'    2.000
+'reversible'  -12.3690  20.1400
+!
+! uo2no3.2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'uo2no3.2h2o'
+'surface'
+ 430.0690    1.0000
+ 3  'uo2+2'    1.000  'no3-1'    2.000  'h2o'    2.000
+'reversible'   -4.8510  6.0600
+!
+! uo2no3.3h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'uo2no3.3h2o'
+'surface'
+ 448.0840    1.0000
+ 3  'uo2+2'    1.000  'no3-1'    2.000  'h2o'    3.000
+'reversible'   -3.6420  2.4050
+!
+! uo2no3.6h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'uo2no3.6h2o'
+'surface'
+ 502.1300    1.0000
+ 3  'uo2+2'    1.000  'no3-1'    2.000  'h2o'    6.000
+'reversible'   -2.3000  -4.7700
+!
+! aloh3(a)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993 - for g
+! activation energy: undefined
+!
+'aloh3(a)'
+'surface'
+  78.0073    2.3500
+ 3  'al+3'    1.000  'h2o'    3.000  'h+1'   -3.000
+'reversible'  -10.8000  26.5000
+!
+! alohso4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'alohso4'
+'surface'
+ 140.0505    1.0000
+ 4  'h+1'   -1.000  'al+3'    1.000  'so4-2'    1.000  'h2o'    1.000
+'reversible'    3.2300  0.0000
+!
+! al4(oh)10so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'al4(oh)10so4'
+'surface'
+ 374.0616    1.0000
+ 4  'h+1'  -10.000  'al+3'    4.000  'so4-2'    1.000  'h2o'   10.000
+'reversible'  -22.7000  0.0000
+!
+! alumk
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'alumk'
+'surface'
+ 438.3597    1.0000
+ 4  'k+1'    1.000  'al+3'    1.000  'so4-2'    2.000  'h2o'   12.000
+'reversible'    5.1700  -7.2200
+!
+! alunite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'alunite'
+'surface'
+ 414.2141    2.7000
+ 5  'k+1'    1.000  'al+3'    3.000  'so4-2'    2.000  'h2o'    6.000  'h+1'   -6.000
+'reversible'    1.3460  -50.2500
+!
+! anhydrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'anhydrite'
+'surface'
+ 136.1416    2.9450
+ 2  'ca+2'    1.000  'so4-2'    1.000
+'reversible'    4.3600  1.7100
+!
+! aragonite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'aragonite'
+'surface'
+ 100.0894    2.9500
+ 2  'ca+2'    1.000  'co3-2'    1.000
+'reversible'    8.3600  2.6150
+!
+! artinite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'artinite'
+'surface'
+ 196.6941    2.0300
+ 4  'h+1'   -2.000  'mg+2'    2.000  'co3-2'    1.000  'h2o'    5.000
+'reversible'   -9.6000  28.7420
+!
+! baf2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'baf2'
+'surface'
+ 175.3368    1.0000
+ 2  'ba+2'    1.000  'f-1'    2.000
+'reversible'    5.7600  -1.0000
+!
+! barite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'barite'
+'surface'
+ 233.4016    4.5000
+ 2  'ba+2'    1.000  'so4-2'    1.000
+'reversible'    9.9760  -6.2800
+!
+! boehmite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'boehmite'
+'surface'
+  59.9884    3.0350
+ 3  'h+1'   -3.000  'al+3'    1.000  'h2o'    2.000
+'reversible'   -8.5780  28.1300
+!
+! brucite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'brucite'
+'surface'
+  58.3268    2.3900
+ 3  'mg+2'    1.000  'h2o'    2.000  'h+1'   -2.000
+'reversible'  -16.8400  27.1000
+!
+! calcite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'calcite'
+'surface'
+ 100.0894    2.7100
+ 2  'ca+2'    1.000  'co3-2'    1.000
+'reversible'    8.4800  2.5850
+!
+! celestite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'celestite'
+'surface'
+ 183.6816    3.9600
+ 2  'sr+2'    1.000  'so4-2'    1.000
+'reversible'    6.6300  1.0370
+!
+! chalcedony
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993 - for quartz
+! activation energy: undefined
+!
+'chalcedony'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'reversible'    3.5230  -4.6150
+!
+! chrysotile
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'chrysotile'
+'surface'
+ 277.1349    2.5500
+ 4  'h+1'   -6.000  'mg+2'    3.000  'h4sio4'    2.000  'h2o'    1.000
+'reversible'  -32.1880  46.8000
+!
+! clinoenstite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'clinoenstite'
+'surface'
+ 100.3964    3.1900
+ 4  'h2o'   -1.000  'mg+2'    1.000  'h4sio4'    1.000  'h+1'   -2.000
+'reversible'  -11.3380  20.0150
+!
+! cristobalite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'cristobalite'
+'surface'
+  60.0848    2.3200
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'reversible'    3.5870  -5.5000
+!
+! diaspore
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'diaspore'
+'surface'
+  59.9884    3.4000
+ 3  'h+1'   -3.000  'al+3'    1.000  'h2o'    2.000
+'reversible'   -6.8730  24.6300
+!
+! diopside
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'diopside'
+'surface'
+ 216.5608    3.2000
+ 5  'h2o'   -2.000  'ca+2'    1.000  'mg+2'    1.000  'h4sio4'    2.000  'h+1'   -4.000
+'reversible'  -19.8860  32.2800
+!
+! dolomite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'dolomite'
+'surface'
+ 184.4108    2.8500
+ 3  'ca+2'    1.000  'mg+2'    1.000  'co3-2'    2.000
+'reversible'   17.0900  9.4360
+!
+! epsomite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'epsomite'
+'surface'
+ 246.4807    1.7500
+ 3  'mg+2'    1.000  'so4-2'    1.000  'h2o'    7.000
+'reversible'    2.1400  -2.8200
+!
+! sepiolite(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'sepiolite(c)'
+'surface'
+ 323.9313    2.0000
+ 4  'h2o'   -0.500  'mg+2'    2.000  'h4sio4'    3.000  'h+1'   -4.000
+'reversible'  -15.9130  27.2680
+!
+! ferrihydrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'ferrihydrite'
+'surface'
+ 104.8692    4.3713
+ 3  'h+1'   -3.000  'fe+3'    1.000  'h2o'    3.000
+'reversible'   -4.8910  0.0000
+!
+! fe3(oh)8
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'fe3(oh)8'
+'surface'
+ 297.6002    1.0000
+ 4  'h+1'   -8.000  'fe+3'    2.000  'fe+2'    1.000  'h2o'    8.000
+'reversible'  -20.2220  0.0000
+!
+! feoh)2.7cl.3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'feoh)2.7cl.3'
+'surface'
+ 110.4029    1.0000
+ 4  'h+1'   -2.700  'fe+3'    1.000  'h2o'    2.700  'cl-1'    0.300
+'reversible'    3.0400  0.0000
+!
+! fesppt
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'fesppt'
+'surface'
+  85.9110    4.3000
+ 3  'h+1'   -1.000  'fe+2'    1.000  'hs-1'    1.000
+'reversible'    3.9150  0.0000
+!
+! fe2(so4)3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'fe2(so4)3'
+'surface'
+ 395.8788    3.0273
+ 2  'fe+3'    2.000  'so4-2'    3.000
+'reversible'   -3.5800  59.1200
+!
+! hydrapatite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'hydrapatite'
+'surface'
+ 502.3200    3.1474
+ 4  'ca+2'    5.000  'po4-3'    3.000  'h2o'    1.000  'h+1'   -1.000
+'reversible'   44.1990  0.0000
+!
+! fco3apatite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'fco3apatite'
+'surface'
+ 967.3670    1.0000
+ 6  'ca+2'    9.496  'na+1'    0.360  'mg+2'    0.144  'po4-3'    4.800  'co3-2'    1.200  'f-1'    2.480
+'reversible'  114.4000  -39.3900
+!
+! fluorite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'fluorite'
+'surface'
+  78.0768    3.1800
+ 2  'ca+2'    1.000  'f-1'    2.000
+'reversible'   10.9600  -4.7100
+!
+! forsterite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'forsterite'
+'surface'
+ 236.8234    3.2000
+ 3  'h+1'   -4.000  'mg+2'    2.000  'h4sio4'    1.000
+'reversible'  -28.2980  48.5100
+!
+! gibbsite(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'gibbsite(c)'
+'surface'
+  78.0037    2.3500
+ 3  'h+1'   -3.000  'al+3'    1.000  'h2o'    3.000
+'reversible'   -8.1100  22.8000
+!
+! al2o3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'al2o3'
+'surface'
+ 101.9504    4.0200
+ 3  'al+3'    2.000  'h2o'    3.000  'h+1'   -6.000
+'reversible'  -22.9800  0.0000
+!
+! goethite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'goethite'
+'surface'
+  86.8536    4.3700
+ 3  'h+1'   -3.000  'fe+3'    1.000  'h2o'    2.000
+'reversible'    1.0000  14.4800
+!
+! greenalite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'greenalite'
+'surface'
+ 365.7393    3.2000
+ 4  'h+1'   -6.000  'fe+2'    3.000  'h4sio4'    2.000  'h2o'    1.000
+'reversible'  -20.8100  0.0000
+!
+! greigite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'greigite'
+'surface'
+ 289.7970    4.0490
+ 4  'h+1'   -4.000  'fe+3'    2.000  'fe+2'    1.000  'hs-1'    4.000
+'reversible'   45.0350  0.0000
+!
+! gypsum
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+'gypsum'
+'surface'
+ 172.1722    2.3200
+ 3  'ca+2'    1.000  'so4-2'    1.000  'h2o'    2.000
+'reversible'    4.5810  0.1090
+!
+! halite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'halite'
+'surface'
+  58.4428    2.1600
+ 2  'na+1'    1.000  'cl-1'    1.000
+'reversible'   -1.5700  -0.9180
+!
+! polyhalite 
+! equilibrium constant
+! Was added by Sergio Andres Bea Jofre
+! Vancouver 2009 
+!
+'polyhalite'
+'surface'
+  218.1    2.1600
+ 5  'mg+2'    1.000  'ca+2'    2.000  'h2o'    2.000  'k+1'    2.000  'so4-2'    4.000  
+'reversible'   13.7440  -0.9180
+!
+! hematite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'hematite'
+'surface'
+ 155.6919    5.2600
+ 3  'h+1'   -6.000  'fe+3'    2.000  'h2o'    3.000
+'reversible'    4.0080  30.8450
+!
+! huntite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'huntite'
+'surface'
+ 353.0536    2.8727
+ 3  'mg+2'    3.000  'ca+2'    1.000  'co3-2'    4.000
+'reversible'   29.9680  25.7600
+!
+! hydrmagnesit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'hydrmagnesit'
+'surface'
+ 467.6736    2.2398
+ 4  'mg+2'    5.000  'co3-2'    4.000  'h+1'   -2.000  'h2o'    6.000
+'reversible'    8.7660  52.2100
+!
+! jarositena
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'jarositena'
+'surface'
+ 484.6978    2.8423
+ 5  'h+1'   -6.000  'na+1'    1.000  'fe+3'    3.000  'so4-2'    2.000  'h2o'    6.000
+'reversible'    5.2800  36.1800
+!
+! jarositek
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'jarositek'
+'surface'
+ 500.8100    3.2000
+ 5  'h+1'   -6.000  'k+1'    1.000  'fe+3'    3.000  'so4-2'    2.000  'h2o'    6.000
+'reversible'    9.2100  31.2800
+!
+! jarositeh
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'jarositeh'
+'surface'
+ 480.7320    2.7000
+ 4  'h+1'   -5.000  'fe+3'    3.000  'so4-2'    2.000  'h2o'    7.000
+'reversible'    5.3900  55.1500
+!
+! kidd-jaros
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'kidd-jaros'
+'surface'
+ 483.6300    3.2000
+ 5  'h+1'   -5.760  'na+1'    0.760  'fe+3'    3.000  'so4-2'    2.000  'h2o'    6.240
+'reversible'   10.5000  34.0000
+!
+! mackinawite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'mackinawite'
+'surface'
+  87.9110    4.3000
+ 3  'h+1'   -1.000  'fe+2'    1.000  'hs-1'    1.000
+'reversible'    4.6480  0.0000
+!
+! magadiite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'magadiite'
+'surface'
+ 532.6521    1.0000
+ 4  'h+1'   -1.000  'h2o'   -9.000  'na+1'    1.000  'h4sio4'    7.000
+'reversible'   14.3000  0.0000
+!
+! maghemite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'maghemite'
+'surface'
+ 159.6922    4.9000
+ 3  'h+1'   -6.000  'fe+3'    2.000  'h2o'    3.000
+'reversible'   -6.3860  0.0000
+!
+! magnesite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'magnesite'
+'surface'
+  84.3214    3.1000
+ 2  'mg+2'    1.000  'co3-2'    1.000
+'reversible'    8.0457  6.1690
+!
+! magnetite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'magnetite'
+'surface'
+ 231.5386    5.1800
+ 4  'h+1'   -8.000  'fe+3'    2.000  'fe+2'    1.000  'h2o'    4.000
+'reversible'   -3.7370  50.4600
+!
+! melanterite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'melanterite'
+'surface'
+ 278.0157    1.9000
+ 3  'fe+2'    1.000  'so4-2'    1.000  'h2o'    7.000
+'reversible'    2.2090  -4.9100
+!
+! mirabilite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mirabilite'
+'surface'
+ 322.1942    1.4659
+ 3  'na+1'    2.000  'so4-2'    1.000  'h2o'   10.000
+'reversible'    1.1140  -18.9870
+!
+! natron
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'natron'
+'surface'
+ 286.1420    1.4600
+ 3  'na+1'    2.000  'co3-2'    1.000  'h2o'   10.000
+'reversible'    1.3110  -15.7450
+!
+! nesquehonite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'nesquehonite'
+'surface'
+ 138.3673    1.8500
+ 3  'mg+2'    1.000  'co3-2'    1.000  'h2o'    3.000
+'reversible'    5.6210  5.7890
+!
+! phlogopite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'phlogopite'
+'surface'
+ 417.2863    2.8600
+ 5  'h+1'  -10.000  'k+1'    1.000  'mg+2'    3.000  'al+3'    1.000  'h4sio4'    3.000
+'reversible'  -43.3000  42.3000
+!
+! pyrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'pyrite'
+'surface'
+ 119.9750    5.0200
+ 4  'o2(aq)'    0.500  'fe+2'    1.000  'hs-1'    2.000  'h2o'   -1.000
+'reversible'   61.4880  -78.2140
+!
+! quartz
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'quartz'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'reversible'    3.9800  -5.9900
+!
+! sepiolite(a)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'sepiolite(a)'
+'surface'
+ 323.9308    2.0000
+ 4  'h2o'   -0.500  'mg+2'    2.000  'h4sio4'    3.000  'h+1'   -4.000
+'reversible'  -18.7800  0.0000
+!
+! siderite(d)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'siderite(d)'
+'surface'
+ 115.8564    3.9600
+ 2  'fe+2'    1.000  'co3-2'    1.000
+'reversible'   10.4500  5.3280
+!
+! siderite(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'siderite(c)'
+'surface'
+ 115.8564    3.9600
+ 2  'fe+2'    1.000  'co3-2'    1.000
+'reversible'   10.8900  2.4800
+!
+! sio2(a,gl)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993 - for quartz
+! activation energy: undefined
+!
+'sio2(a,gl)'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'reversible'    3.0180  -4.4400
+!
+! sio2(a,pt)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993 - for quartz
+! activation energy: undefined
+!
+'sio2(a,pt)'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'reversible'    2.7100  -3.9100
+!
+! srf2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'srf2'
+'surface'
+ 125.6168    4.2400
+ 2  'sr+2'    1.000  'f-1'    2.000
+'reversible'    8.5400  -1.2500
+!
+! strengite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'strengite'
+'surface'
+ 186.8490    2.8950
+ 3  'fe+3'    1.000  'po4-3'    1.000  'h2o'    2.000
+'reversible'   26.4000  2.0300
+!
+! strontianite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'strontianite'
+'surface'
+ 147.6294    3.7000
+ 2  'sr+2'    1.000  'co3-2'    1.000
+'reversible'    9.2500  0.4010
+!
+! talc
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'talc'
+'surface'
+ 379.2888    2.7500
+ 4  'h2o'   -4.000  'mg+2'    3.000  'h4sio4'    4.000  'h+1'   -6.000
+'reversible'  -21.3390  46.3520
+!
+! thenardite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'thenardite'
+'surface'
+ 142.0412    2.6634
+ 2  'na+1'    2.000  'so4-2'    1.000
+'reversible'    0.1790  0.5720
+!
+! thermonatr
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'thermonatr'
+'surface'
+ 124.0043    2.2580
+ 3  'na+1'    2.000  'co3-2'    1.000  'h2o'    1.000
+'reversible'   -0.1250  2.8020
+!
+! tremolite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'tremolite'
+'surface'
+ 812.4096    3.1000
+ 5  'h2o'   -8.000  'ca+2'    2.000  'mg+2'    5.000  'h4sio4'    8.000  'h+1'  -14.000
+'reversible'  -56.5460  96.6150
+!
+! vivianite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'vivianite'
+'surface'
+ 501.6062    2.6300
+ 3  'fe+2'    3.000  'po4-3'    2.000  'h2o'    8.000
+'reversible'   36.0000  0.0000
+!
+! witherite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'witherite'
+'surface'
+ 197.3494    4.3000
+ 2  'ba+2'    1.000  'co3-2'    1.000
+'reversible'    8.5850  -0.3600
+!
+! pyrolusite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'pyrolusite'
+'surface'
+  86.9368    4.7500
+ 4  'h+1'   -3.000  'o2(aq)'    0.250  'mn+3'    1.000  'h2o'    1.500
+'reversible'    5.6435  -4.2770
+!
+! birnessite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'birnessite'
+'surface'
+  86.9368    4.5000
+ 4  'h+1'   -3.000  'o2(aq)'    0.250  'mn+3'    1.000  'h2o'    1.500
+'reversible'    3.4135  0.0000
+!
+! nsutite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'nsutite'
+'surface'
+  86.9368    1.0000
+ 4  'h+1'   -3.000  'o2(aq)'    0.250  'mn+3'    1.000  'h2o'    1.500
+'reversible'    4.0005  0.0000
+!
+! bixbyite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'bixbyite'
+'surface'
+ 157.8742    5.0326
+ 3  'h+1'   -6.000  'mn+3'    2.000  'h2o'    3.000
+'reversible'    0.6110  15.2450
+!
+! hausmannite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'hausmannite'
+'surface'
+ 228.8116    4.8735
+ 4  'h+1'   -6.000  'o2(aq)'    0.500  'mn+2'    3.000  'h2o'    3.000
+'reversible'  -18.0210  33.7260
+!
+! pyrocroite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'pyrocroite'
+'surface'
+  88.9528    3.9782
+ 3  'h+1'   -2.000  'mn+2'    1.000  'h2o'    2.000
+'reversible'  -15.0880  22.5900
+!
+! manganite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'manganite'
+'surface'
+  87.9448    4.3000
+ 3  'h+1'   -3.000  'mn+3'    1.000  'h2o'    2.000
+'reversible'    0.2380  0.0000
+!
+! rhodochrosit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'rhodochrosit'
+'surface'
+ 114.9474    3.6000
+ 2  'mn+2'    1.000  'co3-2'    1.000
+'reversible'   10.4100  2.0790
+!
+! mncl2,4h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mncl2,4h2o'
+'surface'
+ 197.9052    2.0100
+ 3  'mn+2'    1.000  'cl-1'    2.000  'h2o'    4.000
+'reversible'   -2.7100  -17.3800
+!
+! mnsgreen
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mnsgreen'
+'surface'
+  87.0020    1.0000
+ 3  'h+1'   -1.000  'mn+2'    1.000  'hs-1'    1.000
+'reversible'   -3.8000  5.7900
+!
+! mnso4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mnso4'
+'surface'
+ 150.9996    3.4617
+ 2  'mn+2'    1.000  'so4-2'    1.000
+'reversible'   -2.6690  15.4800
+!
+! mn2(so4)3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mn2(so4)3'
+'surface'
+ 398.0608    1.0000
+ 2  'mn+3'    2.000  'so4-2'    3.000
+'reversible'    5.7110  39.0600
+!
+! mn3(po4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mn3(po4)2'
+'surface'
+ 354.7568    3.2128
+ 2  'mn+2'    3.000  'po4-3'    2.000
+'reversible'   23.8270  -2.1200
+!
+! a-cryptomeln
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'a-cryptomeln'
+'surface'
+ 775.7382    4.3600
+ 5  'h+1'  -34.000  'mn+3'   16.000  'k+1'    0.800  'h2o'   17.000  'mn+2'   -7.400
+'reversible'    0.0000  0.0000
+!
+! hollandite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'hollandite'
+'surface'
+ 817.4214    4.9000
+ 6  'h+1'  -32.000  'mn+3'   14.000  'ba+2'    0.820  'fe+2'    0.570  'h2o'   16.000  'mn+2'   -6.410
+'reversible'    0.0000  0.0000
+!
+! todorokite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993, for ro
+! activation energy: undefined
+!
+'todorokite'
+'surface'
+ 592.4641    4.2000
+ 6  'h+1'  -24.000  'ca+2'    0.393  'mg+2'    0.473  'mn+3'   10.000  'h2o'   14.000  'mn+2'   -3.866
+'reversible'    0.0000  0.0000
+!
+! lithiophorit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'lithiophorit'
+'surface'
+1953.3934    3.2700
+ 6  'h+1'  -70.000  'li+1'    2.000  'al+3'    8.000  'mn+3'   20.000  'h2o'   49.000  'mn+2'   -8.000
+'reversible'    0.0000  0.0000
+!
+! rancieite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'rancieite'
+'surface'
+ 466.1930    3.1000
+ 5  'h+1'  -18.000  'ca+2'    0.440  'mn+3'    8.000  'h2o'   12.000  'mn+2'   -3.440
+'reversible'    0.0000  0.0000
+!
+! cumetali
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'cumetali'
+'surface'
+  63.5460    8.9000
+ 4  'cu+1'    1.000  'o2(aq)'   -0.250  'h+1'   -1.000  'h2o'    0.500
+'reversible'  -12.7445  16.3270
+!
+! nantokite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'nantokite'
+'surface'
+  98.9990    4.1388
+ 2  'cu+1'    1.000  'cl-1'    1.000
+'reversible'    6.7600  -9.9800
+!
+! cuf
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'cuf'
+'surface'
+  82.5444    7.0732
+ 2  'cu+1'    1.000  'f-1'    1.000
+'reversible'   -7.0800  12.3700
+!
+! cuprite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'cuprite'
+'surface'
+ 143.0914    6.1000
+ 3  'h+1'   -2.000  'cu+1'    2.000  'h2o'    1.000
+'reversible'    1.5500  -6.2450
+!
+! chalcocite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'chalcocite'
+'surface'
+ 159.1560    5.6500
+ 3  'h+1'   -1.000  'cu+1'    2.000  'hs-1'    1.000
+'reversible'   34.6190  -49.3500
+!
+! djurleite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'djurleite'
+'surface'
+ 154.9620    5.7500
+ 4  'h+1'   -1.000  'cu+2'    0.066  'cu+1'    1.868  'hs-1'    1.000
+'reversible'   33.9200  -47.8810
+!
+! anilite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'anilite'
+'surface'
+ 143.2695    5.6803
+ 4  'h+1'   -1.000  'cu+2'    0.250  'cu+1'    1.500  'hs-1'    1.000
+'reversible'   31.8780  -43.5350
+!
+! blaubleiii
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'blaubleiii'
+'surface'
+ 121.0284    1.0000
+ 4  'h+1'   -1.000  'cu+2'    0.600  'cu+1'    0.800  'hs-1'    1.000
+'reversible'   27.2790  0.0000
+!
+! blaubleii
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'blaubleii'
+'surface'
+ 101.9646    1.0000
+ 4  'h+1'   -1.000  'cu+2'    0.900  'cu+1'    0.200  'hs-1'    1.000
+'reversible'   24.1620  0.0000
+!
+! covellite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'covellite'
+'surface'
+  95.6100    4.6800
+ 3  'h+1'   -1.000  'cu+2'    1.000  'hs-1'    1.000
+'reversible'   22.2700  -24.0100
+!
+! cu2so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu2so4'
+'surface'
+ 223.1536    1.0000
+ 2  'cu+1'    2.000  'so4-2'    1.000
+'reversible'    1.9500  4.5600
+!
+! cuprousferit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cuprousferit'
+'surface'
+ 151.3918    1.0000
+ 4  'h+1'   -4.000  'cu+1'    1.000  'fe+3'    1.000  'h2o'    2.000
+'reversible'    8.9200  3.8000
+!
+! melanothalli
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'melanothalli'
+'surface'
+ 134.4520    4.0800
+ 2  'cu+2'    1.000  'cl-1'    2.000
+'reversible'   -3.7300  12.3200
+!
+! cuco3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cuco3'
+'surface'
+ 123.5552    1.0000
+ 2  'cu+2'    1.000  'co3-2'    1.000
+'reversible'    9.6300  0.0000
+!
+! cuf2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'cuf2'
+'surface'
+ 101.5428    4.2310
+ 2  'cu+2'    1.000  'f-1'    2.000
+'reversible'    0.6200  13.3200
+!
+! cuf2,2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'cuf2,2h2o'
+'surface'
+ 137.5732    4.2310
+ 3  'cu+2'    1.000  'f-1'    2.000  'h2o'    2.000
+'reversible'    4.5500  3.6500
+!
+! cu(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993, for tenorite
+! activation energy: undefined
+!
+'cu(oh)2'
+'surface'
+  97.5606    6.5000
+ 3  'h+1'   -2.000  'cu+2'    1.000  'h2o'    2.000
+'reversible'   -8.6400  15.2500
+!
+! atacamite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'atacamite'
+'surface'
+ 213.5669    3.7600
+ 4  'h+1'   -3.000  'cu+2'    2.000  'h2o'    3.000  'cl-1'    1.000
+'reversible'   -7.3400  18.6900
+!
+! cu2(oh)3no3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu2(oh)3no3'
+'surface'
+ 240.1188    1.0000
+ 4  'h+1'   -3.000  'cu+2'    2.000  'h2o'    3.000  'no3-1'    1.000
+'reversible'   -9.2400  17.3500
+!
+! antlerite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'antlerite'
+'surface'
+ 354.7248    3.9000
+ 4  'h+1'   -4.000  'cu+2'    3.000  'h2o'    4.000  'so4-2'    1.000
+'reversible'   -8.2900  0.0000
+!
+! brochantite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'brochantite'
+'surface'
+ 452.2854    3.9000
+ 4  'h+1'   -6.000  'cu+2'    4.000  'h2o'    6.000  'so4-2'    1.000
+'reversible'  -15.3400  0.0000
+!
+! langite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'langite'
+'surface'
+ 470.3006    3.5000
+ 4  'h+1'   -6.000  'cu+2'    4.000  'h2o'    7.000  'so4-2'    1.000
+'reversible'  -16.7900  39.6100
+!
+! tenorite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'tenorite'
+'surface'
+  79.5454    6.5000
+ 3  'h+1'   -2.000  'cu+2'    1.000  'h2o'    1.000
+'reversible'   -7.6200  15.2400
+!
+! cuocuso4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cuocuso4'
+'surface'
+ 239.1490    1.0000
+ 4  'h+1'   -2.000  'cu+2'    2.000  'h2o'    1.000  'so4-2'    1.000
+'reversible'  -11.5300  35.5750
+!
+! cu3(po4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu3(po4)2'
+'surface'
+ 380.5808    1.0000
+ 2  'cu+2'    3.000  'po4-3'    2.000
+'reversible'   36.8500  0.0000
+!
+! cu3(po4)2,3w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu3(po4)2,3w'
+'surface'
+ 434.6264    1.0000
+ 3  'cu+2'    3.000  'po4-3'    2.000  'h2o'    3.000
+'reversible'   35.1200  0.0000
+!
+! cuso4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cuso4'
+'surface'
+ 159.6036    1.0000
+ 2  'cu+2'    1.000  'so4-2'    1.000
+'reversible'   -3.0100  18.1400
+!
+! chalcanthite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'chalcanthite'
+'surface'
+ 249.6796    2.2100
+ 3  'cu+2'    1.000  'so4-2'    1.000  'h2o'    5.000
+'reversible'    2.6400  -1.4400
+!
+! dioptase
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'dioptase'
+'surface'
+ 157.6449    3.3000
+ 3  'h+1'   -2.000  'cu+2'    1.000  'h4sio4'    1.000
+'reversible'   -6.5000  8.9600
+!
+! cupricferit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cupricferit'
+'surface'
+ 239.2376    1.0000
+ 4  'h+1'   -8.000  'cu+2'    1.000  'fe+3'    2.000  'h2o'    4.000
+'reversible'   -5.8800  38.6900
+!
+! chalcopyrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'chalcopyrite'
+'surface'
+ 183.5130    4.2000
+ 4  'h+1'   -2.000  'cu+2'    1.000  'fe+2'    1.000  'hs-1'    2.000
+'reversible'   35.2700  -35.4800
+!
+! cubr
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cubr'
+'surface'
+ 143.4500    1.0000
+ 2  'cu+1'    1.000  'br-1'    1.000
+'reversible'    8.2100  -13.0800
+!
+! cui
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cui'
+'surface'
+ 190.4505    1.0000
+ 2  'cu+1'    1.000  'i-1'    1.000
+'reversible'   11.8900  -20.1400
+!
+! znmetal
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'znmetal'
+'surface'
+  65.3800    7.0500
+ 4  'zn+2'    1.000  'o2(aq)'   -0.500  'h+1'   -2.000  'h2o'    1.000
+'reversible'  -68.7660  103.6940
+!
+! zncl2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zncl2'
+'surface'
+ 136.2860    1.0000
+ 2  'zn+2'    1.000  'cl-1'    2.000
+'reversible'   -7.0300  17.4800
+!
+! smithsonite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'smithsonite'
+'surface'
+ 125.3892    4.3750
+ 2  'zn+2'    1.000  'co3-2'    1.000
+'reversible'   10.0000  4.3600
+!
+! znco3,1h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'znco3,1h2o'
+'surface'
+ 143.4044    1.0000
+ 3  'zn+2'    1.000  'co3-2'    1.000  'h2o'    1.000
+'reversible'   10.2600  0.0000
+!
+! znf2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'znf2'
+'surface'
+ 103.3768    4.9510
+ 2  'zn+2'    1.000  'f-1'    2.000
+'reversible'    1.5200  13.0800
+!
+! zn(oh)2(a)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn(oh)2(a)'
+'surface'
+  99.3946    1.0000
+ 3  'h+1'   -2.000  'zn+2'    1.000  'h2o'    2.000
+'reversible'  -12.4500  0.0000
+!
+! zn(oh)2(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn(oh)2(c)'
+'surface'
+  99.3946    1.0000
+ 3  'h+1'   -2.000  'zn+2'    1.000  'h2o'    2.000
+'reversible'  -12.2000  0.0000
+!
+! zn(oh)2(b)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn(oh)2(b)'
+'surface'
+  99.3946    1.0000
+ 3  'h+1'   -2.000  'zn+2'    1.000  'h2o'    2.000
+'reversible'  -11.7500  0.0000
+!
+! zn(oh)2(g)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn(oh)2(g)'
+'surface'
+  99.3946    1.0000
+ 3  'h+1'   -2.000  'zn+2'    1.000  'h2o'    2.000
+'reversible'  -11.7100  0.0000
+!
+! zn(oh)2(e)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn(oh)2(e)'
+'surface'
+  99.3946    1.0000
+ 3  'h+1'   -2.000  'zn+2'    1.000  'h2o'    2.000
+'reversible'  -11.5000  0.0000
+!
+! zn2(oh)3cl
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn2(oh)3cl'
+'surface'
+ 217.2349    1.0000
+ 4  'h+1'   -3.000  'zn+2'    2.000  'h2o'    3.000  'cl-1'    1.000
+'reversible'  -15.2000  0.0000
+!
+! zn5(oh)8cl2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn5(oh)8cl2'
+'surface'
+ 533.8644    1.0000
+ 4  'h+1'   -8.000  'zn+2'    5.000  'h2o'    8.000  'cl-1'    2.000
+'reversible'  -38.5000  0.0000
+!
+! zn2(oh)2so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn2(oh)2so4'
+'surface'
+ 260.8322    1.0000
+ 4  'h+1'   -2.000  'zn+2'    2.000  'h2o'    2.000  'so4-2'    1.000
+'reversible'   -7.5000  0.0000
+!
+! zn4(oh)6so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn4(oh)6so4'
+'surface'
+ 459.6214    1.0000
+ 4  'h+1'   -6.000  'zn+2'    4.000  'h2o'    6.000  'so4-2'    1.000
+'reversible'  -28.4000  0.0000
+!
+! znno3)2,6h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'znno3)2,6h2o'
+'surface'
+ 297.4810    1.0000
+ 3  'zn+2'    1.000  'no3-1'    2.000  'h2o'    6.000
+'reversible'   -3.4400  -5.5100
+!
+! zno(active)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zno(active)'
+'surface'
+  81.3794    1.0000
+ 3  'h+1'   -2.000  'zn+2'    1.000  'h2o'    1.000
+'reversible'  -11.3100  0.0000
+!
+! zincite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'zincite'
+'surface'
+  81.3794    5.6800
+ 3  'h+1'   -2.000  'zn+2'    1.000  'h2o'    1.000
+'reversible'  -11.1400  21.8600
+!
+! zn3o(so4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn3o(so4)2'
+'surface'
+ 404.2546    1.0000
+ 4  'h+1'   -2.000  'zn+2'    3.000  'so4-2'    2.000  'h2o'    1.000
+'reversible'  -19.0200  62.0000
+!
+! zn3(po4),4w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn3(po4),4w'
+'surface'
+ 458.1436    1.0000
+ 3  'zn+2'    3.000  'po4-3'    2.000  'h2o'    4.000
+'reversible'   32.0400  0.0000
+!
+! zns(a)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993, for sp
+! activation energy: undefined
+!
+'zns(a)'
+'surface'
+  97.4400    4.0000
+ 3  'h+1'   -1.000  'zn+2'    1.000  'hs-1'    1.000
+'reversible'    9.0520  -3.6700
+!
+! sphalerite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'sphalerite'
+'surface'
+  97.4400    4.0000
+ 3  'h+1'   -1.000  'zn+2'    1.000  'hs-1'    1.000
+'reversible'   11.6180  -8.2500
+!
+! wurtzite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'wurtzite'
+'surface'
+  97.4400    3.9800
+ 3  'h+1'   -1.000  'zn+2'    1.000  'hs-1'    1.000
+'reversible'    9.6820  -5.0600
+!
+! znsio3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'znsio3'
+'surface'
+ 141.4637    1.0000
+ 4  'h+1'   -2.000  'h2o'   -1.000  'zn+2'    1.000  'h4sio4'    1.000
+'reversible'   -2.9300  18.2700
+!
+! willemite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'willemite'
+'surface'
+ 220.8431    4.0500
+ 3  'h+1'   -4.000  'zn+2'    2.000  'h4sio4'    1.000
+'reversible'  -15.3300  33.3700
+!
+! zincosite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zincosite'
+'surface'
+ 161.4376    1.0000
+ 2  'zn+2'    1.000  'so4-2'    1.000
+'reversible'   -3.0100  19.2000
+!
+! znso4,1h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'znso4,1h2o'
+'surface'
+ 179.4528    1.0000
+ 3  'zn+2'    1.000  'so4-2'    1.000  'h2o'    1.000
+'reversible'    0.5700  10.6400
+!
+! bianchite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'bianchite'
+'surface'
+ 269.5288    2.0300
+ 3  'zn+2'    1.000  'so4-2'    1.000  'h2o'    6.000
+'reversible'    1.7650  0.1600
+!
+! goslarite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'goslarite'
+'surface'
+ 287.5440    2.0000
+ 3  'zn+2'    1.000  'so4-2'    1.000  'h2o'    7.000
+'reversible'    1.9600  -3.3000
+!
+! znbr2,2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'znbr2,2h2o'
+'surface'
+ 261.2184    1.0000
+ 3  'zn+2'    1.000  'br-1'    2.000  'h2o'    2.000
+'reversible'   -5.2100  7.5100
+!
+! zni2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zni2'
+'surface'
+ 319.1890    1.0000
+ 2  'zn+2'    1.000  'i-1'    2.000
+'reversible'   -7.2300  13.4400
+!
+! cdmetal
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'cdmetal'
+'surface'
+ 112.4100    8.6436
+ 4  'cd+2'    1.000  'o2(aq)'   -0.500  'h+1'   -2.000  'h2o'    1.000
+'reversible'  -56.4990  84.9140
+!
+! gammacd
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'gammacd'
+'surface'
+ 112.4100    1.0000
+ 4  'cd+2'    1.000  'o2(aq)'   -0.500  'h+1'   -2.000  'h2o'    1.000
+'reversible'  -56.5990  85.0540
+!
+! otavite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'otavite'
+'surface'
+ 172.4192    4.8844
+ 2  'cd+2'    1.000  'co3-2'    1.000
+'reversible'   12.1000  0.0190
+!
+! cdcl2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdcl2'
+'surface'
+ 183.3160    1.0000
+ 2  'cd+2'    1.000  'cl-1'    2.000
+'reversible'    0.6800  4.4700
+!
+! cdcl2,1h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdcl2,1h2o'
+'surface'
+ 201.3312    1.0000
+ 3  'cd+2'    1.000  'cl-1'    2.000  'h2o'    1.000
+'reversible'    1.7100  1.8200
+!
+! cdcl2,2.5h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdcl2,2.5h2o'
+'surface'
+ 228.3536    1.0000
+ 3  'cd+2'    1.000  'cl-1'    2.000  'h2o'    2.500
+'reversible'    1.9400  -1.7100
+!
+! cdf2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdf2'
+'surface'
+ 150.4068    1.0000
+ 2  'cd+2'    1.000  'f-1'    2.000
+'reversible'    2.9800  9.7200
+!
+! cd(oh)2(a)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd(oh)2(a)'
+'surface'
+ 146.4246    1.0000
+ 3  'h+1'   -2.000  'cd+2'    1.000  'h2o'    2.000
+'reversible'  -13.7300  20.7700
+!
+! cd(oh)2(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd(oh)2(c)'
+'surface'
+ 146.4246    1.0000
+ 3  'h+1'   -2.000  'cd+2'    1.000  'h2o'    2.000
+'reversible'  -13.6500  0.0000
+!
+! cdohcl
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdohcl'
+'surface'
+ 164.8703    1.0000
+ 4  'h+1'   -1.000  'cd+2'    1.000  'h2o'    1.000  'cl-1'    1.000
+'reversible'   -3.5200  7.4070
+!
+! cd3(oh)4so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd3(oh)4so4'
+'surface'
+ 501.3168    1.0000
+ 4  'h+1'   -4.000  'cd+2'    3.000  'h2o'    4.000  'so4-2'    1.000
+'reversible'  -22.5600  0.0000
+!
+! cd3oh2(so4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd3oh2(so4)2'
+'surface'
+ 563.3598    1.0000
+ 4  'h+1'   -2.000  'cd+2'    3.000  'h2o'    2.000  'so4-2'    2.000
+'reversible'   -6.7100  0.0000
+!
+! cd4(oh)6so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd4(oh)6so4'
+'surface'
+ 647.7414    1.0000
+ 4  'h+1'   -6.000  'cd+2'    4.000  'h2o'    6.000  'so4-2'    1.000
+'reversible'  -28.4000  0.0000
+!
+! monteponite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'monteponite'
+'surface'
+ 128.4094    8.2393
+ 3  'h+1'   -2.000  'cd+2'    1.000  'h2o'    1.000
+'reversible'  -13.7700  24.7600
+!
+! cd3(po4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd3(po4)2'
+'surface'
+ 527.1728    1.0000
+ 2  'cd+2'    3.000  'po4-3'    2.000
+'reversible'   32.6000  0.0000
+!
+! cdsio3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdsio3'
+'surface'
+ 188.4937    1.0000
+ 4  'h2o'   -1.000  'cd+2'    1.000  'h4sio4'    1.000  'h+1'   -2.000
+'reversible'   -9.0600  16.6300
+!
+! cdso4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdso4'
+'surface'
+ 208.4676    1.0000
+ 2  'cd+2'    1.000  'so4-2'    1.000
+'reversible'    0.1000  14.7400
+!
+! cdso4,1h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdso4,1h2o'
+'surface'
+ 226.4828    1.0000
+ 3  'cd+2'    1.000  'so4-2'    1.000  'h2o'    1.000
+'reversible'    1.6570  7.5200
+!
+! cdso4,2.7h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdso4,2.7h2o'
+'surface'
+ 256.3879    1.0000
+ 3  'cd+2'    1.000  'so4-2'    1.000  'h2o'    2.670
+'reversible'    1.8730  4.3000
+!
+! greenockite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'greenockite'
+'surface'
+ 144.4700    4.9000
+ 3  'h+1'   -1.000  'cd+2'    1.000  'hs-1'    1.000
+'reversible'   15.9300  -16.3600
+!
+! cdbr2,4h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdbr2,4h2o'
+'surface'
+ 344.2788    1.0000
+ 3  'cd+2'    1.000  'br-1'    2.000  'h2o'    4.000
+'reversible'    2.4200  -7.2300
+!
+! cdi2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdi2'
+'surface'
+ 366.2190    1.0000
+ 2  'cd+2'    1.000  'i-1'    2.000
+'reversible'    3.6100  -4.0800
+!
+! pbmetal
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'pbmetal'
+'surface'
+ 207.2000   11.3429
+ 4  'pb+2'    1.000  'o2(aq)'   -0.500  'h+1'   -2.000  'h2o'    1.000
+'reversible'  -47.2790  66.5140
+!
+! cotunnite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'cotunnite'
+'surface'
+ 278.1060    5.9058
+ 2  'pb+2'    1.000  'cl-1'    2.000
+'reversible'    4.7700  -5.6000
+!
+! matlockite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'matlockite'
+'surface'
+ 261.6514    7.1295
+ 3  'pb+2'    1.000  'cl-1'    1.000  'f-1'    1.000
+'reversible'    9.4300  -7.9500
+!
+! phosgenite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'phosgenite'
+'surface'
+ 545.3152    6.1500
+ 3  'pb+2'    2.000  'cl-1'    2.000  'co3-2'    1.000
+'reversible'   19.8100  0.0000
+!
+! cerrusite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'cerrusite'
+'surface'
+ 267.2092    6.5500
+ 2  'pb+2'    1.000  'co3-2'    1.000
+'reversible'   13.1300  -4.8600
+!
+! pbf2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'pbf2'
+'surface'
+ 245.1968    8.7920
+ 2  'pb+2'    1.000  'f-1'    2.000
+'reversible'    7.4400  0.7000
+!
+! massicot
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3.6 database
+! activation energy: undefined
+!
+'massicot'
+'surface'
+ 223.1994    9.6414
+ 3  'h+1'   -2.000  'pb+2'    1.000  'h2o'    1.000
+'reversible'  -12.9100  16.7800
+!
+! litharge
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'litharge'
+'surface'
+ 223.1994    9.1400
+ 3  'h+1'   -2.000  'pb+2'    1.000  'h2o'    1.000
+'reversible'  -12.7200  16.3800
+!
+! pbo,.3h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pbo,.3h2o'
+'surface'
+ 229.1444    1.0000
+ 3  'h+1'   -2.000  'pb+2'    1.000  'h2o'    1.330
+'reversible'  -12.9800  0.0000
+!
+! pb2oco3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2oco3'
+'surface'
+ 490.4086    1.0000
+ 4  'h+1'   -2.000  'pb+2'    2.000  'h2o'    1.000  'co3-2'    1.000
+'reversible'    0.5000  11.4600
+!
+! larnakite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'larnakite'
+'surface'
+ 526.4570    1.0000
+ 4  'h+1'   -2.000  'pb+2'    2.000  'so4-2'    1.000  'h2o'    1.000
+'reversible'    0.2800  6.4400
+!
+! pb3o2so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb3o2so4'
+'surface'
+ 749.6564    1.0000
+ 4  'h+1'   -4.000  'pb+2'    3.000  'so4-2'    1.000  'h2o'    2.000
+'reversible'  -10.4000  20.7500
+!
+! pb4o3so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb4o3so4'
+'surface'
+ 972.8558    1.0000
+ 4  'h+1'   -6.000  'pb+2'    4.000  'so4-2'    1.000  'h2o'    3.000
+'reversible'  -22.1000  35.0700
+!
+! clpyromorph
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'clpyromorph'
+'surface'
+1356.3672    7.0400
+ 3  'pb+2'    5.000  'po4-3'    3.000  'cl-1'    1.000
+'reversible'   84.4300  0.0000
+!
+! hxypyromorph
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'hxypyromorph'
+'surface'
+1337.9215    7.1402
+ 4  'h+1'   -1.000  'pb+2'    5.000  'po4-3'    3.000  'h2o'    1.000
+'reversible'   62.7900  0.0000
+!
+! pb3o2co3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb3o2co3'
+'surface'
+ 713.6080    1.0000
+ 4  'h+1'   -4.000  'pb+2'    3.000  'co3-2'    1.000  'h2o'    2.000
+'reversible'  -11.0200  26.4300
+!
+! plumbgummite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'plumbgummite'
+'surface'
+ 581.1391    4.0700
+ 5  'h+1'   -5.000  'pb+2'    1.000  'al+3'    3.000  'po4-3'    2.000  'h2o'    6.000
+'reversible'   32.7900  0.0000
+!
+! hinsdalite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'hinsdalite'
+'surface'
+ 581.2174    4.0700
+ 6  'h+1'   -6.000  'pb+2'    1.000  'al+3'    3.000  'po4-3'    1.000  'so4-2'    1.000  'h2o'    6.000
+'reversible'    2.5000  0.0000
+!
+! tsumebite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'tsumebite'
+'surface'
+ 677.9849    6.1330
+ 5  'h+1'   -3.000  'pb+2'    2.000  'cu+2'    1.000  'po4-3'    1.000  'h2o'    6.000
+'reversible'    9.7900  0.0000
+!
+! pbsio3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pbsio3'
+'surface'
+ 283.2837    1.0000
+ 4  'h2o'   -1.000  'h+1'   -2.000  'pb+2'    1.000  'h4sio4'    1.000
+'reversible'   -7.3200  9.2600
+!
+! pb2sio4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2sio4'
+'surface'
+ 506.4831    1.0000
+ 3  'h+1'   -4.000  'pb+2'    2.000  'h4sio4'    1.000
+'reversible'  -19.7600  26.0000
+!
+! anglesite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'anglesite'
+'surface'
+ 303.2576    6.3000
+ 2  'pb+2'    1.000  'so4-2'    1.000
+'reversible'    7.7900  -2.1500
+!
+! galena
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'galena'
+'surface'
+ 239.2600    7.5000
+ 3  'h+1'   -1.000  'pb+2'    1.000  'hs-1'    1.000
+'reversible'   12.7800  -19.4000
+!
+! plattnerite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'plattnerite'
+'surface'
+ 239.1988    9.5641
+ 4  'h+1'   -2.000  'o2(aq)'    0.500  'pb+2'    1.000  'h2o'    1.000
+'reversible'   -6.2910  3.8160
+!
+! pb2o3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2o3'
+'surface'
+ 462.3982    1.0000
+ 4  'h+1'   -4.000  'o2(aq)'    0.500  'pb+2'    2.000  'h2o'    2.000
+'reversible'  -18.0310  0.0000
+!
+! minium
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'minium'
+'surface'
+ 685.5976    9.0500
+ 4  'h+1'   -6.000  'o2(aq)'    0.500  'pb+2'    3.000  'h2o'    3.000
+'reversible'  -30.6810  35.8460
+!
+! pb(oh)2(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb(oh)2(c)'
+'surface'
+ 241.2146    1.0000
+ 3  'h+1'   -2.000  'pb+2'    1.000  'h2o'    2.000
+'reversible'   -8.1500  13.9900
+!
+! laurionite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database - for paralaurionite
+! activation energy: undefined
+!
+'laurionite'
+'surface'
+ 259.6603    6.2800
+ 4  'h+1'   -1.000  'pb+2'    1.000  'cl-1'    1.000  'h2o'    1.000
+'reversible'   -0.6230  0.0000
+!
+! pb2(oh)3cl
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2(oh)3cl'
+'surface'
+ 500.8749    1.0000
+ 4  'h+1'   -3.000  'pb+2'    2.000  'h2o'    3.000  'cl-1'    1.000
+'reversible'   -8.7930  0.0000
+!
+! hydcerrusite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hydcerrusite'
+'surface'
+ 775.6330    1.0000
+ 4  'h+1'   -2.000  'pb+2'    3.000  'co3-2'    2.000  'h2o'    2.000
+'reversible'   17.4600  0.0000
+!
+! pb2o(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2o(oh)2'
+'surface'
+ 464.4140    1.0000
+ 3  'h+1'   -4.000  'pb+2'    2.000  'h2o'    3.000
+'reversible'  -26.2000  0.0000
+!
+! pbbr2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pbbr2'
+'surface'
+ 367.0080    1.0000
+ 2  'pb+2'    1.000  'br-1'    2.000
+'reversible'    5.1800  -8.1000
+!
+! pbbrf
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pbbrf'
+'surface'
+ 306.1024    1.0000
+ 3  'pb+2'    1.000  'br-1'    1.000  'f-1'    1.000
+'reversible'    8.4900  0.0000
+!
+! pbi2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pbi2'
+'surface'
+ 461.0090    1.0000
+ 2  'pb+2'    1.000  'i-1'    2.000
+'reversible'    8.0700  -15.1600
+!
+! pb4(oh)6so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb4(oh)6so4'
+'surface'
+1026.9014    1.0000
+ 4  'h+1'   -6.000  'pb+2'    4.000  'so4-2'    1.000  'h2o'    6.000
+'reversible'  -21.1000  0.0000
+!
+! nico3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'nico3'
+'surface'
+ 118.7092    4.3882
+ 2  'ni+2'    1.000  'co3-2'    1.000
+'reversible'    6.8400  9.9400
+!
+! ni(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'ni(oh)2'
+'surface'
+  92.7146    4.1502
+ 3  'h+1'   -2.000  'ni+2'    1.000  'h2o'    2.000
+'reversible'  -10.8000  -30.4500
+!
+! ni4(oh)6so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ni4(oh)6so4'
+'surface'
+ 432.9014    1.0000
+ 4  'h+1'   -6.000  'ni+2'    4.000  'so4-2'    1.000  'h2o'    6.000
+'reversible'  -32.0000  0.0000
+!
+! bunsenite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'bunsenite'
+'surface'
+  74.6994    6.8094
+ 3  'h+1'   -2.000  'ni+2'    1.000  'h2o'    1.000
+'reversible'  -12.4500  23.9200
+!
+! ni3(po4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ni3(po4)2'
+'surface'
+ 366.0428    1.0000
+ 2  'ni+2'    3.000  'po4-3'    2.000
+'reversible'   31.3000  0.0000
+!
+! millerite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'millerite'
+'surface'
+  90.7600    5.5000
+ 3  'h+1'   -1.000  'ni+2'    1.000  'hs-1'    1.000
+'reversible'    8.0420  -2.5000
+!
+! retgersite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'retgersite'
+'surface'
+ 262.8488    2.0700
+ 3  'ni+2'    1.000  'so4-2'    1.000  'h2o'    6.000
+'reversible'    2.0400  -1.1000
+!
+! morenosite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'morenosite'
+'surface'
+ 280.8640    1.9481
+ 3  'ni+2'    1.000  'so4-2'    1.000  'h2o'    7.000
+'reversible'    2.3600  -2.9400
+!
+! ni2sio4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'ni2sio4'
+'surface'
+ 209.4831    4.9163
+ 3  'h+1'   -4.000  'ni+2'    2.000  'h4sio4'    1.000
+'reversible'  -14.5400  33.3600
+!
+! agmetal
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'agmetal'
+'surface'
+ 107.8680   17.1500
+ 4  'ag+1'    1.000  'o2(aq)'   -0.250  'h+1'   -1.000  'h2o'    0.500
+'reversible'   -7.9945  8.2230
+!
+! bromyrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System (bromargyri
+! activation energy: undefined
+!
+'bromyrite'
+'surface'
+ 187.7720    5.9000
+ 2  'ag+1'    1.000  'br-1'    1.000
+'reversible'   12.2700  -20.1700
+!
+! cerargyrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System (chlorargyr
+! activation energy: undefined
+!
+'cerargyrite'
+'surface'
+ 143.3210    5.5500
+ 2  'ag+1'    1.000  'cl-1'    1.000
+'reversible'    9.7500  -15.6520
+!
+! ag2co3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2co3'
+'surface'
+ 275.7452    1.0000
+ 2  'ag+1'    2.000  'co3-2'    1.000
+'reversible'   11.0700  -9.5300
+!
+! agf.4h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'agf.4h2o'
+'surface'
+ 198.9272    1.0000
+ 3  'ag+1'    1.000  'f-1'    1.000  'h2o'    4.000
+'reversible'   -0.5500  -4.2700
+!
+! iodyrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System (iodargyrit
+! activation energy: undefined
+!
+'iodyrite'
+'surface'
+ 234.7725    5.6000
+ 2  'ag+1'    1.000  'i-1'    1.000
+'reversible'   16.0700  -26.8200
+!
+! ag2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2o'
+'surface'
+ 231.7354    1.0000
+ 3  'h+1'   -2.000  'ag+1'    2.000  'h2o'    1.000
+'reversible'  -12.5800  10.4300
+!
+! ag3po4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'ag3po4'
+'surface'
+ 418.5754    6.4189
+ 2  'ag+1'    3.000  'po4-3'    1.000
+'reversible'   17.5500  0.0000
+!
+! acanthite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'acanthite'
+'surface'
+ 247.7960    7.3000
+ 3  'h+1'   -1.000  'ag+1'    2.000  'hs-1'    1.000
+'reversible'   36.0500  -53.3000
+!
+! ag2so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2so4'
+'surface'
+ 311.7936    1.0000
+ 2  'ag+1'    2.000  'so4-2'    1.000
+'reversible'    4.9200  -4.2500
+!
+! analcime
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'analcime'
+'surface'
+ 220.1550    2.2700
+ 5  'na+1'    1.000  'al+3'    1.000  'h4sio4'    2.000  'h2o'   -1.000  'h+1'   -4.000
+'reversible'   -6.7190  22.8400
+!
+! halloysite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'halloysite'
+'surface'
+ 258.1620    2.1000
+ 4  'al+3'    2.000  'h4sio4'    2.000  'h2o'    1.000  'h+1'   -6.000
+'reversible'  -12.4980  39.9200
+!
+! kaolinite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'kaolinite'
+'surface'
+ 258.1620    2.6000
+ 4  'al+3'    2.000  'h4sio4'    2.000  'h2o'    1.000  'h+1'   -6.000
+'reversible'   -7.4350  35.2800
+!
+! leonhardite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'leonhardite'
+'surface'
+ 922.8670    1.0000
+ 5  'h2o'   -1.000  'h+1'  -16.000  'ca+2'    2.000  'h4sio4'    8.000  'al+3'    4.000
+'reversible'  -16.4900  85.3600
+!
+! lowalbite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'lowalbite'
+'surface'
+ 262.2250    2.6200
+ 5  'na+1'    1.000  'al+3'    1.000  'h4sio4'    3.000  'h+1'   -4.000  'h2o'   -4.000
+'reversible'   -2.5920  17.4000
+!
+! analbite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'analbite'
+'surface'
+ 262.2250    1.0000
+ 5  'na+1'    1.000  'al+3'    1.000  'h4sio4'    3.000  'h+1'   -4.000  'h2o'   -4.000
+'reversible'   -3.5060  20.0000
+!
+! muscovite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'muscovite'
+'surface'
+ 398.3110    2.8200
+ 4  'k+1'    1.000  'al+3'    3.000  'h4sio4'    3.000  'h+1'  -10.000
+'reversible'  -12.9900  59.3400
+!
+! annite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'annite'
+'surface'
+ 511.8900    3.3171
+ 5  'k+1'    1.000  'fe+2'    3.000  'al+3'    1.000  'h4sio4'    3.000  'h+1'  -10.000
+'reversible'  -23.2900  65.7200
+!
+! anorthite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'anorthite'
+'surface'
+ 278.2110    2.7600
+ 4  'ca+2'    1.000  'al+3'    2.000  'h4sio4'    2.000  'h+1'   -8.000
+'reversible'  -25.4300  70.6600
+!
+! pyrophyllite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'pyrophyllite'
+'surface'
+ 360.3138    2.8000
+ 4  'al+3'    2.000  'h4sio4'    4.000  'h2o'   -4.000  'h+1'   -6.000
+'reversible'    1.5980  0.0000
+!
+! laumontite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'laumontite'
+'surface'
+ 470.4410    2.2800
+ 4  'ca+2'    1.000  'al+3'    2.000  'h4sio4'    4.000  'h+1'   -8.000
+'reversible'  -14.4600  50.4500
+!
+! wairakite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'wairakite'
+'surface'
+ 434.4110    2.3247
+ 5  'ca+2'    1.000  'al+3'    2.000  'h4sio4'    4.000  'h+1'   -8.000  'h2o'   -2.000
+'reversible'  -18.8700  63.1500
+!
+! malachite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'malachite'
+'surface'
+ 221.1162    3.9650
+ 4  'cu+2'    2.000  'h2o'    2.000  'co3-2'    1.000  'h+1'   -2.000
+'reversible'    5.1800  19.7600
+!
+! azurite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'azurite'
+'surface'
+ 344.6716    3.7700
+ 4  'cu+2'    3.000  'h2o'    2.000  'co3-2'    2.000  'h+1'   -2.000
+'reversible'   16.9200  23.7700
+!
+! arsenolite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'arsenolite'
+'surface'
+ 395.6824    3.8703
+ 2  'h3aso3'    4.000  'h2o'   -6.000
+'reversible'    2.8010  -14.3300
+!
+! claudetite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'claudetite'
+'surface'
+ 395.6824    4.1862
+ 2  'h3aso3'    4.000  'h2o'   -6.000
+'reversible'    3.0650  -13.2900
+!
+! asi3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'asi3'
+'surface'
+ 455.6347    1.0000
+ 4  'h3aso3'    1.000  'i-1'    3.000  'h+1'    3.000  'h2o'   -3.000
+'reversible'   -4.1550  -1.8750
+!
+! oripment
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'oripment'
+'surface'
+ 246.0350    3.4900
+ 4  'h3aso3'    2.000  'hs-1'    3.000  'h+1'    3.000  'h2o'   -6.000
+'reversible'   60.9710  -82.8900
+!
+! realgar
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'realgar'
+'surface'
+ 106.9855    3.4800
+ 5  'h3aso3'    1.000  'hs-1'    1.000  'h+1'    1.000  'o2(aq)'   -0.250  'h2o'   -2.500
+'reversible'   -1.7575  2.9120
+!
+! as2o5
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'as2o5'
+'surface'
+ 229.8400    4.3203
+ 2  'h3aso4'    2.000  'h2o'   -3.000
+'reversible'   -6.6990  5.4050
+!
+! sb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'sb'
+'surface'
+ 121.7500    6.6600
+ 3  'sb(oh)3'    1.000  'o2(aq)'   -0.750  'h2o'   -1.500
+'reversible'  -52.8077  80.3260
+!
+! sb2s3stib
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'sb2s3stib'
+'surface'
+ 339.6980    4.5700
+ 4  'sb(oh)3'    2.000  'hs-1'    3.000  'h+1'    3.000  'h2o'   -6.000
+'reversible'   60.1560  -69.2900
+!
+! sb2se3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb2se3'
+'surface'
+ 480.3800    1.0000
+ 4  'sb(oh)3'    2.000  'hse-1'    3.000  'h+1'    3.000  'h2o'   -6.000
+'reversible'   67.7571  -81.9900
+!
+! nisbbreitha
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'nisbbreitha'
+'surface'
+ 180.4400    8.2300
+ 5  'sb(oh)3'    1.000  'o2(aq)'   -1.250  'h+1'   -2.000  'ni+2'    1.000  'h2o'   -0.500
+'reversible'  -89.0000  144.3401
+!
+! znsb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'znsb'
+'surface'
+ 187.1400    1.0000
+ 5  'sb(oh)3'    1.000  'o2(aq)'   -1.250  'zn+2'    1.000  'h+1'   -2.000  'h2o'   -0.500
+'reversible' -118.5363  180.4011
+!
+! alsb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'alsb'
+'surface'
+ 148.7315    1.0000
+ 4  'sb(oh)3'    1.000  'o2(aq)'   -1.500  'al+3'    1.000  'h+1'   -3.000
+'reversible' -194.6511  0.0000
+!
+! cdsb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdsb'
+'surface'
+ 234.1610    1.0000
+ 5  'sb(oh)3'    1.000  'o2(aq)'   -1.250  'h+1'   -2.000  'cd+2'    1.000  'h2o'   -0.500
+'reversible' -107.1282  161.9401
+!
+! mg2sb3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mg2sb3'
+'surface'
+ 413.8600    1.0000
+ 5  'mg+2'    2.000  'sb(oh)3'    3.000  'h+1'   -4.000  'o2(aq)'   -3.250  'h2o'   -2.500
+'reversible' -354.2423  0.0000
+!
+! ag4sb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag4sb'
+'surface'
+ 445.3546    1.0000
+ 4  'sb(oh)3'    1.000  'o2(aq)'   -1.500  'ag+1'    3.000  'h+1'   -3.000
+'reversible'  -72.8452  0.0000
+!
+! na3sb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'na3sb'
+'surface'
+ 190.7193    1.0000
+ 4  'na+1'    3.000  'sb(oh)3'    1.000  'h+1'   -3.000  'o2(aq)'   -1.500
+'reversible' -223.4354  303.9871
+!
+! nasb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'nasb'
+'surface'
+ 144.7398    1.0000
+ 5  'na+1'    1.000  'sb(oh)3'    1.000  'h+1'   -1.000  'o2(aq)'   -1.000  'h2o'   -1.000
+'reversible' -109.1950  156.2131
+!
+! mn2sb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mn2sb'
+'surface'
+ 231.6261    1.0000
+ 5  'mn+2'    2.000  'sb(oh)3'    1.000  'o2(aq)'   -1.750  'h+1'   -4.000  'h2o'    0.500
+'reversible' -211.6111  0.0000
+!
+! ca3sb2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ca3sb2'
+'surface'
+ 363.7340    1.0000
+ 4  'ca+2'    3.000  'sb(oh)3'    2.000  'h+1'   -6.000  'o2(aq)'   -3.000
+'reversible' -401.0278  576.6142
+!
+! usb2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'usb2'
+'surface'
+ 481.5289    1.0000
+ 5  'uo2+2'    1.000  'sb(oh)3'    2.000  'o2(aq)'   -3.000  'h+1'   -2.000  'h2o'   -2.000
+'reversible' -287.5786  426.1642
+!
+! cu2sb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu2sb'
+'surface'
+ 248.8420    1.0000
+ 6  'sb(oh)3'    1.000  'o2(aq)'   -1.500  'h+1'   -3.000  'cu+1'    1.000  'cu+2'    1.000  'h2o'    3.000
+'reversible'  -94.1443  144.9971
+!
+! mnsb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mnsb'
+'surface'
+ 176.6881    1.0000
+ 4  'mn+3'    1.000  'sb(oh)3'    1.000  'o2(aq)'   -1.500  'h+1'   -3.000
+'reversible' -126.1171  195.6971
+!
+! cu3sb
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu3sb'
+'surface'
+ 312.3880    1.0000
+ 4  'sb(oh)3'    1.000  'o2(aq)'   -1.500  'h+1'   -3.000  'cu+1'    3.000
+'reversible'  -86.4333  127.0971
+!
+! u3sb4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'u3sb4'
+'surface'
+1201.0867    1.0000
+ 4  'u+4'    3.000  'sb(oh)3'    4.000  'o2(aq)'   -6.000  'h+1'  -12.000
+'reversible' -668.4368  1038.6884
+!
+! sb2o4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb2o4'
+'surface'
+ 307.4976    1.0000
+ 3  'sb(oh)3'    2.000  'h2o'   -3.000  'o2(aq)'    0.500
+'reversible'   39.5493  -50.6440
+!
+! sb4o6ii,cub
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb4o6ii,cub'
+'surface'
+ 582.9964    1.0000
+ 2  'sb(oh)3'    4.000  'h2o'   -6.000
+'reversible'   19.6586  -14.6000
+!
+! sb4o6i,orth
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb4o6i,orth'
+'surface'
+ 582.9964    1.0000
+ 2  'sb(oh)3'    4.000  'h2o'   -6.000
+'reversible'   17.0346  -8.9900
+!
+! sb(oh)3(s)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb(oh)3(s)'
+'surface'
+ 172.7719    1.0000
+ 1  'sb(oh)3'    1.000
+'reversible'    7.1099  -7.2000
+!
+! cu(sbo3)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu(sbo3)2'
+'surface'
+ 403.0424    1.0000
+ 5  'sb(oh)3'    2.000  'cu+2'    1.000  'h+1'   -2.000  'o2(aq)'    1.000  'h2o'   -2.000
+'reversible'   40.8075  0.0000
+!
+! sb2o3senarm
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb2o3senarm'
+'surface'
+ 291.4982    1.0000
+ 2  'sb(oh)3'    2.000  'h2o'   -3.000
+'reversible'   12.3654  -7.3250
+!
+! sb2o3valent
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb2o3valent'
+'surface'
+ 291.4982    1.0000
+ 2  'sb(oh)3'    2.000  'h2o'   -3.000
+'reversible'    8.4806  -4.5450
+!
+! sb2o5
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sb2o5'
+'surface'
+ 323.4970    1.0000
+ 3  'sb(oh)6-'    2.000  'h+1'    2.000  'h2o'   -7.000
+'reversible'   12.4827  0.0000
+!
+! sbo2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sbo2'
+'surface'
+ 153.7488    1.0000
+ 4  'sb(oh)6-'    1.000  'o2(aq)'   -0.250  'h+1'    1.000  'h2o'   -3.500
+'reversible'    6.3196  0.0000
+!
+! sbbr3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sbbr3'
+'surface'
+ 361.4620    1.0000
+ 4  'sb(oh)3'    1.000  'br-1'    3.000  'h+1'    3.000  'h2o'   -3.000
+'reversible'   -1.0562  5.0720
+!
+! sbcl3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sbcl3'
+'surface'
+ 228.1081    1.0000
+ 4  'sb(oh)3'    1.000  'cl-1'    3.000  'h+1'    3.000  'h2o'   -3.000
+'reversible'   -0.5915  8.4140
+!
+! sbf3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sbf3'
+'surface'
+ 178.7452    1.0000
+ 4  'sb(oh)3'    1.000  'h+1'    3.000  'f-1'    3.000  'h2o'   -3.000
+'reversible'   10.2251  1.6080
+!
+! sbi3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sbi3'
+'surface'
+ 502.4634    1.0000
+ 4  'sb(oh)3'    1.000  'h+1'    3.000  'i-1'    3.000  'h2o'   -3.000
+'reversible'    0.5380  -3.2480
+!
+! zn(bo2)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn(bo2)2'
+'surface'
+ 150.9893    1.0000
+ 4  'h2o'   -2.000  'h+1'   -2.000  'zn+2'    1.000  'h3bo3'    2.000
+'reversible'   -8.2900  0.0000
+!
+! cd(bo2)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd(bo2)2'
+'surface'
+ 198.0188    1.0000
+ 4  'h2o'   -2.000  'h+1'   -2.000  'cd+2'    1.000  'h3bo3'    2.000
+'reversible'   -9.8400  0.0000
+!
+! pb(bo2)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb(bo2)2'
+'surface'
+ 292.8093    1.0000
+ 4  'h2o'   -2.000  'h+1'   -2.000  'pb+2'    1.000  'h3bo3'    2.000
+'reversible'   -7.6100  5.8000
+!
+! mnhpo4(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mnhpo4(c)'
+'surface'
+ 150.9174    1.0000
+ 3  'mn+2'    1.000  'po4-3'    1.000  'h+1'    1.000
+'reversible'   25.4000  0.0000
+!
+! pbhpo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'pbhpo4'
+'surface'
+ 303.1693    5.6604
+ 3  'pb+2'    1.000  'po4-3'    1.000  'h+1'    1.000
+'reversible'   23.9000  0.0000
+!
+! pb3(po4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'pb3(po4)2'
+'surface'
+ 811.5125    7.0100
+ 2  'pb+2'    3.000  'po4-3'    2.000
+'reversible'   44.5000  0.0000
+!
+! sulfur
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'sulfur'
+'surface'
+  32.0640    2.0700
+ 4  'hs-1'    1.000  'h+1'    1.000  'o2(aq)'    0.500  'h2o'   -1.000
+'reversible'   45.1190  -62.7140
+!
+! alaso4.2w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'alaso4.2w'
+'surface'
+ 165.9006    1.0000
+ 4  'al+3'    1.000  'h3aso4'    1.000  'h2o'    2.000  'h+1'   -3.000
+'reversible'   -4.8000  0.0000
+!
+! ca3(aso4)26w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ca3(aso4)26w'
+'surface'
+ 506.1700    1.0000
+ 4  'ca+2'    3.000  'h3aso4'    2.000  'h2o'    4.000  'h+1'   -6.000
+'reversible'  -22.3000  0.0000
+!
+! cu3(aso4)26w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu3(aso4)26w'
+'surface'
+ 576.5680    1.0000
+ 4  'cu+2'    3.000  'h3aso4'    2.000  'h2o'    2.000  'h+1'   -6.000
+'reversible'   -6.1000  0.0000
+!
+! feaso4.2w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'feaso4.2w'
+'surface'
+ 230.7967    1.0000
+ 4  'fe+3'    1.000  'h3aso4'    1.000  'h2o'    2.000  'h+1'   -3.000
+'reversible'   -0.4000  0.0000
+!
+! mn3aso428w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mn3aso428w'
+'surface'
+ 586.7746    1.0000
+ 4  'mn+2'    3.000  'h3aso4'    2.000  'h2o'    8.000  'h+1'   -6.000
+'reversible'  -12.5000  0.0000
+!
+! ni3(aso4)28w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ni3(aso4)28w'
+'surface'
+ 459.1707    1.0000
+ 4  'ni+2'    3.000  'h3aso4'    2.000  'h2o'    8.000  'h+1'   -6.000
+'reversible'  -15.7000  0.0000
+!
+! pb3(aso4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb3(aso4)2'
+'surface'
+ 899.4079    1.0000
+ 3  'pb+2'    3.000  'h3aso4'    2.000  'h+1'   -6.000
+'reversible'   -5.8000  0.0000
+!
+! zn3aso422.5w
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn3aso422.5w'
+'surface'
+ 518.9862    1.0000
+ 4  'zn+2'    3.000  'h3aso4'    2.000  'h2o'    2.500  'h+1'   -6.000
+'reversible'  -13.6500  0.0000
+!
+! ba(aso4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ba(aso4)2'
+'surface'
+ 689.8582    1.0000
+ 3  'ba+2'    3.000  'h3aso4'    2.000  'h+1'   -6.000
+'reversible'    8.9100  -2.6400
+!
+! vmetal
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: rom EQ3/6 database
+! activation energy: undefined
+!
+'vmetal'
+'surface'
+  50.9400    6.1000
+ 4  'v+3'    1.000  'o2(aq)'   -0.750  'h+1'   -3.000  'h2o'    1.500
+'reversible' -106.8635  163.2710
+!
+! vo
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vo'
+'surface'
+  66.9390    1.0000
+ 4  'h+1'   -3.000  'v+3'    1.000  'h2o'    1.500  'o2(aq)'   -0.250
+'reversible'  -34.5845  61.4770
+!
+! vcl2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vcl2'
+'surface'
+ 121.8460    1.0000
+ 5  'v+3'    1.000  'cl-1'    2.000  'o2(aq)'   -0.250  'h+1'   -1.000  'h2o'    0.500
+'reversible'  -39.4745  69.2570
+!
+! v2o3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'v2o3'
+'surface'
+ 149.8780    1.0000
+ 3  'h+1'   -3.000  'v+3'    1.000  'h2o'    1.500
+'reversible'   -4.9000  19.7200
+!
+! v(oh)3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'v(oh)3'
+'surface'
+ 101.9620    1.0000
+ 3  'h+1'   -3.000  'v+3'    1.000  'h2o'    3.000
+'reversible'   -7.6500  0.0000
+!
+! vcl3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vcl3'
+'surface'
+ 157.2990    1.0000
+ 2  'v+3'    1.000  'cl-1'    3.000
+'reversible'  -21.7300  43.9600
+!
+! vocl
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vocl'
+'surface'
+ 137.8450    1.0000
+ 4  'v+3'    1.000  'cl-1'    1.000  'h2o'    1.000  'h+1'   -2.000
+'reversible'   -9.4100  26.1700
+!
+! v2o4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'v2o4'
+'surface'
+ 165.8780    4.3390
+ 3  'h+1'   -2.000  'vo+2'    1.000  'h2o'    1.000
+'reversible'   -4.2700  14.0700
+!
+! vo(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vo(oh)2'
+'surface'
+ 100.9540    1.0000
+ 3  'h+1'   -2.000  'vo+2'    1.000  'h2o'    2.000
+'reversible'   -5.8500  0.0000
+!
+! vf4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vf4'
+'surface'
+ 126.9320    1.0000
+ 4  'h2o'   -1.000  'vo+2'    1.000  'f-1'    4.000  'h+1'    2.000
+'reversible'  -14.9300  47.5900
+!
+! voso4(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'voso4(c)'
+'surface'
+ 162.9970    1.0000
+ 2  'vo+2'    1.000  'so4-2'    1.000
+'reversible'   -3.5700  20.7200
+!
+! (vo)3(po4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'(vo)3(po4)2'
+'surface'
+ 390.7530    1.0000
+ 2  'vo+2'    1.000  'po4-3'    0.667
+'reversible'    8.3700  0.0000
+!
+! vocl2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vocl2'
+'surface'
+ 137.8450    1.0000
+ 2  'vo+2'    1.000  'cl-1'    2.000
+'reversible'  -12.7900  28.2000
+!
+! v2o5
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'v2o5'
+'surface'
+ 181.8770    1.0000
+ 3  'h+1'   -1.000  'vo2+1'    1.000  'h2o'    0.500
+'reversible'    0.7200  4.1600
+!
+! tyuyamunite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'tyuyamunite'
+'surface'
+ 810.0130    4.0000
+ 5  'h+1'   -4.000  'ca+2'    0.500  'uo2+2'    1.000  'vo2+1'    1.000  'h2o'    2.000
+'reversible'   -2.0400  18.3000
+!
+! ca-vanadate
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ca-vanadate'
+'surface'
+ 237.9560    1.0000
+ 4  'h+1'   -2.000  'ca+2'    0.500  'vo2+1'    1.000  'h2o'    1.000
+'reversible'   -2.8300  10.1300
+!
+! ca3(vo4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'ca3(vo4)2'
+'surface'
+ 350.1150    4.0090
+ 4  'h+1'   -4.000  'ca+2'    1.500  'vo2+1'    1.000  'h2o'    2.000
+'reversible'  -19.4800  35.0700
+!
+! ca2v2o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ca2v2o7'
+'surface'
+ 294.0360    1.0000
+ 4  'h+1'   -3.000  'ca+2'    1.000  'vo2+1'    1.000  'h2o'    1.500
+'reversible'   -8.7500  19.0600
+!
+! fe-vanadate
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'fe-vanadate'
+'surface'
+ 508.4310    1.0000
+ 4  'h+1'   -2.000  'fe+2'    0.500  'vo2+1'    1.000  'h2o'    1.000
+'reversible'    1.8600  7.3700
+!
+! mg-vanadate
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mg-vanadate'
+'surface'
+ 222.1860    1.0000
+ 4  'h+1'   -2.000  'mg+2'    0.500  'vo2+1'    1.000  'h2o'    1.000
+'reversible'   -5.6400  16.3300
+!
+! mg2v2o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mg2v2o7'
+'surface'
+ 262.4960    1.0000
+ 4  'h+1'   -3.000  'mg+2'    1.000  'vo2+1'    1.000  'h2o'    1.500
+'reversible'  -13.1800  30.5000
+!
+! mn-vanadate
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mn-vanadate'
+'surface'
+ 252.8160    1.0000
+ 4  'h+1'   -2.000  'mn+2'    0.500  'vo2+1'    1.000  'h2o'    1.000
+'reversible'   -2.4500  11.0500
+!
+! nh4vo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'nh4vo3'
+'surface'
+ 116.9770    1.0000
+ 4  'h+1'   -2.000  'nh4+1'    1.000  'vo2+1'    1.000  'h2o'    1.000
+'reversible'   -2.6900  3.7700
+!
+! na-vanadate
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'na-vanadate'
+'surface'
+ 121.9280    1.0000
+ 4  'h+1'   -2.000  'na+1'    1.000  'vo2+1'    1.000  'h2o'    1.000
+'reversible'   -3.7100  7.0100
+!
+! na3vo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'na3vo4'
+'surface'
+ 183.9080    1.0000
+ 4  'h+1'   -4.000  'na+1'    3.000  'vo2+1'    1.000  'h2o'    2.000
+'reversible'  -36.9400  44.4200
+!
+! na4v2o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'na4v2o7'
+'surface'
+ 305.8360    1.0000
+ 4  'h+1'   -3.000  'na+1'    2.000  'vo2+1'    1.000  'h2o'    1.500
+'reversible'  -18.7000  24.0300
+!
+! pb3(vo4)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb3(vo4)2'
+'surface'
+ 851.4750    1.0000
+ 4  'h+1'   -4.000  'pb+2'    1.500  'vo2+1'    1.000  'h2o'    2.000
+'reversible'   -3.0700  8.6800
+!
+! pb2v2o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2v2o7'
+'surface'
+ 628.2760    1.0000
+ 4  'h+1'   -3.000  'pb+2'    1.000  'vo2+1'    1.000  'h2o'    1.500
+'reversible'    0.9500  3.2200
+!
+! carnotite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'carnotite'
+'surface'
+ 848.1330    4.8500
+ 5  'h+1'   -4.000  'k+1'    1.000  'uo2+2'    1.000  'vo2+1'    1.000  'h2o'    2.000
+'reversible'   -0.2300  8.7000
+!
+! ag-vanadate
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag-vanadate'
+'surface'
+ 206.8080    1.0000
+ 4  'h+1'   -2.000  'ag+1'    1.000  'vo2+1'    1.000  'h2o'    1.000
+'reversible'   -0.7700  0.0000
+!
+! ag2hvo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2hvo4'
+'surface'
+ 331.6860    1.0000
+ 4  'h+1'   -3.000  'ag+1'    2.000  'vo2+1'    1.000  'h2o'    2.000
+'reversible'   -1.4800  0.0000
+!
+! ag3h2vo5
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag3h2vo5'
+'surface'
+ 456.5630    1.0000
+ 4  'h+1'   -4.000  'ag+1'    3.000  'vo2+1'    1.000  'h2o'    3.000
+'reversible'   -5.1800  0.0000
+!
+! vo2cl
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'vo2cl'
+'surface'
+ 118.3920    1.0000
+ 2  'vo2+1'    1.000  'cl-1'    1.000
+'reversible'   -2.8100  9.6500
+!
+! v3o5
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'v3o5'
+'surface'
+ 232.8170    4.7500
+ 4  'h+1'   -6.000  'vo+2'    3.000  'h2o'    3.000  'o2(aq)'   -0.500
+'reversible'  -44.8790  90.4440
+!
+! v4o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'v4o7'
+'surface'
+ 315.7560    1.0000
+ 4  'h+1'   -8.000  'vo+2'    4.000  'h2o'    4.000  'o2(aq)'   -0.500
+'reversible'  -50.1490  106.0640
+!
+! v6o13
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'v6o13'
+'surface'
+ 513.6320    1.0000
+ 4  'h+1'   -6.000  'vo2+1'    6.000  'h2o'    3.000  'o2(aq)'   -1.000
+'reversible'  -25.1580  68.9381
+!
+! lime
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'lime'
+'surface'
+  56.0800    3.3453
+ 3  'h+1'   -2.000  'ca+2'    1.000  'h2o'    1.000
+'reversible'  -32.7970  46.2650
+!
+! portlandite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'portlandite'
+'surface'
+  73.0880    2.2110
+ 3  'h+1'   -2.000  'ca+2'    1.000  'h2o'    2.000
+'reversible'  -22.8000  31.0000
+!
+! portlandite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'C-S-H'
+'surface'
+  73.0880    2.2110
+ 3  'h+1'   -2.000  'ca+2'    1.000  'h2o'    2.000
+'reversible'  -27.2000  31.0000
+! wustite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'wustite'
+'surface'
+  71.8500    5.9676
+ 3  'h+1'   -2.000  'fe+2'    0.947  'h2o'    1.000
+'reversible'  -11.6870  24.8460
+!
+! periclase
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'periclase'
+'surface'
+  40.3200    3.5600
+ 3  'h+1'   -2.000  'mg+2'    1.000  'h2o'    1.000
+'reversible'  -21.5100  36.1350
+!
+! hercynite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'hercynite'
+'surface'
+ 173.8100    4.3900
+ 4  'h+1'   -8.000  'fe+2'    1.000  'al+3'    2.000  'h2o'    4.000
+'reversible'  -27.1620  78.3600
+!
+! spinel
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'spinel'
+'surface'
+ 142.2800    3.8000
+ 4  'h+1'   -8.000  'mg+2'    1.000  'al+3'    2.000  'h2o'    4.000
+'reversible'  -36.3330  89.0890
+!
+! mag-ferrite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mag-ferrite'
+'surface'
+ 200.0200    4.4878
+ 4  'h+1'   -8.000  'mg+2'    1.000  'fe+3'    2.000  'h2o'    4.000
+'reversible'  -16.7650  66.6390
+!
+! cryolite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'cryolite'
+'surface'
+ 209.9530    2.9750
+ 3  'al+3'    1.000  'na+1'    3.000  'f-1'    6.000
+'reversible'   31.4900  -10.9040
+!
+! wollastonite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'wollastonite'
+'surface'
+ 116.1700    2.8500
+ 4  'h2o'   -1.000  'h+1'   -2.000  'h4sio4'    1.000  'ca+2'    1.000
+'reversible'  -12.9960  19.4980
+!
+! p-wollstanit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'p-wollstanit'
+'surface'
+ 116.1700    2.8985
+ 4  'h2o'   -1.000  'h+1'   -2.000  'h4sio4'    1.000  'ca+2'    1.000
+'reversible'  -13.8460  21.0680
+!
+! ca-olivine
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ca-olivine'
+'surface'
+ 172.2500    1.0000
+ 3  'h+1'   -4.000  'h4sio4'    1.000  'ca+2'    2.000
+'reversible'  -37.6490  54.6950
+!
+! larnite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'larnite'
+'surface'
+ 172.2500    3.3382
+ 3  'h+1'   -4.000  'h4sio4'    1.000  'ca+2'    2.000
+'reversible'  -39.1410  57.2380
+!
+! ca3sio5
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ca3sio5'
+'surface'
+ 228.3300    1.0000
+ 4  'h+1'   -6.000  'h4sio4'    1.000  'ca+2'    3.000  'h2o'    1.000
+'reversible'  -73.8670  106.3350
+!
+! monticellite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'monticellite'
+'surface'
+ 156.4900    3.2000
+ 4  'h+1'   -4.000  'h4sio4'    1.000  'ca+2'    1.000  'mg+2'    1.000
+'reversible'  -30.2720  49.4210
+!
+! akerminite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'akerminite'
+'surface'
+ 272.6600    2.9378
+ 5  'h2o'   -1.000  'h+1'   -6.000  'h4sio4'    2.000  'ca+2'    2.000  'mg+2'    1.000
+'reversible'  -47.4720  76.4450
+!
+! merwinite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'merwinite'
+'surface'
+ 328.7400    3.1489
+ 4  'h+1'   -8.000  'h4sio4'    2.000  'mg+2'    1.000  'ca+2'    3.000
+'reversible'  -68.5430  107.1110
+!
+! kalsilite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'kalsilite'
+'surface'
+ 158.1700    2.6100
+ 4  'h+1'   -4.000  'h4sio4'    1.000  'al+3'    1.000  'k+1'    1.000
+'reversible'  -12.8380  28.9190
+!
+! leucite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'leucite'
+'surface'
+ 278.2600    2.4700
+ 5  'h2o'   -2.000  'h+1'   -4.000  'h4sio4'    2.000  'al+3'    1.000  'k+1'    1.000
+'reversible'   -6.4230  22.0850
+!
+! microcline
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'microcline'
+'surface'
+ 378.3500    2.5550
+ 5  'h2o'   -4.000  'h+1'   -4.000  'h4sio4'    3.000  'al+3'    1.000  'k+1'    1.000
+'reversible'   -0.6160  12.3090
+!
+! hsanidine
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'hsanidine'
+'surface'
+ 378.3500    3.4708
+ 5  'h2o'   -4.000  'h+1'   -4.000  'h4sio4'    3.000  'al+3'    1.000  'k+1'    1.000
+'reversible'   -1.0620  14.2520
+!
+! nepheline
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'nepheline'
+'surface'
+ 142.0610    2.6250
+ 4  'h+1'   -4.000  'h4sio4'    1.000  'al+3'    1.000  'na+1'    1.000
+'reversible'  -14.2180  33.2040
+!
+! gehlenite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'gehlenite'
+'surface'
+ 374.2100    4.1468
+ 5  'h+1'  -10.000  'al+3'    2.000  'h4sio4'    1.000  'ca+2'    2.000  'h2o'    3.000
+'reversible'  -56.8220  116.1250
+!
+! lepidocrocit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'lepidocrocit'
+'surface'
+  72.8600    4.0900
+ 3  'h+1'   -3.000  'fe+3'    1.000  'h2o'    2.000
+'reversible'   -1.3710  0.0000
+!
+! na-nontronit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'na-nontronit'
+'surface'
+ 425.2690    2.5000
+ 6  'h+1'   -7.320  'h2o'   -2.680  'al+3'    0.330  'fe+3'    2.000  'na+1'    0.330  'h4sio4'    3.670
+'reversible'   14.5040  0.0000
+!
+! k-nontronite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'k-nontronite'
+'surface'
+ 430.5850    3.1832
+ 6  'h+1'   -7.320  'h2o'   -2.680  'al+3'    0.330  'fe+3'    2.000  'k+1'    0.330  'h4sio4'    3.670
+'reversible'   15.5490  0.0000
+!
+! ca-nontronit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'ca-nontronit'
+'surface'
+ 424.3750    3.2370
+ 6  'h+1'   -7.320  'h2o'   -2.680  'al+3'    0.330  'fe+3'    2.000  'ca+2'    0.167  'h4sio4'    3.670
+'reversible'   20.8890  0.0000
+!
+! mg-nontronit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mg-nontronit'
+'surface'
+ 408.6150    3.1490
+ 6  'h+1'   -7.320  'h2o'   -2.680  'al+3'    0.330  'fe+3'    2.000  'mg+2'    0.167  'h4sio4'    3.670
+'reversible'   20.5890  0.0000
+!
+! montmorillon
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'montmorillon'
+'surface'
+ 371.3490    2.5000
+ 6  'h4sio4'    3.810  'mg+2'    0.490  'h+1'   -6.760  'h2o'   -3.240  'fe+3'    0.220  'al+3'    1.710
+'reversible'   -2.6700  0.0000
+!
+! tlmetal
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'tlmetal'
+'surface'
+ 204.3700   11.8750
+ 4  'tl+1'    1.000  'o2(aq)'   -0.250  'h+1'   -1.000  'h2o'    0.500
+'reversible'  -27.1778  32.1770
+!
+! tl2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl2o'
+'surface'
+ 424.7394    1.0000
+ 3  'tl+1'    2.000  'h2o'    1.000  'h+1'   -2.000
+'reversible'  -27.0984  23.0550
+!
+! tloh
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tloh'
+'surface'
+ 221.3773    1.0000
+ 3  'tl+1'    1.000  'h2o'    1.000  'h+1'   -1.000
+'reversible'  -12.9225  9.9350
+!
+! tlcl
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tlcl'
+'surface'
+ 239.8230    1.0000
+ 2  'tl+1'    1.000  'cl-1'    1.000
+'reversible'    3.7243  -10.1370
+!
+! tlbr
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tlbr'
+'surface'
+ 284.2740    1.0000
+ 2  'tl+1'    1.000  'br-1'    1.000
+'reversible'    5.4190  -13.6410
+!
+! tli
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tli'
+'surface'
+ 331.2745    1.0000
+ 2  'tl+1'    1.000  'i-1'    1.000
+'reversible'    7.1964  -17.2810
+!
+! tl2s
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl2s'
+'surface'
+ 440.8000    1.0000
+ 3  'tl+1'    2.000  'hs-1'    1.000  'h+1'   -1.000
+'reversible'    7.1832  -21.5600
+!
+! tl2so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl2so4'
+'surface'
+ 504.7976    1.0000
+ 2  'tl+1'    2.000  'so4-2'    1.000
+'reversible'    3.6942  -7.9400
+!
+! tl2se
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl2se'
+'surface'
+ 487.7000    1.0000
+ 3  'tl+1'    2.000  'hse-1'    1.000  'h+1'   -1.000
+'reversible'    6.6848  -20.3600
+!
+! tl2seo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl2seo4'
+'surface'
+ 551.6976    1.0000
+ 2  'tl+1'    2.000  'seo4-2'    1.000
+'reversible'    4.0168  -9.7600
+!
+! tlno3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tlno3'
+'surface'
+ 266.3749    1.0000
+ 2  'tl+1'    1.000  'no3-1'    1.000
+'reversible'    1.5319  -10.0200
+!
+! tl2co3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl2co3'
+'surface'
+ 468.7492    1.0000
+ 2  'tl+1'    2.000  'co3-2'    1.000
+'reversible'    3.8482  -8.0200
+!
+! tl(oh)3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl(oh)3'
+'surface'
+ 255.3919    1.0000
+ 1  'tl(oh)3'    1.000
+'reversible'    6.4503  0.0000
+!
+! avicennite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System
+! activation energy: undefined
+!
+'avicennite'
+'surface'
+ 456.7382    9.5740
+ 2  'tl(oh)3'    2.000  'h2o'   -3.000
+'reversible'   16.3236  0.0000
+!
+! sehex,blac
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'sehex,blac'
+'surface'
+  78.9600    1.0000
+ 4  'hse-1'    1.000  'h+1'    1.000  'o2(aq)'    0.500  'h2o'   -1.000
+'reversible'   50.7053  -70.7140
+!
+! se(a)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'se(a)'
+'surface'
+  78.9600    4.8087
+ 4  'hse-1'    1.000  'h+1'    1.000  'o2(aq)'    0.500  'h2o'   -1.000
+'reversible'   50.1189  -69.5140
+!
+! ferroselite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'ferroselite'
+'surface'
+ 213.7670    7.1350
+ 4  'hse-1'    2.000  'fe+2'    1.000  'o2(aq)'    0.500  'h2o'   -1.000
+'reversible'   61.6049  -78.2140
+!
+! clausthalit
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'clausthalit'
+'surface'
+ 286.1600    8.2681
+ 3  'hse-1'    1.000  'pb+2'    1.000  'h+1'   -1.000
+'reversible'   21.2162  -28.0000
+!
+! ag2se
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2se'
+'surface'
+ 294.6960    1.0000
+ 3  'hse-1'    1.000  'ag+1'    2.000  'h+1'   -1.000
+'reversible'   43.6448  -64.9500
+!
+! cdse
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cdse'
+'surface'
+ 191.3700    1.0000
+ 3  'hse-1'    1.000  'cd+2'    1.000  'h+1'   -1.000
+'reversible'   18.0739  -18.1600
+!
+! cuse
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cuse'
+'surface'
+ 142.5060    1.0000
+ 3  'hse-1'    1.000  'cu+2'    1.000  'h+1'   -1.000
+'reversible'   26.5121  -28.9500
+!
+! cu2sealpha
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu2sealpha'
+'surface'
+ 206.0520    1.0000
+ 3  'hse-1'    1.000  'cu+1'    2.000  'h+1'   -1.000
+'reversible'   36.0922  -51.2100
+!
+! cuse2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cuse2'
+'surface'
+ 221.4660    1.0000
+ 4  'hse-1'    2.000  'cu+2'    1.000  'o2(aq)'    0.500  'h2o'   -1.000
+'reversible'   76.3745  -100.5140
+!
+! cu3se2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu3se2'
+'surface'
+ 348.5580    1.0000
+ 4  'hse-1'    2.000  'cu+1'    2.000  'cu+2'    1.000  'h+1'   -2.000
+'reversible'   63.4911  -81.3400
+!
+! fese
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'fese'
+'surface'
+ 134.8070    1.0000
+ 3  'hse-1'    1.000  'fe+2'    1.000  'h+1'   -1.000
+'reversible'    7.1466  -0.5000
+!
+! mnse
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mnse'
+'surface'
+ 133.8980    5.5490
+ 3  'hse-1'    1.000  'mn+2'    1.000  'h+1'   -1.000
+'reversible'   -5.3508  13.4600
+!
+! znse
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from MinMax Mineral Information System (Stilleite)
+! activation energy: undefined
+!
+'znse'
+'surface'
+ 144.3400    5.2900
+ 3  'hse-1'    1.000  'zn+2'    1.000  'h+1'   -1.000
+'reversible'   11.3642  -6.4390
+!
+! cose
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cose'
+'surface'
+ 137.8932    1.0000
+ 3  'hse-1'    1.000  'zn+2'    1.000  'h+1'   -1.000
+'reversible'   16.2723  0.0000
+!
+! nise
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'nise'
+'surface'
+ 137.6600    1.0000
+ 3  'hse-1'    1.000  'ni+2'    1.000  'h+1'   -1.000
+'reversible'   17.7382  0.0000
+!
+! seo2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'seo2'
+'surface'
+ 110.9588    1.0000
+ 3  'hseo3-1'    1.000  'h+1'    1.000  'h2o'   -1.000
+'reversible'   -0.1246  -0.3350
+!
+! baseo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'baseo3'
+'surface'
+ 264.2882    1.0000
+ 3  'hseo3-1'    1.000  'ba+2'    1.000  'h+1'   -1.000
+'reversible'   -4.1634  6.2800
+!
+! caseo3:2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'caseo3:2h2o'
+'surface'
+ 203.0686    1.0000
+ 4  'hseo3-1'    1.000  'ca+2'    1.000  'h2o'    2.000  'h+1'   -1.000
+'reversible'   -2.8139  4.6500
+!
+! cuseo3:2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cuseo3:2h2o'
+'surface'
+ 226.5346    1.0000
+ 4  'hseo3-1'    1.000  'cu+2'    1.000  'h2o'    2.000  'h+1'   -1.000
+'reversible'   -0.4838  8.8100
+!
+! fe2(seo3)3:
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'fe2(seo3)3:'
+'surface'
+ 528.5990    1.0000
+ 4  'hseo3-1'    3.000  'fe+3'    2.000  'h2o'    2.000  'h+1'   -3.000
+'reversible'   20.6262  0.0000
+!
+! fe2(oh)4seo
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'fe2(oh)4seo'
+'surface'
+ 306.6814    1.0000
+ 4  'hseo3-1'    1.000  'fe+3'    2.000  'h2o'    4.000  'h+1'   -5.000
+'reversible'   -1.5539  0.0000
+!
+! mgseo3:6h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'mgseo3:6h2o'
+'surface'
+ 259.3544    2.0900
+ 4  'hseo3-1'    1.000  'mg+2'    1.000  'h2o'    6.000  'h+1'   -1.000
+'reversible'   -4.0314  -1.2500
+!
+! mnseo3:2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mnseo3:2h2o'
+'surface'
+ 217.9266    1.0000
+ 4  'hseo3-1'    1.000  'mn+2'    1.000  'h2o'    2.000  'h+1'   -1.000
+'reversible'   -0.9822  -2.0300
+!
+! niseo3:2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'niseo3:2h2o'
+'surface'
+ 221.6886    1.0000
+ 4  'hseo3-1'    1.000  'ni+2'    1.000  'h2o'    2.000  'h+1'   -1.000
+'reversible'   -2.8147  7.4100
+!
+! srseo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'srseo3'
+'surface'
+ 214.5782    1.0000
+ 3  'hseo3-1'    1.000  'sr+2'    1.000  'h+1'   -1.000
+'reversible'   -0.1034  0.0000
+!
+! mnseo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mnseo3'
+'surface'
+ 181.8962    1.0000
+ 3  'hseo3-1'    1.000  'mn+2'    1.000  'h+1'   -1.000
+'reversible'   -0.0440  0.0000
+!
+! coseo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'coseo3'
+'surface'
+ 185.8914    1.0000
+ 3  'hseo3-1'    1.000  'mn+2'    1.000  'h+1'   -1.000
+'reversible'   -0.1906  0.0000
+!
+! ag2seo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2seo3'
+'surface'
+ 342.6942    1.0000
+ 3  'hseo3-1'    1.000  'ag+1'    2.000  'h+1'   -1.000
+'reversible'    8.1977  -9.4700
+!
+! seo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'seo3'
+'surface'
+ 126.9582    3.6000
+ 3  'seo4-2'    1.000  'h+1'    2.000  'h2o'   -1.000
+'reversible'  -21.0440  34.9850
+!
+! ag2seo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2seo4'
+'surface'
+ 358.6936    1.0000
+ 2  'seo4-2'    1.000  'ag+1'    2.000
+'reversible'    8.9014  -10.4500
+!
+! baseo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'baseo4'
+'surface'
+ 280.2876    4.7500
+ 2  'seo4-2'    1.000  'ba+2'    1.000
+'reversible'    5.1895  -2.0000
+!
+! caseo4:2h2o
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'caseo4:2h2o'
+'surface'
+ 219.0680    1.0000
+ 3  'seo4-2'    1.000  'ca+2'    1.000  'h2o'    2.000
+'reversible'    2.9473  -0.8800
+!
+! pbseo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'pbseo4'
+'surface'
+ 350.1576    6.6310
+ 2  'seo4-2'    1.000  'pb+2'    1.000
+'reversible'    6.8387  -3.8000
+!
+! srseo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'srseo4'
+'surface'
+ 230.5776    4.2300
+ 2  'seo4-2'    1.000  'sr+2'    1.000
+'reversible'    6.8747  -2.6900
+!
+! hgmetal(l
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgmetal(l'
+'surface'
+ 200.5900    1.0000
+ 4  'hg2+2'    0.500  'o2(aq)'   -0.250  'h+1'   -1.000  'h2o'    0.500
+'reversible'   -8.0493  13.5220
+!
+! hg2br2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2br2'
+'surface'
+ 560.9880    1.0000
+ 2  'hg2+2'    1.000  'br-1'    2.000
+'reversible'   22.2091  -31.2520
+!
+! hg2co3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2co3'
+'surface'
+ 461.1892    1.0000
+ 2  'hg2+2'    1.000  'co3-2'    1.000
+'reversible'   13.9586  0.0000
+!
+! calomel
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'calomel'
+'surface'
+ 472.0860    7.1500
+ 2  'hg2+2'    1.000  'cl-1'    2.000
+'reversible'   17.8427  -23.4440
+!
+! hg2f2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2f2'
+'surface'
+ 439.1768    1.0000
+ 2  'hg2+2'    1.000  'f-1'    2.000
+'reversible'    3.0811  4.4320
+!
+! hg2i2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2i2'
+'surface'
+ 654.9890    1.0000
+ 2  'hg2+2'    1.000  'i-1'    2.000
+'reversible'   28.2782  0.0000
+!
+! hg2(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2(oh)2'
+'surface'
+ 435.1946    1.0000
+ 3  'hg2+2'    1.000  'h2o'    2.000  'h+1'   -2.000
+'reversible'   -5.2603  0.0000
+!
+! hg2hpo4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2hpo4'
+'surface'
+ 497.1593    1.0000
+ 3  'hg2+2'    1.000  'h+1'    1.000  'po4-3'    1.000
+'reversible'   25.9795  0.0000
+!
+! hg2s
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2s'
+'surface'
+ 433.2400    1.0000
+ 3  'hg2+2'    1.000  'hs-1'    1.000  'h+1'   -1.000
+'reversible'   11.6765  -16.6700
+!
+! hg2so4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2so4'
+'surface'
+ 497.2376    1.0000
+ 2  'hg2+2'    1.000  'so4-2'    1.000
+'reversible'    6.1593  -0.2300
+!
+! hg2seo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2seo3'
+'surface'
+ 528.1382    1.0000
+ 3  'hg2+2'    1.000  'hseo3-1'    1.000  'h+1'   -1.000
+'reversible'    4.6570  0.0000
+!
+! hgbr2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgbr2'
+'surface'
+ 360.3980    1.0000
+ 4  'hg(oh)2'    1.000  'br-1'    2.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'   25.3730  -34.4520
+!
+! hgco3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgco3'
+'surface'
+ 260.5992    1.0000
+ 4  'hg(oh)2'    1.000  'co3-2'    1.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'   28.6817  -22.1300
+!
+! hgcl2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgcl2'
+'surface'
+ 271.4960    1.0000
+ 4  'hg(oh)2'    1.000  'cl-1'    2.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'   21.7858  -27.2640
+!
+! coccinite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: Ecole des Mines de Paris
+! activation energy: undefined
+!
+'coccinite'
+'surface'
+ 454.3990    6.3500
+ 4  'hg(oh)2'    1.000  'i-1'    2.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'   34.6599  -49.7320
+!
+! montroydite
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'montroydite'
+'surface'
+ 216.5894   11.2100
+ 2  'hg(oh)2'    1.000  'h2o'   -1.000
+'reversible'    3.6503  -5.1150
+!
+! hg(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg(oh)2'
+'surface'
+ 234.6046    1.0000
+ 1  'hg(oh)2'    1.000
+'reversible'    3.4963  0.0000
+!
+! cinnabar
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'cinnabar'
+'surface'
+ 232.6500    8.1000
+ 4  'hg(oh)2'    1.000  'hs-1'    1.000  'h+1'    1.000  'h2o'   -2.000
+'reversible'   45.1885  -60.4300
+!
+! metacinnaba
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'metacinnaba'
+'surface'
+ 232.6500    7.7120
+ 4  'hg(oh)2'    1.000  'hs-1'    1.000  'h+1'    1.000  'h2o'   -2.000
+'reversible'   44.8220  -59.5300
+!
+! hgso4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgso4'
+'surface'
+ 296.6476    1.0000
+ 4  'hg(oh)2'    1.000  'so4-2'    1.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'    9.4189  -3.5100
+!
+! hgseo3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgseo3'
+'surface'
+ 327.5482    1.0000
+ 4  'hg(oh)2'    1.000  'hseo3-1'    1.000  'h+1'    1.000  'h2o'   -2.000
+'reversible'   12.6953  0.0000
+!
+! hgi2:2nh3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgi2:2nh3'
+'surface'
+ 488.4598    1.0000
+ 4  'hg(oh)2'    1.000  'i-1'    2.000  'nh4+1'    2.000  'h2o'   -2.000
+'reversible'   16.1066  -32.6320
+!
+! hgi2:6nh3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hgi2:6nh3'
+'surface'
+ 556.5814    1.0000
+ 5  'hg(oh)2'    1.000  'i-1'    2.000  'nh4+1'    6.000  'h2o'   -2.000  'h+1'   -4.000
+'reversible'  -33.8566  20.5680
+!
+! cr(oh)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cr(oh)2'
+'surface'
+  86.0106    1.0000
+ 3  'cr+2'    1.000  'h2o'    2.000  'h+1'   -2.000
+'reversible'  -10.8189  8.5100
+!
+! crbr3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'crbr3'
+'surface'
+ 291.7080    1.0000
+ 4  'cr(oh)2+'    1.000  'br-1'    3.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'  -19.9086  33.7770
+!
+! crcl3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'crcl3'
+'surface'
+ 158.3550    2.7600
+ 4  'cr(oh)2+'    1.000  'cl-1'    3.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'  -13.5067  27.5090
+!
+! crf3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'crf3'
+'surface'
+ 108.9912    1.9000
+ 4  'cr(oh)2+'    1.000  'f-1'    3.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'   13.2597  4.3630
+!
+! cri3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'cri3'
+'surface'
+ 432.7095    4.9150
+ 4  'cr(oh)2+'    1.000  'i-1'    3.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'  -20.4767  32.1270
+!
+! fecr2o4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Deer et al., 1989, for chromite
+! activation energy: undefined
+!
+'fecr2o4'
+'surface'
+ 223.8366    5.0900
+ 3  'cr(oh)2+'    2.000  'fe+2'    1.000  'h+1'   -4.000
+'reversible'    0.9016  24.8600
+!
+! mgcr2o4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy: undefined
+!
+'mgcr2o4'
+'surface'
+ 192.2946    4.2000
+ 3  'cr(oh)2+'    2.000  'mg+2'    1.000  'h+1'   -4.000
+'reversible'  -12.0796  39.8600
+!
+! crmetal
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'crmetal'
+'surface'
+  51.9960    7.1910
+ 4  'cr+2'    1.000  'o2(aq)'   -0.500  'h+1'   -2.000  'h2o'    1.000
+'reversible'  -75.2530  101.2140
+!
+! cr2o3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cr2o3'
+'surface'
+ 151.9902    1.0000
+ 3  'cr(oh)2+'    2.000  'h+1'   -2.000  'h2o'   -1.000
+'reversible'    3.3937  12.1250
+!
+! cr(oh)3(a)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cr(oh)3(a)'
+'surface'
+ 103.0179    1.0000
+ 3  'cr(oh)2+'    1.000  'h2o'    1.000  'h+1'   -1.000
+'reversible'    0.7500  0.0000
+!
+! cr(oh)3(c)
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cr(oh)3(c)'
+'surface'
+ 103.0179    1.0000
+ 3  'cr(oh)2+'    1.000  'h2o'    1.000  'h+1'   -1.000
+'reversible'   -1.7005  7.1150
+!
+! crcl2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'crcl2'
+'surface'
+ 122.9020    1.0000
+ 2  'cr+2'    1.000  'cl-1'    2.000
+'reversible'  -15.8676  19.6660
+!
+! ag2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag2cro4'
+'surface'
+ 331.7296    1.0000
+ 2  'cro4-2'    1.000  'ag+1'    2.000
+'reversible'   11.5548  -14.0400
+!
+! bacro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'bacro4'
+'surface'
+ 253.3236    4.4800
+ 2  'cro4-2'    1.000  'ba+2'    1.000
+'reversible'    9.6681  -6.3900
+!
+! cs2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cs2cro4'
+'surface'
+ 381.8044    1.0000
+ 2  'cro4-2'    1.000  'ba+2'    2.000
+'reversible'    0.5541  -7.5040
+!
+! cs2cr2o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cs2cr2o7'
+'surface'
+ 481.7986    1.0000
+ 4  'cro4-2'    2.000  'ba+2'    2.000  'h+1'    2.000  'h2o'   -1.000
+'reversible'   17.7793  -22.8990
+!
+! cucro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cucro4'
+'surface'
+ 179.5396    1.0000
+ 2  'cro4-2'    1.000  'cu+2'    1.000
+'reversible'    5.4754  0.0000
+!
+! k2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k2cro4'
+'surface'
+ 194.1902    1.0000
+ 2  'cro4-2'    1.000  'k+1'    2.000
+'reversible'   -0.0073  -4.2500
+!
+! k2cr2o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k2cr2o7'
+'surface'
+ 294.1844    1.0000
+ 4  'cro4-2'    2.000  'k+1'    2.000  'h+1'    2.000  'h2o'   -1.000
+'reversible'   15.6712  -18.1250
+!
+! li2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'li2cro4'
+'surface'
+ 129.8756    1.0000
+ 2  'cro4-2'    1.000  'li+1'    2.000
+'reversible'   -4.8568  10.8220
+!
+! mgcro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mgcro4'
+'surface'
+ 140.2986    1.0000
+ 2  'cro4-2'    1.000  'mg+2'    1.000
+'reversible'   -5.3801  21.2600
+!
+! (nh4)2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'(nh4)2cro4'
+'surface'
+ 152.0702    1.0000
+ 2  'cro4-2'    1.000  'nh4+1'    2.000
+'reversible'   -0.4046  -2.1900
+!
+! na2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'na2cro4'
+'surface'
+ 161.9731    2.7230
+ 2  'cro4-2'    1.000  'na+1'    2.000
+'reversible'   -3.2618  4.6100
+!
+! na2cr2o7
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'na2cr2o7'
+'surface'
+ 261.9673    1.0000
+ 4  'cro4-2'    2.000  'na+1'    2.000  'h+1'    2.000  'h2o'   -1.000
+'reversible'    9.8953  -5.3050
+!
+! pbcro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pbcro4'
+'surface'
+ 323.1936    1.0000
+ 2  'cro4-2'    1.000  'pb+2'    1.000
+'reversible'   13.6848  -10.2300
+!
+! rb2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'rb2cro4'
+'surface'
+ 286.9292    1.0000
+ 2  'cro4-2'    1.000  'rb+1'    2.000
+'reversible'    0.0968  -5.8920
+!
+! srcro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'srcro4'
+'surface'
+ 203.6136    3.8950
+ 2  'cro4-2'    1.000  'sr+2'    1.000
+'reversible'    4.8443  2.4200
+!
+! cro3
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy: undefined
+!
+'cro3'
+'surface'
+  99.9942    2.8460
+ 3  'cro4-2'    1.000  'h+1'    2.000  'h2o'   -1.000
+'reversible'    3.2105  1.2450
+!
+! cacro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cacro4'
+'surface'
+ 156.0736    1.0000
+ 2  'ca+2'    1.000  'cro4-2'    1.000
+'reversible'    2.2657  6.4400
+!
+! hg2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg2cro4'
+'surface'
+ 517.1736    1.0000
+ 2  'hg2+2'    1.000  'cro4-2'    1.000
+'reversible'    8.7031  0.0000
+!
+! tl2cro4
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl2cro4'
+'surface'
+ 524.7336    1.0000
+ 2  'tl+1'    2.000  'cro4-2'    1.000
+'reversible'   12.0136  -25.3100
+!
+! ag5fecn)6.h2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag5fecn)6.h2'
+'surface'
+ 661.4415    1.0000
+ 4  'cn-'    6.000  'ag+1'    4.000  'fe+2'    1.000  'h2o'    1.000
+'reversible'   89.6909  0.0000
+!
+! agcn
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'agcn'
+'surface'
+ 133.8859    1.0000
+ 2  'cn-'    1.000  'ag+1'    1.000
+'reversible'   16.2180  -26.3850
+!
+! cd2fecn)6.7h
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd2fecn)6.7h'
+'surface'
+ 562.8824    1.0000
+ 4  'cn-'    6.000  'cd+2'    2.000  'fe+2'    1.000  'h2o'    7.000
+'reversible'   62.9824  0.0000
+!
+! crcn
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'crcn'
+'surface'
+  78.0138    1.0000
+ 5  'cn-'    1.000  'cr+2'    1.000  'o2(aq)'   -0.250  'h+1'   -1.000  'h2o'    0.500
+'reversible'  -45.3925  0.0000
+!
+! cr2cn
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cr2cn'
+'surface'
+ 130.0099    1.0000
+ 5  'cn-'    1.000  'cr+2'    2.000  'o2(aq)'   -0.750  'h+1'   -3.000  'h2o'    1.500
+'reversible' -121.1585  0.0000
+!
+! cucn
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cucn'
+'surface'
+  89.5637    1.0000
+ 2  'cn-'    1.000  'cu+1'    1.000
+'reversible'   19.4974  -30.2000
+!
+! cu2fecn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cu2fecn)6'
+'surface'
+ 339.0454    1.0000
+ 3  'cn-'    6.000  'cu+2'    2.000  'fe+2'    1.000
+'reversible'   61.4168  0.0000
+!
+! cni
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cni'
+'surface'
+ 152.9222    1.0000
+ 5  'cn-'    1.000  'i-1'    1.000  'o2(aq)'    0.500  'h+1'    2.000  'h2o'   -1.000
+'reversible'   31.6976  -49.6050
+!
+! k12ni8fecn67
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k12ni8fecn67'
+'surface'
+2422.3737    1.0000
+ 4  'cn-'   42.000  'k+1'   12.000  'ni+2'    8.000  'fe+2'    7.000
+'reversible'  431.0902  0.0000
+!
+! kcni,cub
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'kcni,cub'
+'surface'
+  65.1160    1.0000
+ 2  'cn-'    1.000  'k+1'    1.000
+'reversible'   -1.4403  -2.7400
+!
+! k2cdfecn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k2cdfecn)6'
+'surface'
+ 402.5610    1.0000
+ 4  'cn-'    6.000  'k+1'    2.000  'cd+2'    1.000  'fe+2'    1.000
+'reversible'   63.0279  0.0000
+!
+! k4ni4fecn63
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k4ni4fecn63'
+'surface'
+1027.0135    1.0000
+ 4  'cn-'   18.000  'k+1'    4.000  'ni+2'    4.000  'fe+2'    3.000
+'reversible'  183.5467  0.0000
+!
+! k4fecn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k4fecn)6'
+'surface'
+ 368.3466    1.0000
+ 3  'cn-'    6.000  'k+1'    4.000  'fe+2'    1.000
+'reversible'   48.8241  -95.6200
+!
+! k2mn3fecn62
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k2mn3fecn62'
+'surface'
+ 666.9176    1.0000
+ 4  'cn-'   12.000  'k+1'    2.000  'mn+2'    3.000  'fe+2'    2.000
+'reversible'  121.0011  0.0000
+!
+! k2ni3fecn62
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k2ni3fecn62'
+'surface'
+ 678.1735    1.0000
+ 4  'cn-'   12.000  'k+1'    2.000  'ni+2'    3.000  'fe+2'    2.000
+'reversible'  123.1267  0.0000
+!
+! k4fecn6.3h
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k4fecn6.3h'
+'surface'
+ 422.3925    1.0000
+ 4  'cn-'    6.000  'k+1'    4.000  'fe+2'    1.000  'h2o'    3.000
+'reversible'   49.5424  -99.1750
+!
+! k12cd8fecn67
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k12cd8fecn67'
+'surface'
+2852.1417    1.0000
+ 4  'cn-'   42.000  'k+1'   12.000  'cd+2'    8.000  'fe+2'    7.000
+'reversible'  441.9853  0.0000
+!
+! kzn1.5fecn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'kzn1.5fecn)6'
+'surface'
+ 349.1367    1.0000
+ 4  'cn-'    6.000  'k+1'    1.000  'zn+2'    1.500  'fe+2'    1.000
+'reversible'   66.8086  0.0000
+!
+! k3fe(cn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k3fe(cn)6'
+'surface'
+ 329.2483    1.0000
+ 3  'cn-'    6.000  'k+1'    3.000  'fe+3'    1.000
+'reversible'   54.6440  -83.2900
+!
+! k8mn6fecn65
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k8mn6fecn65'
+'surface'
+1702.1819    1.0000
+ 4  'cn-'   30.000  'k+1'    8.000  'mn+2'    6.000  'fe+2'    5.000
+'reversible'  293.6849  0.0000
+!
+! k2cu2fecn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'k2cu2fecn)6'
+'surface'
+ 417.2420    1.0000
+ 4  'cn-'    6.000  'k+1'    2.000  'cu+1'    2.000  'fe+2'    1.000
+'reversible'   72.5142  0.0000
+!
+! mn2fe(cn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'mn2fe(cn)6'
+'surface'
+ 321.8295    1.0000
+ 3  'cn-'    6.000  'mn+2'    2.000  'fe+2'    1.000
+'reversible'   59.0272  0.0000
+!
+! nacncri,cub
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'nacncri,cub'
+'surface'
+  49.0075    1.0000
+ 2  'cn-'    1.000  'na+1'    1.000
+'reversible'   -2.2869  0.5200
+!
+! pb2fecn6.3h
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2fecn6.3h'
+'surface'
+ 680.3993    1.0000
+ 4  'cn-'    6.000  'pb+2'    2.000  'fe+2'    1.000  'h2o'    3.000
+'reversible'   63.6011  0.0000
+!
+! tl4fecn6.2h
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'tl4fecn6.2h'
+'surface'
+1065.5172    1.0000
+ 4  'cn-'    6.000  'tl+1'    4.000  'fe+2'    1.000  'h2o'    2.000
+'reversible'   56.9162  0.0000
+!
+! zn2fecn6.2h
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn2fecn6.2h'
+'surface'
+ 378.7640    1.0000
+ 4  'cn-'    6.000  'zn+2'    2.000  'fe+2'    1.000  'h2o'    2.000
+'reversible'   61.2321  0.0000
+!
+! agocn
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'agocn'
+'surface'
+ 149.8853    1.0000
+ 2  'ocn-'    1.000  'ag+1'    1.000
+'reversible'    6.6159  -13.1750
+!
+! ag5fe(cn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'ag5fe(cn)6'
+'surface'
+ 133.8859    1.0000
+ 3  'cn-'    6.000  'ag+1'    4.000  'fe+2'    1.000
+'reversible'  193.9140  -260.9100
+!
+! cd2fe(cn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'cd2fe(cn)6'
+'surface'
+ 436.7754    1.0000
+ 3  'cn-'    6.000  'cd+2'    2.000  'fe+2'    1.000
+'reversible'   28.2243  0.0000
+!
+! hg(cn)2
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'hg(cn)2'
+'surface'
+ 252.6255    1.0000
+ 4  'hg(oh)2'    1.000  'cn-'    2.000  'h+1'    2.000  'h2o'   -2.000
+'reversible'   45.3791  -60.7300
+!
+! pb2fe(cn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'pb2fe(cn)6'
+'surface'
+ 626.3534    1.0000
+ 3  'cn-'    6.000  'pb+2'    2.000  'fe+2'    1.000
+'reversible'   27.5895  0.0000
+!
+! zn2fe(cn)6
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: undefined
+! activation energy: undefined
+!
+'zn2fe(cn)6'
+'surface'
+ 342.7334    1.0000
+ 3  'cn-'    6.000  'zn+2'    2.000  'fe+2'    1.000
+'reversible'   29.9263  0.0000
+!
+! ****************************************************************************
+! rate expressions with rate data from literature
+! ****************************************************************************
+!
+! albite-ph: pH-dependent rate law for acidic and basic pH ranges
+!            reversible reaction
+!            GFW from MINTEQA2
+!            density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!            enthalpy change from MINTEQA2
+!            activation energy from Rev. Min. Vol. 31, pg. 313
+!            after Sverdrup, 1990
+!            reaction rates and exponent from Rev. Min. Vol. 31, pg. 315
+!            after Wollast and Chou, 1985
+!            equilibrium constant from MINTEQA2
+!
+'albite-ph'
+'surface'
+ 262.2250    2.6200
+ 5  'na+1'    1.000  'al+3'    1.000  'h4sio4'    3.000  'h+1'   -4.000  'h2o'   -4.000
+'reversible'   -2.5920  17.4000
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.9000
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.9000
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+
+!
+! albite-ph-d: pH-dependent rate law for acidic and basic pH ranges
+!              dissolution to equilibrium
+!              GFW from MINTEQA2
+!              density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!              enthalpy change from MINTEQA2
+!              activation energy from Rev. Min. Vol. 31, pg. 313
+!              after Sverdrup, 1990
+!              reaction rates and exponent from from Rev. Min. Vol. 31, pg. 315
+!              after Wollast and Chou, 1985
+!              equilibrium constant from MINTEQA2
+!
+'albite-ph-d'
+'surface'
+262.2250  2.620
+5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution - log K control '  -2.5920  17.400
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+! albite: pH-dependent rate law for acidic and basic pH ranges
+!         dissolution far from equilibrium
+!         GFW from MINTEQA2
+!         density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!         enthalpy change from MINTEQA2
+!         activation energy from Rev. Min. Vol. 31, pg. 313
+!         after Sverdrup, 1990
+!         reaction rates and exponent from from Rev. Min. Vol. 31, pg. 315
+!         after Wollast and Chou, 1985
+!
+'albite'
+'surface'
+262.2250  2.620
+5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution'
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+! anorthite-ph: pH-dependent rate law for acidic pH range
+!               dissolution far from equilibrium
+!               GFW from MINTEQA2
+!               density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!               enthalpy change from MINTEQA2
+!               activation energy from Rev. Min. Vol. 31, pg. 318, Fig 13
+!               reaction rates and exponents from Rev. Min., Vol. 31, p. 318
+!               after Brady and Walther, 1989
+!
+'anorthite-ph'
+'surface'
+278.2110  2.760
+4  'ca+2' 1.000  'al+3' 2.000  'h4sio4' 2.000  'h+1' -8.000
+'irreversible dissolution'
+
+'log rate constant'  -5.870
+'activation energy' 19.300
+'fractional C^c'  1
+'h+1'  1.12
+!
+! aragonite-ch: reversible reaction
+!               GFW from MINTEQA2
+!               density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!               enthalpy change from MINTEQA2
+!               activation energy missing
+!               equilibrium constant from Chou et al., Chem. Geol., 78:269-282, 1989
+!               reaction rates and exponents from Chou et al., Chem. Geol., 78:269-282, 1989
+!
+'aragonite-ch'
+'surface'
+100.0894  2.950
+2  'ca+2' 1.000  'co3-2'  1.000
+'reversible'  8.2200  2.615
+
+'parallel reaction pathways' 3
+
+'pathway' 1
+'log rate constant'  0.079
+'fractional C^c'  1
+'h+1' 1.000
+'end pathway'
+
+'pathway' 2
+'log rate constnat'  -6.000
+'fractional C^c' 1
+'h2o' 1.000
+'end pathway'
+
+'pathway' 3
+'log rate constant'  -3.398
+'fractional C^x'  1
+'h2co3aq' 1.000
+'end pathway'
+!
+! augite-ph: pH dependent rate law for acidic pH range
+!            dissolution far from equilibrium
+!            composition from Jambor and Owens, 1993
+!            GFW calculated
+!            density form Klein and Hurlbut, 1993
+!            enthalpy change missing
+!            acivation energy missing
+!            rate constant from Rev. Min., Vol. 31, Ch. 4, p. 153
+!            after Sverdrup (1990) and
+!            Siegel and Pfannkuch, 1984 for pH < 6
+!
+'augite-ph'
+'surface'
+226.6190  3.300
+7  'ca+2' 0.800 'mg+2' 0.880  'fe+2' 0.340  'h4sio4' 1.930  'al+3' 0.080  'h+1' -2.490  'h2o' -1.720
+'irreversible dissolution'
+
+'log rate constant' -7.300
+'fractional C^c' 1
+'h+1' 0.990
+!
+! biotite-ph: pH dependent rate law for acidic pH range
+!             dissolution far from equilibrium
+!             GFW calculated
+!             density calculated from EQ3/6 database
+!             enthalpy change missing
+!             acivation energy missing
+!             rate constant from Rev. Min, Vol. 31, pg. 198
+!             after Acker and Bricker (1992) for pH = 3-5.5
+!             exponent as for montmorillonite (p. 199) as suggested in text
+!
+'biotite-ph'
+'surface'
+448.8020  2.930
+6  'k+1' 1.000  'mg+2' 2.000  'fe+2' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -10.000
+'irreversible dissolution'
+
+'log rate constant'  -10.972
+'fractional C^c' 1
+'h+1' 0.25
+!
+! calcite-ch: reversible reaction
+!             GFW from MINTEQA2
+!             density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!             enthalpy change from MINTEQA2
+!             activation energy from Plummer et al, AJS 278, 179-216, 1978
+!             equilibrium constant from Chou et al., Chem. Geol., 78:269-282, 1989
+!             reaction rates and exponents from Chou et al., Chem. Geol., 78:269-282, 1989
+!
+'calcite-ch'
+'surface'
+100.0894  2.710
+2  'ca+2' 1.000  'co3-2' 1.000
+'reversible' 8.4600  2.585
+
+'parallel reaction pathways' 3
+
+'pathway' 1
+'log rate constant' -0.051
+'activation energy' 2.000
+'fractional C^c' 1
+'h+1' 1.000
+'end pathway'
+
+'pathway' 2
+'log rate constant'  -6.187
+'activation energy' 2.000
+'fractional C^c' 1
+'h2o' 1.000
+'end pathway'
+
+'pathway' 3
+'log rate constant'  -3.301
+'activation energy' 2.000
+'fractional C^x' 1
+'h2co3aq' 1.000
+'end pathway'
+!
+! k-spar-ph: pH-dependent rate law for acidic and basic pH range
+!            dissolution far from equilibrium
+!            GFW calculated
+!            density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!            (for orthoclase)
+!            activation energy from Rev. Min. Vol. 31, pg. 316
+!            average value after Schweda, 1990
+!            reaction rates and exponents from Rev. Min., Vol. 31, p. 316
+!            after Schweda, 1990
+!
+'k-spar-ph'
+'surface'
+278.3315  2.570
+5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution'
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'log rate constant' -9.930
+'activation energy' 14.300
+'fractional C^c' 1
+'h+1' 0.500
+'end pathway'
+
+'pathway' 2
+'log rate constant' -16.500
+'activation energy' 14.300
+'fractional C^c' 1
+'h+1'  -0.450
+'end pathway'
+!
+! kaolinite-ph: pH-dependent rate law for acidic and basic pH ranges
+!               reversible reaction
+!               GFW from MINTEQA2
+!               density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!               enthalpy change from MINTEQA2
+!               activation energy from Rev. Min. Vol. 31, pg. 201, Table 9,
+!               average value after Carroll and Walther, 1990
+!               exponents from Rev. Min., Vol. 31, p. 187-188,
+!               after Carroll & Walther, 1990
+!               rate constant from Rev. Min., Vol. 31, p. 188 and 193
+!               for acidic range from Table 6, pg 188,
+!               calculated from Carroll and Walther, 1990
+!               for basic range: estimated from Fig 9, pg 193,
+!               based on data from Carroll and Walther, 1990
+!               equilibrium constant from MINTEQA2
+!
+'kaolinite-ph'
+'surface'
+258.1620  2.600
+4  'al+3' 2.000  'h4sio4' 2.000  'h2o' 1.000  'h+1' -6.000
+'reversible'  -7.435  2.5280
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'log rate constant' -12.550
+'activation energy'  7.300
+'fractional C^c' 1
+'h+1'  0.090
+'end pathway'
+
+'pathway' 2
+'log rate constant' -16.000
+'activation energy'  7.300
+'fractional C^c' 1
+'h+1' -0.250
+'end pathway'
+!
+! magnesite-ch: reversible reaction
+!               GFW from MINTEQA2
+!               density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!               enthalpy change from MINTEQA2
+!               activation energy missing
+!               reaction rates and exponents from Chou et al., Chem. Geol., 78:269-282, 1989
+!               equilibrium constant from MINTEQA2
+!
+'magnesite-ch'
+'surface'
+84.3214  3.100
+2  'mg+2' 1.000  'co3-2' 1.000
+'reversible'  8.029  6.169
+
+'parallel reaction pathways' 3
+
+'pathway' 1
+'log rate constant' -4.600
+'fractional C^c' 1
+'h+1' 1.000
+'end pathway'
+
+'pathway' 2
+'log rate constant' -9.350
+'fractional C^c' 1
+'h2o' 1.000
+'end pathway'
+
+'pathway' 3
+'log rate constant' -5.220
+'fractional C^x' 1
+'h2co3aq' 1.000
+'end pathway'
+!
+! muscovite-ph: pH-dependent rate law for acidic pH range
+!               dissolution far from equilibrium
+!               GFW from MINTEQA2
+!               density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!               enthalpy change from MINTEQA2
+!               activation energy from Rev. Min. Vol. 31, pg. 200, Table 8
+!               exponents from Rev. Min., Vol. 31, p. 187-188
+!               after Nickel, 1973
+!               rate constant from Rev. Min., Vol. 31, pg 188 and 196
+!               for acidic range calculated from Table 6, pg 188
+!               for basic range: estimated from Fig 15, pg 196
+!
+'muscovite-ph'
+'surface'
+398.3110  2.820
+4  'k+1' 1.000  'al+3' 3.000  'h4sio4' 3.000  'h+1' -10.000
+'irreversible dissolution'
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'log rate constant' -12.600
+'activation energy' 5.300
+'fractional C^c' 1
+'h+1' 0.080
+'end pathway'
+
+'pathway' 2
+'log rate constant' -13.500
+'activation energy' 5.300
+'fractional C^c' 1
+'h+1' -0.100
+'end pathway'
+
+!
+! witherite-ch: reversible reaction
+!               GFW from MINTEQA2
+!               density from Klein and Hurlbut, Manual of Mineralogy, 1993
+!               enthalpy change from MINTEQA2
+!               activation energy missing
+!               equilibrium constant from Chou et al., Chem. Geol., 78:269-282, 1989
+!               reaction rates and exponents from Chou et al., Chem. Geol., 78:269-282, 1989
+!
+'witherite-ch'
+'surface'
+197.3494  4.300
+2 'ba+2' 1.000  'co3-2' 1.000
+'reversible'  8.4700  -0.360
+
+'parallel reaction pathways' 3
+
+'pathway' 1
+'log rate constant' -0.120
+'fractional C^c' 1
+'h+1' 1.000
+'end pathway'
+
+'pathway' 2
+'log rate constant' -6.150
+'fractional C^c' 1
+'h2o' 1.000
+'end pathway'
+
+'pathway' 3
+'log rate constant' -3.520
+'fractional C^x' 1
+'h2co3aq' 1.000
+'end pathway'
+
+!
+! ****************************************************************************
+! user-defined entries
+! ****************************************************************************
+!
+! k-feldspar-d:
+! dissolution to equilibrium
+! equilibrium constant and density from eq3/6
+! gram formula weight calculated
+! enthalpy change and activation energy undefined
+!
+'k-feldspar-d'
+'surface'
+278.3315  2.5700
+5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution - log K control'  -0.080  0.000
+!
+! muscovite
+! reversible reaction
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy undefined
+!
+'muscovite'
+'surface'
+398.3110  2.8200
+4  'k+1' 1.000  'al+3' 3.000  'h4sio4' 3.000  'h+1' -10.000
+'reversible'  -12.9900  59.3400
+!
+! pyrite-so4
+! equilibrium constant calculated from MINTEQA2
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy
+! enthalpy change and activation energy undefined
+!
+'pyrite-so4'
+'surface'
+119.9750  5.0200
+5  'fe+2' 1.000  'so4-2' 2.000  'h+1' 2.000  'h2o' -1.000  'o2(aq)' -3.500
+'reversible'  -215.2640  0.0000
+!
+! pyrite-as
+! equilibrium constant calculated from MINTEQA2
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy
+! enthalpy change and activation energy undefined
+!
+'pyrite-as'
+'surface'
+119.9750  5.0200
+6  'fe+2' 1.000  'so4-2' 1.990  'h3aso4' 0.01  'h+1' 1.980  'h2o' -1.005  'o2(aq)' -3.4975
+'reversible'  -215.2640  0.000
+!
+! covellit-so4
+! equilibrium constant calculated from MINTEQA2
+! gram formula weight from MINTEQA2
+! enthalpy change undefined
+! density average value from Klein and Hurlbut, 1993
+! activation energy undefined
+!
+'covellit-so4'
+'surface'
+95.6100  4.6800
+3  'o2(aq)' -2.000  'cu+2' 1.000  'so4-2' 1.000
+'reversible'  -116.1060  0.000
+!
+! pyrite-sc: from Wunderly et al., 1996
+! irreversible transport controlled dissolution reaction
+! equilibrium constant calculated from MINTEQA2
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy
+! activation energy undefined
+!
+'pyrite-sc'
+'transport'
+119.9750  5.020
+5  'fe+2' 1.000  'so4-2' 2.000  'h+1' 2.000  'h2o' -1.000  'o2(aq)' -3.500
+'irreversible dissolution - log K control '  -215.2640  -11.300
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters'  2.41d-9  3.500
+
+!
+! pyrrhot-sc
+! transport controlled reaction
+! density from Klein and Hurlbut, 1993
+! composition after Jambor and Owens
+!
+'pyrrhot-sc'
+'transport'
+87.9130  4.620
+5  'fe+2' 0.850  'so4-2' 1.000  'h+1' 0.300  'h2o' -0.150  'o2(aq)' -1.925
+'irreversible dissolution - log K control ' -134.6567  0.0000
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters' 2.41d-9  1.925
+
+!
+! pentland-sc
+! transport controlled oxidation by o2(aq)
+! density from Klein and Hurlbut, 1993
+!
+'pentland-sc'
+'transport'
+771.9445  4.800
+6  'fe+2' 4.500  'ni+2' 4.500  'so4-2' 8.000  'h+1' -2.000  'h2o' 0.500  'o2(aq)' -16.500
+'irreversible dissolution'
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters' 2.41d-9  16.500
+
+!
+! chalcopyr-sc
+! transport controlled oxidation by o2(aq)
+! density from Klein and Hurlbut, 1993
+!
+'chalcopyr-sc'
+'transport'
+183.5250  4.200
+4  'fe+2' 1.000  'cu+2' 1.000  'so4-2' 2.000  'o2(aq)' -4.000
+'irreversible dissolution'
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters'  2.41d-9  4.000
+
+!
+! sphaler-sc
+! transport controlled oxidation by o2(aq)
+! equilibrium constant and gram formula weight from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy undefined
+!
+'sphaler-sc'
+'transport'
+97.4400  4.0000
+3  'zn+2' 1.000  'so4-2' 1.000 'o2(aq)' -2.000
+'irreversible dissolution'
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters'  2.41d-9  2.000
+
+!
+! pyrite-par
+! transport controlled reaction
+! parallel pathways by o2(aq) and Fe3+
+! fractional order with respect to Fe3+
+! equilibrium constant calculated from MINTEQA2
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy
+! enthalpy change and activation energy undefined
+!
+'pyrite-par'
+'transport'
+119.9750  5.0200
+5 'fe+2' 1.000  'so4-2' 2.000  'h+1' 2.000  'h2o' -1.000  'o2(aq)' -3.500
+'reversible'  -215.2640  0.000
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters'  2.41d-9  3.500
+'end pathway'
+
+'pathway' 2
+'fractional T^a' 1
+'fe+3' 0.200
+'shrinking core parameters'  2.41d-13 3.500
+'end pathway'
+
+!
+! pyrrhot-par
+! transport controlled reaction
+! parallel pathways by o2(aq) and fe3+
+! fractional order wrt to Fe(III)
+! density from Klein and Hurlbut, 1993
+! composition after Jambor and Owens
+!
+'pyrrhot-par'
+'transport'
+87.9130  4.620
+5  'fe+2' 0.850  'so4-2' 1.000  'h+1' 0.300  'h2o' -0.150  'o2(aq)' -1.925
+'irreversible dissolution - log K control '  -134.6567  0.000
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters'  2.41d-9  1.925
+'end pathway'
+
+'pathway' 2
+'fractional T^a' 1
+'fe+3' 0.200
+'shrinking core parameters' 2.41d-13  1.925
+'end pathway'
+
+!
+! pyrrhot-sc-2
+! transport controlled reaction
+! parallel pathways by o2(aq) and fe3+
+! fractional order wrt to Fe(III)
+! density from Klein and Hurlbut, 1993
+! composition after Jambor and Owens
+!
+'pyrrhot-sc-2'
+'transport'
+87.9130  4.620
+5  'fe+2' 0.850  'so4-2' 1.000  'h+1' 0.300  'h2o' -0.150  'o2(aq)' -1.925
+'irreversible dissolution - log K control ' -129.6567  0.000
+
+'parallel reaction pathways' 2
+
+'pathway' 1
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters' 2.41d-9   1.925
+'end pathway'
+
+'pathway' 2
+'fractional T^a' 1
+'fe+3' 0.200
+'shrinking core parameters' 2.41d-13  1.925
+'end pathway'
+
+!
+! pyrrhot-dia
+! transport controlled reaction by o2(aq)
+! density from Klein and Hurlbut, 1993
+! composition for Diavik mine site
+!
+'pyrrhot-dia'
+'transport'
+83.0442  4.620
+7  'fe+2' 0.852  'ni+2' 0.004 'co+2' 0.001 'so4-2' 1.000  'h+1' 0.296  'h2o' -0.148  'o2(aq)' -1.926
+'irreversible dissolution'
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters'  2.41d-9  1.926
+
+!
+! chalcpyr-dia
+! transport controlled oxidation by o2(aq)
+! density from Klein and Hurlbut, 1993
+!
+'chalcpyr-dia'
+'transport'
+183.5250  4.200
+4  'fe+2' 1.000  'cu+2' 1.000  'so4-2' 2.000  'o2(aq)' -4.000
+'irreversible dissolution'
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters'  2.41d-9  4.000
+
+!
+! sphaler-dia
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: average value from Klein and Hurlbut, 1993
+! activation energy undefined
+!
+'sphaler-dia'
+'transport'
+97.4400  4.0000
+3  'zn+2' 1.000  'so4-2' 1.000 'o2(aq)' -2.000
+'irreversible dissolution'
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+'shrinking core parameters' 2.41d-9  2.000
+
+!
+! fe(oh)2(s)
+! equilibrium constant from EQ3/6
+! gram formula weight calculated
+! density calculated from EQ3/6 molar volume
+! enthalpy change and activation energy undefined
+!
+'fe(oh)2(s)'
+'surface'
+89.8617  3.400
+3  'fe+2' 1.000  'h+1' -2.000  'h2o' 2.000
+'reversible'  -13.9045  0.000
+!
+! fe_0_cr
+! zero-valent iron corrosion - Cr(VI)-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate expression and constant from Gould, 1982
+! activation energy undefined
+!
+'fe_0_cr'
+'surface'
+55.8470  4.533
+5  'cro4-2' -1.0000  'h+1' -6.0000  'cr(oh)2+' 1.0000  'fe+3' 1.0000  'h2o' 2.000
+'irreversible dissolution'
+
+'fractional T^a' 1
+'cro4-2' 0.500
+
+'fractional C^c' 1
+'h+1' 0.500
+
+'hyperbolic T^a' 1
+'cro4-2'  1.d-12  2.000
+
+'log rate constant' -2.0415
+
+!
+! fe_0_o2
+! zero-valent iron corrosion - O_2-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant estimated based on pe_0
+! activation energy undefined
+!
+'fe_0_o2'
+'surface'
+55.8470  4.533
+4  'fe+3' 1.000   'h2o' 1.500  'o2(aq)' -0.750  'h+1' -3.000
+'irreversible dissolution'
+
+'fractional C^c' 1
+'o2(aq)' 1.000
+
+'hyperbolic T^a' 1
+'o2(aq)'  1.0d-8  1.000
+
+'log rate constant'  -2.4365
+
+!
+! fe_0_no3:
+! zero-valent iron corrosion - NO_3-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated estimated from Rahman and Agrawal (1997)
+! activation energy undefined
+!
+'fe_0_no3'
+'surface'
+55.8470  4.533
+5  'fe+3' 1.000  'nh4+1' 0.375  'h2o' 1.125  'no3-1' -0.375 'h+1' -3.750
+'irreversible dissolution'
+
+'fractional T^a' 1
+'no3-1' 1.000
+
+'hyperbolic T^a' 1
+'no3-1'  1.0d-8  1.000
+
+'log rate constant'  -6.5255
+
+!
+! fe_0_no3_2
+! zero-valent iron corrosion - NO_3-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated estimated from Rahman and Agrawal (1997)
+! activation energy undefined
+!
+'fe_0_no3_2'
+'surface'
+55.8470  4.533
+5  'fe+2' 1.000  'nh4+1' 0.250  'h2o' 0.750  'no3-1' -0.250 'h+1' -2.500
+'irreversible dissolution'
+
+'fractional T^a' 1
+'no3-1' 1.000
+
+'hyperbolic T^a' 1
+'no3-1'  1.0d-8  1.000
+
+'log rate constant' -6.5255
+
+!
+! fe_0_so4
+! zero-valent iron corrosion - SO_4-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant estimated based on pe_0
+! activation energy undefined
+!
+'fe_0_so4'
+'surface'
+55.8470  4.533
+5  'fe+2' 1.000  'hs-1' 0.250  'h2o' 1.000  'so4-2' -0.250 'h+1' -2.250
+'irreversible dissolution'
+
+'fractional T^a' 1
+'so4-2' 1.000
+
+'hyperbolic T^a' 1
+'so4-2'  1.0d-8  1.000
+
+'log rate constant'  -7.4365
+
+!
+! fe_0_so4_2
+! zero-valent iron corrosion - SO_4-reduction
+! to be used parallel with sulfate reduction by H2(aq)
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calibrated: 80 % of rate constant of
+! reaction fe_0_so4
+! activation energy undefined
+!
+'fe_0_so4_2'
+'surface'
+55.8470  4.533
+5  'fe+2' 1.000  'hs-1' 0.250  'h2o' 1.000  'so4-2' -0.250 'h+1' -2.250
+'irreversible dissolution'
+
+'fractional T^a' 1
+'so4-2' 1.000
+
+'hyperbolic T^a' 1
+'so4-2'  1.0d-8  1.000
+
+'log rate constant'  -7.5334
+
+!
+! fe_0_ch2o
+! zero-valent iron corrosion - CH_2O-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant estimated based on pe_0
+! activation energy undefined
+!
+'fe_0_ch2o'
+'surface'
+55.8470  4.533
+5  'fe+2' 1.000  'ch4(aq)' 0.500  'h2o' 0.500  'ch2o' -0.500 'h+1' -2.000
+'irreversible dissolution'
+
+'fractional T^a' 1
+'ch2o' 1.000
+
+'hyperbolic T^a'  1
+'ch2o'  1.0d-8  1.000
+
+'log rate constant'  -8.7365
+
+!
+! fe_0_co3
+! zero-valent iron corrosion - CO_3-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant estimated based on pe_0
+! activation energy undefined
+!
+'fe_0_co3'
+'surface'
+55.8470  4.533
+5  'fe+2' 1.000  'ch4(aq)' 0.250  'h2o' 0.750  'co3-2' -0.250 'h+1' -2.500
+'irreversible dissolution'
+
+'fractional T^a' 1
+'co3-2' 1.000
+
+'hyperbolic T^a' 1
+'co3-2'  1.0d-8  1.000
+
+'log rate constant'  -8.7365
+
+!
+! fe_0_h2o:
+! zero-valent iron corrosion - H_2O-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant estimated 10e-4 slower than rate constant
+! calculated from Reardon, 1995
+! enthalpy change and activation energy undefined
+!
+'fe_0_h2o'
+'surface'
+55.8470  4.533
+3  'fe+2' 1.000  'h2(aq)' 1.000  'h+1' -2.000
+'irreversible dissolution - log K control '  -11.780  0.000
+
+'log rate constant' -15.2675
+
+!
+! fe_0_h2o_1
+! zero-valent iron corrosion - H_2O reduction
+! inhibited in the presence of elevated
+! H_2(aq)-concentrations
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated from Reardon, 1995
+! activation energy undefined
+!
+'fe_0_h2o_1'
+'surface'
+55.8470  4.533
+3  'fe+2' 1.000  'h2(aq)' 1.000  'h+1' -2.000
+'irreversible dissolution'
+
+'inhibition T^a' 1
+'h2(aq)' 5.0d-9  1.000
+
+'log rate constant'  -11.2675
+
+!
+! fe_0_h2o_2
+! zero-valent iron corrosion - H_2O reduction
+! inhibited in the presence of elevated
+! H_2(aq)-concentrations and SO_4
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated from Reardon, 1995
+! activation energy undefined
+!
+'fe_0_h2o_2'
+'surface'
+55.8470  4.533
+3  'fe+2' 1.000  'h2(aq)' 1.000  'h+1' -2.000
+'irreversible dissolution'
+
+'inhibition T^a' 2
+'so4-2'  1.0d-5  1.0d0
+'h2(aq)' 5.0d-9  1.0d0
+
+'log rate constant' -11.2675
+
+!
+! fe_0_h2o_3:
+! zero-valent iron corrosion - H_2O-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated from Reardon, 1995
+! enthalpy change and activation energy undefined
+!
+'fe_0_h2o_3'
+'surface'
+55.8470  4.533
+3  'fe+2' 1.000  'h2(aq)' 1.000  'h+1' -2.000
+'irreversible dissolution - log K control ' -11.780  0.000
+
+'log rate constant' -11.2675
+
+!
+! fe_0_tce
+! zero-valent iron corrosion - TCE-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated from O'Hannesin-et-al, 1995
+! activation energy undefined
+!
+'fe_0_tce'
+'surface'
+55.8470  4.533
+6  'fe+2' 1.000  'cis-1,2-dce' 0.07  'ethane' 0.2325  'cl-1' 0.7675  'h+1' -1.2325  'tce' -0.3025
+'irreversible dissolution'
+
+'fractional T^a' 1
+'tce' 1.000
+'hyperbolic T^a'  1
+'tce'  1.0d-8  1.000
+'log rate constant'  -7.1435
+
+!
+! fe_0_cdce
+! zero-valent iron corrosion - cis-1,2 DCE-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated from O'Hannesin-et-al, 1995
+! activation energy undefined
+!
+'fe_0_cdce'
+'surface'
+55.8470  4.533
+5  'fe+2' 1.000  'vc' 1.000  'cl-1' 1.000  'h+1' -1.000 'cis-1,2-dce' -1.000
+'irreversible dissolution'
+
+'fractional T^a' 1
+'cis-1,2-dce' 1.000
+'hyperbolic T^a' 1
+'cis-1,2-dce'  1.0d-8  1.000
+'log rate constant'  -8.1155
+
+!
+! fe_0_vc
+! zero-valent iron corrosion - VC-reduction
+! gram formula weight calculated
+! density from Bennett, 1997
+! rate constant calculated from O'Hannesin-et-al, 1995
+! activation energy undefined
+!
+'fe_0_vc'
+'surface'
+55.8470  4.533
+5  'fe+2' 1.000  'ethane' 0.500  'cl-1' 0.500  'h+1' -1.500 'vc' -0.500
+'irreversible dissolution'
+
+'fractional T^a' 1
+'vc' 1.000
+'hyperbolic T^a'  1
+'vc'  1.0d-8  1.000
+'log rate constant'  -7.3195
+
+!
+! benzene dissolution from residual free phase product
+! reversible reaction
+!
+'c6h6(f)'
+'surface'
+78.1136  0.8786
+1  'c6h6' 1.000
+'reversible'  3.1937  0.000
+
+!
+! ch2o dissolution
+! reversible reaction
+! solubility set to same molar value as benzene
+!
+'ch2o(f)'
+'surface' 'reversible'
+30.0000  0.8786
+1  'ch2o' 1.000
+'reversible'  3.1937  0.000
+
+!
+! ch2o dissolution
+! reversible reaction
+! solubility set to 10-2.5
+!
+'ch2o(f)-2'
+'surface'
+30.0000  0.9000
+1  'ch2o' 1.000
+'reversible' 2.000  0.000
+
+!
+! benzene dissolution from residual free phase product
+! dissolution form organic mixture based on Raoult's law
+! reversible reaction
+! solubility limit from Schwarzenbach et al., 1993,
+! Environmental Organic Geochemistry
+!
+'c6h6(r)'
+'surface'
+78.1136  0.8786
+1  'c6h6' 1.000
+'raoult'  1.6700  0.000
+!
+! insoluble residual to simulate inhibited
+! dissolution from organic mixture based on Raoult's law
+! reversible reaction
+! solubility 10 orders of magnitude lower than for benzene
+! density from benzene
+! benzene data from Schwarzenbach et al., 1993,
+! Environmental Organic Geochemistry
+!
+'residual(r)'
+'surface'
+78.1136  0.8786
+1  'h2o' 1.000
+'raoult'  11.670  0.000
+
+!
+! feooh-c6h6
+! reductive dissolution of goethite by benzene
+! equilibrium constant and gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for c6h6 (factor 30)
+!
+'feooh-c6h6'
+'surface'
+86.8536  4.370
+5  'c6h6' -0.0333  'h+1' -1.600  'co3-2' 0.200  'fe+2' 1.000  'h2o' 1.400
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'c6h6'   5.0d-3    1.000
+'c6h6'   1.d-10    2.000
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-6  1.000
+'no3-1'  3.125d-6  1.000
+
+'log rate constant'  1.477
+
+!
+! feooh-c6h6-2
+! reductive dissolution of goethite by benzene
+! equilibrium constant and gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for c6h6 (factor 30)
+!
+'feooh-c6h6-2'
+'surface'
+86.8536  4.370
+5  'c6h6' -0.0333  'h+1' -1.600  'co3-2' 0.200  'fe+2' 1.000  'h2o' 1.400
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'c6h6'   5.0d-3    1.000
+'c6h6'   1.d-10    2.000
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-6  1.000
+
+'log rate constant'  1.477d0
+
+!
+! feoh3-c6h6
+! reductive dissolution of ferrihydrite by benzene
+! gram formula weight and density from MINTEQA2
+! rates scaled for unit stoichiometric coefficient for c6h6 (factor 30)
+!
+'feoh3-c6h6'
+'surface'
+104.8692  4.3713
+5  'c6h6' -0.0333  'h+1' -1.600  'co3-2' 0.200  'fe+2' 1.000  'h2o' 2.400
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'c6h6'   1.0d-3    1.000
+'c6h6'   1.d-10    2.000
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-6  1.000
+
+'log rate constant'  1.477d0
+
+!
+! feooh-ch2o
+! reductive dissolution of goethite by ch2o
+! equilibrium constant and gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for ch2o (factor 4)
+!
+'feooh-ch2o'
+'surface'
+86.8536  4.370
+5  'ch2o' -0.2500  'h+1' -1.500  'co3-2' 0.250  'fe+2' 1.000  'h2o' 1.500
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'ch2o'   5.0d-3    1.000
+'ch2o'   1.d-10    2.000
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-6  1.000
+'no3-1'  3.125d-6  1.000
+
+'log rate constant'  0.602
+
+!
+! feooh-ch2o-2
+! reductive dissolution of goethite by ch2o
+! equilibrium constant and gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for ch2o (factor 4)
+! no inhibition by nitrate
+!
+'feooh-ch2o-2'
+'surface'
+86.8536  4.370
+5  'ch2o' -0.2500  'h+1' -1.500  'co3-2' 0.250  'fe+2' 1.000  'h2o' 1.500
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'ch2o'   5.0d-3    1.000
+'ch2o'   1.d-10    2.000
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-6  1.000
+
+'log rate constant'  0.602
+
+!
+! feoh3-ch2o-2
+! reductive dissolution of ferrihydrite by ch2o
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for ch2o (factor 4)
+! no inhibition by nitrate
+!
+'feoh3-ch2o-2'
+'surface'
+104.8692  4.3713
+5  'ch2o' -0.2500  'h+1' -1.500  'co3-2' 0.250  'fe+2' 1.000  'h2o' 2.500
+'irreversible dissolution'
+
+'hyperbolic T^a'  2
+'ch2o'   1.0d-3    1.000
+'ch2o'   1.d-10    2.000
+
+'inhibition T^a'  1
+'o2(aq)' 3.125d-6   1.000
+
+'log rate constant'  0.602
+
+!
+! feooh-ch4-2
+! reductive dissolution of goethite by ch4
+! equilibrium constant and gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for ch4 (factor 8)
+! no inhibition by nitrate
+!
+'feooh-ch4-2'
+'surface'
+86.8536  4.370
+5  'ch4(aq)' -0.125  'h+1' -1.750  'co3-2' 0.125  'fe+2' 1.000  'h2o' 0.625
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'ch4(aq)'   5.0d-3    1.000
+'ch4(aq)'   1.d-10    2.000
+
+'inhibition T^a' 1
+'o2(aq)'  3.125d-6    1.000
+
+'log rate constant'  0.903
+
+!
+! feoh3-ch4-2
+! reductive dissolution of ferrihydrite by ch4
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for ch4 (factor 8)
+! no inhibition by nitrate
+!
+'feoh3-ch4-2'
+'surface'
+104.8692  4.3713
+5  'ch4(aq)' -0.125  'h+1' -1.750  'co3-2' 0.125  'fe+2' 1.000  'h2o' 1.625
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'ch4(aq)'   1.0d-3    1.000
+'ch4(aq)'   1.d-10    2.000
+
+'inhibition T^a' 1
+'o2(aq)'  3.125d-6    1.000
+
+'log rate constant' 0.903
+
+!
+! feooh-ch4
+! reductive dissolution of goethite by methane
+! equilibrium constant and gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! rates scaled for unit stoichiometric coefficient for ch4 (factor 8)
+!
+'feooh-ch4'
+'surface'
+86.8536  4.370
+5  'ch4(aq)' -0.125  'h+1' -1.750  'co3-2' 0.125  'fe+2' 1.000  'h2o' 1.625
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'ch4(aq)'  1.0d-5    1.000
+'ch4(aq)'  1.d-10    2.000
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-6    1.000
+'no3-1'  3.125d-6    1.000
+
+'log rate constant'  0.903
+
+!
+! feco3-o2
+! oxidative dissolution of siderite by o2
+! gram formula weight and density from MINTEQA2
+!
+'feco3-o2'
+'surface'
+115.8564  3.9600
+5  'o2(aq)' -0.250  'h+1' -1.000  'fe+3' 1.000  'co3-2' 1.000  'h2o' 0.500
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+'inhibition T^a' 2
+'c6h6'    1.0d-7    1.000
+'ch4(aq)' 1.0d-7    1.000
+
+!
+! feco3-o2-2
+! oxidative dissolution of siderite by o2
+! gram formula weight and density from MINTEQA2
+!
+'feco3-o2-2'
+'surface'
+115.8564  3.9600
+5  'o2(aq)' -0.250  'h+1' -1.000  'fe+3' 1.000  'co3-2' 1.000  'h2o' 0.500
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+'inhibition T^a' 2
+'ch2o'    1.0d-7    1.000
+'ch4(aq)' 1.0d-7    1.000
+
+!
+! fes-o2
+! oxidative dissolution of mackinawite by o2
+! gram formula weight and density from MINTEQA2
+!
+'fes-o2'
+'surface'
+87.9110  4.3000
+3  'o2(aq)' -2.000  'fe+2' 1.000  'so4-2' 1.000
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+!
+! fes-no3
+! oxidative dissolution of mackinawite by no3
+! gram formula weight and density from MINTEQA2
+! inhibition by o2
+!
+'fes-no3'
+'surface'
+87.9110  4.3000
+6  'no3-1' -1.600  'h+1' -1.600  'fe+2' 1.000  'so4-2' 1.000  'n2(aq)' 0.800  'h2o' 0.800
+'irreversible dissolution'
+
+'hyperbolic T^a' 2
+'no3-1'  3.125d-6  1.000
+'no3-1'  1.d-10    2.000
+
+'inhibition T^a' 1
+'o2(aq)' 1.0d-5    1.000
+
+!
+! pyrite-mno4
+! pyrite oxidation by mno4-1
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+!
+'pyrite-mno4'
+'surface'
+119.9750  5.0200
+6  'mno4-1' -5.000  'h+1' -4.000  'fe+3' 1.000  'so4-2' 2.000  'mno2(aq)' 5.000  'h2o' 2.000
+'irreversible dissolution'
+
+'fractional T^a'  1
+'mno4-1'  1.000
+
+'hyperbolic T^a' 1
+'mno4-1'  1.0d-10  1.000
+
+!
+! ch2o-mno4
+! organic carbon oxidation by mno4-1
+! gram formula weight from MINTEQA2
+! density estimated
+!
+'ch2o-mno4'
+'surface'
+30.02088  1.0000
+5  'mno4-1' -1.333  'co3-2' 1.000  'mno2(aq)' 1.333  'h2o' 0.667  'h+1' 0.667
+'irreversible dissolution'
+
+'fractional T^a' 1
+'mno4-1'  1.000
+
+'hyperbolic T^a' 1
+'mno4-1'  1.0d-10  1.000
+
+!
+! ch2o-mno4-s
+! organic carbon oxidation by mno4-1, slow reaction
+! gram formula weight from MINTEQA2
+! density estimated
+!
+'ch2o-mno4-s'
+'surface'
+30.02088  1.0000
+5  'mno4-1' -1.333  'co3-2' 1.000  'mno2(aq)' 1.333  'h2o' 0.667  'h+1' 0.667
+1  0  0  0.000d0  1.d-10  1.000
+'irreversible dissolution'
+
+'fractional T^a' 1
+'mno4-1'  1.000
+
+'hyperbolic T^a' 1
+'mno4-1'  1.0d-10  1.000
+
+!
+! mno2(am)
+! gram formula weight from MINTEQA2
+! density from Manual of Mineralogy (1993)
+! equilibrium constant estimated, i.e. practically insoluble
+!
+'mno2(am)'
+'surface'
+86.9368  4.7500
+1  'mno2(aq)' 1.000
+'reversible' 15.000  0.000
+
+!
+! c2cl4(r)
+! gram formula weight calculated
+! density from EPA-web site (1993)
+! equilibrium constant calculated based on EPA-solubility S = 150 mg/L
+!
+'c2cl4(r)'
+'surface'
+165.83280  1.6200
+1  'c2cl4' 1.000
+'reversible'  3.0436  0.000
+
+!
+! c2cl4-mno4
+! gram formula weight calculated
+! density from EPA-web site (1993)
+! equilibrium constant calculated based on EPA-solubility S = 150 mg/L
+! first order with respect to mno4
+!
+'c2cl4-mno4'
+'surface'
+165.83280  1.6200
+1  'c2cl4' 1.000
+'reversible' 3.0436  0.000
+
+'fractional T^a' 1
+'mno4-1' 1.000
+
+!
+! ch2o-mno2
+! gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy undefined
+! for comparison with COMPTRAN
+!
+'ch2o-mno2'
+'surface'
+86.9368  4.7500
+5  'ch2o' -0.500  'h+1' -1.000  'mn+2' 1.000  'co3-2' 0.500  'h2o' 1.000
+'irreversible dissolution'
+
+'hyperbolic T^a' 1
+'ch2o'   1.0d-5    1.000
+
+'inhibition T^a' 2
+'o2(aq)' 5.0d-8    1.000
+'no3-1'  5.0d-8    1.000
+
+!
+! ch2o-feoh3
+! gram formula weight and enthalpy change from MINTEQA2
+! density: from EQ3/6 database
+! activation energy undefined
+! for comparison with COMPTRAN
+!
+'ch2o-feoh3'
+'surface'
+104.8692  4.3713
+5  'ch2o' -0.250  'h+1' -1.500  'fe+2' 1.000 'co3-2' 0.2500  'h2o' 2.500
+'irreversible dissolution'
+
+'hyperbolic T^a'  1
+'ch2o'   1.0d-5    1.000
+
+'inhibition T^a'  2
+'o2(aq)' 1.0d-8    1.000
+'no3-1'  1.0d-8    1.000
+
+!
+! jarositek-1
+! first order wrt to k+1
+! equilibrium constant, gram formula weight and enthalpy change from MINTEQA2
+! density: from Klein and Hurlbut, 1993
+! activation energy undefined
+!
+'jarositek-1'
+'surface'
+500.8100  3.2000
+5  'h+1' -6.000  'k+1' 1.000  'fe+3' 3.000  'so4-2' 2.000  'h2o' 6.000
+'reversible'  9.2100  31.2800
+
+'fractional C^c' 1
+'k+1' 1.000
+
+!
+! jurbanite: from Lichtner (1997)
+!
+'jurbanite'
+'surface'
+230.1288  1.8264
+4  'al+3' 1.000  'h2o' 6.000  'h+1' -1.000  'so4-2' 1.000
+'reversible'  3.805  0.000
+
+'log rate constant'  -0.063
+
+!
+! example mineral
+! listing all options
+!
+! required entries:
+! name
+! reaction type (surface, transport)
+! gfw     density
+! number of aqueous components forming mineral, list of aqueous components and stoichiometric coefficients
+! type of reaction
+! (irreversible dissolution, irreversible precipitation,
+!  reversible, irreversible dissolution - log K control, irreversible precipitation - log K control
+!  last three options are followed by log K and enthalpy change)
+!
+! optional entries to follow
+! fractional terms, hyperbolic terms, inhibition terms
+! C^c = components as species in solution
+! C^x = aqueous complexes
+! T^a = total aqueous component concentrations
+! phi^m = mineral volume fractions
+! name of species in fractional terms are followed by order of reaction
+! name of species in hyperbolic terms are followed by half saturation constant and order of hyperbolic term
+! name of species in inhibition terms are followed by inhibition constant and order of inhibition term
+! log rate constant
+! activation energy
+!
+!
+'example'
+'surface'
+115.8564  3.9600
+5  'o2(aq)' -0.250  'h+1' -1.000  'fe+3' 1.000  'co3-2' 1.000  'h2o' 0.500
+'irreversible dissolution'
+
+'fractional T^a' 1
+'mno4-1' 1.000
+
+'fractional C^c' 1
+'mno4-1' 1.000
+
+'fractional C^x' 1
+'mno4-1' 1.000
+
+'hyperbolic C^c' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+'inhibition C^c' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+'hyperbolic T^a' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+'inhibition T^a' 2
+'ch2o'    1.0d-7    1.000
+'ch4(aq)' 1.0d-7    1.000
+
+'hyperbolic phi^m' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+'inhibition phi^m' 2
+'o2(aq)'  3.125d-6  1.000
+'o2(aq)'  1.d-10    2.000
+
+'log rate constant'  -0.063
+
+'activation energy' 12.0
+
+!
+! end of database
+!
+'end'

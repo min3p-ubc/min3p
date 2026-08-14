@@ -1,0 +1,11 @@
+title = "column influent"
+variables = "time","Br(influent)"
+zone t = "inf", f=point
+2.20E+01	0.00E+00
+1.11E+02	0.00E+00
+1.11E+02	3.25E-04
+1.50E+02	3.25E-04
+1.50E+02	0.00E+00
+1.79E+02	0.00E+00
+1.79E+02	0.00E+00
+2.21E+02	0.00E+00

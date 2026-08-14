@@ -1,0 +1,131 @@
+!
+!Self-described unstructured grid generation file
+!This example is for mesh generation test only
+!
+
+!**********************************************************************
+!example input parameters for polygon 2d delaunay mesh
+!**********************************************************************
+
+'polygon 2d delaunay mesh'
+
+'coordinate projection'
+'xz'                    !'xy' or 'yz' or 'xz'
+
+'number of constraints'
+5
+
+!constraint 1: outer boundary
+'constraint type'
+'closed polygon with sub discretization interval'
+
+'number of vertices'
+10
+
+'vertices coordinate'
+0.0      0.0
+2000.0   0.0
+2000.0   100.0
+2000.0   200.0
+2000.0   300.0
+2000.0   400.0
+2000.0   2000.0
+0.0      2000.0
+0.0      400.0
+0.0      300.0
+0.0      200.0
+0.0      100.0
+
+
+'segment discretization interval'
+50.0
+50.0
+50.0
+50.0
+50.0
+50.0
+50.0
+50.0
+50.0
+50.0
+50.0
+50.0
+
+'end of constraint'
+
+!constraint 2: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0      100.0
+2000.0   100.0
+
+
+'segment discretization interval'
+50.0
+
+'end of constraint'
+
+!constraint 3: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0      200.0
+2000.0   200.0
+
+
+'segment discretization interval'
+50.0
+
+'end of constraint'
+
+!constraint 4: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0      300.0
+2000.0   300.0
+
+
+'segment discretization interval'
+50.0
+
+'end of constraint'
+
+!constraint 5: inner boundary
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.0      400.0
+2000.0   400.0
+
+
+'segment discretization interval'
+50.0
+
+'end of constraint'
+
+
+'global domain mesh criteria'
+32.0, 75.0    ;shape criterion bound, size bound
+
+'mesh optimization iterations'
+20
+
+

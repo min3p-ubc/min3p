@@ -1,0 +1,1313 @@
+! ---------------------------------------------------------------------------
+
+! Verification with SUTRA 
+
+! Verification Radial flow with energy transport
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Verification with SUTRA'
+
+.true.                        ;varsat_flow
+
+.false.                       ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'density dependent flow'
+
+
+
+'energy balance' 
+
+
+
+'backup frequency' 
+
+20 
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+'geochemical system'
+
+
+
+'compute alkalinity'
+
+
+
+'use pitzer model' 
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'database\default'
+
+
+
+'components'
+
+1                            ;number of components (nc-1)
+
+'cl-1'
+
+
+
+  
+
+
+
+'secondary aqueous species'
+
+0                 ;number of secondary aqueous species
+
+
+
+
+
+'gases'
+
+0                             ;number of gases 
+
+
+
+'minerals'
+
+0                             ;number of minerals (nm)
+
+
+
+
+
+
+
+'excluded minerals'
+
+0 
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+35                             ;number of discretization intervals in x
+
+     1 
+
+     0.0000E+00     0.1000E+01
+
+     1
+
+     0.1000E+01     0.2100E+01
+
+     1
+
+     0.2100E+01     0.3310E+01
+
+     1
+
+     0.3310E+01     0.4641E+01
+
+     1
+
+     0.4641E+01     0.6105E+01
+
+     1
+
+     0.6105E+01     0.7716E+01
+
+     1
+
+     0.7716E+01     0.9487E+01
+
+     1
+
+     0.9487E+01     0.1144E+02
+
+     1
+
+     0.1144E+02     0.1358E+02
+
+     1
+
+     0.1358E+02     0.1594E+02
+
+     1
+
+     0.1594E+02     0.1853E+02
+
+     1
+
+     0.1853E+02     0.2138E+02
+
+     1
+
+     0.2138E+02     0.2452E+02
+
+     1
+
+     0.2452E+02     0.2797E+02
+
+     1
+
+     0.2797E+02     0.3177E+02
+
+     1
+
+     0.3177E+02     0.3595E+02
+
+     1
+
+     0.3595E+02     0.4054E+02
+
+     1
+
+     0.4054E+02     0.4560E+02
+
+     1
+
+     0.4560E+02     0.5116E+02
+
+     1
+
+     0.5116E+02     0.5727E+02
+
+     1
+
+     0.5727E+02     0.6400E+02
+
+     1
+
+     0.6400E+02     0.7140E+02
+
+     1
+
+     0.7140E+02     0.7954E+02
+
+     1
+
+     0.7954E+02     0.8850E+02
+
+     1
+
+     0.8850E+02     0.9835E+02
+
+     1
+
+     0.9835E+02     0.1092E+03
+
+     1
+
+     0.1092E+03     0.1211E+03
+
+     1
+
+     0.1211E+03     0.1342E+03
+
+     1
+
+     0.1342E+03     0.1486E+03
+
+     1
+
+     0.1486E+03     0.1645E+03
+
+     1
+
+     0.1645E+03     0.1819E+03
+
+     1
+
+     0.1819E+03     0.2011E+03
+
+     1
+
+     0.2011E+03     0.2223E+03
+
+     1
+
+     0.2223E+03     0.2455E+03
+
+     1
+
+     0.2455E+03     0.2460E+03
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in interval
+
+0. 1.0                        ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+10                            ;number of control volumes in interval
+
+0.  30.0                      ;zmin,zmax
+
+
+
+'radial coordinates'
+
+
+
+'done'
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+'time step control - global system'
+
+'days'                        ;time unit
+
+0.0                           ;time at start of solution
+
+120.0d0                       ;final solution time
+
+0.3d0                         ;maximum time step
+
+1.0d-8                        ;minimum time step
+
+'done'
+
+
+
+
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+20.0d0                        ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.2d0                         ;min. activity for h2o
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'iterative solver'
+
+ 
+
+'variable density parameters'
+
+1000.0d0                      ;freshwater density g/L
+
+0.0d0                         ;linear density coefficient d(rho)/d(TDS)
+
+6                             ;max # Picard flow-RT iterations
+
+3                             ;Picard iteration target (# iterations)
+
+0.1d0                         ;maximum density update: Picard convergence g/L
+
+1.0d50                        ;Courant criteria target
+
+
+
+
+
+'newton iteration settings'
+
+1.0d-4                       ;increment for numerical differentiation
+
+100                           ;max. number of newton iterations
+
+1.0d-7                       ;convergence tolerance
+
+1.0d0                         ;sw_star
+
+ 
+
+'input units for media permeability'
+
+'permeability'  
+
+ 
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'solver settings'
+
+1                             ;level_vs, incomplete factorization level
+
+100                           ;msolvit_vs, max. number of solver iterations
+
+0                            ;idetail_vs, solver information level
+
+1.0d-10                       ;restol_vs, solver residual tolerance
+
+1.0d-10                       ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+
+
+!
+
+! Data Block 6B: control parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - energy balance'
+
+
+
+'update viscosity' 
+
+
+
+'viscosity model'
+
+'sutra' 
+
+
+
+'reference tds'
+
+0.0d0
+
+
+
+'gravity constant'
+
+9.81d0
+
+
+
+'non-storage term in flow equation'
+
+      
+
+ 
+
+'reference temperature for density'
+
+20.0d0
+
+ 
+
+'energy balance parameters'
+
+-0.375d0                      ;linear density coefficient d(rho)/d(T)
+
+
+
+
+
+'newton iteration settings'
+
+1.0d-4                        ;increment for numerical differentiation
+
+30                            ;max. number of newton iterations
+
+1.0d-7                        ;convergence tolerance
+
+5.0d0                         ;maximum log cycles update
+
+
+
+ 
+
+'solver settings'
+
+1                             ;level_vs, incomplete factorization level
+
+100                           ;msolvit_vs, max. number of solver iterations
+
+0                            ;idetail_vs, solver information level
+
+1.0d-10                       ;restol_vs, solver residual tolerance
+
+1.0d-10                       ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'                      ;spatial weighting
+
+
+
+'activity update settings'
+
+'time_lagged'                    ;type of activity update
+
+
+
+'tortuosity correction'
+
+'no correction'
+
+
+
+! 'update porosity'
+
+
+
+
+
+'newton iteration settings'
+
+1.0d-2                        ;increment h for numerical differentiation
+
+10                            ;anticipted number of Newton iterations
+
+100                           ;max. number of Newton iterations
+
+1.0d50                        ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.0d-3                        ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+0                             ;solver information level
+
+1.d-1                         ;solver residual tolerance
+
+1.d-12                        ;solver update tolerance
+
+
+
+'done'
+
+
+
+
+
+!
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+4
+
+30.0d0  60.0d0 90.0d0 120.0d0 
+
+  
+
+
+
+'done'
+
+!
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                                ;number of property zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'aquifer'
+
+0.35d0                          ;porosity
+
+
+
+'extent of zone'
+
+0.0 246.0d0 0.0 1.0  0.0 30.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------------------------------------
+
+'aquifer'                  ;name of zone
+
+
+
+
+
+'permeability in x-direction'
+
+1.02d-10
+
+
+
+
+
+
+
+'permeability in y-direction'
+
+1.02d-10
+
+
+
+
+
+ 
+
+'permeability in z-direction'
+
+1.02d-10
+
+
+
+
+
+ 
+
+'specific storage coefficient'
+
+0.0d0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 10B: physical parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - energy balance'
+
+1
+
+
+
+'specific heat of water'
+
+4182.0d0
+
+
+
+'number and name of zone'
+
+1
+
+'pepe rompe' 
+
+ 
+
+
+
+ 
+
+'specific heat of solid'
+
+840.0d0 
+
+
+
+
+
+'water thermal conductivity in x-direction'
+
+0.6d0 
+
+
+
+'water thermal conductivity in y-direction'
+
+0.6d0
+
+
+
+'water thermal conductivity in z-direction'
+
+0.6d0
+
+
+
+'solid thermal conductivity in x-direction'
+
+3.5d0 
+
+
+
+'solid thermal conductivity in y-direction'
+
+3.5d0
+
+
+
+'solid thermal conductivity in z-direction'
+
+3.5d0
+
+
+
+'longitudinal dispersivity'
+
+4.0
+
+
+
+'transverse vertical dispersivity'
+
+1.0
+
+
+
+'transverse horizontal dispersivity'
+
+0.0
+
+
+
+'solid bulk density'
+
+2650.0d0 
+
+
+
+'extent of zone'
+
+0.0 246.0 0.0 1.0   0.0 30.0
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+0.0d0                        ;aqueous phase
+
+0.0d0                        ;gaseous phase
+
+
+
+! ---------------------------------------------------------------------------
+
+'aquifer'
+
+
+
+'longitudinal dispersivity'
+
+4.0d0
+
+
+
+'transverse vertical dispersivity'
+
+1.0d0
+
+
+
+'transverse horizontal dispersivity'
+
+1.0d0
+
+ 
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                              ;number of zones
+
+
+
+'number and name of zone'
+
+1
+
+'hydrostatic condition'
+
+'hydrostatic condition'
+
+0.0d0                       ;freshwater column
+
+0.0d0                       ;tot tds
+
+30.0                        ;hydro top
+
+
+
+'extent of zone'
+
+0.0 246.0  0.0 1.0   0.0 30.0
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+'number and name of zone'
+
+1
+
+'zone 1'
+
+
+
+'initial condition'
+
+0.0d0                         ;freshwater head
+
+
+
+'extent of zone'
+
+0.0 246.0d0  0.0 1.0  0.0 30.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 12: initial condition - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+
+
+'initial condition - energy balance'
+
+1                              ;number of zones
+
+
+
+'number and name of zone'
+
+1
+
+'pepe rompe' 
+
+
+
+'initial condition'
+
+20.0d0
+
+
+
+'extent of zone'
+
+0.0 246.0d0 0.0 1.0   0.0 30.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+ 3
+
+ 
+
+
+
+
+
+'number and name of zone'
+
+1
+
+'inflow'                                                                   
+
+                        
+
+   
+
+'boundary type'
+
+'second' 0.006666666d0
+
+ 
+
+   
+
+'extent of zone'
+
+0.0d0 0.0d0 0.0d0 1.0d0 0.0 30.0d0 
+
+ 'end of zone'
+
+ 
+
+ 
+
+ 
+
+ 'number and name of zone'
+
+ 2
+
+ 'hydroestatic boundary conditions'                                                                   
+
+                      
+
+ 
+
+'boundary type'
+
+'initial'  0.0 
+
+ 
+
+'extent of zone'
+
+246.0d0 246.0d0 0.0d0 1.0d0 0.0 30.0d0
+
+ 
+
+'end of zone'
+
+ 
+
+'number and name of zone'
+
+3
+
+'top'                                                                   
+
+                          
+
+     
+
+'boundary type'
+
+'first' 30.0 
+
+   
+
+     
+
+'extent of zone'
+
+246.0 246.0d0 0.0d0 1.0d0 30.0 30.0d0 
+
+'end of zone'
+
+
+
+ 
+
+'done'
+
+
+
+!
+
+! Data Block 13B: boundary conditions - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - energy balance'
+
+ 2
+
+ 
+
+ 'number and name of zone'
+
+ 1
+
+ 'inflow'                                                                   
+
+                      
+
+ 
+
+ 'boundary type'
+
+ 'free' 60.0d0
+
+ 
+
+ 'extent of zone'
+
+ 0.0d0 0.0d0 0.0 1.0 0.0d0 30.0d0
+
+ 
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  2
+
+ 'hydroestatic'                                                                   
+
+                       
+
+  
+
+ 'boundary type'
+
+ 'free' 20.0d0
+
+  
+
+  'extent of zone'
+
+  246.0d0 246.0d0 0.0 1.0 0.0d0 30.0d0
+
+  'end of zone'
+
+ 
+
+ 
+
+'done'
+
+
+
+!
+
+! Data Block 15: initial conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'background 2'
+
+
+
+'concentration input'
+
+1.0d-20         'free'    ;cl
+
+
+
+
+
+'extent of zone'
+
+0.0 246.0d0 0.0 1.0  0.0 30.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+ Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'first'
+
+
+
+
+
+'concentration input'
+
+1.0d-20       'free'    ;cl
+
+
+
+
+
+'extent of zone'
+
+
+
+0.0 0.0  0.0 1.0  0.00 0.00
+
+
+
+'end of zone'
+
+
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+
+
+'concentration input'
+
+1.0d-20       'free'    ;cl
+
+
+
+
+
+'extent of zone'
+
+246.0 246.0  0.0 1.0  0.0d0 30.00
+
+
+
+'end of zone'
+
+
+
+'done'

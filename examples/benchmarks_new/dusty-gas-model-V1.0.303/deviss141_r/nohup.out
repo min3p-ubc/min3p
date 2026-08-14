@@ -1,0 +1,440 @@
+
+Press Enter to Continue.
+
+Press Enter to Continue.
+
+    ------------------------------------------------
+          M     M  I  N     N  333333  PPPPPP       
+          MM   MM  I  NN    N       3  P    P       
+          M M M M  I  N N   N       3  P    P       
+          M  M  M  I  N  N  N    3333  PPPPPP       
+          M     M  I  N   N N       3  P            
+          M     M  I  N    NN       3  P            
+          M     M  I  N     N  333333  P            
+
+                     Version 1.1
+
+          A Numerical Model for the Analysis
+                       of the
+                Geochemical Evolution
+                         of
+              Mineral-Water-Gas-Systems
+
+                  (c) 2000 U. Mayer
+    ------------------------------------------------
+
+
+    now provide prefix of problem filename ...
+
+
+ ~/gas_advection/min3p-database/                                                                                                                                                                                                                                 
+ 
+ ch4-source  
+ ------------------------------------------------------------------------
+ number of parallel reaction pathways 1
+ searching for log rate constant:
+ searching for activation energy:
+ searching for exponent m:
+ searching for exponent n:
+ searching for shrinking core parameters:
+ searching for fractional order terms: T^a
+ searching for fractional order terms: C^c
+ searching for fractional order terms: C_x
+ searching for hyperbolic terms: T^a
+ searching for inhibition terms: T^a
+ searching for hyperbolic terms: C^c
+ searching for inhibition terms: C^c
+ searching for hyperbolic terms: phi^m
+ searching for inhibition terms: phi^m
+ 
+ co2-source  
+ ------------------------------------------------------------------------
+ number of parallel reaction pathways 1
+ searching for log rate constant:
+ searching for activation energy:
+ searching for exponent m:
+ searching for exponent n:
+ searching for shrinking core parameters:
+ searching for fractional order terms: T^a
+ searching for fractional order terms: C^c
+ searching for fractional order terms: C_x
+ searching for hyperbolic terms: T^a
+ searching for inhibition terms: T^a
+ searching for hyperbolic terms: C^c
+ searching for inhibition terms: C^c
+ searching for hyperbolic terms: phi^m
+ searching for inhibition terms: phi^m
+ ---------------------------
+ ch4-o2yyy   
+ searching for log rate constant: ch4-o2yyy   
+ searching for activation energy: ch4-o2yyy   
+ searching for fractional order terms: T^a
+ searching for fractional order terms: C^c
+ searching for fractional order terms: C^x
+ searching for hyperbolic terms: T^a
+ hyperbolic T^a                                                           4
+ searching for hyperbolic terms: C^c
+ searching for hyperbolic terms: phi^m
+ searching for inhibition terms: T^a
+ searching for inhibition terms: C^c
+ searching for inhibition terms: phi^m
+ 50
+ initial condition - variably saturated flow
+ ------------------------------------------------------------------------
+ 
+ boundary conditions - variably saturated flow
+ ------------------------------------------------------------------------
+
+ initial condition - reactive transport
+ ------------------------------------------------------------------------
+
+ boundary conditions - reactive transport
+ ------------------------------------------------------------------------
+
+ steady state flow - variably saturated conditions
+ ------------------------------------------------------------------------
+
+ enter timeloop
+ ------------------------------------------------------------------------
+ timestep:       50  time: 7.634E+00 seconds      delt: 2.580E-01 seconds     
+ timestep:       99  time: 1.934E+01 seconds      delt: 4.168E-01 seconds     
+ timestep:      150  time: 4.243E+01 seconds      delt: 4.780E-01 seconds     
+ timestep:      201  time: 6.758E+01 seconds      delt: 5.222E-01 seconds     
+ timestep:      252  time: 9.454E+01 seconds      delt: 5.434E-01 seconds     
+
+ write contour data, T =   1.0000E+02 seconds     
+ ------------------------------------------------------------------------
+
+ timestep:      303  time: 1.235E+02 seconds      delt: 5.896E-01 seconds     
+ timestep:      354  time: 1.552E+02 seconds      delt: 6.482E-01 seconds     
+ timestep:      405  time: 1.888E+02 seconds      delt: 6.582E-01 seconds     
+ timestep:      456  time: 2.239E+02 seconds      delt: 7.130E-01 seconds     
+ timestep:      507  time: 2.609E+02 seconds      delt: 7.481E-01 seconds     
+ timestep:      558  time: 2.996E+02 seconds      delt: 7.826E-01 seconds     
+ timestep:      609  time: 3.399E+02 seconds      delt: 8.144E-01 seconds     
+ timestep:      660  time: 3.815E+02 seconds      delt: 8.474E-01 seconds     
+ timestep:      711  time: 4.245E+02 seconds      delt: 8.400E-01 seconds     
+ timestep:      762  time: 4.690E+02 seconds      delt: 8.741E-01 seconds     
+ timestep:      813  time: 5.152E+02 seconds      delt: 9.096E-01 seconds     
+ timestep:      864  time: 5.627E+02 seconds      delt: 9.465E-01 seconds     
+ timestep:      915  time: 6.114E+02 seconds      delt: 9.850E-01 seconds     
+ timestep:      966  time: 6.610E+02 seconds      delt: 9.763E-01 seconds     
+ timestep:     1017  time: 7.118E+02 seconds      delt: 1.016E+00 seconds     
+ timestep:     1068  time: 7.636E+02 seconds      delt: 1.007E+00 seconds     
+ timestep:     1119  time: 8.163E+02 seconds      delt: 1.048E+00 seconds     
+ timestep:     1170  time: 8.699E+02 seconds      delt: 1.039E+00 seconds     
+ timestep:     1221  time: 9.244E+02 seconds      delt: 1.081E+00 seconds     
+ timestep:     1272  time: 9.797E+02 seconds      delt: 1.071E+00 seconds     
+ timestep:     1323  time: 1.035E+03 seconds      delt: 1.062E+00 seconds     
+ timestep:     1374  time: 1.090E+03 seconds      delt: 1.105E+00 seconds     
+ timestep:     1425  time: 1.145E+03 seconds      delt: 1.095E+00 seconds     
+ timestep:     1476  time: 1.201E+03 seconds      delt: 1.086E+00 seconds     
+ timestep:     1527  time: 1.257E+03 seconds      delt: 1.076E+00 seconds     
+ timestep:     1578  time: 1.312E+03 seconds      delt: 1.067E+00 seconds     
+ timestep:     1629  time: 1.368E+03 seconds      delt: 1.110E+00 seconds     
+ timestep:     1680  time: 1.423E+03 seconds      delt: 1.100E+00 seconds     
+ timestep:     1731  time: 1.480E+03 seconds      delt: 1.090E+00 seconds     
+ timestep:     1782  time: 1.538E+03 seconds      delt: 1.156E+00 seconds     
+ timestep:     1833  time: 1.596E+03 seconds      delt: 1.127E+00 seconds     
+ timestep:     1884  time: 1.655E+03 seconds      delt: 1.189E+00 seconds     
+ timestep:     1935  time: 1.715E+03 seconds      delt: 1.163E+00 seconds     
+ timestep:     1986  time: 1.776E+03 seconds      delt: 1.236E+00 seconds     
+ timestep:     2037  time: 1.837E+03 seconds      delt: 1.197E+00 seconds     
+ timestep:     2088  time: 1.899E+03 seconds      delt: 1.186E+00 seconds     
+ timestep:     2139  time: 1.962E+03 seconds      delt: 1.230E+00 seconds     
+ timestep:     2190  time: 2.025E+03 seconds      delt: 1.269E+00 seconds     
+ timestep:     2241  time: 2.089E+03 seconds      delt: 1.258E+00 seconds     
+ timestep:     2292  time: 2.153E+03 seconds      delt: 1.247E+00 seconds     
+ timestep:     2343  time: 2.218E+03 seconds      delt: 1.297E+00 seconds     
+ timestep:     2394  time: 2.282E+03 seconds      delt: 1.286E+00 seconds     
+ timestep:     2445  time: 2.348E+03 seconds      delt: 1.274E+00 seconds     
+ timestep:     2496  time: 2.413E+03 seconds      delt: 1.263E+00 seconds     
+ timestep:     2547  time: 2.479E+03 seconds      delt: 1.315E+00 seconds     
+ timestep:     2598  time: 2.545E+03 seconds      delt: 1.303E+00 seconds     
+ timestep:     2649  time: 2.612E+03 seconds      delt: 1.292E+00 seconds     
+ timestep:     2700  time: 2.679E+03 seconds      delt: 1.344E+00 seconds     
+ timestep:     2751  time: 2.746E+03 seconds      delt: 1.332E+00 seconds     
+ timestep:     2802  time: 2.814E+03 seconds      delt: 1.320E+00 seconds     
+ timestep:     2853  time: 2.882E+03 seconds      delt: 1.309E+00 seconds     
+ timestep:     2904  time: 2.950E+03 seconds      delt: 1.362E+00 seconds     
+ timestep:     2955  time: 3.019E+03 seconds      delt: 1.350E+00 seconds     
+ timestep:     3006  time: 3.089E+03 seconds      delt: 1.338E+00 seconds     
+ timestep:     3057  time: 3.159E+03 seconds      delt: 1.392E+00 seconds     
+ timestep:     3108  time: 3.230E+03 seconds      delt: 1.437E+00 seconds     
+ timestep:     3159  time: 3.302E+03 seconds      delt: 1.369E+00 seconds     
+ timestep:     3210  time: 3.374E+03 seconds      delt: 1.392E+00 seconds     
+ timestep:     3261  time: 3.447E+03 seconds      delt: 1.416E+00 seconds     
+ timestep:     3312  time: 3.520E+03 seconds      delt: 1.472E+00 seconds     
+ timestep:     3363  time: 3.594E+03 seconds      delt: 1.440E+00 seconds     
+ timestep:     3414  time: 3.669E+03 seconds      delt: 1.433E+00 seconds     
+ timestep:     3465  time: 3.745E+03 seconds      delt: 1.490E+00 seconds     
+ timestep:     3516  time: 3.822E+03 seconds      delt: 1.568E+00 seconds     
+ timestep:     3567  time: 3.900E+03 seconds      delt: 1.558E+00 seconds     
+ timestep:     3618  time: 3.982E+03 seconds      delt: 1.638E+00 seconds     
+ timestep:     3669  time: 4.064E+03 seconds      delt: 1.586E+00 seconds     
+ timestep:     3720  time: 4.146E+03 seconds      delt: 1.594E+00 seconds     
+ timestep:     3771  time: 4.229E+03 seconds      delt: 1.585E+00 seconds     
+ timestep:     3822  time: 4.313E+03 seconds      delt: 1.716E+00 seconds     
+ timestep:     3873  time: 4.399E+03 seconds      delt: 1.689E+00 seconds     
+ timestep:     3924  time: 4.486E+03 seconds      delt: 1.679E+00 seconds     
+ timestep:     3975  time: 4.573E+03 seconds      delt: 1.764E+00 seconds     
+ timestep:     4026  time: 4.662E+03 seconds      delt: 1.739E+00 seconds     
+ timestep:     4077  time: 4.752E+03 seconds      delt: 1.842E+00 seconds     
+ timestep:     4128  time: 4.843E+03 seconds      delt: 1.833E+00 seconds     
+ timestep:     4179  time: 4.936E+03 seconds      delt: 1.799E+00 seconds     
+ timestep:     4230  time: 5.030E+03 seconds      delt: 1.886E+00 seconds     
+ timestep:     4281  time: 5.126E+03 seconds      delt: 1.835E+00 seconds     
+ timestep:     4332  time: 5.223E+03 seconds      delt: 1.947E+00 seconds     
+ timestep:     4383  time: 5.321E+03 seconds      delt: 1.977E+00 seconds     
+ timestep:     4434  time: 5.420E+03 seconds      delt: 1.960E+00 seconds     
+ timestep:     4485  time: 5.518E+03 seconds      delt: 1.943E+00 seconds     
+ timestep:     4536  time: 5.617E+03 seconds      delt: 1.926E+00 seconds     
+ timestep:     4587  time: 5.716E+03 seconds      delt: 1.909E+00 seconds     
+ timestep:     4638  time: 5.815E+03 seconds      delt: 1.986E+00 seconds     
+ timestep:     4689  time: 5.914E+03 seconds      delt: 1.969E+00 seconds     
+ timestep:     4740  time: 6.013E+03 seconds      delt: 1.951E+00 seconds     
+ timestep:     4791  time: 6.113E+03 seconds      delt: 1.934E+00 seconds     
+ timestep:     4842  time: 6.212E+03 seconds      delt: 1.917E+00 seconds     
+ timestep:     4893  time: 6.312E+03 seconds      delt: 1.995E+00 seconds     
+ timestep:     4944  time: 6.412E+03 seconds      delt: 1.977E+00 seconds     
+ timestep:     4995  time: 6.512E+03 seconds      delt: 1.960E+00 seconds     
+ timestep:     5046  time: 6.613E+03 seconds      delt: 1.943E+00 seconds     
+ timestep:     5097  time: 6.713E+03 seconds      delt: 2.022E+00 seconds     
+ timestep:     5148  time: 6.814E+03 seconds      delt: 2.004E+00 seconds     
+ timestep:     5199  time: 6.915E+03 seconds      delt: 1.986E+00 seconds     
+ timestep:     5250  time: 7.016E+03 seconds      delt: 1.969E+00 seconds     
+ timestep:     5301  time: 7.118E+03 seconds      delt: 1.951E+00 seconds     
+ timestep:     5352  time: 7.220E+03 seconds      delt: 2.031E+00 seconds     
+ timestep:     5403  time: 7.322E+03 seconds      delt: 2.013E+00 seconds     
+ timestep:     5454  time: 7.424E+03 seconds      delt: 1.995E+00 seconds     
+ timestep:     5505  time: 7.526E+03 seconds      delt: 1.977E+00 seconds     
+ timestep:     5556  time: 7.630E+03 seconds      delt: 2.058E+00 seconds     
+ timestep:     5607  time: 7.733E+03 seconds      delt: 2.040E+00 seconds     
+ timestep:     5658  time: 7.836E+03 seconds      delt: 2.022E+00 seconds     
+ timestep:     5709  time: 7.940E+03 seconds      delt: 2.004E+00 seconds     
+ timestep:     5760  time: 8.045E+03 seconds      delt: 2.056E+00 seconds     
+ timestep:     5811  time: 8.153E+03 seconds      delt: 2.129E+00 seconds     
+ timestep:     5862  time: 8.260E+03 seconds      delt: 2.165E+00 seconds     
+ timestep:     5913  time: 8.368E+03 seconds      delt: 2.062E+00 seconds     
+ timestep:     5964  time: 8.477E+03 seconds      delt: 2.144E+00 seconds     
+ timestep:     6015  time: 8.586E+03 seconds      delt: 2.125E+00 seconds     
+ timestep:     6066  time: 8.696E+03 seconds      delt: 2.143E+00 seconds     
+ timestep:     6117  time: 8.808E+03 seconds      delt: 2.204E+00 seconds     
+ timestep:     6168  time: 8.920E+03 seconds      delt: 2.308E+00 seconds     
+ timestep:     6219  time: 9.034E+03 seconds      delt: 2.203E+00 seconds     
+ timestep:     6270  time: 9.151E+03 seconds      delt: 2.280E+00 seconds     
+ timestep:     6321  time: 9.269E+03 seconds      delt: 2.329E+00 seconds     
+ timestep:     6372  time: 9.388E+03 seconds      delt: 2.292E+00 seconds     
+ timestep:     6423  time: 9.508E+03 seconds      delt: 2.342E+00 seconds     
+ timestep:     6474  time: 9.630E+03 seconds      delt: 2.435E+00 seconds     
+ timestep:     6525  time: 9.753E+03 seconds      delt: 2.381E+00 seconds     
+ timestep:     6576  time: 9.877E+03 seconds      delt: 2.408E+00 seconds     
+ timestep:     6627  time: 1.000E+04 seconds      delt: 2.452E+00 seconds     
+ timestep:     6678  time: 1.013E+04 seconds      delt: 2.625E+00 seconds     
+ timestep:     6729  time: 1.027E+04 seconds      delt: 2.603E+00 seconds     
+ timestep:     6780  time: 1.040E+04 seconds      delt: 2.581E+00 seconds     
+ timestep:     6831  time: 1.053E+04 seconds      delt: 2.679E+00 seconds     
+ timestep:     6882  time: 1.067E+04 seconds      delt: 2.643E+00 seconds     
+ timestep:     6933  time: 1.080E+04 seconds      delt: 2.713E+00 seconds     
+ timestep:     6984  time: 1.094E+04 seconds      delt: 2.844E+00 seconds     
+ timestep:     7035  time: 1.109E+04 seconds      delt: 2.969E+00 seconds     
+ timestep:     7086  time: 1.124E+04 seconds      delt: 3.069E+00 seconds     
+ timestep:     7137  time: 1.139E+04 seconds      delt: 2.886E+00 seconds     
+ timestep:     7188  time: 1.154E+04 seconds      delt: 2.984E+00 seconds     
+ timestep:     7239  time: 1.169E+04 seconds      delt: 3.077E+00 seconds     
+ timestep:     7290  time: 1.184E+04 seconds      delt: 3.007E+00 seconds     
+ timestep:     7341  time: 1.200E+04 seconds      delt: 2.981E+00 seconds     
+ timestep:     7392  time: 1.215E+04 seconds      delt: 3.102E+00 seconds     
+ timestep:     7443  time: 1.231E+04 seconds      delt: 3.075E+00 seconds     
+ timestep:     7494  time: 1.246E+04 seconds      delt: 3.048E+00 seconds     
+ timestep:     7545  time: 1.262E+04 seconds      delt: 3.021E+00 seconds     
+ timestep:     7596  time: 1.278E+04 seconds      delt: 3.143E+00 seconds     
+ timestep:     7647  time: 1.293E+04 seconds      delt: 3.116E+00 seconds     
+ timestep:     7698  time: 1.309E+04 seconds      delt: 3.088E+00 seconds     
+ timestep:     7749  time: 1.325E+04 seconds      delt: 3.061E+00 seconds     
+ timestep:     7800  time: 1.341E+04 seconds      delt: 3.185E+00 seconds     
+ timestep:     7851  time: 1.357E+04 seconds      delt: 3.157E+00 seconds     
+ timestep:     7902  time: 1.373E+04 seconds      delt: 3.130E+00 seconds     
+ timestep:     7953  time: 1.389E+04 seconds      delt: 3.102E+00 seconds     
+ timestep:     8004  time: 1.405E+04 seconds      delt: 3.228E+00 seconds     
+ timestep:     8055  time: 1.422E+04 seconds      delt: 3.200E+00 seconds     
+ timestep:     8106  time: 1.438E+04 seconds      delt: 3.171E+00 seconds     
+ timestep:     8157  time: 1.455E+04 seconds      delt: 3.300E+00 seconds     
+ timestep:     8208  time: 1.471E+04 seconds      delt: 3.271E+00 seconds     
+ timestep:     8259  time: 1.488E+04 seconds      delt: 3.242E+00 seconds     
+ timestep:     8310  time: 1.505E+04 seconds      delt: 3.374E+00 seconds     
+ timestep:     8361  time: 1.522E+04 seconds      delt: 3.344E+00 seconds     
+ timestep:     8412  time: 1.539E+04 seconds      delt: 3.315E+00 seconds     
+ timestep:     8463  time: 1.556E+04 seconds      delt: 3.449E+00 seconds     
+ timestep:     8514  time: 1.573E+04 seconds      delt: 3.419E+00 seconds     
+ timestep:     8565  time: 1.591E+04 seconds      delt: 3.389E+00 seconds     
+ timestep:     8616  time: 1.609E+04 seconds      delt: 3.527E+00 seconds     
+ timestep:     8667  time: 1.626E+04 seconds      delt: 3.495E+00 seconds     
+ timestep:     8718  time: 1.645E+04 seconds      delt: 3.685E+00 seconds     
+ timestep:     8769  time: 1.665E+04 seconds      delt: 3.899E+00 seconds     
+ timestep:     8820  time: 1.684E+04 seconds      delt: 3.910E+00 seconds     
+ timestep:     8871  time: 1.704E+04 seconds      delt: 3.920E+00 seconds     
+ timestep:     8922  time: 1.725E+04 seconds      delt: 3.900E+00 seconds     
+ timestep:     8973  time: 1.746E+04 seconds      delt: 4.714E+00 seconds     
+ timestep:     9024  time: 1.770E+04 seconds      delt: 4.586E+00 seconds     
+ timestep:     9075  time: 1.794E+04 seconds      delt: 5.002E+00 seconds     
+ timestep:     9126  time: 1.819E+04 seconds      delt: 4.866E+00 seconds     
+ timestep:     9177  time: 1.844E+04 seconds      delt: 4.734E+00 seconds     
+ timestep:     9228  time: 1.870E+04 seconds      delt: 5.163E+00 seconds     
+ timestep:     9279  time: 1.896E+04 seconds      delt: 5.023E+00 seconds     
+ timestep:     9330  time: 1.923E+04 seconds      delt: 5.312E+00 seconds     
+ timestep:     9381  time: 1.951E+04 seconds      delt: 5.435E+00 seconds     
+ timestep:     9432  time: 1.979E+04 seconds      delt: 5.575E+00 seconds     
+ timestep:     9483  time: 2.008E+04 seconds      delt: 5.749E+00 seconds     
+ timestep:     9534  time: 2.037E+04 seconds      delt: 5.960E+00 seconds     
+ timestep:     9585  time: 2.066E+04 seconds      delt: 5.972E+00 seconds     
+ timestep:     9636  time: 2.095E+04 seconds      delt: 6.015E+00 seconds     
+ timestep:     9687  time: 2.124E+04 seconds      delt: 5.431E+00 seconds     
+ timestep:     9738  time: 2.154E+04 seconds      delt: 5.836E+00 seconds     
+ timestep:     9789  time: 2.183E+04 seconds      delt: 5.677E+00 seconds     
+ timestep:     9840  time: 2.213E+04 seconds      delt: 5.523E+00 seconds     
+ timestep:     9891  time: 2.242E+04 seconds      delt: 6.024E+00 seconds     
+ timestep:     9942  time: 2.272E+04 seconds      delt: 6.137E+00 seconds     
+ timestep:     9993  time: 2.301E+04 seconds      delt: 5.691E+00 seconds     
+ timestep:    10044  time: 2.329E+04 seconds      delt: 5.182E+00 seconds     
+ timestep:    10095  time: 2.358E+04 seconds      delt: 5.529E+00 seconds     
+ timestep:    10146  time: 2.386E+04 seconds      delt: 5.503E+00 seconds     
+ timestep:    10197  time: 2.414E+04 seconds      delt: 5.477E+00 seconds     
+ timestep:    10248  time: 2.442E+04 seconds      delt: 5.452E+00 seconds     
+ timestep:    10299  time: 2.469E+04 seconds      delt: 5.426E+00 seconds     
+ timestep:    10350  time: 2.497E+04 seconds      delt: 4.904E+00 seconds     
+ timestep:    10401  time: 2.523E+04 seconds      delt: 5.034E+00 seconds     
+ timestep:    10452  time: 2.548E+04 seconds      delt: 4.863E+00 seconds     
+ timestep:    10503  time: 2.574E+04 seconds      delt: 4.932E+00 seconds     
+ timestep:    10554  time: 2.599E+04 seconds      delt: 4.874E+00 seconds     
+ timestep:    10605  time: 2.624E+04 seconds      delt: 4.943E+00 seconds     
+ timestep:    10656  time: 2.650E+04 seconds      delt: 5.013E+00 seconds     
+ timestep:    10707  time: 2.675E+04 seconds      delt: 4.842E+00 seconds     
+ timestep:    10758  time: 2.700E+04 seconds      delt: 5.025E+00 seconds     
+ timestep:    10809  time: 2.726E+04 seconds      delt: 4.854E+00 seconds     
+ timestep:    10860  time: 2.751E+04 seconds      delt: 4.922E+00 seconds     
+ timestep:    10911  time: 2.776E+04 seconds      delt: 5.107E+00 seconds     
+ timestep:    10962  time: 2.802E+04 seconds      delt: 4.933E+00 seconds     
+ timestep:    11013  time: 2.827E+04 seconds      delt: 4.890E+00 seconds     
+ timestep:    11064  time: 2.852E+04 seconds      delt: 4.847E+00 seconds     
+ timestep:    11115  time: 2.877E+04 seconds      delt: 5.044E+00 seconds     
+ timestep:    11166  time: 2.903E+04 seconds      delt: 4.999E+00 seconds     
+ timestep:    11217  time: 2.928E+04 seconds      delt: 4.955E+00 seconds     
+ timestep:    11268  time: 2.954E+04 seconds      delt: 4.912E+00 seconds     
+ timestep:    11319  time: 2.979E+04 seconds      delt: 4.868E+00 seconds     
+ timestep:    11370  time: 3.004E+04 seconds      delt: 5.066E+00 seconds     
+ timestep:    11421  time: 3.030E+04 seconds      delt: 5.022E+00 seconds     
+ timestep:    11472  time: 3.055E+04 seconds      delt: 4.977E+00 seconds     
+ timestep:    11523  time: 3.081E+04 seconds      delt: 4.933E+00 seconds     
+ timestep:    11574  time: 3.106E+04 seconds      delt: 5.134E+00 seconds     
+ timestep:    11625  time: 3.132E+04 seconds      delt: 5.089E+00 seconds     
+ timestep:    11676  time: 3.158E+04 seconds      delt: 5.044E+00 seconds     
+ timestep:    11727  time: 3.183E+04 seconds      delt: 4.999E+00 seconds     
+ timestep:    11778  time: 3.209E+04 seconds      delt: 4.955E+00 seconds     
+ timestep:    11829  time: 3.235E+04 seconds      delt: 5.157E+00 seconds     
+ timestep:    11880  time: 3.261E+04 seconds      delt: 5.111E+00 seconds     
+ timestep:    11931  time: 3.286E+04 seconds      delt: 5.066E+00 seconds     
+ timestep:    11982  time: 3.312E+04 seconds      delt: 5.021E+00 seconds     
+ timestep:    12033  time: 3.338E+04 seconds      delt: 4.977E+00 seconds     
+ timestep:    12084  time: 3.364E+04 seconds      delt: 5.179E+00 seconds     
+ timestep:    12135  time: 3.390E+04 seconds      delt: 5.134E+00 seconds     
+ timestep:    12186  time: 3.416E+04 seconds      delt: 5.088E+00 seconds     
+ timestep:    12237  time: 3.443E+04 seconds      delt: 5.044E+00 seconds     
+ timestep:    12288  time: 3.469E+04 seconds      delt: 5.249E+00 seconds     
+ timestep:    12339  time: 3.495E+04 seconds      delt: 5.202E+00 seconds     
+ timestep:    12390  time: 3.522E+04 seconds      delt: 5.156E+00 seconds     
+ timestep:    12441  time: 3.548E+04 seconds      delt: 5.111E+00 seconds     
+ timestep:    12492  time: 3.575E+04 seconds      delt: 5.319E+00 seconds     
+ timestep:    12543  time: 3.601E+04 seconds      delt: 5.624E+00 seconds     
+ timestep:    12594  time: 3.629E+04 seconds      delt: 5.517E+00 seconds     
+ timestep:    12645  time: 3.658E+04 seconds      delt: 5.445E+00 seconds     
+ timestep:    12696  time: 3.687E+04 seconds      delt: 5.946E+00 seconds     
+ timestep:    12747  time: 3.716E+04 seconds      delt: 5.776E+00 seconds     
+ timestep:    12798  time: 3.745E+04 seconds      delt: 5.987E+00 seconds     
+ timestep:    12849  time: 3.775E+04 seconds      delt: 6.210E+00 seconds     
+ timestep:    12900  time: 3.805E+04 seconds      delt: 6.441E+00 seconds     
+ timestep:    12951  time: 3.837E+04 seconds      delt: 6.059E+00 seconds     
+ timestep:    13002  time: 3.869E+04 seconds      delt: 6.293E+00 seconds     
+ timestep:    13053  time: 3.901E+04 seconds      delt: 6.536E+00 seconds     
+ timestep:    13104  time: 3.933E+04 seconds      delt: 6.148E+00 seconds     
+ timestep:    13155  time: 3.965E+04 seconds      delt: 6.601E+00 seconds     
+ timestep:    13206  time: 3.999E+04 seconds      delt: 6.987E+00 seconds     
+ timestep:    13257  time: 4.035E+04 seconds      delt: 6.927E+00 seconds     
+ timestep:    13308  time: 4.070E+04 seconds      delt: 6.869E+00 seconds     
+ timestep:    13359  time: 4.106E+04 seconds      delt: 6.810E+00 seconds     
+ timestep:    13410  time: 4.142E+04 seconds      delt: 7.790E+00 seconds     
+ timestep:    13461  time: 4.180E+04 seconds      delt: 7.803E+00 seconds     
+ timestep:    13512  time: 4.219E+04 seconds      delt: 8.067E+00 seconds     
+ timestep:    13563  time: 4.258E+04 seconds      delt: 7.585E+00 seconds     
+ timestep:    13614  time: 4.298E+04 seconds      delt: 7.822E+00 seconds     
+ timestep:    13665  time: 4.339E+04 seconds      delt: 8.140E+00 seconds     
+ timestep:    13716  time: 4.380E+04 seconds      delt: 8.068E+00 seconds     
+ timestep:    13767  time: 4.422E+04 seconds      delt: 7.997E+00 seconds     
+ timestep:    13818  time: 4.463E+04 seconds      delt: 8.322E+00 seconds     
+ timestep:    13869  time: 4.506E+04 seconds      delt: 8.249E+00 seconds     
+ timestep:    13920  time: 4.548E+04 seconds      delt: 8.584E+00 seconds     
+ timestep:    13971  time: 4.591E+04 seconds      delt: 8.508E+00 seconds     
+ timestep:    14022  time: 4.635E+04 seconds      delt: 8.433E+00 seconds     
+ timestep:    14073  time: 4.679E+04 seconds      delt: 9.541E+00 seconds     
+ timestep:    14124  time: 4.727E+04 seconds      delt: 9.632E+00 seconds     
+ timestep:    14175  time: 4.780E+04 seconds      delt: 1.036E+01 seconds     
+ timestep:    14226  time: 4.834E+04 seconds      delt: 1.078E+01 seconds     
+ timestep:    14277  time: 4.889E+04 seconds      delt: 1.068E+01 seconds     
+ timestep:    14328  time: 4.943E+04 seconds      delt: 1.059E+01 seconds     
+ timestep:    14379  time: 4.998E+04 seconds      delt: 1.102E+01 seconds     
+ timestep:    14430  time: 5.054E+04 seconds      delt: 1.092E+01 seconds     
+ timestep:    14481  time: 5.109E+04 seconds      delt: 1.083E+01 seconds     
+ timestep:    14532  time: 5.165E+04 seconds      delt: 1.127E+01 seconds     
+ timestep:    14583  time: 5.222E+04 seconds      delt: 1.117E+01 seconds     
+ timestep:    14634  time: 5.279E+04 seconds      delt: 1.107E+01 seconds     
+ timestep:    14685  time: 5.336E+04 seconds      delt: 1.152E+01 seconds     
+ timestep:    14736  time: 5.394E+04 seconds      delt: 1.142E+01 seconds     
+ timestep:    14787  time: 5.453E+04 seconds      delt: 1.132E+01 seconds     
+ timestep:    14838  time: 5.512E+04 seconds      delt: 1.177E+01 seconds     
+ timestep:    14889  time: 5.571E+04 seconds      delt: 1.167E+01 seconds     
+ timestep:    14940  time: 5.640E+04 seconds      delt: 1.700E+01 seconds     
+ timestep:    14991  time: 5.730E+04 seconds      delt: 1.740E+01 seconds     
+ timestep:    15042  time: 5.839E+04 seconds      delt: 2.325E+01 seconds     
+ timestep:    15093  time: 5.953E+04 seconds      delt: 2.182E+01 seconds     
+ timestep:    15144  time: 6.089E+04 seconds      delt: 2.951E+01 seconds     
+ timestep:    15195  time: 6.235E+04 seconds      delt: 3.100E+01 seconds     
+ timestep:    15246  time: 6.415E+04 seconds      delt: 3.783E+01 seconds     
+ timestep:    15297  time: 6.634E+04 seconds      delt: 4.874E+01 seconds     
+ timestep:    15348  time: 6.895E+04 seconds      delt: 5.421E+01 seconds     
+ timestep:    15399  time: 7.179E+04 seconds      delt: 5.922E+01 seconds     
+ timestep:    15450  time: 7.496E+04 seconds      delt: 6.470E+01 seconds     
+ timestep:    15501  time: 7.865E+04 seconds      delt: 7.791E+01 seconds     
+ timestep:    15552  time: 8.337E+04 seconds      delt: 1.086E+02 seconds     
+ timestep:    15603  time: 9.128E+04 seconds      delt: 2.461E+02 seconds     
+ timestep:    15654  time: 2.322E+05 seconds      delt: 1.000E+04 seconds     
+ timestep:    15705  time: 7.422E+05 seconds      delt: 1.000E+04 seconds     
+
+ write contour data, T =   1.0000E+06 seconds     
+ ------------------------------------------------------------------------
+
+ timestep:    15756  time: 1.250E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    15807  time: 1.760E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    15858  time: 2.270E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    15909  time: 2.780E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    15960  time: 3.290E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16011  time: 3.800E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16062  time: 4.310E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16113  time: 4.820E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16164  time: 5.330E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16215  time: 5.840E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16266  time: 6.350E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16317  time: 6.860E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16368  time: 7.370E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16419  time: 7.880E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16470  time: 8.390E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16521  time: 8.900E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16572  time: 9.410E+06 seconds      delt: 1.000E+04 seconds     
+ timestep:    16623  time: 9.920E+06 seconds      delt: 1.000E+04 seconds     
+
+ write contour data, T =   1.0000E+07 seconds     
+ ------------------------------------------------------------------------
+
+
+     ***************** normal exit ******************
+
+

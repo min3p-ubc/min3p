@@ -1,0 +1,167 @@
+ 'TITLE OF THE PROBLEM: ordovicean water (taken from McNutt et al. (1987)'
+'-----------------------------------------------------------------------------'
+'DEFINITION OF THE GEOCHEMICAL SYSTEM'
+25.0          4    1		!initial temp. of the system
+'PRIMARY AQUEOUS SPECIES'
+'h+'
+'cl-'
+'so4-2'
+'k+'
+'na+'
+'ca+2'
+'mg+2'
+'co3-2' 
+'h2o' 
+'*'
+'AQUEOUS COMPLEXES'
+'hso4-' 
+'co2(aq)' 
+'oh-'
+'hco3-'
+'mgoh+'  
+'caco3(aq)' 
+'mgco3(aq)' 
+'cacl+'
+'caso4(aq)'
+'mghco3+'
+'caoh+'
+'cacl2(aq)' 
+'*' 
+'MINERALS'
+'halite'          0 
+'anhydrite'       0
+ 
+'sylvite'         0 
+'gypsum'          0 
+'epsomite'        0
+'arcanite'        0 
+'glauberite'      0
+'hexahydrite'     0
+'bloedite'        0 
+'antarcticite'    0
+'calcite'         0
+'bischofite'      0 
+'carnallite'      0 
+'dolomite'        0 
+'brucite'         0 
+'thenardite'      0
+'kainite'         0 
+'hydromagnesite'  0 
+'polyhalite'      0
+'mirabilite'      0 
+'kieserite'       0 
+'lansfordite'     0 
+'pentahydrite'    0 
+'oxychloride-mg'  0 
+'pentasalt'       0 
+'nesquehonite'    0 
+'natron'          0
+'syngenite'       0 
+'leonhardite'     0 
+'*'               0
+'GASES'
+'co2(g)'
+'*' 
+'SURFACE COMPLEXES'  
+'*'
+'----------------------------------------------------------------------------'
+'INITIAL AND BOUNDARY WATER TYPES'
+1  0   0   !niwtype, nbwtype, nrwtype= number of ini, bound, rech waters
+1     25.0d0   'Sample 1'
+'       icon        guess         ctot         constrain'
+'h+'         3      1.0d-7        1.0d-7      ' ' 
+'cl-'        1      5.81d0        5.81d0        'halite'
+'so4-2'      1      6.3d-3        6.3d-3        'anhydrite'
+'k+'         1    0.1739d0      0.1739d0        ' '               
+'na+'        1     1.752d0       1.752d0        'halite'      
+'ca+2'       1      0.4274        0.4274        'calcite'      
+'co3-2'      1     3.92d-3       3.92d-3        'calcite'      
+'mg+2'       1     1.555d0       1.555d0        'dolomite'
+'*'      0          0.0             0.0         ' '
+'----------------------------------------------------------------------------'
+'INITIAL MINERAL ZONES'
+0					!nmtype= number of mineral zones 
+'*'                0.0       0.0
+'----------------------------------------------------------------------------'
+'INITIAL SURFACE ADSORPTION ZONES'
+0
+'----------------------------------------------------------------------------'
+'OUTPUT'
+'h+' 
+'so4-2'
+'hso4-' 
+'ca+2'
+'mg+2' 
+'h2o' 
+'k+'
+'halite'         
+'anhydrite'
+'calcite'        
+'dolomite'       
+'sylvite'        
+'*'
+'end'
+
+  		    
+	   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+
+		   
+		   
+		   
+		   
+
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    

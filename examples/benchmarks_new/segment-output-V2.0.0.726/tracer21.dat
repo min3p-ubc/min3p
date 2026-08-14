@@ -1,0 +1,768 @@
+! Lac Tio Lab Model
+!
+! 2D - push dump wrp reactive transport - steady state flow
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'2D Test Example - Push Dump Construction WRP'
+.true.                        ;varsat_flow
+.true.                        ;steady_flow
+.false.                       ;fully_saturated
+.false.                       ;reactive_transport
+
+'parallel solver configuration file'
+'./solver.cfg'
+
+!'output sparse matrix data set and rhs'
+
+'done'
+
+!
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'../database/default'
+
+'compute alkalinity'
+
+'components'
+1                             ;number of components (nc-1)
+'br-1'                         ;component names             
+
+'done'
+
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+
+!'generate unstructured grid from structured parameters'
+!'generate unstructured grid from structured boundary'
+!'generate unstructured grid from file'
+
+'read unstructured grid from file'
+
+'control volume method'
+'voronoi diagram'
+!'median dual'
+
+'allow obtuse cells'
+
+'cell based hydraulic conductivity'
+'cell based dispersivity for reactive transport'
+
+'done'
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'days'                        ;time unit
+0.0                           ;time at start of solution
+1000.0                           ;final solution time
+1.0d1                         ;maximum time step
+1.d-10                        ;minimum time step
+
+'done'
+
+!
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-4                         ;factor for numerical differentiation
+1.d-6                         ;convergence tolerance
+
+'maximum ionic strength'
+1.0d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'output time unit'
+'years'                       ;time unit (local chemistry)
+
+'done'
+
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'pressure head'               ;input unit
+
+'compute underrelaxation factor'
+0.01                           ;max. allowed update
+
+'newton iteration settings'
+1.0d-4                        ;increment for numerical differentiation
+1000                          ;maxit_vs, max. number of newton iterations
+1.0d-7                        ;tol_vs, convergence tolerance
+0.1                           ;sw_star
+
+'solver settings'
+1                             ;incomplete factorization level
+1000                          ;max. number of solver iterations
+1                             ;information level
+1.d-7                         ;solver residual tolerance
+1.d-7                         ;solver update tolerance
+
+
+!
+! Data Block 7: control parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'control parameters - reactive transport'
+
+'mass balance'
+
+'spatial weighting'
+'upstream'
+
+'activity update settings'
+'time_lagged'
+
+'tortuosity correction'
+'millington'
+
+'newton iteration settings'
+1.d-4                         ;increment h for numerical differentiation
+12                            ;anticipated number of Newton iterations
+60                            ;max. number of Newton iterations
+2.0d0                         ;anticipated update in log cycles
+3.0d0                         ;maximum update in log cycles
+1.d-6                         ;convergence tolerance (global system)
+
+'solver settings'
+0                             ;incomplete factorization level
+100                           ;max. number of solver iterations
+1                             ;information level
+1.d-7                         ;solver residual tolerance
+1.d-7                         ;solver update tolerance
+
+'done'
+
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'use binary format'
+'use ascii data format for transient output'
+'use separated mesh and result data'
+
+
+'output of spatial data'
+1                                 ;number of output times (spatial data)
+1000.0
+
+
+'output of mass through specified boundary'
+5                                                               ;total number of specified boundary segments
+
+'number and name of zone'                                       ;keyword for zone
+1                                                               ;number of specified boundary segment
+'rese5'                                                    ;name of specified boundary segments
+'extent of zone: boundary nodes only'                           ;keyword for zone selection (other keywords are available)
+1.05092832686000 1.06092832686000   0 0  -0.21222432431369 0    ;coordinates for zone selection
+'end of zone'                                                   ;end of current zone
+
+
+'number and name of zone'                                
+2                                                             
+'rese4'                                                 
+'extent of zone: boundary nodes only'                        
+1.32986284230000  1.33986284230000  0 0  -0.21222432431369 0    
+'end of zone'          
+                                         
+'number and name of zone'                                
+3                                                             
+'rese3'                                                 
+'extent of zone: boundary nodes only'                        
+1.59588487968600  1.60588487968600  0 0  -0.21222432431369 0   
+'end of zone'                                                   
+
+'number and name of zone'                                
+4                                                             
+'rese2'                                                 
+'extent of zone: boundary nodes only'                        
+1.92957205049600  1.93957205049600  0 0  -0.21222432431369 0  
+'end of zone'
+
+'number and name of zone'                                
+5                                                             
+'rese1'                                                 
+'extent of zone: boundary nodes only'                        
+2.24341143338600  2.25341143338600  0 0  -0.21222432431369 0   
+'end of zone'
+
+
+'done'
+
+
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+5                             ;number of property zones
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+1
+'background'
+0.360                           ;porosity
+
+'extent of zone'
+0 2.51114674632166  0  0  -0.21222432431369  0.976270800935453
+
+
+'end of zone'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'hi'
+0.48                           ;porosity from Dimech et al 2018
+
+'extent of zone: all cells in polygon'
+'read data'
+4 ;number of nodes in polygon
+0.0697246240044978 0.0 0.796955755865676     ;coordinates of polygon vertices
+0.0 0.0 0.0
+2.19162832863061 0.0 -0.191742716012369
+1.37473967423454 0.0 0.682781684058311
+
+
+'end of zone'
+
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'anor'
+0.35                           ;porosity from Dimech et al 2018
+
+'extent of zone: all cells in polygon'
+'read data'
+4 ;number of nodes in polygon
+1.374739674 0.0 0.682781684058311 ;coordinates of polygon vertices
+2.19162832863061 0.0 -0.191742716012369
+2.42573408191615 0.0 -0.21222432431369
+2.49545870592065 0.0 0.584731431551986
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'sand'
+0.36                           ;porosity from Dimech et al 2018
+
+'extent of zone: all cells in polygon'
+'read data'
+4 ;number of nodes in polygon
+0.07844020200506 0.0 0.896575225348885
+0.0697246240044978 0.0 0.796955755865676 ;coordinates of polygon vertices
+2.49545870592065 0.0 0.584731431551986
+2.50417428392121 0.0 0.684350901035195
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'crushed anor'
+0.3                           ;porosity from Dimech et al 2018 <- assumed slightly lower than Anor
+
+'extent of zone: all cells in polygon'
+'read data'
+4 ;number of nodes in polygon
+0.0854126644055098 0.0 0.976270800935453
+0.07844020200506 0.0 0.896575225348885
+2.50417428392121 0.0 0.684350901035195
+2.51114674632166 0.0 0.764046476621763
+
+
+'end of zone'
+
+
+'done'
+
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'background' 
+
+'hydraulic conductivity in x-direction'
+5.5d-4                       ;K_xx
+
+'hydraulic conductivity in y-direction'
+5.5d-4                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+5.5d-4                       ;K_zz
+
+'specific storage coefficient'
+1.0d-5
+
+'specific storage coefficient'
+1.0d-5
+
+'soil hydraulic function parameters'
+0.3			 ;residual saturation
+3.6				 ;van genuchten - alpha
+1.56			 ;van genuchten - n
+0.5				 ;expn
+0.0				 ;air entry pressure
+0.0				 ;max bubble entrapment
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'hi' 
+
+'hydraulic conductivity in x-direction'
+5.5d-4                       ;K_xx
+
+'hydraulic conductivity in y-direction'
+5.5d-4                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+5.5d-4                       ;K_zz
+
+'specific storage coefficient'
+1.0d-5
+
+'specific storage coefficient'
+1.0d-5
+
+'soil hydraulic function parameters'
+0.47			 ;residual saturation  - adjusted from bisse's presentation (2017) and Dimech et al (2018)
+5.96		     ;van genuchten - alpha
+3.61			 ;van genuchten - n
+0.5				 ;expn
+0.0				 ;air entry pressure
+0.0				 ;max bubble entrapment
+
+'end of zone'
+
+!-----------------------------------------------------------------------------
+'number and name of zone'
+3
+'anor'
+
+'hydraulic conductivity in x-direction'
+5d-4                       ;K_xx
+
+'hydraulic conductivity in y-direction'
+5d-4                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+5d-4                       ;K_zz
+
+'specific storage coefficient'
+1.0d-5
+
+'specific storage coefficient'
+1.0d-5
+
+'soil hydraulic function parameters'
+0.05  			 ;residual saturation  - adjusted from bisse's presentation (2017) and Dimech et al (2018)
+3.6				 ;van genuchten - alpha
+1.56			 ;van genuchten - n
+0.5				 ;expn
+0.0				 ;air entry pressure
+0.0				 ;max bubble entrapment
+
+'end of zone'
+
+!-----------------------------------------------------------------------------
+'number and name of zone'
+4
+'sand' 	;name of zone
+
+'hydraulic conductivity in x-direction'
+7.8d-4                       ;K_xx
+
+'hydraulic conductivity in y-direction'
+7.8d-4                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+7.8d-4                       ;K_zz
+
+'specific storage coefficient'
+1.0d-5
+
+'specific storage coefficient'
+1.0d-5
+
+'soil hydraulic function parameters'
+0.18			 ;residual saturation - adjusted from bisse's presentation (2017) and Dimech et al (2018)
+14.5		     ;van genuchten - alpha ; obtained from rosetta for sand
+2.68			 ;van genuchten - n ; obtained from rosetta for sand 
+0.5				 ;expn ; obtained from rosetta for sand
+0.0				 ;air entry pressure
+0.0				 ;max bubble entrapment
+
+'end of zone'
+
+!-----------------------------------------------------------------------------
+'number and name of zone'
+5
+'crushed anor' 	;name of zone
+
+'hydraulic conductivity in x-direction'
+5d-5                       ;K_xx
+
+'hydraulic conductivity in y-direction'
+5d-5                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+5d-5                       ;K_zz
+
+'specific storage coefficient'
+1.0d-5
+
+'specific storage coefficient'
+1.0d-5
+
+'soil hydraulic function parameters'
+0.03			 ;residual saturation - adjusted from bisse's presentation (2017) and Dimech et al (2018)
+60   		     ;van genuchten - alpha ; increased from sand to account for drainage...
+5   			 ;van genuchten - n ; ; increased from sand to account for drainage...
+0.5				 ;expn ; obtained from rosetta for sand
+0.0				 ;air entry pressure
+0.0				 ;max bubble entrapment
+'end of zone'
+
+
+'done'
+
+
+! Data Block 11: physical parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'physical parameters - reactive transport'
+
+'diffusion coefficients'
+2.38d-9                       ;free diffusion coefficient in water
+2.07d-5                       ;free diffusion coefficient in air
+
+! ---------------------------------------------------------------------------
+'background'
+
+'longitudinal dispersivity'
+5d-4                        
+
+'transverse vertical dispersivity'
+5d-4                    
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'hi'
+
+'longitudinal dispersivity'
+5d-4                         
+
+'transverse vertical dispersivity'
+5d-4                     
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'anor'
+
+'longitudinal dispersivity'
+5d-4 
+                        
+'transverse vertical dispersivity'
+5d-4                           
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'sand'
+
+'longitudinal dispersivity'
+5d-4                        
+
+'transverse vertical dispersivity'
+5d-4                            
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'crushed anor'
+
+'longitudinal dispersivity'
+5d-4                         
+
+'transverse vertical dispersivity'
+5d-4                            
+
+'end of zone'
+
+
+
+'done'
+
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'fullArea'
+
+'initial condition'
+-0.5                           ;pressure head
+
+'initial gas saturation'
+0.0
+
+'extent of zone'
+0 2.51114674632166  0  0  -0.21222432431369  0.976270800935453
+
+'end of zone'
+
+'done'
+
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+6                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'surface inflow boundary'
+
+'boundary flux direction'
+0.0 0.0 1.0                  ;vector xi+yj+zk
+
+'boundary type'
+'second' 1.422d-6         ;flux [m/s] - 180 L / day divided by width of 0.60 m tank, divided by length of pile (2.47 m)
+
+'extent of zone: boundary nodes only'
+0.07844020200506  2.51114674632166  0 0  0.6843509010351956 0.976270800935453
+
+
+'end of zone'
+
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'res 5'     
+
+'boundary type'
+'first' -0.5                   ;head
+
+'extent of zone: boundary nodes only'
+1.05092832686000 1.06092832686000   0 0  -0.21222432431369 0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'res 4'     
+
+'boundary type'
+'first' -0.5                  ;head
+
+'extent of zone: boundary nodes only'
+1.32986284230000  1.33986284230000  0 0  -0.21222432431369 0
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'res 3'    
+
+'boundary type'
+'first' -0.5                  ;head
+
+'extent of zone: boundary nodes only'
+1.59588487968600  1.60588487968600  0 0  -0.21222432431369 0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'res 2'     
+
+'boundary type'
+'first' -0.5                   ;head
+
+'extent of zone: boundary nodes only'
+1.92957205049600  1.93957205049600  0 0  -0.21222432431369 0
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+6
+'res 1'    
+
+'boundary type'
+'first' -0.5                   ;head
+
+'extent of zone: boundary nodes only'
+2.24341143338600  2.25341143338600  0 0  -0.21222432431369 0
+
+
+'end of zone'
+
+'done'
+
+
+! Section 15: initial condition - reactive transport
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'background chemistry'
+
+'concentration input'
+1.0000d-09  'free'         ;br-1
+
+'guess for ph'
+7.0
+
+'extent of zone'
+0 2.51114674632166   0  0   -0.21222432431369 0.976270800935453
+
+'end of zone'
+
+'done'
+
+! Data Block 16: boundary conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - reactive transport'
+6                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'surface inflow boundary'
+
+'boundary type'
+'mixed'
+
+'concentration input'
+1.000-01    'free'      ;br-1
+
+'guess for ph'
+7.0
+
+'extent of zone: boundary nodes only'
+0  2.51114674632166  0 0  0.6843509010351956 0.976270800935453
+
+'end of zone'
+
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'res 5'
+
+'boundary type'
+'second'
+
+'extent of zone: boundary nodes only'
+1.05092832686000 1.06092832686000   0 0  -0.21222432431369 0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'res 4'
+
+'boundary type'
+'second'
+
+'extent of zone: boundary nodes only'
+1.32986284230000  1.33986284230000  0 0  -0.21222432431369 0
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'res 3'
+
+'boundary type'
+'second'
+
+'extent of zone: boundary nodes only'
+1.59588487968600  1.60588487968600  0 0  -0.21222432431369 0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'res 2'
+
+'boundary type'
+'second'
+
+'extent of zone: boundary nodes only'
+1.92957205049600  1.93957205049600  0 0  -0.21222432431369 0
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+6
+'res 1'
+
+'boundary type'
+'second'
+
+'extent of zone: boundary nodes only'
+2.24341143338600  2.25341143338600  0 0  -0.21222432431369 0
+
+
+'end of zone'
+
+'done'

@@ -1,0 +1,555 @@
+<------ comp.dbs: start of components ------>
+ca+2         2.0     6.00  .17           40.08000    .00
+mg+2         2.0     6.50  .20           24.31200    .00
+al+3         3.0     9.00  .00           26.98150    .00
+cl-1        -1.0     3.00  .01           35.45300    .00
+na+1         1.0     4.00  .07           22.98980    .00
+k+1          1.0     3.00  .01           39.10200    .00
+h4sio4        .0      .00  .00           96.11550    .00
+h+1          1.0     9.00  .00            1.00800  -1.00
+o2(aq)        .0     3.00  .00           31.99980    .00   !added 9/96
+co3-2       -2.0     5.40  .00           60.00940   2.00
+po4-3       -3.0     5.00  .00           94.97140    .00
+no3-1       -1.0     3.00  .00           62.00490    .00
+nh4+1        1.0     2.50  .00           18.03860    .00
+mn+3         3.0     9.00  .00           54.93800    .00
+ti(oh)4       .0      .00  .00          115.90000    .00   !added 4/2024
+lactate     -1.0      .00  .00           89.07070    .00
+fe+2         2.0     6.00  .00           55.84700    .00
+fe+3         3.0     9.00  .00           55.84700    .00
+h2o           .0      .00  .00           18.01530    .00
+<------ comp.dbs: end of components ------>
+
+<------ complex.dbs: start of secondary aqueous species ------>
+feco3+             .0000    9.7200                 1.00  .00  .00 115.8562   2.00   !added 9/97
+      2   fe+3           1.000 co3-2          1.000
+oh-              13.3620  -13.9980                -1.00 3.50  .00  17.0074   1.00
+      2   h2o            1.000 h+1           -1.000
+h3sio4-           6.1200   -9.8300                -1.00 4.00  .00  95.1070    .00
+      2   h4sio4         1.000 h+1           -1.000
+h2sio4-2         17.6000  -23.0000                -2.00 5.40  .00  94.0990    .00
+      2   h4sio4         1.000 h+1           -2.000
+mgoh+            15.9520  -11.8090                 1.00 6.50  .00  41.3190    .00
+      3   mg+2           1.000 h2o            1.000 h+1           -1.000
+mgco3aq           2.0220    2.9280                  .00  .00  .00  84.3210   2.00
+      2   mg+2           1.000 co3-2          1.000
+mghco3+          -2.4300   11.3990                 1.00 4.00  .00  85.3290   1.00
+      3   mg+2           1.000 co3-2          1.000 h+1            1.000
+mgpo4-            3.1000    6.5890                -1.00 5.40  .00 119.2830    .00
+      2   mg+2           1.000 po4-3          1.000
+mgh2po4+         -1.1200   21.0730                 1.00 5.40  .00 121.2990    .00
+      3   mg+2           1.000 po4-3          1.000 h+1            2.000
+mghpo4aq          -.2300   15.2200                  .00  .00  .00 120.2910    .00
+      3   mg+2           1.000 po4-3          1.000 h+1            1.000
+koh                .0000  -14.4600                  .00  .00  .00  56.1002    .00
+      3   k+1            1.000 h2o            1.000 h+1           -1.000
+naoh               .0000  -14.1800                  .00  .00  .00  39.9917    .00
+      3   na+1           1.000 h2o            1.000 h+1           -1.000
+caoh+            14.5350  -12.7800                 1.00 6.00  .00  57.0870    .00
+      3   ca+2           1.000 h2o            1.000 h+1           -1.000
+cahco3+           5.4100   11.4350                 1.00 6.00  .00 101.0970   1.00
+      3   ca+2           1.000 co3-2          1.000 h+1            1.000
+caco3aq           4.0300    3.1510                  .00  .00  .00 100.0890   2.00
+      2   ca+2           1.000 co3-2          1.000
+cahpo4aq          -.2300   15.0850                  .00  .00  .00 136.0590    .00
+      3   ca+2           1.000 po4-3          1.000 h+1            1.000
+capo4-            3.1000    6.4590                -1.00 5.40  .00 135.0510    .00
+      2   ca+2           1.000 po4-3          1.000
+cah2po4+         -1.1200   20.9600                 1.00 5.40  .00 137.0670    .00
+      3   ca+2           1.000 po4-3          1.000 h+1            2.000
+naco3-            8.9110    1.2700                -1.00 5.40  .00  82.9990   2.00
+      2   na+1           1.000 co3-2          1.000
+nahco3aq           .0000   10.0790                  .00  .00  .00  84.0070   1.00
+      3   na+1           1.000 co3-2          1.000 h+1            1.000
+nahpo4-            .0000   12.6360                -1.00 5.40  .00 118.9690    .00
+      3   na+1           1.000 po4-3          1.000 h+1            1.000
+khpo4-             .0000   12.6400                -1.00 5.40  .00 135.0810    .00
+      3   k+1            1.000 po4-3          1.000 h+1            1.000
+aloh+2           11.4900   -4.9900                 2.00 5.40  .00  43.9880    .00
+      3   al+3           1.000 h2o            1.000 h+1           -1.000
+al(oh)2+         26.9000  -10.1000                 1.00 5.40  .00  60.9960    .00
+      3   al+3           1.000 h2o            2.000 h+1           -2.000
+al(oh)4-         42.3000  -22.7000                -1.00 4.50  .00  95.0110    .00
+      3   al+3           1.000 h2o            4.000 h+1           -4.000
+al(oh)3aq        39.8400  -16.9000                  .00  .00  .00  78.0030    .00
+      3   al+3           1.000 h2o            3.000 h+1           -3.000
+feoh+            13.2000   -9.5000                 1.00 5.00  .00  72.8540    .00
+      3   fe+2           1.000 h2o            1.000 h+1           -1.000
+feoh3-1          30.3000  -31.0000                -1.00 5.00  .00 106.8690    .00
+      3   fe+2           1.000 h2o            3.000 h+1           -3.000
+fehco3+            .0000   12.3300                 1.00  .00  .00 116.8641   1.00
+      3   fe+2           1.000 co3-2          1.000 h+1            1.000
+feco3aq            .0000    4.3800                  .00  .00  .00 115.8562    .00
+      2   fe+2           1.000 co3-2          1.000
+feh2po4+           .0000   22.2530                 1.00 5.40  .00 152.8340    .00
+      3   fe+2           1.000 po4-3          1.000 h+1            2.000
+feoh2aq          28.5650  -20.5700                  .00  .00  .00  89.8610    .00
+      3   fe+2           1.000 h2o            2.000 h+1           -2.000
+fehpo4aq           .0000   15.9500                  .00  .00  .00 151.8260    .00
+      3   fe+2           1.000 po4-3          1.000 h+1            1.000
+feoh+2           10.4000   -2.1900                 2.00 5.00  .00  72.8540    .00
+      3   fe+3           1.000 h2o            1.000 h+1           -1.000
+fehpo4+          -7.3000   16.1000                 1.00 5.40  .00 151.8260    .00
+      3   fe+3           1.000 po4-3          1.000 h+1            1.000
+fecl+2            5.6000    1.4800                 2.00 5.00  .00  91.3000    .00
+      2   fe+3           1.000 cl-1           1.000
+fecl+2            5.6000    1.4800                 2.00 5.00  .00  91.3000    .00
+      2   fe+3           1.000 cl-1           1.000
+fecl2+             .0000    2.1300                 1.00 5.00  .00 126.7530    .00
+      2   fe+3           1.000 cl-1           2.000
+fecl3aq            .0000    1.1300                  .00  .00  .00 162.2060    .00
+      2   fe+3           1.000 cl-1           3.000
+feoh2+           17.1000   -5.6700                 1.00 5.40  .00  89.8610    .00
+      3   fe+3           1.000 h2o            2.000 h+1           -2.000
+feoh3aq          24.8000  -12.5600                  .00  .00  .00 106.8690    .00
+      3   fe+3           1.000 h2o            3.000 h+1           -3.000
+feoh4-           31.9000  -21.6000                -1.00 5.40  .00 123.8760    .00
+      3   fe+3           1.000 h2o            4.000 h+1           -4.000
+feh2po4+2          .0000   24.9800                 2.00 5.40  .00 152.8340    .00
+      3   fe+3           1.000 po4-3          1.000 h+1            2.000
+fe2(oh)2+4       13.5000   -2.9500                 4.00  .00  .00 145.7080    .00
+      3   fe+3           2.000 h2o            2.000 h+1           -2.000
+fe3(oh)4+5       14.3000   -6.3000                 5.00  .00  .00 235.5700    .00
+      3   fe+3           3.000 h2o            4.000 h+1           -4.000
+hco3-            -3.6170   10.3393                -1.00 5.40  .00  61.0170   1.00
+      2   co3-2          1.000 h+1            1.000
+h2co3aq          -2.2470   16.6810                  .00  .00  .00  62.0250    .00
+      2   co3-2          1.000 h+1            2.000
+hpo4-2           -3.4900   12.5000                -2.00 5.00  .00  95.9790    .00
+      2   po4-3          1.000 h+1            1.000
+h2po4-           -4.3500   19.5600                -1.00 5.40  .00  96.9870    .00
+      2   po4-3          1.000 h+1            2.000
+h3po4              .0000   21.7000                  .00  .00  .00  97.9950    .00
+      2   po4-3          1.000 h+1            3.000
+mg-(lact)2           0.0      2.01                 0.00  .00  .00 202.4534    .00
+      2   mg+2           1.000 lactate        2.000
+mg-(lact)+           0.0      1.37                 1.00  .00  .00 113.3827    .00
+      2   mg+2           1.000 lactate        1.000
+ca-(lact)2           0.0      2.48                 0.00  .00  .00 218.2214    .00
+      2   ca+2           1.000 lactate        2.000
+ca-(lact)+           0.0      1.48                 1.00  .00  .00 129.1507    .00
+      2   ca+2           1.000 lactate        1.000
+h-(lact)             0.0      3.86                 0.00  .00  .00  90.0786    .00
+      2   h+1            1.000 lactate        1.000
+al2-lact             0.0     -7.03                 0.00  .00  .00 150.0668    .00
+      4   h+1           -2.000 lactate        1.000 al+3           1.000 h2o            1.000
+al-lact2+            0.0      5.82                 1.00  .00  .00 205.1229    .00
+      2   lactate        2.000 al+3           1.000
+al-lact3             0.0      7.45                 0.00  .00  .00 294.1936    .00
+      2   lactate        3.000 al+3           1.000
+al-lact++            0.0      3.24                 2.00  .00  .00 116.0522    .00
+      2   lactate        1.000 al+3           1.000
+<------ complex.dbs: end of secondary aqueous species ------>
+
+<------ redox.dbs: start of intra-aqueous kinetic reactions ------>
+'fe+3'
+4  'fe+2'           1.000 'o2(aq)'       0.250 'h+1'          1.000 'h2o'    -0.500
+'equilibrium'  -8.4725   23.4570
+!
+<------ redox.dbs: end of intra-aqueous kinetic reactions ------>
+
+<------ gases.dbs: start of gaseous species ------>
+o2(g)              1.844    2.8980                                 31.9988
+      1   o2(aq)         1.000
+co2(g)            -.5300   18.1600                                 41.0100
+      3   co3-2          1.000 h+1            2.000 h2o           -1.000
+<------ gases.dbs: end of gaseous species ------>
+
+<------ mineral.dbs: start of minerals ------>
+'calcite'
+'surface'
+ 100.0894    2.7100
+ 2  'ca+2'    1.000  'co3-2'    1.000
+'reversible'    8.4750  2.5850
+!
+'actinolite-crit'
+'surface'
+853.16  3.135
+7  'ca+2' 2.7  'mg+2' 3.1 'h4sio4' 7.38  'h+1' -13.95  'fe+2' 0.97  'h2o' -5.52  'na+1'  0.41
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 3
+'pathway' 1
+'log rate constant'  -10.7
+'activation energy' 88.0
+'fractional C^c' 1
+'h+1'  0.25
+'end pathway'
+'pathway' 2
+'log rate constant' -13.2
+'activation energy' 88.0
+'end pathway'
+'pathway' 3
+'log rate constant' -13.37
+'activation energy' 51.0
+'fractional C^c'  1
+'h+1' -0.13
+'end pathway'
+!
+'epidote-marieni'
+'surface'
+483.2226  3.471426724
+8  'ca+2' 2.07  'mn+3' 0.01 'h4sio4' 3.0  'h+1' -13.47   'fe+3' 1.02  'h2o' 0.71  'al+3'  2.08  'ti(oh)4'  0.01
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 3
+'pathway' 1
+'log rate constant'  -9.4546
+'activation energy' 60.0
+'fractional C^c' 1
+'h+1'  0.56
+'end pathway'
+'pathway' 2
+'log rate constant' -11.8582
+'activation energy' 43.2
+'end pathway'
+'pathway' 3
+'log rate constant' -16.2645
+'activation energy' 42.3
+'fractional C^c'  1
+'h+1' -0.4
+'end pathway'
+!-------------------------------------------------------------------------------------------------------------------
+'albite-ph-d'
+'surface'
+262.2250  2.620
+5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution'  -2.5920  17.400
+'parallel reaction pathways' 2
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+'quartz-td'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'irreversible dissolution'   3.9800  -5.9900
+'parallel reaction pathways' 1
+'pathway' 1
+'log rate constant'  -13.99
+'activation energy' 87.6
+'end pathway'
+!
+'chlorite-crit'
+'surface'
+555.7969  2.68358312
+6  'mg+2' 2.79  'fe+2' 1.62  'al+3' 2.1  'h4sio4' 2.81 'h+1' -15.12  'h2o' 6.76
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 3
+'pathway' 1
+'log rate constant'  -10.0
+'activation energy' 88.0
+'fractional C^c' 1
+'h+1'  0.36
+'end pathway'
+'pathway' 2
+'log rate constant' -14.0
+'activation energy' 88.0
+'end pathway'
+'pathway' 3
+'log rate constant' -12.39
+'activation energy' 51.0
+'fractional C^c'  1
+'h+1' -0.03
+'end pathway'
+!
+'titanite-td'
+'surface'
+196.0405  3.48
+5  'ti(oh)4' 1.000  'ca+2' 1.000  'h4sio4' 1.000  'h+1' -2.000  'h2o' -3.000
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 2
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+'albite-n'
+'surface'
+262.2250  2.620
+5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution - log K control '  -2.5920  17.400
+'parallel reaction pathways' 2
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+'ch2o-o2-td'
+'surface'
+30.02088  100.0000
+3  'o2(aq)' -1.000  'co3-2' 1.000  'h+1' 2.000
+'irreversible dissolution'
+'hyperbolic C^c' 1
+'o2(aq)'  1.0d-10 1.000
+!
+'ferrihydrite'
+'surface'
+ 104.8692    4.3713
+ 3  'h+1'   -3.000  'fe+3'    1.000  'h2o'    3.000
+'reversible'   -4.8910  0.0000
+!
+'al(oh)3(am)'
+'surface'
+  78.0034    2.3500
+ 3  'h+1'   -3.000  'al+3'    1.000  'h2o'    3.000
+'reversible'   -10.800  22.8000
+!
+'sio2(a,pt)'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'reversible'    2.7100  -3.9100
+!
+'uan-fertilizer-n'
+'surface'
+36.96 1000.0
+4  'nh4+1' 1.2814  'no3-1' 0.2814  'h2o' 0.25  'co3-2' 0.5
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'k-fertilizer'
+'surface'
+140.2  1000.0
+2  'cl-1' 1.000  'k+1' 1.000
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'urea-phosphate'
+'surface'
+158.05  1000.0
+5  'nh4+1' 2.000  'h2o' -2.000  'co3-2' 1.000  'po4-3' 1.000  'h+1' 3.000
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'turnover-26-12-2024'
+'surface'
+100.0   1000.0
+7 'ca+2'	0.1297	'mg+2'	0.0445	'po4-3'	0.1510	'k+1'	0.2074	'no3-1'	0.0260	'nh4+1'	0.4414	'h+1'	-0.5182
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'ion-exchange-ca'
+'surface'
+100.0  1000.0
+2  'al+3' 1.0  'ca+2' -1.5
+'irreversible dissolution'
+'hyperbolic C^c' 1
+'ca+2'     1.0d-05    2.00
+!----------------------------------------------------------------------------------------------
+'soca+_kin'
+'surface'
+100.0   1000.0
+2  'h+1'  1.0  'ca+2'  -1.0
+'irreversible dissolution'
+'hyperbolic C^a' 1
+'oh-'    1.0e-07    1.00
+'hyperbolic T^a' 1
+'ca+2'   1.0e-07    1.00
+'inhibition C^a' 1
+'h+1' 1.0e-07  1.000
+!----------------------------------------------------------------------------------------------
+'somg+_kin'
+'surface'
+100.0   1000.0
+2  'h+1'  1.0  'mg+2'  -1.0
+'irreversible dissolution'
+'hyperbolic C^a' 1
+'oh-'    1.0e-07    1.00
+'hyperbolic T^a' 1
+'mg+2'   1.0e-07    1.00
+'inhibition C^a' 1
+'h+1' 1.0e-07  1.000
+!----------------------------------------------------------------------------------------------
+'lactate-exud'
+'surface'
+100.0   1000.0
+2  'lactate'  1.0  'h+1'  1.0
+'irreversible dissolution'
+'hyperbolic C^a' 1
+'oh-'    1.0e-07    1.0
+!'inhibition C^a' 1
+<------ mineral.dbs: end of minerals ------>
+
+<------ redox.dbs: start of intra-aqueous kinetic reactions ------>
+'nitri-1-order'
+5  'nh4+1'   -1.000   'no3-1'    1.000  'h2o'    1.000  'h+1'    2.000  'o2(aq)'   -2.000
+'irreversible'
+'fractional T^a'  1
+'nh4+1'   1.000
+'hyperbolic T^a'  1
+'nh4+1'    1.11e-4  1.0d0
+'hyperbolic C^c'  1
+'o2(aq)'   6.25e-5  1.0d0
+'inhibition C^c'  1
+'h+1' 2.0e-7  1.5
+!----------------------------------------------------------------------------------
+<------ redox.dbs: end of intra-aqueous kinetic reactions ------>
+
+<------ mineral(x).dbs: start of excluded minerals ------>
+'chrysotile'
+'surface'
+ 277.1349    2.5500
+ 4  'h+1'   -6.000  'mg+2'    3.000  'h4sio4'    2.000  'h2o'    1.000
+'reversible'  -32.1880  46.8000
+!
+'clinoenstite'
+'surface'
+ 100.3964    3.1900
+ 4  'h2o'   -1.000  'mg+2'    1.000  'h4sio4'    1.000  'h+1'   -2.000
+'reversible'  -11.3380  20.0150
+!
+'diopside'
+'surface'
+ 216.5608    3.2000
+ 5  'h2o'   -2.000  'ca+2'    1.000  'mg+2'    1.000  'h4sio4'    2.000  'h+1'   -4.000
+'reversible'  -19.8860  32.2800
+!
+'sepiolite(c)'
+'surface'
+ 323.9313    2.0000
+ 4  'h2o'   -0.500  'mg+2'    2.000  'h4sio4'    3.000  'h+1'   -4.000
+'reversible'  -15.9130  27.2680
+!
+'forsterite'
+'surface'
+ 236.8234    3.2000
+ 3  'h+1'   -4.000  'mg+2'    2.000  'h4sio4'    1.000
+'reversible'  -28.2980  48.5100
+!
+'phlogopite'
+'surface'
+ 417.2863    2.8600
+ 5  'h+1'  -10.000  'k+1'    1.000  'mg+2'    3.000  'al+3'    1.000  'h4sio4'    3.000
+'reversible'  -43.3000  42.3000
+!
+'sepiolite(a)'
+'surface'
+ 323.9308    2.0000
+ 4  'h2o'   -0.500  'mg+2'    2.000  'h4sio4'    3.000  'h+1'   -4.000
+'reversible'  -18.7800  0.0000
+!
+'talc'
+'surface'
+ 379.2888    2.7500
+ 4  'h2o'   -4.000  'mg+2'    3.000  'h4sio4'    4.000  'h+1'   -6.000
+'reversible'  -21.3390  46.3520
+!
+'tremolite'
+'surface'
+ 812.4096    3.1000
+ 5  'h2o'   -8.000  'ca+2'    2.000  'mg+2'    5.000  'h4sio4'    8.000  'h+1'  -14.000
+'reversible'  -56.5460  96.6150
+!
+'monticellite'
+'surface'
+ 156.4900    3.2000
+ 4  'h+1'   -4.000  'h4sio4'    1.000  'ca+2'    1.000  'mg+2'    1.000
+'reversible'  -30.2720  49.4210
+!
+'akerminite'
+'surface'
+ 272.6600    2.9378
+ 5  'h2o'   -1.000  'h+1'   -6.000  'h4sio4'    2.000  'ca+2'    2.000  'mg+2'    1.000
+'reversible'  -47.4720  76.4450
+!
+'merwinite'
+'surface'
+ 328.7400    3.1489
+ 4  'h+1'   -8.000  'h4sio4'    2.000  'mg+2'    1.000  'ca+2'    3.000
+'reversible'  -68.5430  107.1110
+!
+'mg-nontronit'
+'surface'
+ 408.6150    3.1490
+ 6  'h+1'   -7.320  'h2o'   -2.680  'al+3'    0.330  'fe+3'    2.000  'mg+2'    0.167  'h4sio4'    3.670
+'reversible'   20.5890  0.0000
+!
+'montmorillon'
+'surface'
+ 371.3490    2.5000
+ 6  'h4sio4'    3.810  'mg+2'    0.490  'h+1'   -6.760  'h2o'   -3.240  'fe+3'    0.220  'al+3'    1.710
+'reversible'   -2.6700  0.0000
+!
+'leonhardite'
+'surface'
+ 922.8670    1.0000
+ 5  'h2o'   -1.000  'h+1'  -16.000  'ca+2'    2.000  'h4sio4'    8.000  'al+3'    4.000
+'reversible'  -16.4900  85.3600
+!
+'anorthite'
+'surface'
+ 278.2110    2.7600
+ 4  'ca+2'    1.000  'al+3'    2.000  'h4sio4'    2.000  'h+1'   -8.000
+'reversible'  -25.4300  70.6600
+!
+'laumontite'
+'surface'
+ 470.4410    2.2800
+ 4  'ca+2'    1.000  'al+3'    2.000  'h4sio4'    4.000  'h+1'   -8.000
+'reversible'  -14.4600  50.4500
+!
+'wairakite'
+'surface'
+ 434.4110    2.3247
+ 5  'ca+2'    1.000  'al+3'    2.000  'h4sio4'    4.000  'h+1'   -8.000  'h2o'   -2.000
+'reversible'  -18.8700  63.1500
+!
+'wollastonite'
+'surface'
+ 116.1700    2.8500
+ 4  'h2o'   -1.000  'h+1'   -2.000  'h4sio4'    1.000  'ca+2'    1.000
+'reversible'  -12.9960  19.4980
+!
+'p-wollstanit'
+'surface'
+ 116.1700    2.8985
+ 4  'h2o'   -1.000  'h+1'   -2.000  'h4sio4'    1.000  'ca+2'    1.000
+'reversible'  -13.8460  21.0680
+!
+'ca-olivine'
+'surface'
+ 172.2500    3.32
+ 3  'h+1'   -4.000  'h4sio4'    1.000  'ca+2'    2.000
+'reversible'  -37.6490  54.6950
+!
+'larnite'
+'surface'
+ 172.2500    3.3382
+ 3  'h+1'   -4.000  'h4sio4'    1.000  'ca+2'    2.000
+'reversible'  -39.1410  57.2380
+!
+'gehlenite'
+'surface'
+ 374.2100    4.1468
+ 5  'h+1'  -10.000  'al+3'    2.000  'h4sio4'    1.000  'ca+2'    2.000  'h2o'    3.000
+'reversible'  -56.8220  116.1250
+!
+'ca-nontronit'
+'surface'
+ 424.3750    3.2370
+ 6  'h+1'   -7.320  'h2o'   -2.680  'al+3'    0.330  'fe+3'    2.000  'ca+2'    0.167  'h4sio4'    3.670
+'reversible'   20.8890  0.0000
+!
+<------ mineral(x).dbs: end of excluded minerals ------>
+

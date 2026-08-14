@@ -1,0 +1,930 @@
+! ---------------------------------------------------------------------------
+
+! Verification of 1D vertical stress
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Sedimentary basin'
+
+.true.                        ;varsat_flow
+
+.false.                       ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'density dependent flow'
+
+
+
+'compute ice sheet loading/unloading'
+
+
+
+
+
+'backup frequency' 
+
+20 
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+'geochemical system'
+
+
+
+'compute alkalinity'
+
+
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'database\default'
+
+
+
+'components'
+
+1                            ;number of components (nc-1)
+
+'cl-1'
+
+
+
+  
+
+
+
+'secondary aqueous species'
+
+0                 ;number of secondary aqueous species
+
+
+
+
+
+'gases'
+
+0                             ;number of gases 
+
+
+
+'minerals'
+
+0                             ;number of minerals (nm)
+
+
+
+
+
+'excluded minerals'
+
+0 
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+
+'read unstructured grid from file'
+
+!'use unstructured grid method'
+
+'use layered mesh structure'
+
+!'scale factor for mesh output'
+!1.0 1.0 0.0002
+
+'structured spatial discretization'
+1                             ;number of discretization intervals in x
+
+2
+
+0.0 1.0
+
+1                             ;number of discretization intervals in y
+
+2                             ;number of control volumes in interval
+
+0. 1.0                        ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+200                          ;number of control volumes in interval
+
+0.  10000.0                   ;zmin,zmax
+
+
+
+'done'
+
+
+
+
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+'time step control - global system'
+
+'years'                       ;time unit
+
+0.0                           ;time at start of solution
+
+20000.0d0                     ;final solution time
+
+10.0d0                       ;maximum time step
+
+1.0d-2                        ;minimum time step
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+20.0d0                        ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.2d0                         ;min. activity for h2o
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+ 
+
+'variable density parameters'
+
+1000.0d0                      ;freshwater density g/L
+
+0.0d0                         ;linear density coefficient d(rho)/d(TDS)
+
+6                             ;max # Picard flow-RT iterations
+
+3                             ;Picard iteration target (# iterations)
+
+0.1d0                        ;maximum density update: Picard convergence g/L
+
+1.0d50                        ;Courant criteria target
+
+
+
+
+
+'newton iteration settings'
+
+1.0d-4                        ;increment for numerical differentiation
+
+100                           ;max. number of newton iterations
+
+1.0d-4                        ;convergence tolerance
+
+1.0d0                         ;sw_star
+
+ 
+
+'input units for media permeability'
+
+'hydraulic conductivity'  
+
+ 
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'solver settings'
+
+1                             ;level_vs, incomplete factorization level
+
+1000                           ;msolvit_vs, max. number of solver iterations
+
+2                             ;idetail_vs, solver information level
+
+1.0d-9                        ;restol_vs, solver residual tolerance
+
+1.0d-9                        ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'                      ;spatial weighting
+
+
+
+'activity update settings'
+
+'time_lagged'                    ;type of activity update
+
+
+
+'tortuosity correction'
+
+'no correction'
+
+
+
+'newton iteration settings'
+
+1.0d-4                        ;increment h for numerical differentiation
+
+10                            ;anticipted number of Newton iterations
+
+100                           ;max. number of Newton iterations
+
+1.0d50                        ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.0d-5                        ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+1                             ;incomplete factorization level
+
+1000                           ;max. number of solver iterations
+
+2                             ;solver information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+'done'
+
+
+
+
+
+!
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+5
+
+100.0 500.0  1000.0 5000.0
+
+10000.0
+
+
+
+'output of transient data'
+
+0                             ;number of output locations (transient data)
+
+1                             ;timesteps between output (transient data)
+
+100                            ;control volume numbers (transient data)
+
+
+
+'done'
+
+
+
+
+
+'done'
+
+!
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                                ;number of property zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'basin'
+
+1.0d0                          ;porosity
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 10000.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------------------------------------
+
+'basin'                  ;name of zone
+
+
+
+
+
+ 'hydraulic conductivity in x-direction'
+
+3.17108e-11
+
+ 
+
+ 'hydraulic conductivity in y-direction'
+
+3.17108e-11
+
+ 
+
+ 'hydraulic conductivity in z-direction'
+
+3.17108e-11
+
+ 
+
+'specific storage coefficient'
+
+ 1.0d-6
+
+
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+0.0                          ;aqueous phase
+
+0.d0                         ;gaseous phase
+
+
+
+! ---------------------------------------------------------------------------
+
+'basin'
+
+
+
+'longitudinal dispersivity'
+
+0.0d0
+
+
+
+'transverse horizontal dispersivity'
+
+0.0d0
+
+'transverse vertical dispersivity'
+
+0.0d0
+
+ 
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                              ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'upper'
+
+
+
+'initial condition'
+
+0.0d0                        ;freshwater head
+
+
+
+'extent of zone'
+
+0.0 1.0d0 0.0 1.0  0.0 10000.0d0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+!
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+ 2
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'boundary 1'
+
+
+
+'boundary type'
+
+'first'      0.0d0               ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 0.0
+
+
+
+'end of zone'
+
+
+
+
+
+'number and name of zone'
+
+2
+
+'boundary 2'
+
+
+
+'boundary type'
+
+'second'      0.0d0               ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  10000.0 10000.0
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+'done'
+
+!
+
+! Data Block 15: initial conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'background'
+
+
+
+'concentration input'
+
+1.0e-10         'free'      ;cl-1
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 10000.0
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'third'
+
+
+
+
+
+'concentration input'
+
+1.0d-10       'free'    ;cl
+
+
+
+
+
+
+
+'extent of zone'
+
+0.0 1.0d0 0.0 1.0  10000.0 10000.00
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+! Data Block 17: control parameter of ice Sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'control parameters - ice sheet loading/unloading' 
+
+'density of ice'
+1000.0
+
+'scaling factor of pressure head and pore stress'
+0.0d0           ;scaling factor of pressure head due to ice sheet growth
+1.0d0           ;scaling factor of pore stress due to ice sheet growth
+0.0d0           ;scaling factor of pressure head due to ice sheet decay
+1.0d0           ;scaling factor of pore stress due to ice sheet decay
+
+'basal temperature of ice'
+0.0d0           ;basal temperature during ice sheet growth
+0.0d0           ;basal temperature during ice sheet decay
+
+!modify (smooth) ice thickness by log function based on h'=a*(log(h*b+1))^c 
+!where h is the original thickness, e.g., h'=500.0*(log(h*0.01+1))^0.75 
+!'transformation parameters of ice thickness'
+!500.0  0.01  0.75
+
+!c isbc, add boundary condition indicator, relation with surface temperature
+!c facpw, Scale factor for pw, used to adjust pressure head
+!c facpice, Scale factor for pice, used to adjust por_stress
+!c 'concentration input', reactive transport bd when ice sheet is applied
+
+
+
+
+
+!'ice sheet loading/unloading'
+
+!.true. 
+
+!0.0d0     ! l source
+
+!0.0d0     ! z source 
+
+!0.0d0     ! a
+
+!0.0d0     ! b
+
+!-1.0d0	  ! logkxx
+
+!-1.0d0	  ! logkyy
+
+!-1.0d0	  ! logkzz 
+
+!1.0d3     ! ice density 
+
+!1.0d3     ! fresh water density
+
+!1         ! number of stages
+
+!1			   ! istage
+
+!.true.
+
+!0.0d0                      ! facw 
+
+!1.0d0                      ! facice
+
+!0.0d0   20000.0d0          ! time(1,i),time(2,i)
+
+!0.0d0   10000.0d0          ! l(1,i),l(2,i)
+
+!0.0d0    6000.0d0          ! h(1,i),h(2,i) 
+
+!0.0d0       0.0d0          ! l1perm(1,i),l1perm(2,i) 
+
+!0.0d0       0.0d0          ! l2perm(1,i),l2perm(2,i) 
+
+!0.0d0       0.0d0	   ! thickperm(1,i),thickperm(2,i) 
+
+
+
+'done'
+
+! Data Block 18: physical parameter of ice Sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'physical parameters - ice sheet loading/unloading' 
+2
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'ice sheet basal nodes'
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+200
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'ice sheet basal cells'
+
+'extent of zone: boundary cells by material id'
+'read data'
+1
+199
+
+'end of zone'
+
+'done'
+
+! Data Block 19: initial condition of ice sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'initial condition - ice sheet loading/unloading' 
+!'read initial condition from file'
+!'read initial condition from vtk file'
+!'read initial condition from hdf5 file'
+
+1
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'ini-ice'
+
+'initial condition'
+'first'  0.0d0
+
+!'curve fitting ice sheet model'
+!5.0           ;[m] sea level change
+!4.4           ;[m/T] sea level change per temperature change
+!-10.0         ;[m/m] ice thickness change per sea level change
+!-5.0          ;[m], threshold of sea level change to form ice sheet
+!1000.0        ;[m], threshold of elevation to form ice sheet
+
+!specified ice temperature and ice thickness directly
+!'first' 20.0
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+200
+
+'end of zone'
+
+'done'
+
+! Data Block 20: boundary conditions of ice sheet loading/unloading
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - ice sheet loading/unloading' 
+1
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'bd-ice'
+
+'concentration input'
+1.0d-10       'free'    ;cl
+
+'boundary type'
+'first'  0.0d0
+
+!'curve fitting ice sheet model'
+!5.0           ;[m] sea level change
+!4.4           ;[m/T] sea level change per temperature change
+!-10.0         ;[m/m] ice thickness change per sea level change
+!-5.0          ;[m], threshold of sea level change to form ice sheet
+!1000.0        ;[m], threshold of elevation to form ice sheet
+
+!specified ice temperature and ice thickness directly
+!'first' 20.0
+
+'extent of zone: boundary nodes by material id'
+'read data'
+1
+200
+
+'end of zone'
+
+'transient boundary conditions: values only'
+
+'linear interpolation of boundary conditions'
+
+'done'
+

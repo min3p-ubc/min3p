@@ -1,0 +1,1375 @@
+"Verification vapor transport"			
+
+!
+
+!Mizayaki, T. Condensation and movement of water vapor in sand under temperature 
+
+!gradient (In japanese) Transactions of the Japanese Society of Irrigation, 
+
+!Drainage and Reclamation Engineering, 1976, 61, 1-8                                      			
+
+!
+
+!Bea, S.; Wilson, S.; Mayer, K.; Dipple, G.; Power, I. & Gamazo, P. 
+
+!Reactive transport modeling of natural carbon sequestration in ultramafic 
+
+!mine tailings Vadose Zone Journal, 2012, 11(2), 1-17
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'global control parameters'                                                 			
+
+'preconditioning - wetland Leuna A2'                                        			
+
+.true.                        ;varsat_flow                                  			
+
+.false.                       ;steady_flow                                  			
+
+.false.                       ;fully_saturated                              			
+
+.false.                       ;reactive_transport                           			
+
+.false.                       ;plant_uptake and physical evaporation ???	
+
+
+
+
+
+'density dependent flow'
+
+
+
+'energy balance' 
+
+			
+
+!'restart' 
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 2: geochemical system                                             			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'geochemical system'			
+
+			
+
+'use new database format'
+
+
+
+			
+
+'database directory'                                                        
+
+'database'                                          			
+
+			                                                                    			
+
+			
+
+'define temperature'			
+
+25			
+
+			
+
+			
+
+'components'                                                                			
+
+1                               ;number of components (nc-1)                			
+
+'cl-1'
+
+
+
+'secondary aqueous species'                                                 			
+
+0                 ;number of secondary aqueous species
+
+			
+
+'done'                                                                      			
+
+!   			
+
+! Section 3: spatial discretization                                         			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'spatial discretization'                                                    			
+
+1                             ;number of discretization intervals in x			
+
+1                             ;number of control volumes in x			
+
+0.0  1.0                      ;xmin,xmax"			
+
+1                             ;number of discretization intervals in y      			
+
+1                             ;number of control volumes in y               			
+
+0. 1.0                        ;ymin,ymax                                    "			
+
+1
+
+150                           ;number of discretization intervals in z
+
+0.0  0.1
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 4: time step control - global system                              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'time step control - global system'                                         			
+
+'days'                       ;time unit                                     			
+
+0.0                          ;time at start of solution                     			
+
+30.d0                        ;final solution time                           			
+
+0.01d0                       ;maximum time step			
+
+1.0d-5                       ;minimum time step			
+
+'done'			
+
+			
+
+!   			
+
+! Section 5: control parameters - local geochemistry                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - local geochemistry'                                   			
+
+			
+
+'finite minerals'                                                           			
+
+.true.                        ;update geometrical parameters of minerals    			
+
+			
+
+'newton iteration settings'                                                 			
+
+1.d-4                         ;factor for numerical differentiation         			
+
+1.d-6                         ;convergence tolerance                        			
+
+			
+
+'maximum ionic strength'                                                    			
+
+50.0d0                         ;max. ionic strength                          			
+
+			
+
+'minimum activity for h2o'                                                  			
+
+0.01d0                         ;min. activity for h2o                        			
+
+			
+
+'output time unit'                                                          			
+
+'days'                        ;time unit (local chemistry)                  			
+
+			
+
+'done'                                                                      			
+
+			
+
+!   			
+
+! Section 6: control parameters - variably saturated flow                   			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - variably saturated flow'                              			
+
+                         			
+
+	
+
+'mass balance'		
+
+
+
+'upstream factor for flow equation'
+
+0.5
+
+
+
+'iterative solver'
+
+			
+
+'input units for boundary and initial conditions'                           			
+
+'pressure head'              ;input unit 
+
+
+
+'input units for media permeability'
+
+'hydraulic conductivity'
+
+			
+
+'upstream weighting'                                                        			
+
+.true.                       .true.                        ;upstream weight			
+
+		
+
+
+
+'variable density parameters'
+
+1000.0d0                      ;freshwater density g/L
+
+0.0d0                         ;linear density coefficient d(rho)/d(TDS)
+
+15                            ;max # Picard flow-RT iterations
+
+8                             ;Picard iteration target (# iterations)
+
+0.1d0                         ;maximum density update: Picard convergence g/L
+
+1.0d50                        ;Courant criteria target
+
+			
+
+'newton iteration settings'			
+
+1.0d-4                        ;increment for numerical differentiation			
+
+200                           ;max. number of newton iterations			
+
+1.0d-6                        ;convergence tolerance			
+
+0.8                           ;sw_star			
+
+			
+
+'solver settings'			
+
+0                             ;incomplete factorization level			
+
+100                           ;max. number of solver iterations			
+
+0                             ;solver information level			
+
+1.0d-11                       ;solver residual tolerance			
+
+1.0d-11                       ;solver update tolerance			
+
+.true.                        ;rcm ordering			
+
+			
+
+'done'	
+
+
+
+!
+
+! Data Block 6B: control parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - energy balance'
+
+
+
+'energy balance'
+
+
+
+'upstream factor for heat equation'
+
+0.5
+
+
+
+'thermal conductivity model'
+
+'model 6'
+
+1.0d0
+
+
+
+'compute evaporation'
+
+
+
+'non-linear density'
+
+ 
+
+ 
+
+'reference temperature for density'
+
+25.0d0
+
+ 
+
+'energy balance parameters'
+
+0.0d0 
+
+
+
+
+
+'newton iteration settings'
+
+1.0d-5                        ;increment for numerical differentiation
+
+100                           ;max. number of newton iterations
+
+1.0d-6                        ;convergence tolerance
+
+15.0d0                        ;maximum log cycles update
+
+
+
+ 
+
+'solver settings'
+
+0                             ;level_vs, incomplete factorization level
+
+100                           ;msolvit_vs, max. number of solver iterations
+
+0                             ;idetail_vs, solver information level
+
+1.0d-10                       ;restol_vs, solver residual tolerance
+
+1.0d-10                       ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6B: control parameters - evaporation
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - evaporation'
+
+
+
+'write transient evaporation info'
+
+
+
+'vapour density model'
+
+'saito et al. (2006)'
+
+.true.
+
+
+
+'temperature gain factor for soil'
+
+7.0d0
+
+
+
+'update vapor density derivatives'
+
+
+
+'reference vapor diffusivity'
+
+2.12d-5 
+
+
+
+!'enhanced factor in isothermal vapor fluxes'
+
+8.0d0
+
+
+
+'soil surface resistance to vapor flow'
+
+'model 3'
+
+
+
+!'split divergence of vapor density'
+
+
+
+'tortuosity model to vapor flow'
+
+'millington'
+
+
+
+'compute enhanced factor in thermal vapor fluxes'
+
+2.0              ! clay fraction content
+
+8.0              ! nabla cte
+
+
+
+'relative humidity parameters'
+
+.false.          ! Read Hr from file
+
+0.85d0           ! Relative humidity of the atmosphere (average) 
+
+0.0d0            ! relative humidity (amplitude during the year)
+
+0.00d0           ! relative humidity (amplitude during the day)
+
+182.5d0          ! Time for maximum relative humidity during year [units of the problem]
+
+0.5d0            ! Maximum during day [units of the problem]
+
+
+
+'temperature parameters'
+
+.false.          ! Read temp from file
+
+37.0d0           ! Temperature of the atmosphere
+
+0.0d0            ! Temperature (amplitude during the year)
+
+0.0              ! Temperature (amplitude during the day)
+
+0.0              ! maximum time during year  [units of the problem]
+
+0.0d0            ! maximum time during day [units of the problem]
+
+
+
+ 
+
+
+
+'solar radiation parameters'
+
+.false.          ! Read radiation from file 
+
+.false.          ! Read cloud index from file
+
+0.0d0            ! Factor to multiply radiation term 
+
+-29.0d0          ! Latitude of the place 
+
+182.5d0          ! Time when January is starting
+
+0.5d0            ! Time corresponding to moon  
+
+273.5d0          ! Time when autumn is starting 
+
+1.0d0            ! Cloud index (0=completely clouded sky, 1=clear sky)  
+
+0.2d0            ! Albedo dry soil
+
+0.1d0            ! Albedo wet soil 
+
+
+
+
+
+'rain parameters'
+
+.false.          ! Read rain events from file 
+
+-100.0d0         ! Leakage for runoff term 
+
+
+
+'evaporation parameters'
+
+.false.          ! Compute evaporation rate based on aerodynamic relationship
+
+.true.           ! Read evaporation rate from file (only if compute evaporation rate is false)
+
+1.9675E-06       ! Imposed evaporation rate [kg/m2/s]
+
+1.0              ! Factor to multiply evaporation term 
+
+0.001d0          ! Roughness length [m]
+
+0.001d0          ! Screen height where parameters were measured [m] 
+
+1.0              ! Stability factor 
+
+1.112d0          ! Density of air in the atmosphere 
+
+.false.          ! Read wind 
+
+1.               ! Wind speed [m s-1] 
+
+0.0              ! Wind speed amplitude during year [m s-1] 
+
+0.0              ! Wind speed amplitude during day [m s-1]
+
+0.0              ! Maximum wind speed during year [units of the problem] 
+
+0.0              ! Maximum wind speed during day [units of the problem] 
+
+
+
+
+
+'done'
+
+			
+
+!   			
+
+! Section 7: control parameters - reactive transport                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - reactive transport'                                   			
+
+			
+
+'update porosity'
+
+
+
+'update permeability'    			
+
+			
+
+'mass balance settings'                                                     			
+
+.true.                        ;compute mass balance                         			
+
+			
+
+'spatial weighting'                                                         			
+
+'upstream'                     ;spatial weighting        'centered'         			
+
+			
+
+'activity update settings'                                                  			
+
+'time_lagged'                 ;type of activity update                      			
+
+			
+
+'tortuosity corrections'                                                    			
+
+.false.                       ;Millington-Quirk tortuosity correction			
+
+			
+
+			
+
+'newton iteration settings'                                                 			
+
+1.0d-4                        ;increment h for numerical differentiation    			
+
+50                            ;anticipated number of Newton iterations      			
+
+100                           ;max. number of Newton iterations             			
+
+1.0d50                        ;anticipated update in log cycles    => increase time step more slowly			
+
+4.0d0                         ;maximum update in log cycles                 			
+
+1.d-5                         ;convergence tolerance (global system)        			
+
+			
+
+'solver settings'                                                           			
+
+0                             ;incomplete factorization level               			
+
+100                           ;max. number of solver iterations             			
+
+0                             ;solver information level                     			
+
+1.d-9                         ;solver residual tolerance                    			
+
+1.d-9                         ;solver update tolerance                      			
+
+.true.                        ;rcm ordering                                 			
+
+			
+
+'done'                                                                      			
+
+!   			
+
+! Section 8: output control                                                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'output control'                                                            			
+
+			
+
+'output of spatial data'                                                    			
+
+9                           ;number of output times (spatial data)	
+
+0.01 0.02 0.1 0.5
+
+5.0 6.0 10.0 16.0 
+
+30.0 
+
+			
+
+					
+
+			
+
+'coordinate output'			
+
+			
+
+'output of transient data'                                                  			
+
+2                              ;number of output locations (transient data)  			
+
+1                              ;timesteps between output (transient data)			
+
+0.0   0.0      0.1
+
+0.0   0.0    0.001
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 9: physical parameters - porous medium                            			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - porous medium'                                       			
+
+1                             ;number of property zones                     			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'tailings'                                                                   			
+
+			
+
+0.325d0                         ;porosity                                     			
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 0.1			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+'done'			
+
+!   			
+
+! Section 10: physical parameters - variably saturated flow                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - variably saturated flow'			
+
+'dual permeability off'			
+
+'dual porosity off'
+
+
+
+			
+
+! --------------------------------------------------------------------------			
+
+'tailings'			
+
+			
+
+'hydraulic conductivity in x-direction'      ! conductivity adjusted to fit			
+
+0.00040046                      ;K_xx			
+
+
+
+'hydraulic conductivity in y-direction'      ! conductivity adjusted to fit			
+
+0.00040046                     ;K_yy			
+
+			
+
+'hydraulic conductivity in z-direction'      ! grad = 1.5 per mil			
+
+0.00040046                     ;K_zz			
+
+			
+
+'specific storage coefficient'			
+
+0.0d0
+
+
+
+'oven-drying parameters'
+
+1.0d5           ! hm  
+
+1.0d-10         ! w0
+
+1.0             ! beta
+
+0.6d0           ! cte p0 
+
+
+
+'soil hydraulic function parameters'
+
+0.083076923d0                  ;residual saturation
+
+6.56d0                         ;van genuchten - alpha
+
+4.71d0                         ;van genuchten - n
+
+6.17d0                         ;expn
+
+0.0                            ;air entry pressure
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 10B: physical parameters - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - energy balance'
+
+1
+
+!'read energy balance parameters from file'
+
+
+
+'specific heat of water'
+
+4180.0d0
+
+
+
+'specific heat of vapour'
+
+630.0d0
+
+
+
+!'specific heat of air'
+
+1000.0d0
+
+
+
+'number and name of zone'
+
+1
+
+'pepe rompe' 
+
+ 
+
+'specific heat of solid'
+
+1920.0 
+
+
+
+
+
+'water thermal conductivity in x-direction'
+
+0.6d0 
+
+
+
+'water thermal conductivity in y-direction'
+
+0.6d0
+
+
+
+'water thermal conductivity in z-direction'
+
+0.6d0
+
+
+
+'solid thermal conductivity in x-direction'
+
+1.4d0 
+
+
+
+'solid thermal conductivity in y-direction'
+
+1.4d0 
+
+
+
+'solid thermal conductivity in z-direction'
+
+1.4d0 
+
+
+
+'longitudinal dispersivity'
+
+0.1d0
+
+
+
+'transverse vertical dispersivity'
+
+0.1d0
+
+
+
+'transverse horizontal dispersivity'
+
+0.1d0
+
+
+
+'solid bulk density'
+
+700.0 
+
+
+
+!1000.0 
+
+
+
+'extent of zone'
+
+0.0 1.0 0.0 1.0   0.0 0.1
+
+
+
+'end of zone'
+
+
+
+
+
+
+
+!   			
+
+! Section 11: physical parameters - reactive transport                      			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - reactive transport'                                  			
+
+			
+
+'diffusion coefficients'                                                    			
+
+1.0d-10                       ;aqueous phase                                			
+
+5.0d-5                        ;gaseous phase                                						
+
+! --------------------------------------------------------------------------			
+
+'tailings'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.04d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.04d0			
+
+			
+
+'end of zone'			
+
+			
+
+'done'			
+
+			
+
+! Data Block 12: initial condition - variably saturated flow                			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'initial condition - variably saturated flow'                               			
+
+1                             ;number of zones                              			
+
+!'read initial condition from file'                                        			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'all domain'                                                                    			
+
+			
+
+'initial condition'                                                         			
+
+-7.0d3           ;pressure head   
+
+
+
+
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 0.1			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+'done'   
+
+
+
+!
+
+! Data Block 12: initial condition - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+
+
+'initial condition - energy balance'
+
+1                              ;number of zones
+
+
+
+!'read initial condition from file'
+
+
+
+'number and name of zone'
+
+1
+
+'pepe rompe' 
+
+
+
+'initial condition'
+
+23.5d0
+
+
+
+'extent of zone'
+
+0.0 1.0 0.0 1.0  0.0 0.1
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+
+
+			
+
+! Data Block 13: boundary conditions - variably saturated flow              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'boundary conditions - variably saturated flow'                             			
+
+1                             ;number of zones                              			
+
+			
+
+!'read atmospheric boundary conditions'
+
+
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'inflow boundary'                                                           			
+
+			
+
+'boundary type'                                                             			
+
+'atmospheric'       0.0d0 !
+
+
+
+!'boundary type'                                                             			
+
+!'first'      3.0d0 
+
+
+
+
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.1 0.1                                                    			
+
+			
+
+'end of zone'     	
+
+! --------------------------------------------------------------------------			
+
+
+
+'number and name of zone'                                                   			
+
+2			
+
+'bottom'                                                               			
+
+			
+
+
+
+'boundary type'                                                             			
+
+'first'    -0.26514d0                ; hydraulic head [m]			
+
+
+
+
+
+!'boundary type'                                                             			
+
+!'first'    -0.26               ; hydraulic head [m]			
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 0.0			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+			
+
+			
+
+'done'	
+
+
+
+
+
+!
+
+! Data Block 13B: boundary conditions - energy balance
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - energy balance'
+
+2
+
+ 
+
+'number and name of zone'
+
+1
+
+'inflow'                                                                   
+
+                      
+
+
+
+'boundary type'
+
+'first'      36.3d0   
+
+
+
+
+
+ 
+
+ 'extent of zone'
+
+ 0.0 1.0  0.0 1.0  0.1 0.1
+
+ 
+
+ 'end of zone'
+
+ 
+
+ 'number and name of zone'
+
+  2
+
+  'bottom'                                                                   
+
+                       
+
+  
+
+'boundary type'
+
+'first' 23.5d0
+
+  
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 0.0
+
+  
+
+'end of zone'
+
+ 
+
+ 
+
+ 
+
+ 
+
+'done'
+
+
+
+			
+
+
+
+
+
+!   			
+
+! Section 14: initial conditions - reactive transport                       			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'initial condition - reactive transport'                                    			
+
+1                             ;number of zones                              			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'tailings up'                                                      			
+
+			
+
+'concentration input'			
+
+1.0d-10  'free'    ; 'cl-1'	
+
+
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 0.1 			
+
+			
+
+'end of zone' 
+
+
+
+
+
+
+
+			
+
+'done'			
+
+			
+
+!			
+
+! Section 15: boundary conditions - reactive transport			
+
+! --------------------------------------------------------------------------			
+
+!			
+
+'boundary conditions - reactive transport'			
+
+1                             ;number of zones			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'			
+
+1			
+
+'influx boundary'			
+
+			
+
+'boundary type'			
+
+'mixed'			
+
+			
+
+'concentration input'			
+
+1.0d-10     'free'  ; 'cl-1'	
+
+		
+
+						
+
+'extent of zone'			
+
+0.0 1.0  0.0 1.0  0.1  0.1  			
+
+			
+
+'end of zone'			
+
+			
+
+
+
+'done'   

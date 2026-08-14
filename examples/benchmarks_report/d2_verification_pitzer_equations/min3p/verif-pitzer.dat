@@ -1,0 +1,372 @@
+! Speciation of sea water
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'redox equilibrium mixing at plume front'
+
+.false.                        ;varsat_flow
+
+.false.                        ;steady_flow
+
+.false.                        ;fully_saturated
+
+.false.                        ;reactive_transport
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! --------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use pitzer model'
+
+
+
+'use macinnes convention' 
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'database\default'
+
+
+
+'components'
+
+8                              ;number of components (nc-1)
+
+'h+1'    
+
+'cl-1'   
+
+'so4-2' 
+
+'k+1'    
+
+'na+1'   
+
+'ca+2'                         
+
+'co3-2' 
+
+'mg+2'  
+
+
+
+'secondary aqueous species'
+
+12                             
+
+'hso4-' 
+
+'co2(aq)' 
+
+'oh-'
+
+'hco3-'
+
+'mgoh+'  
+
+'caco3(aq)' 
+
+'mgco3(aq)' 
+
+'cacl+'
+
+'caso4(aq)'
+
+'mghco3+'
+
+'caoh+'
+
+'cacl2(aq)' 
+
+
+
+'gases'
+
+1
+
+'co2(g)'
+
+
+
+'minerals'
+
+31                     
+
+'halite'          
+
+'anhydrite'       
+
+'aragonite'
+
+'sylvite'         
+
+'gypsum'          
+
+'epsomite'        
+
+'arcanite'        
+
+'glauberite'      
+
+'hexahydrite'     
+
+'bloedite'        
+
+'antarcticite'    
+
+'calcite'         
+
+'bischofite'      
+
+'carnallite'      
+
+'dolomite'        
+
+'brucite'         
+
+'thenardite'      
+
+'kainite'         
+
+'hydromagnesite'  
+
+'polyhalite'      
+
+'mirabilite'      
+
+'kieserite'       
+
+'lansfordite'     
+
+'pentahydrite'    
+
+'oxychloride-mg'  
+
+'pentasalt'       
+
+'nesquehonite'    
+
+'natron'          
+
+'syngenite'       
+
+'leonhardite'
+
+'magnesite'     
+
+
+
+
+
+'done'
+
+
+
+
+
+! Data Block 14: initial condition - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - local geochemistry'
+
+1                           
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'background chemistry - aquifer'
+
+
+
+'concentration input'
+
+  7.0d0    'ph'   	 ;'h+'    
+
+  5.81d0   'free'   	 ;'cl-'   
+
+  6.3d-3   'free'   	 ;'so4-2' 
+
+1.739d-1   'free'   	 ;'k+'    
+
+ 1.752d0   'free'   	 ;'na+'   
+
+4.274d-1   'free'   	 ;'ca+2'  
+
+ 3.92d-3   'free'   	 ;'co3-2' 
+
+ 1.555d0   'free'   	 ;'mg+2'  
+
+     
+
+'mineral input'
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+0.0d0   .true. 'twothird' ;phim, minequil, update_type 
+
+1.0d-20    1.0d-7   0.000    ;phimin, scalfac, supsatm
+
+
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+

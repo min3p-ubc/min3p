@@ -1,0 +1,331 @@
+! noble gas ingrowth database
+! based on Ballentine and Burnard (2002)
+
+!--------------------------------------------------------------------------------------------------
+! decay constants, spontaneous fission constants, and molar masses
+! decay and fission constants in units of [s-1]sp (from Shultis et al., 2008, as reported on wikipedia)
+! spontaneous fission does not occur for 40K (restricted to molar masses > 232)
+
+'radioelements'
+
+'238u'  
+'spontaneous fission' 2.7e-24       ;lamda_sf, table 1?
+'first order decay'  4.92e-18       ;lamda_alpha, table 3, use keyword 'alpha decay'? 
+'molar mass' 238.0                  ;gfw_re, gram formula weight of radioelement, table 1
+
+'235u'        
+'spontaneous fission'  6.3e-26      ;lamda_sf, Shultis et al., 2008
+'first order decay'  3.12e-17       ;lamda_alpha, table 3, alpha decay
+'molar mass' 235.0                  ;gfw_re, gram formula weight of radioelement, table 3
+
+'232th' 
+'spontaneous fission' 6.7e-29       ;lamda_sf, table 1
+'first order decay'  1.57e-18       ;lamda_alpha, table 3, alpha decay
+'molar mass' 232.0                  ;gfw_re, gram formula weight of radioelement, table 3
+
+'40k'             
+'first order decay'  1.73e-17       ;lamda_alpha, table 6, beta decay or just use decay instead? 
+'molar mass' 40.0                   ;gfw_re, gram formula weight of radioelement, table 6
+
+'end of radioelements'
+
+
+
+!--------------------------------------------------------------------------------------------------
+! neutron production'
+! all parameters from or derived from Ballentine and Burnard (2002)
+
+'neutron production'
+
+! fraction of neutrons reaching thermal energy level 
+! for thermal neutron capture reactions
+! value from Ballentine and Burnard (2002)
+
+'fraction of neutrons reaching thermal energy level'
+0.8                                             ;frac_neutron_th (p_th), eq 9
+
+'238u'
+'spontaneous fission'            
+'yield factor' 2.2                              ;yield_sf, table 1
+
+'232th'
+'spontaneous fission'      
+'yield factor' 2.5                              ;yield_sf, table 1
+'first order decay'                             ;'alpha decay'
+5                                               ;num_path, number of pathways
+'na' 'empirical yield factor' 3.2e-28           ;yield_alpha, table 2
+'mg' 'empirical yield factor' 1.3e-28
+'al' 'empirical yield factor' 1.35e-28
+'si' 'empirical yield factor' 2.9e-29
+'c'  'empirical yield factor' 4.4e-29
+
+'238u+235u' 
+'first order decay'                             ;'alpha decay'
+5                                               ;number of pathways
+'na' 'empirical yield factor' 7.3e-28           ;yield_alpha, table 2
+'mg' 'empirical yield factor' 2.8e-28
+'al' 'empirical yield factor' 2.6e-28
+'si' 'empirical yield factor' 6.9e-29       ;6.9e-28
+'c'  'empirical yield factor' 1.1e-28
+
+'end of neutron production'
+
+!--------------------------------------------------------------------------------------------------
+! 3He ingrowth
+! no yield factor in equation provided by Ballentine and Burnard (2002), set to 1 (yield 100%)
+! neutron capture by 6Li
+
+'noble gas ingrowth'
+
+'3he ingrowth'
+1                                   ;number of rate expressions
+'neutron capture'                   ;type of rate expression, Rn is required
+'6li'                               ;name of rate expression
+'yield factor' 1.0                  ;yield_alpha
+
+!--------------------------------------------------------------------------------------------------
+! 4He ingrowth
+! all yield factors from Ballentine and Burnard (2002)
+
+'4he ingrowth'
+3                                   ;number of rate expressions
+'first order decay'                 ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 8.0                  ;yield_alpha, table 3
+
+'first order decay'                 ;type of rate expression
+'235u'                              ;name of rate expression
+'yield factor' 7.0                  ;yield_alpha, table 3 
+
+'first order decay'                 ;type of rate expression
+'232th'                             ;name of rate expression
+'yield factor' 6.0                  ;yield_alpha, table 3
+
+!--------------------------------------------------------------------------------------------------
+! 20Ne ingrowth
+! all parameters derived from Ballentine and Burnard (2002)
+! equation rearranged to fit same format as 21Ne, 22Ne and 38Ar
+
+'20ne ingrowth'
+1                                   ;number of rate expressions
+'nucleogenic'                       ;type of rate expression
+'empirical yield factor'  1.41e-29  ;yield_nu, table 4
+'elements' 2                        ;num_nu_e 2, table 4
+'o'  1.0                            ;a_nu_e, table 4
+'na' 1.0                            ;a_nu_e, table 4
+'radioelement' 'o'                  ;num_nu_pe 2, table 4
+'238u+235u' 0.144                   ;b_nu_pe, table 4 (add 238u+235u as a radioelement)
+'232th'  0.0174                     ;b_nu_pe, table 4 (change from th to 232th or add th as a radioelement)
+'radioelement' 'na'                 ;num_nu_pe 2, table 4
+'238u+235u' 0.141                   ;b_nu_pe, table 4 (add 238u+235u as a radioelement)
+'232th'  0.00169                    ;b_nu_pe, table 4 (change from th to 232th or add th as a radioelement)
+
+!--------------------------------------------------------------------------------------------------
+! 21Ne ingrowth
+! all parameters derived from Ballentine and Burnard (2002)
+
+'21ne ingrowth'
+1                                   ;num, number of rate expressions
+'nucleogenic'                       ;type of rate expression
+'empirical yield factor'  1.41e-29  ;yield_nu, table 4
+'elements' 2                        ;num_nu_e 2, table 4
+'o'  1.0                            ;a_nu_e, table 4
+'mg' 1.0                            ;a_nu_e, table 4
+'radioelement' 'o'                  ;num_nu_pe 2, table 4
+'238u+235u' 1.48                    ;b_nu_pe, table 4 (add 238u+235u as a radioelement)
+'232th'  0.186                      ;b_nu_pe, table 4 (change from th to 232th or add th as a radioelement)
+'radioelement' 'mg'                 ;num_nu_pe 2, table 4
+'238u+235u' 0.105                   ;b_nu_pe, table 4 (add 238u+235u as a radioelement)
+'232th'  0.0179                     ;b_nu_pe, table 4 (change from th to 232th or add th as a radioelement)
+
+!--------------------------------------------------------------------------------------------------
+! 22Ne ingrowth
+! all parameters derived from Ballentine and Burnard (2002)
+! coefficient for F adjusted to allow input as weight fraction, 
+! consistent with input for other elements
+
+'22ne ingrowth'                     
+1                                   ;number of rate expressions
+'nucleogenic'                       ;type of rate expression
+'empirical yield factor'  1.41e-31  ;yield_nu, table 4   
+'elements' 2                        ;num_nu_e 2, table 4
+'f'  1.0e4                          ;a_nu_e, table 4
+'mg' 1.0                            ;a_nu_e, table 4
+'radioelement' 'f'                  ;num_nu_pe 2, table 4
+'238u+235u' 3.06                    ;b_nu_pe, table 4 (add 238u+235u as a radioelement)
+'232th'  0.417                      ;b_nu_pe, table 4 (change from th to 232th or add th as a radioelement)
+'radioelement' 'mg'                 ;num_nu_pe 2, table 4
+'238u+235u' 4.20                    ;b_nu_pe, table 4 (add 238u+235u as a radioelement)
+'232th'  0.663                      ;b_nu_pe, table 4 (change from th to 232th or add th as a radioelement)
+
+!--------------------------------------------------------------------------------------------------
+! 36Ar ingrowth
+! yield factor from Ballentine and Burnard (2002)
+! neutron capture by 35Cl
+
+'36ar ingrowth'
+1                                   ;number of rate expressions
+'neutron capture'                   ;type of rate expression, Rn is required
+'35cl'                              ;name of rate expression, add the linked element
+'yield factor' 0.95                 ;yield_beta, eq 11, F_35Cl is missing?
+
+!--------------------------------------------------------------------------------------------------
+! 38Ar ingrowth 
+! all parameters derived from Ballentine and Burnard (2002)
+! no yield factor for neutron capture reaction, set to 1 (yield is 100%)
+! neutron capture by 37Cl
+
+'38ar ingrowth'
+2                                   ;number of rate expressions
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'37cl'                              ;name of rate expression
+'yield factor' 1.0                  ;yield_beta, eq 12
+
+'nucleogenic'                       ;type of rate expression
+'empirical yield factor'  1.41e-28  ;lamda_nu, table 5
+'elements' 1                        ;num_nu_e, table 5
+'cl'  1.0                           ;a_nu_e, table 5
+'radioelement' 'cl'                 ;num_nu_pe, 2, table 5
+'238u+235u' 0.76                    ;b_nu_pe, table 5 (add 238u+235u as a radioelement)
+'232th'  0.104                      ;b_nu_pe, table 4 (change from th to 232th or add th as a radioelement)
+
+!--------------------------------------------------------------------------------------------------
+! 40Ar ingrowth
+! yield factor from Ballentine and Burnard (2002)
+
+'40ar ingrowth'
+1                                   ;number of rate expressions
+'first order decay'                 ;type of rate expression
+'40k'                               ;name of rate expression
+'yield factor' 0.105                ;yield_alpha, eq 15, table 6
+
+!--------------------------------------------------------------------------------------------------
+! 83Kr ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'83kr ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 3.78E-04	            ;yield_sf, table 7 in TM NG (2023) derived from Tab. 7 in B&B (2002)
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 5.51E-03               ;yield_nc, table 7
+
+!--------------------------------------------------------------------------------------------------
+! 84Kr ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'84kr ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 1.25E-03	            ;yield_sf, table 7 in TM NG (2023) derived from Tab. 7 in B&B (2002)
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 1.02E-02             ;yield_nc, table 7
+
+!--------------------------------------------------------------------------------------------------
+! 86Kr ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'86kr ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 7.88E-03	            ;yield_sf, table 7
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 2.04E-02             ;yield_nc, table 7
+
+!--------------------------------------------------------------------------------------------------
+! 129Xe ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'129xe ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 1.26E-04	            ;yield_sf, table 7
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 9.71E-03             ;yield_nc, table 7
+
+!--------------------------------------------------------------------------------------------------
+! 131Xe ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'131xe ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 4.79E-03	            ;yield_sf, table 7
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 2.93E-02             ;yield_nc, table 7
+
+!--------------------------------------------------------------------------------------------------
+! 132Xe ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'132xe ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 3.75E-02	            ;yield_sf, table 7
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 4.38E-02             ;yield_nc, table 7
+
+!--------------------------------------------------------------------------------------------------
+! 134Xe ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'134xe ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 5.24E-02	            ;yield_sf, table 7
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 8.09E-02               ;yield_nc, table 7
+
+!--------------------------------------------------------------------------------------------------
+! 136Xe ingrowth
+! yield factors derived from Ballentine and Burnard (2002), based on ratios in Table 7 
+! Wetherill (1953) (spontaneous fission, first order)
+! Farrer and Tomlinson (1962) (neutron capture by 235U)
+
+'136xe ingrowth'
+2                                   ;number of rate expressions
+'spontaneous fission'               ;type of rate expression
+'238u'                              ;name of rate expression
+'yield factor' 6.30E-02	            ;yield_sf, table 7
+
+'neutron capture'                   ;type of rate expression, Rn is required
+'235u'                              ;name of rate expression
+'yield factor' 6.47E-02             ;yield_nc, table 7
+
+'end of noble gas ingrowth'

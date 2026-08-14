@@ -1,0 +1,65 @@
+!
+!Self-described unstructured grid generation file
+!This example is for mesh generation test only
+!
+
+!**********************************************************************
+!example input parameters for polygon 2d delaunay mesh
+!**********************************************************************
+
+'polygon 2d delaunay mesh'
+
+'coordinate projection'
+'xz'                    !'xy' or 'yz' or 'xz'
+
+'number of constraints'
+2
+
+!constraint 1
+'constraint type'
+'closed polygon with sub discretization interval'
+
+'number of vertices'
+4
+
+'vertices coordinate'
+0.0,  0.0
+1.0,  0.0
+1.0,  1.0
+0.0,  1.0
+
+'segment discretization interval'
+0.025
+0.025
+0.025
+0.025
+
+'end of constraint'
+
+!constraint 1
+'constraint type'
+'closed polygon with sub discretization interval'
+
+'number of vertices'
+4
+
+'vertices coordinate'
+0.3,  0.3
+0.7,  0.3
+0.7,  0.7
+0.3,  0.7
+
+'segment discretization interval'
+0.02
+0.02
+0.02
+0.02
+
+'end of constraint'
+
+
+'global domain mesh criteria'
+30.0, 0.05    ;shape criterion bound, size bound
+
+'mesh optimization iterations'
+10

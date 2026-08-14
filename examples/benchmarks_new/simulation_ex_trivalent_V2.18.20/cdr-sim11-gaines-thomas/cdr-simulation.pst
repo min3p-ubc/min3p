@@ -1,0 +1,52 @@
+pcf
+* control data
+restart estimation
+9  14 2 0 2
+1 1 single point 1 0  0
+5.0 2.0 0.3 0.03 10
+3.0 3.0 0.001  0 
+0.1
+30 0.01 3 3 0.01 3
+1 1 1
+* parameter groups
+rsa relative 0.01 0 switch 2.0 parabolic
+resp relative 0.01 0 switch 2.0 parabolic
+* parameter data
+epidote_1    none factor 120.730456 1.0 300.0 rsa 1 0 1
+chlorite_1   none factor  256.78802 1.0 400.0 rsa 1 0 1
+actinolite_1 none factor  54.705988 1.0 200.0 rsa 1 0 1
+titanite_1   none factor   8.017257 0.1 100.0 rsa 1 0 1
+resp_het     fixed factor  1.8e-9 1.0e-12  1.0e-5 resp 1 0 1
+epidote_2    tied factor 43.712751 0.1 200 rsa 1 0 1
+chlorite_2   tied factor 92.974973 0.1 200 rsa 1 0 1
+actinolite_2 tied factor 19.80734 0.1 200 rsa 1 0 1
+titanite_2   tied factor 2.9028 0.1 100 rsa 1 0 1
+epidote_2 epidote_1
+chlorite_2 chlorite_1
+actinolite_2 actinolite_1
+titanite_2 titanite_1
+* observation groups
+tot
+resp
+* observation data
+ca_0 3257 0.01 tot
+mg_0 3285 0.01 tot
+ca_1 4283 0.01 tot
+mg_1 4129 0.01 tot
+ca_2 4952 1  tot
+mg_2 5259 1  tot
+ca_3 5665 1  tot
+mg_3 6071 1  tot
+ca_4 7546 0.01 tot
+mg_4 6852 1  tot
+resp_1 1.7920 1 resp
+resp_2 2.0630 1 resp
+resp_3 2.0290 1 resp
+resp_4 2.0100 1 resp
+* model command line
+"min3p_td_run.bat"
+* model input/output
+"cdr_simulation.tpl" "cdr_simulation.in"
+"cdr_simulation.ins" "cdr_simulation_out.dat"
+
+

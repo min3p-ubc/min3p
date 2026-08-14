@@ -1,0 +1,50 @@
+ PARAMETER STATISTICAL MATRICES: CASE cdr_simulation
+
+ OPTIMISATION ITERATION NUMBER  5
+
+
+ Parameter standard deviations ----->
+
+ Adjustable        Group           Current          Standard
+ parameter                         value            deviation
+ epidote_1         rsa              150.849          188.068    
+ chlorite_1        rsa              247.093          794.936    
+ actinolite_1      rsa              32.0869          186.869    
+ titanite_1        rsa              27.0570          291.251    
+
+ Note that if a parameter is log-transformed, the standard deviation in the 
+ above table refers to the log of the parameter. Note also that the objective
+ function used in the calculation of the covariance matrix (and eigenvalues
+ of the covariance matrix) was calculated at the end of the previous iteration.
+
+
+ Parameter covariance matrix ----->
+
+               epidote_1    chlorite_1  actinolite_1  titanite_1 
+ epidote_1      3.5369E+04   -4353.        3115.      -4.4991E+04
+ chlorite_1     -4353.       6.3192E+05  -1.4823E+05   1.3742E+05
+ actinolite_1    3115.      -1.4823E+05   3.4920E+04  -3.4868E+04
+ titanite_1    -4.4991E+04   1.3742E+05  -3.4868E+04   8.4827E+04
+
+
+ Parameter correlation coefficient matrix ----->
+
+               epidote_1    chlorite_1  actinolite_1  titanite_1 
+ epidote_1       1.000      -2.9116E-02   8.8637E-02  -0.8214    
+ chlorite_1    -2.9116E-02    1.000      -0.9979       0.5935    
+ actinolite_1   8.8637E-02  -0.9979        1.000      -0.6407    
+ titanite_1    -0.8214       0.5935      -0.6407        1.000    
+
+
+ Normalized eigenvectors of covariance matrix ----->
+
+               Vector_1     Vector_2     Vector_3     Vector_4   
+ epidote_1      0.5796       0.5123      -0.6333      -2.2572E-02
+ chlorite_1     4.7515E-02  -0.2496      -0.1922       0.9479    
+ actinolite_1   0.6450      -0.7308       7.2783E-03  -0.2233    
+ titanite_1     0.4957       0.3759       0.7496       0.2261    
+
+
+ Eigenvalues ----->
+
+                 7.660        33.83       8.7264E+04   6.9973E+05

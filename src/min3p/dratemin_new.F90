@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/dratemin_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/dratemin_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -251,16 +251,15 @@
       
       real*8 :: r1_iap_k, prodrc, prodrcinc
       
-      real*8 :: totc, c, cx, gammac, gammax, sw, ratem, phim, phimod,  &
-                aream, drtinc, rootdens, conc_m
+      real*8 :: sw, ratem, phimold, aream, drtinc, rootdens, conc_m
       
       real*8 :: sar, sarinc
 
-      dimension totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
+      real*8 :: totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
 
       real*8 :: alphar, alphartot, alphartop, alphartotinc,            &
                 alphartopinc, alpharinc, gammatemp, gammatempinc,      &
-                sumic, sumicinc, phimold, satminc, sumix, sumixinc
+                sumic, sumicinc, satminc, sumix, sumixinc
                 
       real*8, external :: satcorr_curve
       
@@ -356,7 +355,7 @@
 !c  compute difference of total dissolution/precipitation rate 
 !c  for surface controlled dissolution/precipitation reactions
 !c  (incremented - not incremented)
-!c  also for active uptake and release by roots (type = 'root') !FG August 2021
+!c  also for active solute uptake and release by roots (type = 'root') !FG August 2021
 
       if (rate_control(im).eq.'surface' .or.                           &
           rate_control(im).eq.'root') then
@@ -382,7 +381,7 @@
 !c  scale reaction rate depending on equilibrium condition except for
 !c  far from equilibrium reactions
 !c  (not incremented - incremented)
-!c  also for active uptake and release by roots (type = 'root') !FG August 2021
+!c  also for active solute uptake and release by roots (type = 'root') !FG August 2021
 
             if (reaction_type(im).eq.                                 &
                'dissolution_far_from_equilibrium') then

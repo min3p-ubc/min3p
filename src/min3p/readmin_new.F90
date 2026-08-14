@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readmin_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readmin_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -306,9 +306,10 @@
 
       use parm
       use chem
-      use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
+      use gen, only : rank, b_enable_output, b_enable_output_gen,      &
+                      idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -325,7 +326,7 @@
                  itemp, icount2, iiso, iiso2, istop, ndpm, ndscx,      &
                  idcm, ndcm, ndsta,nifr, ntsct, nprsc, nprs, idummy
       
-      real*8 :: dummy
+      real*8 :: dummy, zbal
       real*8 :: xnumt(100),ordt(100),value(100),value2(100),           &
                 alphat(100,100)
       integer :: ntsct2(100), iinum(100)
@@ -338,7 +339,7 @@
               found_keyword
                                                                
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r10 = 10.0d0,       &
-                           r86400 = 86400.0d0
+                           r86400 = 86400.0d0, rsmall = 1.0d-10
 
 !c  control parameter for debugging output
 
@@ -388,11 +389,11 @@
 !c  read all mineral data and store in compressed format
 !c  exit when done or if mineral not found
 
-      if (info_debug.gt.1) then
-        write(*,*) "search for mineral index ", im
-        write(*,*) trim(namem(im))
-        write(*,*) ('-', i=1,72)
-      end if
+        if (info_debug.gt.1) then
+          write(*,*) "search for mineral index ", im
+          write(*,*) trim(namem(im))
+          write(*,*) ('-', i=1,72)
+        end if
 
         done = .false.
 
@@ -402,7 +403,7 @@
 
           comment_line = .true.
           do while (comment_line)
-            read (imdbs,'(a1)',err=999) string
+            read (imdbs,'(a1)',err=999,end=998) string
             if (string.ne.'!') comment_line = .false.
           end do
 
@@ -413,6 +414,7 @@
 !c  read mineral name
 
           read(imdbs,*,err=999,end=998) name
+          call makelowercase(name)
 
 !c  look for match, as long end of data file is not reached or
 !c  match is found
@@ -420,8 +422,6 @@
 !c  mineral is found --> read data
 
           if (name.eq.namem(im)) then
-
-            done = .true.
 
 !c  -------------------------------------------------------------------
 !c  read rate control for dissolution-precipitation reaction,
@@ -437,44 +437,61 @@
 !c  read number and names of components and stoichiometric coefficients 
 !c  of components in mineral reaction
 
-            read(imdbs,*,err=999,end=998) nv,(namet(iv),              &
-     &                                    xnumt(iv),iv=1,nv)
+            read(imdbs,*,err=999,end=998) nv,(namet(iv),xnumt(iv),iv=1,nv)
 
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
 !c  -------------------------------------------------------------------
 !c  read raction type
 
             read(imdbs,*,err=999,end=998) reaction_type(im)
 
-          if (reaction_type(im).eq.'irreversible dissolution') then
-            reaction_type(im) = 'dissolution_far_from_equilibrium'
-          elseif (reaction_type(im).eq.                             &
-     &              'irreversible dissolution - log K control') then   
-              reaction_type(im) = 'dissolution_to_equilibrium'
-          elseif (reaction_type(im).eq.                             &
-     &              'irreversible precipitation') then                 
-              reaction_type(im) =  'precipitation_far_from_equilibrium'
-          elseif (reaction_type(im).eq.                             &
-     &              'irreversible precipitation - log K control') then
-            reaction_type(im) = 'precipitation_to_equilibrium'
-          end if
+            if (reaction_type(im).eq.'irreversible dissolution') then
+              reaction_type(im) = 'dissolution_far_from_equilibrium'
+            elseif (reaction_type(im).eq.                             &
+                      'irreversible dissolution - log K control') then   
+                reaction_type(im) = 'dissolution_to_equilibrium'
+            elseif (reaction_type(im).eq.                             &
+                      'irreversible precipitation') then                 
+                reaction_type(im) =  'precipitation_far_from_equilibrium'
+            elseif (reaction_type(im).eq.                             &
+                      'irreversible precipitation - log K control') then
+              reaction_type(im) = 'precipitation_to_equilibrium'
+            end if
+
+
+            if (rank == 0 .and. b_enable_output_gen) then
+              if (im == 1) then
+                write(igen,'(72a)') ('-',i=1,72)
+                write(igen,'(a)') 'mineral database entries read:'
+              end if
+              write(igen,'(a)') trim(name)
+              write(igen,'(a,1x,i0,100(1x,a,1x,1pe15.6e3))')           &
+                    'nv ',nv,(trim(namet(iv)),xnumt(iv),iv=1,nv)
+              if (im == nm) then
+                write(igen,'(72a)') ('-',i=1,72)
+              end if
+            end if
+
+            done = .true.
 
 !c  check if type of reaction requires equilibrium constant
 !c  exit program if error in database
 
             if (reaction_type(im).eq.'reversible' .or.                &
-     &          reaction_type(im).eq.'dissolution_to_equilibrium' .or.&
-     &          reaction_type(im).eq.                                 &
-     &          'precipitation_to_equilibrium'.or.                    &
-     &          reaction_type(im).eq.'raoult') then
+                reaction_type(im).eq.'dissolution_to_equilibrium' .or.&
+                reaction_type(im).eq.                                 &
+                'precipitation_to_equilibrium'.or.                    &
+                reaction_type(im).eq.'raoult') then
 
               far_from_equil(im) = .false.
 
 !c  backspace and read log_10 of equilibrium constant and enthalpy 
 !c  change
 
-            backspace(imdbs)
-            read(imdbs,*,err=999,end=998) reaction_type_new,        &
-     &                                      eqms(im), dhcm(im)
+              backspace(imdbs)
+              read(imdbs,*,err=999,end=998) reaction_type_new, eqms(im), dhcm(im)
 
 !c  convert equilibrium constant to linear scale and adjust for 
 !c  internal calculations
@@ -489,9 +506,9 @@
               end if       
 
             elseif (reaction_type(im).eq.                             &
-     &              'dissolution_far_from_equilibrium' .or.           &
-     &              reaction_type(im).eq.                             &
-     &              'precipitation_far_from_equilibrium') then
+                    'dissolution_far_from_equilibrium' .or.           &
+                    reaction_type(im).eq.                             &
+                    'precipitation_far_from_equilibrium') then
                                                                        
               far_from_equil(im) = .true.
                                                                        
@@ -520,40 +537,40 @@
 
 !c  define number of parallel reaction pathways
             
-          found = .false.
-          searching = .true.
+            found = .false.
+            searching = .true.
                         
-          do while (searching.and..not.found)
+            do while (searching.and..not.found)
                   
-            read(imdbs,*,err=999,end=998) keyword            
-            backspace(imdbs)
-            read (imdbs,'(a1)',err=999) string
-
-            if (keyword.eq.'parallel reaction pathways') then
-                  
-              found = .true.
+              read(imdbs,*,err=999,end=998) keyword            
               backspace(imdbs)
-              read(imdbs,*,err=999,end=998) keyword,nreac
-              
+              read (imdbs,'(a1)',err=999,end=998) string
+
+              if (keyword.eq.'parallel reaction pathways') then
+                  
+                found = .true.
+                backspace(imdbs)
+                read(imdbs,*,err=999,end=998) keyword,nreac
+
 !c  exit, if end of mineral reaction input is reached, set number of
 !c  parallel reaction pathways to 1 
 
-            elseif (string.eq.'!') then
+              elseif (string.eq.'!') then
             
-              searching = .false.
-              nreac = 1
+                searching = .false.
+                nreac = 1
             
+              end if
+
+            end do
+
+            if (info_debug.gt.1) then
+              write(*,*) 'number of parallel reaction pathways', nreac
             end if
-
-          end do
-
-          if (info_debug.gt.1) then
-             write(*,*) 'number of parallel reaction pathways', nreac
-          end if
 
 !c  rewind file and return to start of data input for mineral reaction
 
-          call findname(namem(im),imdbs,found_keyword)
+            call findname(namem(im),imdbs,found_keyword)
 
 !c  pointer array to row in stoichiometric reaction matrix for
 !c  next mineral
@@ -665,9 +682,9 @@
 
 !c  define length of namemp(ireac)
 
-                l_namemp(ireac) = index(namemp(ireac),' ')-1
-                if (l_namemp(ireac).eq.-1.or.l_namemp(ireac).gt.14) then
-                  l_namemp(ireac) = 14
+                l_namemp(ireac) = index(namemp(ireac),' ')-1                
+                if (l_namemp(ireac).eq.-1.or.l_namemp(ireac).gt.72) then
+                  l_namemp(ireac) = 72
                 end if
                 
                 
@@ -1218,7 +1235,8 @@
                 read (imdbs,'(a1)',err=999,end=998) string
 
                                 
-                if (keyword.eq.'fractional T^a') then
+                if (keyword.eq.'fractional T^a' .or. &
+                    keyword.eq.'fractional t^a') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -1226,6 +1244,7 @@
                   read(imdbs,*,err=999,end=998) keyword,ndt
                   do idt = 1,ndt
                     read(imdbs,*,err=999,end=998) namet(idt),ordt(idt)
+                    call makelowercase(namet(idt))
                   end do
 
                   if (info_debug.gt.1) then
@@ -1315,7 +1334,8 @@
                 read (imdbs,'(a1)',err=999,end=998) string
 
                                 
-                if (keyword.eq.'fractional C^c') then
+                if (keyword.eq.'fractional C^c' .or. &
+                    keyword.eq.'fractional c^c') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -1323,6 +1343,7 @@
                   read(imdbs,*,err=999,end=998) keyword,ndc
                   do idc = 1,ndc
                     read(imdbs,*,err=999,end=998) namet(idc),ordt(idc)
+                    call makelowercase(namet(idc))
                   end do               
 
                   if (info_debug.gt.1) then
@@ -1411,7 +1432,8 @@
                 read (imdbs,'(a1)',err=999,end=998) string
 
                                 
-                if (keyword.eq.'fractional C^x') then
+                if (keyword.eq.'fractional C^x' .or. &
+                    keyword.eq.'fractional c^x') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -1419,6 +1441,7 @@
                   read(imdbs,*,err=999,end=998) keyword,ndcx
                   do idcx = 1,ndcx
                     read(imdbs,*,err=999,end=998) namet(idcx),ordt(idcx)
+                    call makelowercase(namet(idcx))
                   end do
 
                   if (info_debug.gt.1) then
@@ -1508,7 +1531,8 @@
                 backspace(imdbs)
                 read (imdbs,'(a1)',err=999,end=998) string
 
-                if (keyword.eq.'fractional C^m') then
+                if (keyword.eq.'fractional C^m' .or. &
+                    keyword.eq.'fractional c^m') then
                  
                   found = .true.
                   backspace(imdbs)
@@ -1516,6 +1540,7 @@
                   read(imdbs,*,err=999,end=998) keyword,ndcm
                   do idcm = 1,ndcm
                     read(imdbs,*,err=999,end=998) namet(idcm),ordt(idcm)
+                    call makelowercase(namet(idcm))
                   end do
                                                                        
                   if (rank==0.and.b_enable_output.and.info_debug.gt.1) then                             
@@ -1615,6 +1640,7 @@
                   read(imdbs,*,err=999,end=998) keyword,ndpm
                   do idpm = 1,ndpm
                     read(imdbs,*,err=999,end=998) namet(idpm),ordt(idpm)
+                    call makelowercase(namet(idpm))
                   end do
                                                                         
                   if (rank==0.and.b_enable_output.and.info_debug.gt.1) then                             
@@ -1707,7 +1733,8 @@
                 backspace(imdbs)
                 read (imdbs,'(a1)',err=999,end=998) string
                                 
-                if (keyword.eq.'fractional sum C^x') then
+                if (keyword.eq.'fractional sum C^x' .or. &
+                    keyword.eq.'fractional sum c^x') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -1717,6 +1744,7 @@
                   do idscx = 1,ndscx
                     read(imdbs,*,err=999,end=998) namet(idscx),        &
                                                   ordt(idscx)
+                    call makelowercase(namet(idscx))
                   end do
 
                   if (rank==0.and.b_enable_output.and.info_debug.gt.1) then
@@ -1803,7 +1831,8 @@
                 backspace(imdbs)
                 read (imdbs,'(a1)',err=999,end=998) string
                                 
-                if (keyword.eq.'hyperbolic T^a') then
+                if (keyword.eq.'hyperbolic T^a' .or. &
+                    keyword.eq.'hyperbolic t^a') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -1815,9 +1844,11 @@
                     if(string .ne. "'") then
                       read(imdbs,*,err=999,end=998) value(i),value2(i),&
                                                     namet(i)
+                      call makelowercase(namet(i))
                     else
                       read(imdbs,*,err=999,end=998) namet(i),value(i), &
                                                     value2(i)
+                      call makelowercase(namet(i))
                     end if
                   end do
                   
@@ -1910,7 +1941,8 @@
                 backspace(imdbs)
                 read (imdbs,'(a1)',err=999,end=998) string
                                 
-                if (keyword.eq.'hyperbolic sum T^a') then
+                if (keyword.eq.'hyperbolic sum T^a' .or. &
+                    keyword.eq.'hyperbolic sum t^a') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -2227,7 +2259,8 @@
                   found = .true.
                   backspace(imdbs)
                   read(imdbs,*,err=999,end=998) keyword, namet3
-                  
+                  call makelowercase(namet3)
+
                   im1 = 0
                   found = .false.
                   do while ((im1.lt.nm).and.(.not.found)) 
@@ -2330,7 +2363,8 @@
                 backspace(imdbs)
                 read (imdbs,'(a1)',err=999,end=998) string
                                 
-                if (keyword.eq.'inhibition T^a') then
+                if (keyword.eq.'inhibition T^a' .or. &
+                    keyword.eq.'inhibition t^a') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -2342,9 +2376,11 @@
                     if(string .ne. "'") then
                       read(imdbs,*,err=999,end=998) value(i),value2(i),&
                                                     namet(i)
+                      call makelowercase(namet(i))
                     else
                       read(imdbs,*,err=999,end=998) namet(i),value(i),&
                                                     value2(i)
+                      call makelowercase(namet(i))
                     end if
                   end do                                             
                     if (info_debug.gt.1) then
@@ -2436,7 +2472,8 @@
                 read (imdbs,'(a1)',err=999,end=998) string
 
                                 
-                if (keyword.eq.'hyperbolic C^c') then
+                if (keyword.eq.'hyperbolic C^c' .or. &
+                    keyword.eq.'hyperbolic c^c') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -2448,9 +2485,11 @@
                     if(string .ne. "'") then
                       read(imdbs,*,err=999,end=998) value(i),value2(i),&
                                                     namet(i)
+                      call makelowercase(namet(i))
                     else
                       read(imdbs,*,err=999,end=998) namet(i),value(i),&
                                                     value2(i)
+                      call makelowercase(namet(i))
                     end if
                   end do
                   
@@ -2545,7 +2584,8 @@
                 read (imdbs,'(a1)',err=999,end=998) string
 
                                 
-                if (keyword.eq.'inhibition C^c') then
+                if (keyword.eq.'inhibition C^c' .or. &
+                    keyword.eq.'inhibition c^c') then
                   
                   found = .true.
                   backspace(imdbs)
@@ -2557,9 +2597,11 @@
                     if(string .ne. "'") then
                       read(imdbs,*,err=999,end=998) value(i),value2(i),&
                                                     namet(i)
+                      call makelowercase(namet(i))
                     else
                       read(imdbs,*,err=999,end=998) namet(i),value(i),&
                                                     value2(i)
+                      call makelowercase(namet(i))
                     end if
                   end do                                             
                   if (info_debug.gt.1) then
@@ -2642,7 +2684,7 @@
               end if
 
               found = .false.
-            searching = .true.
+              searching = .true.
                               
               do while (searching.and..not.found)
                   
@@ -2663,9 +2705,11 @@
                     if(string .ne. "'") then
                       read(imdbs,*,err=999,end=998) value(i),value2(i),&
                                                     namet(i)
+                      call makelowercase(namet(i))
                     else
                       read(imdbs,*,err=999,end=998) namet(i),value(i), &
                                                     value2(i)
+                      call makelowercase(namet(i))
                     end if
                   end do 
 
@@ -2775,9 +2819,11 @@
                     if(string .ne. "'") then
                       read(imdbs,*,err=999,end=998) value(i),          &
                                            value2(i),namet(i)
+                      call makelowercase(namet(i))
                     else
                       read(imdbs,*,err=999,end=998) namet(i),          &
                                            value(i),value2(i) 
+                      call makelowercase(namet(i))
                     end if
                   end do
                   
@@ -2913,6 +2959,31 @@
         end if
       end if
 
+!c  check charge balance of the mineral and give error information if charge balance is not met
+      if (nm > 0) then
+        if (rank == 0 .and. b_enable_output) then
+          write(igen,'(72a)') ('-',i=1,72)
+          write(igen,'(a)') 'charge balance for minerals: calculated charge'
+          write(igen,'(72a)') ('-',i=1,72)
+        end if
+        do im = 1, nm
+          istart = iam(im)
+          iend = iam(im+1)-1
+          zbal = r0
+          do i = istart,iend
+            icur = jam(i)
+            zbal = zbal + xnum(i)*chargec(icur)
+          end do
+          if (rank == 0 .and. b_enable_output) then
+            if (abs(zbal) > rsmall) then
+              write(igen,'(a,1x,1pe15.6e3,1x,a)') namem(im),zbal,'(*)'
+            else
+              write(igen,'(a,1x,1pe15.6e3)') namem(im),zbal
+            end if
+          end if
+        end do
+      end if
+
 !c  write backup of database items to the file
       if (rank == 0) then
         if (.not.use_dbs_bk) then
@@ -2923,7 +2994,7 @@
             do while(.true.)
               if (readnextline(imdbs,strbuffer,lowercase=.false.,          &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namem(im))) == 2) then            !note, mineral name has quotes
+                if (startWithEntireName(strbuffer,namem(im),flagQuote=.true.)) then 
                   write(idbs_bk,'(a)') trim(strbuffer)
                   do while(readnextline(imdbs,strbuffer,lowercase=.false., &
                            withcomment=.true.,original=.true.))

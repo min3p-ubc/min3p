@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/gen.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/gen.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -146,6 +146,7 @@
       logical :: radial_coord
       logical :: update_tortuosity
       logical :: assign_marchies
+
 
       logical :: root_uptake
       logical :: root_uptake_legacy
@@ -337,6 +338,7 @@
       real (type_r8), allocatable :: xg(:)
       real (type_r8), allocatable :: yg(:)
       real (type_r8), allocatable :: zg(:)
+      real (type_r8), allocatable :: zg_depth(:)
       real (type_r8), allocatable :: xglat(:)
       real (type_r8), allocatable :: yglat(:)
       real (type_r8), allocatable :: zglat(:)      
@@ -557,6 +559,7 @@
       integer (type_i4) :: l_time_unit
       integer (type_i4) :: mtime
       integer (type_i4) :: mtime_f
+      integer (type_i4) :: ngb_tstep_gbl
 
       logical :: read_spatial_master_proc
 
@@ -840,7 +843,9 @@
       integer (type_i4), allocatable :: ngb_vol_ijface(:,:)
       integer (type_i4), allocatable :: ngb_vol_ijface_jtemp(:)
 
-      integer (type_i4) :: ngb,ngs,ngb_ijface
+      integer (type_i4) :: ngb
+      integer (type_i4) :: ngs
+      integer (type_i4) :: ngb_ijface
       integer (type_i4) :: igstime
       integer (type_i4) :: ircm_tz
       integer (type_i4) :: ircm_stage
@@ -864,6 +869,7 @@
 
       logical :: ircm_tz_restart
       logical :: skip_time_gb
+      logical :: ascii_fmt_comma
 
 !cdsu exclude solute uptake in recycling during return time.
       logical :: exclude_return_uptake
@@ -893,20 +899,26 @@
       integer (type_i4) :: isitdbs
       integer (type_i4) :: irdbs
       integer (type_i4) :: igdbs
-      integer (type_i4) :: imvs
-      integer (type_i4) :: imvs_first
-      integer (type_i4) :: imvs_last
-      integer (type_i4) :: iresp            !root respiration
-      integer (type_i4) :: irup             !root uptake, including respiration and passive uptake
+
+      !integer (type_i4) :: iprup            !passive root uptake, solute uptake with water
+      !integer (type_i4) :: iarup            !active root uptake, including respiration and exudation
+      !integer (type_i4) :: irup             !total solute uptake, including passive solute uptake and active solute uptake
+      !integer (type_i4) :: imvs
+      !integer (type_i4) :: imvs_first
+      !integer (type_i4) :: imvs_last
+      !integer (type_i4) :: imrt
+      !integer (type_i4) :: imrt_first
+      !integer (type_i4) :: imrt_last
+      !integer (type_i4) :: imrtm2c
+      !integer (type_i4) :: imrtm2c_first
+      !integer (type_i4) :: imrtm2c_last
+      !integer (type_i4) :: imcd
+      !integer (type_i4) :: imcd_first
+      !integer (type_i4) :: imcd_last 
+      
       integer (type_i4) :: irupcm           !recyclable root uptake for component-mineral
-      integer (type_i4) :: imrt
-      integer (type_i4) :: imrt_first
-      integer (type_i4) :: imrt_last 
       integer (type_i4) :: idix
       integer (type_i4) :: ispm
-      integer (type_i4) :: imcd
-      integer (type_i4) :: imcd_first
-      integer (type_i4) :: imcd_last 
       integer (type_i4) :: igsaqt
       integer (type_i4) :: igsmech
       integer (type_i4) :: igsp
@@ -977,7 +989,6 @@
 
       character*72, allocatable :: namemb(:)
 
-      !character*72 :: prefix
       character*256 :: prefix           !dsu, change the length of prefix to 256 to support long file path
       character*72 :: section_header
       character*72 :: zone_name
@@ -1000,6 +1011,41 @@
       integer (type_i4), allocatable :: jatmsb(:)
       integer (type_i8), allocatable :: mproptmsb(:)
       logical :: b_overlap_tmsb
+
+! ----------------------------------------------------------------------
+! output of mass balance for selected subdomains
+! ----------------------------------------------------------------------
+      logical :: subdomain_mass
+      integer (type_i4) :: subdomains_skip
+      integer (type_i4) :: subdomains_n
+      integer (type_i4), allocatable :: subdomains_bdface_conn(:,:)
+      integer (type_i4), allocatable :: subdomains_bdface(:,:,:)
+      integer (type_i4), allocatable :: subdomains_bits(:,:)
+
+      !c  mass balance related file unit
+      integer (type_i4), allocatable :: iarup(:)
+      integer (type_i4), allocatable :: iprup(:)
+      integer (type_i4), allocatable :: irup(:)
+      integer (type_i4), allocatable :: imvs(:)
+      integer (type_i4), allocatable :: imvs_first(:)
+      integer (type_i4), allocatable :: imvs_last(:)
+      integer (type_i4), allocatable :: imrt(:)
+      integer (type_i4), allocatable :: imrt_first(:)
+      integer (type_i4), allocatable :: imrt_last(:)
+      integer (type_i4), allocatable :: imcd(:)
+      integer (type_i4), allocatable :: imcd_first(:)
+      integer (type_i4), allocatable :: imcd_last(:)
+      integer (type_i4), allocatable :: imrtm2c(:)
+      integer (type_i4), allocatable :: imrtm2c_first(:)
+      integer (type_i4), allocatable :: imrtm2c_last(:)
+      integer (type_i4), allocatable :: imheat(:)
+      integer (type_i4), allocatable :: imheat_first(:)
+      integer (type_i4), allocatable :: imheat_last(:)
+
+      !c  mass balance related variables
+      real (type_r8), allocatable :: totvsmass(:)
+      real (type_r8), allocatable :: culabsbalvs(:)
+
 
  
 ! ----------------------------------------------------------------------
@@ -1121,7 +1167,7 @@
 !cprovi---------------------------------------------------------------
 !cprovi For diffusion coefficients for each component 
 !cprovi---------------------------------------------------------------      
-      logical :: diff_coff      
+      logical :: comp_dep_diff_coff      
       
 !cprovi---------------------------------------------------------------
 !cprovi---------------------------------------------------------------
@@ -1152,6 +1198,9 @@
 !                                - old time level [moles/l water]
 !           cnew(nc,nn)        = concentrations of free species
 !                                - new time level [moles/l water]
+!           actvset(nc,nn)     = activities of components as species + -
+!c                               in solution - new time level
+!
 !           cec_g(nn)          = cation exchange capacity
 !                                - global system
 !           cec_fraction_g(nsites_ion,nn)                            * +
@@ -1215,7 +1264,7 @@
 !           gmfrac(ng,nn)      = molar fraction 
 !                                - new time level [moles/l air]
 !           totgmfrac(n,nn)    = total molar gas fractions
-!           cx(nx,nn)          = concentrations of secondary aqueous 
+!           cxnew(nx,nn)       = concentrations of secondary aqueous 
 !                                species [moles/l water]-new time level
 !           cxold(nx,nn)       = concentrations of secondary aqueous 
 !                                species [moles/l water]-old time level
@@ -1260,11 +1309,12 @@
 !        -->                                                         <--
 ! ----------------------------------------------------------------------
  
-      real (type_r8), allocatable :: c(:,:)
+      real (type_r8), allocatable :: cold(:,:)
       real (type_r8), allocatable :: cnew(:,:)
       real (type_r8), allocatable :: cec_g(:)
       real (type_r8), allocatable :: cec_fraction_g(:,:)
       real (type_r8), allocatable :: rhobulk_g(:)
+      real (type_r8), allocatable :: actvset(:,:)
       real (type_r8), allocatable :: gamma(:,:)
       real (type_r8), allocatable :: gammaold(:,:)
       real (type_r8), allocatable :: totaold(:,:)
@@ -1287,7 +1337,7 @@
       real (type_r8), allocatable :: distcoff_rt(:,:)
       real (type_r8), allocatable :: gold(:,:)
       real (type_r8), allocatable :: gnew(:,:)
-      real (type_r8), allocatable :: cx(:,:)
+      real (type_r8), allocatable :: cxnew(:,:)
       real (type_r8), allocatable :: cxold(:,:)
       real (type_r8), allocatable :: sionnew(:)
       real (type_r8), allocatable :: sionold(:)
@@ -1361,10 +1411,11 @@
 !cprovi--------------------------------------------------------------
       real (type_r8), allocatable :: cinfrt_da_ic(:,:)
 
-!cprovi--------------------------------------------------------------      
-!cprovi--------------------------------------------------------------      
-!cprovi--------------------------------------------------------------
-      integer (type_i4), allocatable :: mpropc(:)      
+!cdsu --------------------------------------------------------------
+!cdsu material property for control volume to zone index in
+!cdsu initial condition - reactive transport
+!cdsu --------------------------------------------------------------
+      integer (type_i4), allocatable :: mpropc(:)
 ! prc ---------------------------------------------------------------
 ! defining the vectors for diffusion coefficients for primary and 
 ! secondary spices
@@ -1511,10 +1562,11 @@
 !           iupsgbrt(nbrt)     = upstream node 'i', 'j', 'a'
 !        -->                                                         <--
 ! ----------------------------------------------------------------------
-
       real (type_r8), allocatable :: bcondrt_a(:,:)
       real (type_r8), allocatable :: bcondrt_g(:,:)
       real (type_r8), allocatable :: bdycrt_d(:)
+      real (type_r8), allocatable :: bcondrt_prev(:,:)
+      real (type_r8), allocatable :: bcondrt_next(:,:)
       real (type_r8), allocatable :: zgbrt(:)
       real (type_r8), allocatable :: gbrt(:,:)
       real (type_r8), allocatable :: tsrc(:)
@@ -1524,12 +1576,17 @@
       real (type_r8), allocatable :: cinfvs_gbrt(:)  !gas transport
 
       integer (type_i4), allocatable :: iabrt(:)
+      integer (type_i4), allocatable :: ivol2brt(:)
+      integer (type_i4), allocatable :: ivol2bzrt(:)      
+
       !Boundary condition can be duplicated, use negative value for those overwritten boundary condition in jabrt, by DSU, 2018-02-02
       !This is important in parallel code as the boundary condition assignment to the nodes is not in the same order as sequential code
       !For the sequential code, the latter boundary condition will overwrite the previous boundary condition if assign to the same node.
       integer (type_i4), allocatable :: jabrt(:)
+      integer (type_i4), allocatable :: bzrt_nparms(:)
 
       integer (type_i4) :: itsrc
+      integer (type_i4) :: ibcrt
       integer (type_i4) :: nbrt
       integer (type_i4) :: nbzrt
       integer (type_i4) :: ntsrc
@@ -1537,7 +1594,12 @@
       logical :: spec_conc 
       logical :: transient_source
       logical :: transient_source_function
-      logical, allocatable :: b_update_zone_func(:)      
+      logical :: update_bcrt
+      logical :: update_bcrt_value_only
+      logical :: b_restart_update_bcrt
+      logical :: b_interpolation_bcrt
+      logical :: b_first_update_bcrt
+      logical, allocatable :: b_update_zone_func(:)   
 
       character*12, allocatable :: btypert(:)      
       
@@ -1596,7 +1658,6 @@
       real (type_r8), allocatable :: totgflux(:)
       real (type_r8), allocatable :: totgaflux(:)
       real (type_r8), allocatable :: totmdp(:,:)
-      real (type_r8), allocatable :: totrootdiff(:)
  
       integer (type_i4), allocatable :: i2up(:) 
 
@@ -1945,17 +2006,17 @@
 !                                - non-aqueous components [moles]
 !           cculabsbal(n)      = accumulative absolute mass balance
 !                                error for dissolved species
-!                                [moles/elapsed time]
+!                                [moles]
 !           cculrelbal(n)      = accumulative relative mass balance
 !                                error for dissolved species [%]
 !           gculabsbal(ng)     = accumulative absolute mass balance
 !                                error for gaseous species
-!                                [moles/elapsed time]
+!                                [moles]
 !           gculrelbal(ng)     = accumulative relative mass balance
 !                                error for gaseous species [%]
 !           cmculabsbal(nm)    = accumulative absolute mass balance
 !                                error for minerals 
-!                                [moles/elapsed time]
+!                                [moles]
 !           cmculrelbal(nm)    = accumulative relative mass balance
 !                                error for minerals [%]
 !           sbdiff(n)          = source-sink term due to phase
@@ -1965,28 +2026,22 @@
 !           rateaqtot(naq)     = total rate of intra-aqueous kinetic
 !                                reaction in solution domain
 !                                [moles/day]
-!           contaqtot(naq)     = contribution of intra-aqueous 
+!           accuaqtot(naq)     = contribution of intra-aqueous 
 !                                kinetic reactions to mass balance
-!                                [moles/elapsed time]
-!           contmintot(nm)     = contribution of dissolution-
+!                                [moles]
+!           accudpdiff(nm)     = contribution of dissolution-
 !                                precipitation reactions to mass
-!                                balance [moles/elapsed time]
-!           totdpdiffp(ndr*nm) = individual contribution of parallel 
+!                                balance [moles]
+!           accudpdiffp(ndr*nm) = accumulative individual contribution of parallel 
 !                                reaction pathways of dissolution-
 !                                precipitation reactions to mass
-!                                balance [moles/elapsed time]
-!           totcfluxin(nc)     = total mass gain due to inflow in
+!                                balance [moles]
+!           totcfluxin(nc)     = accumulative mass gain due to inflow in
 !                                auqueous phase in terms of total 
 !                                aqueous component concentrations
-!           totcfluxout(nc)    = total mass loss due to inflow in
+!           totcfluxout(nc)    = accumulative mass loss due to inflow in
 !                                aqueous phase in terms of total 
 !                                aqueous component concentrations
-
-!      real (type_r8), allocatable :: totcfluxin_diff(:)
-!      real (type_r8), allocatable :: totcfluxin_mig(:)
-!      real (type_r8), allocatable :: totcfluxout_diff(:)
-!      real (type_r8), allocatable :: totcfluxout_mig(:)
-
 !           totcstordiff(nc)   = total change in storage in
 !                                aqueous phase in terms of total 
 !                                aqueous component concentrations
@@ -2071,7 +2126,7 @@
       real (type_r8), allocatable :: gdiff(:)
       real (type_r8), allocatable :: amass(:)
       real (type_r8), allocatable :: amass_gbl(:)
-      real (type_r8), allocatable :: tmass(:)
+      real (type_r8), allocatable :: tmass(:,:)
       real (type_r8), allocatable :: tmass_gbl(:)
       real (type_r8), allocatable :: cmass(:)
       real (type_r8), allocatable :: cmass_gbl(:)
@@ -2086,7 +2141,7 @@
       real (type_r8), allocatable :: csbmass_surf_gbl(:)
       real (type_r8), allocatable :: csbmass_c(:)
       real (type_r8), allocatable :: csbmass_c_gbl(:)
-      real (type_r8), allocatable :: cculabsbal(:)
+      real (type_r8), allocatable :: cculabsbal(:,:)
       real (type_r8), allocatable :: cculrelbal(:)
       real (type_r8), allocatable :: gculabsbal(:)
       real (type_r8), allocatable :: gculrelbal(:)
@@ -2096,38 +2151,39 @@
       real (type_r8), allocatable :: smass_gbl(:)
       real (type_r8), allocatable :: sbdiff(:)
       real (type_r8), allocatable :: rateaqtot(:)
-      real (type_r8), allocatable :: contaqtot(:)
-      real (type_r8), allocatable :: contmintot(:)
-#ifdef PETSC
-      real (type_r8), allocatable :: contmintot_mpi(:)
-#endif
-      real (type_r8), allocatable :: totcfluxin(:)
-      real (type_r8), allocatable :: totcfluxin_diff(:)
-      real (type_r8), allocatable :: totcfluxin_mig(:)
-      real (type_r8), allocatable :: totcfluxout(:)
-      real (type_r8), allocatable :: totcfluxout_diff(:)
-      real (type_r8), allocatable :: totcfluxout_mig(:)
-      real (type_r8), allocatable :: totcstordiff(:)
-      real (type_r8), allocatable :: totordiff(:)
-      real (type_r8), allocatable :: totintradiff(:)
-      real (type_r8), allocatable :: totdpdiff(:)
-      real (type_r8), allocatable :: totgdegas(:)
-      real (type_r8), allocatable :: totgdiff(:)
-      real (type_r8), allocatable :: totgfluxin(:)
-      real (type_r8), allocatable :: totgfluxout(:)
-      real (type_r8), allocatable :: totgafluxin(:)
-      real (type_r8), allocatable :: totgafluxout(:)
-      real (type_r8), allocatable :: totgstordiff(:)
-      real (type_r8), allocatable :: totsbdiff(:) 
+      real (type_r8), allocatable :: accuaqtot(:,:)
+      real (type_r8), allocatable :: accudpdiff(:,:)
+
+      real (type_r8), allocatable :: totcfluxin(:,:)
+      real (type_r8), allocatable :: totcfluxout(:,:)
+      real (type_r8), allocatable :: totcstordiff(:,:)
+      real (type_r8), allocatable :: totordiff(:,:)
+      real (type_r8), allocatable :: totintradiff(:,:)
+      real (type_r8), allocatable :: totdpdiff(:,:)
+      real (type_r8), allocatable :: totsbdiff(:,:) 
+      real (type_r8), allocatable :: totgdiff(:,:)
+      real (type_r8), allocatable :: totgfluxin(:,:)
+      real (type_r8), allocatable :: totgfluxout(:,:)
+      real (type_r8), allocatable :: totgafluxin(:,:)
+      real (type_r8), allocatable :: totgafluxout(:,:)
+      real (type_r8), allocatable :: totgstordiff(:,:)
+      real (type_r8), allocatable :: totgdegas(:,:)
+      real (type_r8), allocatable :: totcfluxin_diff(:,:)
+      real (type_r8), allocatable :: totcfluxin_mig(:,:)
+      real (type_r8), allocatable :: totcfluxout_diff(:,:)
+      real (type_r8), allocatable :: totcfluxout_mig(:,:)
+
       real (type_r8), allocatable :: dpdiffp(:)
-      real (type_r8), allocatable :: totdpdiffp(:)
-#ifdef PETSC
-      real (type_r8), allocatable :: totdpdiffp_mpi(:)
-#endif
+      real (type_r8), allocatable :: accudpdiffp(:,:)
+
+      !c mass balance of source sink of each component from mineral phases      
+      real (type_r8), allocatable :: dpdiff_m2c(:,:)
+      real (type_r8), allocatable :: accu_dpdiff_m2c(:,:)
 
       !c solute uptake
-      real (type_r8), allocatable :: totrootresp(:)     !respiration uptake
-      real (type_r8), allocatable :: totrootuptake(:)   !total uptake by passive uptake and respiration
+      real (type_r8), allocatable :: totrootprup(:,:)     !passive solute uptake, including respiration and exudation
+      real (type_r8), allocatable :: totrootarup(:,:)     !active solute uptake, including respiration and exudation
+      real (type_r8), allocatable :: totrootrup(:,:)      !total solute uptake by passive solute uptake and active solute uptake
 
       real (type_r8), allocatable :: totrcm_c(:)        !total uptake in component-mineral recycles
       real (type_r8), allocatable :: totrcm_c_tz(:)     !total uptake in component-mineral recycles - current cycle
@@ -2569,8 +2625,8 @@
 !        -->                                                         <--
 ! ----------------------------------------------------------------------
 
-      real (type_r8) :: totvsmass
-      real (type_r8) :: culabsbalvs 
+      !real (type_r8) :: totvsmass
+      !real (type_r8) :: culabsbalvs 
 
       real (type_r8) :: rtol_relbalance_vs
       real (type_r8) :: rtol_absbalance_vs
@@ -2680,13 +2736,13 @@
 !      
 !           integer:
 !           --------
-!           iabvs(nbvs)        = pointer to boundary control volumes
+!           jabvs(nbvs)        = pointer to boundary control volumes
 !                                for variably saturated flow
 !           ivol2bvs(nngl)     = pointer from control volume number to
 !                                boundary control volume index
 !           ivol2bzvs(nngl)    = pointer from control volume number to
 !                                the zone index of boundary control volume    
-!           bvalid_iabvs(nbvs) = flag to indicate if this boundary 
+!           bvalid_jabvs(nbvs) = flag to indicate if this boundary 
 !                                condition is valid. If the boundary
 !                                condition is overwritten, it is 
 !                                an invalid boundary condition
@@ -2715,6 +2771,11 @@
 !                                           condition for variably
 !                                           saturated flow
 !                                           with same types and zones
+!
+!           update_bcvs_switch
+!                              = .true.  -> allow boundary condition
+!                                           switch.
+!
 !           b_interpolation_bcvs
 !                              = .true.  -> linear interpolation for 
 !                                           transient boundary conditions
@@ -2738,15 +2799,18 @@
       real (type_r8), allocatable :: bcondvs_prev(:)
       real (type_r8), allocatable :: bcondvs_next(:)
 
+      !c transient boundary condition switch, if .false., this turns boundary condtition to closed (default no boundary condition)     
+      logical, allocatable :: bcondvs_on(:) 
+
 
       !Boundary condition can be duplicated, use negative value for those overwritten boundary condition in jabrt, by DSU, 2018-02-02
       !This is important in parallel code as the boundary condition assignment to the nodes is not in the same order as sequential code
       !For the sequential code, the latter boundary condition will overwrite the previous boundary condition if assign to the same node.
-      integer (type_i4), allocatable :: iabvs(:)
+      integer (type_i4), allocatable :: jabvs(:)
       integer (type_i4), allocatable :: ivol2bvs(:)
       integer (type_i4), allocatable :: ivol2bzvs(:)      
 
-      !logical, allocatable :: bvalid_iabvs(:)
+      !logical, allocatable :: bvalid_jabvs(:)
 
       integer (type_i4) :: nbvs
       integer (type_i4) :: nbzvs
@@ -2755,6 +2819,7 @@
 
       logical :: update_bcvs
       logical :: update_bcvs_value_only
+      logical :: update_bcvs_switch
       logical :: b_interpolation_bcvs
       logical :: b_first_update_bcvs
 
@@ -2952,6 +3017,8 @@
 !           isymvs(njavs)      = symmetry pointer array 
 !           lordervs(nn)       = array containing ordering
 !           invordvs(nn)       = array containing inverse ordering
+!           ivol_f(3,nn)       = array for forward control volume index in x-, y- and z-direction
+!           ivol_b(3,nn)       = array for backward control volume index in x-, y- and z-direction
 !           level_vs           = incomplete factorization level
 !           msolvit_vs         = max. number of solver iterations
 !           mnjavs             = max. number of global connections
@@ -2998,6 +3065,10 @@
       integer (type_i4), allocatable :: lordervs(:)
       integer (type_i4), allocatable :: invordvs(:)
       integer (type_i4), allocatable :: javsrec(:)
+
+
+      integer (type_i4), allocatable :: ivol_f(:,:)
+      integer (type_i4), allocatable :: ivol_b(:,:)
 
       integer (type_i4) :: mnjavs
       integer (type_i4) :: mnjafvs
@@ -3085,6 +3156,7 @@
       integer :: n_iwork_max
 
       logical, allocatable :: lwork(:)
+      logical, allocatable :: lwork_next(:)
       
 ! ----------------------------------------------------------------------
       integer (type_i4) :: skip_time, nskip_time    ! skip writing output in logfile
@@ -3129,7 +3201,7 @@
 !cprovi
 !cprovi Ice sheet 
 !cprovi Sergio Andres Bea Jofre 
-!cdsu   Add b_iabvs_ice and b_jabrt_ice to set those volumes in affected area
+!cdsu   Add b_jabvs_ice and b_jabrt_ice to set those volumes in affected area
 !cdsu   during ice advanc process, the flags of boundary nodes under ice are set to false,
 !cdsu   during ice retreat process, the flags of boundary nodes under ice are set to true,
 !cdsu   on other conditions, the flags of boundary nodes are set to true.
@@ -3149,16 +3221,16 @@
       real (type_r8) :: time_bcrt
 
       !cdsu the following variables are commented out, 
-      !cdsu replaced with new indicator b_iabvs_ice and b_jabrt_ice
+      !cdsu replaced with new indicator b_jabvs_ice and b_jabrt_ice
       real (type_r8), allocatable   :: bcondvs0(:)
       real (type_r8), allocatable   :: bcondvs1(:)
       real (type_r8), allocatable   :: bcondrt_a0(:,:)
-      !integer(type_i4), allocatable :: iabvs0(:)
+      !integer(type_i4), allocatable :: jabvs0(:)
       !integer(type_i4), allocatable :: jabrt0(:)      
       !integer(type_i4)              :: nbvs0
       !integer(type_i4)              :: nbrt0
 
-!cdsu b_iabvs_ice          = true,   apply normal boundary condition or 
+!cdsu b_jabvs_ice          = true,   apply normal boundary condition or 
 !cdsu                                ice retreat boundary condition
 !cdsu                        false,  apply ice advance boundary condition or
 !cdsu                                closed boundary condition.
@@ -3166,7 +3238,7 @@
 !cdsu                                ice retreat boundary condition
 !cdsu                        false,  apply ice advance boundary condition or
 !cdsu                                closed boundary condition.      
-      logical, allocatable :: b_iabvs_ice(:)
+      logical, allocatable :: b_jabvs_ice(:)
       logical, allocatable :: b_jabrt_ice(:)
       
       real (type_r8), allocatable   :: por_stress_dt(:)        ! - stor * skempton * delta stress  
@@ -3195,8 +3267,9 @@
 !cdsu Cushman, J. H. & Tartakovsky, D. M. The Handbook of Groundwater Engineering, 2016 
 !cdsu --------------------------------------------------------
       integer :: ifrac                                !file unit of fracture aperture
-      integer, allocatable :: fractureFlowType(:)    !define fracture flow type, e.g., 0 - darcy flow, 1 - cublic law flow
-      real*8, allocatable :: aperture(:)             !aperture of fracture
+      integer, allocatable :: fractureFlowType(:)     !define fracture flow type, e.g., 0 - darcy flow, 1 - cublic law flow
+      real*8, allocatable :: aperture(:)              !aperture of fracture
+      real*8, allocatable :: fracFlowCoeff(:)         !coefficient of fracture flow, e.g., 1.0/12.0 in (Steefel and Hu 2022, WRR)
 
 
 !> Parameter for output control
@@ -3785,6 +3858,8 @@
     integer*4 :: nthreads_per_proc
     character(14) :: str_rank
 
+    logical :: flag_non_interlaced
+
 #ifndef PETSC
     integer*4 :: Petsc_Comm_World
     integer*4 :: Petsc_Comm_Self 
@@ -3905,6 +3980,9 @@
     !> to node number map after reordering, (g)->(b)
     integer(type_i4), allocatable :: node_idx_g2g_lorder(:)
 
+    !> MIN3P node rank (owner's processor ID), including ghost nodes
+    integer(type_i4), allocatable :: node_owner_rank(:)
+
     !> MIN3P local boundary nodes without ghost nodes to
     !> global node number map
     !> Only the local node connected to ghost nodes are set.
@@ -3949,7 +4027,6 @@
 !> output precision in ascii format, by default, single precision is used
 !>dsu----------------------------------------------------------
     character*72 :: ascii_fmt
-    character*72 :: ascii_fmt_iir
 
 !>dsu----------------------------------------------------------
 !>Parameters for binary output of tecplot and paraview data file
@@ -4048,6 +4125,7 @@
     real*8, allocatable :: realbuffer13(:)
     real*8, allocatable :: realbuffer14(:)
     real*8, allocatable :: realbuffer15(:)
+    real*8, allocatable :: realbuffer16(:)
     real*8, allocatable :: realbuffer2d(:,:)
     real*8, allocatable :: realbuffer2d_2(:,:)
     real*8              :: realbuffer_gb(1000)
@@ -4112,17 +4190,72 @@
     integer*8, allocatable :: offset_igbac_ijk(:)
     integer*8, allocatable :: offset_igbre_ijk(:)
     
-!c  file unit for writing transient data (*.gfvel, *.gcvel) 
-    integer(type_i4), allocatable :: igfvel(:)
-    integer(type_i4), allocatable :: igcvel(:,:)
+!c  file unit for interface flux of variable saturated flow,
+!c  reactive transprot and biomixing (*.ifvs, *.ifrt, *.ifga) 
+    integer(type_i4), allocatable :: ifvs(:)
+    integer(type_i4), allocatable :: ifrt(:,:)
+    integer(type_i4), allocatable :: ifga(:,:)
+    integer(type_i4), allocatable :: ifbm(:,:)
     
-!c  offset for writing transient data (*.gfvel, *.gcvel) 
-    integer*8, allocatable :: offset_igfvel(:)
-    integer*8, allocatable :: offset_igfvel_ijk(:)
+    real*8, allocatable :: ifvs_vx_accu(:)
+    real*8, allocatable :: ifvs_vy_accu(:)
+    real*8, allocatable :: ifvs_vz_accu(:)
     
-    integer*8, allocatable :: offset_igcvel(:,:)
-    integer*8, allocatable :: offset_igcvel_temp(:,:)
-    integer*8, allocatable :: offset_igcvel_ijk(:,:)
+    real*8, allocatable :: ifrt_vx_adv_accu(:,:)
+    real*8, allocatable :: ifrt_vy_adv_accu(:,:)
+    real*8, allocatable :: ifrt_vz_adv_accu(:,:)
+
+    real*8, allocatable :: ifrt_vx_dif_accu(:,:)
+    real*8, allocatable :: ifrt_vy_dif_accu(:,:)
+    real*8, allocatable :: ifrt_vz_dif_accu(:,:)
+
+    real*8, allocatable :: ifrt_vx_mig_accu(:,:)
+    real*8, allocatable :: ifrt_vy_mig_accu(:,:)
+    real*8, allocatable :: ifrt_vz_mig_accu(:,:)
+
+    real*8, allocatable :: ifrt_vx_tot_accu(:,:)
+    real*8, allocatable :: ifrt_vy_tot_accu(:,:)
+    real*8, allocatable :: ifrt_vz_tot_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_adv_accu(:,:)
+    real*8, allocatable :: ifga_vy_adv_accu(:,:)
+    real*8, allocatable :: ifga_vz_adv_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_dif_accu(:,:)
+    real*8, allocatable :: ifga_vy_dif_accu(:,:)
+    real*8, allocatable :: ifga_vz_dif_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_tot_accu(:,:)
+    real*8, allocatable :: ifga_vy_tot_accu(:,:)
+    real*8, allocatable :: ifga_vz_tot_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_dgm_accu(:,:)
+    real*8, allocatable :: ifga_vy_dgm_accu(:,:)
+    real*8, allocatable :: ifga_vz_dgm_accu(:,:)
+
+    real*8, allocatable :: ifga_vx_neq_accu(:,:)
+    real*8, allocatable :: ifga_vy_neq_accu(:,:)
+    real*8, allocatable :: ifga_vz_neq_accu(:,:)
+
+    real*8, allocatable :: ifbm_vx_accu(:,:)
+    real*8, allocatable :: ifbm_vy_accu(:,:)
+    real*8, allocatable :: ifbm_vz_accu(:,:)
+    
+    integer*8, allocatable :: offset_ifvs(:)
+    integer*8, allocatable :: offset_ifvs_ijk(:)
+    
+    integer*8, allocatable :: offset_ifrt(:,:)
+    integer*8, allocatable :: offset_ifrt_temp(:,:)
+    integer*8, allocatable :: offset_ifrt_ijk(:,:)
+
+    integer*8, allocatable :: offset_ifga(:,:)
+    integer*8, allocatable :: offset_ifga_temp(:,:)
+    integer*8, allocatable :: offset_ifga_ijk(:,:)
+
+    integer*8, allocatable :: offset_ifbm(:,:)
+    integer*8, allocatable :: offset_ifbm_temp(:,:)
+    integer*8, allocatable :: offset_ifbm_ijk(:,:)
+
     
 !c  file unit for writing transient data e.g., 
 !c  .mas, .mss, .mgs, .mss, .mms, .mac, .mae, .msc, .mic, .mgc, .mmc, idx
@@ -4148,14 +4281,21 @@
     integer*8              :: offset_ispm
     integer*8              :: offset_ispm_ijk
 
-!c  root respiration and uptake, _o.resp
-    integer(type_i4) :: iresp_mpi
+!c  passive root uptake (solute uptake with water), _o.prup
+    integer(type_i4) :: iprup_mpi
 
-!c  offset for writing transient data e.g., _o.resp
-    integer*8 :: offset_iresp
-    integer*8 :: offset_iresp_ijk
+!c  offset for writing transient data e.g., _o.prup
+    integer*8 :: offset_iprup
+    integer*8 :: offset_iprup_ijk
 
-!c  root respiration and uptake, _o.rup
+!c  active root uptake (respiration and exudation), _o.arup
+    integer(type_i4) :: iarup_mpi
+
+!c  offset for writing transient data e.g., _o.arup
+    integer*8 :: offset_iarup
+    integer*8 :: offset_iarup_ijk
+
+!c  total root uptake (passive root uptake and active root uptake), _o.rup
     integer(type_i4) :: irup_mpi
     integer(type_i4) :: irupcm_mpi
 

@@ -1,0 +1,7544 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"..\results-ok-uli\column1-100-days-csa.out"'
+$!VarSet |LFDSVL1| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "Time (day)" "Acetate" "HCO3-" "Cr+++" "CrO4--" "NO3-" "NO2-" "NH4+" "C5H7O2NNO3" "decay_b_no" "m_Cr(OH)3(" "m_C5H7O2NN" "fd_AceNO3H" "fd_AceNO2H" "fd_aAceNO2" "fd_Cr_redo" "fa_AceNO3H" "fa_AceNO2H" "fa_aAceNO2" "fa_Cr_redo" "fn_AceNO3H" "fn_AceNO2H" "fn_aAceNO2" "fn_Cr_redo" "fh_AceNO3H" "fh_AceNO2H" "fh_aAceNO2" "fh_Cr_redo" "ft_AceNO3H" "ft_AceNO2H" "ft_aAceNO2" "ft_Cr_redo" "fd_aAceNO3" "fa_aAceNO3" "fn_aAceNO3" "fh_aAceNO3" "ft_aAceNO3" "m_Calcite" "m_decay_b_" "X (meters)" "H+" "Na+" "Ca++" "Cl-" "O2(aq)"'
+$!VarSet |LFDSFN2| = '"..\results-ok-uli\column1-100-days-csa.out"'
+$!VarSet |LFDSVL2| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "Time (day)" "Acetate" "HCO3-" "Cr+++" "CrO4--" "NO3-" "NO2-" "NH4+" "C5H7O2NNO3" "decay_b_no" "m_Cr(OH)3(" "m_C5H7O2NN" "fd_AceNO3H" "fd_AceNO2H" "fd_aAceNO2" "fd_Cr_redo" "fa_AceNO3H" "fa_AceNO2H" "fa_aAceNO2" "fa_Cr_redo" "fn_AceNO3H" "fn_AceNO2H" "fn_aAceNO2" "fn_Cr_redo" "fh_AceNO3H" "fh_AceNO2H" "fh_aAceNO2" "fh_Cr_redo" "ft_AceNO3H" "ft_AceNO2H" "ft_aAceNO2" "ft_Cr_redo" "fd_aAceNO3" "fa_aAceNO3" "fn_aAceNO3" "fh_aAceNO3" "ft_aAceNO3" "m_Calcite" "m_decay_b_" "X (meters)" "H+" "Na+" "Ca++" "Cl-" "O2(aq)"'
+$!VarSet |LFDSFN3| = '"..\results-ok-uli\column1-100-days-volume-esa.out"'
+$!VarSet |LFDSVL3| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "Time (day)" "Acetate" "HCO3-" "Cr+++" "CrO4--" "NO3-" "NO2-" "NH4+" "C5H7O2NNO3" "decay_b_no" "m_Cr(OH)3(" "m_C5H7O2NN" "fd_AceNO3H" "fd_AceNO2H" "fd_aAceNO2" "fd_Cr_redo" "fa_AceNO3H" "fa_AceNO2H" "fa_aAceNO2" "fa_Cr_redo" "fn_AceNO3H" "fn_AceNO2H" "fn_aAceNO2" "fn_Cr_redo" "fh_AceNO3H" "fh_AceNO2H" "fh_aAceNO2" "fh_Cr_redo" "ft_AceNO3H" "ft_AceNO2H" "ft_aAceNO2" "ft_Cr_redo" "fd_aAceNO3" "fa_aAceNO3" "fn_aAceNO3" "fh_aAceNO3" "ft_aAceNO3" "m_Calcite" "m_decay_b_" "X (meters)" "Cr(OH)3(s)" "Calcite" "H+" "Na+" "Ca++" "Cl-" "O2(aq)"'
+$!VarSet |LFDSFN4| = '"chrom-bio_2.gsv"'
+$!VarSet |LFDSVL4| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "x" "y" "z" "calcite" "cr(oh)3(a)" "porosity"'
+$!VarSet |LFDSFN5| = '"chrom-bio_2.gss"'
+$!VarSet |LFDSVL5| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "x" "y" "z" "calcite" "cr(oh)3(a)"'
+$!VarSet |LFDSFN6| = '"chrom-bio_2.gsd"'
+$!VarSet |LFDSVL6| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "x" "y" "z" "calcite_1" "cr(oh)3(a)_1"'
+$!VarSet |LFDSFN7| = '"..\results-ok-uli\column1-100-days-volume-csa.out"'
+$!VarSet |LFDSVL7| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "Time (day)" "Acetate" "HCO3-" "Cr+++" "CrO4--" "NO3-" "NO2-" "NH4+" "C5H7O2NNO3" "decay_b_no" "m_Cr(OH)3(" "m_C5H7O2NN" "fd_AceNO3H" "fd_AceNO2H" "fd_aAceNO2" "fd_Cr_redo" "fa_AceNO3H" "fa_AceNO2H" "fa_aAceNO2" "fa_Cr_redo" "fn_AceNO3H" "fn_AceNO2H" "fn_aAceNO2" "fn_Cr_redo" "fh_AceNO3H" "fh_AceNO2H" "fh_aAceNO2" "fh_Cr_redo" "ft_AceNO3H" "ft_AceNO2H" "ft_aAceNO2" "ft_Cr_redo" "fd_aAceNO3" "fa_aAceNO3" "fn_aAceNO3" "fh_aAceNO3" "ft_aAceNO3" "m_Calcite" "m_decay_b_" "X (meters)" "Cr(OH)3(s)" "Calcite"'
+$!VarSet |LFDSFN8| = '"chrom-bio_2.gsc"'
+$!VarSet |LFDSVL8| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "x" "y" "z" "oh-" "h2co3aq" "hco3-" "caoh+" "caco3aq" "cacl+" "cahco3+" "cach3coo+" "ca(ch3coo)2" "nh3aq" "cr+3" "cr(oh)3aq" "cr(oh)4-" "cr2(oh)2+4" "cr2o7-2" "cr3(oh)4+5" "crcl+2" "crcl2+" "cr(oh)+2" "ch3cooh"'
+$!VarSet |LFDSFN9| = '"..\results-ok-uli\conc5-col1-os3d-esa.out"'
+$!VarSet |LFDSVL9| = '"time" "h+1" "na+1" "ca+2" "cl-1" "co3-2" "ch3coo-" "no3-1" "no2-1" "n2(aq)" "nh4+1" "cro4-2" "cr(oh)2+" "c5h7o2n" "c5h7o2n(d)" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CaCO_3]" "Alk [mg/L CaCO_3]" "temperature" "x" "y" "z" "oh-" "h2co3aq" "hco3-" "caoh+" "caco3aq" "cacl+" "cahco3+" "cach3coo+" "ca(ch3coo)2" "nh3aq" "cr+3" "cr(oh)3aq" "cr(oh)4-" "cr2(oh)2+4" "cr2o7-2" "cr3(oh)4+5" "crcl+2" "crcl2+" "cr(oh)+2" "ch3cooh" "X (meters)" "H+" "Na+" "Ca++" "Cl-" "Acetate" "NO3-" "NO2-" "NH4+" "O2(aq)" "CrO4--" "Cr+++" "C5H7O2NNO3" "decay_b_no" "CO2(aq)" "CO3--" "CaCO3(aq)" "Ca(CH3COO)" "NH3(aq)" "Cr(OH)3(aq" "Cr2(OH)2++" "Cr2O7--" "Cr3(OH)4(5" "CrCl++" "CrOH++" "Acetic_aci"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = QUARTERINCH
+  REGIONINWORKAREA
+    {
+    X1 = 5.417
+    Y1 = 4.196
+    X2 = 10.96
+    Y2 = 8.251
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5.5
+    Y = 4.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [7-8]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 71.429
+      Y = 62.5
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 29
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 28
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 11
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [15]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [16]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 17
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [17]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 18
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [18]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 19
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [19]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 20
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [20]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 21
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [21]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 22
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [22]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 23
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [23]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 24
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 10
+    GRSPACING = 2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'time [days]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 5.0000000000000004E-006
+    GRSPACING = 1E-006
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'concentration [mol/L]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 4.9999999999999998E-007
+    GRSPACING = 1E-007
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'NH4+' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWLINES = NO
+  SHOWSYMBOLS = YES
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL2|' 
+$!REMOVEVAR |LFDSVL2|
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5.5
+    Y = 0.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [6-10]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 84.26
+      Y = 74.665
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 26
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 30
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 31
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 32
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [15]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [16]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 17
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [17]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 18
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [18]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 19
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [19]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 20
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [20]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 21
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [21]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 22
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [22]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 23
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [23]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 24
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 10
+    GRSPACING = 2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'time [days]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.002
+    GRSPACING = 0.0005
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'concentration [mol/L]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    RANGEMIN = -0.00050000000000000001
+    RANGEMAX = 0.00029999999999999997
+    GRSPACING = 0.0002
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'NH4+' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWLINES = NO
+  SHOWSYMBOLS = YES
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL3|' 
+$!REMOVEVAR |LFDSVL3|
+$!REMOVEVAR |LFDSFN3|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25037
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [7]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 76.19
+      Y = 75
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 33
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 11
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [15]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [16]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 17
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [17]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 18
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [18]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 19
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [19]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 20
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [20]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 21
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [21]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 22
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [22]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 23
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [23]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 24
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [24]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 25
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [25]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 26
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [26]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 27
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [27]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 28
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [28]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 29
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [29]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 30
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [30]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 31
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [31]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 32
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [32]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 33
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [33]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 34
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [34]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 35
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [35]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 36
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [36]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 37
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [37]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 38
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [38]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 39
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [39]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 40
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [40]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [41]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 42
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [42]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 43
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [43]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 44
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [44]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [45]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 46
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [46]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 47
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [47]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 48
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [48]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 49
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [49]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 50
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [50]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 51
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [51]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 52
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [52]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 53
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [53]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 54
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [54]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 55
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [55]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 56
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [56]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 57
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [57]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 58
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [58]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 59
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [59]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 60
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [60]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 61
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [61]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 62
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [62]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 63
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [63]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 64
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [64]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 65
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [65]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 66
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 10
+    GRSPACING = 2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'distance [m]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 2.5
+    GRSPACING = 1
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'concentration [mol/L]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    RANGEMIN = -0.00050000000000000001
+    RANGEMAX = 0.00014999999999999999
+    GRSPACING = 0.0001
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'NH4+' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWLINES = NO
+  SHOWSYMBOLS = YES
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN4|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL4|' 
+$!REMOVEVAR |LFDSVL4|
+$!REMOVEVAR |LFDSFN4|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.25
+    Y = 4.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [7]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 76.19
+      Y = 75
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 29
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 11
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.10000000149011612
+    GRSPACING = 0.02
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'distance [m]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 5.0000000000000004E-006
+    GRSPACING = 1E-006
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'volume fraction [-]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    RANGEMIN = -0.00050000000000000001
+    RANGEMAX = 0.00014999999999999999
+    GRSPACING = 0.0001
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'NH4+' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN5|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL5|' 
+$!REMOVEVAR |LFDSVL5|
+$!REMOVEVAR |LFDSFN5|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.25
+    Y = 0.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [7]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 76.19
+      Y = 62.5
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 29
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 11
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.10000000000000001
+    GRSPACING = 0.02
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'distance [m]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2
+    GRSPACING = 0.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'SI [-]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    RANGEMIN = 6.5
+    RANGEMAX = 12
+    GRSPACING = 1
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'pH' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+### Frame Number 6 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN6|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL6|' 
+$!REMOVEVAR |LFDSVL6|
+$!REMOVEVAR |LFDSFN6|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5.5
+    Y = 0.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [6]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    BOX
+      {
+      BOXTYPE = FILLED
+      }
+    XYPOS
+      {
+      X = 76.281
+      Y = 80.593
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 29
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 8
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 11
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.10000000000000001
+    GRSPACING = 0.02
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'distance [m]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 3.0000000000000001E-005
+    GRSPACING = 5E-006
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'rate [mol/L/day]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    RANGEMIN = -0.00050000000000000001
+    RANGEMAX = 0.00029999999999999997
+    GRSPACING = 0.0002
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'NH4+' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+### Frame Number 7 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN7|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL7|' 
+$!REMOVEVAR |LFDSVL7|
+$!REMOVEVAR |LFDSFN7|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.25
+    Y = 4.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [7]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 76.19
+      Y = 75
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 3
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 4
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 5
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 6
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 7
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 64
+    YAXISVAR = 65
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    SKIPMODE = BYFRAMEUNITS
+    SKIPPING = 2
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 9
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 10
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 11
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [15]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [16]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 17
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [17]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 18
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [18]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 19
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [19]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 20
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [20]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 21
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [21]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 22
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [22]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 23
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [23]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 24
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 10
+    GRSPACING = 2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'distance [m]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 0.00050000000000000001
+    GRSPACING = 0.0001
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'concentration [mol/L]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    RANGEMIN = -0.00050000000000000001
+    RANGEMAX = 0.00014999999999999999
+    GRSPACING = 0.0001
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'NH4+' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWLINES = NO
+  SHOWSYMBOLS = YES
+### Frame Number 8 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN8|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL8|' 
+$!REMOVEVAR |LFDSVL8|
+$!REMOVEVAR |LFDSFN8|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5.5
+    Y = 4.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-10]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 79.391
+      Y = 96.246
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 13
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 38
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 1.5
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 39
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 40
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 41
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 42
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 43
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 44
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 45
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 46
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 14
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 15
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.10000000000000001
+    GRSPACING = 0.02
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'distance [m]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    COORDSCALE = LOG
+    RANGEMIN = 9.9999999999999995E-021
+    RANGEMAX = 1.0000000000000001E-005
+    GRSPACING = 2E-006
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Cr(III)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+### Frame Number 9 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN9|' 
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL9|' 
+$!REMOVEVAR |LFDSVL9|
+$!REMOVEVAR |LFDSFN9|
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  ISTRANSPARENT = YES
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5.5
+    Y = 4.25
+    }
+  WIDTH = 5.25
+  HEIGHT = 4
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001' 
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-10]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 30.073
+      Y = 44.435
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 72
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 59
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINETHICKNESS = 1.5
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 67
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 40
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 41
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 69
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 70
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [8]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 71
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = CYAN
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [9]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 45
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [10]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 72
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [11]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 14
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [12]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 15
+    YAXIS = 2
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [13]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 14
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    SYMBOLSHAPE
+      {
+      GEOMSHAPE = CIRCLE
+      }
+    COLOR = RED
+    FILLCOLOR = RED
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [14]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 15
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [15]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [16]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 17
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [17]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 18
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [18]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 19
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    SIZE = 1
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [19]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 20
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [20]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 21
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [21]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 22
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [22]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 23
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [23]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 24
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [24]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 25
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [25]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 26
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [26]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 27
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [27]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 28
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [28]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 29
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [29]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 30
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [30]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 31
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [31]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 32
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [32]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 33
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [33]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 34
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [34]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 35
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [35]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 36
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [36]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 37
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [37]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 38
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [38]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 39
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [39]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 40
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [40]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!LINEMAP  [41]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 42
+    }
+  LINES
+    {
+    COLOR = YELLOW
+    }
+  SYMBOLS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!LINEMAP  [42]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 43
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    }
+  SYMBOLS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [43]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 44
+    }
+  LINES
+    {
+    COLOR = RED
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [44]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = GREEN
+    }
+  SYMBOLS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [45]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 46
+    }
+  LINES
+    {
+    COLOR = BLUE
+    }
+  SYMBOLS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [46]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 48
+    YAXISVAR = 47
+    }
+  LINES
+    {
+    COLOR = CYAN
+    }
+  SYMBOLS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  BARCHARTS
+    {
+    COLOR = CYAN
+    FILLCOLOR = CYAN
+    }
+  ERRORBARS
+    {
+    COLOR = CYAN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+  VIEWPORTPOSITION
+    {
+    X1 = 23.81
+    Y1 = 25
+    X2 = 80
+    Y2 = 88.395
+    }
+  VIEWPORTTOPSNAPTARGET = 88.3952205882
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 10
+    GRSPACING = 2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'distance [m]' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 10
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 1.8441950189185263E-008
+    RANGEMAX = 1.2796764738016719E-007
+    GRSPACING = 2E-008
+    }
+$!XYLINEAXIS 
+  YDETAIL 2
+    {
+    RANGEMIN = -20
+    RANGEMAX = -5
+    GRSPACING = 5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 5
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Cr(III)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 5.6
+        }
+      OFFSET = 16
+      }
+    AXISLINE
+      {
+      AXISALIGNMENT = WITHGRIDMAX
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWLINES = NO
+  SHOWSYMBOLS = YES
+$!SETSTYLEBASE CONFIG

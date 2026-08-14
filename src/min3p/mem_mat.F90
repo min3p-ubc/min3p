@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mem_mat.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mem_mat.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -450,6 +450,12 @@
       call checkerr(ierr,'tree_trans_factor',ilog)
       call memory_monitor(sizeof(tree_trans_factor),'tree_trans_factor',.true.)
 
+      allocate (canopy_evap_factor(nzn), stat = ierr)
+      canopy_evap_factor=0.0d0
+      call checkerr(ierr,'canopy_evap_factor',ilog)
+      call memory_monitor(sizeof(canopy_evap_factor),'canopy_evap_factor',.true.)
+
+
 !cdsu orientation and rotation matrix information
       if (useAnisoCorr) then
         allocate (aca_vol(nngl), stat = ierr)
@@ -582,6 +588,11 @@
       aperture=0.0d0
       call checkerr(ierr,'aperture',ilog)
       call memory_monitor(sizeof(aperture),'aperture',.true.)
+
+      allocate (fracFlowCoeff(nngl), stat = ierr)
+      fracFlowCoeff=0.0d0
+      call checkerr(ierr,'fracFlowCoeff',ilog)
+      call memory_monitor(sizeof(fracFlowCoeff),'fracFlowCoeff',.true.)
 
     end subroutine 
 

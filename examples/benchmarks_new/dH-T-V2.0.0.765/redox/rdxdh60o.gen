@@ -1,0 +1,191 @@
+#Program     : MIN3P-HPC.
+#Version     : 2.0.16.765
+#Commit date : 2020/03/16 17:06:38
+#Build date  : 2020/04/07 09:34:36
+#Repository  : https://biot.eos.ubc.ca/svn/min3p_thcm/branches/mxie_sulAq
+#Platform    : Debug_X64
+#System      : Windows
+#Solver      : WS209
+#Parallel    : Sequential
+generic output file for dataset rdxdh60
+
+------------------------------------------------------------------------
+global control parameters
+------------------------------------------------------------------------
+
+gas temperature - batch problem                                         
+
+simulation of:
+batch test with kinetically controlled dissolution-
+precipitation reactions
+
+
+------------------------------------------------------------------------
+geochemical system
+------------------------------------------------------------------------
+
+database: ./database/default                                                                                                                                                                                                                                              
+redox master variable: o2(aq)
+input units: mol/l       
+temperature =  60.00 deg C
+
+number of components:                           =          6
+
+aqueous components:
+-------------------
+h+1                                                                     
+o2(aq)                                                                  
+cl-1                                                                    
+fe+2                                                                    
+fe+3                                                                    
+h2o                                                                     
+
+number of redox couples:                        =          1
+
+redox couples:
+--------------
+fe+2/fe+3
+
+number of aqueous complexes:                    =         15
+
+aqueous complexes:
+------------------
+h2(aq)                                                                  
+oh-                                                                     
+feoh+                                                                   
+feoh3-1                                                                 
+feoh2aq                                                                 
+feoh+2                                                                  
+fecl+2                                                                  
+fecl+                                                                   
+fecl2+                                                                  
+fecl3aq                                                                 
+feoh2+                                                                  
+feoh3aq                                                                 
+feoh4-                                                                  
+fe2(oh)2+4                                                              
+fe3(oh)4+5                                                              
+
+number of gases:                                =          1
+
+gases:
+------
+o2(g)                                                                   
+
+------------------------------------------------------------------------
+control parameters - local geochemistry
+------------------------------------------------------------------------
+
+equilibrium controlled redox reactions
+factor for numerical differentiation            =   1.000000E-004
+convergence tolerance                           =   1.000000E-006
+max. ionic strength                             =   5.000000E-001
+min. activity for h2o                           =   5.000000E-001
+minimum reaction rate considered                =   0.000000E+000
+
+------------------------------------------------------------------------
+initial condition - local geochemistry
+------------------------------------------------------------------------
+ 
+number of zones                                 =          1
+
+************************************************************************
+background chemistry - aquifer                                          
+************************************************************************
+
+control parameters: 
+------------------------------------------------------------------------
+
+equilibration only for aqueous species
+
+input parameters: 
+------------------------------------------------------------------------
+
+total aqueous component concentrations:
+---------------------------------------
+component             conc.
+---------------------------
+o2(aq)         1.000000E-007
+cl-1           9.000000E-008
+fe+2           9.000000E-008
+fe+3           1.000000E-015
+
+aqueous components with fixed activities:
+-----------------------------------------
+species               actv.
+---------------------------
+h+1            1.158777E-007
+
+guess for pH of solution:          pH =  7.0000
+
+results:
+------------------------------------------------------------------------
+
+computed pH of solution:           pH =       6.9360
+computed pe of solution:           pe =      12.7908
+computed Eh of solution:           Eh =     843.2202 mV
+ionic strength:                     I =   5.742625E-007
+
+total concentrations - aqueous phase:
+--------------------------------------
+species               conc.
+---------------------------
+h+1           -1.063889E-006
+o2(aq)         7.750000E-008
+cl-1           9.000000E-008
+fe+2           5.710642E-016
+fe+3           9.000000E-008
+
+components as species in solution:
+----------------------------------
+species               conc.          gamma
+------------------------------------------
+h+1            1.158777E-007  1.000000E+000
+o2(aq)         7.750000E-008  1.000000E+000
+cl-1           9.000000E-008  1.000000E+000
+fe+2           5.553017E-016  1.000000E+000
+fe+3           4.975018E-018  1.000000E+000
+h2o            1.000000E+000  1.000000E+000
+
+secondary aqueous species:
+--------------------------
+species               conc.          gamma
+------------------------------------------
+oh-            9.242212E-007  1.000000E+000
+feoh3aq        7.157917E-008  1.000000E+000
+feoh2+         1.643482E-008  1.000000E+000
+feoh4-         1.984261E-009  1.000000E+000
+feoh+2         1.752908E-012  1.000000E+000
+feoh+          1.574482E-017  1.000000E+000
+feoh2aq        1.763947E-020  1.000000E+000
+fecl+          6.898767E-023  1.000000E+000
+fecl+2         3.650276E-023  1.000000E+000
+fe2(oh)2+4     2.266223E-023  1.000000E+000
+feoh3-1        7.693215E-024  1.000000E+000
+fecl2+         5.436003E-030  1.000000E+000
+fe3(oh)4+5     4.322252E-030  1.000000E+000
+h2(aq)         1.000826E-036  1.000000E+000
+fecl3aq        4.892403E-038  1.000000E+000
+
+gases:
+-------
+species               conc.  partial pres.
+------------------------------------------
+o2(g)          3.108703E-006  8.498041E-005
+
+charge balance:
+---------------
+sum of positive charge:   1.323161E-007   sum of negative charge:   1.016205E-006
+charge balance error:      7.695889E+001 %
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =         17
+total number of time steps              =          0
+
+------------------------------------------------------------------------
+
+         ***************** normal exit ******************
+
+

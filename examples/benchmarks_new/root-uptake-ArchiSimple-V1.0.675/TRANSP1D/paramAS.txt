@@ -1,0 +1,24 @@
+0.5 # X position of the seed (old : 0.0mm)  (in MIN3P domain, meters) 
+0 # Y position of the seed (old : 0.0mm)  (in MIN3P domain, meters)    
+1 # Z position of the seed (old : 20.0mm)   (in MIN3P domain, meters)             
+1
+1
+100
+30
+0.5
+1
+5
+0.2
+1
+25
+1
+0.005
+5.3
+7
+0.18
+0.17
+0.1
+1000.0 growth duration
+8000
+0.4
+

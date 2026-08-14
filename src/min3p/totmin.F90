@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/totmin.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/totmin.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -78,9 +78,7 @@
 
       external zero_r8
       
-      real*8 :: ratem, totm
- 
-      dimension ratem(*),totm(*)
+      real*8 :: ratem(*), totm(*)
 
       call zero_r8(totm,nc-1,1,1)
  

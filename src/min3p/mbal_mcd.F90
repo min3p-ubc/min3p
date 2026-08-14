@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mbal_mcd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mbal_mcd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -59,7 +59,7 @@
 !c           zg(nn)             = spatial coordinates in z-direction  + -
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of aqueous    + -
 !c                                species
@@ -75,17 +75,17 @@
 !c                                - old time level [moles/l bulk]]
 !c           cculabsbal(n)      = accumulative absolute mass balance  + +
 !c                                error for dissolved species 
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cmculabsbal(n)     = accumulative absolute mass balance  + +
 !c                                error for minerals 
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cculrelbal(n)      = accumulative relative mass balance  + +
 !c                                error for dissolved species [%]
 !c           cmculrelbal(n)     = accumulative relative mass balance  + +
 !c                                for minerals [%]
 !c           gculabsbal(ng)     = accumulative absolute mass balance  + +
 !c                                error for gaseous species
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           gculrelbal(ng)     = accumulative relative mass balance  + +
 !c                                error for gaseous species [%]
 !c           cvol(nn)           = nodal volumes                       + -
@@ -115,12 +115,12 @@
 !                                migration in water phase in terms  
 !                                of total aqueous component 
 !                                concentrations
-!c           contaqtot(naq)     = contribution of intra-aqueous       + +
+!c           accuaqtot(naq)     = contribution of intra-aqueous       + +
 !c                                kinetic reactions to mass balance
-!c                                [moles/elapsed time]
-!c           contmintot(nm)     = contribution of dissolution-        + +
+!c                                [moles]
+!c           accudpdiff(nm)     = contribution of dissolution-        + +
 !c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c                                balance [moles]
 !c           gfluxtbdy(ng)      = mass flux across boundary           * *
 !c                                (gaseous phase)
 !c           gfluxin(n)         = mass gain due to inflow in air      * *
@@ -235,10 +235,11 @@
 !c                                aqueous component concentrations
 !c                                due to dissolution-precipitation 
 !c                                reactions
-!c           totdpdiffp(ndr*nm) = individual contribution of parallel + +
+!c           accudpdiffp(ndr*nm) = accumulative individual             + +
+!c                                contribution of parallel
 !c                                reaction pathways of dissolution-
 !c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c                                balance [moles]
 !c           totgdegas(nc)      = total mass loss from aquoeus phase  + +
 !c                                due to degassing
 !c           totgdiff(nc)       = total source/sink to total          + +
@@ -532,7 +533,7 @@
 #endif
 
       integer :: i1, ibrt, ic, ivol, istart, iend, imb, jvol,irecord,  &
-                 idim, tid
+                 idim, izn, isub, isub_bit, tid
       
       real*8 :: totvsflux, bdyinfrt_da, diff_eff, diff_loc
       real*8, external :: bulkconc, bdryflux, fluxd 
@@ -540,7 +541,7 @@
       real*8 :: rdummys(17)
       
 !c root water uptake varaibles (HG 28 Mar 2019)
-      real*8 :: rootdiff(n)
+      real*8 :: rootprup(n), totuptake
       real*8 :: qrootloc, roottmp, trtmp
       
 #ifdef PETSC
@@ -550,7 +551,7 @@
       external acoff, comptotc, msysrt, zero_r8
       
 !c root water uptake mass balance addition (HG 28 Mar 2019)
-      real*8, external :: rootwat
+      real*8, external :: rootwat, soluteUptakeFunc
 
       real*8, external :: pressure_melt_k
 
@@ -591,7 +592,7 @@
 #endif
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0,r100 = 100.0d0,      &
-                           conv3 = 1.0d3
+                           conv3 = 1.0d3, rverysmall = 1.0d-30
       
       integer :: nvarsimcd
       
@@ -609,12 +610,12 @@
       call zero_r8(cfluxout_mig,n,1,1)  
       call zero_r8(cfluxout,n,1,1)
       call zero_r8(cstordiff,n,1,1)
-      call zero_r8 (rootdiff,n,1,1) 
+      call zero_r8 (rootprup,n,1,1) 
 
 !c  compute total system mass at current time step
  
       call msysrt
- 
+
 !c  compress total aqueous component concentration vector and
 !c  total gaseous component concentration vector for mass 
 !c  balance calculations
@@ -629,7 +630,7 @@
     !$omp do schedule(static)
 #endif   
         do ivol = 1,nngl
-          call comptotc(totcnew(1,ivol))
+          call comptotc(totcnew(:,ivol))
         end do
 #ifdef OPENMP
     !$omp end do
@@ -637,6 +638,11 @@
 #endif        
       end if
 
+ !c  loop over subdomains
+      do isub = 0, subdomains_n
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
+ 
 !c  calculate mass balance for water phase in terms of total 
 !c  aqueous component concentrations [moles/unit time]
 
@@ -665,230 +671,314 @@
     !$omp grad_cgg_totcnew, grad_cgg_totviscnew, grad_cgg_electro,    &
     !$omp grad_cgg_totgnew,                                           &
 #endif
-    !$omp i1, ibrt, ic, iend, istart, ivol, jvol, idim, tid,          &
+    !$omp i1, ibrt, ic, iend, istart, ivol, jvol, idim, izn, tid,     &
     !$omp delta_totviscnew, delta_electromignew,                      &
     !$omp qrootloc, so_av, diff_eff, diff_loc, bdyinfrt_da,           &                                         
     !$omp totcflux, totvsflux)                                        &
-    !$omp reduction(+:totcflux_diff, totcflux_mig, rootdiff,          &
+    !$omp reduction(+:totcflux_diff, totcflux_mig, rootprup,          &
     !$omp cfluxin_diff, cfluxin_mig, cfluxin,                         &
     !$omp cfluxout_diff, cfluxout_mig, cfluxout)
     !$omp do schedule(static)
 #endif
-      do ibrt = 1,nbrt                 !boundary control volumes
+        do ibrt = 1,nbrt                 !boundary control volumes
           
-        ivol = jabrt(ibrt)             !pointer to control volume
-        if (ivol < 0) then
-          cycle
-        end if
-
-        if (compute_ice_sheet_loading) then
-          if (.not. b_jabrt_ice(ibrt)) then
+          ivol = jabrt(ibrt)             !pointer to control volume
+          if (ivol < 0) then
             cycle
           end if
-        end if
+
+          if (compute_ice_sheet_loading) then
+            if (.not. b_jabrt_ice(ibrt)) then
+              cycle
+            end if
+          end if
 
 
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
+          end if
 #endif
 
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+            cycle
+          end if
+
 #ifdef OPENMP
-        tid = omp_get_thread_num() + 1
+          tid = omp_get_thread_num() + 1
 #else
-        tid = 1
+          tid = 1
 #endif
 
 !c  Dirichlet type boundary conditions
 
-        if (btypert(ivol).eq.'first') then
+          if (btypert(ivol).eq.'first') then
 
-          istart = iavs(ivol)+1 
-          iend = iavs(ivol+1)-1
+            istart = iavs(ivol)+1 
+            iend = iavs(ivol+1)-1
 
-          do i1 = istart,iend        !loop over local connections
+            do i1 = istart,iend        !loop over local connections
 
 #ifdef USG
-            if (discretization_type > 0) then
-              ncell = janumcell(i1)
-            end if
+              if (discretization_type > 0) then
+                ncell = janumcell(i1)
+              end if
 #endif
 
-            jvol = javs(i1)
+              jvol = javs(i1)
 
 ! cdsu -------------------------------------------------------
 ! cdsu gradient reconstruction for reactive transport
 ! cdsu -------------------------------------------------------
 #ifdef USG
-            if (discretization_type > 0 .and.                          &
-                any(component_type .eq.'aqueous', 1) ) then
-              if (b_use_cross_diffusion_react) then
+              if (discretization_type > 0 .and.                        &
+                  any(component_type .eq.'aqueous', 1) ) then
+                if (b_use_cross_diffusion_react) then
+                  if (multi_diff) then
+                    call gradient_cross_diff_md(i1,ivol,jvol,          &
+                         grad_totviscnew_ivol,grad_totviscnew_jvol,    &
+                         grad_totviscnew_kvol,grad_electro_ivol,       &
+                         grad_electro_jvol,grad_electro_kvol,          &
+                         grad_totviscnew_hls_loc,grad_electro_hls_loc, &
+                         grad_cgg_totviscnew,grad_cgg_electro)
+                  else
+                    call gradient_cross_diff_rt(i1,ivol,jvol,n,totcnew,&
+                         grad_totcnew_ivol,grad_totcnew_jvol,          &
+                         grad_totcnew_kvol,grad_totcnew_hls_loc,       &
+                         grad_cgg_totcnew)
+                  end if
+                end if
+
+                call usg_face_utility_cinfrt_da(ivol,jvol,i1,          &
+                         cinfrt_da_usg_loc,cinfrt_da_usg_cross_loc)
+
                 if (multi_diff) then
-                  call gradient_cross_diff_md(i1,ivol,jvol,            &
-                       grad_totviscnew_ivol,grad_totviscnew_jvol,      &
-                       grad_totviscnew_kvol,grad_electro_ivol,         &
-                       grad_electro_jvol,grad_electro_kvol,            &
-                       grad_totviscnew_hls_loc,grad_electro_hls_loc,   &
-                       grad_cgg_totviscnew,grad_cgg_electro)
-                else
-                  call gradient_cross_diff_rt(i1,ivol,jvol,n,totcnew,  &
-                       grad_totcnew_ivol,grad_totcnew_jvol,            &
-                       grad_totcnew_kvol,grad_totcnew_hls_loc,         &
-                       grad_cgg_totcnew)
+                  call usg_face_utility_cinfrt_mcd(ivol,jvol,i1,       &
+                           cinfrt_mcd_usg_loc,cinfrt_mcd_usg_cross_loc)
                 end if
               end if
-
-              call usg_face_utility_cinfrt_da(ivol,jvol,i1,            &
-                       cinfrt_da_usg_loc,cinfrt_da_usg_cross_loc)
-
-              if (multi_diff) then
-                call usg_face_utility_cinfrt_mcd(ivol,jvol,i1,         &
-                         cinfrt_mcd_usg_loc,cinfrt_mcd_usg_cross_loc)
-              end if
-            end if
 #endif
 
-            if (multi_diff) then
-              call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),        &
-                             cnew(:,jvol),cx(:,jvol),                  &
-                             delta_totviscnew(:,tid))
+              if (multi_diff) then
+                call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
+                               delta_totviscnew(:,tid))
 
-              call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),    &
-                                 cnew(:,jvol),cx(:,jvol),              &
-                                 delta_electromignew(:,tid))
-            end if
+                call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol), &
+                                   cnew(:,jvol),cxnew(:,jvol),           &
+                                   delta_electromignew(:,tid))
+              end if
 
-            do ic=1,n              !loop over components
+              do ic=1,n              !loop over components
 
-              if (component_type(ic).eq.'aqueous') then
+                if (component_type(ic).eq.'aqueous') then
 
 !!!!!! For now Advective flux is neglected !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   !ToDo
                 
-                if (multi_diff) then 
+                  if (multi_diff) then 
                    
 #ifdef USG
-                  if (discretization_type > 0) then
+                    if (discretization_type > 0) then
 
 !c calculate gradient at the middle of edge and along the control volume face,
 !c this part can be further improved for better representation for a boundary volume
-                    grad_totcnew_mids = vector_zero
-                    grad_totviscnew_mids = vector_zero
-                    grad_electro_mids = vector_zero
-                    flux_totcnew_hls_corr = r0
-                    flux_totviscnew_hls_corr = r0
-                    flux_electro_hls_corr = r0
+                      grad_totcnew_mids = vector_zero
+                      grad_totviscnew_mids = vector_zero
+                      grad_electro_mids = vector_zero
+                      flux_totcnew_hls_corr = r0
+                      flux_totviscnew_hls_corr = r0
+                      flux_electro_hls_corr = r0
 
-                    if (b_use_cross_diffusion_react) then
-                      call gradient_cross_diff_rt_average(ic,n,i1,ivol,    &
-                           jvol,grad_totviscnew_ivol,grad_totviscnew_jvol, &
-                           grad_totviscnew_kvol,grad_totviscnew_hls_loc,   &
-                           grad_weights,grad_totviscnew_locs,              &
-                           grad_totviscnew_mids,flux_totviscnew_hls_corr,  &
-                           grad_cgg_totviscnew)
-  
-                      call gradient_cross_diff_rt_average(ic,n,i1,ivol,    &
-                           jvol,grad_electro_ivol,grad_electro_jvol,       &
-                           grad_electro_kvol,grad_electro_hls_loc,         &
-                           grad_weights,grad_electro_locs,                 &
-                           grad_electro_mids,flux_electro_hls_corr,        &
-                           grad_cgg_electro)
-                    end if
+                      if (b_use_cross_diffusion_react) then
+                        call gradient_cross_diff_rt_average(ic,n,i1,ivol,    &
+                             jvol,grad_totviscnew_ivol,grad_totviscnew_jvol, &
+                             grad_totviscnew_kvol,grad_totviscnew_hls_loc,   &
+                             grad_weights,grad_totviscnew_locs,              &
+                             grad_totviscnew_mids,flux_totviscnew_hls_corr,  &
+                             grad_cgg_totviscnew)
 
-                    totcflux_diff(ic) = totcflux_diff(ic) - conv3 *                    &  !Diffusive Flux
-                        fluxd_usg(r0,delta_totviscnew(ic,tid),                         & !diffusive term
-                              num_edge_dvols,janumcell(i1),                            &
-                              grad_totviscnew_mids(1:num_edge_dvols,1:janumcell(i1)),     &
-                              flux_totviscnew_hls_corr(1:num_edge_dvols,1:janumcell(i1)), &
-                              cinfrt_mcd_usg_loc(1:num_edge_dvols,1:janumcell(i1)),    &
-                              cinfrt_mcd_usg_cross_loc(1:num_edge_dvols,1:janumcell(i1)))
+                        call gradient_cross_diff_rt_average(ic,n,i1,ivol,    &
+                             jvol,grad_electro_ivol,grad_electro_jvol,       &
+                             grad_electro_kvol,grad_electro_hls_loc,         &
+                             grad_weights,grad_electro_locs,                 &
+                             grad_electro_mids,flux_electro_hls_corr,        &
+                             grad_cgg_electro)
+                      end if
 
-                    totcflux_mig(ic) = totcflux_mig(ic) - conv3 *                      &  !Electromigration Flux
-                        fluxd_usg(r0,delta_electromignew(ic,tid),                      & !electromigration term
-                              num_edge_dvols,janumcell(i1),                            &
-                              grad_electro_mids(1:num_edge_dvols,1:janumcell(i1)),     &
-                              flux_electro_hls_corr(1:num_edge_dvols,1:janumcell(i1)), &
-                              cinfrt_mcd_usg_loc(1:num_edge_dvols,1:janumcell(i1)),    &
-                              cinfrt_mcd_usg_cross_loc(1:num_edge_dvols,1:janumcell(i1)))
-                  else
+                      totcflux_diff(ic) = totcflux_diff(ic) - conv3 *                    &  !Diffusive Flux
+                          fluxd_usg(r0,delta_totviscnew(ic,tid),                         & !diffusive term
+                                num_edge_dvols,janumcell(i1),                            &
+                                grad_totviscnew_mids(1:num_edge_dvols,1:janumcell(i1)),     &
+                                flux_totviscnew_hls_corr(1:num_edge_dvols,1:janumcell(i1)), &
+                                cinfrt_mcd_usg_loc(1:num_edge_dvols,1:janumcell(i1)),    &
+                                cinfrt_mcd_usg_cross_loc(1:num_edge_dvols,1:janumcell(i1)))
+
+                      totcflux_mig(ic) = totcflux_mig(ic) - conv3 *                      &  !Electromigration Flux
+                          fluxd_usg(r0,delta_electromignew(ic,tid),                      & !electromigration term
+                                num_edge_dvols,janumcell(i1),                            &
+                                grad_electro_mids(1:num_edge_dvols,1:janumcell(i1)),     &
+                                flux_electro_hls_corr(1:num_edge_dvols,1:janumcell(i1)), &
+                                cinfrt_mcd_usg_loc(1:num_edge_dvols,1:janumcell(i1)),    &
+                                cinfrt_mcd_usg_cross_loc(1:num_edge_dvols,1:janumcell(i1)))
+                    else
 #endif
-                    totcflux_diff(ic) = totcflux_diff(ic) - conv3*             &
-                                        fluxd(r0,delta_totviscnew(ic,tid),     & !diffusive term
-                                              cinfrt_mcd(i1))
-                    totcflux_mig(ic) = totcflux_mig(ic) - conv3*               &
-                                        fluxd(r0,delta_electromignew(ic,tid),  & !electromigration term
-                                              cinfrt_mcd(i1))
+                      totcflux_diff(ic) = totcflux_diff(ic) - conv3*             &
+                                          fluxd(r0,delta_totviscnew(ic,tid),     & !diffusive term
+                                                cinfrt_mcd(i1))
+                      totcflux_mig(ic) = totcflux_mig(ic) - conv3*               &
+                                          fluxd(r0,delta_electromignew(ic,tid),  & !electromigration term
+                                                cinfrt_mcd(i1))
 #ifdef USG
-                  end if
+                    end if
 #endif
                        
-                  totcflux(ic) = totcflux_diff(ic) + totcflux_mig(ic)
+                    totcflux(ic) = totcflux_diff(ic) + totcflux_mig(ic)
                   
-                else
-#ifdef USG
-                  if (discretization_type > 0) then
-                    grad_totcnew_mids = vector_zero
-                    flux_totcnew_hls_corr = r0
-
-                    if (b_use_cross_diffusion_react) then
-                      call gradient_cross_diff_rt_average(ic,n,i1,ivol,    &
-                           jvol,grad_totcnew_ivol,grad_totcnew_jvol,       &
-                           grad_totcnew_kvol,grad_totcnew_hls_loc,         &
-                           grad_weights,grad_totcnew_locs,                 &
-                           grad_totcnew_mids,flux_totcnew_hls_corr,        &
-                           grad_cgg_totcnew)
-                    end if
-
-                    totcflux_diff(ic) = totcflux_diff(ic) - conv3 *                    &  !Diffusive Flux
-                       (fluxd_usg(totcnew(ic,ivol),totcnew(ic,jvol),                   &
-                              num_edge_dvols,janumcell(i1),                            &
-                              grad_totcnew_mids(1:num_edge_dvols,1:janumcell(i1)),     &
-                              flux_totcnew_hls_corr(1:num_edge_dvols,1:janumcell(i1)), &
-                              cinfrt_da_usg_loc(1:num_edge_dvols,1:janumcell(i1)),     &
-                              cinfrt_da_usg_cross_loc(1:num_edge_dvols,1:janumcell(i1))))
                   else
-#endif
-                    totcflux_diff(ic) = totcflux_diff(ic) - conv3 *    &    !Diffusive Flux
-                                         (fluxd(totcnew(ic,ivol),      &
-                                          totcnew(ic,jvol),            &
-                                          cinfrt_da(i1)))                
 #ifdef USG
-                  end if
+                    if (discretization_type > 0) then
+                      grad_totcnew_mids = vector_zero
+                      flux_totcnew_hls_corr = r0
+
+                      if (b_use_cross_diffusion_react) then
+                        call gradient_cross_diff_rt_average(ic,n,i1,ivol,    &
+                             jvol,grad_totcnew_ivol,grad_totcnew_jvol,       &
+                             grad_totcnew_kvol,grad_totcnew_hls_loc,         &
+                             grad_weights,grad_totcnew_locs,                 &
+                             grad_totcnew_mids,flux_totcnew_hls_corr,        &
+                             grad_cgg_totcnew)
+                      end if
+
+                      totcflux_diff(ic) = totcflux_diff(ic) - conv3 *                    &  !Diffusive Flux
+                         (fluxd_usg(totcnew(ic,ivol),totcnew(ic,jvol),                   &
+                                num_edge_dvols,janumcell(i1),                            &
+                                grad_totcnew_mids(1:num_edge_dvols,1:janumcell(i1)),     &
+                                flux_totcnew_hls_corr(1:num_edge_dvols,1:janumcell(i1)), &
+                                cinfrt_da_usg_loc(1:num_edge_dvols,1:janumcell(i1)),     &
+                                cinfrt_da_usg_cross_loc(1:num_edge_dvols,1:janumcell(i1))))
+                    else
 #endif
-                  totcflux(ic) = totcflux_diff(ic)
+                      totcflux_diff(ic) = totcflux_diff(ic) - conv3 *    &    !Diffusive Flux
+                                           (fluxd(totcnew(ic,ivol),      &
+                                            totcnew(ic,jvol),            &
+                                            cinfrt_da(i1)))                
+#ifdef USG
+                    end if
+#endif
+                    totcflux(ic) = totcflux_diff(ic)
+
+                  end if
 
                 end if
-
-              end if
    
-            end do                   !loop over components
+              end do                   !loop over components
 
-          end do                       !loop over local connections
+            end do                       !loop over local connections
 
 !c  Neumann, Cauchy or mixed type boundary conditions
 
-        else
+          else
 
 !c  compute water flux axcross boundary
 
-          totvsflux = bdryflux(ivol) 
+            totvsflux = bdryflux(ivol) 
 
 !c  total mass fluxes across Neumann type boundary control volumes
  
-          if (btypert(ivol).eq.'second') then
+            if (btypert(ivol).eq.'second') then
 
-            do ic = 1,n
-              if (component_type(ic).eq.'aqueous') then
-                totcflux(ic) = conv3 * totvsflux          &    !advective flux
-     &                       * totcnew(ic,ivol)
-              end if
-            end do
+              do ic = 1,n
+                if (component_type(ic).eq.'aqueous') then
+                  totcflux(ic) = conv3 * totvsflux          &    !advective flux
+                               * totcnew(ic,ivol)
+                end if
+              end do
 
 !c  total mass fluxes across Cauchy type boundary control volumes
 
-          elseif (btypert(ivol).eq.'third' .or.            &
-                  btypert(ivol).eq.'third-evap') then
-            if (b_fluxd_bcond(ivol)) then      
+            else if (btypert(ivol).eq.'third' .or.            &
+                   btypert(ivol).eq.'third-evap') then
+              if (b_fluxd_bcond(ivol)) then      
+                diff_eff = r0
+                diff_loc = r0
+                so_av=dmin1(r1, sonew(ivol))  
+                if (type_diff_ic_coeff == 0) then
+                  diff_loc = diff_a
+                else if (type_diff_ic_coeff > 0) then
+                  idim = diff_brt_dim(ibrt)
+                  if (idim == 1) then
+                    diff_loc = diff_a_tensor%xx
+                  else if (idim == 2) then
+                    diff_loc = diff_a_tensor%yy
+                  else if (idim == 3) then
+                    diff_loc = diff_a_tensor%zz  
+                  end if
+                end if
+
+                diff_eff = diffcoff(diff_loc,sanew(ivol),pornew(ivol),     &
+                                    tortuosity_corr,assigned_tau,          &
+                                    tau(ivol)*tau_fac(ivol),               &
+                                    type_tortuosity,marchies(ivol),so_av,  &
+                                    tor_corr_a_mq, tor_corr_b_mq)     
+                bdyinfrt_da = diff_eff * bdycrt_d(ibrt)
+                if(b_water_freezing) then
+                  if (tkel(ivol) < pressure_melt_k(ivol,r0)) then
+                    bdyinfrt_da = bdyinfrt_da*frozen_diff_a
+                  end if
+                end if 
+              end if
+
+!cbdy-start
+              if (totvsflux.gt.0) then
+!cbdy-end
+!cbdy - flux enters domain
+
+                do ic = 1,n
+                  if (component_type(ic).eq.'aqueous') then
+                    if (b_fluxd_bcond(ivol)) then
+                      totcflux(ic) = conv3 *                             &
+                                     (totvsflux * bcondrt_a(ic,ibrt) +   &     !advective flux
+                                      fluxd(totcnew(ic,ivol),            &     ! diffusive flux
+                                            bcondrt_a(ic,ibrt),          &
+                                            bdyinfrt_da))
+                    else
+                      totcflux(ic) = conv3 *                             &
+                                     totvsflux * bcondrt_a(ic,ibrt)            !advective flux
+                    end if
+                  end if
+                end do
+!cbdy-start
+!cbdy - flux leaves domain
+
+              else
+              
+                do ic = 1,n
+                  if (component_type(ic).eq.'aqueous') then
+                    if (btypert(ivol).eq.'third-evap') then                    !evaporation type, mass is retained
+                      totcflux(ic) = conv3 * totvsflux * r0                    !advective flux
+                    else
+                      if (b_fluxd_bcond(ivol)) then
+                        totcflux(ic) = conv3 *                           &
+                                       (totvsflux * totcnew(ic,ivol) +   &     !advective flux 
+                                        fluxd(totcnew(ic,ivol),          &     !diffusive flux
+                                              bcondrt_a(ic,ibrt),        &
+                                              bdyinfrt_da))
+                      else
+                        totcflux(ic) = conv3 *                           &
+                                       totvsflux * totcnew(ic,ivol)            !advective flux
+                      end if
+                    end if
+                  end if
+                end do
+
+              end if
+
+!cbdy-end
+
+!c  total mass fluxes across mixed type boundary control volumes
+
+            elseif (btypert(ivol).eq.'mixed' .or. btypert(ivol).eq.'mixed-evap') then
+              
               diff_eff = r0
               diff_loc = r0
               so_av=dmin1(r1, sonew(ivol))  
@@ -915,127 +1005,49 @@
                 if (tkel(ivol) < pressure_melt_k(ivol,r0)) then
                   bdyinfrt_da = bdyinfrt_da*frozen_diff_a
                 end if
-              end if 
-            end if
-
-!cbdy-start
-            if (totvsflux.gt.0) then
-!cbdy-end
-!cbdy - flux enters domain
-
-              do ic = 1,n
-                if (component_type(ic).eq.'aqueous') then
-                  if (b_fluxd_bcond(ivol)) then
-                    totcflux(ic) = conv3 *                             &
-                                   (totvsflux * bcondrt_a(ic,ibrt) +   &     !advective flux
-                                    fluxd(totcnew(ic,ivol),            &     ! diffusive flux
-                                          bcondrt_a(ic,ibrt),          &
-                                          bdyinfrt_da))
-                  else
-                    totcflux(ic) = conv3 *                             &
-                                   totvsflux * bcondrt_a(ic,ibrt)            !advective flux
-                  end if
-                end if
-              end do
-!cbdy-start
-!cbdy - flux leaves domain
-
-            else
-              
-              do ic = 1,n
-                if (component_type(ic).eq.'aqueous') then
-                  if (btypert(ivol).eq.'third-evap') then                    !evaporation type, mass is retained
-                    totcflux(ic) = conv3 * totvsflux * r0                    !advective flux
-                  else
-                    if (b_fluxd_bcond(ivol)) then
-                      totcflux(ic) = conv3 *                           &
-                                     (totvsflux * totcnew(ic,ivol) +   &     !advective flux 
-                                      fluxd(totcnew(ic,ivol),          &     !diffusive flux
-                                            bcondrt_a(ic,ibrt),        &
-                                            bdyinfrt_da))
-                    else
-                      totcflux(ic) = conv3 *                           &
-                                     totvsflux * totcnew(ic,ivol)            !advective flux
-                    end if
-                  end if
-                end if
-              end do
-
-          end if
-
-!cbdy-end
-
-!c  total mass fluxes across mixed type boundary control volumes
-
-        elseif (btypert(ivol).eq.'mixed' .or. btypert(ivol).eq.'mixed-evap') then
-              
-            diff_eff = r0
-            diff_loc = r0
-            so_av=dmin1(r1, sonew(ivol))  
-            if (type_diff_ic_coeff == 0) then
-              diff_loc = diff_a
-            else if (type_diff_ic_coeff > 0) then
-              idim = diff_brt_dim(ibrt)
-              if (idim == 1) then
-                diff_loc = diff_a_tensor%xx
-              else if (idim == 2) then
-                diff_loc = diff_a_tensor%yy
-              else if (idim == 3) then
-                diff_loc = diff_a_tensor%zz  
-              end if
-            end if
-
-            diff_eff = diffcoff(diff_loc,sanew(ivol),pornew(ivol),     &
-                                tortuosity_corr,assigned_tau,          &
-                                tau(ivol)*tau_fac(ivol),               &
-                                type_tortuosity,marchies(ivol),so_av,  &
-                                tor_corr_a_mq, tor_corr_b_mq)     
-            bdyinfrt_da = diff_eff * bdycrt_d(ibrt)
-            if(b_water_freezing) then
-              if (tkel(ivol) < pressure_melt_k(ivol,r0)) then
-                bdyinfrt_da = bdyinfrt_da*frozen_diff_a
-              end if
-            end if            
+              end if            
  
-            do ic = 1,n
-              if (component_type(ic).eq.'aqueous') then
-                if (totvsflux > r0) then                                 ! influx
-                  if (b_fluxd_bcond(ivol)) then
-                    totcflux(ic) = conv3 *                             &
-                                   (totvsflux * bcondrt_a(ic,ibrt) +   & ! advective flux
-                                    fluxd(totcnew(ic,ivol),            & ! diffusive flux
-                                          bcondrt_a(ic,ibrt),          &
-                                          bdyinfrt_da))
-                  else
-                    totcflux(ic) = conv3 *                             &
-                                   (totvsflux * bcondrt_a(ic,ibrt))      ! advective flux only
-                  end if
-                else if (totvsflux <= r0) then                           ! outflux
-                  if (btypert(ivol).eq.'mixed-evap') then
-                    totcflux(ic) = conv3 * totvsflux * r0 
-                  else
+              do ic = 1,n
+                if (component_type(ic).eq.'aqueous') then
+                  if (totvsflux > r0) then                                 ! influx
                     if (b_fluxd_bcond(ivol)) then
-                      totcflux(ic) = conv3 *                           &
-                                     (totvsflux * totcnew(ic,ivol) +   & ! advective flux
-                                      fluxd(totcnew(ic,ivol),          & ! diffusive flux
-                                            bcondrt_a(ic,ibrt),        &
+                      totcflux(ic) = conv3 *                             &
+                                     (totvsflux * bcondrt_a(ic,ibrt) +   & ! advective flux
+                                      fluxd(totcnew(ic,ivol),            & ! diffusive flux
+                                            bcondrt_a(ic,ibrt),          &
                                             bdyinfrt_da))
                     else
-                      totcflux(ic) = conv3 *                           &
-                                     (totvsflux * totcnew(ic,ivol))      ! advective flux only
+                      totcflux(ic) = conv3 *                             &
+                                     (totvsflux * bcondrt_a(ic,ibrt))      ! advective flux only
+                    end if
+                  else if (totvsflux <= r0) then                           ! outflux
+                    if (btypert(ivol).eq.'mixed-evap') then
+                      totcflux(ic) = conv3 * totvsflux * r0 
+                    else
+                      if (b_fluxd_bcond(ivol)) then
+                        totcflux(ic) = conv3 *                           &
+                                       (totvsflux * totcnew(ic,ivol) +   & ! advective flux
+                                        fluxd(totcnew(ic,ivol),          & ! diffusive flux
+                                              bcondrt_a(ic,ibrt),        &
+                                              bdyinfrt_da))
+                      else
+                        totcflux(ic) = conv3 *                           &
+                                       (totvsflux * totcnew(ic,ivol))      ! advective flux only
+                      end if
                     end if
                   end if
                 end if
-              end if
-            end do
+              end do
 
-          end if
+            end if
+          end if                !boundary type (transport) 
 
 !c mass flux due to root water uptake and solute uptake (HG 28 Mar 2019)
           if (passive_uptake) then 
-            do ivol = 1,nngl 
-              if (btypert(ivol).ne.'first') then 
-                !c root uptake, positive means source and negative means sink here
+            !c root uptake, positive means source and negative means sink here                
+            if (rld(ivol) > rverysmall) then
+              izn = mpropvs(ivol)
+              if (itype_rootuptk_solut == 1) then
                 qrootloc = - cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
                 if (rootwateruptake_field) then
                   qrootloc = qrootloc*uptakefactor_vol(ivol)
@@ -1043,81 +1055,139 @@
                   qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
                 end if
                 do ic = 1,n    
-                  rootdiff(ic) = rootdiff(ic) + conv3 * qrootloc * totcnew(ic,ivol)
-                end do 
-              end if   
-            end do     
+                  rootprup(ic) = rootprup(ic) + conv3 * qrootloc * totcnew(ic,ivol)
+                end do
+              else if (itype_rootuptk_solut == 2) then
+                qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+                do ic = 1,n
+                  totuptake = soluteUptakeFunc(qrootloc,totcnew(ic,ivol),r0,r0,    &
+                                               rld(ivol),sanew(ivol),pornew(ivol), &
+                                               ic,izn)
+                  rootprup(ic) = rootprup(ic) + conv3*cvol(ivol)*totuptake                 !*delt  
+                end do
+              end if
+            end if
           end if 
-
-        end if                !boundary type (transport) 
 
 !c  assign flux contributions
 
-        do ic = 1,n
-          if (component_type(ic).eq.'aqueous') then
-            if (totcflux(ic).gt.r0 ) then
-              if (btypert(ivol).eq.'first') then  
-                cfluxin_diff(ic) = cfluxin_diff(ic) + totcflux_diff(ic)  !mass in
-                cfluxin_mig(ic) = cfluxin_mig(ic) + totcflux_mig(ic)     !mass in
-              end if
-              cfluxin(ic) = cfluxin(ic) + totcflux(ic)                   !mass in
-            else
-              if (btypert(ivol).eq.'first') then  
-                cfluxout_diff(ic) = cfluxout_diff(ic) - totcflux_diff(ic)!mass out
-                cfluxout_mig(ic) = cfluxout_mig(ic) - totcflux_mig(ic)   !mass out
-              end if
-
-              if (btypert(ivol).eq.'mixed-evap') then
-                !c 'mixed-evap' boundary, no mass out for aqueous phase
+          do ic = 1,n
+            if (component_type(ic).eq.'aqueous') then
+              if (totcflux(ic).gt.r0 ) then
+                if (btypert(ivol).eq.'first') then  
+                  cfluxin_diff(ic) = cfluxin_diff(ic) + totcflux_diff(ic)  !mass in
+                  cfluxin_mig(ic) = cfluxin_mig(ic) + totcflux_mig(ic)     !mass in
+                end if
+                cfluxin(ic) = cfluxin(ic) + totcflux(ic)                   !mass in
               else
-                cfluxout(ic) = cfluxout(ic) - totcflux(ic)               !mass out
+                if (btypert(ivol).eq.'first') then  
+                  cfluxout_diff(ic) = cfluxout_diff(ic) - totcflux_diff(ic)!mass out
+                  cfluxout_mig(ic) = cfluxout_mig(ic) - totcflux_mig(ic)   !mass out
+                end if
+
+                if (btypert(ivol).eq.'mixed-evap') then
+                  !c 'mixed-evap' boundary, no mass out for aqueous phase
+                else
+                  cfluxout(ic) = cfluxout(ic) - totcflux(ic)               !mass out
+                end if
               end if
             end if
-          end if
-        end do
+          end do
 
-      end do                  !loop over boundary control volumes
+        end do                  !loop over boundary control volumes
       
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
 
-#ifdef PETSC
-      call MPI_Allreduce(cfluxin_diff, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cfluxin_diff(1:n) = mpireduce_n(1:n) 
-      
-      call MPI_Allreduce(cfluxin_mig, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cfluxin_mig(1:n) = mpireduce_n(1:n) 
-      
-      call MPI_Allreduce(cfluxin, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cfluxin(1:n) = mpireduce_n(1:n) 
-      
-      call MPI_Allreduce(cfluxout_diff, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cfluxout_diff(1:n) = mpireduce_n(1:n) 
-      
-      call MPI_Allreduce(cfluxout_mig, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cfluxout_mig(1:n) = mpireduce_n(1:n) 
-      
-      call MPI_Allreduce(cfluxout, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cfluxout(1:n) = mpireduce_n(1:n) 
+!c  loop over internal boundaries for subdomains, 
+!c  should exclude physical boundaries since they are already considered 
+        if (isub > 0) then
+          do ibrt = 1, 2
+            i1 = subdomains_bdface_conn(ibrt,isub)
+            if (i1 > 0) then
+              ivol = subdomains_bdface(1,ibrt,isub)       !inside domain
+              jvol = subdomains_bdface(2,ibrt,isub)       !outside domain
 
-      call MPI_Allreduce(rootdiff, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      rootdiff(1:n) = mpireduce_n(1:n) 
+              if (multi_diff) then
+                call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
+                               delta_totviscnew(:,tid))
+
+                call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                                   cnew(:,jvol),cxnew(:,jvol),             &
+                                   delta_electromignew(:,tid))
+              end if
+
+              do ic=1,n              !loop over components
+
+                if (component_type(ic).eq.'aqueous') then
+!!!!!! For now Advective flux is neglected !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   !ToDo                
+                  if (multi_diff) then
+                    totcflux_diff(ic) = - conv3 * fluxd(r0,delta_totviscnew(ic,tid),   & !diffusive term
+                                                        cinfrt_mcd(i1))
+                    totcflux_mig(ic) = - conv3 * fluxd(r0,delta_electromignew(ic,tid), & !electromigration term
+                                                       cinfrt_mcd(i1))                       
+                    totcflux(ic) = totcflux_diff(ic) + totcflux_mig(ic)                  
+                  else
+                    totcflux_diff(ic) = - conv3 * fluxd(totcnew(ic,ivol),      &
+                                                        totcnew(ic,jvol),      &
+                                                        cinfrt_da(i1))                
+                    totcflux(ic) = totcflux_diff(ic)
+                  end if
+
+                  if (totcflux(ic).gt.r0 ) then
+                    cfluxin_diff(ic) = cfluxin_diff(ic) + totcflux_diff(ic)    !mass in
+                    cfluxin_mig(ic) = cfluxin_mig(ic) + totcflux_mig(ic)       !mass in
+                    cfluxin(ic) = cfluxin(ic) + totcflux(ic)                   !mass in
+                  else
+                    cfluxout_diff(ic) = cfluxout_diff(ic) - totcflux_diff(ic)  !mass out
+                    cfluxout_mig(ic) = cfluxout_mig(ic) - totcflux_mig(ic)     !mass out
+                    cfluxout(ic) = cfluxout(ic) - totcflux(ic)                 !mass out
+                  end if
+                end if
+              end do
+            end if
+          end do
+        end if
+
+
+#ifdef PETSC
+        call MPI_Allreduce(cfluxin_diff, mpireduce_n,n,MPI_REAL8,MPI_SUM,  &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cfluxin_diff(1:n) = mpireduce_n(1:n) 
+      
+        call MPI_Allreduce(cfluxin_mig, mpireduce_n,n,MPI_REAL8,MPI_SUM,   &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cfluxin_mig(1:n) = mpireduce_n(1:n) 
+      
+        call MPI_Allreduce(cfluxin, mpireduce_n,n,MPI_REAL8,MPI_SUM,       &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cfluxin(1:n) = mpireduce_n(1:n) 
+      
+        call MPI_Allreduce(cfluxout_diff, mpireduce_n,n,MPI_REAL8,MPI_SUM, &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cfluxout_diff(1:n) = mpireduce_n(1:n) 
+      
+        call MPI_Allreduce(cfluxout_mig, mpireduce_n,n,MPI_REAL8,MPI_SUM,  &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cfluxout_mig(1:n) = mpireduce_n(1:n) 
+      
+        call MPI_Allreduce(cfluxout, mpireduce_n,n,MPI_REAL8,MPI_SUM,      &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cfluxout(1:n) = mpireduce_n(1:n) 
+
+        call MPI_Allreduce(rootprup, mpireduce_n,n,MPI_REAL8,MPI_SUM,      &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        rootprup(1:n) = mpireduce_n(1:n) 
 #endif
  
 !c  change in storage [moles/unit time]
@@ -1130,201 +1200,169 @@
     !$omp reduction(+:cstordiff)
     !$omp do schedule(static)
 #endif
-      do ivol = 1,nngl
+        do ivol = 1,nngl
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
+          end if
 #endif
-        do ic = 1,n
-          cstordiff(ic) = cstordiff(ic)                                &
-                        + cvol(ivol)                                   &
-                        * (bulkconc(totcnew(ic,ivol),                  &
-                                    sanew(ivol),                       &
-                                    pornew(ivol))                      &
-                        -  bulkconc(totcold(ic,ivol),                  &
-                                    saold(ivol),                       &
-                                    porold(ivol)))
+
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+            cycle
+          end if
+
+          do ic = 1,n
+            cstordiff(ic) = cstordiff(ic)                                &
+                          + cvol(ivol)                                   &
+                          * (bulkconc(totcnew(ic,ivol),                  &
+                                      sanew(ivol),                       &
+                                      pornew(ivol))                      &
+                          -  bulkconc(totcold(ic,ivol),                  &
+                                      saold(ivol),                       &
+                                      porold(ivol)))
+          end do
         end do
-      end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif   
 
 #ifdef PETSC
-      call MPI_Allreduce(cstordiff, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      cstordiff(1:n) = mpireduce_n(1:n)
+        call MPI_Allreduce(cstordiff, mpireduce_n,n,MPI_REAL8,MPI_SUM,     &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        cstordiff(1:n) = mpireduce_n(1:n)
 #endif
 
-      cstordiff(1:n) = cstordiff(1:n) * conv3 / delt
+        cstordiff(1:n) = cstordiff(1:n) * conv3 / delt
 
 
 !c  compute mass balance for selected species in aqueous phase
 !c  only if selected species are specified
 !c ----------------------------------------------------------------------
 
-      imcd = imcd_first
+        imcd(isub) = imcd_first(isub)
 
       !c add code for masmcd output, code is missing here
       !c file creating for masmcd is disabled as output is not availabe
 
-      if (nmb.gt.0) then
+        if (nmb.gt.0) then
 
-        imcd = imcd + 1
+          imcd(isub) = imcd(isub) + 1
 
         !c add code for mssmcd output, code is missing here
         !c file creating for masmcd is disabled as output is not availabe
 
-      end if
+        end if
 
 
-      do ic = 1,n
+        do ic = 1,n
 
 !c compute accumulative changes over time
-        totcfluxin_diff(ic) = totcfluxin_diff(ic)     &
-                            + cfluxin_diff(ic)*delt
+          totcfluxin_diff(ic,isub) = totcfluxin_diff(ic,isub) + cfluxin_diff(ic)*delt
 
-        totcfluxin_mig(ic) = totcfluxin_mig(ic)     &
-                            + cfluxin_mig(ic)*delt
+          totcfluxin_mig(ic,isub) = totcfluxin_mig(ic,isub) + cfluxin_mig(ic)*delt
 
-        totcfluxin(ic) = totcfluxin(ic) + cfluxin(ic)*delt
+          totcfluxin(ic,isub) = totcfluxin(ic,isub) + cfluxin(ic)*delt
 
-        totcfluxout_diff(ic) = totcfluxout_diff(ic)     &
-                             + cfluxout_diff(ic)*delt
+          totcfluxout_diff(ic,isub) = totcfluxout_diff(ic,isub) + cfluxout_diff(ic)*delt
 
-        totcfluxout_mig(ic) = totcfluxout_mig(ic)     &
-                             + cfluxout_mig(ic)*delt
+          totcfluxout_mig(ic,isub) = totcfluxout_mig(ic,isub) + cfluxout_mig(ic)*delt
 
-        totcfluxout(ic) = totcfluxout(ic) + cfluxout(ic)*delt
+          totcfluxout(ic,isub) = totcfluxout(ic,isub) + cfluxout(ic)*delt
         
-        if(passive_uptake) then    ! HG passive uptake 28 Mar 2019
-          totrootdiff(ic) = totrootdiff(ic) + rootdiff(ic)*delt
-        end if
+          if(passive_uptake .and. itype_rootuptk_solut == 1) then    ! HG passive solute uptake 28 Mar 2019
+            totrootprup(ic,isub) = totrootprup(ic,isub) + rootprup(ic)*delt
+          end if
+
+          !c to be further updated, active solute uptake is not included here
         
 
 !c  write results
  
-        imcd = imcd+1
+          imcd(isub) = imcd(isub)+1
         
-        if(rank == 0 .and. b_enable_output) then
-          if (b_output_trans_binary) then
-            nvarsimcd = 17
-            realbuffer_gb(1:nvarsimcd)=(/time_io,                      &
-                                        cfluxin_diff(ic),              &
-                                        cfluxin_mig(ic),               &
-                                        cfluxin(ic),                   &
-                                        cfluxout_diff(ic),             &
-                                        cfluxout_mig(ic),              &
-                                        cfluxout(ic),                  &
-                                        cstordiff(ic),                 &
-                                        rootdiff(ic),                  &
-                                        totcfluxin_diff(ic),           &
-                                        totcfluxin_mig(ic),            &
-                                        totcfluxin(ic),                &
-                                        totcfluxout_diff(ic),          &
-                                        totcfluxout_mig(ic),           &
-                                        totcfluxout(ic),               &
-                                        totcstordiff(ic),              &
-                                        totrootdiff(ic)/)
-            call binary_write_data(imcd_mpi(imcd), 1,          &
-                         (/mtime/),offset_imcd_ijk(imcd),.true.)
-            call binary_write_data(imcd_mpi(imcd), nvarsimcd,  &
-                         realbuffer_gb,offset_imcd(imcd),.true.) 
+          if(rank == 0 .and. b_enable_output) then
+            if (b_output_trans_binary) then
+              nvarsimcd = 17
+              realbuffer_gb(1:nvarsimcd)=(/time_io,                    &
+                                          cfluxin_diff(ic),            &
+                                          cfluxin_mig(ic),             &
+                                          cfluxin(ic),                 &
+                                          cfluxout_diff(ic),           &
+                                          cfluxout_mig(ic),            &
+                                          cfluxout(ic),                &
+                                          cstordiff(ic),               &
+                                          rootprup(ic),                &
+                                          totcfluxin_diff(ic,isub),    &
+                                          totcfluxin_mig(ic,isub),     &
+                                          totcfluxin(ic,isub),         &
+                                          totcfluxout_diff(ic,isub),   &
+                                          totcfluxout_mig(ic,isub),    &
+                                          totcfluxout(ic,isub),        &
+                                          totcstordiff(ic,isub),       &
+                                          totrootprup(ic,isub)/)
+              call binary_write_data(imcd_mpi(imcd(isub)), 1,          &
+                           (/mtime/),offset_imcd_ijk(imcd(isub)),.true.)
+              call binary_write_data(imcd_mpi(imcd(isub)), nvarsimcd,  &
+                           realbuffer_gb,offset_imcd(imcd(isub)),.true.) 
 
-            offset_imcd(imcd) = offset_imcd(imcd) + nvarsimcd*nfloatbit
-   
-          else
+              offset_imcd(imcd(isub)) = offset_imcd(imcd(isub)) +      &
+                                        nvarsimcd*nfloatbit
 
-            !c read accumulative absolute mass balance error at the restart point
-            !c For legacy mode, previous mass balance is read at restart point but
-            !c will not output until the second restart point is reached
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(imcd,irecord)
+            else
 
-              if (irecord > 0) then
-                !c locate to the restart time and get previous results
-                call reposition_file(imcd,irecord,time_io_rs)
-                read(imcd,*,end=10,err=10) rdummys(1:17)
-                !c reposition to the line to append results
-                call reposition_file(imcd,irecord)
+              !c read accumulative absolute mass balance error at the restart point
+              !c For legacy mode, previous mass balance is read at restart point but
+              !c will not output until the second restart point is reached
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(imcd(isub),irecord)
 
-                totcfluxin_diff(ic) = totcfluxin_diff(ic) + rdummys(10)
-                totcfluxin_mig(ic) = totcfluxin_mig(ic) + rdummys(11)
-                totcfluxin(ic) = totcfluxin(ic) + rdummys(12)
-                totcfluxout_diff(ic) = totcfluxout_diff(ic) + rdummys(13)
-                totcfluxout_mig(ic) = totcfluxout_mig(ic) + rdummys(14)
-                totcfluxout(ic) = totcfluxout(ic) + rdummys(15)
-                totcstordiff(ic) = totcstordiff(ic) + rdummys(16)
-                totrootdiff(ic) = totrootdiff(ic) + rdummys(17)
+                if (irecord > 0) then
+                  !c locate to the restart time and get previous results
+                  call reposition_file(imcd(isub),irecord,time_io_rs)
+                  read(imcd(isub),*,end=10,err=10) rdummys(1:17)
+                  !c reposition to the line to append results
+                  call reposition_file(imcd(isub),irecord)
+  
+                  totcfluxin_diff(ic,isub) = totcfluxin_diff(ic,isub) + rdummys(10)
+                  totcfluxin_mig(ic,isub) = totcfluxin_mig(ic,isub) + rdummys(11)
+                  totcfluxin(ic,isub) = totcfluxin(ic,isub) + rdummys(12)
+                  totcfluxout_diff(ic,isub) = totcfluxout_diff(ic,isub) + rdummys(13)
+                  totcfluxout_mig(ic,isub) = totcfluxout_mig(ic,isub) + rdummys(14)
+                  totcfluxout(ic,isub) = totcfluxout(ic,isub) + rdummys(15)
+                  totcstordiff(ic,isub) = totcstordiff(ic,isub) + rdummys(16)
+                  totrootprup(ic,isub) = totrootprup(ic,isub) + rdummys(17)
+                end if
+10              continue
               end if
-10            continue
-            end if
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(imcd,ascii_fmt) time_io,                           &
-                                        cfluxin_diff(ic),              &
-                                        cfluxin_mig(ic),               &
-                                        cfluxin(ic),                   &
-                                        cfluxout_diff(ic),             &
-                                        cfluxout_mig(ic),              &
-                                        cfluxout(ic),                  &
-                                        cstordiff(ic),                 &
-                                        rootdiff(ic),                  &
-                                        totcfluxin_diff(ic),           &
-                                        totcfluxin_mig(ic),            &
-                                        totcfluxin(ic),                &
-                                        totcfluxout_diff(ic),          &
-                                        totcfluxout_mig(ic),           &
-                                        totcfluxout(ic),               &
-                                        totcstordiff(ic),              &
-                                        totrootdiff(ic)
-            end if
-          end if      
-        end if
+              if (i_append_sim < 1 .or.                                &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                write(imcd(isub),ascii_fmt) time_io,                   &
+                                            cfluxin_diff(ic),          &
+                                            cfluxin_mig(ic),           &
+                                            cfluxin(ic),               &
+                                            cfluxout_diff(ic),         &
+                                            cfluxout_mig(ic),          &
+                                            cfluxout(ic),              &
+                                            cstordiff(ic),             &
+                                            rootprup(ic),              &
+                                            totcfluxin_diff(ic,isub),  &
+                                            totcfluxin_mig(ic,isub),   &
+                                            totcfluxin(ic,isub),       &
+                                            totcfluxout_diff(ic,isub), &
+                                            totcfluxout_mig(ic,isub),  &
+                                            totcfluxout(ic,isub),      &
+                                            totcstordiff(ic,isub),     &
+                                            totrootprup(ic,isub)
+              end if
+            end if      
+          end if
       
-      end do   ! do ic
-
-!c  absolute mass balance error [moles/time unit]
-!c  relative mass balance error in [%] = [moles/moles in system] x 100
-!c  accumulative mass balance error [moles]
-!c  relative accumulative mass balance error in [%] = 
-!c  [moles/moles in system] x 100
-! 
-!      do ic = 1,n
-!        absbalance = (cfluxin(ic) - cfluxout(ic)
-!     &             - cstordiff(ic))*delt
-!        relbalance = dabs(absbalance)/tmass(ic)*r100
-!        cculabsbal(ic) = cculabsbal(ic) + absbalance
-!        cculrelbal(ic) = cculabsbal(ic)/tmass(ic)*r100
-!        imcd = imcd+1
-!
-!        if (mtime.eq.1) then
-!        write(imcd,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-!          write(imcd,'(11a)') 'variables = "time [',
-!     &            time_unit(:l_time_unit),']", ',
-!     &           '"absolute mass balance error [mol]", ',
-!     &           '"relative mass balance error ',
-!     &           '[% of system mass]", ',
-!     &           '"absolute cumulative mass balance error ',
-!     &           '[mol] ", ',    
-!     &           '"relative cumulative mass balance error ',
-!     &           '[% of system mass]"' 
-!          write(imcd,'(4a)') 
-!     &              'zone t = "mass balance error for component ',
-!     &           namec(ic)(:l_namec(ic)),' - ',
-!     &           ' reactive transport", f=point'
-!    end if
-!
-!        write(imcd,'(4(1pe15.6e3,4x))') time_io,absbalance,
-!     &                                relbalance,cculabsbal(ic),
-!     &                                cculrelbal(ic)
-!      end do
-!   
-!c ----------------------------------------------------------------------
+        end do   ! do ic
+        
+      end do       !subdomains
 
       return
       end

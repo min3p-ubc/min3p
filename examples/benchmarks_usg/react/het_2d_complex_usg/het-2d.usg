@@ -1,0 +1,119 @@
+!
+!Self-described unstructured grid generation file
+!This example is for mesh generation test only
+!
+
+!**********************************************************************
+!example input parameters for polygon 2d delaunay mesh
+!**********************************************************************
+
+'polygon 2d delaunay mesh'
+
+'coordinate projection'
+'xz'                    !'xy' or 'yz' or 'xz'
+
+'number of constraints'
+4
+
+!constraint 1: outer boundary
+'constraint type'
+'closed polygon with sub discretization interval'
+
+'number of vertices'
+16
+
+'vertices coordinate'
+0.0   0.0
+0.1   0.0
+0.1   0.02
+0.09  0.025
+0.1   0.075
+0.09  0.080
+0.09  0.15
+0.1   0.15
+0.1   0.175
+0.0   0.2
+0.0   0.15
+0.015 0.15
+0.0   0.1
+0.01  0.095
+0.0   0.05
+0.01  0.047
+
+'segment discretization interval'
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+0.005
+
+'end of constraint'
+
+
+!constraint 2: line constraint
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.015   0.15
+0.09    0.15
+
+'segment discretization interval'
+0.0025
+
+'end of constraint'
+
+!constraint 3: line constraint
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.01    0.095
+0.09    0.08
+
+'segment discretization interval'
+0.0025
+
+'end of constraint'
+
+
+!constraint 4: line constraint
+'constraint type'
+'open polygon with sub discretization interval'
+
+'number of vertices'
+2
+
+'vertices coordinate'
+0.01    0.047
+0.09    0.025
+
+'segment discretization interval'
+0.0025
+
+'end of constraint'
+
+'global domain mesh criteria'
+32.0, 0.05    ;shape criterion bound, size bound
+
+'mesh optimization iterations'
+10
+
+

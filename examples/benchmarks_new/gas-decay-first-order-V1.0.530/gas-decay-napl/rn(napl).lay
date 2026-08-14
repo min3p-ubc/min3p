@@ -1,0 +1,2796 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"RnDecayNaplVar_0.gst"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN2| = '"RnDecayNaplVar_30.gst"'
+$!VarSet |LFDSVL2| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN3| = '"RnDecayNaplVar_27.gst"'
+$!VarSet |LFDSVL3| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN4| = '"RnDecayNaplVar_24.gst"'
+$!VarSet |LFDSVL4| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN5| = '"RnDecayNaplVar_21.gst"'
+$!VarSet |LFDSVL5| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN6| = '"RnDecayNaplVar_18.gst"'
+$!VarSet |LFDSVL6| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN7| = '"RnDecayNaplVar_15.gst"'
+$!VarSet |LFDSVL7| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN8| = '"RnDecayNaplVar_12.gst"'
+$!VarSet |LFDSVL8| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN9| = '"RnDecayNaplVar_9.gst"'
+$!VarSet |LFDSVL9| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN10| = '"RnDecayNaplVar_6.gst"'
+$!VarSet |LFDSVL10| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!VarSet |LFDSFN11| = '"RnDecayNaplVar_3.gst"'
+$!VarSet |LFDSVL11| = '"x" "y" "z" "rn(aq)" "rn(napl)"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 8.5
+    Y = 4.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 4
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMAX = 9.99999996004E-013
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 9.99999996004E-013
+      CMAX = 9.99999996004E-013
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665799
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    SHOWAXIS = NO
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 9.99999996004E-013
+  ISOVALUE2 = 9.99999996004E-013
+  ISOVALUE3 = 9.99999996004E-013
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL2|' 
+$!REMOVEVAR |LFDSVL2|
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 7
+    Y = 4.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 10
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00197737347844
+    RANGEMAX = 0.0056739864267
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.000129067004309
+      CMAX = 0.00752229290083
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665799
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00197737347844
+  ISOVALUE2 = 0.00382567995257
+  ISOVALUE3 = 0.0056739864267
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 30 days' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL3|' 
+$!REMOVEVAR |LFDSVL3|
+$!REMOVEVAR |LFDSFN3|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5.5
+    Y = 4.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00197550579105
+    RANGEMAX = 0.00566850856922
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.00012900440197
+      CMAX = 0.0075150099583
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665799
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00197550579105
+  ISOVALUE2 = 0.00382200718013
+  ISOVALUE3 = 0.00566850856922
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 27 days' 
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN4|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL4|' 
+$!REMOVEVAR |LFDSVL4|
+$!REMOVEVAR |LFDSFN4|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 4
+    Y = 4.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00197172493426
+    RANGEMAX = 0.00565742158869
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.00012887660705
+      CMAX = 0.00750026991591
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665799
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00197172493426
+  ISOVALUE2 = 0.00381457326148
+  ISOVALUE3 = 0.00565742158869
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 24 days' 
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN5|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL5|' 
+$!REMOVEVAR |LFDSVL5|
+$!REMOVEVAR |LFDSFN5|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 2.5
+    Y = 4.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00196406331088
+    RANGEMAX = 0.00563495572715
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.000128617102746
+      CMAX = 0.00747040193528
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665832
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00196406331088
+  ISOVALUE2 = 0.00379950951901
+  ISOVALUE3 = 0.00563495572715
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 21 days' 
+### Frame Number 6 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN6|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL6|' 
+$!REMOVEVAR |LFDSVL6|
+$!REMOVEVAR |LFDSFN6|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 4.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00194852790446
+    RANGEMAX = 0.00558939852635
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.000128092593513
+      CMAX = 0.0074098338373
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.9016259563566581
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00194852790446
+  ISOVALUE2 = 0.00376896321541
+  ISOVALUE3 = 0.00558939852635
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 18 days' 
+### Frame Number 7 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN7|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL7|' 
+$!REMOVEVAR |LFDSVL7|
+$!REMOVEVAR |LFDSFN7|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 8.5
+    Y = 0.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00191705122052
+    RANGEMAX = 0.00549710047562
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.000127026592963
+      CMAX = 0.00728712510318
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665632
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00191705122052
+  ISOVALUE2 = 0.00370707584807
+  ISOVALUE3 = 0.00549710047562
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 15 days' 
+### Frame Number 8 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN8|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL8|' 
+$!REMOVEVAR |LFDSVL8|
+$!REMOVEVAR |LFDSFN8|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 7
+    Y = 0.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00185327491636
+    RANGEMAX = 0.00531010416307
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.000124860292999
+      CMAX = 0.00703851878643
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665765
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00185327491636
+  ISOVALUE2 = 0.00358168953971
+  ISOVALUE3 = 0.00531010416307
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 12 days' 
+### Frame Number 9 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN9|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL9|' 
+$!REMOVEVAR |LFDSVL9|
+$!REMOVEVAR |LFDSFN9|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5.5
+    Y = 0.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00172431666579
+    RANGEMAX = 0.00493208099215
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.000120434502605
+      CMAX = 0.00653596315533
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665765
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00172431666579
+  ISOVALUE2 = 0.00332819882897
+  ISOVALUE3 = 0.00493208099215
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 9 days' 
+### Frame Number 10 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN10|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL10|' 
+$!REMOVEVAR |LFDSVL10|
+$!REMOVEVAR |LFDSFN10|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 4
+    Y = 0.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.00146540335481
+    RANGEMAX = 0.00417381986699
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.000111195098725
+      CMAX = 0.00552802812308
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665765
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.00146540335481
+  ISOVALUE2 = 0.0028196116109
+  ISOVALUE3 = 0.00417381986699
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 6 days' 
+### Frame Number 11 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN11|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL11|' 
+$!REMOVEVAR |LFDSVL11|
+$!REMOVEVAR |LFDSFN11|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 2.5
+    Y = 0.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  DEFNUMLEVELS = 1
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.000958088625339
+    RANGEMAX = 0.00269364017004
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 9.03128529899E-005
+      CMAX = 0.00356141594239
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.9016259563566581
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.000958088625339
+  ISOVALUE2 = 0.00182586439769
+  ISOVALUE3 = 0.00269364017004
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 3 days' 
+### Frame Number 12 ###
+$!CREATENEWFRAME 
+$!ATTACHDATASET 
+  FRAME = 1
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 1.5
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 5
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 95
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -0.187499999998
+    RANGEMAX = 9.99999996004E-013
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 9.99999996004E-013
+      CMAX = 9.99999996004E-013
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+7
+0.001
+0.002
+0.003
+0.004
+0.005
+0.006
+0.007
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 0.90162595635665788
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.4684515071808941
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 9.99999996004E-013
+  ISOVALUE2 = 9.99999996004E-013
+  ISOVALUE3 = 9.99999996004E-013
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!LINKING 
+  BETWEENFRAMES
+    {
+    LINKCONTOURLEVELS = YES
+    LINKXAXISRANGE = YES
+    LINKYAXISRANGE = YES
+    }
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 29.2074250355
+    Y = 91.3407643312
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 10
+    }
+  TEXT = 't = 0 days' 
+$!SETSTYLEBASE CONFIG

@@ -1,0 +1,73 @@
+ RECORD OF "NORMAL MATRIX" CONDITION NUMBERS: CASE cdr_simulation
+
+
+ ------------------------------------------------------------------------------
+ OPTIMISATION ITERATION NO.        :    1
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     5.00    
+           MATRIX CONDITION NUMBER =   12.393    
+
+
+ ------------------------------------------------------------------------------
+ OPTIMISATION ITERATION NO.        :    2
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     2.50    
+           MATRIX CONDITION NUMBER =   57.085    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     1.25    
+           MATRIX CONDITION NUMBER =   70.115    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     5.00    
+           MATRIX CONDITION NUMBER =   49.252    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     10.0    
+           MATRIX CONDITION NUMBER =   42.953    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     20.0    
+           MATRIX CONDITION NUMBER =   38.488    
+
+
+ ------------------------------------------------------------------------------
+ OPTIMISATION ITERATION NO.        :    3
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     20.0    
+           MATRIX CONDITION NUMBER =   17.452    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     10.0    
+           MATRIX CONDITION NUMBER =   16.193    
+
+
+ ------------------------------------------------------------------------------
+ OPTIMISATION ITERATION NO.        :    4
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     5.00    
+           MATRIX CONDITION NUMBER =   20.091    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     2.50    
+           MATRIX CONDITION NUMBER =   21.470    
+
+
+ ------------------------------------------------------------------------------
+ OPTIMISATION ITERATION NO.        :    5
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     1.25    
+           MATRIX CONDITION NUMBER =   42.935    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =    0.625    
+           MATRIX CONDITION NUMBER =   86.957    
+
+
+ CURRENT VALUE OF MARQUARDT LAMBDA =     2.50    
+           MATRIX CONDITION NUMBER =   29.876    

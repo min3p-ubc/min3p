@@ -1,0 +1,2140 @@
+! benC1b.dat
+
+! Base case in granite - bentonite-concrete (LHHPC) interface (Project GS701)
+
+! CH-coupling
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'Bentonite-concrete (LHHHPC) interactions in granite'
+
+.true.                        ;varsat_flow
+
+.true.                        ;steady_flow
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'parallel solver configuration file'
+
+'solver.cfg'
+
+
+
+'backup frequency' 
+
+10
+
+
+
+!'restart'
+
+'done'
+
+
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'compute alkalinity'
+
+
+
+'use sit model'
+
+
+
+'consider exponent n for reaction rate law'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'..\database-calcitek'
+
+
+
+'define redox master variable'
+
+'h2(aq)'
+
+
+
+
+
+'components'
+
+12                           ;number of components (nc-1)
+
+'h+1'                        ;component names
+
+'al+3'                		;'alo2-'
+
+'fe+2'            			;'feoh+'
+
+'h4(sio4)'					;'hsio3-'
+
+'k+'
+
+'mg+2'
+
+'ca+2'
+
+'na+'
+
+'so4-2'
+
+'cl-'
+
+'co3-2'
+
+'h2(aq)'
+
+
+
+'redox couples'
+
+0                             ;number of redox couples (nr)
+
+
+
+'secondary aqueous species'
+
+109                          ;number of secondary aqueous species
+
+'al(oh)+2'
+
+'al(oh)2+'
+
+'al(oh)3'
+
+'al(oh)4-'
+
+'al(so4)+'
+
+'alh3sio4+2'
+
+'ca(h3sio4)+'
+
+'ca(hco3)+'
+
+'ca(oh)+'
+
+'ca(s2o3)'
+
+'ca(so4)'
+
+'cacl+'
+
+'cacl2'
+
+'caco3'
+
+'ch4'
+
+'cl2'
+
+'clo4-'
+
+'co'
+
+'co2'
+
+'fe(co3)'
+
+'fe(co3)2-2'
+
+'fe(co3)3-3'
+
+'fe(h3sio4)+2'
+
+'fe(hs)+'
+
+'fe(hs)2'
+
+'fe(hso4)+'
+
+'fe(oh)+'
+
+'fe(oh)+2'
+
+'fe(oh)2'
+
+'fe(oh)2+'
+
+'fe(oh)3'
+
+'fe(oh)3-'
+
+'fe(oh)4-'
+
+'fe(oh)4-2'
+
+'fe(so4)'
+
+'fe(so4)+'
+
+'fe(so4)2-'
+
+'fe+3'
+
+'fe2(oh)2+4'
+
+'fe3(oh)4+5'
+
+'fecl+'
+
+'fecl+2'
+
+'fecl2'
+
+'fecl2+'
+
+'fecl3'
+
+'fecl3-'
+
+'fecl4-'
+
+'feco3oh'
+
+'feco3oh-'
+
+'fehco3+'
+
+'fehso4+2'
+
+'fes2o3+'
+
+'h(s2o3)-'
+
+'h(so3)-'
+
+'h(so4)-'
+
+'h2(aq)'
+
+'h2(s2o3)'
+
+'h2(sio4)-2'
+
+'h2(so3)'
+
+'h2s'
+
+'h2s2o4'
+
+'h3(sio4)-'
+
+'hcl'
+
+'hco3-'
+
+'hs-'
+
+'hs2o4-'
+
+'hso5-'
+
+'k(oh)'
+
+'k(so4)-'
+
+'kal(oh)4'
+
+'kcl'
+
+'mg(co3)'
+
+'mg(h3sio4)+'
+
+'mg(hco3)+'
+
+'mg(oh)+'
+
+'mg(s2o3)'
+
+'mg(so4)'
+
+'mg4(oh)4+4'
+
+'mgcl+'
+
+'na(co3)-'
+
+'na(hco3)'
+
+'na(oh)'
+
+'na(s2o3)-'
+
+'na(so4)-'
+
+'naal(oh)4'
+
+'nacl'
+
+'oh-'
+
+'s-2'
+
+'s2-2'
+
+'s2o3-2'
+
+'s2o4-2'
+
+'s2o5-2'
+
+'s2o8-2'
+
+'s3-2'
+
+'s3o6-2'
+
+'s4-2'
+
+'s4o6-2'
+
+'s5-2'
+
+'s5o6-2'
+
+'si2o2(oh)5-'
+
+'si2o3(oh)4-2'
+
+'si3o5(oh)5-3'
+
+'si3o6(oh)3-3'
+
+'si4o6(oh)6-2'
+
+'si4o7(oh)6-4'
+
+'si4o8(oh)4-4'
+
+'si6o15-6'
+
+'so2'
+
+'so3-2'
+
+
+
+
+
+'gases'
+
+0                              ;number of gases
+
+'o2(g)'                        ;names of gases
+
+'co2(g)'
+
+
+
+'sorbed species'
+
+4
+
+'na-x(na)'
+
+'ca-x(na)'
+
+'mg-x(na)'
+
+'k-x(na)'
+
+
+
+'minerals'
+
+23                            ;number of minerals
+
+'sio2(am)'                  ;mineral names
+
+'tobii-07mat'
+
+'hydrotalcite_k'   	
+
+'gypsum'
+
+'calcitek'
+
+'albite-low_k'             
+
+'microcline_k'			
+
+'clinochlore_k' 		;chlorite is a group name, which is replaced with clinochlore
+
+'phlogopite_kK'			
+
+'smectitmx80k'
+
+'ettringitek'			
+
+'saponite-cak'
+
+'saponite-kk'
+
+'saponite-mgk'
+
+'saponite-nak'
+
+'kaolinitek'
+
+'illiteimt2k'
+
+'gibbsitek'
+
+'quartzk'
+
+'phillipsi_nak'
+
+'phillipsi_kk'
+
+'phillipsi_cak'
+
+'ferrihydrite'
+
+!'magnetite'
+
+!'chamosite'
+
+
+
+'combine mineralogical parameters'
+
+'sio2(am)'                  ;mineral names
+
+'tobii-07mat'
+
+'hydrotalcite_k'   	
+
+'gypsum'
+
+'calcitek'
+
+'albite-low_k'             
+
+'microcline_k'				; added to consider as a irreversable reaction
+
+'clinochlore_k' 			;'chloriteca-k'			chlorite is a group name, which is replaced with clinochlore
+
+'phlogopite_kK'			
+
+'smectitmx80k'
+
+'ettringitek'			
+
+'saponite-nak'
+
+'saponite-nak'
+
+'saponite-nak'
+
+'saponite-nak'
+
+'kaolinitek'
+
+'illiteimt2k'
+
+'gibbsitek'
+
+'quartzk'
+
+'phillipsi_nak'
+
+'phillipsi_nak'
+
+'phillipsi_nak'
+
+'ferrihydrite'
+
+'magnetite'
+
+'chamosite'
+
+
+
+'excluded minerals'
+
+270
+
+'acmite'
+
+'afwillite'
+
+'al(s)'
+
+'albite-high'
+
+'albite-low'
+
+'amesite'
+
+'amesite-fe'
+
+'analcime'
+
+'anhydrite'
+
+'annite'
+
+'anorthite'
+
+'antarcticite'
+
+'aragonite'
+
+'arcanite'
+
+'artinite'
+
+'bassanite'
+
+'beidellite-c'
+
+'beidellite-k'
+
+'beidellite-m'
+
+'beidellite-n'
+
+'beidellite_1'
+
+'beidellite_s'
+
+'berthierife2'
+
+'berthierine3'
+
+'berthier_isg'
+
+'berthier_lor'
+
+'bischofite'
+
+'bloedite'
+
+'boehmite'
+
+'brucite'
+
+'burkeite'
+
+'c(cr)'
+
+'c2sh(alpha)'
+
+'c3ah6'
+
+'c3fh6'
+
+'c4ah13'
+
+'c4fh13'
+
+'ca(s)'
+
+'ca(so3)(s)'
+
+'ca2cl2(oh)2:'
+
+'ca2fe2o5(s)'
+
+'ca4cl2(oh)6:'
+
+'cacl2:2h2o(c'
+
+'cacl2:4h2o(c'
+
+'cacl2:h2o(s)'
+
+'caco3:h2o(s)'
+
+'cafe2o4(s)'
+
+'calcite'
+
+'camg3(co3)4('
+
+'cao(cr)'
+
+'carnallite'
+
+'celadonite-f'
+
+'celadonite-m'
+
+'chabazite'
+
+'chamosite'
+
+'clinochlore'
+
+'clinoptil_ca'
+
+'clinoptil_k'
+
+'clinoptil_na'
+
+'corundum'
+
+'cristobalite'
+
+'cronstedtite'
+
+'csh0.8'
+
+'csh1.2'
+
+'csh1.6'
+
+'dawsonite'
+
+'diaspore'
+
+'dickite'
+
+'dolomite'
+
+'eastonite'
+
+'epsonite'
+
+'ettringite'
+
+'ettringite-f'
+
+'fayalite'
+
+'fe(oh)2(cr)'
+
+'fe(s)'
+
+'feal2o4(s)'
+
+'feo(s)'
+
+'ferrosilite'
+
+'ferryhydrite'
+
+'fes(am)'
+
+'foshagite'
+
+'friedel-salt'
+
+'gaylussite'
+
+'gibbsite'
+
+'gismondine'
+
+'glaserite'
+
+'glauberite'
+
+'glauconite'
+
+'goethite'
+
+'greenalite'
+
+'gyrolite'
+
+'halite'
+
+'halloysite'
+
+'hbeidelli-ca'
+
+'hbeidelli-k'
+
+'hbeidelli-mg'
+
+'hbeidelli-na'
+
+'hematite'
+
+'hemicarboalu'
+
+'heulandite_c'
+
+'heulandite_n'
+
+'hexahydrite'
+
+'hillebrandit'
+
+'hmontm-bcca'
+
+'hmontm-bck'
+
+'hmontm-bcmg'
+
+'hmontm-bcna'
+
+'hmontm-ca'
+
+'hmontm-hcca'
+
+'hmontm-hck'
+
+'hmontm-hcmg'
+
+'hmontm-hcna'
+
+'hmontm-k'
+
+'hmontm-mg'
+
+'hmontm-na'
+
+'hsaponi-feca'
+
+'hsaponi-fek'
+
+'hsaponi-femg'
+
+'hsaponi-fena'
+
+'hsaponite-ca'
+
+'hsaponite-k'
+
+'hsaponite-mg'
+
+'hsaponite-na'
+
+'hvermicul-ca'
+
+'hvermicul-k'
+
+'hvermicul-mg'
+
+'hvermicul-na'
+
+'hydrophilite'
+
+'hydrotal-co3'
+
+'hydrotalcite'
+
+'illite-al'
+
+'illite-feii'
+
+'illite-feiii'
+
+'illite-mg'
+
+'illite-smec_'
+
+'illite/smect'
+
+'illite_imt-2'
+
+'jaffeite'
+
+'jennite'
+
+'k(cr)'
+
+'k(oh)(s)'
+
+'k-carbonate'
+
+'k-trona'
+
+'k2co3(cr)'
+
+'k2o(s)'
+
+'kainite'
+
+'kal(so4)2(s)'
+
+'kal(so4)2:12'
+
+'kalicinite'
+
+'kaolinite'
+
+'katoite'
+
+'lansfordite'
+
+'laumontite'
+
+'lawrencite'
+
+'leonhardtite'
+
+'leonite'
+
+'lepidocrocit'
+
+'lizardite'
+
+'mackinawite'
+
+'maghemite(di'
+
+'maghemite(or'
+
+'magnesite(na'
+
+'magnesite(sy'
+
+'magnetite'
+
+'margarite'
+
+'melanterite'
+
+'mercallite'
+
+'merlinoite_k'
+
+'merlinoite_n'
+
+'mg(cr)'
+
+'mg(so4)(s)'
+
+'mg(so4):h2o('
+
+'mg-oxychloru'
+
+'mg5(co3)4(oh'
+
+'mgcl2(s)'
+
+'mgcl2:2h2o(s'
+
+'mgcl2:4h2o(s'
+
+'mgcl2:h2o(s)'
+
+'microcline'
+
+'minnesotaite'
+
+'mirabilite'
+
+'monocarboalu'
+
+'monosulfate-'
+
+'monosulfoalu'
+
+'montm-bcca'
+
+'montm-bck'
+
+'montm-bcmg'
+
+'montm-bcna'
+
+'montm-hcca'
+
+'montm-hck'
+
+'montm-hcmg'
+
+'montm-hcna'
+
+'mordenite_ca'
+
+'mordenite_or'
+
+'muscovite'
+
+'na(cr)'
+
+'na2(co3)(cr)'
+
+'na2co3:7h2o('
+
+'na2o(cr)'
+
+'nahcolite'
+
+'natrolite'
+
+'natron'
+
+'nesquehonite'
+
+'nontronite-c'
+
+'nontronite-k'
+
+'nontronite-m'
+
+'nontronite-n'
+
+'nontronite_n'
+
+'okenite'
+
+'paragonite'
+
+'pentahydrite'
+
+'periclase'
+
+'phillipsi_ca'
+
+'phillipsi_k'
+
+'phillipsi_na'
+
+'phlogopite_k'
+
+'phlogopite_n'
+
+'picromerite'
+
+'pirssonite'
+
+'polyhalite'
+
+'portlandite'
+
+'pyrite'
+
+'pyrophyllite'
+
+'pyrrhotite'
+
+'quartz'
+
+'ripidolite_c'
+
+'s(cr)'
+
+'sanidine'
+
+'saponit-feca'
+
+'saponit-femg'
+
+'saponit-fena'
+
+'saponite-ca'
+
+'saponite-fek'
+
+'saponite-k'
+
+'saponite-mg'
+
+'saponite-na'
+
+'saponit_sp4w'
+
+'saponit_spca'
+
+'scolecite'
+
+'si(cr)'
+
+'siderite'
+
+'siderophylli'
+
+'smectitemx80'
+
+'smectitmx4w'
+
+'smectitmx5w'
+
+'stellerite'
+
+'stilbite'
+
+'stratlingite'
+
+'sudoite'
+
+'sylvite'
+
+'syngenite'
+
+'tachyhydrite'
+
+'talc'
+
+'thermonatrit'
+
+'thernardite'
+
+'tobermor-11a'
+
+'tobermor-14a'
+
+'troilite'
+
+'trona'
+
+'truscottite'
+
+'vaterite'
+
+'vermiculi-ca'
+
+'vermiculi-k'
+
+'vermiculi-mg'
+
+'vermiculi-na'
+
+'vermiculi-so'
+
+'wairakite'
+
+'xonotlite'
+
+'zeolite_cap'
+
+
+
+
+
+'done'
+
+!
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+4                             ;number of discretization intervals in x
+
+44                             ;number of control volumes in x
+
+0. 0.218                        ;xmin,xmax
+
+30
+
+0.218 0.368
+
+30
+
+0.368 0.518
+
+60
+
+0.518 0.868
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in y
+
+0. 1.0                        ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+1                             ;number of control volumes in z
+
+0. 1.0                        ;zmin,zmax
+
+
+
+!'radial coordinates'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'years'                     ;time unit
+
+0.0                         ;time at start of solution
+
+1.0d4                       ;final solution time
+
+5.0                         ;maximum time step
+
+1.d-20                      ;minimum time step
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'activity update settings'
+
+!'no_update'
+
+'time_lagged'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+1.0d0                         ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'years'                       ;time unit (local chemistry)
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'compute underrelaxation factor'
+
+100.0                         ;max. allowed update
+
+
+
+'newton iteration settings'
+
+1.0d-6                        ;increment for numerical differentiation
+
+80                            ;max. number of newton iterations
+
+1.0d-6                        ;convergence tolerance
+
+0.3                           ;sw_star
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+0                             ;solver information level
+
+1.0d-9                        ;solver residual tolerance
+
+1.0d-9                        ;solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'dense block matrices'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'
+
+
+
+'activity update settings'
+
+!'no_update'
+
+'time_lagged'
+
+
+
+'update porosity'
+
+'update permeability'
+
+
+
+'pore clogging'
+
+'porosity threshold minimum'
+
+1.0d-4
+
+
+
+'tortuosity correction'
+
+!'no correction'
+
+!'assigned tau' 
+
+!'millington'
+
+'archie'
+
+
+
+'update tortuosity'
+
+
+
+'newton iteration settings'
+
+1.d-5                         ;increment h for numerical differentiation 
+
+23                            ;anticipated number of Newton iterations
+
+50                            ;max. number of Newton iterations
+
+0.5d0 ; 2.0d0                         ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.d-6                         ;convergence tolerance (global system)
+
+
+
+'user specified underrelaxation factor'
+
+0.6       !1.0 is no underrelaxation, 0.7 is not a bad value to get started, <0.5 slows things down a lot 
+
+
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+0                             ;information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+24                           ;number of output times (spatial data)
+
+4.5d-4 5.0d0 1.0d1 2.0d1      ;specified output times (spatial data)
+
+5.0d1 1.0d2 2.0d2 3.0d2 		
+
+4.0d2 5.0d2 6.0d2 7.0d2 
+
+8.0d2 9.0d2 1.0d3 2.0d3 
+
+3.0d3 4.0d3 5.0d3 6.0d3 
+
+7.0d3 8.0d3 9.0d3 1.0d4
+
+
+
+'coordinate output'
+
+
+
+'output of transient data'
+
+4                             ;number of output locations (transient data)
+
+5                             ;timesteps between output (transient data)
+
+0.30 0.0 0.0                    ; volume in bentonite
+
+0.35 0.0 0.0                    ; volume in bentonite adjacent to interface
+
+0.38 0.0 0.0                    ; volume in LHHPC adjacent to interface 
+
+0.43 0.0 0.0                    ; volume in LHHPC
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+2                             ;number of material property zones
+
+!
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'Bentonite HCB'
+
+0.38                         ;porosity (0.382 total porosity)
+
+0.0118                       ;tortuosity, tau = De/(Do*por) = 9.0E-12/(2.0E-9 * 0.38)=0.0118 , Da from Appelo (2003)
+
+4.5847				; used when tortuosity correction = archie		 ; alpha = LOG(tau)/LOG(porosity)=log10(0.0118)/log10(0.38) =5.584712
+
+
+
+'extent of zone'
+
+0.0 0.368  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'concrete LHHPC'
+
+0.052                         ;porosity
+
+0.002885                      ;tortuosity, tau = De/(Do*por) = 3.0E-13/(2.0E-9 * 0.064)=0.0023 De from NWMO data clearance form (2017)
+
+1.98						  ; alpha = LOG(tau)/LOG(porosity)=log10(0.0023)/log10(0.064) =2.20119
+
+
+
+'extent of zone'
+
+0.368 0.868  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+
+
+! ---------------------------------------------------------------------------
+
+'Bentonite HCB'
+
+
+
+'hydraulic conductivity in x-direction'
+
+6.0d-14                        ;K_xx
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'concrete LHHPC'
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.0d-10                        ;K_xx
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+2.0d-9                       ;!!add tortuosity for each zone!!       ;free diffusion coefficient in water
+
+2.0d-5                       ;free diffusion coefficient in air
+
+
+
+! ---------------------------------------------------------------------------
+
+'Bentonite HCB'
+
+
+
+'longitudinal dispersivity'
+
+0.0                         ;longitudinal dispersivity
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'concrete LHHPC'
+
+
+
+'longitudinal dispersivity'
+
+0.0                         ;longitudinal dispersivity
+
+
+
+'end of zone'
+
+
+
+'done'
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'zone 1'
+
+
+
+'initial condition'
+
+0.00                          ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 0.868  0.0 1.0  0.0 1.00
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'first' 0.0d0                 ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  0.0 1.0     ;extent of zone
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'first' 0.0                   ;hydraulic head
+
+
+
+'extent of zone'
+
+0.868 0.868  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Section 15: initial condition - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'Bentonite HCB - IC'
+
+
+
+'concentration input'                        ; bentonite mineral in equilibrium with granite porewater
+
+7.516     'ph'     ;'h+1'                    ;component names
+
+7.588e-010      'free'   ;'alo2-'                  
+
+1.790e-005   'free'   ;'feoh+'
+
+6.902e-004    'free'   ;'hsio3-'
+
+3.835e-004    'free'   ;'k+1'
+
+2.468e-003    'free'   ;'mg+2'
+
+6.130e-002    'free'   ;'ca+2'
+
+8.262e-002    'free'   ;'na+1
+
+1.162e-002    'free'   ;'so4-2'
+
+1.720e-001    'free'   ;'cl-1'
+
+2.577e-004    'free'   ;'co3-2'
+
+1.986e-012   'fixed'  ;'h2(aq)'
+
+
+
+'sorption parameter input'
+
+79.0d0                         ;cation exchange capacity (Bradbury & Baeyens 2003)
+
+1.70d0                        ;dry bulk density (g/cm^3)
+
+
+
+'equilibrate with fixed solution composition'
+
+
+
+'mineral input'  
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type  	- 'sio2(am)'
+
+1.d-10    8.75d-10    0.00d0    ;phimin, scalfac, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type 	- 'tobii-07mat'
+
+1.d-10    7.42E03    0.00d0   1.0d-7 ;phimin, area, supsatm, phic_nuc  areacnuc= areac * phic_nuc / bulk mol fraction 
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type  	- 'hydrotalcite'
+
+1.d-10    7.91E01    0.00d0    1.0d-7    ;phimin, area, supsatm, phic_nuc 
+
+0.0074d0   .false. 'twothird'  ;phim, minequil, update_type  - 'gypsum'
+
+1.d-10    5.89E-08   0.00d0      ;phimin, area, supsatm
+
+0.0063d0    .false. 'twothird'  ;phim, minequil, update_type  - 'calcitek'
+
+1.d-10    3.76E-0    0.00d0     1.0d-7   ;phimin, area, supsatm, phic_nuc
+
+0.00d0    .false. 'constant'  ;phim, minequil, update_type  	- 'albite-low_k'
+
+1.d-10    4.21e0   0.00d0       ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type  	- 'microcline_k'
+
+1.d-10    3.40E-1  0.00d0    ;phimin, area, supsatm 
+
+0.00     .false. 'constant'  ;phim, minequil, update_type  	- 'clinochlore_k'
+
+1.d-10    1.59e-1   0.00d0      ;phimin, area, supsatm 
+
+0.00   .false. 'constant'  ;phim, minequil, update_type  	- 'phlogopit_kk'  
+
+1.d-10   4.71e-2    0.00d0     ;phimin, area, supsatm 
+
+0.5632d0   .false. 'constant'  ;phim, minequil, update_type  	- 'smectitemx80k'
+
+1.d-10    1.75E03  0.00d0     ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type  	- 'ettringite'
+
+1.d-10    1.73d-6    0.00d0    ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  - 'saponite-cak'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'saponite-kk'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'saponite-mgk'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'saponite-nak'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  - 'kaolinitek'
+
+1.d-10    2.12d2    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type  	- 'illiteimt2k'
+
+1.d-10   3.75d3    0.00d0    ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'gibbsitek'
+
+1.d-10    1.61e2    0.00d0   ;phimin, area, supsatm, phic_nuc 
+
+0.043d0   .false. 'twothird'  ;phim, minequil, update_type  - 'quartzk'
+
+1.d-10    5.69E-0   0.00d0      ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  - 'phillipsi_nak'
+
+1.d-10    1.1d-2    0.00d0    ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type    - 'phillipsi_kk'
+
+1.d-10    1.2d-2    0.00d0    ;phimin, area, supsatm
+
+1.00d-10  .false. 'constant'  ;phim, minequil, update_type    - 'phillipsi_cak'
+
+1.d-10    1.0d-2    0.00d0    ;phimin, area, supsatm
+
+1.00d-10  .false. 'constant'  ;phim, minequil, update_type    - 'ferrihydrite'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm 
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'hematite'
+
+1.d-10    1.0d-9     0.00d0    ;phimin, area, supsatm         
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-n'
+
+1.d-10   1.0d-9     0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-k'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-m'
+
+1.d-10    2.2d4    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-c'
+
+1.d-10    2.2d4    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'csh0.8k'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm      
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'csh1.2k'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm  
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'chamositek'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm  
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'analcime'
+
+1.d-10    2.2d-9    0.00d0    ;phimin, area, supsatm         
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'muscovite'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm
+
+        
+
+
+
+
+
+
+
+
+
+
+
+'extent of zone'
+
+0.0 0.368  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'Concrete LHHPC - IC'
+
+
+
+'concentration input'
+
+9.75           'ph'     'h+1'      9.75       
+
+5.77e-006      'free'   'al+3'     3.779e-005                 ;component names
+
+2.15d-10      'free'   'fe+2'     9.866d-17  
+
+4.03e-03     'free'   'h4(sio4)' 1.528e-002 
+
+2.11e-01     'free'   'k+'       7.861e-011 
+
+1.28e-04     'free'   'mg+2'     7.557e-005 
+
+9.87e-03     'free'   'ca+2'     1.573e-002 
+
+1.51e-01     'free'   'na+'      9.996e-004 
+
+1.90e-01     'free'   'so4-2'    1.528e-002 
+
+8.96e-04     'free'   'cl-'      8.960e-004 
+
+4.76e-05     'free'   'co3-2'    1.311e-005 
+
+4.428e-12     'fixed'  'h2(aq)'   4.428e-012 
+
+
+
+
+
+'sorption parameter input'
+
+0.0d0                          ;cation exchange capacity
+
+2.390d0                       ;dry bulk density
+
+
+
+'mineral input'   
+
+0.11d0   .false. 'constant'  ;phim, minequil, update_type   - 'sio2(am)'
+
+1.d-10    8.75d-10    0.00d0    ;phimin, scalfac, supsatm
+
+0.08169d0   .false. 'constant'  ;phim, minequil, update_type  - 'tobii-07mat'
+
+1.d-10    7.42E3    0.00d0   1.0d-7 ;phimin, area, supsatm, phic_nuc  areacnuc= areac * phic_nuc / bulk mol fraction 
+
+0.0034d0   .false. 'constant'  ;phim, minequil, update_type  - 'hydrotalcite'
+
+1.d-10    7.91E1    0.00d0    1.0d-7    ;phimin, area, supsatm, phic_nuc 
+
+0.00237d0   .false. 'twothird'  ;phim, minequil, update_type   	- 'gypsum'
+
+1.d-10    5.26E-08   0.00d0      ;phimin, area, supsatm
+
+0.00128d0    .false. 'twothird'  ;phim, minequil, update_type  	- 'calcitek'
+
+1.d-10    7.63E-01    0.00d0     ;phimin, area, supsatm 
+
+0.134d0    .false. 'constant'  ;phim, minequil, update_type  	- 'albite-low_k'
+
+1.d-10    4.21e-0   0.00d0       ;phimin, area, supsatm
+
+0.133d0   .false. 'constant'  ;phim, minequil, update_type   - 'microcline_k'
+
+1.d-10    3.40E-1  0.00d0    ;phimin, area, supsatm 
+
+0.00503     .false. 'constant'  ;phim, minequil, update_typ  - 'clinochlore'
+
+1.d-10    1.59e-1   0.00d0      ;phimin, area, supsatm 
+
+0.01690   .false. 'constant'  ;phim, minequil, update_type  - 'phlogopit_k'  
+
+1.d-10   4.71e-2    0.00d0     ;phimin, area, supsatm 
+
+1.00d-10  .false. 'constant'   ;phim, minequil, update_type     	- 'smectitemx80k
+
+1.d-10    1.75E03  0.00d0     ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type  	- 'ettringite'
+
+1.d-10    1.73d-6    0.00d0    ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  - 'saponite-cak'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'saponite-kk'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'saponite-mgk'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'saponite-nak'
+
+1.d-10    2.16d2    0.00d0   ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  - 'kaolinitek'
+
+1.d-10    2.12d2    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type  	- 'illiteimt2k'
+
+1.d-10   3.75d3    0.00d0    ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  	- 'gibbsitek'
+
+1.d-10    1.61e2    0.00d0   ;phimin, area, supsatm, phic_nuc 
+
+0.4565d0   .false. 'twothird'  ;phim, minequil, update_type   	- 'quartzk'
+
+1.d-10    6.04E1   0.00d0      ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type  - 'phillipsi_nak'
+
+1.d-10    1.1d-2    0.00d0    ;phimin, area, supsatm
+
+1.00d-10   .false. 'constant'  ;phim, minequil, update_type    - 'phillipsi_kk'
+
+1.d-10    1.2d-2    0.00d0    ;phimin, area, supsatm
+
+1.00d-10  .false. 'constant'  ;phim, minequil, update_type    - 'phillipsi_cak'
+
+1.d-10    1.0d-2    0.00d0    ;phimin, area, supsatm
+
+1.00d-10  .false. 'constant'  ;phim, minequil, update_type    - 'ferrihydrite'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm 
+
+
+
+
+
+
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'hematite'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-n'
+
+1.d-10    1.0d-9     0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-k'
+
+1.d-10   1.0d-9    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-m'
+
+1.d-10    2.2d4    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'beidellite-c'
+
+1.d-10    2.2d4    0.00d0    ;phimin, area, supsatm
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'csh0.8k'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm      
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'csh1.2k'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm  
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'chamositek'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm  
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'analcime'
+
+1.d-10    2.2d-9    0.00d0    ;phimin, area, supsatm         
+
+0.00d0   .false. 'constant'  ;phim, minequil, update_type    - 'muscovite'
+
+1.d-10    1.0d-9    0.00d0    ;phimin, area, supsatm              
+
+
+
+'extent of zone'
+
+0.368 0.868  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'Bentonite - BC'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'LHHPC - BC'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+'extent of zone'
+
+0.868 0.868  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+

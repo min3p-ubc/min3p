@@ -1,0 +1,1123 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"simulation_1_3.gcvel" "simulation_1_6.gcvel" "simulation_1_5.gcvel" "simulation_1_2.gcvel" "simulation_1_1.gcvel" "simulation_1_4.gcvel"'
+$!VarSet |LFDSVL1| = '"time" "vx adv" "vy adv" "vz adv" "vx dif" "vy dif" "vz dif" "vx mig" "vy mig" "vz mig" "vx tot" "vy tot" "vz tot"'
+$!VarSet |LFDSFN2| = '"simulation_3.gfvel" "simulation_1.gfvel" "simulation_4.gfvel" "simulation_2.gfvel" "simulation_5.gfvel"'
+$!VarSet |LFDSVL2| = '"time" "vx" "vy" "vz"'
+$!VarSet |LFDSFN3| = '"simulation_20.gbp" "simulation_21.gbp" "simulation_22.gbp" "simulation_23.gbp"'
+$!VarSet |LFDSVL3| = '"time" "fh_w" "p_w" "ph_w" "rho_w" "s_a" "theta_a" "s_g" "theta_g" "q_root"'
+$!VarSet |LFDSFN4| = '"simulation_20.gbm" "simulation_21.gbm" "simulation_22.gbm" "simulation_23.gbm"'
+$!VarSet |LFDSVL4| = '"time" "pH" "pe" "Eh" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "charge bal [%]"'
+$!SetStyleBase Factory
+$!GlobalPaper 
+  PaperSizeInfo
+    {
+    Letter
+      {
+      Width = 8.5
+      Height = 11
+      LeftHardClipOffset = 0.125
+      RightHardClipOffset = 0.125
+      TopHardClipOffset = 0.125
+      BottomHardClipOffset = 0.125
+      }
+    }
+$!Page 
+  Name = 'Untitled'
+  PaperAttributes
+    {
+    BackgroundColor = White
+    IsTransparent = Yes
+    OrientPortrait = No
+    ShowGrid = Yes
+    ShowRuler = No
+    ShowPaper = No
+    PaperSize = Letter
+    RulerSpacing = OneInch
+    PaperGridSpacing = HalfInch
+    RegionInWorkArea
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!ReadDataSet  '|LFDSFN1|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  ResetStyle = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL1|'
+$!RemoveVar |LFDSVL1|
+$!RemoveVar |LFDSFN1|
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 0.25
+    }
+  Width = 9
+  Height = 2
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [1-6]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    XYPos
+      {
+      X = 95
+      }
+    }
+$!LineMap  [1]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Custom1
+    }
+  Symbols
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [5]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 5
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Custom3
+    }
+  Symbols
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [6]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 6
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Purple
+    }
+  Symbols
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+$!XYLineAxis 
+  XDetail 1
+    {
+    RangeMin = 3570.1323464733472974
+    RangeMax = 3829.2751412785423781
+    GRSpacing = 50
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 6
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 7.6
+        }
+      }
+    }
+$!XYLineAxis 
+  XDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = -5.2211739885416674767
+    RangeMax = 0.48441748894396646774
+    GRSpacing = 2
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 7
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 7.6
+        }
+      }
+    }
+$!XYLineAxis 
+  YDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!Linking 
+  BetweenFrames
+    {
+    LinkXAxisRange = Yes
+    }
+### Frame Number 2 ###
+$!CreateNewFrame 
+$!ReadDataSet  '|LFDSFN2|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  ResetStyle = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL2|'
+$!RemoveVar |LFDSVL2|
+$!RemoveVar |LFDSFN2|
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 2.25
+    }
+  Width = 9
+  Height = 2
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [1-5]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    XYPos
+      {
+      X = 95
+      }
+    }
+$!LineMap  [1]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Custom1
+    }
+  Symbols
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [5]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 5
+    XAxisVar = 1
+    YAxisVar = 4
+    }
+  Lines
+    {
+    Color = Custom3
+    }
+  Symbols
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+$!XYLineAxis 
+  XDetail 1
+    {
+    RangeMin = 3570.1323464733472974
+    RangeMax = 3829.2751412785423781
+    GRSpacing = 50
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 7
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 7.6
+        }
+      }
+    }
+$!XYLineAxis 
+  XDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = -2.6597576240938467507
+    RangeMax = 0.19942009829339468752
+    GRSpacing = 1
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 7
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 7.6
+        }
+      }
+    }
+$!XYLineAxis 
+  YDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!Linking 
+  BetweenFrames
+    {
+    LinkXAxisRange = Yes
+    }
+### Frame Number 3 ###
+$!CreateNewFrame 
+$!ReadDataSet  '|LFDSFN3|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL3|'
+$!RemoveVar |LFDSVL3|
+$!RemoveVar |LFDSFN3|
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 4.25
+    }
+  Width = 9
+  Height = 2
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [2-3]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    XYPos
+      {
+      X = 95
+      }
+    }
+$!LineMap  [1]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 1
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 1
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 1
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Custom1
+    }
+  Symbols
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+$!XYLineAxis 
+  XDetail 1
+    {
+    RangeMin = 3570.1323464733472974
+    RangeMax = 3829.2751412785423781
+    GRSpacing = 50
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 7
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 7.6
+        }
+      }
+    }
+$!XYLineAxis 
+  XDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = -46004.127531340229325
+    RangeMax = 20473.977622272999724
+    GRSpacing = 20000
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 7
+        }
+      }
+    }
+$!XYLineAxis 
+  YDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!Linking 
+  BetweenFrames
+    {
+    LinkXAxisRange = Yes
+    }
+### Frame Number 4 ###
+$!CreateNewFrame 
+$!ReadDataSet  '|LFDSFN4|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL4|'
+$!RemoveVar |LFDSVL4|
+$!RemoveVar |LFDSFN4|
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 6.25
+    }
+  Width = 9
+  Height = 2
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [1-4]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    XYPos
+      {
+      X = 95
+      }
+    }
+$!LineMap  [1]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 12
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 1
+    YAxisVar = 12
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 1
+    YAxisVar = 12
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = '&ZN&'
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 1
+    YAxisVar = 12
+    }
+  Lines
+    {
+    Color = Custom1
+    }
+  Symbols
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+$!XYLineAxis 
+  XDetail 1
+    {
+    RangeMin = 3570.1323464733472974
+    RangeMax = 3829.2751412785423781
+    GRSpacing = 50
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 7
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 7.6
+        }
+      }
+    }
+$!XYLineAxis 
+  XDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  XDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = 0.1753017845370778427
+    RangeMax = 46.030014971182538375
+    GRSpacing = 10
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 7
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 7.6
+        }
+      }
+    }
+$!XYLineAxis 
+  YDetail 2
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 3
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 4
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!XYLineAxis 
+  YDetail 5
+    {
+    RangeMin = 0
+    RangeMax = 1
+    GRSpacing = 0.1
+    }
+$!Linking 
+  BetweenFrames
+    {
+    LinkXAxisRange = Yes
+    }
+$!FrameControl ActivateByNumber
+  Frame = 1
+$!SetStyleBase Config

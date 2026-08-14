@@ -4,7 +4,7 @@
 !> $Revision: 878 $
 !> $Author: dsu $
 !> $Date: 2024-02-14 20:08:49 -0800 (Wed, 14 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initpppm.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initpppm.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -140,7 +140,8 @@
       use phys
       use dens, only : density_dependence
       use file_unit, only : lun_get, lun_free
-      use file_utility, only : read_vtk_data_from_file
+      use file_utility, only : read_vtk_data_from_file, makelowercase
+      
 #ifdef OPENMP
       use omp_lib 
 #endif
@@ -200,6 +201,7 @@
       character*1 :: cdummy
       character*256 :: strbuffer
       character*12 :: strFracFlowTypeLoc
+      real*8 :: fracFlowCoeffLoc
       real(8) :: marchieloc
       
       integer :: iskip, nskip
@@ -294,545 +296,545 @@
         end if
 #endif
 
-        do izn = 1,nzn
-
 !c  read porosity field from file
-          subsection = 'read porosity field from file'
+        subsection = 'read porosity field from file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-            ipor = lun_get()
+          ipor = lun_get()
 
-            open(ipor,file=prefix(:l_prfx)//'.por',status='unknown',  &
-                 form='formatted')
-            
-            porosity_field = .true.
+          open(ipor,file=prefix(:l_prfx)//'.por',status='unknown',  &
+               form='formatted')
+          
+          porosity_field = .true.
     
 !c  read porosities
 
-            read(ipor,*,err=992,end=992) cdummy
-            read(ipor,*,err=992,end=992) cdummy
-            read(ipor,*,err=992,end=992) cdummy
+          read(ipor,*,err=992,end=992) cdummy
+          read(ipor,*,err=992,end=992) cdummy
+          read(ipor,*,err=992,end=992) cdummy
 
 #ifdef USG
-            if (discretization_type > 0) then
-              do ivolgbl = 1,nngbl
+          if (discretization_type > 0) then
+            do ivolgbl = 1,nngbl
 #ifdef PETSC
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-                else
-                  ivol = node_idx_g2lg(ivolgbl)
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
+              else
+                ivol = node_idx_g2lg(ivolgbl)
+              end if
 #else
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2g_invord(ivolgbl)
-                else
-                  ivol = ivolgbl
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2g_invord(ivolgbl)
+              else
+                ivol = ivolgbl
+              end if
 #endif
-                if (ivol > 0) then
-                  read(ipor,*,err=992,end=992) rdummy, rdummy,rdummy,  &
-                                               por_init(ivol)
-                else
-                  read(ipor,*,err=992,end=992) rdummy
-                end if
-              end do
-            end if
-#endif
-            if (discretization_type == 0) then
-              nskip = 0
-              do ivol = 1,nngl
-#ifdef PETSC
-                do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                    read(ipor,*,end=992,err=992) rdummy
-                end do
-                nskip = node_idx_lg2g(ivol)
-#endif
-                read(ipor,*,err=992,end=992) rdummy, rdummy,rdummy,    &
+              if (ivol > 0) then
+                read(ipor,*,err=992,end=992) rdummy, rdummy,rdummy,  &
                                              por_init(ivol)
-              end do
-            end if
-
-            close(ipor)
-            call lun_free(ipor)
-                
+              else
+                read(ipor,*,err=992,end=992) rdummy
+              end if
+            end do
           end if
+#endif
+          if (discretization_type == 0) then
+            nskip = 0
+            do ivol = 1,nngl
+#ifdef PETSC
+              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
+                  read(ipor,*,end=992,err=992) rdummy
+              end do
+              nskip = node_idx_lg2g(ivol)
+#endif
+              read(ipor,*,err=992,end=992) rdummy, rdummy,rdummy,    &
+                                           por_init(ivol)
+            end do
+          end if
+
+          close(ipor)
+          call lun_free(ipor)
+              
+        end if
 
 #ifdef USG
 !c  read porosity field from file
-          subsection = 'read porosity field from vtk file'
+        subsection = 'read porosity field from vtk file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-            ipor = lun_get()
-            if ((read_spatial_master_proc .and. rank == 0) .or.        &
-                .not.read_spatial_master_proc) then
-              open(ipor,file=prefix(:l_prfx)//'.por.vtk',              &
-                   status='unknown',form='formatted')
-            else
-              call lun_free(ipor)
-              ipor = 0
-            end if
+          ipor = lun_get()
+          if ((read_spatial_master_proc .and. rank == 0) .or.        &
+              .not.read_spatial_master_proc) then
+            open(ipor,file=prefix(:l_prfx)//'.por.vtk',              &
+                 status='old',form='formatted')
+          else
+            call lun_free(ipor)
+            ipor = 0
+          end if
 
-            porosity_field = .true.
+          porosity_field = .true.
 
 !c  read porosities
-            call read_vtk_data_from_file(ipor,'porosity',bfound,por_init)
-            if (bfound) then
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(a)') 'read porosity from vtk file: done'
-                write(ilog,'(a)') 'read porosity from vtk file: done'
-              end if
+          call read_vtk_data_from_file(ipor,'porosity',bfound,por_init)
+          if (bfound) then
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(a)') 'read porosity from vtk file: done'
+              write(ilog,'(a)') 'read porosity from vtk file: done'
             end if
-
-            if (ipor > 0) then
-              close(ipor)
-              call lun_free(ipor)
-            end if
-
           end if
+
+          if (ipor > 0) then
+            close(ipor)
+            call lun_free(ipor)
+          end if
+
+        end if
 #endif
         
 !c  read tortuosity field from file
 
-          subsection = 'read tortuosity field from file'
+        subsection = 'read tortuosity field from file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-             itor = lun_get()
+           itor = lun_get()
 
-             open(itor,file=prefix(:l_prfx)//'.tor',status='unknown', &
-                  form='formatted')
-            
-            tortuosity_field = .true.
+           open(itor,file=prefix(:l_prfx)//'.tor',status='unknown', &
+                form='formatted')
+          
+          tortuosity_field = .true.
     
 !c  read tortuosities
 
-            read(itor,*,err=993,end=993) cdummy
-            read(itor,*,err=993,end=993) cdummy
-            read(itor,*,err=993,end=993) cdummy
+          read(itor,*,err=993,end=993) cdummy
+          read(itor,*,err=993,end=993) cdummy
+          read(itor,*,err=993,end=993) cdummy
 #ifdef USG
-            if (discretization_type > 0) then
-              do ivolgbl = 1,nngbl
+          if (discretization_type > 0) then
+            do ivolgbl = 1,nngbl
 #ifdef PETSC
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-                else
-                  ivol = node_idx_g2lg(ivolgbl)
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
+              else
+                ivol = node_idx_g2lg(ivolgbl)
+              end if
 #else
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2g_invord(ivolgbl)
-                else
-                  ivol = ivolgbl
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2g_invord(ivolgbl)
+              else
+                ivol = ivolgbl
+              end if
 #endif
-                if (ivol > 0) then
-                  read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,  &
-                                               tau(ivol)
-                else
-                  read(itor,*,err=993,end=993) rdummy
-                end if
-              end do
-            end if
-#endif
-            if (discretization_type == 0) then
-              nskip = 0
-              do ivol = 1,nngl
-#ifdef PETSC
-                do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                  read(itor,*,end=993,err=993) rdummy
-                end do
-                nskip = node_idx_lg2g(ivol)
-#endif
-                read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,    &
+              if (ivol > 0) then
+                read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,  &
                                              tau(ivol)
-              end do
-            end if
-
-            close(itor)
-            call lun_free(itor)
-                
+              else
+                read(itor,*,err=993,end=993) rdummy
+              end if
+            end do
           end if
+#endif
+          if (discretization_type == 0) then
+            nskip = 0
+            do ivol = 1,nngl
+#ifdef PETSC
+              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
+                read(itor,*,end=993,err=993) rdummy
+              end do
+              nskip = node_idx_lg2g(ivol)
+#endif        
+              read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,    &
+                                           tau(ivol)
+            end do
+          end if
+
+          close(itor)
+          call lun_free(itor)
+              
+        end if
 
 #ifdef USG
 !c  read tortuosity field from vtk file
 
-          subsection = 'read tortuosity field from vtk file'
+        subsection = 'read tortuosity field from vtk file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-            itor = lun_get()
-            if ((read_spatial_master_proc .and. rank == 0) .or.        &
-                .not.read_spatial_master_proc) then
-              open(itor,file=prefix(:l_prfx)//'.tor.vtk',              &
-                   status='unknown',form='formatted')
-            else
-              call lun_free(itor)
-              itor = 0
-            end if
+          itor = lun_get()
+          if ((read_spatial_master_proc .and. rank == 0) .or.        &
+              .not.read_spatial_master_proc) then
+            open(itor,file=prefix(:l_prfx)//'.tor.vtk',              &
+                 status='old',form='formatted')
+          else
+            call lun_free(itor)
+            itor = 0
+          end if
 
-            tortuosity_field = .true.
+          tortuosity_field = .true.
 
 !c  read tortuosities
-            call read_vtk_data_from_file(itor,'tau',bfound,tau)
-            if (bfound) then
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(a)') 'read tortuosity from vtk file: done'
-                write(ilog,'(a)') 'read tortuosity from vtk file: done'
-              end if
+          call read_vtk_data_from_file(itor,'tau',bfound,tau)
+          if (bfound) then
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(a)') 'read tortuosity from vtk file: done'
+              write(ilog,'(a)') 'read tortuosity from vtk file: done'
             end if
-
-            if (itor > 0) then
-              close(itor)
-              call lun_free(itor)
-            end if
-
           end if
+
+          if (itor > 0) then
+            close(itor)
+            call lun_free(itor)
+          end if
+
+        end if
 #endif
 
 !c  read anisotropic correction angles (alpha(Z-axis), beta(Y-axis), gamma(X-axis)) from file
 
-          subsection = 'read anisotropic correction angles from file'
+        subsection = 'read anisotropic correction angles from file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-            iaca = lun_get()
+          iaca = lun_get()
 
-            open(iaca,file=prefix(:l_prfx)//'.aca',status='unknown',   &
-                 form='formatted')
-            
-            aca_field = .true.
+          open(iaca,file=prefix(:l_prfx)//'.aca',status='unknown',   &
+               form='formatted')
+          
+          aca_field = .true.
     
 !c  read tortuosities
 
-            read(iaca,*,err=993,end=993) cdummy
-            read(iaca,*,err=993,end=993) cdummy
-            read(iaca,*,err=993,end=993) cdummy
+          read(iaca,*,err=993,end=993) cdummy
+          read(iaca,*,err=993,end=993) cdummy
+          read(iaca,*,err=993,end=993) cdummy
 #ifdef USG
-            if (discretization_type > 0) then
-              do ivolgbl = 1,nngbl
+          if (discretization_type > 0) then
+            do ivolgbl = 1,nngbl
 #ifdef PETSC
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-                else
-                  ivol = node_idx_g2lg(ivolgbl)
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
+              else
+                ivol = node_idx_g2lg(ivolgbl)
+              end if
 #else
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2g_invord(ivolgbl)
-                else
-                  ivol = ivolgbl
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2g_invord(ivolgbl)
+              else
+                ivol = ivolgbl
+              end if
 #endif
-                if (ivol > 0) then
-                  read(iaca,*,err=993,end=993) rdummy,rdummy,rdummy,   &
-                       aca_vol(ivol)%z,aca_vol(ivol)%y,aca_vol(ivol)%x
-
-                  !c convert to radian
-                  aca_vol(ivol)%x = aca_vol(ivol)%x*(pi/r180)
-                  aca_vol(ivol)%y = aca_vol(ivol)%y*(pi/r180)
-                  aca_vol(ivol)%z = aca_vol(ivol)%z*(pi/r180)
-                else
-                  read(iaca,*,err=993,end=993) rdummy
-                end if
-              end do
-            end if
-#endif
-            if (discretization_type == 0) then
-              nskip = 0
-              do ivol = 1,nngl
-#ifdef PETSC
-                do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                  read(iaca,*,end=993,err=993) rdummy
-                end do
-                nskip = node_idx_lg2g(ivol)
-#endif
-                read(iaca,*,err=993,end=993) rdummy,rdummy,rdummy,     &
+              if (ivol > 0) then
+                read(iaca,*,err=993,end=993) rdummy,rdummy,rdummy,   &
                      aca_vol(ivol)%z,aca_vol(ivol)%y,aca_vol(ivol)%x
+
                 !c convert to radian
                 aca_vol(ivol)%x = aca_vol(ivol)%x*(pi/r180)
                 aca_vol(ivol)%y = aca_vol(ivol)%y*(pi/r180)
                 aca_vol(ivol)%z = aca_vol(ivol)%z*(pi/r180)
-              end do
-            end if
-
-            close(iaca)
-            call lun_free(iaca)
-                
+              else
+                read(iaca,*,err=993,end=993) rdummy
+              end if
+            end do
           end if
+#endif
+          if (discretization_type == 0) then
+            nskip = 0
+            do ivol = 1,nngl
+#ifdef PETSC
+              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
+                read(iaca,*,end=993,err=993) rdummy
+              end do
+              nskip = node_idx_lg2g(ivol)
+#endif
+              read(iaca,*,err=993,end=993) rdummy,rdummy,rdummy,     &
+                   aca_vol(ivol)%z,aca_vol(ivol)%y,aca_vol(ivol)%x
+              !c convert to radian
+              aca_vol(ivol)%x = aca_vol(ivol)%x*(pi/r180)
+              aca_vol(ivol)%y = aca_vol(ivol)%y*(pi/r180)
+              aca_vol(ivol)%z = aca_vol(ivol)%z*(pi/r180)
+            end do
+          end if
+
+          close(iaca)
+          call lun_free(iaca)
+              
+        end if
 
 #ifdef USG
 !c  read anisotropic correction angles from vtk file
 
-          subsection = 'read anisotropic correction angles from vtk file'
+        subsection = 'read anisotropic correction angles from vtk file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-            iaca = lun_get()
-            if ((read_spatial_master_proc .and. rank == 0) .or.        &
-                .not.read_spatial_master_proc) then
-              open(iaca,file=prefix(:l_prfx)//'.aca.vtk',              &
-                   status='unknown',form='formatted')
-            else
-              call lun_free(iaca)
-              iaca = 0
-            end if
+          iaca = lun_get()
+          if ((read_spatial_master_proc .and. rank == 0) .or.        &
+              .not.read_spatial_master_proc) then
+            open(iaca,file=prefix(:l_prfx)//'.aca.vtk',              &
+                 status='old',form='formatted')
+          else
+            call lun_free(iaca)
+            iaca = 0
+          end if
 
-            aca_field = .true.
+          aca_field = .true.
 
 !c  read anisotropic correction angles (alpha(Z-axis), beta(Y-axis), gamma(X-axis)) from vtk file
-            call read_vtk_data_from_file(iaca,'aca',bfound,aca_vol,.true.)
-            if (bfound) then
-              !c convert to radian
-              do ivol = 1, nngl
-                aca_vol(ivol)%x = aca_vol(ivol)%x*(pi/r180)
-                aca_vol(ivol)%y = aca_vol(ivol)%y*(pi/r180)
-                aca_vol(ivol)%z = aca_vol(ivol)%z*(pi/r180)
-              end do
+          call read_vtk_data_from_file(iaca,'aca',bfound,aca_vol,.true.)
+          if (bfound) then
+            !c convert to radian
+            do ivol = 1, nngl
+              aca_vol(ivol)%x = aca_vol(ivol)%x*(pi/r180)
+              aca_vol(ivol)%y = aca_vol(ivol)%y*(pi/r180)
+              aca_vol(ivol)%z = aca_vol(ivol)%z*(pi/r180)
+            end do
 
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(a)') 'read anisotropic correction angles from vtk file: done'
-                write(ilog,'(a)') 'read anisotropic correction angles from vtk file: done'
-              end if
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(a)') 'read anisotropic correction angles from vtk file: done'
+              write(ilog,'(a)') 'read anisotropic correction angles from vtk file: done'
             end if
-
-            if (iaca > 0) then
-              close(iaca)
-              call lun_free(iaca)
-            end if
-
           end if
+
+          if (iaca > 0) then
+            close(iaca)
+            call lun_free(iaca)
+          end if
+
+        end if
 #endif
 
 !c  read gas tortuosity field from file
 
-          subsection = 'read gas tortuosity field from file'
+        subsection = 'read gas tortuosity field from file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-             itor = lun_get()
+           itor = lun_get()
 
-             open(itor,file=prefix(:l_prfx)//'.torgas',status='unknown',     &
+           open(itor,file=prefix(:l_prfx)//'.torgas',status='unknown',     &
      &            form='formatted')
 
-            tortuosity_field_gas = .true.
+          tortuosity_field_gas = .true.
 
 !c  read tortuosities
 
-            read(itor,*,err=993,end=993) cdummy
-            read(itor,*,err=993,end=993) cdummy
-            read(itor,*,err=993,end=993) cdummy
+          read(itor,*,err=993,end=993) cdummy
+          read(itor,*,err=993,end=993) cdummy
+          read(itor,*,err=993,end=993) cdummy
 #ifdef USG
-            if (discretization_type > 0) then
-              do ivolgbl = 1,nngbl
+          if (discretization_type > 0) then
+            do ivolgbl = 1,nngbl
 #ifdef PETSC
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-                else
-                  ivol = node_idx_g2lg(ivolgbl)
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
+              else
+                ivol = node_idx_g2lg(ivolgbl)
+              end if
 #else
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2g_invord(ivolgbl)
-                else
-                  ivol = ivolgbl
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2g_invord(ivolgbl)
+              else
+                ivol = ivolgbl
+              end if
 #endif
-                if (ivol > 0) then
-                  read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,  &
-                                               taugas(ivol)
-                else
-                  read(itor,*,err=993,end=993) rdummy
-                end if
-              end do
-            end if
-#endif
-            if (discretization_type == 0) then
-              nskip = 0
-              do ivol = 1,nngl
-#ifdef PETSC
-                do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                  read(itor,*,end=993,err=993) rdummy
-                end do
-                nskip = node_idx_lg2g(ivol)
-#endif
-                read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,    &
+              if (ivol > 0) then
+                read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,  &
                                              taugas(ivol)
-              end do
-            end if
-
-            close(itor)
-            call lun_free(itor)
-
+              else
+                read(itor,*,err=993,end=993) rdummy
+              end if
+            end do
           end if
+#endif
+          if (discretization_type == 0) then
+            nskip = 0
+            do ivol = 1,nngl
+#ifdef PETSC
+              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
+                read(itor,*,end=993,err=993) rdummy
+              end do
+              nskip = node_idx_lg2g(ivol)
+#endif
+              read(itor,*,err=993,end=993) rdummy, rdummy,rdummy,    &
+                                           taugas(ivol)
+            end do
+          end if
+
+          close(itor)
+          call lun_free(itor)
+
+        end if
 
 #ifdef USG
 !c  read gas tortuosity field from vtk file
 
-          subsection = 'read gas tortuosity field from vtk file'
+        subsection = 'read gas tortuosity field from vtk file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-            itor = lun_get()
-            if ((read_spatial_master_proc .and. rank == 0) .or.        &
-                .not.read_spatial_master_proc) then
-              open(itor,file=prefix(:l_prfx)//'.torgas.vtk',           &
-                   status='unknown',form='formatted')
-            else
-              call lun_free(itor)
-              itor = 0
-            end if
+          itor = lun_get()
+          if ((read_spatial_master_proc .and. rank == 0) .or.        &
+              .not.read_spatial_master_proc) then
+            open(itor,file=prefix(:l_prfx)//'.torgas.vtk',           &
+                 status='old',form='formatted')
+          else
+            call lun_free(itor)
+            itor = 0
+          end if
 
-            tortuosity_field_gas = .true.
+          tortuosity_field_gas = .true.
 
 !c  read tortuosities
-            call read_vtk_data_from_file(itor,'tau',bfound,taugas)
-            if (bfound) then
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(a)') 'read gas tortuosity from vtk file: done'
-                write(ilog,'(a)') 'read gas tortuosity from vtk file: done'
-              end if
+          call read_vtk_data_from_file(itor,'tau',bfound,taugas)
+          if (bfound) then
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(a)') 'read gas tortuosity from vtk file: done'
+              write(ilog,'(a)') 'read gas tortuosity from vtk file: done'
             end if
-
-            if (itor > 0) then
-              close(itor)
-              call lun_free(itor)
-            end if
-
           end if
+
+          if (itor > 0) then
+            close(itor)
+            call lun_free(itor)
+          end if
+
+        end if
 #endif
 
 !c  read fracture parameters 
-          subsection = 'read fracture parameters from file'
+        subsection = 'read fracture parameters from file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
+        if (found_subsection) then
 
-            assigned_aperture = .true.
-            assigned_fracture_flow_type = .true.
+          assigned_aperture = .true.
+          assigned_fracture_flow_type = .true.
 
-            ifrac = lun_get()
+          ifrac = lun_get()
 
-            open(ifrac,file=prefix(:l_prfx)//'.frac',status='unknown',  &
-                 form='formatted')
+          open(ifrac,file=prefix(:l_prfx)//'.frac',status='unknown',  &
+               form='formatted')
 
-            fracture_aperture_field = .true.
-            fracture_flow_type_field = .true.
+          fracture_aperture_field = .true.
+          fracture_flow_type_field = .true.
 
 !c  read fracture aperture
 
-            read(ifrac,*,err=993,end=993) cdummy
-            read(ifrac,*,err=993,end=993) cdummy
-            read(ifrac,*,err=993,end=993) cdummy
+          read(ifrac,*,err=993,end=993) cdummy
+          read(ifrac,*,err=993,end=993) cdummy
+          read(ifrac,*,err=993,end=993) cdummy
 #ifdef USG
-            if (discretization_type > 0) then
-              do ivolgbl = 1,nngbl
+          if (discretization_type > 0) then
+            do ivolgbl = 1,nngbl
 #ifdef PETSC
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
-                else
-                  ivol = node_idx_g2lg(ivolgbl)
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2lg(node_idx_g2g_invord(ivolgbl))
+              else
+                ivol = node_idx_g2lg(ivolgbl)
+              end if
 #else
-                if (ibits(usg_mesh_ordering,0,2) == 3) then
-                  ivol = node_idx_g2g_invord(ivolgbl)
-                else
-                  ivol = ivolgbl
-                end if
+              if (ibits(usg_mesh_ordering,0,2) == 3) then
+                ivol = node_idx_g2g_invord(ivolgbl)
+              else
+                ivol = ivolgbl
+              end if
 #endif
-                if (ivol > 0) then
-                  read(ifrac,*,err=993,end=993) rdummy, rdummy,rdummy,  &
-                      aperture(ivol), fractureFlowType(ivol)
-                else
-                  read(ifrac,*,err=993,end=993) rdummy
-                end if
-              end do
-            end if
-#endif
-            if (discretization_type == 0) then
-              nskip = 0
-              do ivol = 1,nngl
-#ifdef PETSC
-                do iskip = 1, node_idx_lg2g(ivol) - nskip -1
-                  read(ifrac,*,end=993,err=993) rdummy
-                end do
-                nskip = node_idx_lg2g(ivol)
-#endif
-                read(ifrac,*,err=993,end=993) rdummy, rdummy,rdummy,    &
+              if (ivol > 0) then
+                read(ifrac,*,err=993,end=993) rdummy, rdummy,rdummy,  &
                     aperture(ivol), fractureFlowType(ivol)
-              end do
-            end if
-
-            close(ifrac)
-            call lun_free(ifrac)
-
+              else
+                read(ifrac,*,err=993,end=993) rdummy
+              end if
+            end do
           end if
+#endif
+          if (discretization_type == 0) then
+            nskip = 0
+            do ivol = 1,nngl
+#ifdef PETSC
+              do iskip = 1, node_idx_lg2g(ivol) - nskip -1
+                read(ifrac,*,end=993,err=993) rdummy
+              end do
+              nskip = node_idx_lg2g(ivol)
+#endif
+              read(ifrac,*,err=993,end=993) rdummy, rdummy,rdummy,    &
+                  aperture(ivol), fractureFlowType(ivol)
+            end do
+          end if
+
+          close(ifrac)
+          call lun_free(ifrac)
+
+        end if
 #ifdef USG
 !c  read fracture parameters from vtk file
 
-          subsection = 'read fracture parameters from vtk file'
+        subsection = 'read fracture parameters from vtk file'
 
-          call findstrg(subsection,itmp,found_subsection)
+        call findstrg(subsection,itmp,found_subsection)
 
-          if (found_subsection) then
-            ifrac = lun_get()
+        if (found_subsection) then
+          ifrac = lun_get()
 
-            if ((read_spatial_master_proc .and. rank == 0) .or.        &
-                .not.read_spatial_master_proc) then
-              open(ifrac,file=prefix(:l_prfx)//'.frac.vtk',              &
-                   status='unknown',form='formatted')
-            else
-              call lun_free(ifrac)
-              ifrac = 0
-            end if
+          if ((read_spatial_master_proc .and. rank == 0) .or.        &
+              .not.read_spatial_master_proc) then
+            open(ifrac,file=prefix(:l_prfx)//'.frac.vtk',              &
+                 status='old',form='formatted')
+          else
+            call lun_free(ifrac)
+            ifrac = 0
+          end if
 
 !c  read fracture aperture
-            call read_vtk_data_from_file(ifrac,'aperture',bfound,aperture)
-            if (bfound) then
-              assigned_aperture = .true.
-              fracture_aperture_field = .true.
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(a)') 'read fracture aperture from vtk file: done'
-                write(ilog,'(a)') 'read fracture aperture from vtk file: done'
-              end if              
-            end if
+          call read_vtk_data_from_file(ifrac,'aperture',bfound,aperture)
+          if (bfound) then
+            assigned_aperture = .true.
+            fracture_aperture_field = .true.
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(a)') 'read fracture aperture from vtk file: done'
+              write(ilog,'(a)') 'read fracture aperture from vtk file: done'
+            end if              
+          end if
 
 !c  read fracture flow type
-            call read_vtk_data_from_file(ifrac,'flow_type',bfound,fractureFlowType)
-            if (bfound) then
-              assigned_fracture_flow_type = .true.
-              fracture_flow_type_field = .true.
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(a)') 'read fracture flow type from vtk file: done'
-                write(ilog,'(a)') 'read fracture flow type from vtk file: done'
-              end if
+          call read_vtk_data_from_file(ifrac,'flow_type',bfound,fractureFlowType)
+          if (bfound) then
+            assigned_fracture_flow_type = .true.
+            fracture_flow_type_field = .true.
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(a)') 'read fracture flow type from vtk file: done'
+              write(ilog,'(a)') 'read fracture flow type from vtk file: done'
             end if
-
-            if (ifrac > 0) then
-              close(ifrac)
-              call lun_free(ifrac)
-            end if
-
           end if
+
+          if (ifrac > 0) then
+            close(ifrac)
+            call lun_free(ifrac)
+          end if
+
+        end if
 #endif
+
+        do izn = 1,nzn
 
 !c  read physical parameters for porous medium
 
@@ -935,19 +937,31 @@
 
           assigned_fracture_flow_type = .true.
 
-          if (trim(strFracFlowTypeLoc) == 'darcy') then
+          if (trim(strFracFlowTypeLoc) == 'darcy law') then
             fracFlowTypeLoc = 0
           else if (trim(strFracFlowTypeLoc) == 'cubic law') then
             fracFlowTypeLoc = 1
           else
             if (rank == 0) then
               write(*,'(2a)') 'Error: unknown fracture flow type, ',   &
-                    'should be darcy or cubic law'
+                    'should be darcy law or cubic law'
               write(ilog,'(2a)') 'Error: unknown fracture flow type, ',&
-                    'should be darcy or cubic law'
+                    'should be darcy law or cubic law'
             end if
             goto 999
           end if
+
+!cdsu For cublic law flow, 
+!cdsu Q = coeff*aperture^3 => Velocity = coeff*aperture^2 (assume unit fracture width)
+          fracFlowCoeffLoc = 1.0/12.0
+          subsection = 'fracture flow coefficient'
+          call findstrg(subsection,icnv,found_subsection)
+          if (found_subsection) then
+            ierrcd = 9
+            read(icnv,*,err=999,end=999) fracFlowCoeffLoc
+          end if
+          fracFlowCoeffLoc = fracFlowCoeffLoc*sec_per_days  ! convert the unit of flow velocity from m/s to m/day
+
         end if
 
 !c  read mechanical parameters
@@ -1246,6 +1260,10 @@
 
               if (assigned_fracture_flow_type .and. .not.fracture_flow_type_field) then
                 fractureFlowType(ivol) = fracFlowTypeLoc
+              end if
+
+              if (assigned_aperture) then
+                fracFlowCoeff(ivol) = fracFlowCoeffLoc
               end if
 
 #ifdef PETSC
@@ -1588,7 +1606,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.          &
             .not.read_spatial_master_proc) then
             open(igso,file=prefix(:l_prfx)//'.gso.vtk',                &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(igso)
             igso = 0
@@ -1623,6 +1641,7 @@
 !c  read oil saturation field from file
 
         subsection = 'read So field from file - no feedback on sat'
+        call makelowercase(subsection)
         call findstrg(subsection,itmp,found_subsection)
 
         if (found_subsection) then
@@ -1693,6 +1712,7 @@
 !c  read oil saturation field from file
 
         subsection = 'read So field from vtk file - no feedback on sat'
+        call makelowercase(subsection)
         call findstrg(subsection,itmp,found_subsection)
 
         if (found_subsection) then
@@ -1705,7 +1725,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.          &
               .not.read_spatial_master_proc) then
             open(igso,file=prefix(:l_prfx)//'.gso.vtk',                &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(igso)
             igso = 0

@@ -4,7 +4,7 @@
 !> $Revision: 786 $
 !> $Author: dsu $
 !> $Date: 2021-01-06 21:41:32 -0800 (Wed, 06 Jan 2021) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/ddtds.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/ddtds.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -194,7 +194,7 @@
           !cprovi Copy the molalities in the local vector 
           !cprovi------------------------------------------------
           cpz_loc(1:nc)=cnew(1:nc,ivol)
-          cpz_loc(nc+1:nc+nx)=cx(1:nx,ivol)  
+          cpz_loc(nc+1:nc+nx)=cxnew(1:nx,ivol)  
           call compute_density_ (phase,r0,r0,cpz_loc,density(ivol),.false., &
                                     iserror)
           if (iserror) then          

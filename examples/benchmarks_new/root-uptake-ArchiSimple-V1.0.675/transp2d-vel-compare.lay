@@ -1,0 +1,881 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"TRANSP2D\transp-updrld_1.vel"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "vx" "vy" "vz"'
+$!VarSet |LFDSFN2| = '"TRANSP2D\transp-updrld_2.vel"'
+$!VarSet |LFDSVL2| = '"x" "y" "z" "vx" "vy" "vz"'
+$!VarSet |LFDSFN3| = '"TRANSP2D-NoRoot\transp-updrld_1.vel"'
+$!VarSet |LFDSVL3| = '"x" "y" "z" "vx" "vy" "vz"'
+$!VarSet |LFDSFN4| = '"TRANSP2D-NoRoot\transp-updrld_2.vel"'
+$!VarSet |LFDSVL4| = '"x" "y" "z" "vx" "vy" "vz"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 4
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 6
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.000902943429537
+    RANGEMAX = 0.00464325433131
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -0.000967212021351
+      CMAX = 0.0065134097822
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+14
+-0.0005
+0
+0.0005
+0.001
+0.0015
+0.002
+0.0025
+0.003
+0.0035
+0.004
+0.0045
+0.005
+0.0055
+0.006
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALTWODVECTOR 
+  UVAR = 4
+  VVAR = 6
+  RELATIVELENGTH = 7
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 0.99147643636055294
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 1.0174560373372288
+    GRSPACING = 0.2
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.000902943429537
+  ISOVALUE2 = 0.00277309888043
+  ISOVALUE3 = 0.00464325433131
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWVECTOR = YES
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 2.53679634094
+    Y = 94.6335646141
+    }
+  TEXT = 'Transp With Plant Uptake - 10 Days' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL2|' 
+$!REMOVEVAR |LFDSVL2|
+$!REMOVEVAR |LFDSFN2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5
+    Y = 0.25
+    }
+  WIDTH = 4
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALTWODVECTOR 
+  UVAR = 4
+  VVAR = 6
+  RELATIVELENGTH = 15
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 0.99147643636055294
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 1.0174560373372288
+    GRSPACING = 0.2
+    }
+$!GLOBALISOSURFACE 
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWVECTOR = YES
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 2.53679634094
+    Y = 94.6335646141
+    }
+  TEXT = 'Transp With Plant Uptake - 20 Days' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL3|' 
+$!REMOVEVAR |LFDSVL3|
+$!REMOVEVAR |LFDSFN3|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 4.25
+    }
+  WIDTH = 4
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 6
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -0.000732871313176
+    RANGEMAX = -0.000263815970811
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -0.000967398984358
+      CMAX = -2.92882996291E-005
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+19
+-0.00095
+-0.0009
+-0.00085
+-0.0008
+-0.00075
+-0.0007
+-0.00065
+-0.0006
+-0.00055
+-0.0005
+-0.00045
+-0.0004
+-0.00035
+-0.0003
+-0.00025
+-0.0002
+-0.00015
+-0.0001
+-5E-005
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALTWODVECTOR 
+  UVAR = 4
+  VVAR = 6
+  RELATIVELENGTH = 60
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 0.99147643636055294
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 1.0174560373372286
+    GRSPACING = 0.2
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = -0.000732871313176
+  ISOVALUE2 = -0.000498343641993
+  ISOVALUE3 = -0.000263815970811
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWVECTOR = YES
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 2.53679634094
+    Y = 94.6335646141
+    }
+  TEXT = 'Transp Without Plant Uptake - 10 Days' 
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN4|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL4|' 
+$!REMOVEVAR |LFDSVL4|
+$!REMOVEVAR |LFDSFN4|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 5
+    Y = 4.25
+    }
+  WIDTH = 4
+  HEIGHT = 4
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALTWODVECTOR 
+  UVAR = 4
+  VVAR = 6
+  RELATIVELENGTH = 80
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 0.99147643636055294
+    GRSPACING = 0.2
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0.017241399735212326
+    RANGEMAX = 1.0174560373372283
+    GRSPACING = 0.2
+    }
+$!GLOBALISOSURFACE 
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWVECTOR = YES
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 2.53679634094
+    Y = 94.6335646141
+    }
+  TEXT = 'Transp Without Plant Uptake - 20 Days' 
+$!SETSTYLEBASE CONFIG

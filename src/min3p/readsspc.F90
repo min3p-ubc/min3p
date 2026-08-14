@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readsspc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readsspc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -142,7 +142,7 @@
       use gen, only : rank, b_enable_output, b_enable_output_gen,      &
                       idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif 
@@ -170,8 +170,8 @@
 
         if (rank == 0 .and. b_enable_output) then  
           write(ipsp,'(72a/a/72a/)')('*',i=1,72),                      &
-     &          'Possible aqueous species, gases and minerals',        &
-     &          ('*',i=1,72)                                             
+                'Possible aqueous species, gases and minerals',        &
+                ('*',i=1,72)                                             
           write(ipsp,'(a)') 'secondary aqueous species'                  
           write(ipsp,'(a/)') '-------------------------' 
         end if
@@ -179,10 +179,17 @@
         do i = 1,10000    
             
           if (space_delimiter_dbs) then                 !merged space delimiters
-              
             read(ixdbs,'(a)',end=999,err=9999) strbuffer
-            !c make lower case and replace tab and quote with space
+
             call makelowercase(strbuffer)
+
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+
+            !c make lower case and replace tab and quote with space
             call replacecharacter(strbuffer, achar(9), strspace) 
             call replacecharacter(strbuffer, "'", strspace)
             call replacecharacter(strbuffer, '"', strspace)
@@ -199,13 +206,21 @@
           else
             read(ixdbs,100,end=999,err=9999) name,dhc,eqt,charge,dha, &
                                              dhb,gfw
+            call makelowercase(name)
           end if  
           
           
           if (name.eq.'end') goto 999
           
           if (space_delimiter_dbs) then                  !merged space delimiters
-            read(ixdbs,'(a)',end=9998,err=9999) strbuffer
+            read(ixdbs,'(a)',end=999,err=9999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace) 
@@ -215,9 +230,9 @@
             strbuffer = trim(adjustl(strbuffer))
             iend = index(strbuffer,strspace)
             if (iend <= 1) then
-              goto 9998
+              goto 999
             end if
-            read(strbuffer,*,end=9998,err=9999) nv
+            read(strbuffer,*,end=999,err=9999) nv
             
             do iv = 1, nv
               strbuffer = trim(adjustl(strbuffer(iend:))) 
@@ -226,10 +241,13 @@
               
               strbuffer = trim(adjustl(strbuffer(iend:))) 
               iend = index(strbuffer,strspace)
-              read(strbuffer,*,end=9998,err=9999) xnuxt(iv)
+              read(strbuffer,*,end=999,err=9999) xnuxt(iv)
             end do
           else  
             read(ixdbs,101,end=999,err=9999) nv,(namet(iv),xnuxt(iv),iv=1,nv)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
           end if
 
 !MX          if (name.eq.'end') goto 999
@@ -298,6 +316,13 @@
 
           if (space_delimiter_dbs) then                 !merged space delimiters
             read(ixdbs,'(a)',end=9998,err=9999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
             !c make lower case and replace tab with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace) 
@@ -314,10 +339,17 @@
             if (.not.multi_diff) then 
               read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw                  !c note, alkfac is calculated internally later
             else      
-              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,diffcoff2   !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff            
+              read(strbuffer,*,end=9998,err=9999) dhc,eqt,charge,dha,dhb,gfw,diffcoff2        !c note, for multi_diff, the last parameter is diffusion coeff            
             end if                           !  .not.multi_diff
             
             read(ixdbs,'(a)',end=9998,err=9999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+            
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace) 
@@ -345,10 +377,14 @@
               read(ixdbs,100,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw              !c note, alkfac is calculated internally later
               read(ixdbs,101,end=9998,err=9999) nv,(namet(iv),xnuxt(iv),iv=1,nv)
             else
-              read(ixdbs,102,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,null,  &     !c note, for multi_diff, read a dummy variable 'null' before diffusion coeff
-                   diffcoff2                
+              read(ixdbs,102,end=9998,err=9999) name,dhc,eqt,charge,dha,dhb,gfw,  &          !c note, for multi_diff, the last parameter is diffusion coeff            
+                                                diffcoff2                
               read(ixdbs,101,end=9998,err=9999) nv,(namet(iv),xnuxt(iv),iv=1,nv)
             end if ! multi_diff  
+            call makelowercase(name)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
           end if
     
 ! prc ----------------------------------------------------------------------------
@@ -570,7 +606,7 @@
             do while(.true.)
               if (readnextline(ixdbs,strbuffer,lowercase=.false.,          &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namex(ix))) == 1) then
+                if (startWithEntireName(strbuffer,namex(ix),flagQuote=.false.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   if (readnextline(ixdbs,strbuffer,lowercase=.false.,      &
                       original=.true.)) then

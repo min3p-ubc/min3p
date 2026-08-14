@@ -1,0 +1,3970 @@
+"CO2 sequestration in ultramafic tailings"			
+
+! This model includes  
+
+! 
+
+! 1) cover
+
+! 2) rainfall events
+
+!Trying to reproduce Massmann and Farrier (1992) paper
+
+! Section 1: global control parameters                                      			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'global control parameters'                                                 			
+
+'preconditioning - wetland Leuna A2'                                        			
+
+.true.                        ;varsat_flow                                  			
+
+.true.                       ;steady_flow                                  			
+
+.false.                       ;fully_saturated                              			
+
+.true.                        ;reactive_transport                           			
+
+.false.                       ;plant_uptake and physical evaporation	
+
+
+
+
+
+!'density dependent flow'
+
+
+
+!'energy balance' 
+
+			
+
+!'restart' 
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 2: geochemical system                                             			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'geochemical system'			
+
+			
+
+'use new database format'
+
+
+
+'use pitzer model'
+
+
+
+'use macinnes convention' 
+
+			
+
+'database directory'                                                        
+
+'databaseAH'                                          			
+
+			                                                                    			
+
+			
+
+'define temperature'			
+
+25			
+
+			
+
+			
+
+'components'                                                                			
+
+5                               ;number of components (nc-1)                			
+
+'cl-1'
+
+'na+1'
+
+'h+1'
+
+'n2(aq)'
+
+'h4sio4'
+
+
+
+'secondary aqueous species'                                                 			
+
+1                 ;number of secondary aqueous species
+
+'oh-' 
+
+
+
+
+
+			
+
+'gases'                                                                     			
+
+1                             ;number of gases			
+
+'n2(g)'
+
+			
+
+'minerals'                                                                  			
+
+1            ;number of minerals	
+
+'quartz'
+
+			
+
+			
+
+'done'                                                                      			
+
+!   			
+
+! Section 3: spatial discretization                                         			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'spatial discretization'                                                    			
+
+1                             ;number of discretization intervals in x			
+
+1                             ;number of control volumes in x			
+
+0.0  1.0                      ;xmin,xmax"			
+
+1                             ;number of discretization intervals in y      			
+
+1                             ;number of control volumes in y               			
+
+0. 1.0                        ;ymin,ymax                                    "			
+
+1
+
+100                           ;number of discretization intervals in z
+
+0.0  20.0
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 4: time step control - global system                              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'time step control - global system'                                         			
+
+'days'                       ;time unit                                     			
+
+0.0                          ;time at start of solution                     			
+
+4.0d0                        ;final solution time                           			
+
+0.1d0                        ;maximum time step			
+
+1.0d-7                       ;minimum time step			
+
+'done'			
+
+			
+
+!   			
+
+! Section 5: control parameters - local geochemistry                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - local geochemistry'                                   			
+
+			
+
+'finite minerals'                                                           			
+
+.true.                        ;update geometrical parameters of minerals    			
+
+			
+
+'newton iteration settings'                                                 			
+
+1.d-4                         ;factor for numerical differentiation         			
+
+1.d-6                         ;convergence tolerance                        			
+
+			
+
+'maximum ionic strength'                                                    			
+
+50.0d0                         ;max. ionic strength                          			
+
+			
+
+'minimum activity for h2o'                                                  			
+
+0.01d0                         ;min. activity for h2o                        			
+
+			
+
+'output time unit'                                                          			
+
+'days'                        ;time unit (local chemistry)                  			
+
+			
+
+'done'                                                                      			
+
+			
+
+!   			
+
+! Section 6: control parameters - variably saturated flow                   			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - variably saturated flow'                              			
+
+                         			
+
+	
+
+'mass balance'		
+
+
+
+!'density model' 
+
+!'pitzer' 
+
+
+
+'upstream factor for flow equation'
+
+1.0d0
+
+
+
+'iterative solver'
+
+			
+
+'input units for boundary and initial conditions'                           			
+
+'pressure head'              ;input unit 
+
+
+
+'input units for media permeability'
+
+'hydraulic conductivity'
+
+			
+
+'upstream weighting'                                                        			
+
+.true.                       .true.                        ;upstream weight			
+
+		
+
+
+
+'variable density parameters'
+
+1000.0d0                      ;freshwater density g/L
+
+0.0d0                         ;linear density coefficient d(rho)/d(TDS)
+
+70                            ;max # Picard flow-RT iterations
+
+25                             ;Picard iteration target (# iterations)
+
+0.1d0                         ;maximum density update: Picard convergence g/L
+
+1.0d50                        ;Courant criteria target
+
+			
+
+'newton iteration settings'			
+
+1.0d-4                        ;increment for numerical differentiation			
+
+200                           ;max. number of newton iterations			
+
+1.0d-7                        ;convergence tolerance			
+
+0.8                           ;sw_star			
+
+			
+
+'solver settings'			
+
+0                             ;incomplete factorization level			
+
+100                           ;max. number of solver iterations			
+
+1                             ;solver information level			
+
+1.0d-11                       ;solver residual tolerance			
+
+1.0d-11                       ;solver update tolerance			
+
+.true.                        ;rcm ordering			
+
+			
+
+'done'	
+
+!   			
+
+! Section 7: control parameters - reactive transport                        			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'control parameters - reactive transport'                                   			
+
+			
+
+'update porosity'
+
+
+
+'update permeability'    			
+
+			
+
+'mass balance settings'                                                     			
+
+.true.                        ;compute mass balance                         			
+
+			
+
+'spatial weighting'                                                         			
+
+'upstream'                     ;spatial weighting   'upstream'  'centered'         			
+
+			
+
+'activity update settings'                                                  			
+
+'time_lagged'                 ;type of activity update                      			
+
+			
+
+'tortuosity corrections'                                                    			
+
+.false.                       ;Millington-Quirk tortuosity correction			
+
+
+
+
+
+'gas advection'
+
+'cumulative mole fractions'
+
+'enable gravity for gas phase'	
+
+			
+
+			
+
+'newton iteration settings'                                                 			
+
+1.0d-4                        ;increment h for numerical differentiation    			
+
+50                            ;anticipated number of Newton iterations      			
+
+100                           ;max. number of Newton iterations             			
+
+0.1                           ;anticipated update in log cycles    => increase time step more slowly			
+
+0.3                        ;maximum update in log cycles   !2.0d-2              			
+
+1.d-10                         ;convergence tolerance (global system)        			
+
+			
+
+'solver settings'                                                           			
+
+0                             ;incomplete factorization level               			
+
+100                           ;max. number of solver iterations             			
+
+1                             ;solver information level                     			
+
+1.d-11                         ;solver residual tolerance                    			
+
+1.d-11                         ;solver update tolerance                      			
+
+.true.                        ;rcm ordering                                 			
+
+			
+
+'done'                                                                      			
+
+!   			
+
+! Section 8: output control                                                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'output control'                                                            			
+
+			
+
+'output of spatial data'                                                    			
+
+5                            ;number of output times (spatial data)	
+
+0.1 1 2 3
+
+4.0
+
+								
+
+			
+
+'coordinate output'			
+
+			
+
+'output of transient data'                                                  			
+
+6                             ;number of output locations (transient data)  			
+
+1                              ;timesteps between output (transient data)			
+
+0.0   0.0 20.0d0             ;xout, yout, zout in meters"			
+
+0.0   0.0   19.7
+
+0.0   0.0   19.5
+
+0.0   0.0   19.3
+
+0.0   0.0   17.0
+
+0.0   0.0   14.0
+
+
+
+'done'                                                                      			
+
+!   			
+
+! Section 9: physical parameters - porous medium                            			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - porous medium'                                       			
+
+1                             ;number of property zones                     			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'tailings'                                                                   			
+
+			
+
+0.3d0                         ;porosity                                     			
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 20.0			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+'done'			
+
+!   			
+
+! Section 10: physical parameters - variably saturated flow                 			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - variably saturated flow'			
+
+'dual permeability off'			
+
+'dual porosity off'
+
+
+
+!'residual gas saturation'
+
+!0.0001d0
+
+			
+
+! --------------------------------------------------------------------------			
+
+'tailings'			
+
+			
+
+'hydraulic conductivity in x-direction'      ! conductivity adjusted to fit			
+
+9.81d-5                      ;K_xx			
+
+
+
+'hydraulic conductivity in y-direction'      ! conductivity adjusted to fit			
+
+9.81d-5                      ;K_yy			
+
+			
+
+'hydraulic conductivity in z-direction'      			
+
+9.81d-5                      ;K_zz			
+
+			
+
+'specific storage coefficient'			
+
+0.0d0
+
+
+
+!'oven-drying parameters'
+
+!1.0d5           ! hm  
+
+!1.0d-10         ! w0
+
+!1.0             ! beta
+
+!0.025d0         ! cte p0 
+
+
+
+'soil hydraulic function parameters'
+
+0.001                           ;residual saturation  !0.0001 !paramters from hydrus for sand, commented out ones from Bea's tailings model
+
+4.0                           ;van genuchten - alpha  !0.8
+
+6.0                           ;van genuchten - n   !1.4
+
+0.5                          ;expn
+
+-0.181                          ;air entry pressure  
+
+
+
+
+
+
+'end of zone'
+
+
+
+
+
+'done'
+
+!   			
+
+! Section 11: physical parameters - reactive transport                      			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'physical parameters - reactive transport'                                  			
+
+			
+
+'diffusion coefficients'                                                    			
+
+1.0d-10                       ;aqueous phase                                			
+
+2.00d-6                        ;gaseous phase                                						
+
+! --------------------------------------------------------------------------			
+
+'tailings'			
+
+			
+
+'longitudinal dispersivity'			
+
+0.2d0			
+
+			
+
+'transverse vertical dispersivity'			
+
+0.2d0			
+
+			
+
+'end of zone'			
+
+			
+
+'done'			
+
+			
+
+! Data Block 12: initial condition - variably saturated flow                			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'initial condition - variably saturated flow'                               			
+
+1                             ;number of zones                              			
+
+!'read initial condition from file'                                        			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'all domain'                                                                    			
+
+			
+
+'initial condition'                                                         			
+
+-10d0                       ;pressure head   
+
+
+
+
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 20.0			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+'done'   		
+
+! Data Block 13: boundary conditions - variably saturated flow              			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'boundary conditions - variably saturated flow'                             			
+
+2                             ;number of zones                              			
+
+			
+
+!'read atmospheric boundary conditions'
+
+
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'inflow boundary'                                                           			
+
+			
+
+!'boundary type'                                                             			
+
+!'atmospheric'       0.0d0 !
+
+
+
+!'boundary type'                                                             			
+
+!'second'      0.0d0
+
+
+
+'boundary type'                                                             			
+
+'first'      -10d0 
+
+
+
+
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  20.0 20.0                                                   			
+
+			
+
+'end of zone'     	
+
+! --------------------------------------------------------------------------			
+
+
+
+'number and name of zone'                                                   			
+
+2			
+
+'bottom'                                                               			
+
+			
+
+
+
+!'boundary type'                                                             			
+
+!'first'    0.0d0                ; hydraulic head [m]			
+
+
+
+
+
+'boundary type'                                                             			
+
+'first'    -10d0               ; pressure head [m]			
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 0.0			
+
+			
+
+'end of zone'                                                               			
+
+			
+
+			
+
+			
+
+'done'	
+
+!   			
+
+! Section 14: initial conditions - reactive transport                       			
+
+! --------------------------------------------------------------------------			
+
+!   			
+
+'initial condition - reactive transport'                                    			
+
+1                             ;number of zones                              			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'                                                   			
+
+1			
+
+'unsaturated zone'                                                      			
+
+			
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+ 0.999753d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+			
+
+'mineral input'                        		
+
+ 0.7E+00    .true.     'twothird'    !!!!=>quartz          
+
+     0.1000E-06     0.3532E-5     0.0000E+00	
+
+     
+
+     
+
+'guess for ph'                                                              			
+
+5			
+
+			
+
+'extent of zone'                                                            			
+
+0.0 1.0  0.0 1.0  0.0 20.0 			
+
+			
+
+'end of zone' 
+
+
+
+
+
+			
+
+'done'			
+
+			
+
+!			
+
+! Section 15: boundary conditions - reactive transport			
+
+! --------------------------------------------------------------------------			
+
+!			
+
+'boundary conditions - reactive transport'			
+
+2                             ;number of zones			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'			
+
+1			
+
+'influx boundary'			
+
+			
+
+'boundary type'			
+
+'first'			
+
+			
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.999753d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+		
+
+			
+
+'guess for ph'			
+
+7			
+
+			
+
+'spatial weighting of boundary condition interpolation'
+
+0.0d0
+
+			
+
+'extent of zone'			
+
+0.0 1.0  0.0 1.0  20.0  20.0  			
+
+			
+
+'end of zone'			
+
+			
+
+! --------------------------------------------------------------------------			
+
+'number and name of zone'			
+
+2			
+
+'bottom'			
+
+			
+
+'boundary type'			
+
+'second'			
+
+			
+
+'spatial weighting of boundary condition interpolation'
+
+0.0d0
+
+			
+
+'extent of zone'			
+
+0.0 1.0  0.0 1.0  0.0 0.0			
+
+			
+
+'end of zone'  
+
+ 
+
+
+
+! ---------------------------------------------------------------------------
+
+'update boundary conditions'
+
+48                                ;number of target read times
+
+0.083                             ;target read times
+
+0.167
+
+0.25
+
+0.333
+
+0.417
+
+0.5
+
+0.583
+
+0.667
+
+0.75
+
+0.833
+
+0.917
+
+1
+
+1.083
+
+1.167
+
+1.25
+
+1.333
+
+1.417
+
+1.5
+
+1.583
+
+1.667
+
+1.75
+
+1.833
+
+1.917
+
+2
+
+2.083
+
+2.167
+
+2.25
+
+2.333
+
+2.417
+
+2.5
+
+2.583
+
+2.667
+
+2.75
+
+2.833
+
+2.917
+
+3
+
+3.083
+
+3.167
+
+3.25
+
+3.333
+
+3.417
+
+3.5
+
+3.583
+
+3.667
+
+3.75
+
+3.833
+
+3.917
+
+4
+
+
+
+!
+
+! target read time 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+1
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.002974d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+!
+
+! target read time 2
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+2
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.006139d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 3
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+3
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.009195d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 4
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+4
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.01209d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 5
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+5
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.014773d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+!
+
+! target read time 6
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+6
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.0172d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 7
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+7
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.019328d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 8
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+8
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.021121d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+
+
+! target read time 9
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+9
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.022548d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+!
+
+! target read time 10
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+10
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.023586d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 11
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+11
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.024215d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 12
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+12
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.024426d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 13
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+13
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.024215d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+!
+
+! target read time 14
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+14
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.023586d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 15
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+15
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.022548d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 16
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+16
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.021121d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 17
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+17
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.019328d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 18
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+18
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.0172d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 19
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+19
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.014773d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 20
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+20
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.01209d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 21
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+21
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.009195d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 22
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+22
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.006139d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 23
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+23
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+1.002974d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 24
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+24
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.999753d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 25
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+25
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.996533d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 26
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+26
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.993367d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 27
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+27
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.990311d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+! target read time 28
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+28
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.987417d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 29
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+29
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.984733d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 30
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+30
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.982307d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 31
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+31
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.980179d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 32
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+32
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.978386d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 33
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+33
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.976958d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 34
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+34
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.975921d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 35
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+35
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.975291d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 36
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+36
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.97508d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 37
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+37
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.975291d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 38
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+38
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.975921d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 39
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+39
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.976958d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 40
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+40
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.978386d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 41
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+41
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.980179d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 42
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+42
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.982307d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 43
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+43
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.984733d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 44
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+44
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.987417d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+! target read time 45
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+45
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.990311d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+! target read time 46
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+46
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.993367d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+! target read time 47
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+47
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.996533d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+! target read time 48
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+48
+
+!
+
+!
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'influx boundary'
+
+
+
+
+
+
+
+'concentration input'			
+
+    1.0d-4  'free'    ; 'cl-1'	
+
+    1.0d-4  'free'    ; 'na+1'
+
+     5.6d0  'ph'      ; 'h+1'
+
+0.999753d0  'pn2'     ; 'n2(aq)'
+
+  1.248d-4 'free'    ;h4sio4
+ 
+
+
+
+'guess for ph'
+
+7.0
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+'done'   

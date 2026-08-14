@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/outputvs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/outputvs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -199,7 +199,7 @@
 
       external velocity
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rverysmall = 1.0d-30
 
       character*5 suffix      
       character*2048 strbuffer
@@ -848,7 +848,7 @@
 
 !c  assign depth coordinate in terms of depth or elevation
 
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
         theta_a = pornew(ivol)*sanew(ivol)
         
@@ -874,7 +874,11 @@
 
 !c  compute root water uptake for current control volume
           if (root_uptake) then
-            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            if (rld(ivol) > rverysmall) then
+              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            else
+              transp = r0
+            end if
           else
             transp = r0
           end if

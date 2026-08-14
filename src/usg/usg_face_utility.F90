@@ -4,7 +4,7 @@
 !> $Revision: 878 $
 !> $Author: dsu $
 !> $Date: 2024-02-14 20:08:49 -0800 (Wed, 14 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/usg_face_utility.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/usg_face_utility.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -72,11 +72,11 @@ module usg_face_utility
   use gen, only : iavs, javs, isymvs, jacell, sec_per_days,            &
                   gacc, pornew, sanew, uvsnew, hhead, relperm,         &
                   upstream, fully_saturated, variably_saturated,       &
-                  aperture, fractureFlowType,                          &
+                  aperture, fractureFlowType, fracFlowCoeff,           &
                   tau, tau_fac, assigned_tau,                          &
                   marchies, nngl, njavs, tortuosity_corr,              &
                   mpropvs,  mpropvs_cell, janumcell, jaedgelen,        &
-                  diff_coff, type_tortuosity, harmonic_porosity,       &
+                  comp_dep_diff_coff, type_tortuosity,                 &
                   type_averaging_De, sonew, discretization_type,       &
                   type_cond_perm, type_diff_coeff,                     &
                   type_diff_ic_coeff, type_disp_coeff,                 &
@@ -923,14 +923,15 @@ module usg_face_utility
               if (density_dependence) then
                 viscosity_ij = (viscosity(ivol)+viscosity(jvol))/2.0d0
                 cinfvs_loc(idvol,icell1) = aperture_ij**2/viscosity_ij/&
-                                           jaedgelen(jtemp)/12.0d0*    &
-                                           cvolfacearea
+                                           jaedgelen(jtemp)/12.0d0
               else
                 cinfvs_loc(idvol,icell1) = aperture_ij**2/visc_h2o/    &
-                                           jaedgelen(jtemp)/12.0d0*    &
-                                           dens_h2o*gacc*cvolfacearea 
+                                           jaedgelen(jtemp)/12.0d0
               end if
-              cinfvs_loc(idvol,icell1) = cinfvs_loc(idvol,icell1)*sec_per_days
+              cinfvs_loc(idvol,icell1) = cinfvs_loc(idvol,icell1)*     &
+                                         cvolfacearea*                 &
+                                         (fracFlowCoeff(ivol)+         &
+                                          fracFlowCoeff(jvol))/2.0
 
               cinfvs_cross_loc(idvol,icell1) = vector_zero
             else

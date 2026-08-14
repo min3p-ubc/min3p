@@ -1,0 +1,650 @@
+!-------------------------
+
+'global control parameters'
+
+
+
+'Global'
+
+.true.         ;Flow
+
+.false.         ;Steady flow
+
+.false.         ;Saturated Flow
+
+.true.         ;Reactions
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'spatial discretization'
+
+1
+
+5
+
+0.0 0.25
+
+
+
+1
+
+1
+
+0.0 1.0
+
+1
+
+46
+
+0.0 2.3
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'time step control - global system'
+
+
+
+'days'         ;time unit
+
+0.0
+
+30.0
+
+0.1
+
+1e-07
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'output control'
+
+
+
+'output of spatial data'
+
+30
+
+
+
+1.0 2.0 3.0 4.0 
+
+5.0 6.0 7.0 8.0 
+
+9.0 10.0 11.0 12.0 
+
+13.0 14.0 15.0 16.0 
+
+17.0 18.0 19.0 20.0 
+
+21.0 22.0 23.0 24.0 
+
+25.0 26.0 27.0 28.0 
+
+29.0 30.0 
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'control parameters - variably saturated flow'
+
+
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'         ;type
+
+
+
+'input units for media permeability'
+
+'hydraulic conductivity'         ;type
+
+
+
+'centered weighting'
+
+
+
+
+
+'compute underrelaxation factor'
+
+10.0
+
+
+
+'newton iteration settings'
+
+1e-06
+
+100
+
+1e-06
+
+0.1
+
+
+
+'solver settings'
+
+0
+
+100
+
+1
+
+1e-07
+
+1e-07
+
+
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'physical parameters - porous medium'
+
+1
+
+'number and name of zone'
+
+1 
+
+'domain'
+
+ +3.2000d-01 
+
+
+
+'extent of zone'
+
+0.0  0.25  0.0  1.0  0.0  2.3  
+
+'end of zone'
+
+
+
+'done'
+
+!-------------------------
+
+'physical parameters - variably saturated flow'
+
+1
+
+'number and name of zone'
+
+1 
+
+'domain'
+
+'hydraulic conductivity'
+
+'hydraulic conductivity in x-direction'
+
+ +1.0000e-04
+
+'hydraulic conductivity in y-direction'
+
+ +1.0000e-04
+
+'hydraulic conductivity in z-direction'
+
+ +1.0000e-04
+
+'specific storage coefficient'
+
+ +0.0000e+00
+
+'soil hydraulic function parameters'
+
+ +3.1250e-01
+
+ +2.5000e+01
+
+ +3.0000e+00
+
+ +5.0000e-01
+
+ +0.0000e+00
+
+'extent of zone'
+
+0.0  0.25  0.0  1.0  0.0  2.3  
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'initial condition - variably saturated flow'
+
+1
+
+'number and name of zone'
+
+1 
+
+'domain'
+
+ 'initial condition'
+
+ -1.0000d+01 
+
+'extent of zone'
+
+0.0  0.25  0.0  1.0  0.0  2.3  
+
+'end of zone'
+
+
+
+'done'
+
+!-------------------------
+
+'boundary conditions - variably saturated flow'
+
+2
+
+'number and name of zone'
+
+1
+
+'bc1'
+
+'boundary type'
+
+'first' -1.0000d+01 
+
+'extent of zone'
+
+0.0 0.0 0.0  1.0  0.0 0.4109 
+
+'end of zone'
+
+
+
+'number and name of zone'
+
+2
+
+'bc2'
+
+'boundary type'
+
+'first' -1.0000d+01 
+
+'extent of zone'
+
+0.25 0.25 0.0  1.0  0.0 0.4 
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+
+
+'spatial weighting'
+
+'upstream'         ;type
+
+
+
+'activity update settings'
+
+'no update'         ;type
+
+
+
+'tortuosity correction'
+
+'millington'         ;type
+
+
+
+'degassing'
+
+0.0
+
+
+
+
+
+
+
+'user-specified underrelaxation factor'
+
+1.0
+
+
+
+'newton iteration settings'
+
+1e-06
+
+12
+
+15
+
+0.5
+
+1.0
+
+1e-06
+
+
+
+'solver settings'
+
+0
+
+100
+
+1
+
+1e-07
+
+1e-07
+
+
+
+'natural ordering'
+
+
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1e-06
+
+1e-06
+
+
+
+'output time untis'
+
+'minutes'         ;years
+
+
+
+'maximum ionic strength'
+
+2
+
+
+
+'minimum activity for h2o'
+
+0.5
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'physical parameters - reactive transport'
+
+1
+
+'diffusion coefficients'
+
+ +1.0000d-10 
+
+ +1.1000d-05 
+
+ +0.0000d+00 
+
+'number and name of zone'
+
+1 
+
+'domain'
+
+'dispersivities'
+
+'longitudinal dispersivity'
+
+ +0.0000e+00
+
+'transverse horizontal dispersivity'
+
+ +0.0000e+00
+
+'transverse vertical dispersivity'
+
+ +0.0000e+00
+
+'extent of zone'
+
+0.0  0.25  0.0  1.0  0.0  2.3  
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!-------------------------
+
+'initial condition - reactive transport'
+
+1
+
+'number and name of zone'
+
+1 
+
+'domain'
+
+ 'initial condition'
+
+'concentration input' 
+
+1d-12  'free'  ;rn(aq)
+
+1d-12  'free'  ;rn(napl)
+
+
+
+'mineral input' 
+
+0.02  .true. 'constant' ; napl(f)
+
+1d-09 0 0.0   
+
+0.1  .false. 'constant' ; rn(f)
+
+1d-09 3.65d-9 0.0   
+
+ 
+
+'extent of zone'
+
+0.0  0.25  0.0  1.0  0.0  2.3  
+
+'end of zone'
+
+
+
+'done'
+
+!-------------------------
+
+'boundary conditions - reactive transport'
+
+1
+
+'number and name of zone'
+
+1
+
+'bcc_top'
+
+'boundary type'
+
+'mixed'
+
+'concentration input' 
+
+1d-12  'free'  ;rn(aq)
+
+1d-12  'free'  ;rn(napl)
+
+ 
+
+'extent of zone'
+
+0.0 0.25 0.0  1.0  2.3 2.3 
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!-----------------------------
+
+'geochemical system'
+
+'use new database format'
+
+
+
+'database directory'
+
+'database'
+
+
+
+'components'
+
+1
+
+rn(aq)
+
+
+
+'biomass components'
+
+1
+
+rn(napl)
+
+
+
+'intra-aqueous kinetic reactions'
+
+3
+
+'rn-decay'
+
+'rn-napl-decay'
+
+'rn-napl-k'
+
+
+
+'gases'
+
+1
+
+'rn(g)'
+
+
+
+'minerals'
+
+2
+
+'napl(f)'
+
+'rn(f)'
+
+
+
+'scaling for intra-aqueous kinetic reactions'
+
+2.1e-6
+
+2.1e-6
+
+5e-05
+
+
+
+'gases decay rate constant'
+
+2.1e-6
+
+
+
+'done'
+

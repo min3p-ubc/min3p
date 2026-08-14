@@ -1,0 +1,278 @@
+DATABASE D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\redox\database\phreeqc\llnl.dat
+TITLE Temperature - gas exchange benchmarking
+
+SOLUTION_SPECIES
+ 1.0000 H2O  =  H2 +0.5000 O2   
+      log_k        -44.61  #   -46.1066
+	-delta_H	65.636  kcal/mol  #  275.588	kJ/mol	# Calculated enthalpy of reaction	H2
+#	Enthalpy of formation:	-1 kcal/mol
+#        -analytic 6.6835e+001 1.7172e-002 -1.8849e+004 -2.4092e+001 4.2501e+005
+#       -Range:  0-300
+
+#2H2O = O2 + 4H+ + 4e- 
+#        log_k           -86.08
+#        delta_h 134.79 kcal
+#2 H+ + 2 e- = H2
+#        log_k           -3.15
+#        delta_h -1.759  kcal
+
+1.0000 H2O  =  OH- +1.0000 H+
+#        -llnl_gamma           3.5    
+        log_k           -13.9980
+	-delta_H	13.3450   kcal/mol  #55.8146	kJ/mol	# Calculated enthalpy of reaction	OH-
+#	Enthalpy of formation:	-54.977 kcal/mol
+#        -analytic -6.7506e+001 -3.0619e-002 -1.9901e+003 2.8004e+001 -3.1033e+001
+#       -Range:  0-300
+      -gamma 3.5  0.0
+
+ 1.0000 H+ + 1.0000 Fe++ + 0.2500 O2  =  Fe+++ +0.5000 H2O 
+#        -llnl_gamma           9.0    
+        log_k           +8.4725
+	-delta_H	-23.4570 kcal/mol  #  -97.209	kJ/mol	# Calculated enthalpy of reaction	Fe+3
+#	Enthalpy of formation:	-11.85 kcal/mol
+#        -analytic -1.7808e+001 -1.1753e-002 4.7609e+003 5.5866e+000 7.4295e+001
+#       -Range:  0-300
+
+ 1.0000 H2O  =  H2 +0.5000 O2   
+#	-CO2_llnl_gamma
+        log_k           -46.1066
+	-delta_H	275.588	kJ/mol	# Calculated enthalpy of reaction	H2
+#	Enthalpy of formation:	-1 kcal/mol
+#        -analytic 6.6835e+001 1.7172e-002 -1.8849e+004 -2.4092e+001 4.2501e+005
+#       -Range:  0-300
+      -gamma 0.0 0.0
+1.0000 H2O + 1.0000 Fe++  =  FeOH+ +1.0000 H+
+#        -llnl_gamma           4.0    
+        log_k           -9.5
+	-delta_H	13.20	   kcal/mol   	# Not possible to calculate enthalpy of reaction	FeOH+
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 5.0 0.0
+
+2.0000 H2O + 1.0000 Fe++  =  Fe(OH)2 +2.0000 H+
+#        -llnl_gamma           3.0    
+        log_k           -20.57
+	-delta_H	28.565	  kcal/mol    	# Not possible to calculate enthalpy of reaction	Fe(OH)2
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 0.0 0.0
+
+3.0000 H2O + 1.0000 Fe++  =  Fe(OH)3- +3.0000 H+
+#        -llnl_gamma           4.0    
+        log_k           -31.0
+	-delta_H	30.30	     kcal/mol 	# Not possible to calculate enthalpy of reaction	Fe(OH)3-
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 5.0 0.0
+ 
+2.0000 H2O + 1.0000 Fe+++  =  Fe(OH)2+ +2.0000 H+
+#        -llnl_gamma           4.0    
+        log_k           -5.67
+	-delta_H	17.10	      kcal/mol	# Not possible to calculate enthalpy of reaction	Fe(OH)2+
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 5.4 0.0
+ 
+3.0000 H2O + 1.0000 Fe+++  =  Fe(OH)3 +3.0000 H+
+#        -llnl_gamma           3.0    
+        log_k           -12.56
+	-delta_H	24.800	  kcal/mol    	# Not possible to calculate enthalpy of reaction	Fe(OH)3
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 0.0  0.0
+
+4.0000 H2O + 1.0000 Fe+++  =  Fe(OH)4- +4.0000 H+
+#        -llnl_gamma           4.0    
+        log_k           -21.6
+	-delta_H	31.9000	kcal/mol      	# Not possible to calculate enthalpy of reaction	Fe(OH)4-
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 5.4 0.0
+ 
+4.0000 H2O + 1.0000 Fe++  =  Fe(OH)4-- +4.0000 H+
+#        -llnl_gamma           4.0    
+        log_k           -46
+	-delta_H	0	      	# Not possible to calculate enthalpy of reaction	Fe(OH)4-2
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 5.4 0.0
+
+1.0000 Fe++ + 1.0000 Cl-  =  FeCl+
+#        -llnl_gamma           4.0    
+        log_k       0.14    #    -0.1605
+	-delta_H	0.0   #3.02503	kJ/mol	# Calculated enthalpy of reaction	FeCl+
+#	Enthalpy of formation:	-61.26 kcal/mol
+#        -analytic 8.2435e+001 3.7755e-002 -1.4765e+003 -3.5918e+001 -2.3064e+001
+#       -Range:  0-300
+      -gamma 5.0 0.0
+
+1.0000 Fe+++ + 1.0000 Cl-  =  FeCl++
+#        -llnl_gamma           4.5    
+        log_k           1.48    #-0.8108
+	-delta_H	5.60   kcal/mol #36.6421	kJ/mol	# Calculated enthalpy of reaction	FeCl+2
+#	Enthalpy of formation:	-180.018 kJ/mol
+#        -analytic 1.6186e+002 5.9436e-002 -5.1913e+003 -6.5852e+001 -8.1053e+001
+#       -Range:  0-300
+      -gamma 5.0 0.0
+
+2.0000 Cl- + 1.0000 Fe++  =  FeCl2
+#        -llnl_gamma           3.0    
+        log_k           -2.4541
+	-delta_H	6.46846	kcal/mol	# Calculated enthalpy of reaction	FeCl2
+#	Enthalpy of formation:	-100.37 kcal/mol
+#        -analytic 1.9171e+002 7.8070e-002 -4.1048e+003 -8.2292e+001 -6.4108e+001
+#       -Range:  0-300
+      -gamma 5.0 0.0 
+
+3.0000 Cl- + 1.0000 Fe+++  =  FeCl3
+#        -llnl_gamma           3.0    
+        log_k          1.13    # -2.4541
+	-delta_H	0.0	kJ/mol	# Calculated enthalpy of reaction	FeCl2
+#	Enthalpy of formation:	-100.37 kcal/mol
+#        -analytic 1.9171e+002 7.8070e-002 -4.1048e+003 -8.2292e+001 -6.4108e+001
+#       -Range:  0-300 
+      -gamma 0.0 0.0
+
+4.0000 H2O + 3.0000 Fe+++  =  Fe3(OH)4+5 +4.0000 H+
+#        -llnl_gamma           6.0    
+        log_k           -6.3
+	-delta_H	14.3	     kcal/mol 	# Not possible to calculate enthalpy of reaction	Fe3(OH)4+5
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 0.0 0.0
+
+2.0000 H2O + 2.0000 Fe+++  =  Fe2(OH)2++++ +2.0000 H+
+#        -llnl_gamma           5.5    
+        log_k           -2.95
+	-delta_H	13.5	   kcal/mol   	# Not possible to calculate enthalpy of reaction	Fe2(OH)2+4
+#	Enthalpy of formation:	-0 kcal/mol
+      -gamma 0.0 0.0
+
+1.0000 H2O + 1.0000 Fe+++  =  FeOH++ +1.0000 H+
+#        -llnl_gamma           4.5    
+        log_k           -2.19
+	-delta_H	10.4000	 kcal/mol      	# Not possible to calculate enthalpy of reaction	FeOH+2
+#	Enthalpy of formation:	-0 kcal/mol
+
+
+PHASES
+O2(g) 
+   O2 = O2
+        log_k   -2.8980
+        delta_h  -1.844    kcal  # from MIN3P database gases.dbs
+
+SOLUTION 0
+    temp      5.0
+    pH        7.0
+    pe        4
+#    redox     O(-2)/O(0)
+    units     mol/kgw
+    density   1
+     O(0)    2.0e-6
+-water    1.0 # kg
+SAVE solution 0
+END
+
+
+SOLUTION 1
+    temp      5.0
+    pH        7.0
+#    pe        -3.3471
+#    redox     O(-2)/O(0)
+    units     mol/kgw
+    density   1
+     Fe(+2)	 1.0e-7
+     Cl	 1.0e-7	
+	 Fe(+3)  1.0e-15
+
+    -water    1.0 # kg
+
+
+#EQUILIBRIUM_PHASES 1
+#    O2(g)           -0.21
+	
+#GAS_PHASE 1  
+#     -fixed_pressure
+#     -pressure       1.001
+#     -volume         1.0
+#     -temperature    25.0
+#     CO2(g)          1.078501E-002
+#     O2(g)           7.912478E-002
+#     N2(g)           9.1009021E-01
+
+
+
+
+END
+
+
+MIX 1
+ 0 0.1
+ 1 0.9
+
+END
+
+
+
+SOLUTION 2
+    temp      25.0
+    pH        7.0
+#    pe        -3.3471
+#    redox     pe
+    units     mol/kgw
+    density   1
+#     O(0)    2.0e-6
+     Fe(+2)	 1.0e-7
+     Cl	 1.0e-7	
+     Fe(+3)  1.0e-15
+
+    -water    1.0 # kg
+#EQUILIBRIUM_PHASES 1
+#    O2(g)           -4.324138106
+END
+
+SOLUTION 0
+    temp      25.0
+    pH        7.0
+#    pe        4
+#    redox     O(-2)/O(0)
+    units     mol/kgw
+    density   1
+     O(0)    2.0e-6
+-water    1.0 # kg
+SAVE solution 0
+END
+
+
+MIX 2
+ 2 0.9
+ 0 0.1
+END
+
+SOLUTION 3
+    temp      60.0
+    pH        7.0
+#    pe        4
+#    redox     pe
+    units     mol/kgw
+    density   1
+#     O(0)    2.0e-6
+     Fe(+2)	 1.0e-7
+     Cl	 1.0e-7	
+	 Fe(+3)  1.0e-15
+
+    -water    1.0 # kg
+
+END
+
+SOLUTION 0
+    temp      60.0
+    pH        7.0
+    pe        4
+    redox     O(-2)/O(0)
+    units     mol/kgw
+    density   1
+     O(0)    2.0e-6
+-water    1.0 # kg
+SAVE solution 0
+END
+
+MIX 3
+ 3 0.9
+ 0 0.1
+END
+
+
+

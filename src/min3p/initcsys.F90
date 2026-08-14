@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initcsys.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcsys.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -341,16 +341,16 @@
       logical found_section, found_subsection, found, bflag, flag_stop
       logical found_surface_complex, found_ion_exchange, istat_bool,  &
               multisite_ion_exchange
-      character*16 :: dbs_names(13)
+      character*16 :: dbs_names(12)
       character*72 :: subsection, name, string, pair, dummy      
       character*1024 :: strbuffer      
 
-      real*8, parameter :: r1 = 1.0d0, r86400 = 86400d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r86400 = 86400d0
       
       integer :: l_string, l_string2, ic, idummy, ir, ix, ig, ierrcd,  &
                  ilinear, ianc, isb, nss_counter, jsb, itemp, isites,  &
                  im, iaq, ierr, imx, i1, nmp, im2, i, ipts, npts,      &
-                 istat, idbs, idbs_in, ntemp,                          &
+                 istat, idbs, idbs_in, ntemp, ilayer, icount, iss,     &
                  ingi, ingre, inge, ingnce, ingnpre, bitngre
       real*8 :: alpha, rhalftime, rdummy
 
@@ -466,20 +466,15 @@
               flag_stop = .false.
               if (rank == 0) then
 #ifdef INTEL
-                istat_bool = system('mkdir '//trim(dbs_dir))
-                if (.not. istat_bool) then
-                  flag_stop = .true.
-                  write(*,*) 'Error to create database folder ',trim(dbs_dir)
-                  write(ilog,*) 'Error to create database folder ',trim(dbs_dir)
-                end if
+                istat = system('mkdir '//trim(dbs_dir))
 #else
                 call system('mkdir '//trim(dbs_dir), status=istat)
+#endif
                 if (istat /= 0) then
                   flag_stop = .true.
                   write(*,*) 'Error to create database folder ',trim(dbs_dir)
                   write(ilog,*) 'Error to create database folder ',trim(dbs_dir)
                 end if
-#endif
                 
               end if
 #ifdef PETSC
@@ -503,69 +498,122 @@
               dbs_names(3) = 'gases.dbs'
               dbs_names(4) = 'sit.dbs'
               dbs_names(5) = 'mineral.dbs'
-              dbs_names(6) = 'mineral(x).dbs'
-              dbs_names(7) = 'redox.dbs'
-              dbs_names(8) = 'redoxh2.dbs'
-              dbs_names(9) = 'redoxe.dbs'
-              dbs_names(10) = 'sorption.dbs'
-              dbs_names(11) = 'aqueousphase.dat'
-              dbs_names(12) = 'pitzer.xml'
-              dbs_names(13) = 'noblegases.dbs'
+              dbs_names(6) = 'redox.dbs'
+              dbs_names(7) = 'redoxh2.dbs'
+              dbs_names(8) = 'redoxe.dbs'
+              dbs_names(9) = 'sorption.dbs'
+              dbs_names(10) = 'aqueousphase.dat'
+              dbs_names(11) = 'pitzer.xml'
+              dbs_names(12) = 'noblegases.dbs'
 
-              do i = 1, size(dbs_names)
+              do i = 1, 12
+
+                open(idbs,file=trim(dbs_dir)//'/'//trim(dbs_names(i)), &
+                     status='unknown',form='formatted')
 
                 bflag = .true.
 
                 rewind(idbs_in)
-                do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
-                         withcomment=.true.,original=.true.))
 
-                  if (index(strbuffer,trim(dbs_names(i))//': start of') > 0) then
-
-                    bflag = .false.
-
-                    if (trim(dbs_names(i)).eq.'mineral(x).dbs') then
-                      open(idbs,file=trim(dbs_dir)//'/mineral.dbs',&
-                           status='unknown',form='formatted',access='append')
-                    else
-                      open(idbs,file=trim(dbs_dir)//'/'//trim(dbs_names(i)), &
-                           status='unknown',form='formatted')
-                    end if
-                    do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
-                             withcomment=.true., original=.true.))
-                      if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
-                        !skip writing 'end' when loop over minerals since 'end' will be
-                        !added when loop over excluded minerals.
-                        if(i < 5) then
-                          write(idbs,'(a)') 'end'
-                        else if (i > 5 .and. i < 11) then
-                          write(idbs,'(a)') "'end'"
+                !c for mineral.dbs, it includes minerals and excluded minerals
+                if (i == 5) then
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of minerals') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
                         end if
-                        exit
-                      else
-                        write(idbs,'(a)') trim(strbuffer)
-                      end if
-                    end do
-                    close(idbs)
-                  end if
-                end do
+                      end do
+                      exit
+                    end if
+                  end do
+                  write(idbs,'(a)') '!'
 
-                if (bflag) then
-                  if (i == 6) then
-                    open(idbs,file=trim(dbs_dir)//'/mineral.dbs',&
-                         status='unknown',form='formatted',access='append')
-                  else
-                    open(idbs,file=trim(dbs_dir)//'/'//trim(dbs_names(i)), &
-                         status='unknown',form='formatted')
-                  end if
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of excluded minerals') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
+
+                  write(idbs,'(a)') "'end'"
+                !c for redox.dbs, it includes redox couples and intra-aqueous kinetic reactions. 
+                else if (i >= 6 .and. i <= 8) then
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of redox couples') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
+                  write(idbs,'(a)') '!'
+
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of intra-aqueous kinetic reactions') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
+
+                  write(idbs,'(a)') "'end'"
+                  
+                else
+                  do while(readnextline(idbs_in,strbuffer,lowercase=.false.,           &
+                           withcomment=.true.,original=.true.))                  
+                    if (index(strbuffer,trim(dbs_names(i))//': start of') > 0) then
+                      bflag = .false.
+                      do while(readnextline(idbs_in,strbuffer,lowercase=.false.,       &
+                               withcomment=.true., original=.true.))
+                        if (index(strbuffer,trim(dbs_names(i))//': end of') > 0) then
+                          exit
+                        else
+                          write(idbs,'(a)') trim(strbuffer)
+                        end if
+                      end do
+                      exit
+                    end if
+                  end do
                   
                   if(i < 5) then
                     write(idbs,'(a)') 'end'
-                  else if (i > 5 .and. i < 11) then
+                  else if (i >= 5 .and. i < 11) then
                     write(idbs,'(a)') "'end'"
                   end if
-                  close(idbs)
+
                 end if
+
+                close(idbs)
 
               end do
                 
@@ -582,11 +630,8 @@
           end if
         end if
 
-
-
-
 !cprovi---------------------------------------------------
-!cproci It was added by Sergio Andr�s Bea Jofr?
+!cproci It was added by Sergio Andres Bea Jofre
 !cprovi               18/01/2009 
 !cprovi---------------------------------------------------
         subsection = 'use pitzer model' 
@@ -627,13 +672,14 @@
           new_database = .false.
         end if
         
-        subsection = 'use space delimiter in database'
+!c  use space delimiter in database files as default, unless specified otherwise
+        subsection = 'disable space delimiter in database'
         call findstrg(subsection,itmp,found_subsection)
 
         if (found_subsection) then
-          space_delimiter_dbs = .true.
-        else
           space_delimiter_dbs = .false.
+        else
+          space_delimiter_dbs = .true.
         end if
 
 !cdsu  use compatible bubble gas database where temperature dependent 
@@ -820,14 +866,104 @@
 
         end if               !(subsection)
 
+!cprovi------------------------------------------------------------------
+!cprovi Check if electrostatic correction must be carried out
+!cprovi in the surface complexation model
+!cprovi Only if non-aqueous components are defined by the user
+!cprovi------------------------------------------------------------------
+        nelect = 0
+        if (nna > 0) then 
+          subsection = 'use molar fractions for surface complexes'        
+          call findstrg(subsection,itmp,found_subsection)
+          if (found_subsection) then            
+            mol_frac_ads = .true.
+          else
+            mol_frac_ads = .false.
+          end if
+
+          subsection = 'use electrostatic correction'        
+          call findstrg(subsection,itmp,found_subsection)
+          if (found_subsection) then
+            elect_correction = .true. 
+            ierrcd = 63
+            read(itmp,*,err=999,end=999) name_elect_correction 
+            call makelowercase(name_elect_correction)
+            !cprovi---------------------------------------------------------------
+            !cprovi Allocate vector to store the electrostatic potential
+            !cprovi for the surface complexation model
+            !cprovi The number of unknowns depends on the surface electrostatic
+            !cprovi model.
+            !cprovi 
+            !cprovi---------------------------------------------------------------
+            if (name_elect_correction=='triple layer model') then
+              !nelect = 3*nna
+              nelect = 3
+              nlayer = 2
+              ncap = 2
+            else if (name_elect_correction=='diffuse layer model') then
+              !nelect = nna
+              nelect = 1
+              nlayer = 1
+              ncap = 0
+            else if(name_elect_correction=='constant capacitance model') then
+              !nelect = nna
+              nelect = 1
+              nlayer = 1
+              ncap = 1                    
+            else  ! if the electrostatic model is not recognized...
+              goto 999 
+            end if 
+
+            if (b_enable_output .and. b_enable_output_gen) then
+              write(igen,'(/72a)')('-',i=1,72)
+              write(igen,'(2a)') 'electrostatic correction method: ',trim(name_elect_correction)
+            end if
+!c ----------------------------------------------------------------------
+!c Read the constant capacitances        
+!c ----------------------------------------------------------------------
+            if (name_elect_correction=='constant capacitance model'.or.&
+                name_elect_correction=='triple layer model') then 
+              allocate (cap_surf(nlayer), stat = ierr)
+              cap_surf = r1 
+              call checkerr(ierr,'cap_surf',ilog)
+
+              if (b_enable_output .and. b_enable_output_gen) then
+                write(igen,'(a)')'layer        cap_surf'
+              end if
+
+              ! Read the constant capacitance
+              do ilayer = 1, nlayer
+                ierrcd = 64
+                read(itmp,*,err=999,end=999) cap_surf(ilayer)
+                if (b_enable_output .and. b_enable_output_gen) then
+                  write(igen,'(i0,12x,1pe15.6e3)') ilayer, cap_surf(ilayer)
+                end if
+              end do
+            else
+              !c the following is just to avoid passing uninitialized array
+              allocate (cap_surf(1), stat = ierr)
+              cap_surf = r1 
+              call checkerr(ierr,'cap_surf',ilog)
+            end if
+              
+          end if
+        end if
+
+
 !c  number of components including biomass and surface compelxation sites
 
-        n = n+nbio+nna
-
+        na = n
+        n = n+nbio+nna+nelect
 
 !c  number of components including h2o
 
         nc=n+1
+
+        if (elect_correction) then
+          if (b_enable_output .and. b_enable_output_gen) then
+            write(igen,'(/72a)')('-',i=1,72)
+          end if
+        end if
  
 !c  allocate memory for one-dimensional arrays of size n and nc
 
@@ -854,8 +990,9 @@
         idummy = idummy   !avoid error messages
 
         ierrcd = 11
-        do ic=1,n-nbio-nna
+        do ic=1,n-nbio-nna-nelect
           read(itmp,*,err=999,end=999) namec(ic)
+          call makelowercase(namec(ic))
         end do
 
 !c  read biomass component names
@@ -871,8 +1008,9 @@
           idummy = idummy   !avoid error messages
 
           ierrcd = 13
-          do ic=n-nbio-nna+1,n-nna
+          do ic=n-nbio-nna-nelect+1,n-nna-nelect
             read(itmp,*,err=999,end=999) namec(ic)
+            call makelowercase(namec(ic))
             component_type(ic) = 'biomass'
           end do
           
@@ -890,10 +1028,12 @@
           ierrcd = 14
           read(itmp,*,err=999,end=999) idummy
 
-          do ic=n-nna+1,n
+          do ic=n-nna-nelect+1,n-nelect
 
             ierrcd = 15
             read(itmp,*,err=999,end=999) namec(ic), component_type(ic)
+            call makelowercase(namec(ic))
+            call makelowercase(component_type(ic))
 
             if (component_type(ic).eq.'surface') then
               nsites = nsites+1
@@ -915,10 +1055,12 @@
           ierrcd = 16
           read(itmp,*,err=999,end=999) idummy
 
-          do ic=n-nna+1,n
+          do ic=n-nna-nelect+1,n-nelect
 
             ierrcd = 17
             read(itmp,*,err=999,end=999) namec(ic), component_type(ic)
+            call makelowercase(namec(ic))
+            call makelowercase(component_type(ic))
  
             if (component_type(ic).eq.'surface') then
               nsites = nsites+1
@@ -928,6 +1070,26 @@
 
         end if
         
+!cprovi-----------------------------------------------------------------------------
+!cprovi Assign the name of the electrostatic component
+!cprovi-----------------------------------------------------------------------------
+        if (elect_correction) then
+          icount=0
+          do ic=n-nelect+1,n
+            icount=icount+1
+            if (icount==1) then
+              namec(ic) = 'exp_psi_0'
+            else if (icount==2) then
+              namec(ic) = 'exp_psi_b'
+            else
+              namec(ic) = 'exp_psi_d'
+            end if 
+            component_type(ic) = 'electro'
+          end do
+        end if
+!cprovi-----------------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------------
+!cprovi-----------------------------------------------------------------------------
 !c ----------------------------------------------------------------------
 !c  read number of redox couples
   
@@ -950,6 +1112,8 @@
           do ir=1,nr
             ierrcd = 19
             read(itmp,*,err=999,end=999) namerp(ir), namers(ir)
+            call makelowercase(namerp(ir))
+            call makelowercase(namers(ir))
           end do
 
 !c  define length of primary and secondary components of redox couples
@@ -1014,6 +1178,7 @@
           do ix=1,nx
             ierrcd = 21
             read(itmp,*,err=999,end=999) namex(ix)
+            call makelowercase(namex(ix))
           end do
 
 !c  define length of names of secondary aqueous species
@@ -1026,7 +1191,7 @@
           end do
 
         end if                         !(found_subsection)
-        
+
 !c_bubbles Determine if bubble formation is required
 
         subsection = 'bubble formation'
@@ -1126,7 +1291,9 @@
             do ig=1,ng
 !c_bubbles read gas names and gas pair
               ierrcd = 25
-              read(itmp,*,err=999,end=999) nameg(ig), pair
+              read(itmp,*,err=999,end=999) nameg(ig), pair              
+              call makelowercase(nameg(ig))
+              call makelowercase(pair)
 
 !c_bubbles Look for 'pair' in components then species
               call assnpair(pair, ig)            
@@ -1136,6 +1303,7 @@
             do ig=1,ng
               ierrcd = 26
               read(itmp,*,err=999,end=999) nameg(ig)
+              call makelowercase(nameg(ig))
             end do
           end if
 
@@ -1214,10 +1382,6 @@
           noncompetitive_sorption = .true.
           linear_sorption = .true.
 
-!c  allocate memory for non-competitive sorption reactions
-
-          call mem_nsb
-
 !c  number of components undergoing linear sorption
           ierrcd = 29
           read(itmp,*,err=999,end=999) nlinear
@@ -1234,7 +1398,7 @@
             found = .false.
             ierrcd = 30
             read(itmp,*,err=999,end=999) name
-                      
+            call makelowercase(name)
             do ic = 1,nc
               if (name.eq.namec(ic)) then
                 isotherm_type(ic) = 'linear'
@@ -1347,6 +1511,7 @@
           do isb=1,nsb_ion
             ierrcd = 34
             read(itmp,*,err=999,end=999) namesb_ion(isb)
+            call makelowercase(namesb_ion(isb))
           end do
           namesb_surf(1:nsb_surf) = namesb_ion(1:nsb_ion)
 
@@ -1406,9 +1571,13 @@
         found_ion_exchange = .false.
         multisite_ion_exchange = .false.
 
-        subsection = 'sorbed species of surface-complex'
-        
+        subsection = 'adsorption - surface complexation'
         call findstrg(subsection,itmp,found_subsection)
+        
+        if (.not.found_subsection) then
+          subsection = 'sorbed species of surface-complex'        
+          call findstrg(subsection,itmp,found_subsection)
+        end if
 
         if (found_subsection) then
             
@@ -1418,9 +1587,13 @@
           
         end if
         
-        subsection = 'sorbed species of ion-exchange'
-        
+        subsection = 'adsorption - ion exchange'
         call findstrg(subsection,itmp,found_subsection)
+        
+        if (.not.found_subsection) then
+          subsection = 'sorbed species of ion-exchange'
+          call findstrg(subsection,itmp,found_subsection)
+        end if
 
         if (found_subsection) then
             
@@ -1474,10 +1647,13 @@
           call mem_nsb
 
 !c  read names of sorbed species of surface-complex
-
-          subsection = 'sorbed species of surface-complex'
-          
+          subsection = 'adsorption - surface complexation'
           call findstrg(subsection,itmp,found_subsection)
+        
+          if (.not.found_subsection) then
+            subsection = 'sorbed species of surface-complex'        
+            call findstrg(subsection,itmp,found_subsection)
+          end if
           
           if (found_subsection) then
             ierrcd = 39
@@ -1486,6 +1662,7 @@
             do isb=1,nsb_surf
               ierrcd = 40
               read(itmp,*,err=999,end=999) namesb_surf(isb)
+              call makelowercase(namesb_surf(isb))
             end do
 
 !c  define length of names of sorbed species of surface-complex
@@ -1500,10 +1677,13 @@
           end if
 
 !c  read names of sorbed species of ion-exchange
-
-        subsection = 'sorbed species of ion-exchange'
-        
+        subsection = 'adsorption - ion exchange'
         call findstrg(subsection,itmp,found_subsection)
+        
+        if (.not.found_subsection) then
+          subsection = 'sorbed species of ion-exchange'
+          call findstrg(subsection,itmp,found_subsection)
+        end if
 
         if (found_subsection) then            
           ierrcd = 41
@@ -1514,6 +1694,7 @@
           do isb=1,nsb_ion
             ierrcd = 42
             read(itmp,*,err=999,end=999) namesb_ion(isb)
+            call makelowercase(namesb_ion(isb))
           end do
 
 !c  define length of names of sorbed species of ion-exchange
@@ -1545,7 +1726,7 @@
             do isb=1,nsites_ion
               ierrcd = 44
               read(itmp,*,err=999,end=999) namesb_sites_ion(isb)
-              !!! if (TRIM(namesb_sites_ion(isb))='-PS')
+              call makelowercase(namesb_sites_ion(isb))
               l_string = index(namesb_sites_ion(isb),' ')-1
               if (l_string.eq.-1.or.l_string.gt.72) then
               l_string=72
@@ -1706,6 +1887,8 @@
          
         if (sorption_type_surf .eq. 'surface-complex') then
           subsection = 'specify output unit for SCM sorbed species concentration'
+          call makelowercase(subsection)
+          
           call findstrg(subsection,itmp,found_subsection)
 
           if (found_subsection) then
@@ -1713,15 +1896,15 @@
             ierrcd = 47
             read(itmp,*,err=999,end=999) output_unit_sb_surf
                                   
-            if ((trim(output_unit_sb_surf) .ne. 'mol/L H2O') .and.&
-                (trim(output_unit_sb_surf) .ne. 'mol/L bulk')) then
+            if ((trim(output_unit_sb_surf) .ne. 'mol/l h2o') .and.     &
+                (trim(output_unit_sb_surf) .ne. 'mol/l bulk')) then
                 l_string = index(subsection,' ')-1
               if (rank == 0) then  
                 write(ilog,*) 'SIMULATION TERMINATED'
                 write(ilog,*) 'error reading input file'
                 write(ilog,*) 'subsection "',trim(subsection), '"'
-                write(ilog,*) 'The specified SCM sepcies unit: ''', &
-                              trim(output_unit_sb_surf),            &
+                write(ilog,*) 'The specified SCM sepcies unit: ''',    &
+                              trim(output_unit_sb_surf),               &
                               '''is not valid.'
                 write(ilog,*) 'This should be ''mol/L H2O'' or ''mol/L bulk''.'
               end if
@@ -1731,7 +1914,7 @@
                  
           else
 
-            output_unit_sb_surf = 'mol/L H2O'
+            output_unit_sb_surf = 'mol/l h2o'
 
           end if             !(found_subsection)
 
@@ -1817,10 +2000,9 @@
         if (sorption_group.eq.'ion-exchange') then
           output_unit_sb_ion = 'meq/100g'
         !elseif (sorption_group.eq.'surface-complexation') then       !removed as user defined
-        !  output_unit_sb_surf = 'mol/L h2o'
+        !  output_unit_sb_surf = 'mol/l h2o'
         elseif (sorption_group.eq.'surface-complex and ion-exchange') then
           output_unit_sb_ion = 'meq/100g'
- !MX      output_unit_sb_surf = 'mol/L h2o'
         end if
 
 !c  define compressed data structure for surface sites
@@ -1903,6 +2085,7 @@
           do im = 1,nm
             ierrcd = 51
             read(itmp,*,err=999,end=999) namem(im)
+            call makelowercase(namem(im))
           end do
 
 !c  define length of mineral names
@@ -1915,7 +2098,112 @@
           end do
  
         end if              !(found_subsection)
-        
+       
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c read the number of solid solutions, and the solid solution 
+!c information 
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+        if (nm > 0) then    
+          subsection = 'solid solutions'
+
+          call findstrg(subsection,itmp,found_subsection)
+          solid_solutions=.false. 
+          if (found_subsection) then
+            solid_solutions = .true. 
+            ierrcd = 65
+            read(itmp,*,err=999,end=999) nss
+ 
+!c  allocate memory for one-dimensional arrays of size nm and
+            allocate (nmin_ss(nss), stat = ierr)
+            nmin_ss=0 
+            call checkerr(ierr,'nmin_ss',ilog)
+
+            allocate (non_ideal_solid_solution(nss), stat = ierr)
+            non_ideal_solid_solution=.false. 
+            call checkerr(ierr,'non_ideal_solid_solution',ilog)
+
+            allocate (idmin_ss(nss,nm), stat = ierr)
+            idmin_ss=0 
+            call checkerr(ierr,'idmin_ss',ilog)
+
+            allocate (xss(nss,nm,nthreads), stat = ierr)
+            xss=r0 
+            call checkerr(ierr,'xss',ilog)
+
+            allocate (satm_ss(nss,nthreads), stat = ierr)
+            satm_ss=r0 
+            call checkerr(ierr,'satm_ss',ilog)
+
+            allocate (gugg0_ss(nss), stat = ierr)
+            gugg0_ss=r0  
+            call checkerr(ierr,'gugg0_ss',ilog)
+
+            allocate (gugg1_ss(nss), stat = ierr)            
+            gugg1_ss=r0 
+            call checkerr(ierr,'gugg1_ss',ilog)
+
+            allocate (lambda_ss(nss,nm,nthreads), stat = ierr)
+            lambda_ss=r1 
+            call checkerr(ierr,'lambda_ss',ilog)
+
+            allocate (chemical_zoning_ss(nss), stat = ierr)
+            chemical_zoning_ss=.false.  
+            call checkerr(ierr,'chemical_zoning_ss',ilog)
+ 
+            do iss = 1,nss
+              ierrcd = 66
+              read(itmp,*,err=999,end=999) nmin_ss(iss), dummy,        &
+                   chemical_zoning_ss(iss), gugg0_ss(iss), gugg1_ss(iss) 
+              if (dummy == 'ideal') then
+                non_ideal_solid_solution(iss) = .false.   
+              else
+                non_ideal_solid_solution(iss) = .true.
+                if (nmin_ss(iss) /= 2) then
+                  if (rank == 0) then
+                    write(ilog,*) 'SIMULATION TERMINATED'
+                    write(ilog,*) 'error reading input file'
+                    write(ilog,*) 'subsection "',subsection(:l_string)
+                    write(ilog,*) 'Two end-member must be defined for non-ideal solid solutions'
+                    write(ilog,*) 'Guggenheim series expansion'
+                    close(ilog)
+                  end if
+                  stop 
+                end if 
+              end if
+              do im2 = 1,nmin_ss(iss)
+                ierrcd = 67
+                read(itmp,*,err=999,end=999) name
+                call makelowercase(name)
+                found=.false. 
+                do im = 1,nm
+                  if (name == namem(im)) then
+                    found=.true.   
+                    idmin_ss(iss,im2)=im 
+                    exit 
+                  end if
+                end do
+                if (.not.found) then
+                  if (rank == 0) then
+                    write(ilog,*) 'SIMULATION TERMINATED'
+                    write(ilog,*) 'error reading input file'
+                    write(ilog,*) 'subsection "',subsection(:l_string), '" missing'
+                    write(ilog,*) 'end-member not found in the mineral list'
+                    close(ilog)
+                  end if
+                  stop 
+                end if
+              end do 
+            end do
+                
+          end if              !(found_subsection)
+        end if                  !solid solutions  
+!c ----------------------------------------------------------------------        
+!c ----------------------------------------------------------------------        
+!c ----------------------------------------------------------------------
         if (nm > 0) then
           subsection = 'mineral water removal coefficient'
           call findstrg(subsection,itmp,found_subsection)
@@ -1968,6 +2256,7 @@
           do iaq=1,naq
             ierrcd = 55
             read(itmp,*,err=999,end=999) nameaq(iaq)
+            call makelowercase(nameaq(iaq))
           end do
 
 !c  define length of names of intra-aqueous kinetic reactions
@@ -2097,6 +2386,7 @@
           do imx = 1,nmx
             ierrcd = 58
             read(itmp,*,err=999,end=999) namemx(imx)
+            call makelowercase(namemx(imx))
           end do
 
 !c  define length of names of excluded minerals
@@ -2152,6 +2442,7 @@
           do im = 1,nm
             ierrcd = 59
             read(itmp,*,err=999,end=999) namet(im)
+            call makelowercase(namet(im))
           end do
      
 !c  define pointer arrays
@@ -2197,6 +2488,7 @@
           do ipts = 1,npts
             ierrcd = 61
             read(itmp,*,err=999,end=999) dummy, alpha
+            call makelowercase(dummy)
             do im=1,nm
                 if(namem(im).eq.dummy) then
                     sur_prec(im)=.true.
@@ -2234,6 +2526,7 @@
             read(itmp,*,err=999,end=999) rdummy
             do ingi = 1, ngi
               read(itmp,*,err=999,end=999) name_ngi(ingi)
+              call makelowercase(name_ngi(ingi))
             end do
           end if
 
@@ -2251,6 +2544,7 @@
             bitngre = 0
             do i = 1, ngre_i
               read(itmp,*,err=999,end=999) name
+              call makelowercase(name)
               if (trim(name).eq.'235u') then
                 bitngre = ibset(bitngre,0)
                 index_uiso(1) = i
@@ -2293,11 +2587,13 @@
             if (b_combine_238u_235u) then
               do i = 1, ngre_i-1
                 read(itmp,*,err=999,end=999) name_ngre_i(i)
+                call makelowercase(name_ngre_i(i))
               end do
               name_ngre_i(ngre_i) = '238u+235u'
             else
               do i = 1, ngre_i
                 read(itmp,*,err=999,end=999) name_ngre_i(i)
+                call makelowercase(name_ngre_i(i))
                 if (trim(name_ngre_i(i)).eq.'235u+238u') then
                   name_ngre_i(i) = '238u+235u'
                 end if
@@ -2327,6 +2623,7 @@
             read(itmp,*,err=999,end=999) rdummy
             do i = 1, nge_i
               read(itmp,*,err=999,end=999) name_nge_i(i)
+              call makelowercase(name_nge_i(i))
               do inge = 1, nge
                 if (trim(name_nge_i(i)) .eq. trim(name_nge(inge))) then
                   idx_nge_i2d(i) = inge
@@ -2342,6 +2639,7 @@
             read(itmp,*,err=999,end=999) rdummy
             do i = 1, ngnce_i
               read(itmp,*,err=999,end=999) name_ngnce_i(i)
+              call makelowercase(name_ngnce_i(i))
               do ingnce = 1, ngnce
                 if (trim(name_ngnce_i(i)) .eq. trim(name_ngnce(ingnce))) then
                   idx_ngnce_i2d(i) = ingnce
@@ -2370,7 +2668,7 @@
         write(igen,'(/72a)')('-',i=1,72)
         write(igen,'(a)') section_header(:l_string)
         write(igen,'(72a/)')('-',i=1,72)
- 
+
 !c  output database to generic output file
 
         write(igen,'(2a)') 'database: ',dbs_dir

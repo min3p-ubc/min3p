@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/usg_ice_sheet.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/usg_ice_sheet.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -476,7 +476,7 @@ module usg_ice_sheet
   !>
   subroutine usg_ice_cal_thickness_phw2ice(i_sn)
 
-    use gen, only : btypevs, ivol2bvs, gacc, bcondvs0, time_io
+    use gen, only : btypevs, ivol2bvs, gacc, bcondvs0, bcondvs_on, time_io
 
     implicit none
 
@@ -499,7 +499,7 @@ module usg_ice_sheet
     if (ice_thickness_new(i_sn) >= ice_thickness_old(i_sn) .and.     &
         ice_thickness_new(i_sn) >= rsmall) then
       ibvs = ivol2bvs(ivol)
-      if (ibvs > 0) then
+      if (ibvs > 0  .and. bcondvs_on(ibvs)) then
         if (btypevs(ibvs)=='first') then
           phw2ice_thickness = bcondvs0(ibvs)/gacc/ice_density
           ice_thickness_phw2ice_new(i_sn) = max(r0,phw2ice_thickness)

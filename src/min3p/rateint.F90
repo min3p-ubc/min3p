@@ -4,7 +4,7 @@
 !> $Revision: 726 $
 !> $Author: dsu $
 !> $Date: 2019-08-07 11:30:33 -0700 (Wed, 07 Aug 2019) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/rateint.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/rateint.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -109,11 +109,10 @@
 
       implicit none
       
-      real*8 :: rate, totc, c, gammac, phim,scalfacaq
+      real*8 :: rate, scalfacaq
+      real*8 :: totc(*),c(*),gammac(*),phim(*)
       
       integer :: iaq, tid
-
-      dimension totc(*),c(*),gammac(*),phim(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       

@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readredx_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readredx_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -112,7 +112,7 @@
       use chem
       use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif 
@@ -165,6 +165,7 @@
 !c  read name of secondary component of redox couple 
  
           read(irdbs,*,err=997,end = 999) name_rs
+          call makelowercase(name_rs)
 
 !c  look for match, as long end of file is not reached or 
 !c  match is found
@@ -209,6 +210,9 @@
 !c  stoichiometry
 
             read(irdbs,*,err=997) nv,(namet(iv),xnut(iv),iv=1,nv)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
 
 !c  pointer array to row in stoichiometric reaction matrix for 
 !c  next redox couple
@@ -360,13 +364,13 @@
         if (.not.use_dbs_bk) then
           if (redox_master.eq.'o2(aq)') then
             write(*,'(1x,a)') 'start of database backup: redox.dbs'
-            write(idbs_bk, '(a)') '<------ redox.dbs: start of intra-aqueous kinetic reactions ------>'
+            write(idbs_bk, '(a)') '<------ redox.dbs: start of redox couples ------>'
           elseif (redox_master.eq.'h2(aq)') then
             write(*,'(1x,a)') 'start of database backup: redoxh2.dbs'
-            write(idbs_bk, '(a)') '<------ redoxh2.dbs: start of intra-aqueous kinetic reactions ------>'
+            write(idbs_bk, '(a)') '<------ redoxh2.dbs: start of redox couples ------>'
           elseif (redox_master.eq.'e-1') then
             write(*,'(1x,a)') 'start of database backup: redoxe.dbs'
-            write(idbs_bk, '(a)') '<------ redoxe.dbs: start of intra-aqueous kinetic reactions ------>'
+            write(idbs_bk, '(a)') '<------ redoxe.dbs: start of redox couples ------>'
           end if
            
           do ir = 1,nr
@@ -374,7 +378,7 @@
             do while(.true.)
               if (readnextline(irdbs, strbuffer, lowercase=.false.,        &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namers(ir))) == 2) then            !note, mineral name has quotes
+                if (startWithEntireName(strbuffer,namers(ir),flagQuote=.true.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   do while(readnextline(irdbs,strbuffer,lowercase=.false., &
                            withcomment=.true.,original=.true.))
@@ -395,13 +399,13 @@
           !write(idbs_bk, '(a)') "'end'"
           if (redox_master.eq.'o2(aq)') then
             write(*,'(1x,a)') 'end of database backup: redox.dbs'
-            write(idbs_bk, '(a/)') '<------ redox.dbs: end of intra-aqueous kinetic reactions ------>'
+            write(idbs_bk, '(a/)') '<------ redox.dbs: end of redox couples ------>'
           elseif (redox_master.eq.'h2(aq)') then
             write(*,'(1x,a)') 'end of database backup: redoxh2.dbs'
-            write(idbs_bk, '(a/)') '<------ redoxh2.dbs: end of intra-aqueous kinetic reactions  ------>'
+            write(idbs_bk, '(a/)') '<------ redoxh2.dbs: end of redox couples ------>'
           elseif (redox_master.eq.'e-1') then
             write(*,'(1x,a)') 'end of database backup: redoxe.dbs'
-            write(idbs_bk, '(a/)') '<------ redoxe.dbs: end of intra-aqueous kinetic reactions  ------>'
+            write(idbs_bk, '(a/)') '<------ redoxe.dbs: end of redox couples ------>'
           end if
         end if
       end if

@@ -1,0 +1,80 @@
+TITLE  1D ion exchange
+
+SOLUTION 0  CaCl2
+
+        units   mol/l
+
+        pH      7.0     charge
+
+        pe      12.5   O2(g)  -0.68
+
+        temp    25.0
+
+        Ca      0.0006
+
+        Cl      0.0012
+
+        Na      1e-9
+
+        K       1e-9
+
+        N(+5)   1e-9
+
+SOLUTION 1  Initial solution for column
+
+        units   mol/l
+
+        pH      7.0     charge
+
+        pe      12.5   O2(g)  -0.68
+
+        temp    25.0
+
+        Na      0.001
+
+        K       0.0002
+
+        N(+5)   0.0012
+
+        Ca      1e-9
+
+        Cl      1e-9
+
+
+
+EXCHANGE 1
+
+        equilibrate 1
+
+        X       1.09375
+
+
+
+END
+
+
+
+SELECTED_OUTPUT
+
+    -file  ionx.out
+
+    -reset      true
+
+USER_PUNCH
+
+-headings Ca Cl Na K CaX2 NaX KX  
+
+10 PUNCH TOT("Ca"), TOT("Cl"), TOT("Na"), TOT("K")
+
+20 ca_x2 = MOL("CaX2")*100/1.875*0.3*2
+
+30 na_x = MOL("NaX")*100/1.875*0.3
+
+40 k_x = MOL("KX")*100/1.875*0.3
+
+50 PUNCH ca_x2 na_x k_x
+
+
+
+END
+

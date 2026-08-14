@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/tprfdd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tprfdd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -81,7 +81,7 @@
 !c
 !c local:    real*8:
 !c           ------- 
-!c           fhead              = freshwater head 
+!c           fhead              = equivalent freshwater head 
 !c           ioutdebug          = output toggle
 !c           phead              = pressure head
 !c           qroot              = root water uptake for current
@@ -133,7 +133,7 @@
 
       real*8, external :: rootwat, evapo, pressure_melt_k
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rverysmall = 1.0d-30
       
       integer :: nvarsigbp
 #ifdef PETSC
@@ -161,7 +161,10 @@
 
 !c  calculate pressure and freshwater heads
       phead = uvsnew(ivol)/(density(ivol) * gacc)
-      fhead = phead * density(ivol)/ref_dens + zg(ivol)
+
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+      fhead = zg(ivol) + phead*(density(ivol)/ref_dens)
 
 !c  calculate ice and water saturation when freezing/thawing are considered
       if ((heat_transport .or. temp_field) .and. b_water_freezing) then
@@ -226,7 +229,11 @@
 
 !FG june 2021 - calculate water uptake (rootwat) and evaporation (evapo), in m3/days
           if (root_uptake) then
-            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            if (rld(ivol) > rverysmall) then
+              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            else
+              transp = r0
+            end if
           else ! to allow for phys. evaporation only
             transp = r0
           end if
@@ -334,7 +341,11 @@
 
 !FG june 2021 - calculate water uptake (rootwat) and evaporation (evapo), in m3/days
           if (root_uptake) then
-            transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            if (rld(ivol) > rverysmall) then
+              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+            else
+              transp = r0
+            end if
           else ! to allow for phys. evaporation only
             transp = r0
           end if

@@ -1,0 +1,82 @@
+DATABASE C:\Program Files (x86)\USGS\Phreeqc Interactive 2.17.4799\database\llnl.dat
+TITLE Example Ionx -- Transport with ion exchange 
+
+SOLUTION 1-100
+    temp      25
+    pH        7
+    pe        4
+    redox     pe
+    units     mol/l
+    density   1
+    S(6)      1e-005
+    Zn        1e-007
+    Fe(2)     1e-005
+    Cu(2)     1e-007
+    Ca        1e-010
+    Mg        1e-005
+    K         1e-005
+    Na        0.001
+    -water    1 # kg
+
+EXCHANGE 1-100
+        equilibrate 1
+        X                0.055
+END
+SOLUTION 0 #boundary
+    temp      25
+    pH        7
+    units     mol/l
+    S(6)      0.0025
+    Zn        0.001
+    Fe(2)     1e-005
+    Cu(2)     0.001
+    Ca        1e-03
+    Mg        1e-10
+    K         1e-10
+    Na        1e-10
+end
+
+EXCHANGE 1-100
+        equilibrate 1
+        X                0.055
+
+TRANSPORT
+    -cells                 100
+    -shifts                1600
+    -time_step             457.14 # seconds
+    -flow_direction        forward
+    -boundary_conditions   flux flux
+    -lengths               100*0.16
+    -dispersivities        100*0.01
+    -diffusion_coefficient 1e-009
+    -print_cells           100
+    -print_frequency       100
+    -punch_cells           100
+    -punch_frequency       3
+    -warnings              true
+PRINT
+    -echo_input            false
+    -eh                    false
+    -equilibrium_phases    false
+    -exchange              false
+    -gas_phase             false
+    -headings              false
+    -inverse               false
+    -kinetics              false
+    -other                 false
+    -saturation_indices    false
+    -solid_solutions       false
+    -species               false
+    -surface               false
+    -totals                false
+    -user_print            false
+    -warnings              0
+SELECTED_OUTPUT
+        -file   ionx-test.sel
+        -reset  false 
+#       -time       true
+#	  -ph
+USER_PUNCH
+        -head time(h) SO4_mol Cu_mol Zn_mol Ca_mol Mg_mol K_mol Na_mol pH
+10 PUNCH TOTAL_TIME/3600, TOT("S"), TOT("Cu"), TOT("Zn"), TOT("Ca"), TOT("Mg"), TOT("K"), TOT("Na"), -LA("H+")
+END

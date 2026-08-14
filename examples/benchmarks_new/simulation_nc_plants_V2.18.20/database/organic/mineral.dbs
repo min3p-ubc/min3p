@@ -1,0 +1,7451 @@
+! ********************************************************************** 
+! MINERAL.DBS
+! ********************************************************************** 
+! database file for MIN3P for kinetically controlled
+! dissolution-precipitation reactions
+!
+!
+! alunite: transition state theory
+!          rate from Lichtner (1997)
+!
+'alunite'
+'surface'  'reversible'
+414.2141  1.4108
+1
+0.348  5  'k+1' 1.000 'al+3' 3.000  'so4-2' 2.000  'h2o' 6.000  'h+1' -6.000
+0  0  0  -0.063  1.000  1.000
+!
+! pce dissolution form free phase product
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'pce(f)'
+'surface' 'reversible'
+165.843  1.6000
+1
+3.0440  1  'pce' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! mtbe dissolution form free phase product
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'mtbe(f)'
+'surface' 'reversible'
+88.1504  0.7400
+1
+0.2632  1  'mtbe' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! pentan dissolution form free phase product
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'pentan(f)'
+'surface' 'reversible'
+72.1510  0.626
+1
+3.2494  1  'pentan' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! iso-oktan dissolution form free phase product
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'iso-oktan(f)'
+'surface' 'reversible'
+114.2320  0.69
+1
+5.2374  1  'iso-oktan' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! toluol dissolution form free phase product
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'toluol(f)'
+'surface' 'reversible'
+92.1410  0.867 
+1
+2.2478  1  'toluol' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! 1,3,5-tmb dissolution form free phase product
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'1,3,5-tmb(f)'
+'surface' 'reversible'
+120.1950  0.8600
+1
+3.3010  1  '1,3,5-tmb' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! benzene dissolution form free phase product
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! solubility limit from Schwarzenbach et al., 1993,
+! Environmental Organic Geochemistry
+!
+'c6h6(f)'
+'surface' 'reversible'
+78.1136  0.8786
+1
+1.6383  1  'c6h6' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! pce dissolution form free phase product
+! reversible reaction
+! dissolution form organic mixture based on Raoult's law
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'pce(r)'
+'surface' 'raoult'
+165.843  1.6000
+1
+3.0440  1  'pce' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! mtbe dissolution form free phase product
+! reversible reaction
+! dissolution form organic mixture based on Raoult's law
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'mtbe(r)'
+'surface' 'raoult'
+88.1504  0.7400  0.000 0.000
+1
+0.2632  1  'mtbe' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! pentan dissolution form free phase product
+! reversible reaction
+! dissolution form organic mixture based on Raoult's law
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'pentan(r)'
+'surface' 'raoult'
+72.1510  0.626
+1
+3.2494  1  'pentan' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! iso-oktan dissolution form free phase product
+! reversible reaction
+! dissolution form organic mixture based on Raoult's law
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'iso-oktan(r)'
+'surface' 'raoult'
+114.2320  0.69
+1
+5.2374  1  'iso-oktan' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! toluol dissolution form free phase product
+! reversible reaction
+! dissolution form organic mixture based on Raoult's law
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'toluol(r)'
+'surface' 'raoult'
+92.1410  0.867 0.000  0.000
+1
+2.2478  1  'toluol' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! 1,3,5-tmb dissolution form free phase product
+! reversible reaction
+! dissolution form organic mixture based on Raoult's law
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! GFW, density and solubility from Ingo Klenk 
+! (University of Tuebingen)
+!
+'1,3,5-tmb(r)'
+'surface' 'raoult'
+120.1950  0.8600
+1
+3.3010  1  '1,3,5-tmb' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! benzene dissolution form free phase product
+! dissolution form organic mixture based on Raoult's law
+! reversible reaction
+! rate constant set to unity
+! free phase forms, if solubiliy is exceeded
+! free phase dissolves, if aqueous concentrations below
+! solubility limit
+! solubility limit from Schwarzenbach et al., 1993,
+! Environmental Organic Geochemistry
+!
+'c6h6(r)'
+'surface' 'raoult'
+78.1136  0.8786
+1
+1.6383  1  'c6h6' 1.000
+0  0  0   0.0000  1.000  1.000
+!
+! calcite: transistion state theory rate law
+!
+'calcite'
+'surface'  'reversible'  
+100.0894  2.710
+1
+8.4750  2  'ca+2' 1.000  'co3-2' 1.000   
+0  0  0   0.0000  1.000  1.000
+!  
+! dolomite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density from Manual of Mineralogy
+! rate constant undefined  
+!  
+'dolomite' 
+'surface' 'reversible' 
+184.4108  2.850  
+1  
+17.0900  3  'ca+2' 1.000  'mg+2' 1.000  'co3-2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!
+! jurbanite: transition state theory
+!            rate from Lichtner (1997)
+!
+'jurbanite'
+'surface'  'reversible'
+230.1288  1.8264
+1
+3.805  4  'al+3' 1.000  'h2o' 6.000  'h+1' -1.000  'so4-2' 1.000
+0  0  0  -0.063  1.000  1.000
+!
+! k-jarosite: transition state theory rate law
+!
+'k-jarosite'
+'surface'  'reversible'
+494.8100  3.1950
+1
+9.210  5  'k+1' 1.000  'fe+3' 3.000  'so4-2' 2.000  'h+1' -6.000  'h2o' 6.000
+0  0  0   0.9365  1.000  1.000
+!
+! ferrihydrite: transition state theory rate law
+!
+'ferrihydrite'
+'surface'  'reversible'
+106.8690  4.450
+1
+-4.891  3  'fe+3' 1.000  'h+1' -3.000  'h2o' 3.000
+0  0  0   0.9365  1.000  1.000
+!
+! gibbsite: transition state theory rate law
+!
+'gibbsite'
+'surface'  'reversible'
+78.0036  2.350
+1
+-8.110  3  'al+3' 1.000  'h+1' -3.000  'h2o' 3.000
+0  0  0  -0.0635  1.000  1.000
+!
+! goethite-p
+! - reductive dissolution of goethite by phenol
+! - equilibrium constant and gram formula weight from MINTEQA2
+! - density from Manual of Mineralogy (1993)
+! - rate constant estimated
+!
+'goethite-p'
+'surface' 'monod'
+86.8536  4.370
+1
+5  'c6h6o' -0.0357  'h+1' -1.5714  'co3-2' 0.2143  'fe+2' 1.000  'h2o' 1.3929
+0  0  0  0.000  1.000  1.000
+2                   !number of monod terms
+'c6h6o'  1.d-3   1.000
+'c6h6o'  1.d-10  2.000
+2                   !number of inhibition terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+!
+! goethite-c
+! - reductive dissolution of goethite by cresol
+! - inhibited in the presence of oxygen and nitrate
+! - equilibrium constant and gram formula weight from MINTEQA2
+! - density from Manual of Mineralogy (1993)
+! - rate constant estimated
+!
+'goethite-c'
+'surface' 'monod'
+86.8536  4.370
+1
+5  'c7h8o' -0.0294  'h+1' -1.5882  'co3-2' 0.2059  'fe+2' 1.000  'h2o' 1.4118
+0  0  0  0.000  1.000  1.000
+2                   !number of monod terms
+'c7h8o'  1.d-3   1.000
+'c7h8o'  1.d-10  2.000
+2                   !number of inhibition terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+!
+! goethite-x
+! - reductive dissolution of goethite by xylenol
+! - inhibited in the presence of oxygen and nitrate
+! - equilibrium constant and gram formula weight from MINTEQA2
+! - density from Manual of Mineralogy (1993)
+! - rate constant estimated
+!
+'goethite-x'
+'surface' 'monod'
+86.8536  4.370
+1
+5  'c8h10o' -0.0250  'h+1' -1.6000  'co3-2' 0.2000  'fe+2' 1.000  'h2o' 1.4250
+0  0  0  0.000  1.000  1.000
+2                   !number of monod terms
+'c8h10o'  1.d-3   1.000
+'c8h10o'  1.d-10  2.000
+2                   !number of inhibition terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+!
+! gypsum: transition state theory rate law
+!
+'gypsum'
+'surface'  'reversible'
+172.1722  2.320  -4.580
+1
+4.580  3  'ca+2' 1.000  'so4-2' 1.000  'h2o' 2.000
+0  0  0   0.9365  1.000  1.000
+!
+! kaolinite: transition state theory
+!            rate from Lichtner (1997)
+!
+'kaolinite'
+'surface'  'reversible'
+258.1620  2.600
+1
+-6.810  4  'al+3' 2.000  'h4sio4' 2.000  'h2o' 1.000  'h+1' -6.000  ;5.1007 (modified K)
+0  0  0  -2.563  1.000  1.000
+!
+! k-feldspar: transition state theory rate law
+!
+'k-feldspar'
+'surface'  'dissolution_to_equilibrium'
+278.3315  2.570
+1
+-0.080  5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+0  0  0  -2.3645  1.000  1.000
+!
+! k-feldspar2: Reviews in Mineralogy, Vol. 31, Chapter 7, p. 301
+!              pH dependent rate law for acidic and basic pH ranges
+!
+'k-feldspar2'
+'surface'  'dissolution_to_equilibrium'
+278.3315  2.570
+2
+-0.080  5  'k+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+0  1  0  -4.560  1.000  1.000
+'h+1' 0.500
+0  1  0  -13.200  1.000  1.000
+'h+1'  -0.580
+!
+! mackinawite
+! transition state theory rate law
+! equilibrium constant and gram fromula weight from MINTEQA2
+! density backcalculated form EQ3/EQ6 database (pyrrhotite)
+! rate constant estimated
+!
+'mackinawite'
+'surface' 'reversible'
+87.9110  4.830
+1
+4.6480  3  'h+1' -1.000  'fe+2' 1.000  'hs-1' 1.000
+0  0  0   0.000  1.000  1.000
+!
+! muscovite: transition state theory rate law
+!
+'muscovite'
+'surface'  'dissolution_to_equilibrium' 
+398.3110  2.820
+1
+-12.990  4  'k+1' 1.000  'al+3' 3.000  'h4sio4' 3.000  'h+1' -10.000
+0  0  0  -3.0635  1.000  1.000
+!
+! pyrolusite-p
+! - reductive dissolution combined with phenol-oxidation
+! - inhibited in the presence of oxygen and nitrate
+! - GFW calculated
+! - density from Manual of Mineralogy (1993)
+! - rate constant estimated
+!
+'pyrolusite-p'
+'surface' 'monod'
+86.9297  4.750
+1
+5  'mn+2' 1.000  'h2o' 0.7857  'co3-2' 0.4286  'h+1' -1.1429  'c6h6o' -0.0714
+0  0  0  0.000  1.000  1.000
+2                   !number of monod terms
+'c6h6o'  1.d-3   1.000
+'c6h6o'  1.d-10  2.000
+2                   !number of inhibition terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+!
+! pyrolusite-c
+! - reductive dissolution combined with cresol-oxidation
+! - inhibited in the presence of oxygen and nitrate
+! - GFW calculated
+! - density from Manual of Mineralogy (1993)
+! - rate constant estimated
+!
+'pyrolusite-c'
+'surface' 'monod'
+86.9297  4.750
+1
+5  'mn+2' 1.000  'h2o' 0.8235  'co3-2' 0.4118  'h+1' -1.1765  'c7h8o' -0.0588
+0  0  0  0.000  1.000  1.000
+2                   !number of monod terms
+'c7h8o'  1.d-3   1.000
+'c7h8o'  1.d-10  2.000
+2                   !number of inhibition terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+!
+! pyrolusite-x
+! - reductive dissolution combined with xylenol-oxidation
+! - inhibited in the presence of oxygen and nitrate
+! - GFW calculated
+! - density from Manual of Mineralogy (1993)
+! - rate constant estimated
+!
+'pyrolusite-x'
+'surface' 'monod'
+86.9297  4.750
+1
+5  'mn+2' 1.000  'h2o' 0.8500  'co3-2' 0.4000  'h+1' -1.2000  'c8h10o' -0.0500
+0  0  0  0.000  1.000  1.000
+2                   !number of monod terms
+'c8h10o'  1.d-3   1.000
+'c8h10o'  1.d-10  2.000
+2                   !number of inhibition terms
+'o2(aq)' 1.d-5
+'no3-1'  1.d-5
+!
+! quartz: transition state theory rate law
+!
+'quartz'
+'surface'  'reversible'
+60.0848  2.650
+1
+3.9800  2  'h4sio4' 1.000  'h2o' -2.000
+0  0  0  -4.0635  1.000  1.000
+!
+! rhodochrosit
+! transition state theory rate law
+! equilibrium constant and gram fromula weight from MINTEQA2
+!
+'rhodochrosit'
+'surface' 'reversible'
+114.9474  3.699
+1
+10.4100  2  'mn+2' 1.000  'co3-2' 1.000
+0  0  0  0.000  1.000  1.000
+!
+! siderite: transition state theory rate law
+! transition state theory rate law
+! equilibrium constant and gram fromula weight from MINTEQA2
+!
+'siderite'
+'surface'  'reversible'
+115.8562  3.960
+1
+10.450  2  'fe+2' 1.000  'co3-2'  1.000   
+0  0  0  0.000  1.000  1.000
+!
+! silica(a,pt): transition state theory rate law
+!
+'silica(a,pt)'
+'surface'  'reversible'
+60.0848  2.650
+1
+2.7100  2  'h4sio4' 1.000  'h2o' -2.000
+0  0  0  -0.0635  1.000  1.000
+!
+! witherite: Chou et al., Chemical Geology (Vol.78,431)
+!
+'witherite'
+'surface'  'reversible'
+197.3494  4.310
+3
+8.4600  2 'ba+2' 1.000  'co3-2' 1.000    
+0  1  0  4.820  1.000  1.000
+'h+1' 1.000
+0  1  0  -1.210  1.000  1.000
+'h2o' 1.000
+0  0  1  1.420  1.000  1.000
+'h2co3aq' 1.000
+!  
+! ************************************************************************
+! from here on MINTEQA2 database entries
+! use for excluded minerals or to implement new rate data
+! ************************************************************************
+!  
+! uraninite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uraninite' 
+'surface' 'reversible' 
+270.0278  0.000  
+1  
+4.7000  3  'h+1' -4.000  'u+4' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uo2(am)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uo2(am)' 
+'surface' 'reversible' 
+270.0278  0.000  
+1  
+-.9340  3  'h+1' -4.000  'u+4' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! u4o9(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'u4o9(c)' 
+'surface' 'reversible' 
+1096.1106  0.000  
+1  
+3.3840  4  'h+1' -18.000  'e-1' -2.000  'u+4' 4.000  'h2o' 9.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! u3o8(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'u3o8(c)' 
+'surface' 'reversible' 
+842.0822  0.000  
+1  
+-21.1070  4  'h+1' -16.000  'e-1' -4.000  'u+4' 3.000  'h2o' 8.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! usio4(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'usio4(c)' 
+'surface' 'reversible' 
+330.1121  0.000  
+1  
+7.6400  3  'h+1' -4.000  'u+4' 1.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uf4(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uf4(c)' 
+'surface' 'reversible' 
+314.0226  0.000  
+1  
+18.6060  2  'u+4' 1.000  'f-1' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uf4.2.5h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uf4.2.5h2o' 
+'surface' 'reversible' 
+359.0606  0.000  
+1  
+27.5700  3  'u+4' 1.000  'f-1' 4.000  'h2o' 2.500  
+0  0  0  0.000  1.000  1.000  
+!  
+! uhpo4)2,4h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uhpo4)2,4h2o' 
+'surface' 'reversible' 
+502.0486  0.000  
+1  
+53.3000  4  'u+4' 1.000  'po4-3' 2.000  'h+1' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ningyoite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ningyoite' 
+'surface' 'reversible' 
+504.0822  0.000  
+1  
+53.9060  4  'u+4' 1.000  'ca+2' 1.000  'po4-3' 2.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uo3(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uo3(c)' 
+'surface' 'reversible' 
+286.0272  0.000  
+1  
+-7.7190  3  'h+1' -2.000  'uo2+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! gummite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'gummite' 
+'surface' 'reversible' 
+286.0272  0.000  
+1  
+-10.4030  3  'h+1' -2.000  'uo2+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! b-uo2(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'b-uo2(oh)2' 
+'surface' 'reversible' 
+304.0424  0.000  
+1  
+-5.5440  3  'h+1' -2.000  'uo2+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! schoepite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'schoepite' 
+'surface' 'reversible' 
+322.0576  0.000  
+1  
+-5.4040  3  'h+1' -2.000  'uo2+2' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! rutherfordin  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'rutherfordin' 
+'surface' 'reversible' 
+330.0370  0.000  
+1  
+14.4390  2  'uo2+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! (uo2)3(po4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'(uo2)3(po4)2' 
+'surface' 'reversible' 
+1000.0262  0.000  
+1  
+49.0370  2  'uo2+2' 3.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! h-autunite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'h-autunite' 
+'surface' 'reversible' 
+732.0144  0.000  
+1  
+47.9310  3  'h+1' 2.000  'uo2+2' 2.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na-autunite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na-autunite' 
+'surface' 'reversible' 
+775.9780  0.000  
+1  
+47.4090  3  'na+1' 2.000  'uo2+2' 2.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k-autunite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k-autunite' 
+'surface' 'reversible' 
+808.2024  0.000  
+1  
+48.2440  3  'k+1' 2.000  'uo2+2' 2.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uramphite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uramphite' 
+'surface' 'reversible' 
+766.0756  0.000  
+1  
+51.7490  3  'uo2+2' 2.000  'nh4+1' 2.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! saleeite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'saleeite' 
+'surface' 'reversible' 
+754.3104  0.000  
+1  
+43.6460  3  'uo2+2' 2.000  'mg+2' 1.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! autunite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'autunite' 
+'surface' 'reversible' 
+770.0784  0.000  
+1  
+43.9270  3  'uo2+2' 2.000  'ca+2' 1.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sr-autunite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sr-autunite' 
+'surface' 'reversible' 
+817.6184  0.000  
+1  
+44.4570  3  'uo2+2' 2.000  'sr+2' 1.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uranocircite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uranocircite' 
+'surface' 'reversible' 
+867.3384  0.000  
+1  
+44.6310  3  'uo2+2' 2.000  'ba+2' 1.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! bassetite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'bassetite' 
+'surface' 'reversible' 
+785.8454  0.000  
+1  
+44.4850  3  'uo2+2' 2.000  'fe+2' 1.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! torbernite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'torbernite' 
+'surface' 'reversible' 
+793.5444  0.000  
+1  
+45.2790  3  'uo2+2' 2.000  'cu+2' 1.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! przhevalskit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'przhevalskit' 
+'surface' 'reversible' 
+937.1883  0.000  
+1  
+44.3650  3  'uo2+2' 2.000  'pb+2' 1.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uranophane  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uranophane' 
+'surface' 'reversible' 
+766.5176  0.000  
+1  
+-17.4900  4  'h+1' -6.000  'uo2+2' 2.000  'ca+2' 1.000  'h4sio4' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uo2no3)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uo2no3)2' 
+'surface' 'reversible' 
+394.0380  0.000  
+1  
+-12.3690  2  'uo2+2' 1.000  'no3-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uo2no3.2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uo2no3.2h2o' 
+'surface' 'reversible' 
+430.0690  0.000  
+1  
+-4.8510  3  'uo2+2' 1.000  'no3-1' 2.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uo2no3.3h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uo2no3.3h2o' 
+'surface' 'reversible' 
+448.0840  0.000  
+1  
+-3.6420  3  'uo2+2' 1.000  'no3-1' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! uo2no3.6h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'uo2no3.6h2o' 
+'surface' 'reversible' 
+502.1300  0.000  
+1  
+-2.3000  3  'uo2+2' 1.000  'no3-1' 2.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! aloh3(a)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'aloh3(a)' 
+'surface' 'reversible' 
+78.0073  0.000  
+1  
+-10.8000  3  'al+3' 1.000  'h2o' 3.000  'h+1' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! alohso4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'alohso4' 
+'surface' 'reversible' 
+140.0505  0.000  
+1  
+3.2300  4  'h+1' -1.000  'al+3' 1.000  'so4-2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! al4(oh)10so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'al4(oh)10so4' 
+'surface' 'reversible' 
+374.0616  0.000  
+1  
+-22.7000  4  'h+1' -10.000  'al+3' 4.000  'so4-2' 1.000  'h2o' 10.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! alumk  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'alumk' 
+'surface' 'reversible' 
+438.3597  0.000  
+1  
+5.1700  4  'k+1' 1.000  'al+3' 1.000  'so4-2' 2.000  'h2o' 12.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! alunite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'alunite' 
+'surface' 'reversible' 
+414.2141  0.000  
+1  
+1.3460  5  'k+1' 1.000  'al+3' 3.000  'so4-2' 2.000  'h2o' 6.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! anhydrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'anhydrite' 
+'surface' 'reversible' 
+136.1416  0.000  
+1  
+4.3600  2  'ca+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! aragonite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'aragonite' 
+'surface' 'reversible' 
+100.0894  0.000  
+1  
+8.3600  2  'ca+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! artinite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'artinite' 
+'surface' 'reversible' 
+196.6941  0.000  
+1  
+-9.6000  4  'h+1' -2.000  'mg+2' 2.000  'co3-2' 1.000  'h2o' 5.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! baf2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'baf2' 
+'surface' 'reversible' 
+175.3368  0.000  
+1  
+5.7600  2  'ba+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! barite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'barite' 
+'surface' 'reversible' 
+233.4016  0.000  
+1  
+9.9760  2  'ba+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! boehmite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'boehmite' 
+'surface' 'reversible' 
+59.9884  0.000  
+1  
+-8.5780  3  'h+1' -3.000  'al+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! brucite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'brucite' 
+'surface' 'reversible' 
+58.3268  0.000  
+1  
+-16.8400  3  'mg+2' 1.000  'h2o' 2.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! calcite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'calcite' 
+'surface' 'reversible' 
+100.0894  0.000  
+1  
+8.4750  2  'ca+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! celestite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'celestite' 
+'surface' 'reversible' 
+183.6816  0.000  
+1  
+6.6300  2  'sr+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! chalcedony  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'chalcedony' 
+'surface' 'reversible' 
+60.0848  0.000  
+1  
+3.5230  2  'h2o' -2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! chrysotile  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'chrysotile' 
+'surface' 'reversible' 
+277.1349  0.000  
+1  
+-32.1880  4  'h+1' -6.000  'mg+2' 3.000  'h4sio4' 2.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! clinoenstite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'clinoenstite' 
+'surface' 'reversible' 
+100.3964  0.000  
+1  
+-11.3380  4  'h2o' -1.000  'mg+2' 1.000  'h4sio4' 1.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cristobalite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cristobalite' 
+'surface' 'reversible' 
+60.0848  0.000  
+1  
+3.5870  2  'h2o' -2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! diaspore  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'diaspore' 
+'surface' 'reversible' 
+59.9884  0.000  
+1  
+-6.8730  3  'h+1' -3.000  'al+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! diopside  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'diopside' 
+'surface' 'reversible' 
+216.5608  0.000  
+1  
+-19.8860  5  'h2o' -2.000  'ca+2' 1.000  'mg+2' 1.000  'h4sio4' 2.000  'h+1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! dolomite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'dolomite' 
+'surface' 'reversible' 
+184.4108  0.000  
+1  
+17.0900  3  'ca+2' 1.000  'mg+2' 1.000  'co3-2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! epsomite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'epsomite' 
+'surface' 'reversible' 
+246.4807  0.000  
+1  
+2.1400  3  'mg+2' 1.000  'so4-2' 1.000  'h2o' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sepiolite(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sepiolite(c)' 
+'surface' 'reversible' 
+323.9313  0.000  
+1  
+-15.9130  4  'h2o' -.500  'mg+2' 2.000  'h4sio4' 3.000  'h+1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ferrihydrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ferrihydrite' 
+'surface' 'reversible' 
+104.8692  0.000  
+1  
+-4.8910  3  'h+1' -3.000  'fe+3' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! fe3(oh)8  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fe3(oh)8' 
+'surface' 'reversible' 
+297.6002  0.000  
+1  
+-20.2220  4  'h+1' -8.000  'fe+3' 2.000  'fe+2' 1.000  'h2o' 8.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! feoh)2.7cl.3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'feoh)2.7cl.3' 
+'surface' 'reversible' 
+110.4029  0.000  
+1  
+3.0400  4  'h+1' -2.700  'fe+3' 1.000  'h2o' 2.700  'cl-1' .300  
+0  0  0  0.000  1.000  1.000  
+!  
+! fesppt  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fesppt' 
+'surface' 'reversible' 
+85.9110  0.000  
+1  
+3.9150  3  'h+1' -1.000  'fe+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! fe2(so4)3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fe2(so4)3' 
+'surface' 'reversible' 
+395.8788  0.000  
+1  
+-3.5800  2  'fe+3' 2.000  'so4-2' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hydrapatite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hydrapatite' 
+'surface' 'reversible' 
+502.3200  0.000  
+1  
+44.1990  4  'ca+2' 5.000  'po4-3' 3.000  'h2o' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! fco3apatite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fco3apatite' 
+'surface' 'reversible' 
+967.3670  0.000  
+1  
+114.4000  6  'ca+2' 9.496  'na+1' .360  'mg+2' .144  'po4-3' 4.800  'co3-2' 1.200  'f-1' 2.480  
+0  0  0  0.000  1.000  1.000  
+!  
+! fluorite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fluorite' 
+'surface' 'reversible' 
+78.0768  0.000  
+1  
+10.9600  2  'ca+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! forsterite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'forsterite' 
+'surface' 'reversible' 
+236.8234  0.000  
+1  
+-28.2980  3  'h+1' -4.000  'mg+2' 2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! gibbsite(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'gibbsite(c)' 
+'surface' 'reversible' 
+78.0037  0.000  
+1  
+-8.1100  3  'h+1' -3.000  'al+3' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! al2o3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'al2o3' 
+'surface' 'reversible' 
+101.9504  0.000  
+1  
+-22.9800  3  'al+3' 2.000  'h2o' 3.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! goethite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'goethite' 
+'surface' 'reversible' 
+86.8536  0.000  
+1  
+1.0000  3  'h+1' -3.000  'fe+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! greenalite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'greenalite' 
+'surface' 'reversible' 
+365.7393  0.000  
+1  
+-20.8100  4  'h+1' -6.000  'fe+2' 3.000  'h4sio4' 2.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! greigite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'greigite' 
+'surface' 'reversible' 
+289.7970  0.000  
+1  
+45.0350  4  'h+1' -4.000  'fe+3' 2.000  'fe+2' 1.000  'hs-1' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! gypsum  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'gypsum' 
+'surface' 'reversible' 
+172.1722  0.000  
+1  
+4.5800  3  'ca+2' 1.000  'so4-2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! halite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'halite' 
+'surface' 'reversible' 
+58.4428  0.000  
+1  
+-1.5820  2  'na+1' 1.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hematite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hematite' 
+'surface' 'reversible' 
+155.6919  0.000  
+1  
+4.0080  3  'h+1' -6.000  'fe+3' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! huntite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'huntite' 
+'surface' 'reversible' 
+353.0536  0.000  
+1  
+29.9680  3  'mg+2' 3.000  'ca+2' 1.000  'co3-2' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hydrmagnesit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hydrmagnesit' 
+'surface' 'reversible' 
+467.6736  0.000  
+1  
+8.7660  4  'mg+2' 5.000  'co3-2' 4.000  'h+1' -2.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! jarositena  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'jarositena' 
+'surface' 'reversible' 
+478.6978  0.000  
+1  
+5.2800  5  'h+1' -6.000  'na+1' 1.000  'fe+3' 3.000  'so4-2' 2.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! jarositek  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'jarositek' 
+'surface' 'reversible' 
+494.8100  0.000  
+1  
+9.2100  5  'h+1' -6.000  'k+1' 1.000  'fe+3' 3.000  'so4-2' 2.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! jarositeh  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'jarositeh' 
+'surface' 'reversible' 
+480.7320  0.000  
+1  
+5.3900  4  'h+1' -5.000  'fe+3' 3.000  'so4-2' 2.000  'h2o' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! kidd-jaros  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'kidd-jaros' 
+'surface' 'reversible' 
+483.6300  0.000  
+1  
+10.5000  5  'h+1' -5.760  'na+1' .760  'fe+3' 3.000  'so4-2' 2.000  'h2o' 6.240  
+0  0  0  0.000  1.000  1.000  
+!  
+! mackinawite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mackinawite' 
+'surface' 'reversible' 
+87.9110  0.000  
+1  
+4.6480  3  'h+1' -1.000  'fe+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! magadiite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'magadiite' 
+'surface' 'reversible' 
+532.6521  0.000  
+1  
+14.3000  4  'h+1' -1.000  'h2o' -9.000  'na+1' 1.000  'h4sio4' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! maghemite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'maghemite' 
+'surface' 'reversible' 
+159.6922  0.000  
+1  
+-6.3860  3  'h+1' -6.000  'fe+3' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! magnesite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'magnesite' 
+'surface' 'reversible' 
+84.3214  0.000  
+1  
+8.0290  2  'mg+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! magnetite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'magnetite' 
+'surface' 'reversible' 
+231.5386  0.000  
+1  
+-3.7370  4  'h+1' -8.000  'fe+3' 2.000  'fe+2' 1.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! melanterite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'melanterite' 
+'surface' 'reversible' 
+278.0157  0.000  
+1  
+2.2090  3  'fe+2' 1.000  'so4-2' 1.000  'h2o' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mirabilite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mirabilite' 
+'surface' 'reversible' 
+322.1942  0.000  
+1  
+1.1140  3  'na+1' 2.000  'so4-2' 1.000  'h2o' 10.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! natron  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'natron' 
+'surface' 'reversible' 
+286.1420  0.000  
+1  
+1.3110  3  'na+1' 2.000  'co3-2' 1.000  'h2o' 10.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nesquehonite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nesquehonite' 
+'surface' 'reversible' 
+138.3673  0.000  
+1  
+5.6210  3  'mg+2' 1.000  'co3-2' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! phlogopite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'phlogopite' 
+'surface' 'reversible' 
+417.2863  0.000  
+1  
+-43.3000  5  'h+1' -10.000  'k+1' 1.000  'mg+2' 3.000  'al+3' 1.000  'h4sio4' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pyrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pyrite' 
+'surface' 'reversible' 
+119.9750  0.000  
+1  
+18.4790  4  'h+1' -2.000  'e-1' -2.000  'fe+2' 1.000  'hs-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! quartz  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'quartz' 
+'surface' 'reversible' 
+60.0848  0.000  
+1  
+3.9800  2  'h2o' -2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sepiolite(a)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sepiolite(a)' 
+'surface' 'reversible' 
+323.9308  0.000  
+1  
+-18.7800  4  'h2o' -.500  'mg+2' 2.000  'h4sio4' 3.000  'h+1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! siderite(d)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'siderite(d)' 
+'surface' 'reversible' 
+115.8564  0.000  
+1  
+10.4500  2  'fe+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! siderite(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'siderite(c)' 
+'surface' 'reversible' 
+115.8564  0.000  
+1  
+10.8900  2  'fe+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sio2(a,gl)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sio2(a,gl)' 
+'surface' 'reversible' 
+60.0848  0.000  
+1  
+3.0180  2  'h2o' -2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sio2(a,pt)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sio2(a,pt)' 
+'surface' 'reversible' 
+60.0848  0.000  
+1  
+2.7100  2  'h2o' -2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! srf2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'srf2' 
+'surface' 'reversible' 
+125.6168  0.000  
+1  
+8.5400  2  'sr+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! strengite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'strengite' 
+'surface' 'reversible' 
+186.8490  0.000  
+1  
+26.4000  3  'fe+3' 1.000  'po4-3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! strontianite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'strontianite' 
+'surface' 'reversible' 
+147.6294  0.000  
+1  
+9.2500  2  'sr+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! talc  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'talc' 
+'surface' 'reversible' 
+379.2888  0.000  
+1  
+-21.3390  4  'h2o' -4.000  'mg+2' 3.000  'h4sio4' 4.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! thenardite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'thenardite' 
+'surface' 'reversible' 
+142.0412  0.000  
+1  
+.1790  2  'na+1' 2.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! thermonatr  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'thermonatr' 
+'surface' 'reversible' 
+124.0043  0.000  
+1  
+-.1250  3  'na+1' 2.000  'co3-2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tremolite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tremolite' 
+'surface' 'reversible' 
+812.4096  0.000  
+1  
+-56.5460  5  'h2o' -8.000  'ca+2' 2.000  'mg+2' 5.000  'h4sio4' 8.000  'h+1' -14.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vivianite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vivianite' 
+'surface' 'reversible' 
+501.6062  0.000  
+1  
+36.0000  3  'fe+2' 3.000  'po4-3' 2.000  'h2o' 8.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! witherite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'witherite' 
+'surface' 'reversible' 
+197.3494  0.000  
+1  
+8.5850  2  'ba+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pyrolusite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pyrolusite' 
+'surface' 'reversible' 
+86.9368  0.000  
+1  
+-15.8610  4  'h+1' -4.000  'e-1' -1.000  'mn+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! birnessite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'birnessite' 
+'surface' 'reversible' 
+86.9368  0.000  
+1  
+-18.0910  4  'h+1' -4.000  'e-1' -1.000  'mn+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nsutite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nsutite' 
+'surface' 'reversible' 
+86.9368  0.000  
+1  
+-17.5040  4  'h+1' -4.000  'e-1' -1.000  'mn+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! bixbyite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'bixbyite' 
+'surface' 'reversible' 
+157.8742  0.000  
+1  
+.6110  3  'h+1' -6.000  'mn+3' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hausmannite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hausmannite' 
+'surface' 'reversible' 
+228.8116  0.000  
+1  
+-61.0300  4  'h+1' -8.000  'e-1' -2.000  'mn+2' 3.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pyrocroite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pyrocroite' 
+'surface' 'reversible' 
+88.9528  0.000  
+1  
+-15.0880  3  'h+1' -2.000  'mn+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! manganite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'manganite' 
+'surface' 'reversible' 
+87.9448  0.000  
+1  
+.2380  3  'h+1' -3.000  'mn+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! rhodochrosit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'rhodochrosit' 
+'surface' 'reversible' 
+114.9474  0.000  
+1  
+10.4100  2  'mn+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mncl2,4h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mncl2,4h2o' 
+'surface' 'reversible' 
+197.9052  0.000  
+1  
+-2.7100  3  'mn+2' 1.000  'cl-1' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mnsgreen  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mnsgreen' 
+'surface' 'reversible' 
+87.0020  0.000  
+1  
+-3.8000  3  'h+1' -1.000  'mn+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mnso4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mnso4' 
+'surface' 'reversible' 
+150.9996  0.000  
+1  
+-2.6690  2  'mn+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mn2(so4)3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mn2(so4)3' 
+'surface' 'reversible' 
+398.0608  0.000  
+1  
+5.7110  2  'mn+3' 2.000  'so4-2' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mn3(po4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mn3(po4)2' 
+'surface' 'reversible' 
+354.7568  0.000  
+1  
+23.8270  2  'mn+2' 3.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! a-cryptomeln  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'a-cryptomeln' 
+'surface' 'reversible' 
+775.7382  0.000  
+1  
+.0000  5  'h+1' -34.000  'mn+3' 16.000  'k+1' .800  'h2o' 17.000  'mn+2' -7.400  
+0  0  0  0.000  1.000  1.000  
+!  
+! hollandite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hollandite' 
+'surface' 'reversible' 
+817.4214  0.000  
+1  
+.0000  6  'h+1' -32.000  'mn+3' 14.000  'ba+2' .820  'fe+2' .570  'h2o' 16.000  'mn+2' -6.410  
+0  0  0  0.000  1.000  1.000  
+!  
+! todorokite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'todorokite' 
+'surface' 'reversible' 
+592.4641  0.000  
+1  
+.0000  6  'h+1' -24.000  'ca+2' .393  'mg+2' .473  'mn+3' 10.000  'h2o' 14.000  'mn+2' -3.866  
+0  0  0  0.000  1.000  1.000  
+!  
+! lithiophorit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'lithiophorit' 
+'surface' 'reversible' 
+1953.3934  0.000  
+1  
+.0000  6  'h+1' -70.000  'li+1' 2.000  'al+3' 8.000  'mn+3' 20.000  'h2o' 49.000  'mn+2' -8.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! rancieite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'rancieite' 
+'surface' 'reversible' 
+466.1930  0.000  
+1  
+.0000  5  'h+1' -18.000  'ca+2' .440  'mn+3' 8.000  'h2o' 12.000  'mn+2' -3.440  
+0  0  0  0.000  1.000  1.000  
+!  
+! cumetali  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cumetali' 
+'surface' 'reversible' 
+63.5460  0.000  
+1  
+8.7600  2  'cu+1' 1.000  'e-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nantokite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nantokite' 
+'surface' 'reversible' 
+98.9990  0.000  
+1  
+6.7600  2  'cu+1' 1.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuf  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuf' 
+'surface' 'reversible' 
+82.5444  0.000  
+1  
+-7.0800  2  'cu+1' 1.000  'f-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuprite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuprite' 
+'surface' 'reversible' 
+143.0914  0.000  
+1  
+1.5500  3  'h+1' -2.000  'cu+1' 2.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! chalcocite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'chalcocite' 
+'surface' 'reversible' 
+159.1560  0.000  
+1  
+34.6190  3  'h+1' -1.000  'cu+1' 2.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! djurleite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'djurleite' 
+'surface' 'reversible' 
+154.9620  0.000  
+1  
+33.9200  4  'h+1' -1.000  'cu+2' .066  'cu+1' 1.868  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! anilite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'anilite' 
+'surface' 'reversible' 
+143.2695  0.000  
+1  
+31.8780  4  'h+1' -1.000  'cu+2' .250  'cu+1' 1.500  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! blaubleiii  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'blaubleiii' 
+'surface' 'reversible' 
+121.0284  0.000  
+1  
+27.2790  4  'h+1' -1.000  'cu+2' .600  'cu+1' .800  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! blaubleii  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'blaubleii' 
+'surface' 'reversible' 
+101.9646  0.000  
+1  
+24.1620  4  'h+1' -1.000  'cu+2' .900  'cu+1' .200  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! covellite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'covellite' 
+'surface' 'reversible' 
+95.6100  0.000  
+1  
+22.2700  3  'h+1' -1.000  'cu+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu2so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu2so4' 
+'surface' 'reversible' 
+223.1536  0.000  
+1  
+1.9500  2  'cu+1' 2.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuprousferit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuprousferit' 
+'surface' 'reversible' 
+151.3918  0.000  
+1  
+8.9200  4  'h+1' -4.000  'cu+1' 1.000  'fe+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! melanothalli  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'melanothalli' 
+'surface' 'reversible' 
+134.4520  0.000  
+1  
+-3.7300  2  'cu+2' 1.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuco3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuco3' 
+'surface' 'reversible' 
+123.5552  0.000  
+1  
+9.6300  2  'cu+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuf2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuf2' 
+'surface' 'reversible' 
+101.5428  0.000  
+1  
+.6200  2  'cu+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuf2,2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuf2,2h2o' 
+'surface' 'reversible' 
+137.5732  0.000  
+1  
+4.5500  3  'cu+2' 1.000  'f-1' 2.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu(oh)2' 
+'surface' 'reversible' 
+97.5606  0.000  
+1  
+-8.6400  3  'h+1' -2.000  'cu+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! atacamite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'atacamite' 
+'surface' 'reversible' 
+213.5669  0.000  
+1  
+-7.3400  4  'h+1' -3.000  'cu+2' 2.000  'h2o' 3.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu2(oh)3no3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu2(oh)3no3' 
+'surface' 'reversible' 
+240.1188  0.000  
+1  
+-9.2400  4  'h+1' -3.000  'cu+2' 2.000  'h2o' 3.000  'no3-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! antlerite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'antlerite' 
+'surface' 'reversible' 
+354.7248  0.000  
+1  
+-8.2900  4  'h+1' -4.000  'cu+2' 3.000  'h2o' 4.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! brochantite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'brochantite' 
+'surface' 'reversible' 
+452.2854  0.000  
+1  
+-15.3400  4  'h+1' -6.000  'cu+2' 4.000  'h2o' 6.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! langite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'langite' 
+'surface' 'reversible' 
+470.3006  0.000  
+1  
+-16.7900  4  'h+1' -6.000  'cu+2' 4.000  'h2o' 7.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tenorite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tenorite' 
+'surface' 'reversible' 
+79.5454  0.000  
+1  
+-7.6200  3  'h+1' -2.000  'cu+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuocuso4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuocuso4' 
+'surface' 'reversible' 
+239.1490  0.000  
+1  
+-11.5300  4  'h+1' -2.000  'cu+2' 2.000  'h2o' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu3(po4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu3(po4)2' 
+'surface' 'reversible' 
+380.5808  0.000  
+1  
+36.8500  2  'cu+2' 3.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu3(po4)2,3w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu3(po4)2,3w' 
+'surface' 'reversible' 
+434.6264  0.000  
+1  
+35.1200  3  'cu+2' 3.000  'po4-3' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuso4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuso4' 
+'surface' 'reversible' 
+159.6036  0.000  
+1  
+-3.0100  2  'cu+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! chalcanthite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'chalcanthite' 
+'surface' 'reversible' 
+249.6796  0.000  
+1  
+2.6400  3  'cu+2' 1.000  'so4-2' 1.000  'h2o' 5.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! dioptase  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'dioptase' 
+'surface' 'reversible' 
+157.6449  0.000  
+1  
+-6.5000  3  'h+1' -2.000  'cu+2' 1.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cupricferit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cupricferit' 
+'surface' 'reversible' 
+239.2376  0.000  
+1  
+-5.8800  4  'h+1' -8.000  'cu+2' 1.000  'fe+3' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! chalcopyrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'chalcopyrite' 
+'surface' 'reversible' 
+183.5130  0.000  
+1  
+35.2700  4  'h+1' -2.000  'cu+2' 1.000  'fe+2' 1.000  'hs-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cubr  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cubr' 
+'surface' 'reversible' 
+143.4500  0.000  
+1  
+8.2100  2  'cu+1' 1.000  'br-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cui  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cui' 
+'surface' 'reversible' 
+190.4505  0.000  
+1  
+11.8900  2  'cu+1' 1.000  'i-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znmetal  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znmetal' 
+'surface' 'reversible' 
+65.3800  0.000  
+1  
+-25.7570  2  'zn+2' 1.000  'e-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zncl2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zncl2' 
+'surface' 'reversible' 
+136.2860  0.000  
+1  
+-7.0300  2  'zn+2' 1.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! smithsonite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'smithsonite' 
+'surface' 'reversible' 
+125.3892  0.000  
+1  
+10.0000  2  'zn+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znco3,1h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znco3,1h2o' 
+'surface' 'reversible' 
+143.4044  0.000  
+1  
+10.2600  3  'zn+2' 1.000  'co3-2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znf2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znf2' 
+'surface' 'reversible' 
+103.3768  0.000  
+1  
+1.5200  2  'zn+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn(oh)2(a)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn(oh)2(a)' 
+'surface' 'reversible' 
+99.3946  0.000  
+1  
+-12.4500  3  'h+1' -2.000  'zn+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn(oh)2(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn(oh)2(c)' 
+'surface' 'reversible' 
+99.3946  0.000  
+1  
+-12.2000  3  'h+1' -2.000  'zn+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn(oh)2(b)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn(oh)2(b)' 
+'surface' 'reversible' 
+99.3946  0.000  
+1  
+-11.7500  3  'h+1' -2.000  'zn+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn(oh)2(g)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn(oh)2(g)' 
+'surface' 'reversible' 
+99.3946  0.000  
+1  
+-11.7100  3  'h+1' -2.000  'zn+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn(oh)2(e)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn(oh)2(e)' 
+'surface' 'reversible' 
+99.3946  0.000  
+1  
+-11.5000  3  'h+1' -2.000  'zn+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn2(oh)3cl  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn2(oh)3cl' 
+'surface' 'reversible' 
+217.2349  0.000  
+1  
+-15.2000  4  'h+1' -3.000  'zn+2' 2.000  'h2o' 3.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn5(oh)8cl2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn5(oh)8cl2' 
+'surface' 'reversible' 
+533.8644  0.000  
+1  
+-38.5000  4  'h+1' -8.000  'zn+2' 5.000  'h2o' 8.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn2(oh)2so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn2(oh)2so4' 
+'surface' 'reversible' 
+260.8322  0.000  
+1  
+-7.5000  4  'h+1' -2.000  'zn+2' 2.000  'h2o' 2.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn4(oh)6so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn4(oh)6so4' 
+'surface' 'reversible' 
+459.6214  0.000  
+1  
+-28.4000  4  'h+1' -6.000  'zn+2' 4.000  'h2o' 6.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znno3)2,6h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znno3)2,6h2o' 
+'surface' 'reversible' 
+297.4810  0.000  
+1  
+-3.4400  3  'zn+2' 1.000  'no3-1' 2.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zno(active)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zno(active)' 
+'surface' 'reversible' 
+81.3794  0.000  
+1  
+-11.3100  3  'h+1' -2.000  'zn+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zincite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zincite' 
+'surface' 'reversible' 
+81.3794  0.000  
+1  
+-11.1400  3  'h+1' -2.000  'zn+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn3o(so4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn3o(so4)2' 
+'surface' 'reversible' 
+404.2546  0.000  
+1  
+-19.0200  4  'h+1' -2.000  'zn+2' 3.000  'so4-2' 2.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn3(po4),4w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn3(po4),4w' 
+'surface' 'reversible' 
+458.1436  0.000  
+1  
+32.0400  3  'zn+2' 3.000  'po4-3' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zns(a)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zns(a)' 
+'surface' 'reversible' 
+97.4400  0.000  
+1  
+9.0520  3  'h+1' -1.000  'zn+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sphalerite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sphalerite' 
+'surface' 'reversible' 
+97.4400  0.000  
+1  
+11.6180  3  'h+1' -1.000  'zn+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! wurtzite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'wurtzite' 
+'surface' 'reversible' 
+97.4400  0.000  
+1  
+9.6820  3  'h+1' -1.000  'zn+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znsio3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znsio3' 
+'surface' 'reversible' 
+141.4637  0.000  
+1  
+-2.9300  4  'h+1' -2.000  'h2o' -1.000  'zn+2' 1.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! willemite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'willemite' 
+'surface' 'reversible' 
+220.8431  0.000  
+1  
+-15.3300  3  'h+1' -4.000  'zn+2' 2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zincosite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zincosite' 
+'surface' 'reversible' 
+161.4376  0.000  
+1  
+-3.0100  2  'zn+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znso4,1h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znso4,1h2o' 
+'surface' 'reversible' 
+179.4528  0.000  
+1  
+.5700  3  'zn+2' 1.000  'so4-2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! bianchite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'bianchite' 
+'surface' 'reversible' 
+269.5288  0.000  
+1  
+1.7650  3  'zn+2' 1.000  'so4-2' 1.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! goslarite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'goslarite' 
+'surface' 'reversible' 
+287.5440  0.000  
+1  
+1.9600  3  'zn+2' 1.000  'so4-2' 1.000  'h2o' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znbr2,2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znbr2,2h2o' 
+'surface' 'reversible' 
+261.2184  0.000  
+1  
+-5.2100  3  'zn+2' 1.000  'br-1' 2.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zni2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zni2' 
+'surface' 'reversible' 
+319.1890  0.000  
+1  
+-7.2300  2  'zn+2' 1.000  'i-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdmetal  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdmetal' 
+'surface' 'reversible' 
+112.4100  0.000  
+1  
+-13.4900  2  'cd+2' 1.000  'e-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! gammacd  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'gammacd' 
+'surface' 'reversible' 
+112.4100  0.000  
+1  
+-13.5900  2  'cd+2' 1.000  'e-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! otavite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'otavite' 
+'surface' 'reversible' 
+172.4192  0.000  
+1  
+12.1000  2  'cd+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdcl2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdcl2' 
+'surface' 'reversible' 
+183.3160  0.000  
+1  
+.6800  2  'cd+2' 1.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdcl2,1h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdcl2,1h2o' 
+'surface' 'reversible' 
+201.3312  0.000  
+1  
+1.7100  3  'cd+2' 1.000  'cl-1' 2.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdcl2,2.5h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdcl2,2.5h2o' 
+'surface' 'reversible' 
+228.3536  0.000  
+1  
+1.9400  3  'cd+2' 1.000  'cl-1' 2.000  'h2o' 2.500  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdf2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdf2' 
+'surface' 'reversible' 
+150.4068  0.000  
+1  
+2.9800  2  'cd+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd(oh)2(a)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd(oh)2(a)' 
+'surface' 'reversible' 
+146.4246  0.000  
+1  
+-13.7300  3  'h+1' -2.000  'cd+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd(oh)2(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd(oh)2(c)' 
+'surface' 'reversible' 
+146.4246  0.000  
+1  
+-13.6500  3  'h+1' -2.000  'cd+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdohcl  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdohcl' 
+'surface' 'reversible' 
+164.8703  0.000  
+1  
+-3.5200  4  'h+1' -1.000  'cd+2' 1.000  'h2o' 1.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd3(oh)4so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd3(oh)4so4' 
+'surface' 'reversible' 
+501.3168  0.000  
+1  
+-22.5600  4  'h+1' -4.000  'cd+2' 3.000  'h2o' 4.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd3oh2(so4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd3oh2(so4)2' 
+'surface' 'reversible' 
+563.3598  0.000  
+1  
+-6.7100  4  'h+1' -2.000  'cd+2' 3.000  'h2o' 2.000  'so4-2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd4(oh)6so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd4(oh)6so4' 
+'surface' 'reversible' 
+647.7414  0.000  
+1  
+-28.4000  4  'h+1' -6.000  'cd+2' 4.000  'h2o' 6.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! monteponite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'monteponite' 
+'surface' 'reversible' 
+128.4094  0.000  
+1  
+-13.7700  3  'h+1' -2.000  'cd+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd3(po4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd3(po4)2' 
+'surface' 'reversible' 
+527.1728  0.000  
+1  
+32.6000  2  'cd+2' 3.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdsio3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdsio3' 
+'surface' 'reversible' 
+188.4937  0.000  
+1  
+-9.0600  4  'h2o' -1.000  'cd+2' 1.000  'h4sio4' 1.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdso4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdso4' 
+'surface' 'reversible' 
+208.4676  0.000  
+1  
+.1000  2  'cd+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdso4,1h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdso4,1h2o' 
+'surface' 'reversible' 
+226.4828  0.000  
+1  
+1.6570  3  'cd+2' 1.000  'so4-2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdso4,2.7h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdso4,2.7h2o' 
+'surface' 'reversible' 
+256.3879  0.000  
+1  
+1.8730  3  'cd+2' 1.000  'so4-2' 1.000  'h2o' 2.670  
+0  0  0  0.000  1.000  1.000  
+!  
+! greenockite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'greenockite' 
+'surface' 'reversible' 
+144.4700  0.000  
+1  
+15.9300  3  'h+1' -1.000  'cd+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdbr2,4h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdbr2,4h2o' 
+'surface' 'reversible' 
+344.2788  0.000  
+1  
+2.4200  3  'cd+2' 1.000  'br-1' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdi2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdi2' 
+'surface' 'reversible' 
+366.2190  0.000  
+1  
+3.6100  2  'cd+2' 1.000  'i-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbmetal  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbmetal' 
+'surface' 'reversible' 
+207.2000  0.000  
+1  
+-4.2700  2  'pb+2' 1.000  'e-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cotunnite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cotunnite' 
+'surface' 'reversible' 
+278.1060  0.000  
+1  
+4.7700  2  'pb+2' 1.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! matlockite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'matlockite' 
+'surface' 'reversible' 
+261.6514  0.000  
+1  
+9.4300  3  'pb+2' 1.000  'cl-1' 1.000  'f-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! phosgenite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'phosgenite' 
+'surface' 'reversible' 
+545.3152  0.000  
+1  
+19.8100  3  'pb+2' 2.000  'cl-1' 2.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cerrusite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cerrusite' 
+'surface' 'reversible' 
+267.2092  0.000  
+1  
+13.1300  2  'pb+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbf2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbf2' 
+'surface' 'reversible' 
+245.1968  0.000  
+1  
+7.4400  2  'pb+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! massicot  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'massicot' 
+'surface' 'reversible' 
+223.1994  0.000  
+1  
+-12.9100  3  'h+1' -2.000  'pb+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! litharge  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'litharge' 
+'surface' 'reversible' 
+223.1994  0.000  
+1  
+-12.7200  3  'h+1' -2.000  'pb+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbo,.3h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbo,.3h2o' 
+'surface' 'reversible' 
+229.1444  0.000  
+1  
+-12.9800  3  'h+1' -2.000  'pb+2' 1.000  'h2o' 1.330  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2oco3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2oco3' 
+'surface' 'reversible' 
+490.4086  0.000  
+1  
+.5000  4  'h+1' -2.000  'pb+2' 2.000  'h2o' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! larnakite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'larnakite' 
+'surface' 'reversible' 
+526.4570  0.000  
+1  
+.2800  4  'h+1' -2.000  'pb+2' 2.000  'so4-2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb3o2so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb3o2so4' 
+'surface' 'reversible' 
+749.6564  0.000  
+1  
+-10.4000  4  'h+1' -4.000  'pb+2' 3.000  'so4-2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb4o3so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb4o3so4' 
+'surface' 'reversible' 
+972.8558  0.000  
+1  
+-22.1000  4  'h+1' -6.000  'pb+2' 4.000  'so4-2' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! clpyromorph  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'clpyromorph' 
+'surface' 'reversible' 
+1356.3672  0.000  
+1  
+84.4300  3  'pb+2' 5.000  'po4-3' 3.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hxypyromorph  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hxypyromorph' 
+'surface' 'reversible' 
+1337.9215  0.000  
+1  
+62.7900  4  'h+1' -1.000  'pb+2' 5.000  'po4-3' 3.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb3o2co3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb3o2co3' 
+'surface' 'reversible' 
+713.6080  0.000  
+1  
+-11.0200  4  'h+1' -4.000  'pb+2' 3.000  'co3-2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! plumbgummite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'plumbgummite' 
+'surface' 'reversible' 
+581.1391  0.000  
+1  
+32.7900  5  'h+1' -5.000  'pb+2' 1.000  'al+3' 3.000  'po4-3' 2.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hinsdalite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hinsdalite' 
+'surface' 'reversible' 
+581.2174  0.000  
+1  
+2.5000  6  'h+1' -6.000  'pb+2' 1.000  'al+3' 3.000  'po4-3' 1.000  'so4-2' 1.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tsumebite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tsumebite' 
+'surface' 'reversible' 
+677.9849  0.000  
+1  
+9.7900  5  'h+1' -3.000  'pb+2' 2.000  'cu+2' 1.000  'po4-3' 1.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbsio3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbsio3' 
+'surface' 'reversible' 
+283.2837  0.000  
+1  
+-7.3200  4  'h2o' -1.000  'h+1' -2.000  'pb+2' 1.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2sio4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2sio4' 
+'surface' 'reversible' 
+506.4831  0.000  
+1  
+-19.7600  3  'h+1' -4.000  'pb+2' 2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! anglesite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'anglesite' 
+'surface' 'reversible' 
+303.2576  0.000  
+1  
+7.7900  2  'pb+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! galena  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'galena' 
+'surface' 'reversible' 
+239.2600  0.000  
+1  
+12.7800  3  'h+1' -1.000  'pb+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! plattnerite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'plattnerite' 
+'surface' 'reversible' 
+239.1988  0.000  
+1  
+-49.3000  4  'h+1' -4.000  'e-1' -2.000  'pb+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2o3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2o3' 
+'surface' 'reversible' 
+462.3982  0.000  
+1  
+-61.0400  4  'h+1' -6.000  'e-1' -2.000  'pb+2' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! minium  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'minium' 
+'surface' 'reversible' 
+685.5976  0.000  
+1  
+-73.6900  4  'h+1' -8.000  'e-1' -2.000  'pb+2' 3.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb(oh)2(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb(oh)2(c)' 
+'surface' 'reversible' 
+241.2146  0.000  
+1  
+-8.1500  3  'h+1' -2.000  'pb+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! laurionite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'laurionite' 
+'surface' 'reversible' 
+259.6603  0.000  
+1  
+-.6230  4  'h+1' -1.000  'pb+2' 1.000  'cl-1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2(oh)3cl  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2(oh)3cl' 
+'surface' 'reversible' 
+500.8749  0.000  
+1  
+-8.7930  4  'h+1' -3.000  'pb+2' 2.000  'h2o' 3.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hydcerrusite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hydcerrusite' 
+'surface' 'reversible' 
+775.6330  0.000  
+1  
+17.4600  4  'h+1' -2.000  'pb+2' 3.000  'co3-2' 2.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2o(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2o(oh)2' 
+'surface' 'reversible' 
+464.4140  0.000  
+1  
+-26.2000  3  'h+1' -4.000  'pb+2' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbbr2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbbr2' 
+'surface' 'reversible' 
+367.0080  0.000  
+1  
+5.1800  2  'pb+2' 1.000  'br-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbbrf  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbbrf' 
+'surface' 'reversible' 
+306.1024  0.000  
+1  
+8.4900  3  'pb+2' 1.000  'br-1' 1.000  'f-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbi2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbi2' 
+'surface' 'reversible' 
+461.0090  0.000  
+1  
+8.0700  2  'pb+2' 1.000  'i-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb4(oh)6so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb4(oh)6so4' 
+'surface' 'reversible' 
+1026.9014  0.000  
+1  
+-21.1000  4  'h+1' -6.000  'pb+2' 4.000  'so4-2' 1.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nico3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nico3' 
+'surface' 'reversible' 
+118.7092  0.000  
+1  
+6.8400  2  'ni+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ni(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ni(oh)2' 
+'surface' 'reversible' 
+92.7146  0.000  
+1  
+-10.8000  3  'h+1' -2.000  'ni+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ni4(oh)6so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ni4(oh)6so4' 
+'surface' 'reversible' 
+432.9014  0.000  
+1  
+-32.0000  4  'h+1' -6.000  'ni+2' 4.000  'so4-2' 1.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! bunsenite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'bunsenite' 
+'surface' 'reversible' 
+74.6994  0.000  
+1  
+-12.4500  3  'h+1' -2.000  'ni+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ni3(po4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ni3(po4)2' 
+'surface' 'reversible' 
+366.0428  0.000  
+1  
+31.3000  2  'ni+2' 3.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! millerite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'millerite' 
+'surface' 'reversible' 
+90.7600  0.000  
+1  
+8.0420  3  'h+1' -1.000  'ni+2' 1.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! retgersite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'retgersite' 
+'surface' 'reversible' 
+262.8488  0.000  
+1  
+2.0400  3  'ni+2' 1.000  'so4-2' 1.000  'h2o' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! morenosite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'morenosite' 
+'surface' 'reversible' 
+280.8640  0.000  
+1  
+2.3600  3  'ni+2' 1.000  'so4-2' 1.000  'h2o' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ni2sio4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ni2sio4' 
+'surface' 'reversible' 
+209.4831  0.000  
+1  
+-14.5400  3  'h+1' -4.000  'ni+2' 2.000  'h4sio4' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! agmetal  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'agmetal' 
+'surface' 'reversible' 
+107.8680  0.000  
+1  
+13.5100  2  'ag+1' 1.000  'e-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! bromyrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'bromyrite' 
+'surface' 'reversible' 
+187.7720  0.000  
+1  
+12.2700  2  'ag+1' 1.000  'br-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cerargyrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cerargyrite' 
+'surface' 'reversible' 
+143.3210  0.000  
+1  
+9.7500  2  'ag+1' 1.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2co3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2co3' 
+'surface' 'reversible' 
+275.7452  0.000  
+1  
+11.0700  2  'ag+1' 2.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! agf.4h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'agf.4h2o' 
+'surface' 'reversible' 
+198.9272  0.000  
+1  
+-.5500  3  'ag+1' 1.000  'f-1' 1.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! iodyrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'iodyrite' 
+'surface' 'reversible' 
+234.7725  0.000  
+1  
+16.0700  2  'ag+1' 1.000  'i-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2o' 
+'surface' 'reversible' 
+231.7354  0.000  
+1  
+-12.5800  3  'h+1' -2.000  'ag+1' 2.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag3po4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag3po4' 
+'surface' 'reversible' 
+418.5754  0.000  
+1  
+17.5500  2  'ag+1' 3.000  'po4-3' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! acanthite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'acanthite' 
+'surface' 'reversible' 
+247.7960  0.000  
+1  
+36.0500  3  'h+1' -1.000  'ag+1' 2.000  'hs-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2so4' 
+'surface' 'reversible' 
+311.7936  0.000  
+1  
+4.9200  2  'ag+1' 2.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! analcime  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'analcime' 
+'surface' 'reversible' 
+220.1550  0.000  
+1  
+-6.7190  5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 2.000  'h2o' -1.000  'h+1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! halloysite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'halloysite' 
+'surface' 'reversible' 
+258.1620  0.000  
+1  
+-12.4980  4  'al+3' 2.000  'h4sio4' 2.000  'h2o' 1.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! kaolinite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'kaolinite' 
+'surface' 'reversible' 
+258.1620  0.000  
+1  
+-7.4350  4  'al+3' 2.000  'h4sio4' 2.000  'h2o' 1.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! leonhardite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'leonhardite' 
+'surface' 'reversible' 
+922.8670  0.000  
+1  
+-16.4900  5  'h2o' -1.000  'h+1' -16.000  'ca+2' 2.000  'h4sio4' 8.000  'al+3' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! lowalbite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'lowalbite' 
+'surface' 'reversible' 
+262.2250  0.000  
+1  
+-2.5920  5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! analbite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'analbite' 
+'surface' 'reversible' 
+262.2250  0.000  
+1  
+-3.5060  5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! muscovite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'muscovite' 
+'surface' 'reversible' 
+398.3110  0.000  
+1  
+-12.9900  4  'k+1' 1.000  'al+3' 3.000  'h4sio4' 3.000  'h+1' -10.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! annite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'annite' 
+'surface' 'reversible' 
+511.8900  0.000  
+1  
+-23.2900  5  'k+1' 1.000  'fe+2' 3.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -10.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! anorthite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'anorthite' 
+'surface' 'reversible' 
+278.2110  0.000  
+1  
+-25.4300  4  'ca+2' 1.000  'al+3' 2.000  'h4sio4' 2.000  'h+1' -8.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pyrophyllite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pyrophyllite' 
+'surface' 'reversible' 
+360.3138  0.000  
+1  
+1.5980  4  'al+3' 2.000  'h4sio4' 4.000  'h2o' -4.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! laumontite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'laumontite' 
+'surface' 'reversible' 
+470.4410  0.000  
+1  
+-14.4600  4  'ca+2' 1.000  'al+3' 2.000  'h4sio4' 4.000  'h+1' -8.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! wairakite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'wairakite' 
+'surface' 'reversible' 
+434.4110  0.000  
+1  
+-18.8700  5  'ca+2' 1.000  'al+3' 2.000  'h4sio4' 4.000  'h+1' -8.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! malachite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'malachite' 
+'surface' 'reversible' 
+221.1162  0.000  
+1  
+5.1800  4  'cu+2' 2.000  'h2o' 2.000  'co3-2' 1.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! azurite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'azurite' 
+'surface' 'reversible' 
+344.6716  0.000  
+1  
+16.9200  4  'cu+2' 3.000  'h2o' 2.000  'co3-2' 2.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! arsenolite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'arsenolite' 
+'surface' 'reversible' 
+395.6824  0.000  
+1  
+2.8010  2  'h3aso3' 4.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! claudetite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'claudetite' 
+'surface' 'reversible' 
+395.6824  0.000  
+1  
+3.0650  2  'h3aso3' 4.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! asi3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'asi3' 
+'surface' 'reversible' 
+455.6347  0.000  
+1  
+-4.1550  4  'h3aso3' 1.000  'i-1' 3.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! oripment  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'oripment' 
+'surface' 'reversible' 
+246.0350  0.000  
+1  
+60.9710  4  'h3aso3' 2.000  'hs-1' 3.000  'h+1' 3.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! realgar  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'realgar' 
+'surface' 'reversible' 
+106.9855  0.000  
+1  
+19.7470  5  'h3aso3' 1.000  'hs-1' 1.000  'h+1' 2.000  'e-1' 1.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! as2o5  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'as2o5' 
+'surface' 'reversible' 
+229.8400  0.000  
+1  
+-6.6990  2  'h3aso4' 2.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb' 
+'surface' 'reversible' 
+121.7500  0.000  
+1  
+11.7058  4  'sb(oh)3' 1.000  'h+1' 3.000  'e-1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb2s3stib  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb2s3stib' 
+'surface' 'reversible' 
+339.6980  0.000  
+1  
+60.1560  4  'sb(oh)3' 2.000  'hs-1' 3.000  'h+1' 3.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb2se3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb2se3' 
+'surface' 'reversible' 
+480.3800  0.000  
+1  
+67.7571  4  'sb(oh)3' 2.000  'hse-1' 3.000  'h+1' 3.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nisbbreitha  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nisbbreitha' 
+'surface' 'reversible' 
+180.4400  0.000  
+1  
+18.5225  5  'sb(oh)3' 1.000  'e-1' 5.000  'h+1' 3.000  'ni+2' 1.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znsb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znsb' 
+'surface' 'reversible' 
+187.1400  0.000  
+1  
+-11.0138  5  'sb(oh)3' 1.000  'e-1' 5.000  'zn+2' 1.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! alsb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'alsb' 
+'surface' 'reversible' 
+148.7315  0.000  
+1  
+-65.6241  5  'sb(oh)3' 1.000  'e-1' 6.000  'al+3' 1.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdsb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdsb' 
+'surface' 'reversible' 
+234.1610  0.000  
+1  
+.3943  5  'sb(oh)3' 1.000  'e-1' 5.000  'h+1' 3.000  'cd+2' 1.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mg2sb3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mg2sb3' 
+'surface' 'reversible' 
+413.8600  0.000  
+1  
+-74.6838  5  'mg+2' 2.000  'sb(oh)3' 3.000  'h+1' 9.000  'e-1' 13.000  'h2o' -9.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag4sb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag4sb' 
+'surface' 'reversible' 
+445.3546  0.000  
+1  
+56.1818  5  'sb(oh)3' 1.000  'e-1' 6.000  'ag+1' 3.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na3sb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na3sb' 
+'surface' 'reversible' 
+190.7193  0.000  
+1  
+-94.4084  5  'na+1' 3.000  'sb(oh)3' 1.000  'h+1' 3.000  'e-1' 6.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nasb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nasb' 
+'surface' 'reversible' 
+144.7398  0.000  
+1  
+-23.1770  5  'na+1' 1.000  'sb(oh)3' 1.000  'h+1' 3.000  'e-1' 4.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mn2sb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mn2sb' 
+'surface' 'reversible' 
+231.6261  0.000  
+1  
+-61.0796  5  'mn+2' 2.000  'sb(oh)3' 1.000  'e-1' 7.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca3sb2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca3sb2' 
+'surface' 'reversible' 
+363.7340  0.000  
+1  
+-142.9738  5  'ca+2' 3.000  'sb(oh)3' 2.000  'h+1' 6.000  'e-1' 12.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! usb2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'usb2' 
+'surface' 'reversible' 
+481.5289  0.000  
+1  
+-29.5246  5  'uo2+2' 1.000  'sb(oh)3' 2.000  'e-1' 12.000  'h+1' 10.000  'h2o' -8.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu2sb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu2sb' 
+'surface' 'reversible' 
+248.8420  0.000  
+1  
+34.8827  5  'sb(oh)3' 1.000  'e-1' 6.000  'h+1' 3.000  'cu+1' 1.000  'cu+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mnsb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mnsb' 
+'surface' 'reversible' 
+176.6881  0.000  
+1  
+2.9099  5  'mn+3' 1.000  'sb(oh)3' 1.000  'e-1' 6.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu3sb  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu3sb' 
+'surface' 'reversible' 
+312.3880  0.000  
+1  
+42.5937  5  'sb(oh)3' 1.000  'e-1' 6.000  'h+1' 3.000  'cu+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! u3sb4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'u3sb4' 
+'surface' 'reversible' 
+1201.0867  0.000  
+1  
+-152.3288  5  'u+4' 3.000  'sb(oh)3' 4.000  'e-1' 24.000  'h+1' 12.000  'h2o' -12.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb2o4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb2o4' 
+'surface' 'reversible' 
+307.4976  0.000  
+1  
+-3.4597  4  'sb(oh)3' 2.000  'h2o' -2.000  'h+1' -2.000  'e-1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb4o6ii,cub  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb4o6ii,cub' 
+'surface' 'reversible' 
+582.9964  0.000  
+1  
+19.6586  2  'sb(oh)3' 4.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb4o6i,orth  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb4o6i,orth' 
+'surface' 'reversible' 
+582.9964  0.000  
+1  
+17.0346  2  'sb(oh)3' 4.000  'h2o' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb(oh)3(s)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb(oh)3(s)' 
+'surface' 'reversible' 
+172.7719  0.000  
+1  
+7.1099  1  'sb(oh)3' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu(sbo3)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu(sbo3)2' 
+'surface' 'reversible' 
+403.0424  0.000  
+1  
+-45.2105  4  'sb(oh)3' 2.000  'cu+2' 1.000  'h+1' -6.000  'e-1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb2o3senarm  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb2o3senarm' 
+'surface' 'reversible' 
+291.4982  0.000  
+1  
+12.3654  2  'sb(oh)3' 2.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb2o3valent  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb2o3valent' 
+'surface' 'reversible' 
+291.4982  0.000  
+1  
+8.4806  2  'sb(oh)3' 2.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sb2o5  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sb2o5' 
+'surface' 'reversible' 
+323.4970  0.000  
+1  
+12.4827  3  'sb(oh)6-' 2.000  'h+1' 2.000  'h2o' -7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sbo2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sbo2' 
+'surface' 'reversible' 
+153.7488  0.000  
+1  
+27.8241  4  'sb(oh)6-' 1.000  'e-1' 1.000  'h+1' 2.000  'h2o' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sbbr3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sbbr3' 
+'surface' 'reversible' 
+361.4620  0.000  
+1  
+-1.0562  4  'sb(oh)3' 1.000  'br-1' 3.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sbcl3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sbcl3' 
+'surface' 'reversible' 
+228.1081  0.000  
+1  
+-.5915  4  'sb(oh)3' 1.000  'cl-1' 3.000  'h+1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sbf3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sbf3' 
+'surface' 'reversible' 
+178.7452  0.000  
+1  
+10.2251  4  'sb(oh)3' 1.000  'h+1' 3.000  'f-1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sbi3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sbi3' 
+'surface' 'reversible' 
+502.4634  0.000  
+1  
+.5380  4  'sb(oh)3' 1.000  'h+1' 3.000  'i-1' 3.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn(bo2)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn(bo2)2' 
+'surface' 'reversible' 
+150.9893  0.000  
+1  
+-8.2900  4  'h2o' -2.000  'h+1' -2.000  'zn+2' 1.000  'h3bo3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd(bo2)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd(bo2)2' 
+'surface' 'reversible' 
+198.0188  0.000  
+1  
+-9.8400  4  'h2o' -2.000  'h+1' -2.000  'cd+2' 1.000  'h3bo3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb(bo2)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb(bo2)2' 
+'surface' 'reversible' 
+292.8093  0.000  
+1  
+-7.6100  4  'h2o' -2.000  'h+1' -2.000  'pb+2' 1.000  'h3bo3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mnhpo4(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mnhpo4(c)' 
+'surface' 'reversible' 
+150.9174  0.000  
+1  
+25.4000  3  'mn+2' 1.000  'po4-3' 1.000  'h+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbhpo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbhpo4' 
+'surface' 'reversible' 
+303.1693  0.000  
+1  
+23.9000  3  'pb+2' 1.000  'po4-3' 1.000  'h+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb3(po4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb3(po4)2' 
+'surface' 'reversible' 
+811.5125  0.000  
+1  
+44.5000  2  'pb+2' 3.000  'po4-3' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sulfur  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sulfur' 
+'surface' 'reversible' 
+32.0640  0.000  
+1  
+2.1100  3  'hs-1' 1.000  'h+1' -1.000  'e-1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! alaso4.2w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'alaso4.2w' 
+'surface' 'reversible' 
+165.9006  0.000  
+1  
+-4.8000  4  'al+3' 1.000  'h3aso4' 1.000  'h2o' 2.000  'h+1' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca3(aso4)26w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca3(aso4)26w' 
+'surface' 'reversible' 
+506.1700  0.000  
+1  
+-22.3000  4  'ca+2' 3.000  'h3aso4' 2.000  'h2o' 4.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu3(aso4)26w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu3(aso4)26w' 
+'surface' 'reversible' 
+576.5680  0.000  
+1  
+-6.1000  4  'cu+2' 3.000  'h3aso4' 2.000  'h2o' 2.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! feaso4.2w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'feaso4.2w' 
+'surface' 'reversible' 
+230.7967  0.000  
+1  
+-.4000  4  'fe+3' 1.000  'h3aso4' 1.000  'h2o' 2.000  'h+1' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mn3aso428w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mn3aso428w' 
+'surface' 'reversible' 
+586.7746  0.000  
+1  
+-12.5000  4  'mn+2' 3.000  'h3aso4' 2.000  'h2o' 8.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ni3(aso4)28w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ni3(aso4)28w' 
+'surface' 'reversible' 
+459.1707  0.000  
+1  
+-15.7000  4  'ni+2' 3.000  'h3aso4' 2.000  'h2o' 8.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb3(aso4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb3(aso4)2' 
+'surface' 'reversible' 
+899.4079  0.000  
+1  
+-5.8000  3  'pb+2' 3.000  'h3aso4' 2.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn3aso422.5w  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn3aso422.5w' 
+'surface' 'reversible' 
+518.9862  0.000  
+1  
+-13.6500  4  'zn+2' 3.000  'h3aso4' 2.000  'h2o' 2.500  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ba(aso4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ba(aso4)2' 
+'surface' 'reversible' 
+689.8582  0.000  
+1  
+8.9100  3  'ba+2' 3.000  'h3aso4' 2.000  'h+1' -6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vmetal  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vmetal' 
+'surface' 'reversible' 
+50.9400  0.000  
+1  
+-42.3500  2  'v+3' 1.000  'e-1' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vo  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vo' 
+'surface' 'reversible' 
+66.9390  0.000  
+1  
+-13.0800  4  'h+1' -2.000  'v+3' 1.000  'h2o' 1.000  'e-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vcl2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vcl2' 
+'surface' 'reversible' 
+121.8460  0.000  
+1  
+-17.9700  3  'v+3' 1.000  'cl-1' 2.000  'e-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! v2o3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'v2o3' 
+'surface' 'reversible' 
+149.8780  0.000  
+1  
+-4.9000  3  'h+1' -3.000  'v+3' 1.000  'h2o' 1.500  
+0  0  0  0.000  1.000  1.000  
+!  
+! v(oh)3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'v(oh)3' 
+'surface' 'reversible' 
+101.9620  0.000  
+1  
+-7.6500  3  'h+1' -3.000  'v+3' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vcl3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vcl3' 
+'surface' 'reversible' 
+157.2990  0.000  
+1  
+-21.7300  2  'v+3' 1.000  'cl-1' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vocl  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vocl' 
+'surface' 'reversible' 
+137.8450  0.000  
+1  
+-9.4100  4  'v+3' 1.000  'cl-1' 1.000  'h2o' 1.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! v2o4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'v2o4' 
+'surface' 'reversible' 
+165.8780  0.000  
+1  
+-4.2700  3  'h+1' -2.000  'vo+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vo(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vo(oh)2' 
+'surface' 'reversible' 
+100.9540  0.000  
+1  
+-5.8500  3  'h+1' -2.000  'vo+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vf4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vf4' 
+'surface' 'reversible' 
+126.9320  0.000  
+1  
+-14.9300  4  'h2o' -1.000  'vo+2' 1.000  'f-1' 4.000  'h+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! voso4(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'voso4(c)' 
+'surface' 'reversible' 
+162.9970  0.000  
+1  
+-3.5700  2  'vo+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! (vo)3(po4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'(vo)3(po4)2' 
+'surface' 'reversible' 
+390.7530  0.000  
+1  
+8.3700  2  'vo+2' 1.000  'po4-3' .667  
+0  0  0  0.000  1.000  1.000  
+!  
+! vocl2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vocl2' 
+'surface' 'reversible' 
+137.8450  0.000  
+1  
+-12.7900  2  'vo+2' 1.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! v2o5  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'v2o5' 
+'surface' 'reversible' 
+181.8770  0.000  
+1  
+.7200  3  'h+1' -1.000  'vo2+1' 1.000  'h2o' .500  
+0  0  0  0.000  1.000  1.000  
+!  
+! tyuyamunite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tyuyamunite' 
+'surface' 'reversible' 
+810.0130  0.000  
+1  
+-2.0400  5  'h+1' -4.000  'ca+2' .500  'uo2+2' 1.000  'vo2+1' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca-vanadate  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca-vanadate' 
+'surface' 'reversible' 
+237.9560  0.000  
+1  
+-2.8300  4  'h+1' -2.000  'ca+2' .500  'vo2+1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca3(vo4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca3(vo4)2' 
+'surface' 'reversible' 
+350.1150  0.000  
+1  
+-19.4800  4  'h+1' -4.000  'ca+2' 1.500  'vo2+1' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca2v2o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca2v2o7' 
+'surface' 'reversible' 
+294.0360  0.000  
+1  
+-8.7500  4  'h+1' -3.000  'ca+2' 1.000  'vo2+1' 1.000  'h2o' 1.500  
+0  0  0  0.000  1.000  1.000  
+!  
+! fe-vanadate  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fe-vanadate' 
+'surface' 'reversible' 
+508.4310  0.000  
+1  
+1.8600  4  'h+1' -2.000  'fe+2' .500  'vo2+1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mg-vanadate  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mg-vanadate' 
+'surface' 'reversible' 
+222.1860  0.000  
+1  
+-5.6400  4  'h+1' -2.000  'mg+2' .500  'vo2+1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mg2v2o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mg2v2o7' 
+'surface' 'reversible' 
+262.4960  0.000  
+1  
+-13.1800  4  'h+1' -3.000  'mg+2' 1.000  'vo2+1' 1.000  'h2o' 1.500  
+0  0  0  0.000  1.000  1.000  
+!  
+! mn-vanadate  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mn-vanadate' 
+'surface' 'reversible' 
+252.8160  0.000  
+1  
+-2.4500  4  'h+1' -2.000  'mn+2' .500  'vo2+1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nh4vo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nh4vo3' 
+'surface' 'reversible' 
+116.9770  0.000  
+1  
+-2.6900  4  'h+1' -2.000  'nh4+1' 1.000  'vo2+1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na-vanadate  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na-vanadate' 
+'surface' 'reversible' 
+121.9280  0.000  
+1  
+-3.7100  4  'h+1' -2.000  'na+1' 1.000  'vo2+1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na3vo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na3vo4' 
+'surface' 'reversible' 
+183.9080  0.000  
+1  
+-36.9400  4  'h+1' -4.000  'na+1' 3.000  'vo2+1' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na4v2o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na4v2o7' 
+'surface' 'reversible' 
+305.8360  0.000  
+1  
+-18.7000  4  'h+1' -3.000  'na+1' 2.000  'vo2+1' 1.000  'h2o' 1.500  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb3(vo4)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb3(vo4)2' 
+'surface' 'reversible' 
+851.4750  0.000  
+1  
+-3.0700  4  'h+1' -4.000  'pb+2' 1.500  'vo2+1' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2v2o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2v2o7' 
+'surface' 'reversible' 
+628.2760  0.000  
+1  
+.9500  4  'h+1' -3.000  'pb+2' 1.000  'vo2+1' 1.000  'h2o' 1.500  
+0  0  0  0.000  1.000  1.000  
+!  
+! carnotite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'carnotite' 
+'surface' 'reversible' 
+848.1330  0.000  
+1  
+-.2300  5  'h+1' -4.000  'k+1' 1.000  'uo2+2' 1.000  'vo2+1' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag-vanadate  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag-vanadate' 
+'surface' 'reversible' 
+206.8080  0.000  
+1  
+-.7700  4  'h+1' -2.000  'ag+1' 1.000  'vo2+1' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2hvo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2hvo4' 
+'surface' 'reversible' 
+331.6860  0.000  
+1  
+-1.4800  4  'h+1' -3.000  'ag+1' 2.000  'vo2+1' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag3h2vo5  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag3h2vo5' 
+'surface' 'reversible' 
+456.5630  0.000  
+1  
+-5.1800  4  'h+1' -4.000  'ag+1' 3.000  'vo2+1' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! vo2cl  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'vo2cl' 
+'surface' 'reversible' 
+118.3920  0.000  
+1  
+-2.8100  2  'vo2+1' 1.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! v3o5  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'v3o5' 
+'surface' 'reversible' 
+232.8170  0.000  
+1  
+-1.8700  4  'h+1' -4.000  'vo+2' 3.000  'h2o' 2.000  'e-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! v4o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'v4o7' 
+'surface' 'reversible' 
+315.7560  0.000  
+1  
+-7.1400  4  'h+1' -6.000  'vo+2' 4.000  'h2o' 3.000  'e-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! v6o13  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'v6o13' 
+'surface' 'reversible' 
+513.6320  0.000  
+1  
+60.8600  4  'h+1' -2.000  'vo2+1' 6.000  'h2o' 1.000  'e-1' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! lime  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'lime' 
+'surface' 'reversible' 
+56.0800  0.000  
+1  
+-32.7970  3  'h+1' -2.000  'ca+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! portlandite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'portlandite' 
+'surface' 'reversible' 
+73.0880  0.000  
+1  
+-22.8000  3  'h+1' -2.000  'ca+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! wustite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'wustite' 
+'surface' 'reversible' 
+71.8500  0.000  
+1  
+-11.6870  3  'h+1' -2.000  'fe+2' .947  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! periclase  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'periclase' 
+'surface' 'reversible' 
+40.3200  0.000  
+1  
+-21.5100  3  'h+1' -2.000  'mg+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hercynite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hercynite' 
+'surface' 'reversible' 
+173.8100  0.000  
+1  
+-27.1620  4  'h+1' -8.000  'fe+2' 1.000  'al+3' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! spinel  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'spinel' 
+'surface' 'reversible' 
+142.2800  0.000  
+1  
+-36.3330  4  'h+1' -8.000  'mg+2' 1.000  'al+3' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mag-ferrite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mag-ferrite' 
+'surface' 'reversible' 
+200.0200  0.000  
+1  
+-16.7650  4  'h+1' -8.000  'mg+2' 1.000  'fe+3' 2.000  'h2o' 4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cryolite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cryolite' 
+'surface' 'reversible' 
+209.9530  0.000  
+1  
+31.4900  3  'al+3' 1.000  'na+1' 3.000  'f-1' 6.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! wollastonite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'wollastonite' 
+'surface' 'reversible' 
+116.1700  0.000  
+1  
+-12.9960  4  'h2o' -1.000  'h+1' -2.000  'h4sio4' 1.000  'ca+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! p-wollstanit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'p-wollstanit' 
+'surface' 'reversible' 
+116.1700  0.000  
+1  
+-13.8460  4  'h2o' -1.000  'h+1' -2.000  'h4sio4' 1.000  'ca+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca-olivine  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca-olivine' 
+'surface' 'reversible' 
+172.2500  0.000  
+1  
+-37.6490  3  'h+1' -4.000  'h4sio4' 1.000  'ca+2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! larnite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'larnite' 
+'surface' 'reversible' 
+172.2500  0.000  
+1  
+-39.1410  3  'h+1' -4.000  'h4sio4' 1.000  'ca+2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca3sio5  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca3sio5' 
+'surface' 'reversible' 
+228.3300  0.000  
+1  
+-73.8670  4  'h+1' -6.000  'h4sio4' 1.000  'ca+2' 3.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! monticellite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'monticellite' 
+'surface' 'reversible' 
+156.4900  0.000  
+1  
+-30.2720  4  'h+1' -4.000  'h4sio4' 1.000  'ca+2' 1.000  'mg+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! akerminite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'akerminite' 
+'surface' 'reversible' 
+272.6600  0.000  
+1  
+-47.4720  5  'h2o' -1.000  'h+1' -6.000  'h4sio4' 2.000  'ca+2' 2.000  'mg+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! merwinite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'merwinite' 
+'surface' 'reversible' 
+328.7400  0.000  
+1  
+-68.5430  4  'h+1' -8.000  'h4sio4' 2.000  'mg+2' 1.000  'ca+2' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! kalsilite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'kalsilite' 
+'surface' 'reversible' 
+158.1700  0.000  
+1  
+-12.8380  4  'h+1' -4.000  'h4sio4' 1.000  'al+3' 1.000  'k+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! leucite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'leucite' 
+'surface' 'reversible' 
+278.2600  0.000  
+1  
+-6.4230  5  'h2o' -2.000  'h+1' -4.000  'h4sio4' 2.000  'al+3' 1.000  'k+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! microcline  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'microcline' 
+'surface' 'reversible' 
+378.3500  0.000  
+1  
+-.6160  5  'h2o' -4.000  'h+1' -4.000  'h4sio4' 3.000  'al+3' 1.000  'k+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hsanidine  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hsanidine' 
+'surface' 'reversible' 
+378.3500  0.000  
+1  
+-1.0620  5  'h2o' -4.000  'h+1' -4.000  'h4sio4' 3.000  'al+3' 1.000  'k+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nepheline  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nepheline' 
+'surface' 'reversible' 
+142.0610  0.000  
+1  
+-14.2180  4  'h+1' -4.000  'h4sio4' 1.000  'al+3' 1.000  'na+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! gehlenite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'gehlenite' 
+'surface' 'reversible' 
+374.2100  0.000  
+1  
+-56.8220  5  'h+1' -10.000  'al+3' 2.000  'h4sio4' 1.000  'ca+2' 2.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! lepidocrocit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'lepidocrocit' 
+'surface' 'reversible' 
+72.8600  0.000  
+1  
+-1.3710  3  'h+1' -3.000  'fe+3' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na-nontronit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na-nontronit' 
+'surface' 'reversible' 
+425.2690  0.000  
+1  
+14.5040  6  'h+1' -7.320  'h2o' -2.680  'al+3' .330  'fe+3' 2.000  'na+1' .330  'h4sio4' 3.670  
+0  0  0  0.000  1.000  1.000  
+!  
+! k-nontronite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k-nontronite' 
+'surface' 'reversible' 
+430.5850  0.000  
+1  
+15.5490  6  'h+1' -7.320  'h2o' -2.680  'al+3' .330  'fe+3' 2.000  'k+1' .330  'h4sio4' 3.670  
+0  0  0  0.000  1.000  1.000  
+!  
+! ca-nontronit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ca-nontronit' 
+'surface' 'reversible' 
+424.3750  0.000  
+1  
+20.8890  6  'h+1' -7.320  'h2o' -2.680  'al+3' .330  'fe+3' 2.000  'ca+2' .167  'h4sio4' 3.670  
+0  0  0  0.000  1.000  1.000  
+!  
+! mg-nontronit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mg-nontronit' 
+'surface' 'reversible' 
+408.6150  0.000  
+1  
+20.5890  6  'h+1' -7.320  'h2o' -2.680  'al+3' .330  'fe+3' 2.000  'mg+2' .167  'h4sio4' 3.670  
+0  0  0  0.000  1.000  1.000  
+!  
+! montmorillon  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'montmorillon' 
+'surface' 'reversible' 
+371.3490  0.000  
+1  
+-2.6700  6  'h4sio4' 3.810  'mg+2' .490  'h+1' -6.760  'h2o' -3.240  'fe+3' .220  'al+3' 1.710  
+0  0  0  0.000  1.000  1.000  
+!  
+! tlmetal  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tlmetal' 
+'surface' 'reversible' 
+204.3700  0.000  
+1  
+-5.6733  2  'tl+1' 1.000  'e-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl2o' 
+'surface' 'reversible' 
+424.7394  0.000  
+1  
+-27.0984  3  'tl+1' 2.000  'h2o' 1.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tloh  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tloh' 
+'surface' 'reversible' 
+221.3773  0.000  
+1  
+-12.9225  3  'tl+1' 1.000  'h2o' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tlcl  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tlcl' 
+'surface' 'reversible' 
+239.8230  0.000  
+1  
+3.7243  2  'tl+1' 1.000  'cl-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tlbr  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tlbr' 
+'surface' 'reversible' 
+284.2740  0.000  
+1  
+5.4190  2  'tl+1' 1.000  'br-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tli  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tli' 
+'surface' 'reversible' 
+331.2745  0.000  
+1  
+7.1964  2  'tl+1' 1.000  'i-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl2s  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl2s' 
+'surface' 'reversible' 
+440.8000  0.000  
+1  
+7.1832  3  'tl+1' 2.000  'hs-1' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl2so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl2so4' 
+'surface' 'reversible' 
+504.7976  0.000  
+1  
+3.6942  2  'tl+1' 2.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl2se  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl2se' 
+'surface' 'reversible' 
+487.7000  0.000  
+1  
+6.6848  3  'tl+1' 2.000  'hse-1' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl2seo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl2seo4' 
+'surface' 'reversible' 
+551.6976  0.000  
+1  
+4.0168  2  'tl+1' 2.000  'seo4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tlno3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tlno3' 
+'surface' 'reversible' 
+266.3749  0.000  
+1  
+1.5319  2  'tl+1' 1.000  'no3-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl2co3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl2co3' 
+'surface' 'reversible' 
+468.7492  0.000  
+1  
+3.8482  2  'tl+1' 2.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl(oh)3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl(oh)3' 
+'surface' 'reversible' 
+255.3919  0.000  
+1  
+6.4503  1  'tl(oh)3' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! avicennite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'avicennite' 
+'surface' 'reversible' 
+456.7382  0.000  
+1  
+16.3236  2  'tl(oh)3' 2.000  'h2o' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! sehex,blac  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'sehex,blac' 
+'surface' 'reversible' 
+78.9600  0.000  
+1  
+7.6963  3  'hse-1' 1.000  'h+1' -1.000  'e-1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! se(a)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'se(a)' 
+'surface' 'reversible' 
+78.9600  0.000  
+1  
+7.1099  3  'hse-1' 1.000  'h+1' -1.000  'e-1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ferroselite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ferroselite' 
+'surface' 'reversible' 
+213.7670  0.000  
+1  
+18.5959  4  'hse-1' 2.000  'fe+2' 1.000  'h+1' -2.000  'e-1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! clausthalit  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'clausthalit' 
+'surface' 'reversible' 
+286.1600  0.000  
+1  
+21.2162  3  'hse-1' 1.000  'pb+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2se  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2se' 
+'surface' 'reversible' 
+294.6960  0.000  
+1  
+43.6448  3  'hse-1' 1.000  'ag+1' 2.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cdse  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cdse' 
+'surface' 'reversible' 
+191.3700  0.000  
+1  
+18.0739  3  'hse-1' 1.000  'cd+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuse  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuse' 
+'surface' 'reversible' 
+142.5060  0.000  
+1  
+26.5121  3  'hse-1' 1.000  'cu+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu2sealpha  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu2sealpha' 
+'surface' 'reversible' 
+206.0520  0.000  
+1  
+36.0922  3  'hse-1' 1.000  'cu+1' 2.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuse2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuse2' 
+'surface' 'reversible' 
+221.4660  0.000  
+1  
+33.3655  4  'hse-1' 2.000  'cu+2' 1.000  'h+1' -2.000  'e-1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu3se2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu3se2' 
+'surface' 'reversible' 
+348.5580  0.000  
+1  
+63.4911  4  'hse-1' 2.000  'cu+1' 2.000  'cu+2' 1.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! fese  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fese' 
+'surface' 'reversible' 
+134.8070  0.000  
+1  
+7.1466  3  'hse-1' 1.000  'fe+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mnse  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mnse' 
+'surface' 'reversible' 
+133.8980  0.000  
+1  
+-5.3508  3  'hse-1' 1.000  'mn+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! znse  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'znse' 
+'surface' 'reversible' 
+144.3400  0.000  
+1  
+11.3642  3  'hse-1' 1.000  'zn+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cose  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cose' 
+'surface' 'reversible' 
+137.8932  0.000  
+1  
+16.2723  3  'hse-1' 1.000  'zn+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nise  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nise' 
+'surface' 'reversible' 
+137.6600  0.000  
+1  
+17.7382  3  'hse-1' 1.000  'ni+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! seo2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'seo2' 
+'surface' 'reversible' 
+110.9588  0.000  
+1  
+-.1246  3  'hseo3-1' 1.000  'h+1' 1.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! baseo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'baseo3' 
+'surface' 'reversible' 
+264.2882  0.000  
+1  
+-4.1634  3  'hseo3-1' 1.000  'ba+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! caseo3:2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'caseo3:2h2o' 
+'surface' 'reversible' 
+203.0686  0.000  
+1  
+-2.8139  4  'hseo3-1' 1.000  'ca+2' 1.000  'h2o' 2.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cuseo3:2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cuseo3:2h2o' 
+'surface' 'reversible' 
+226.5346  0.000  
+1  
+-.4838  4  'hseo3-1' 1.000  'cu+2' 1.000  'h2o' 2.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! fe2(seo3)3:  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fe2(seo3)3:' 
+'surface' 'reversible' 
+528.5990  0.000  
+1  
+20.6262  4  'hseo3-1' 3.000  'fe+3' 2.000  'h2o' 2.000  'h+1' -3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! fe2(oh)4seo  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fe2(oh)4seo' 
+'surface' 'reversible' 
+306.6814  0.000  
+1  
+-1.5539  4  'hseo3-1' 1.000  'fe+3' 2.000  'h2o' 4.000  'h+1' -5.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mgseo3:6h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mgseo3:6h2o' 
+'surface' 'reversible' 
+259.3544  0.000  
+1  
+-4.0314  4  'hseo3-1' 1.000  'mg+2' 1.000  'h2o' 6.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mnseo3:2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mnseo3:2h2o' 
+'surface' 'reversible' 
+217.9266  0.000  
+1  
+-.9822  4  'hseo3-1' 1.000  'mn+2' 1.000  'h2o' 2.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! niseo3:2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'niseo3:2h2o' 
+'surface' 'reversible' 
+221.6886  0.000  
+1  
+-2.8147  4  'hseo3-1' 1.000  'ni+2' 1.000  'h2o' 2.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! srseo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'srseo3' 
+'surface' 'reversible' 
+214.5782  0.000  
+1  
+-.1034  3  'hseo3-1' 1.000  'sr+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mnseo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mnseo3' 
+'surface' 'reversible' 
+181.8962  0.000  
+1  
+-.0440  3  'hseo3-1' 1.000  'mn+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! coseo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'coseo3' 
+'surface' 'reversible' 
+185.8914  0.000  
+1  
+-.1906  3  'hseo3-1' 1.000  'mn+2' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2seo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2seo3' 
+'surface' 'reversible' 
+342.6942  0.000  
+1  
+8.1977  3  'hseo3-1' 1.000  'ag+1' 2.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! seo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'seo3' 
+'surface' 'reversible' 
+126.9582  0.000  
+1  
+-21.0440  3  'seo4-2' 1.000  'h+1' 2.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2seo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2seo4' 
+'surface' 'reversible' 
+358.6936  0.000  
+1  
+8.9014  2  'seo4-2' 1.000  'ag+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! baseo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'baseo4' 
+'surface' 'reversible' 
+280.2876  0.000  
+1  
+5.1895  2  'seo4-2' 1.000  'ba+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! caseo4:2h2o  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'caseo4:2h2o' 
+'surface' 'reversible' 
+219.0680  0.000  
+1  
+2.9473  3  'seo4-2' 1.000  'ca+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbseo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbseo4' 
+'surface' 'reversible' 
+350.1576  0.000  
+1  
+6.8387  2  'seo4-2' 1.000  'pb+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! srseo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'srseo4' 
+'surface' 'reversible' 
+230.5776  0.000  
+1  
+6.8747  2  'seo4-2' 1.000  'sr+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgmetal(l  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgmetal(l' 
+'surface' 'reversible' 
+200.5900  0.000  
+1  
+13.4552  2  'hg2+2' .500  'e-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2br2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2br2' 
+'surface' 'reversible' 
+560.9880  0.000  
+1  
+22.2091  2  'hg2+2' 1.000  'br-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2co3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2co3' 
+'surface' 'reversible' 
+461.1892  0.000  
+1  
+13.9586  2  'hg2+2' 1.000  'co3-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! calomel  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'calomel' 
+'surface' 'reversible' 
+472.0860  0.000  
+1  
+17.8427  2  'hg2+2' 1.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2f2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2f2' 
+'surface' 'reversible' 
+439.1768  0.000  
+1  
+3.0811  2  'hg2+2' 1.000  'f-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2i2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2i2' 
+'surface' 'reversible' 
+654.9890  0.000  
+1  
+28.2782  2  'hg2+2' 1.000  'i-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2(oh)2' 
+'surface' 'reversible' 
+435.1946  0.000  
+1  
+-5.2603  3  'hg2+2' 1.000  'h2o' 2.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2hpo4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2hpo4' 
+'surface' 'reversible' 
+497.1593  0.000  
+1  
+25.9795  3  'hg2+2' 1.000  'h+1' 1.000  'po4-3' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2s  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2s' 
+'surface' 'reversible' 
+433.2400  0.000  
+1  
+11.6765  3  'hg2+2' 1.000  'hs-1' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2so4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2so4' 
+'surface' 'reversible' 
+497.2376  0.000  
+1  
+6.1593  2  'hg2+2' 1.000  'so4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2seo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2seo3' 
+'surface' 'reversible' 
+528.1382  0.000  
+1  
+4.6570  3  'hg2+2' 1.000  'hseo3-1' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgbr2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgbr2' 
+'surface' 'reversible' 
+360.3980  0.000  
+1  
+25.3730  4  'hg(oh)2' 1.000  'br-1' 2.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgco3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgco3' 
+'surface' 'reversible' 
+260.5992  0.000  
+1  
+28.6817  4  'hg(oh)2' 1.000  'co3-2' 1.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgcl2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgcl2' 
+'surface' 'reversible' 
+271.4960  0.000  
+1  
+21.7858  4  'hg(oh)2' 1.000  'cl-1' 2.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! coccinite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'coccinite' 
+'surface' 'reversible' 
+454.3990  0.000  
+1  
+34.6599  4  'hg(oh)2' 1.000  'i-1' 2.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! montroydite  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'montroydite' 
+'surface' 'reversible' 
+216.5894  0.000  
+1  
+3.6503  2  'hg(oh)2' 1.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg(oh)2' 
+'surface' 'reversible' 
+234.6046  0.000  
+1  
+3.4963  1  'hg(oh)2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cinnabar  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cinnabar' 
+'surface' 'reversible' 
+232.6500  0.000  
+1  
+45.1885  4  'hg(oh)2' 1.000  'hs-1' 1.000  'h+1' 1.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! metacinnaba  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'metacinnaba' 
+'surface' 'reversible' 
+232.6500  0.000  
+1  
+44.8220  4  'hg(oh)2' 1.000  'hs-1' 1.000  'h+1' 1.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgso4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgso4' 
+'surface' 'reversible' 
+296.6476  0.000  
+1  
+9.4189  4  'hg(oh)2' 1.000  'so4-2' 1.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgseo3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgseo3' 
+'surface' 'reversible' 
+327.5482  0.000  
+1  
+12.6953  4  'hg(oh)2' 1.000  'hseo3-1' 1.000  'h+1' 1.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgi2:2nh3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgi2:2nh3' 
+'surface' 'reversible' 
+488.4598  0.000  
+1  
+16.1066  4  'hg(oh)2' 1.000  'i-1' 2.000  'nh4+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hgi2:6nh3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hgi2:6nh3' 
+'surface' 'reversible' 
+556.5814  0.000  
+1  
+-33.8566  5  'hg(oh)2' 1.000  'i-1' 2.000  'nh4+1' 6.000  'h2o' -2.000  'h+1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cr(oh)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cr(oh)2' 
+'surface' 'reversible' 
+86.0106  0.000  
+1  
+-10.8189  3  'cr+2' 1.000  'h2o' 2.000  'h+1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! crbr3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'crbr3' 
+'surface' 'reversible' 
+291.7080  0.000  
+1  
+-19.9086  4  'cr(oh)2+' 1.000  'br-1' 3.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! crcl3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'crcl3' 
+'surface' 'reversible' 
+158.3550  0.000  
+1  
+-13.5067  4  'cr(oh)2+' 1.000  'cl-1' 3.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! crf3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'crf3' 
+'surface' 'reversible' 
+108.9912  0.000  
+1  
+13.2597  4  'cr(oh)2+' 1.000  'f-1' 3.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cri3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cri3' 
+'surface' 'reversible' 
+432.7095  0.000  
+1  
+-20.4767  4  'cr(oh)2+' 1.000  'i-1' 3.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! fecr2o4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'fecr2o4' 
+'surface' 'reversible' 
+223.8366  0.000  
+1  
+.9016  3  'cr(oh)2+' 2.000  'fe+2' 1.000  'h+1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mgcr2o4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mgcr2o4' 
+'surface' 'reversible' 
+192.2946  0.000  
+1  
+-12.0796  3  'cr(oh)2+' 2.000  'mg+2' 1.000  'h+1' -4.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! crmetal  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'crmetal' 
+'surface' 'reversible' 
+51.9960  0.000  
+1  
+-32.2440  2  'cr+2' 1.000  'e-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cr2o3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cr2o3' 
+'surface' 'reversible' 
+151.9902  0.000  
+1  
+3.3937  3  'cr(oh)2+' 2.000  'h+1' -2.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cr(oh)3(a)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cr(oh)3(a)' 
+'surface' 'reversible' 
+103.0179  0.000  
+1  
+.7500  3  'cr(oh)2+' 1.000  'h2o' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cr(oh)3(c)  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cr(oh)3(c)' 
+'surface' 'reversible' 
+103.0179  0.000  
+1  
+-1.7005  3  'cr(oh)2+' 1.000  'h2o' 1.000  'h+1' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! crcl2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'crcl2' 
+'surface' 'reversible' 
+122.9020  0.000  
+1  
+-15.8676  2  'cr+2' 1.000  'cl-1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag2cro4' 
+'surface' 'reversible' 
+331.7296  0.000  
+1  
+11.5548  2  'cro4-2' 1.000  'ag+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! bacro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'bacro4' 
+'surface' 'reversible' 
+253.3236  0.000  
+1  
+9.6681  2  'cro4-2' 1.000  'ba+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cs2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cs2cro4' 
+'surface' 'reversible' 
+381.8044  0.000  
+1  
+.5541  2  'cro4-2' 1.000  'ba+2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cs2cr2o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cs2cr2o7' 
+'surface' 'reversible' 
+481.7986  0.000  
+1  
+17.7793  4  'cro4-2' 2.000  'ba+2' 2.000  'h+1' 2.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cucro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cucro4' 
+'surface' 'reversible' 
+179.5396  0.000  
+1  
+5.4754  2  'cro4-2' 1.000  'cu+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k2cro4' 
+'surface' 'reversible' 
+194.1902  0.000  
+1  
+-.0073  2  'cro4-2' 1.000  'k+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k2cr2o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k2cr2o7' 
+'surface' 'reversible' 
+294.1844  0.000  
+1  
+15.6712  4  'cro4-2' 2.000  'k+1' 2.000  'h+1' 2.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! li2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'li2cro4' 
+'surface' 'reversible' 
+129.8756  0.000  
+1  
+-4.8568  2  'cro4-2' 1.000  'li+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mgcro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mgcro4' 
+'surface' 'reversible' 
+140.2986  0.000  
+1  
+-5.3801  2  'cro4-2' 1.000  'mg+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! (nh4)2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'(nh4)2cro4' 
+'surface' 'reversible' 
+152.0702  0.000  
+1  
+-.4046  2  'cro4-2' 1.000  'nh4+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na2cro4' 
+'surface' 'reversible' 
+161.9731  0.000  
+1  
+-3.2618  2  'cro4-2' 1.000  'na+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! na2cr2o7  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'na2cr2o7' 
+'surface' 'reversible' 
+261.9673  0.000  
+1  
+9.8953  4  'cro4-2' 2.000  'na+1' 2.000  'h+1' 2.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pbcro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pbcro4' 
+'surface' 'reversible' 
+323.1936  0.000  
+1  
+13.6848  2  'cro4-2' 1.000  'pb+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! rb2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'rb2cro4' 
+'surface' 'reversible' 
+286.9292  0.000  
+1  
+.0968  2  'cro4-2' 1.000  'rb+1' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! srcro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'srcro4' 
+'surface' 'reversible' 
+203.6136  0.000  
+1  
+4.8443  2  'cro4-2' 1.000  'sr+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cro3  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cro3' 
+'surface' 'reversible' 
+99.9942  0.000  
+1  
+3.2105  3  'cro4-2' 1.000  'h+1' 2.000  'h2o' -1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cacro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cacro4' 
+'surface' 'reversible' 
+156.0736  0.000  
+1  
+2.2657  2  'ca+2' 1.000  'cro4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg2cro4' 
+'surface' 'reversible' 
+517.1736  0.000  
+1  
+8.7031  2  'hg2+2' 1.000  'cro4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl2cro4  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl2cro4' 
+'surface' 'reversible' 
+524.7336  0.000  
+1  
+12.0136  2  'tl+1' 2.000  'cro4-2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag5fecn)6.h2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag5fecn)6.h2' 
+'surface' 'reversible' 
+661.4415  0.000  
+1  
+89.6909  4  'cn-' 6.000  'ag+1' 4.000  'fe+2' 1.000  'h2o' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! agcn  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'agcn' 
+'surface' 'reversible' 
+133.8859  0.000  
+1  
+16.2180  2  'cn-' 1.000  'ag+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd2fecn)6.7h  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd2fecn)6.7h' 
+'surface' 'reversible' 
+562.8824  0.000  
+1  
+62.9824  4  'cn-' 6.000  'cd+2' 2.000  'fe+2' 1.000  'h2o' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! crcn  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'crcn' 
+'surface' 'reversible' 
+78.0138  0.000  
+1  
+-23.8880  3  'cn-' 1.000  'cr+2' 1.000  'e-1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cr2cn  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cr2cn' 
+'surface' 'reversible' 
+130.0099  0.000  
+1  
+-56.6450  3  'cn-' 1.000  'cr+2' 2.000  'e-1' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cucn  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cucn' 
+'surface' 'reversible' 
+89.5637  0.000  
+1  
+19.4974  2  'cn-' 1.000  'cu+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cu2fecn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cu2fecn)6' 
+'surface' 'reversible' 
+339.0454  0.000  
+1  
+61.4168  3  'cn-' 6.000  'cu+2' 2.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cni  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cni' 
+'surface' 'reversible' 
+152.9222  0.000  
+1  
+-11.3114  3  'cn-' 1.000  'i-1' 1.000  'e-1' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k12ni8fecn67  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k12ni8fecn67' 
+'surface' 'reversible' 
+2422.3737  0.000  
+1  
+431.0902  4  'cn-' 42.000  'k+1' 12.000  'ni+2' 8.000  'fe+2' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! kcni,cub  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'kcni,cub' 
+'surface' 'reversible' 
+65.1160  0.000  
+1  
+-1.4403  2  'cn-' 1.000  'k+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k2cdfecn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k2cdfecn)6' 
+'surface' 'reversible' 
+402.5610  0.000  
+1  
+63.0279  4  'cn-' 6.000  'k+1' 2.000  'cd+2' 1.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k4ni4fecn63  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k4ni4fecn63' 
+'surface' 'reversible' 
+1027.0135  0.000  
+1  
+183.5467  4  'cn-' 18.000  'k+1' 4.000  'ni+2' 4.000  'fe+2' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k4fecn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k4fecn)6' 
+'surface' 'reversible' 
+368.3466  0.000  
+1  
+48.8241  3  'cn-' 6.000  'k+1' 4.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k2mn3fecn62  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k2mn3fecn62' 
+'surface' 'reversible' 
+666.9176  0.000  
+1  
+121.0011  4  'cn-' 12.000  'k+1' 2.000  'mn+2' 3.000  'fe+2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k2ni3fecn62  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k2ni3fecn62' 
+'surface' 'reversible' 
+678.1735  0.000  
+1  
+123.1267  4  'cn-' 12.000  'k+1' 2.000  'ni+2' 3.000  'fe+2' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k4fecn6.3h  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k4fecn6.3h' 
+'surface' 'reversible' 
+422.3925  0.000  
+1  
+49.5424  4  'cn-' 6.000  'k+1' 4.000  'fe+2' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k12cd8fecn67  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k12cd8fecn67' 
+'surface' 'reversible' 
+2852.1417  0.000  
+1  
+441.9853  4  'cn-' 42.000  'k+1' 12.000  'cd+2' 8.000  'fe+2' 7.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! kzn1.5fecn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'kzn1.5fecn)6' 
+'surface' 'reversible' 
+349.1367  0.000  
+1  
+66.8086  4  'cn-' 6.000  'k+1' 1.000  'zn+2' 1.500  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k3fe(cn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k3fe(cn)6' 
+'surface' 'reversible' 
+329.2483  0.000  
+1  
+54.6440  3  'cn-' 6.000  'k+1' 3.000  'fe+3' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k8mn6fecn65  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k8mn6fecn65' 
+'surface' 'reversible' 
+1702.1819  0.000  
+1  
+293.6849  4  'cn-' 30.000  'k+1' 8.000  'mn+2' 6.000  'fe+2' 5.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! k2cu2fecn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'k2cu2fecn)6' 
+'surface' 'reversible' 
+417.2420  0.000  
+1  
+72.5142  4  'cn-' 6.000  'k+1' 2.000  'cu+1' 2.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! mn2fe(cn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'mn2fe(cn)6' 
+'surface' 'reversible' 
+321.8295  0.000  
+1  
+59.0272  3  'cn-' 6.000  'mn+2' 2.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! nacncri,cub  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'nacncri,cub' 
+'surface' 'reversible' 
+49.0075  0.000  
+1  
+-2.2869  2  'cn-' 1.000  'na+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2fecn6.3h  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2fecn6.3h' 
+'surface' 'reversible' 
+680.3993  0.000  
+1  
+63.6011  4  'cn-' 6.000  'pb+2' 2.000  'fe+2' 1.000  'h2o' 3.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! tl4fecn6.2h  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'tl4fecn6.2h' 
+'surface' 'reversible' 
+1065.5172  0.000  
+1  
+56.9162  4  'cn-' 6.000  'tl+1' 4.000  'fe+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn2fecn6.2h  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn2fecn6.2h' 
+'surface' 'reversible' 
+378.7640  0.000  
+1  
+61.2321  4  'cn-' 6.000  'zn+2' 2.000  'fe+2' 1.000  'h2o' 2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! agocn  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'agocn' 
+'surface' 'reversible' 
+149.8853  0.000  
+1  
+6.6159  2  'ocn-' 1.000  'ag+1' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! ag5fe(cn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'ag5fe(cn)6' 
+'surface' 'reversible' 
+133.8859  0.000  
+1  
+193.9140  3  'cn-' 6.000  'ag+1' 4.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! cd2fe(cn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'cd2fe(cn)6' 
+'surface' 'reversible' 
+436.7754  0.000  
+1  
+28.2243  3  'cn-' 6.000  'cd+2' 2.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! hg(cn)2  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'hg(cn)2' 
+'surface' 'reversible' 
+252.6255  0.000  
+1  
+45.3791  4  'hg(oh)2' 1.000  'cn-' 2.000  'h+1' 2.000  'h2o' -2.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! pb2fe(cn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'pb2fe(cn)6' 
+'surface' 'reversible' 
+626.3534  0.000  
+1  
+27.5895  3  'cn-' 6.000  'pb+2' 2.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!  
+! zn2fe(cn)6  
+! transition state theory rate law  
+! equilibrium constant and gram fromula weight from MINTEQA2  
+! density undefined  
+! rate constant undefined  
+!  
+'zn2fe(cn)6' 
+'surface' 'reversible' 
+342.7334  0.000  
+1  
+29.9263  3  'cn-' 6.000  'zn+2' 2.000  'fe+2' 1.000  
+0  0  0  0.000  1.000  1.000  
+!
+! end of mineral database 
+!
+'end'
+!---------------------------------------------------------------------------
+!structure of database:
+!----------------------
+!namem(im)
+!reaction_control(im), reaction_type(im)  
+!gfwm(im)  densm(im)
+!nreac
+!eqm(im) ncm  (namec(i) xnum(i)), i = 1,ncm
+!for ireac = 1,nreac
+!  if (rate_control(im).eq.'surface') then
+!    if (reaction_type(im).eq.'reversible'.or.
+!        reaction_type(im).eq.'dissolution_to_equilibrium'.or.
+!        reaction_type(im).eq.'precipitation_to_equilibrium') then
+!      ndt  ndc  ndcx  rated(i)  ordm(i)  ordn(i)
+!    elseif ( reaction_type(im).eq.'dissolution_far_from_equilibrium'.or.
+!             reaction_type(im).eq.'precipitation_far_from_equilibrium') then
+!      ndt  ndc  ndcx  rated(i)  chet1(i)  chet2(i)
+!    end if
+!  elseif (rate_control(im).eq.'transport') then
+!    ndt  ndc  ndcx  diffm(ireac)  xnup(ireac)
+!  end if
+!  namec(i) orddt(i)), i=1,ndc;   namec(i) orddc(i)), i=1,ndc;   
+!  namex(i) orddx(i)), i=1,ndcx
+!  (Note: last two lines are on same line in database)
+!end for
+!---------------------------------------------------------------------------
+!identification of variables:
+!----------------------------
+!namem(im)         - name of mineral A_i^m
+!rate_control(im)  - rate controlling process for reaction
+!                    options: 'surface'
+!                             'transport'
+!reaction_type(im) - reaction type of dissolution-precipitation reaction
+!                    options: 'reversible'
+!                             'dissolution_to_equilibrium'
+!                             'precipitation_to_equilibrium'
+!                             'dissolution_far_from_equilibrium'
+!                             'precipitation_far_from_equilibrium'
+!gfwm(im)          - gram formula weight of mineral [g/mole]
+!densm(im)         - density of mineral [g/cm^3]
+!nreac             - number of parallel dissolution-precipitation reactions
+!eqm(im)           - log_10 of equilibrium constant for mineral A_i^m from 
+!                    dissolution-precipitation rates
+!ncm               - number of components with nonzero stoichiometric 
+!                    coefficients in mineral A_i^m 
+!                    (Note: code uses compressed storage for stoichiometric 
+!                           matrices)
+!namec(i)          - component names
+!xnum(i)           - stoichiometric coefficient of component in 
+!                    mineral A_i^m
+!ndt               - number of reactant species
+!                    (total aqueous component concentrations)
+!ndc               - number of reactant species
+!                    (components as species in solution)
+!ndcx              - number of reactant species
+!                    (aqueous complexes)
+!rated(i)          - log_10 of reaction rate [moles/m^2/day]
+!                    (surface controlled reactions)
+!ordm(i)           - exponent m for rate law for (r1 - satm(im)**ordm(i))**ordn(i)
+!ordn(i)           - exponent n for rate law for (r1 - satm(im)**ordm(i))**ordn(i)
+!chet1(i)          - cutoff-concentration for reacting species (set to small number,
+!                    e.g. 10^{-20} moles/l h2o)
+!chet2(i)          - exponent to define steepness of cutoff (set to 1.0d0)
+!diffm(ireac)      - effective diffusion coefficent through surface coating in
+!                    ireac^{th} parallel reaction [m^2/s]
+!xnup(ireac)       - stoichiometric coefficient of primary reactant in ireac^{th}
+!                    parallel reaction
+!namec(i)          - name of reacting species (component)
+!orddt(i)          - reaction order
+!                    (with respect to total aqueous component concentrations)
+!orddc(i)          - reaction order
+!                    (with respect to activites of components as species in solution)
+!namex(i)          - name of aqueous complex
+!orddcx(i)         - reaction order
+!                    (with respect to activites of aqueous complexes)

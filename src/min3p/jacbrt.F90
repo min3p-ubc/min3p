@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/jacbrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/jacbrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -66,9 +66,9 @@
 !c           brt(nn*n)          = rhs vector                          + +
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
-!c           c(nc,nn)            = concentrations of free species      + -
+!c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - old time level [moles/l water]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of free       + -
 !c                                species
@@ -590,13 +590,14 @@
             end do 
 
             zone_name = 'temperature-correction'
-            call gcreact(cnew(1,ivol),c(1,ivol),cx(1,ivol),       &
-                         gamma(1,ivol),gamma(nc+1,ivol),          &
-                         gnew(1,ivol),sanew(ivol),sgnew(ivol),    &
-                         pornew(ivol),igen,ilog,tid,idbg,         &
-                         tec_header,prefix,l_prfx,                &
-                         zone_name,l_zone_name,                   &
-                         mtime,i_append_sim,mtime_append)
+            call gcreact(cnew(:,ivol),cold(:,ivol),cxnew(:,ivol),    &
+                         gamma(:,ivol),gamma(nc+1,ivol),             &
+                         actvset(:,ivol),gnew(:,ivol),               &
+                         sanew(ivol),sgnew(ivol),                    &
+                         pornew(ivol),igen,ilog,tid,idbg,            &
+                         tec_header,prefix,l_prfx,                   &
+                         zone_name,l_zone_name,                      &
+                         mtime,i_append_sim,mtime_append,.true.)
           end if
 
           istart = (ivol-1)*n+1           !pointer - first row
@@ -694,13 +695,13 @@
 !cprovi---------------------------------------------- 
                  call pitzer (phase,gamma(1:nc,ivol),             &
                               gamma(nc+1:nc+nx,ivol),             &
-                              cnew(1:nc,ivol),cx(1:nx,ivol),      &
+                              cnew(1:nc,ivol),cxnew(1:nx,ivol),   &
                               nc,nx,ilog)
                else
 !c  for free species
                  do ic=1,nc
-                     gamma(ic,ivol) = acoff(cnew(1,ivol),         &
-                                      cx(1,ivol),                 &
+                     gamma(ic,ivol) = acoff(cnew(:,ivol),         &
+                                      cxnew(:,ivol),              &
                                       sionnew(ivol),chargec(ic),  &
                                       dhac(ic),dhbc(ic),          &
                                       dhad(tid),dhbd(tid),        &
@@ -714,8 +715,8 @@
 !c  for aqueous complexes
 
                  do ix=1,nx
-                    gamma(nc+ix,ivol) = acoff(cnew(1,ivol),       &
-                                        cx(1,ivol),               &
+                    gamma(nc+ix,ivol) = acoff(cnew(:,ivol),       &
+                                        cxnew(:,ivol),            &
                                         sionnew(ivol),chargex(ix),&
                                         dhax(ix),dhbx(ix),        &
                                         dhad(tid),dhbd(tid),      &
@@ -738,7 +739,7 @@
               do ir=1,nr
                 ic = n+ir
                 call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),    &
-                gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,ir)
               end do
             end if
 
@@ -747,16 +748,16 @@
 
             do ix=1,nx
               call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),     &
-              gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,ix)
             end do
 
 !c  compute total aqueous component concentrations with incremented
 !c  free species concentrations
 
             if (analyt_deriv_rt) then
-              call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)      
+              call atotconc(cnew(:,ivol),cxnew(:,ivol),jbl,tid)      
             else
-              call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+              call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
             end if
 
 !c  compress total aqueous component concentration vector in case
@@ -776,7 +777,7 @@
 !cprovi-------------------------------------------------------------------
 !cprovi Bubbles use component dependent diff coefficient if speciifed
 !cprovi-------------------------------------------------------------------
-                if (diff_coff) then
+                if (comp_dep_diff_coff) then
                   bdyinfrt_da = bdyinfrt_da_ic(jbl)
                 end if
 !cprovi-------------------------------------------------------------------
@@ -847,7 +848,7 @@
           
           if (evaporation) then
             ibvs = ivol2bvs(ivol)
-            if(ibvs > 0) then
+            if(ibvs > 0 .and. bcondvs_on(ibvs)) then
               if (btypevs(ibvs)=='atmospheric') then 
                 area_ivol=bcondvs(ibvs)
                 !cprovi---------------------------------------------------
@@ -898,7 +899,7 @@
 !cprovi for flow is different than atmospheric 
 !cprovi-------------------------------------------------------------      
 
-            if (.not.diff_coff) then
+            if (.not.comp_dep_diff_coff) then
               diff_eff = r0
               diff_loc = r0
               if (type_diff_coeff == 0) then
@@ -965,7 +966,7 @@
               end do
             end if
           else
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               bdyinfrt_da_ic(1:nc) = r0
             else
               bdyinfrt_da = r0
@@ -988,7 +989,7 @@
                 if (component_type(ic).eq.'aqueous') then
 !c  calculate boundary flux vector
                   if (b_fluxd_bcond(ivol)) then
-                    if (diff_coff) then
+                    if (comp_dep_diff_coff) then
                       bdyinfrt_da = bdyinfrt_da_ic(ic)
                     end if
                     totcflux(ic) = inoutflow*bcondrt_a(ic,ibrt)+       &
@@ -1031,7 +1032,7 @@
                     totcflux(ic) = inoutflow * r0
                   else
                     if (b_fluxd_bcond(ivol)) then
-                      if (diff_coff) then
+                      if (comp_dep_diff_coff) then
                         bdyinfrt_da = bdyinfrt_da_ic(ic)
                       end if
                       totcflux(ic) = inoutflow*totcnew(ic,ivol) +      &
@@ -1091,12 +1092,12 @@
 !cprovi---------------------------------------------- 
                     call pitzer (phase,gamma(1:nc,ivol),       &
                            gamma(nc+1:nc+nx,ivol),             &
-                           cnew(1:nc,ivol),cx(1:nx,ivol),      &
+                           cnew(1:nc,ivol),cxnew(1:nx,ivol),   &
                            nc,nx,ilog)
                   else
 !c  for free species
                     do ic=1,nc
-                      gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),   &
+                      gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
                                              sionnew(ivol),chargec(ic), &
                                              dhac(ic),dhbc(ic),         &
                                              dhad(tid),dhbd(tid),       &
@@ -1109,15 +1110,15 @@
 
 !c  for aqueous complexes
                     do ix=1,nx
-                      gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol),&
-                                              sionnew(ivol),chargex(ix),&
-                                              dhax(ix),dhbx(ix),        &
-                                              dhad(tid),dhbd(tid),      &
-                                              adav,bdav,acth2omin,      &
-                                              nc,nx,namex(ix),namec,    &
-                                              nc+ix,issit,              &
-                                              asit,basit,coepsil,       &
-                                              iasit,jasit)
+                      gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
+                                                sionnew(ivol),chargex(ix), &
+                                                dhax(ix),dhbx(ix),         &
+                                                dhad(tid),dhbd(tid),       &
+                                                adav,bdav,acth2omin,       &
+                                                nc,nx,namex(ix),namec,     &
+                                                nc+ix,issit,               &
+                                                asit,basit,coepsil,        &
+                                                iasit,jasit)
                     end do
                   
                   end if
@@ -1133,7 +1134,7 @@
                   do ir=1,nr
                     ic = n+ir
                     call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),&
-                    gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                    gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,ir)
                   end do
                 end if
 
@@ -1142,16 +1143,16 @@
 
                 do ix=1,nx
                   call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid), &
-                  gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+                  gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,ix)
                 end do
 
 !c  compute total aqueous component concentrations with incremented
 !c  free species concentrations
 
                 if (analyt_deriv_rt) then
-                  call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)
+                  call atotconc(cnew(:,ivol),cxnew(:,ivol),jbl,tid)
                 else
-                  call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+                  call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
                 end if
 
 !c  compress total aqueous component concentration vector in case
@@ -1176,7 +1177,7 @@
                       dtotcflux(ibl) = r0                            !mass is retained
                     else
                       if (b_fluxd_bcond(ivol)) then
-                        if (diff_coff) then
+                        if (comp_dep_diff_coff) then
                           bdyinfrt_da = bdyinfrt_da_ic(ibl)
                         end if
                         dtotcflux(ibl) = inoutflow * dtotc(ibl,tid) +  &
@@ -1240,7 +1241,7 @@
             !cprovi--------------------------------------------------
             !cprovi Check the boundary index for flow
             !cprovi--------------------------------------------------
-            if(ibvs > 0) then
+            if(ibvs > 0 .and. bcondvs_on(ibvs)) then
               if (btypevs(ibvs)=='atmospheric') then 
                    !cprovi---------------------------------------------------
                    !cprovi If the boundary condition for flow was defined 
@@ -1284,7 +1285,7 @@
 !cprovi for flow is different than atmospheric 
 !cprovi-------------------------------------------------------------      
           if (compute_diff) then
-            if (.not.diff_coff) then
+            if (.not.comp_dep_diff_coff) then
               diff_eff = r0
               diff_loc = r0
               if (type_diff_coeff == 0) then
@@ -1340,7 +1341,7 @@
               end do
             end if
           else
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               bdyinfrt_da_ic(1:nc) = r0
             else
               bdyinfrt_da = r0
@@ -1365,56 +1366,55 @@
             end if              
             
             !variables for gas transport
-            if(gas_advection .or. dgm .or. maxwell) then
+            if (gas_advection .or. dgm .or. maxwell) then
                 
-                gsatijbrt = sgnew(ivol)
-                gporijbrt = pornew(ivol)*sgnew(ivol)
-                tauijbrt  = diff_eff / gporijbrt !/ diff_g
+              gsatijbrt = sgnew(ivol)
+              gporijbrt = pornew(ivol)*sgnew(ivol)
+              tauijbrt  = diff_eff / gporijbrt !/ diff_g
                 
-!c              total concentration of gas components at the boundary node
-                call totconcg(gbrt,totgnew_brt)           
+!c            total concentration of gas components at the boundary node
+              call totconcg(gbrt,totgnew_brt)           
                 
 !c-------------------------------------------------------------------------
-!c              calculate gas properties + molar fractions
+!c            calculate gas properties + molar fractions
 
-                mdens_g_ivol  = gasm(ng, gnew(1,ivol))            ! gas molar dens
-                mdens_g_brt   = gasm(ng, gbrt(1,ibrt))            ! gas molar dens               
+              mdens_g_ivol  = gasm(ng, gnew(:,ivol))            ! gas molar dens
+              mdens_g_brt   = gasm(ng, gbrt(:,ibrt))            ! gas molar dens               
 
-                do ig=1,ng
-                    gmfrac_ivol(ig) = gnew(ig,ivol) / mdens_g_ivol  ! molar fractions
-                                                                    ! gas species
-                    gmfrac_brt(ig)  = gbrt(ig,ibrt) / mdens_g_brt   ! molar fractions
-                                                                    ! gas species
-                enddo
+              do ig=1,ng
+                gmfrac_ivol(ig) = gnew(ig,ivol) / mdens_g_ivol  ! molar fractions
+                                                                ! gas species
+                gmfrac_brt(ig)  = gbrt(ig,ibrt) / mdens_g_brt   ! molar fractions
+                                                                ! gas species
+              enddo
          
-                do ic=1,n
-                    totgmfrac_ivol(ic) = totgnew(ic,ivol) /           &
-                                         mdens_g_ivol               ! gas molar frac for components
-                                                            
-                    totgmfrac_brt(ic)  = totgnew_brt(ic)  /           &
-                                         mdens_g_brt                ! gas molar frac for components
-                enddo
+              do ic=1,n
+                totgmfrac_ivol(ic) = totgnew(ic,ivol) /           &
+                                     mdens_g_ivol               ! gas molar frac for components
+                                                        
+                totgmfrac_brt(ic)  = totgnew_brt(ic)  /           &
+                                     mdens_g_brt                ! gas molar frac for components
+              enddo
       
-                !gpivol_ivol = gasp_m(mdens_g_ivol,ivol)             ! gas pressure
-                !gdens_ivol  = gasd_m(mdens_g_ivol,gmfrac_ivol)      ! gas density
-                !gvisc_ivol  = gasv(gmfrac_ivol)                     ! gas viscosity
+              !gpivol_ivol = gasp_m(mdens_g_ivol,ivol)             ! gas pressure
+              !gdens_ivol  = gasd_m(mdens_g_ivol,gmfrac_ivol)      ! gas density
+              !gvisc_ivol  = gasv(gmfrac_ivol)                     ! gas viscosity
 
-                gpivol_ivol = gpivol(ivol)                          ! gas pressure
-                gdens_ivol  = gdens(ivol)                           ! gas density
-                gvisc_ivol  = gvisc(ivol)                           ! gas viscosity
+              gpivol_ivol = gpivol(ivol)                          ! gas pressure
+              gdens_ivol  = gdens(ivol)                           ! gas density
+              gvisc_ivol  = gvisc(ivol)                           ! gas viscosity
 
-                gpivol_brt  = gasp_m(mdens_g_brt,ivol)              ! gas pressure
-                gdens_brt   = gasd_m(mdens_g_brt,gmfrac_ivol)       ! gas density
-                gvisc_brt   = gasv(gmfrac_brt)                      ! gas viscosity 
+              gpivol_brt  = gasp_m(mdens_g_brt,ivol)              ! gas pressure
+              gdens_brt   = gasd_m(mdens_g_brt,gmfrac_ivol)       ! gas density
+              gvisc_brt   = gasv(gmfrac_brt)                      ! gas viscosity 
 
 !c           decide on the upstream node
-                if (spt_weight.eq.'upstream') then
-            
-                    call giups_brt(gpivol_ivol   , gpivol_brt  ,      &
-                                   zg(ivol)      , zgbrt(ibrt) ,      &
-                                   gdens_ivol    , gdens_brt   ,      &
-                                   iupsgbrt(ibrt), gacc)
-                endif
+              if (spt_weight.eq.'upstream') then            
+                call giups_brt(gpivol_ivol   , gpivol_brt  ,      &
+                               zg(ivol)      , zgbrt(ibrt) ,      &
+                               gdens_ivol    , gdens_brt   ,      &
+                               iupsgbrt(ibrt), gacc)
+              endif
 !c-------------------------------------------------------------------------
             
 !c              calculate gas properties at interface according to weighting scheme
@@ -1439,7 +1439,7 @@
               end if
 #endif
 
-              call wgprop(totgnew(1,ivol),totgnew_brt,totgij   ,       &
+              call wgprop(totgnew(:,ivol),totgnew_brt,totgij   ,       &
                       gnew(:,ivol)   ,gbrt(:,ibrt)   ,gij      ,       &
                       gmfrac_ivol    ,gmfrac_brt     ,gmfracij ,       &
                       relpgi         ,relpgj         ,relpgij  ,       &
@@ -1458,7 +1458,7 @@
           
             if (dgm) then
             
-              call dgm_fluxdg (gnew(1,ivol)     ,gbrt(1,ibrt)   ,      &
+              call dgm_fluxdg (gnew(:,ivol)     ,gbrt(:,ibrt)   ,      &
                                gij              ,gmfracij       ,      &
                                zg(ivol)         ,zgbrt(ibrt)    ,      &
                                densgij          ,gpij           ,      &
@@ -1474,7 +1474,7 @@
 
             else if (maxwell) then
             
-              call ms_fluxdg (gnew(1,ivol)      ,gbrt(1,ibrt)   ,      &
+              call ms_fluxdg (gnew(:,ivol)      ,gbrt(:,ibrt)   ,      &
                               gij               ,gmfracij       ,      &
                               zg(ivol)          ,zgbrt(ibrt)    ,      &
                               densgij           ,gpij           ,      &
@@ -1497,7 +1497,7 @@
 !cprovi Bubbles use component dependent diff coefficient if 
 !cprovi speciifed
 !cprovi-------------------------------------------------------
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               bdyinfrt_da = bdyinfrt_da_ic(ic)
             end if
 !cprovi-------------------------------------------------------
@@ -1743,32 +1743,32 @@
 !cprovi---------------------------------------------- 
                 call pitzer (phase,gamma(1:nc,ivol),           &
                              gamma(nc+1:nc+nx,ivol),           &
-                             cnew(1:nc,ivol),cx(1:nx,ivol),    &
+                             cnew(1:nc,ivol),cxnew(1:nx,ivol), &
                              nc,nx,ilog)
               else
 !c  for free species
                 do ic=1,nc
-                     gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),&
-                                      sionnew(ivol),chargec(ic),    &
-                                      dhac(ic),dhbc(ic),            &
-                                      dhad(tid),dhbd(tid),          &
-                                      adav,bdav,acth2omin,nc,       &
-                                      nx,namec(ic),namec,ic,        &
-                                      issit,asit,basit,coepsil,     &
-                                      iasit,jasit)
+                     gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
+                                            sionnew(ivol),chargec(ic), &
+                                            dhac(ic),dhbc(ic),         &
+                                            dhad(tid),dhbd(tid),       &
+                                            adav,bdav,acth2omin,nc,    &
+                                            nx,namec(ic),namec,ic,     &
+                                            issit,asit,basit,coepsil,  &
+                                            iasit,jasit)
                 end do
 
 !c  for secondary aqueous species
 
                 do ix=1,nx
-                  gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol),&
-                                      sionnew(ivol),chargex(ix),    &
-                                      dhax(ix),dhbx(ix),            &
-                                      dhad(tid),dhbd(tid),          &
-                                      adav,bdav,acth2omin,nc,       &
-                                      nx,namex(ix),namec,           &
-                                      nc+ix,issit,asit,basit,       &
-                                      coepsil,iasit,jasit)
+                  gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),&
+                                            sionnew(ivol),chargex(ix), &
+                                            dhax(ix),dhbx(ix),         &
+                                            dhad(tid),dhbd(tid),       &
+                                            adav,bdav,acth2omin,nc,    &
+                                            nx,namex(ix),namec,        &
+                                            nc+ix,issit,asit,basit,    &
+                                            coepsil,iasit,jasit)
                 end do
 
               end if
@@ -1785,7 +1785,7 @@
               do ir=1,nr
                 ic = n+ir
                 call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),    &
-                gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,ir)
               end do
             end if
 
@@ -1794,15 +1794,15 @@
 
             do ix=1,nx
               call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),     &
-              gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+              gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,ix)
             end do
 
 !c  compute derivative of total aqueous component concentrations 
 
             if (analyt_deriv_rt) then
-              call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)
+              call atotconc(cnew(:,ivol),cxnew(:,ivol),jbl,tid)
             else
-              call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+              call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
             end if
 
 !c  compress total aqueous component concentration vector in case
@@ -1820,13 +1820,13 @@
 !c  concentrations
 
               do ig = 1,ng
-                call gasconc(cinc(:,tid),gamma(1,ivol),ginc(ig,tid),  &
+                call gasconc(cinc(:,tid),gamma(:,ivol),ginc(ig,tid),  &
                      ig,tkel(ivol),tid)
               end do
 
 !c  compute derivatives of total gaseous component concentrations
 
-              call dtotcong(gnew(1,ivol),ginc(:,tid),dtotg(:,tid),xnug,      &
+              call dtotcong(gnew(:,ivol),ginc(:,tid),dtotg(:,tid),xnug,      &
                             drtinc,iaga,jaga,nc,ng,jbl,namec)
 
 !c  compress derivative of total gaseous component concentration
@@ -1880,7 +1880,7 @@
               end if
 #endif
 
-              call wgpropd(totgnew(1,ivol),totgnew_brt   ,totgij   ,   &
+              call wgpropd(totgnew(:,ivol),totgnew_brt   ,totgij   ,   &
                            relpgi         ,relpgj        ,relpgij  ,   &
                            gdens_ivol     ,gdens_brt     ,densgij  ,   &
                            gvisc_ivol     ,gvisc_brt     ,viscgij  ,   &
@@ -1895,7 +1895,7 @@
           
               if (dgm) then
               
-                call dgm_dfluxdg (gnew(1,ivol)      ,gbrt(1,ibrt)  ,   &
+                call dgm_dfluxdg (gnew(:,ivol)      ,gbrt(:,ibrt)  ,   &
                                   dg                ,dgmfrac       ,   &
                                   zg(ivol)          ,zgbrt(ibrt)   ,   &
                                   densgij           ,gpij          ,   &
@@ -1920,16 +1920,16 @@
                   enddo
                 enddo
                 
-                call ms_dfluxdg  (gnew(1,ivol),gbrt(1,ibrt),           &
-                                    dg          ,dgmfrac     ,         &
-                                    zg(ivol)    ,zgbrt(ibrt) ,         &
-                                    densgij     ,gpij        ,         &
-                                    tkel(ivol)  ,tauijbrt    ,         &
-                                    gporijbrt   ,dijbrt(ibrt),         &
-                                    rverysmall  ,wfac        ,         &
-                                    ipvt        ,equimolar   ,         &
-                                    lumat2      ,fmat        ,         &
-                                    ms_gflux    ,ms_dgflux   )
+                call ms_dfluxdg  (gnew(:,ivol),gbrt(:,ibrt),           &
+                                  dg          ,dgmfrac     ,           &
+                                  zg(ivol)    ,zgbrt(ibrt) ,           &
+                                  densgij     ,gpij        ,           &
+                                  tkel(ivol)  ,tauijbrt    ,           &
+                                  gporijbrt   ,dijbrt(ibrt),           &
+                                  rverysmall  ,wfac        ,           &
+                                  ipvt        ,equimolar   ,           &
+                                  lumat2      ,fmat        ,           &
+                                  ms_gflux    ,ms_dgflux   )
               
               endif
               
@@ -1949,7 +1949,7 @@
 !c  - for outflux, advective component varies
                 if (inoutflow > r0) then                                 !influx
                   if (b_fluxd_bcond(ivol)) then 
-                    if (diff_coff) then
+                    if (comp_dep_diff_coff) then
                       bdyinfrt_da = bdyinfrt_da_ic(ibl)
                     end if                
                     dtotcflux(ibl) = fluxd(dtotc(ibl,tid),r0,          & !diffusive
@@ -1963,7 +1963,7 @@
                     dtotcflux(ibl) = r0
                   else
                     if (b_fluxd_bcond(ivol)) then
-                      if (diff_coff) then
+                      if (comp_dep_diff_coff) then
                         bdyinfrt_da = bdyinfrt_da_ic(ibl)
                       end if                     
                       dtotcflux(ibl) = inoutflow * dtotc(ibl,tid) +    & !advective

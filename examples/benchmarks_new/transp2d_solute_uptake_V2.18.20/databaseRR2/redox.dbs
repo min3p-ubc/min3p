@@ -1,0 +1,1518 @@
+! intra.dbs
+! **********************************************************************
+! MIN3P database file for equilibrium oxidation-reduction reactions
+! and intra-aqueous kinetic reactions
+!
+!ADDITION OF INTRA-AQUEOUS KINETIC RXN OXALATE OXIDATION
+! ----------------------------------------------------------------------
+! redox reactions - computed from MINTEQ/WATEQ databases
+! ----------------------------------------------------------------------
+!
+! fe+3
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+! activation energy undefined
+!
+'fe+3'
+4  'fe+2'    1.000  'o2(aq)'    0.250  'h+1'    1.000  'h2o'    -0.500
+'equilibrium'   -8.4725  23.4570
+!
+! no2-1
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'no2-1'
+2  'no3-1'    1.000  'o2(aq)'    -.500
+'equilibrium' 14.4390  -23.1540
+!
+! nh4+1
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'nh4+1'
+4  'no3-1'    1.000  'h2o'    1.000  'h+1'    2.000  'o2(aq)'   -2.000
+'equilibrium'   52.9590  -80.6011
+!
+! h3aso4
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'h3aso4'
+2  'h3aso3'    1.000  'o2(aq)'     .500
+'equilibrium'  -23.5650  36.8990
+!
+! sb(oh)3
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'sb(oh)3'
+4  'sb(oh)6-'    1.000  'o2(aq)'    -.500  'h+1'    1.000  'h2o'   -2.000
+'equilibrium'   17.2299  .0000
+!
+! u+3
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'u+3'
+4  'uo2+2'    1.000  'o2(aq)'    -.750  'h+1'    1.000   'h2o'    -.500
+'equilibrium'   64.0935  -90.3410
+!
+! u+4
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'u+4'
+4  'uo2+2'   1.000  'o2(aq)'    -.500  'h+1'    2.000   'h2o'   -1.000
+'equilibrium'   33.7930  -32.4840
+!
+! uo2+1
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'uo2+1'
+4  'uo2+2'   1.000  'o2(aq)'    -.250   'h+1'   -1.000  'h2o'     .500
+'equilibrium'   18.7195  -30.1570
+!
+! mn+3
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'mn+3'
+4  'mn+2'    1.000  'o2(aq)'     .250   'h+1'    1.000  'h2o'    -.500
+'equilibrium'    4.0025   59.2170
+!
+! cu+1
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'cu+1'
+4  'cu+2'   1.000  'o2(aq)'    -.250  'cu+2'   1.000  'h+1'   -1.000  'h2o'     .500
+'equilibrium'   18.7845  -35.1070
+!
+! v+2
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'v+2'
+4  'vo2+1'   1.000  'o2(aq)'    -.750  'h+1'    1.000   'h2o'    -.500
+'equilibrium'   46.1335  -65.0410
+!
+! v+3
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'v+3'
+4  'vo2+1'   1.000  'o2(aq)'    -.500  'h+1'    2.000   'h2o'   -1.000
+'equilibrium'   20.3990  -22.6840
+!
+! vo+2
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'vo+2'
+4  'vo2+1'    1.000  'o2(aq)'    -.250  'h+1'    1.000    'h2o'    -.500
+'equilibrium'    4.5745   -4.1370
+!
+! hs-1
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'hs-1'
+3  'so4-2'   1.000  'h+1'    1.000  'o2(aq)'   -2.000
+'equilibrium'  138.3760 -207.5161
+!
+! tl+1
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'tl+1'
+4  'tl(oh)3'   1.000  'o2(aq)'    -.500  'h+1'    1.000  'tl+1'   -1.000  'h2o'   -2.000
+'equilibrium'   -5.0088     .0000
+!
+! hse-1
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'hse-1'
+2  'hseo3-1'    1.000  'o2(aq)'   -1.500
+'equilibrium'   93.6470 -122.5721
+!
+! seo4-2
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'seo4-2'
+3  'hseo3-1'    1.000  'o2(aq)'     .500  'h+1'   -1.000
+'equilibrium'   -6.6900   18.8190
+!
+! hg2+2
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'hg2+2'
+4  'hg(oh)2'    1.000  'h+1'    2.000  'o2(aq)'    -.500  'h2o'   -3.000
+'equilibrium'     .0220   -3.3240
+!
+! cr+2
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'cr+2'
+4  'cr(oh)2+'    1.000  'h2o'   -1.500   'h+1'    1.000  'o2(aq)'    -.250
+'equilibrium'   18.5575  -39.8170
+!
+! cro4-2
+! equilibrium constant calculated from MINTEQ-database
+! enthalpy change calculated from MINTEQ-database
+!
+'cro4-2'
+4  'cr(oh)2+'    1.000  'h+1'   -3.000  'o2(aq)'     .750   'h2o'     .500
+'equilibrium'    2.8625   -2.6290
+!
+!
+! intra-aqueous kinetic reactions - user defined
+! -------------------------------------------------------------------------
+!
+! microbial biomass synthesis from benzene degradation and nh4 nitrification, composition c5h7.6no2p01 (N/P = 10), based on Jin and Bethke
+!
+'biomass-f'
+9  'c6h6' -1.000  'o2(aq)' -3.125 'nh4+1' -1.300 'po4-3' -0.100 'co3-2' 1.000 'h+1' 3.300 'no3-1' 0.300  'h2o' 0.750  'biomass1' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass1'   1.000
+
+'hyperbolic T^a' 8
+'o2(aq)' 3.125d-6   1.0d0
+'c6h6'   1.0d-5     1.0d0
+'nh4+1'  1.d-5      1.0d0
+'po4-3'  1.d-5      1.0d0
+'o2(aq)' 1.d-10     2.0d0
+'c6h6'   1.d-10     2.0d0
+'nh4+1'  1.d-10     2.0d0
+'po4-3'  1.d-10     2.0d0
+
+!
+! Degradation of theoretical pesticide + ideal soluble organic matter to give metabolite + immobilized pesticide (immobile component)
+! First order degradation rate (see Mamy et al., for example) with respect to pest conc + OM term (personal) to cope with subtratum availability
+!
+'Pest-degrad'
+4  'Pesticide-A' -1.000  'ch2o' -1.000 'Metabolite-A' 1.000	'biomass1' 1.000
+'irreversible'
+
+'fractional T^a' 2
+'Pesticide-A' 1.0000
+'ch2o' 1.0000
+
+!
+! Degradation of a nematicide (from Claudio), neither other reactant nor any product
+! zeroth order degradation rate
+!
+'Nem-degrad-0'
+1  'Nematicide-A' -1.000
+'irreversible'
+
+'hyperbolic T^a' 1 
+'Nematicide-A'  1.d-15     1.0d0
+
+'activation energy' 15.0
+
+! Degradation of a nematicide (from Claudio), neither other reactant nor any product
+! First order degradation rate (see Mamy et al., for example) with respect to nematicide conc
+!
+'Nem-degrad'
+1  'Nematicide-A' -1.000
+'irreversible'
+
+'fractional T^a' 1
+'Nematicide-A' 1.0000
+
+! Degradation of a nematicide (from Claudio), metabolite released by biodeg
+! First order degradation rate (see Mamy et al., for example) with respect to nematicide conc
+!
+'Nem-degrad-b'
+2  'Nematicide-A' -1.000 'Metabolite-A' 5.000
+'irreversible'
+
+'fractional T^a' 1
+'Nematicide-A' 1.0000
+
+!
+! P org (biomass1) transformation into PO4 + 3 H+
+! fast stuff for internal demo
+!
+'Porg-degrad'
+4  'Porganique' -1.000 'ch2o' -1.000  'po4-3' 1.000 'h+1' 3.000
+'irreversible'
+
+'fractional T^a' 1
+'ch2o' 1.0000
+!
+
+!Oxalate (aq) oxidation intra-aqueous kinetic rxn !HG
+!
+
+'oxalateO2'
+4  'o2(aq)' -0.500 'co3-2' 2.000 'h+1' 2.000 'ca+2' 1.000
+'irreversible'
+
+'hyperbolic T^a'  2  
+'o2(aq)'     1.d-5  1.000
+'o2(aq)'     1.d-9  2.000
+
+'fractional phi^m'  1  
+'CaOxalate_ox'  1.0d-5  -1.000
+
+!Oxalate2B (aq) oxidation intra-aqueous kinetic rxn !HG 6/27/19
+!
+
+'oxalate_rxn'
+4  'oxalate-2B' -1.000  'o2(aq)' -0.500 'co3-2' 2.000 'h+1' 2.000
+'irreversible'
+
+'hyperbolic T^a'  4  
+'o2(aq)'     1.d-5  1.000
+'o2(aq)'     1.d-9  2.000
+'oxalate-2B'  1.d-5  1.000
+'oxalate-2B'  1.d-9  1.000
+!
+! oxalate oxidation (for modeling of oxalate-carbonate-pathway) !FG
+! 
+!
+'Oxalate-o2'
+4  'oxalate-2' -1.000  'o2(aq)' -0.500 'co3-2' 2.000 'h+1' 2.000
+'irreversible'
+
+'fractional T^a' 2
+'oxalate-2' 1.0000
+'o2(aq)' 1.0000
+!
+!
+
+!'hyperbolic T^a'  4  
+!'o2(aq)'     1.d-5  1.000
+!'o2(aq)'     1.d-9  2.000
+!'CaOxalate'  1.d-5  1.000
+!'CaOxalate'  1.d-9  1.000
+!
+! FOM degradation for 100% biomass production
+! 
+!
+'FOMdeg'
+2  'FOM' -1.000  'biomass1' 1.000
+'irreversible'
+
+'hyperbolic T^a' 2
+'FOM'  1.d-3     1.0d0
+'FOM'  1.d-10    2.0d0
+
+!
+! FOM degradation - Ca dependent - for 100% biomass production
+! 
+!
+'FOMdegCa'
+3  'FOM' -1.000 'ca+2' -0.001 'biomass1' 1.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'FOM'  1.d-3     1.0d0
+'FOM'  1.d-10    2.0d0
+'ca+2'  1.d-08    1.0d0
+'ca+2'  1.d-10    2.0d0
+
+!
+! Network s1 + 2
+! SOM-p1 production from FOM
+!
+'FOMtoSOMP1'
+1  'SOM-p1' 1.000
+'irreversible'
+
+!
+! Networks 1 + 2
+! biomass transformation into SOM-p1
+!    **um transformation factor = 1.0 **um
+!      and not 0.3 as specified in the benchmark doc...
+!
+'bio-SOMP1'
+2  'biomass1' -1.000 'SOM-p1' 1.000
+'irreversible'
+
+'fractional T^a' 1
+'biomass1' 1.0000
+
+!
+! Network 1
+! SOM-p1 transformation into SOM-p2 + inorganic C + PROTONS + biomass
+!         transformation factor 1 (rp1-p2) = 0.1
+!         transformation factor 2 (rp1-I) = 0.6
+!         transformation factor 3 (rp1-B) = 0.3
+!
+'P1-P2+IH+bio'
+5  'SOM-p1' -1.000 'SOM-p2' 0.100 'co3-2' 0.600 'biomass1' 0.300 'h+1' 1.200 
+'irreversible'
+
+'fractional T^a' 1
+'SOM-p1' 1.0000
+
+!
+! Network 1
+! SOM-p2 transformation into biomass + inorganic C + PROTONS
+!         transformation factor 1 (rp2-B) = 0.4
+!         transformation factor 2 (rp2-I) = 0.6
+!
+'P2tobio+IH'
+4  'SOM-p2' -1.00 'biomass1' 0.400 'co3-2' 0.600  'h+1' 1.200
+'irreversible'
+
+'fractional T^a' 1
+'SOM-p2' 1.0000
+
+!
+! Network 1
+! SOM-p1 transformation into SOM-p2 + inorganic C + PROTONS + biomass
+!         Rate function of biomass
+!         transformation factor 1 (rp1-p2) = 0.1
+!         transformation factor 2 (rp1-I) = 0.6
+!         transformation factor 3 (rp1-B) = 0.3
+!
+'P1-P2+IHbioB'
+5  'SOM-p1' -1.000 'SOM-p2' 0.100 'co3-2' 0.600 'biomass1' 0.300 'h+1' 1.200 
+'irreversible'
+
+'fractional T^a' 2
+'SOM-p1' 1.0000
+'biomass1' 1.0000
+
+!
+! Network 1
+! SOM-p2 transformation into biomass + inorganic C + PROTONS
+!         Rate function of biomass
+!         transformation factor 1 (rp2-B) = 0.4
+!         transformation factor 2 (rp2-I) = 0.6
+!
+'P2tobio+IHB'
+4  'SOM-p2' -1.000 'biomass1' 0.400 'co3-2' 0.6000  'h+1' 1.200
+'irreversible'
+
+'fractional T^a' 2
+'SOM-p2' 1.0000
+'biomass1' 1.0000
+
+!
+! Network 2
+! SOM-p1 transformation into SOM-p2 + SOM-L+ inorganic C + PROTONS + biomass
+!         transformation factor 1 (rp1-p2) = 0.1
+!         transformation factor 2 (rp1-I) = 0.55
+!         transformation factor 3 (rp1-B) = 0.3
+!         transformation factor 4 (rp1-L) = 0.05
+!
+'SOM-P1-deg-A'
+6  'SOM-p1' -1.000 'SOM-p2' 0.100 'co3-2' 0.550 'biomass1' 0.300 'h+1' 1.1000 'SOM-L' 0.050  
+'irreversible'
+
+'fractional T^a' 1
+'SOM-p1' 1.0000
+
+!
+! Network 2
+! SOM-p1 transformation into SOM-p2 + SOM-L+ inorganic C + PROTONS + biomass
+!         transformation factor 1 (rp1-p2) = 0.1
+!         transformation factor 2 (rp1-I) = 0.55
+!         transformation factor 3 (rp1-B) = 0.3
+!         transformation factor 4 (rp1-L) = 0.05
+!
+'SOM-P1-deg-B'
+6  'SOM-p1' -1.000 'SOM-p2' 0.100 'co3-2' 0.550 'biomass1' 0.300 'h+1' 1.1000 'SOM-L' 0.050  
+'irreversible'
+
+'fractional T^a' 2
+'SOM-p1' 1.0000
+'biomass1' 1.0000
+
+!
+! Network 2
+! SOM-p2 transformation into biomass + SOM-L+ inorganic C + PROTONS
+!         transformation factor 1 (rp2-B) = 0.4
+!         transformation factor 2 (rp2-I) = 0.5
+!         transformation factor 2 (rp2-L) = 0.1
+!
+'SOM-P2-deg-A'
+5  'SOM-p2' -1.000 'biomass1' 0.400 'co3-2' 0.500  'h+1' 1.0000 'SOM-L' 0.100
+'irreversible'
+
+'fractional T^a' 1
+'SOM-p2' 1.0000
+
+!
+! Network 2
+! SOM-p2 transformation into biomass + SOM-L+ inorganic C + PROTONS
+!         transformation factor 1 (rp2-B) = 0.4
+!         transformation factor 2 (rp2-I) = 0.5
+!         transformation factor 2 (rp2-L) = 0.1
+!
+'SOM-P2-deg-B'
+5  'SOM-p2' -1.000 'biomass1' 0.400 'co3-2' 0.500  'h+1' 1.0000 'SOM-L' 0.100
+'irreversible'
+
+'fractional T^a' 2
+'SOM-p2' 1.0000
+'biomass1' 1.0000
+
+!
+! Network 2
+! SOM-L transformation into biomass + inorganic C + PROTONS
+!         transformation factor 1 (L-B) = 0.1
+!         transformation factor 2 (L-I) = 0.9
+!
+'SOM-L-deg-A'
+4  'SOM-L' -1.000 'biomass1' 0.100 'co3-2' 0.900  'h+1' 1.800
+'irreversible'
+
+'fractional T^a' 1
+'SOM-L' 1.0000
+
+!
+! Network 2
+! SOM-L transformation into biomass + inorganic C + PROTONS
+!         transformation factor 1 (L-B) = 0.1
+!         transformation factor 2 (L-I) = 0.9
+!
+'SOM-L-deg-B'
+4  'SOM-L' -1.000 'biomass1' 0.100 'co3-2' 0.900  'h+1' 1.800
+'irreversible'
+
+'fractional T^a' 2
+'SOM-L' 1.0000
+'biomass1' 1.0000
+
+!
+! Network 2
+! SOM-L - DOM relationship
+!
+'SOM-DOM'
+2  'SOM-L' -1.000 'DOM' 1.000
+'irreversible'
+
+'fractional T^a' 1
+'SOM-L' 1.0000
+
+!
+! essai sorption kinetic
+! langmuir term
+! DOM sorption
+!
+'DOM-sorption'
+2  'SOM-L' -1.000 'DOM' 1.000
+
+'sorption kinetic_langmuir'
+
+'aqueous component' 1
+'DOM' 6.0055 0.333
+
+!
+! essai sorption kinetic
+! freundlich term
+! DOM sorption
+! Nota: name DOM-sorptionf too long....
+!       read as DOM-sorption ....
+!
+'DOM-sorpt-f'
+2  'SOM-L' -1.000 'DOM' 1.000
+
+'sorption kinetic_freundlich'
+
+'aqueous component' 1
+'DOM' 3.316 0.827
+
+!
+! essai sorption kinetic
+! freundlich term
+! NEM sorption
+!
+'Nem-sorpt-f'
+2  'Sorbed-Nem' -1.000 'Nematicide-A' 1.000
+
+'sorption kinetic_freundlich'
+
+'aqueous component' 1
+'Nematicide-A' 0.3316 0.827 !used for the presentaton of June 2015
+!'Nematicide-A' 3.316 0.827 !used for the first test with nema
+
+!
+! ch2o-degradation + PO4 immobilisation regardless of mass bal etc..
+!
+'ch2opo4'
+2  'ch2o' -1.000  'po4-3' -1.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'ch2o'   1.0d-4     1.0d0
+'ch2o'   1.d-10     2.0d0
+'po4-3'   1.0d-6     1.0d0
+'po4-3'   1.d-10     2.0d0
+
+!
+! SOM degradation set for numerical verification against analytical solution
+!
+'SOMdeg'
+1  'SOM' -1.000
+'irreversible'
+
+'fractional T^a' 1
+'SOM' 1.0000
+
+!
+! ch2o-degradation - aerobic respiration - Monod-kinetics
+!
+'ch2opo4-o2'
+4  'ch2o' -1.000  'o2(aq)' -1.000  'co3-2' 1.000  'h+1' 2.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6   1.0d0
+'ch2o'   1.0d-4     1.0d0
+'o2(aq)' 1.d-10     2.0d0
+'ch2o'   1.d-10     2.0d0
+
+!
+! benzene degradation - aerobic respiration - Monod-kinetics
+!
+'c6h6-o2'
+4  'c6h6' -1.000  'o2(aq)' -7.500  'co3-2' 6.000  'h+1' 12.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6   1.0d0
+'c6h6'   1.0d-5     1.0d0
+'o2(aq)' 1.d-07     2.0d0
+'c6h6'   1.d-07     2.0d0
+
+!
+! mtbe/aerobic oxidation - Monod-kinetics  irreversible reaction
+!
+'mtbe-o2'
+5  'mtbe' -1.000  'o2(aq)' -7.5  'h2o' 1.000  'co3-2' 5.000  'h+1' 10.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'o2(aq)'  3.125d-6   1.0d0
+'mtbe'    1.d-5      1.0d0
+'o2(aq)'  1.d-7      2.0d0
+'mtbe'    1.d-7      2.0d0
+
+!'activation energy' 12.37        ! just a housenumber 
+
+!
+! Exemple réaction de dégradation P organique et
+! création biomasse immobilisant implicitement P (0.8 PO4)
+!
+'porgdeg'
+4  'Porganique' -1.000 'po4-3' 0.800 'h+1' 2.400 'biomass1' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass1'   1.000
+
+'hyperbolic T^a' 2
+'Porganique' 1E-4   1.0d0
+'Porganique' 1.d-10     2.0d0
+!
+! Exemple réaction de dégradation P organique et
+! création biomasse immobilisant implicitement 100% P
+!
+'porgdegb'
+2  'Porganique' -1.000 'biomass1' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass1'   1.000
+
+'hyperbolic T^a' 2
+'Porganique' 1E-4   1.0d0
+'Porganique' 1.d-10     2.0d0
+!
+! Exemple réaction de dégradation P organique et
+! création biomasse immobilisant implicitement 100% P
+!
+'biopred1'
+4  'biomass1' -1.000 'predator1' 0.900  'po4-3' 0.300 'h+1' 2.400
+'irreversible'
+
+'fractional T^a'  1
+'predator1'   1.000
+
+'hyperbolic T^a' 2
+'biomass1' 1E-4   1.0d0
+'biomass1' 1.d-10     2.0d0
+!
+!
+! benzene kinetic sorption from aqueous to immobile species (linear isotherm)
+! **************************  added UM2, 4, 02.06.2008 ****************************
+'c6h6-lin'
+2  'c6h6' -1.000  '=c6h6' 1.000
+'reversible'    1.6417   0.0
+
+!
+! benzene kinetic sorption from aqueous to immobile species (freundlich isotherm)
+! **************************  added UM2, 4, 02.06.2008 ****************************
+'c6h6-fr0.3'
+2  'c6h6' -0.300  '=c6h6' 1.000
+'reversible'    -0.6417   0.0
+
+!
+! benzene kinetic sorption from aqueous to immobile species (freundlich isotherm)
+! **************************  added UM2, 4, 14.08.2008 ****************************
+'c6h6-fr0.35'
+2  'c6h6' -0.350  '=c6h6' 1.000
+'reversible'    -0.6417   0.0
+
+! logKfr = 4.337 [mg/l^0.35 / mg/kg] rhobulk = 0.45 for AC
+
+!'inhibition T^a'  1
+!'=c6h6'   0.0100  2.0d0
+!
+! 'fractional T^a'  1
+! 'c6h6'     1.000
+!
+! 'hyperbolic T^a' 2
+! 'c6h6'   1.0d-5     1.0d0
+! 'c6h6'   1.d-10     2.0d0
+! Keq = aq.sol of benzene; DH = 0:     -1.6417   0.0
+! durch gebrochene Stöchiometrie dürfte man einen Freundlich hinkriegen, aber mehr geht wohl nicht...
+! inhibition-term: max. sorption capacity [mol/l bulk]
+! ---------------------------------------------------------------------------------
+!
+!
+! benzene degradation - aerobic respiration - Monod-kinetics (depending on biomass)
+! **************************  added UM2, 4, 24.10.2007 ****************************
+! ---------------------------------------------------------------------------------
+'c6h6-o2-bio'
+4  'c6h6' -1.000  'o2(aq)' -7.500  'co3-2' 6.000  'h+1' 12.000
+'irreversible'
+
+'parallel reaction pathways'    1
+
+'pathway'  1
+'fractional T^a'  1  
+'biomass1'  1.000  
+'hyperbolic T^a'  4  
+'o2(aq)'  3.125d-6  1.0d0
+'c6h6'  1.0d-5  1.0d0
+'o2(aq)'  1.d-10  2.0d0
+'c6h6'  1.d-10  2.0d0
+'end pathway'
+
+!
+! --------------------------------------------------------------------------------
+! with biomass component
+!
+'c6h6-bio1'
+4  'c6h6' -1.000  'o2(aq)' -1.500  'h2o' -3.000  'biomass1' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass1'     1.000
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6   1.0d0
+'c6h6'   1.0d-5     1.0d0
+'o2(aq)' 1.d-10     2.0d0
+'c6h6'   1.d-10     2.0d0
+
+!
+! --------------------------------------------------------------------------------
+! growth reaction for biomass 2
+!
+'c6h6-bio2'
+4  'c6h6' -1.000  'o2(aq)' -1.500  'h2o' -3.000  'biomass2' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass2'     1.000
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6   1.0d0
+'c6h6'   1.0d-5     1.0d0
+'o2(aq)' 1.d-10     2.0d0
+'c6h6'   1.d-10     2.0d0
+
+! --------------------------------------------------------------------------------
+! biomass1 decay
+
+'biomass-decay'
+2  'biomass1' -1.000  'biomass1d' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass1'     1.000
+
+! --------------------------------------------------------------------------------
+! biomass2 decay
+
+'bio-decay2'
+2  'biomass2' -1.000  'biomass2d' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass2'     1.000
+
+! --------------------------------------------------------------------------------
+! biomass decay interspecific competition with species 2
+
+'bio-decay1-2'
+2  'biomass1' -1.000  'biomass1d' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass2'     1.000
+
+! --------------------------------------------------------------------------------
+! biomass 2 decay interspecific competition with species 1
+
+'bio-decay2-1'
+2  'biomass2' -1.000  'biomass2d' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass1'     1.000
+
+! --------------------------------------------------------------------------------
+! Biomass growth from ch2o only
+!
+'ch2o-bio'
+2  'ch2o' -1.000  'biomass' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass'     1.000
+
+'hyperbolic T^a' 2
+'ch2o'   1.0d-4     1.0d0
+'ch2o'   1.d-10     2.0d0
+
+! --------------------------------------------------------------------------------
+! Biomass1 growth from ch2o only
+!
+'ch2o-bio1'
+2  'ch2o' -1.000  'biomass1' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass1'     1.000
+
+'hyperbolic T^a' 2
+'ch2o'   1.0d-4     1.0d0
+'ch2o'   1.d-10     2.0d0
+
+! --------------------------------------------------------------------------------
+! Biomass2 growth from ch2o only
+!
+'ch2o-bio2'
+2  'ch2o' -1.000  'biomass2' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass2'     1.000
+
+'hyperbolic T^a' 2
+'ch2o'   1.0d-4     1.0d0
+'ch2o'   1.d-10     2.0d0
+! --------------------------------------------------------------------------------
+! Immobilization labile P (here assumed P aqueous only) into active inorganic P : PAiP
+! k2 in Daroub et al. 2003.
+
+'PAiP'
+2  'P' -1.000  'AiP' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'P'     1.000
+! --------------------------------------------------------------------------------
+! Transformation active inorganic P into stable inorganic P : AiPSiP
+! k5 in Daroub et al. 2003.
+
+'AiPSiP'
+2  'AiP' -1.000  'SiP' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'AiP'     1.000
+! --------------------------------------------------------------------------------
+! labile P uptake by Live plant : LPLPP
+! k4 in Daroub et al. 2003.
+
+'LPLPP'
+2  'P' -1.000  'LPP' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'P'     1.000
+! --------------------------------------------------------------------------------
+! transformation Live plant P into Dead Plant P: LPPDPP
+! k4 in Daroub et al. 2003.
+
+'LPPDPP'
+2  'LPP' -1.000  'DPP' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'LPP'     1.000
+! --------------------------------------------------------------------------------
+! CAUTION: not consistent with biomass = 180 g/mol!
+!
+! biomass lysis due to - aerobic respiration - Monod-kinetics
+! **************************  added UM2, 4, 24.10.2007 ***************************
+! --------------------------------------------------------------------------------
+'c6h6-lysis'
+5  'biomass' -1.000  'o2(aq)' -6.000  'h2o'  3.000   'co3-2' 6.000  'h+1' 12.000
+'irreversible'
+
+'fractional T^a'  1
+'biomass'     1.000
+
+'hyperbolic T^a' 2
+'o2(aq)' 3.125d-6   1.0d0
+'o2(aq)' 1.d-10     2.0d0
+
+!
+! radioactive decay of 238U to 234Th
+! **************************  added UM2, 4, 25.10.2007 ***************************
+! --------------------------------------------------------------------------------
+'u+4_radio'
+ 3  'u+4'   -1.000  '234th+4'    1.000  'he(aq)'   1.000
+'irreversible'
+
+'fractional T^a'  1
+'u+4'     1.000
+
+'log rate constant'  -17.31149
+
+! half-live of 238 uranium = 4.5E+09 years
+
+!
+! oxygen release from aerenchyma as intra-aqueous reaction dependent on root phi^m
+! **************************  added UM2, 1, 08.11.2007 ***************************
+! reversible reaction depending on oxygen concentration
+! solubility & deltaH from Carpenter (1961)
+! Note: solubility has opposite sign as in mineral.dbs!
+! -------------------------------------------------------------------------------- 
+'aerenchym_O2'
+ 1  'o2(aq)'   1.000
+'reversible'  -3.5779   -2.7945
+
+'fractional phi^m'  1
+'roots'     1.000
+
+! -------------------------------------------------------
+
+!
+! ch2o degradation - denitrification - Monod-kinetics
+!
+'ch2o-no3'
+6  'ch2o' -1.000 'no3-1' -0.800   'co3-2' 1.000  'n2(aq)' 0.400  'h+1' 1.200  'h2o' 0.400
+'irreversible'
+
+'hyperbolic T^a'  4
+'no3-1'  8.064d-6 1.0d0
+'ch2o'   1.064d-4 1.0d0
+'no3-1'  1.d-10   2.0d0
+'ch2o'   1.d-10   2.0d0
+
+'inhibition T^a'  1
+'o2(aq)' 6.250d-6  1.0d0
+
+!
+! benzene degradation - denitrification - Monod-kinetics
+!
+'c6h6-no3'
+5  'c6h6' -1.000 'no3-1' -6.000   'co3-2' 6.000  'n2(aq)' 3.000  'h+1' 6.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'no3-1'  8.064d-6 1.0d0
+'c6h6'   1.064d-4 1.0d0
+'no3-1'  1.d-10   2.0d0
+'c6h6'   1.d-10   2.0d0
+
+'inhibition - aqueous'  1
+'o2(aq)' 6.250d-6  1.0d0
+!
+! ch2o degradation - sulfate reduction - Monod-kinetics
+!
+'ch2o-so4'
+5  'ch2o' -1.000 'so4-2' -0.500  'co3-2' 1.000  'hs-1' 0.500  'h+1' 1.500
+'irreversible'
+
+'hyperbolic T^a'  4
+'so4-2' 1.6d-3   1.0d0
+'ch2o'  1.064d-4 1.0d0
+'so4-2' 1.0d-10  2.0d0
+'ch2o'  1.0d-10  2.0d0
+
+'inhibition T^a'  2
+'o2(aq)' 3.125d-5  1.0d0
+'no3-1'  1.600d-5  1.0d0
+
+!
+! benzene degradation - sulfate reduction - Monod-kinetics
+! inhibition by nitrate and oxygen
+!
+'c6h6-so4'
+6  'c6h6' -1.000 'so4-2' -3.750  'h2o' -3.000  'co3-2' 6.000  'hs-1' 3.750  'h+1' 8.250
+'irreversible'
+
+'hyperbolic T^a'  4
+'so4-2' 1.6d-3   1.0d0
+'c6h6'  1.064d-4 1.0d0
+'so4-2' 1.0d-10  2.0d0
+'c6h6'  1.0d-10  2.0d0
+
+'inhibition T^a'  2
+'o2(aq)' 3.125d-5  1.0d0
+'no3-1'  1.600d-5  1.0d0
+
+!
+! benzene degradation - sulfate reduction - Monod-kinetics
+! inhibition by nitrate
+!
+'c6h6-so4-2'
+6  'c6h6' -1.000 'so4-2' -3.750  'h2o' -3.000  'co3-2' 6.000  'hs-1' 3.750  'h+1' 8.250
+'irreversible'
+
+'hyperbolic T^a'  4
+'so4-2' 1.6d-3   1.0d0
+'c6h6'  1.064d-4 1.0d0
+'so4-2' 1.0d-10  2.0d0
+'c6h6'  1.0d-10  2.0d0
+
+'inhibition T^a'  1
+'o2(aq)' 3.125d-5  1.0d0
+
+!
+! ch2o degradation - fermentation - Monod-kinetics
+!
+'ch2o-ch4'
+5  'ch2o' -1.000  'h2o' -0.500  'co3-2' 0.500  'ch4(aq)' 0.500  'h+1' 1.000
+'irreversible'
+
+'hyperbolic T^a'  2
+'ch2o' 1.0d-3   1.0d0
+'ch2o' 1.0d-10  2.0d0
+
+'inhibition T^a'  2
+'o2(aq)' 3.125d-5  1.0d0
+'no3-1'  1.600d-5  1.0d0
+
+!
+! ch2o degradation - fermentation - Monod-kinetics
+! no inhibition by nitrate
+!
+'ch2o-ch4-2'
+5  'ch2o' -1.000  'h2o' -0.500  'co3-2' 0.500  'ch4(aq)' 0.500  'h+1' 1.000
+'irreversible'
+
+'hyperbolic T^a'  2
+'ch2o' 1.0d-3   1.0d0
+'ch2o' 1.0d-10  2.0d0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-5  1.0d0
+
+!
+! benzene degradation - fermentation - Monod-kinetics
+!
+'c6h6-ch4-2'
+5  'c6h6' -1.000  'h2o' -6.750  'co3-2' 2.250  'ch4(aq)' 3.750  'h+1' 4.500
+'irreversible'
+
+'hyperbolic T^a'  2
+'c6h6' 1.0d-3   1.0d0
+'c6h6' 1.0d-10  2.0d0
+
+'inhibition T^a'  2
+'o2(aq)' 3.125d-5  1.0d0
+'no3-1'  1.600d-5  1.0d0
+
+!
+! benzene degradation - fermentation - Monod-kinetics
+!
+'c6h6-ch4-3'
+5  'c6h6' -1.000  'h2o' -6.750  'co3-2' 2.250  'ch4(aq)' 3.750  'h+1' 4.500
+'irreversible'
+
+'hyperbolic T^a'  2
+'c6h6' 1.0d-3   1.0d0
+'c6h6' 1.0d-10  2.0d0
+
+'inhibition T^a'  1
+'o2(aq)' 3.125d-5  1.0d0
+
+!
+! benzene degradation - fermentation - Monod-kinetics
+!
+'c6h6-ch4'
+5  'c6h6' -1.000  'h2o' -6.750  'co3-2' 2.250  'ch4(aq)' 3.750  'h+1' 4.500
+'irreversible'
+
+'hyperbolic T^a'  2
+'c6h6' 1.0d-3   1.0d0
+'c6h6' 1.0d-10  2.0d0
+
+'inibition T^a'  3
+'o2(aq)' 3.125d-5  1.0d0
+'no3-1'  1.600d-5  1.0d0
+'so4-2'  1.600d-5  1.0d0
+
+'inhibition phi^m'  1
+'feooh-c6h6'  1.000d-8  1.0d0
+
+!
+! ch4-oxidation - aerobic respiration - Monod-kinetics
+!
+'ch4-o2'
+5  'ch4(aq)' -1.000  'o2(aq)' -2.000  'co3-2' 1.000  'h+1' 2.000  'h2o' 1.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'o2(aq)'   3.125d-6 1.0d0
+'ch4(aq)'  1.0d-5   1.0d0
+'o2(aq)'   1.0d-10  2.0d0
+'ch4(aq)'  1.0d-10  2.0d0
+
+!
+! h2s-oxidation - aerobic respiration - Monod-kinetics
+!
+'ch4-hs'
+4  'hs-1' -1.000  'o2(aq)' -2.000  'so4-2' 1.000  'h+1' 1.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'o2(aq)'   3.125d-6  1.0d0
+'hs-1'       1.0d-5  1.0d0
+'o2(aq)'    1.0d-10  2.0d0
+'hs-1'      1.0d-10  2.0d0
+
+!
+! ch4-oxidation - denitrification - Monod-kinetics
+!
+'ch4-no3'
+6  'ch4(aq)' -1.000 'no3-1' -1.600 'co3-2' 1.000  'n2(aq)' 0.800  'h+1' 0.400  'h2o' 1.800
+'irreversible'
+
+'hyperbolic T^a'  4
+'no3-1'   8.064d-6 1.0d0
+'ch4(aq)' 1.0d-5   1.0d0
+'no3-1'   1.0d-10  2.0d0
+'ch4(aq)' 1.0d-10  2.0d0
+
+'inhibition T^a'  1
+'o2(aq)' 6.250d-6  1.0d0
+
+!
+! ch4-oxidation - sulfate reduction - Monod-kinetics
+! inhibition by of and nitrate
+!
+'ch4-so4'
+6  'ch4(aq)' -1.000 'so4-2' -1.000  'h2o' 1.000  'co3-2' 1.000  'hs-1' 1.000  'h+1' 1.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'so4-2'   1.6d-3   1.0d0
+'ch4(aq)' 1.0d-5   1.0d0
+'so4-2'   1.0d-10  2.0d0
+'ch4(aq)' 1.0d-10  2.0d0
+
+'inhibition T^a'  2
+'o2(aq)' 3.125d-5  1.0d0
+'no3-1'  1.600d-5  1.0d0
+
+!
+! ch4-oxidation - sulfate reduction - Monod-kinetics
+! inhibition by O2
+!
+'ch4-so4-2'
+6  'ch4(aq)' -1.000 'so4-2' -1.000  'h2o' 1.000  'co3-2' 1.000  'hs-1' 1.000  'h+1' 1.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'so4-2'   1.6d-3   1.0d0
+'ch4(aq)' 1.0d-5   1.0d0
+'so4-2'   1.0d-10  2.0d0
+'ch4(aq)' 1.0d-10  2.0d0
+
+'inhibition T^a'  1
+'o2(aq)' 3.125d-5  1.0d0
+
+!
+! Fe(II)-oxidation - aerobic respiration - Monod kinetics
+!
+'fe+2-o2'
+5  'fe+3' 1.000  'fe+2' -1.000  'o2(aq)' -0.250  'h+1' -1.000  'h2o' 0.500
+'irreversible'
+
+'parallel reaction pathways'    2
+
+'pathway'  1
+'hyperbolic T^a'  4  
+'o2(aq)'  3.125d-6  1.0d0
+'fe+2'  1.0d-5  1.0d0
+'o2(aq)'  1.0d-10  2.0d0
+'fe+2'  1.0d-10  2.0d0
+'inhibition T^a'  2  
+'c6h6'  1.0d-7  1.0d0
+'ch4(aq)'  1.0d-7  1.0d0
+'end pathway'
+'pathway'  2
+'end pathway'
+!
+! Fe(II)-oxidation - aerobic respiration - Monod kinetics
+!
+'fe+2-o2-2'
+5  'fe+3' 1.000  'fe+2' -1.000  'o2(aq)' -0.250  'h+1' -1.000  'h2o' 0.500
+'irreversible'
+
+'hyperbolic T^a'  4
+'o2(aq)'   3.125d-6 1.0d0
+'fe+2'     1.0d-5   1.0d0
+'o2(aq)'   1.0d-10  2.0d0
+'fe+2'     1.0d-10  2.0d0
+
+'inhibition T^a'  2
+'ch2o'     1.0d-7   1.0d0
+'ch4(aq)'  1.0d-7   1.0d0
+
+!
+! Fe(III)-reduction by benzene - Monod kinetics
+!
+'fe+3-c6h6'
+6  'fe+3' -30.000   'c6h6' -1.000  'h2o'  -18.00  'fe+2' 30.000   'co3-2' 6.000   'h+1'  42.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'c6h6'     1.0d-4   1.0d0
+'fe+3'     1.0d-6   1.0d0
+'c6h6'     1.0d-10  2.0d0
+'fe+3'     1.0d-10  2.0d0
+
+'inhibition T^a'  1
+'o2(aq)'   3.125d-6  1.0d0
+
+!
+! Fe(III)-reduction by ch2o - Monod kinetics
+!
+'fe+3-ch2o'
+6  'fe+3' -4.000   'ch2o' -1.000  'h2o'  -2.000  'fe+2' 4.000   'co3-2' 1.000  'h+1' 6.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'ch2o'     1.0d-4   1.0d0
+'fe+3'     1.0d-6   1.0d0
+'ch2o'     1.0d-10  2.0d0
+'fe+3'     1.0d-10  2.0d0
+
+'inhibition T^a'  1
+'o2(aq)'   3.125d-6 1.0d0
+
+!
+! Fe(III)-reduction by methane - Monod kinetics
+!
+'fe+3-ch4'
+6  'fe+3' -1.000   'ch4(aq)' -0.125  'h2o' -0.375  'fe+2' 1.000  'co3-2' 0.125  'h+1'  1.250
+'irreversible'
+
+'hyperbolic T^a'  4
+'ch4(aq)'  1.0d-5   1.0d0
+'fe+3'     1.0d-6   1.0d0
+'ch4(aq)'  1.0d-10  2.0d0
+'fe+3'     1.0d-10  2.0d0
+
+'inhibition T^a'  1
+'o2(aq)'   3.125d-6 1.0d0
+
+!
+! pce-mno4
+! oxidation of pce by mno4-1
+! first order wrt to mno4-1
+! first order wrt to pce
+!
+'pce-mno4'
+7  'c2cl4' -0.750 'mno4-1' -1.000  'h2o' -2.500  'co3-2' 1.500  'cl-1' 3.000  'h+1' 5.000  'mno2(aq)' 1.000
+'irreversible'
+
+'fractional T^a'  2
+'c2cl4'   1.0d0
+'mno4-1'  1.0d0
+
+'hyperbolic T^a' 2
+'c2cl4'   5.0d-6   1.0d0
+'c2cl4'   1.0d-6   1.0d0
+
+!
+! pce-mno4-2
+! oxidation of pce by mno4-1
+! first order wrt to mno4-1
+! first order wrt to pce
+! no inhibition at low pce concentrations
+!
+'pce-mno4-2'
+7  'c2cl4' -0.750 'mno4-1' -1.000  'h2o' -2.500  'co3-2' 1.500  'cl-1' 3.000  'h+1' 5.000  'mno2(aq)' 1.000
+'irreversible'
+
+'fractional T^a'  2
+'c2cl4'   1.000
+'mno4-1'  1.000
+
+'hyperbolic T^a'  2
+'c2cl4'   1.0d-20   2.0d0
+'mno4-1'  1.0d-20   2.0d0
+
+!
+! h2o-mno4
+! oxidation of h2o by mno4-1
+! first order wrt mno4-1
+!
+'h2o-mno4'
+5 'mno4-1' -1.000  'h+1' -1.000  'o2(aq)' 0.750  'h2o' 0.500  'mno2(aq)' 1.000
+'irreversible'
+
+'fractional T^a'  1
+'mno4-1' 1.000
+
+!
+! ch2o-degradation - aerobic respiration - Monod-kinetics
+! for comparison with COMPTRAN
+!
+'ch2o-o2-ct'
+4  'ch2o' -1.000  'o2(aq)' -1.000  'co3-2' 1.000  'h+1' 2.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'o2(aq)' 5.01d-5    1.0d0
+'ch2o'   1.0d-5     1.0d0
+'o2(aq)' 1.d-10     2.0d0
+'ch2o'   1.d-10     2.0d0
+
+!
+! ch2o degradation - denitrification - Monod-kinetics
+! for comparison with COMPTRAN
+!
+'ch2o-no3-ct'
+6  'ch2o' -2.500 'no3-1' -2.000   'co3-2' 2.500  'n2(aq)' 1.000  'h+1' 3.000  'h2o' 1.000
+'irreversible'
+
+'hyperbolic T^a'  4
+'no3-1'  2.51d-5  1.0d0
+'ch2o'   1.0d-5   1.0d0
+'no3-1'  1.d-10   2.0d0
+'ch2o'   1.d-10   2.0d0
+
+'inhibition T^a'  1
+'o2(aq)' 5.0d-8   1.0d0
+
+! ###########################################################################################
+! -------------------------------------------------------------------------------------------
+! MIN3P database entries for oxidation-reduction reactions defined by Uli Maier for SAFIRA II
+!  irreversible reactions, Monod
+!
+!  ammonium oxidation to nitrate - Monod-kinetics
+!
+'nitrificat.'
+5  'nh4+1' -1.000  'o2(aq)' -2.000  'h2o' 1.000  'no3-1' 1.000  'h+1' 2.000
+'irreversible'                   ! type of reaction
+
+'hyperbolic T^a'  4              ! monod and threshold terms
+'o2(aq)' 1.d-4    1.0d0
+'nh4+1'  1.d-5    1.0d0
+'o2(aq)' 1.d-5    2.0d0
+'nh4+1'  1.d-10   2.0d0
+                                 ! no inhibition and toxicity terms...
+! -------------------------------------------------------------------------------------------
+! nitrification of ammonium, neglecting reaction products to save RAM
+!  irreversible reactions, Monod
+!
+!  ammonium oxidation to nitrate - Monod-kinetics
+!
+'nitrif_ohne'
+3  'nh4+1' -1.000  'o2(aq)' -2.000  'h2o' 1.000             'no3-1' 1.000  'h+1' 2.000
+'irreversible'                   ! type of reaction
+
+'hyperbolic T^a'  4              ! monod and threshold terms
+'o2(aq)' 1.d-4    1.0d0
+'nh4+1'  1.d-5    1.0d0
+'o2(aq)' 1.d-5    2.0d0
+'nh4+1'  1.d-6    2.0d0
+                                 ! no inhibition and toxicity terms...
+!
+! ---------------------------------------------------------------------
+!  irreversible reactions, pseudo first order
+!  ammonium oxidation to nitrate - first-order-kinetics
+!
+'nitri-1st'
+5  'nh4+1' -1.000  'o2(aq)' -2.000  'h2o' 1.000  'no3-1' 1.000  'h+1' 2.000
+'irreversible'                   ! type of reaction
+
+'fractional T^a'  1              ! fractional order terms
+'nh4+1'  1.0d0
+
+'hyperbolic T^a'  2              ! monod and threshold terms
+'o2(aq)' 1.d-5    1.0d0
+'o2(aq)' 1.d-7    2.0d0
+
+'activation energy' 12.37        ! just a housenumber 
+
+!-------------- nh4+1 ------------------------------------
+!  Anammox reaction to N2 - Monod-kinetics, irreversible reaction, inhibited by O2 (Fe+2??)
+!
+'Anammox-1'
+5  'nh4+1' -1.000    'no3-1' -0.600    'n2(aq)' 0.800    'h2o' 1.800    'h+1' 0.400
+'irreversible'
+
+'fractional T^a'  1
+'nh4+1'  1.0
+
+'hyperbolic T^a'  2
+'no3-1'  1.d-6    1.0d0
+'no3-1'  1.d-8    2.0d0
+
+'inhibition T^a'  1              ! 'fe+2'    1.d-6   1.0
+'o2(aq)'  1.d-6   1.0
+
+! -------------------------------------------------------
+!  benzene degradation by iron reduction - Monod-kinetics
+!
+'benz-fe'
+6    'c6h6'    -1.000    'h2o'  -18.000    'fe+3'   -30.000    'co3-2'   6.000   'fe+2'  30.000    'h+1'   42.000
+'irreversible'
+
+'fractional T^a'  1
+'c6h6'  1.0d0
+
+'hyperbolic T^a'  2              ; changed from: 1.d-24 & 1.d-26 (27.10.2006)
+'fe+3'  1.d-22    1.0d0
+'fe+3'  1.d-23    2.0d0
+
+'inhibition T^a'  1              ! hier Absturz, Syntax-Error: order/exponent (1.0) has to be provided!
+'o2(aq)'  1.d-5   1.0
+
+'activation energy' 12.37        ! just a housenumber 
+
+! ------------------------------------------------------
+!  benzene degradation by sulfate reduction - Monod-kinetics
+!
+'benz-so4'
+6    'c6h6'    -1.000    'h2o'   -3.000    'so4-2'   -3.750    'co3-2'   6.000   'hs-1'   3.750    'h+1'   8.250
+'irreversible'
+
+'fractional T^a'  1
+'c6h6'  1.0d0
+
+'hyperbolic T^a'  2
+'so4-2'  1.d-6    1.0d0
+'so4-2'  1.d-8    2.0d0
+
+'inhibition T^a'  1
+'o2(aq)'  1.d-6   1.0
+
+'inhibition phi^m'  1
+'ferrihydrit'     1.00d-06   1.0
+'ferrihydrite'    1.00d-06   1.0
+'lepidocrocit'    1.00d-06   1.0
+'goethite'        1.00d-06   1.0
+'hematite'        1.00d-06   1.0
+
+'activation energy' 12.37
+
+! activation energy just a housenumber 
+! inhibition and toxicity terms (mineral phase) doesn't work so far: component for intra-aqueous kinetic reaction decan-so4 is missing (even though it's there)
+! exact number must be provided, but unused minerals can be left after the used ones
+
+! ------------------------------------------------------
+!  decane degradation by sulfate reduction - Monod-kinetics
+!
+'decan-so4'
+6    'decan'   -1.000    'h2o'    1.000    'so4-2'   -7.750    'co3-2'   10.000         'hs-1'   7.750    'h+1'   12.250
+'irreversible'
+
+'fractional T^a'  1
+'decan'  1.0d0
+
+'hyperbolic T^a'  2              !monod and threshold terms
+'so4-2'  1.d-6    1.0d0
+'so4-2'  1.d-8    2.0d0
+
+'inhibition T^a'  1              !inhibition and toxicity terms (aqueous phase)
+'o2(aq)'  1.d-6   1.0
+
+'inhibition phi^m'  1            !inhibition and toxicity terms (mineral phase) doesn't work so far: component for intra-aqueous kinetic reaction decan-so4 is missing (even though it's there)
+'ferrihydrit'     1.00d-06   1.0
+'ferrihydrite'    1.00d-06   1.0
+'lepidocrocit'    1.00d-06   1.0
+'goethite'        1.00d-06   1.0
+'hematite'        1.00d-06   1.0    ! exact number must be provided, no unused minerals!
+
+'activation energy' 12.37        ! just a housenumber 
+
+!-------------- fe+2 -----------------------------------
+! fe+2 - kinetic oxidation
+!
+'fe+2-ox'
+5  'fe+2' -1.000  'o2(aq)' -0.250  'h+1' -1.000  'fe+3' 1.000  'h2o' 0.500
+'irreversible'
+
+'fractional T^a'  1
+'fe+2'   1.0
+
+'hyperbolic T^a'  2
+'o2(aq)' 1.d-4    1.0d0
+'o2(aq)' 1.d-6    2.0d0
+
+'activation energy' 12.37        ! just a housenumber 
+
+! ------------- hs-1 -----------------------------------
+! from equilibrium constant calculated from MINTEQ-database enthalpy change calculated from MINTEQ-database:   138.3760 -207.5161
+!
+'hs-ox'
+4  'hs-1'   -1.000  'so4-2'   1.000  'h+1'    1.000  'o2(aq)'   -2.000
+'irreversible'
+
+'fractional T^a'  1
+'hs-1'   1.0
+
+'hyperbolic T^a'  2
+'o2(aq)' 1.d-4    1.0d0
+'o2(aq)' 1.d-6    2.0d0
+
+'activation energy' 12.37        ! just a housenumber 
+
+! ######### aerobic oxidation of organic components - pseudo first order ##########
+! ---------------------------------------------------------------------------------
+!
+!  methane/aerobic oxidation - Monod-kinetics  irreversible reaction
+!
+'ch4-ox'
+5  'ch4(aq)' -1.000  'o2(aq)' -2.000  'h2o' 1.000  'co3-2' 1.000  'h+1' 2.000
+'irreversible'
+'fractional T^a'  1
+'ch4(aq)'  1.0d0
+'hyperbolic T^a'  2
+'o2(aq)'  1.d-6    1.0d0
+'o2(aq)'  1.d-8    2.0d0
+
+!
+!  mtbe/aerobic oxidation - pseudo first order-kinetics  irreversible reaction                 added 08.02.2000
+!
+'mtbe-d'
+5  'mtbe' -1.000  'o2(aq)' -7.5  'h2o' 1.000  'co3-2' 5.000  'h+1' 10.000
+'irreversible'
+'fractional T^a'  1
+'mtbe'  1.0d0
+'hyperbolic T^a'  2
+'o2(aq)'  1.d-6    1.0d0
+'o2(aq)'  1.d-8    2.0d0
+
+'activation energy' 12.37        ! just a housenumber 
+
+!
+!end of database #############################################################################
+'end'

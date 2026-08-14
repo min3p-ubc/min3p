@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/secspec.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/secspec.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -65,19 +65,19 @@
 !c external: -  
 !c ----------------------------------------------------------------------
   
-      subroutine secspec(c,c2,eqc2,gammac1,gammac2,xnuc2,ia,ja,n,i2)
+      subroutine secspec(c,c2,eqc2,gammac1,gammac2,xnuc2,ia,ja,i2)
  
       implicit none
       
-      real*8 :: c, c2, gammac1, gammac2, xnuc2
-      integer :: ia, ja, n, i2
+      real*8 :: c(*),gammac1(*),xnuc2(*)
+      real*8 :: c2, gammac2
+      integer :: ia(*), ja(*)
+      integer :: i2
 
-      dimension c(*),gammac1(*),xnuc2(*),ia(*),ja(*)
-      
       !local variables
       integer :: i, i1, istart, iend
-      real*8 :: r1, eqc2      
-      parameter (r1 = 1.0d0)
+      real*8 :: eqc2      
+      real*8, parameter :: r1 = 1.0d0
       
 
 

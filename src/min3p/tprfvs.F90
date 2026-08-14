@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/tprfvs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tprfvs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -117,7 +117,7 @@
 
       real*8, external :: rootwat, evapo, pressure_melt_k      
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rverysmall = 1.0d-30
       
       integer :: nvarsigbp
 #ifdef PETSC
@@ -137,13 +137,17 @@
 
       theta_a = pornew(ivol)*sanew(ivol)
 
-!c FG's code divide the rootuptake by sec_per_days
+!c FG's code divide the root uptake by sec_per_days
 !c to convert to m3/day, which sounds not correct. 
 !c The default output time unit is day.
 
 !FG june 2021 - calculate water uptake (rootwat) and evaporation (evapo), in m3/days
       if (root_uptake) then
-        transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+        if (rld(ivol) > rverysmall) then
+          transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+        else
+          transp = r0
+        end if
       else ! to allow for phys. evaporation only
         transp = r0
       end if
@@ -179,13 +183,6 @@
       end if 
 
       if (fully_saturated) then
-
-!c to be further checked
-!c  the following code will make the results a little difference from the 
-!c  results without transient output.
-!c  update on 2021-08-17 by DSU
-
-        !hhead(ivol) = uvsnew(ivol)
         phead = uvsnew(ivol) - zg(ivol)
         
         if (b_output_trans_binary) then
@@ -217,15 +214,8 @@
           end if
         end if
                                                                        
-      elseif (variably_saturated) then
-                          
-!c to be further checked
-!c  the following code will make the results a little difference from the 
-!c  results without transient output.
-!c  update on 2021-08-17 by DSU
-
-        !hhead(ivol) = uvsnew(ivol)+zg(ivol)                            
-        !sgnew(ivol) = r1 - sanew(ivol)
+      elseif (variably_saturated) then                       
+        sgnew(ivol) = r1 - sanew(ivol)
         theta_g = pornew(ivol)*sgnew(ivol)  
         
         if (b_output_trans_binary) then

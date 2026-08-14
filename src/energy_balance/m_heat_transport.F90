@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/energy_balance/m_heat_transport.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/energy_balance/m_heat_transport.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -338,11 +338,11 @@ real*8                                       :: uheatlim_log          ! Limit fo
 
 real*8                                       :: uheatant_log          ! anitcipate temperature change in log scale
 
-integer                                      :: imheat                ! unit for energy balance unit 
+!integer                                      :: imheat                ! unit for energy balance unit 
 
-integer                                      :: imheat_first          ! index of first unit for energy balance
+!integer                                      :: imheat_first          ! index of first unit for energy balance
 
-integer                                      :: imheat_last           ! index of last unit for energy balance
+!integer                                      :: imheat_last           ! index of last unit for energy balance
 
 integer, allocatable                         :: imheat_mpi(:)         ! file unit of heat transport for binary output 
 

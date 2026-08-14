@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mbalvs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mbalvs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -62,7 +62,7 @@
 !c
 !c           integer*4:
 !c           ----------
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           iavs(nn+1)         = row pointer array for avs           + -
 !c           imvs               = unit number, mass balance -         + *
@@ -188,10 +188,10 @@
 #endif
 
       integer :: i1, ivol, ibvs, istart, iend, icon, jvol, irecord,    &
-                 itmsb, ierr, izn
+                 itmsb, ierr, isub, isub_bit, izn
       real*8 :: totvsstor, vsstor, totinflux, totoutflux, totvsflux,   &
-                absbalance, relbalance, culrelbalvs,rdummy1, rdummy2,  &
-                rdummy3, rdummy4, rdummy5
+                absbalance, relbalance, culrelbalvs,                   &
+                rdummy1, rdummy2, rdummy3, rdummy4, rdummy5
       real*8, external :: fluxvs, fluxfs, rootwat, storvs, evapo
 
       real*8 :: qroot_tot_act         !CBF!FG july 2017 discarded from PETSC zone above
@@ -216,7 +216,7 @@
 
 
       real*8, parameter :: r0 = 0.0d0, r2 = 2.0d0, r3 = 3.0d0,         &
-                           r100 = 100.0d0, rsmall = 1.0d-100
+                           r100 = 100.0d0, rverysmall = 1.0d-30
       
       integer :: nvarsimvs
       
@@ -228,15 +228,19 @@
 
       call msysvs
 
+ !c  loop over subdomains
+      do isub = 0, subdomains_n
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
+
 !c  for transient conditions -> compute changes in storage 
 
-      totvsstor = r0 !CBF - FG april 2013: should be initialized here,
-      !               and not if transient flow condition is verified
-      !               as totvsstor is used in output file (see below) in
-      !               any case (this fixes small differences of mass balance output, compared to compaq)
+        totvsstor = r0 !CBF - FG april 2013: should be initialized here,
+        !               and not if transient flow condition is verified
+        !               as totvsstor is used in output file (see below) in
+        !               any case (this fixes small differences of mass balance output, compared to compaq)
 
-
-      if (transient_flow) then
+        if (transient_flow) then
 #ifdef OPENMP
     !$omp parallel                                                    &                                                              
     !$omp if (nngl > numofloops_thred_mbalvs_1)                       &
@@ -246,43 +250,47 @@
     !$omp reduction(+:totvsstor)
     !$omp do schedule(static)
 #endif 
-        do ivol = 1,nngl
+          do ivol = 1,nngl
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
+            if(node_idx_lg2l(ivol) < 0) then
               cycle
-          end if
+            end if
 #endif
-            
-          vsstor = cvol(ivol) *                                       &
-                   storvs(delt,uvsnew(ivol),uvsold(ivol),             &
-                          sanew(ivol),saold(ivol),                    &
-                          pornew(ivol),stor(ivol))
 
-          totvsstor = totvsstor + vsstor 
-        end do
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
+            end if
+            
+            vsstor = cvol(ivol) *                                      &
+                     storvs(delt,uvsnew(ivol),uvsold(ivol),            &
+                            sanew(ivol),saold(ivol),                   &
+                            pornew(ivol),stor(ivol))
+
+            totvsstor = totvsstor + vsstor 
+          end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif    
 
 #ifdef PETSC
-      call MPI_Allreduce(totvsstor, totvsstor_gbl,1,MPI_REAL8,MPI_SUM, &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totvsstor = totvsstor_gbl    
+          call MPI_Allreduce(totvsstor,totvsstor_gbl,1,MPI_REAL8,      &
+                             MPI_SUM,Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          totvsstor = totvsstor_gbl    
 #endif
 
-      end if
+        end if
 
 !c  compute fluxes across boundary
 
-      totinflux = r0               !initialize total in- and outflux
-      totoutflux = r0
+        totinflux = r0               !initialize total in- and outflux
+        totoutflux = r0
 
-      if (ntmsb > 0) then
-        tmsb_influx = r0
-        tmsb_outflux = r0
-      end if
+        if (ntmsb > 0 .and. isub == 0) then
+          tmsb_influx = r0
+          tmsb_outflux = r0
+        end if
 #ifdef OPENMP
     !$omp parallel                                                    &                                                              
     !$omp if (nbvs > numofloops_thred_mbalvs_2)                       &
@@ -292,7 +300,7 @@
 #ifdef USG
     !$omp icell, idvol, i2, kvol, ncell, ndvol, nrelp, relps_loc,     &
     !$omp grad_locs, grad_weights,                                    &
-    !$omp grad_flow_mids, flux_hls_corr, grad_flow_hls_loc,          &
+    !$omp grad_flow_mids, flux_hls_corr, grad_flow_hls_loc,           &
     !$omp cinfvs_usg_loc, cinfvs_usg_cross_loc,                       &
 #endif
     !$omp i1, icon, iend, istart, ivol, iups, itmsb, jvol,            &
@@ -311,233 +319,269 @@
     !$omp do schedule(auto)
 #endif
 #endif  
-      do ibvs = 1,nbvs             !loop over boundary control volumes
+        do ibvs = 1,nbvs             !loop over boundary control volumes
           
-        ivol = iabvs(ibvs)         !pointer to control volume
-        if (ivol < 0) then
-          cycle  
-        end if
-
-        if (compute_ice_sheet_loading) then
-          if (.not. b_iabvs_ice(ibvs)) then
-            cycle
+          ivol = jabvs(ibvs)         !pointer to control volume
+          if (ivol <= 0 .or. .not.bcondvs_on(ibvs)) then
+            cycle  
           end if
-        end if
+
+          if (compute_ice_sheet_loading) then
+            if (.not. b_jabvs_ice(ibvs)) then
+              cycle
+            end if
+          end if
 
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
+          end if
 #endif
-        totvsflux = r0             !initialize total flux
+
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+            cycle
+          end if
+
+          totvsflux = r0             !initialize total flux
 
 !c  fluxes at first type control volumes or zero pressure seepage 
 !c  control volumes
 
-        if ((btypevs(ibvs).eq.'first').or.                            & !first type (Dirichlet) 
-            ((btypevs(ibvs).eq.'seepage' .or.                         &
-              btypevs(ibvs).eq.'seepage-second').and.                 & !first type (seepage)
-              ibits(seepage_bits(ibvs),0,1).eq.1)) then
+          if ((btypevs(ibvs).eq.'first').or.                           & !first type (Dirichlet) 
+              ((btypevs(ibvs).eq.'seepage' .or.                        &
+                btypevs(ibvs).eq.'seepage-second').and.                & !first type (seepage)
+                ibits(seepage_bits(ibvs),0,1).eq.1)) then
 
-          istart = iavs(ivol)       !pointer - start of row
-          iend = iavs(ivol+1)-1     !pointer - end of row
-          icon = 0                  !counter (connections)
+            istart = iavs(ivol)       !pointer - start of row
+            iend = iavs(ivol+1)-1     !pointer - end of row
+            icon = 0                  !counter (connections)
 
-          do i1=istart,iend         !loop over connected control volumes
+            do i1=istart,iend         !loop over connected control volumes
 
-            jvol = javs(i1)         !column pointer
+              jvol = javs(i1)         !column pointer
 
 #ifdef USG
-            if (discretization_type > 0) then
-              ncell = janumcell(i1)
-            end if
+              if (discretization_type > 0) then
+                ncell = janumcell(i1)
+              end if
 #endif
 
-            if (jvol.ne.ivol) then
-              icon = icon+1         !counter (connections)
+              if (jvol.ne.ivol) then
+                icon = icon+1         !counter (connections)
 
 !c  consistent with upstream weighting
 
-              if (upstream) then
-                iups(icon) = 'i'                         !h_i >= h_j
-                if (hhead(jvol).gt.hhead(ivol)) then     !h_j > h_i
-                  iups(icon) = 'j'
+                if (upstream) then
+                  iups(icon) = 'i'                         !h_i >= h_j
+                  if (hhead(jvol).gt.hhead(ivol)) then     !h_j > h_i
+                    iups(icon) = 'j'
+                  end if
                 end if
-              end if
 
 !c  flux calculations
-              if (b_use_fixed_flow_vel) then
+                if (b_use_fixed_flow_vel) then
               
-                if (b_use_zero_flow_vel) then
-                  vsflux(icon) = r0
+                  if (b_use_zero_flow_vel) then
+                    vsflux(icon) = r0
+                  else
+                    !c TBD
+                  end if
+              
                 else
-                  !c TBD
-                end if
-              
-              else
 
-                if (variably_saturated) then
+                  if (variably_saturated) then
 #ifdef USG
-                  if (discretization_type > 0) then
+                    if (discretization_type > 0) then
 
 !c calculate gradient at the middle of edge and along the control volume face,
 !c this part can be further improved for better representation for a boundary volume
-                    grad_flow_mids = vector_zero
-                    flux_hls_corr = r0
+                      grad_flow_mids = vector_zero
+                      flux_hls_corr = r0
 
-                    if (b_use_cross_diffusion_flow) then
-                      call gradient_cross_diff(i1,ivol,jvol,hhead,           &
-                                    grad_locs,grad_flow_mids,                &
-                                    grad_weights,flux_hls_corr,              &
-                                    grad_flow_hls_loc)
-                    end if
+                      if (b_use_cross_diffusion_flow) then
+                        call gradient_cross_diff(i1,ivol,jvol,hhead,   &
+                                      grad_locs,grad_flow_mids,        &
+                                      grad_weights,flux_hls_corr,      &
+                                      grad_flow_hls_loc)
+                      end if
 
 !cdsu calculate influence coefficient for variable saturated flow
-                    call usg_face_utility_cinfvs(ivol,jvol,i1,cinfvs_usg_loc,&
-                                                 cinfvs_usg_cross_loc)
+                      call usg_face_utility_cinfvs(ivol,jvol,i1,       &
+                               cinfvs_usg_loc,cinfvs_usg_cross_loc)
 
-                    relps_loc = 0.0d0
-                    if (is_cell_based_relp) then
-                      nrelp = ncell
-                      do icell = 1, ncell
-                        i2 = jacell(icell,i1)
-                        if (i2 >0) then
-                          relps_loc(icell) = relperm(i2)
-                        end if
-                      end do
+                      relps_loc = 0.0d0
+                      if (is_cell_based_relp) then
+                        nrelp = ncell
+                        do icell = 1, ncell
+                          i2 = jacell(icell,i1)
+                          if (i2 >0) then
+                            relps_loc(icell) = relperm(i2)
+                          end if
+                        end do
+                      else
+                        nrelp = 2
+                        relps_loc(1:2) = (/relperm(ivol),relperm(jvol)/)
+                      end if
+
+                      vsflux(icon) = -fluxvs_usg(upstream,hhead(ivol),               &
+                                      hhead(jvol),num_edge_dvols,ncell,              &
+                                      grad_flow_mids(1:num_edge_dvols,1:ncell),      &
+                                      flux_hls_corr(1:num_edge_dvols,1:ncell),       &
+                                      is_cell_based_relp,nrelp,                      &
+                                      relps_loc(1:nrelp),iups(icon),                 &
+                                      cinfvs_usg_loc(1:num_edge_dvols,1:ncell),      &
+                                      cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell))
                     else
-                      nrelp = 2
-                      relps_loc(1:2) = (/relperm(ivol),relperm(jvol)/)
+#endif
+                      vsflux(icon) = - fluxvs(upstream,hhead(ivol),        &
+                                              hhead(jvol),relperm(ivol),   &
+                                              relperm(jvol),iups(icon),    &
+                                              cinfvs_a(i1))
+#ifdef USG
                     end if
-
-                    vsflux(icon) = -fluxvs_usg(upstream,hhead(ivol),               &
-                                    hhead(jvol),num_edge_dvols,ncell,              &
-                                    grad_flow_mids(1:num_edge_dvols,1:ncell),      &
-                                    flux_hls_corr(1:num_edge_dvols,1:ncell),       &
-                                    is_cell_based_relp,nrelp,                      &
-                                    relps_loc(1:nrelp),iups(icon),                 &
-                                    cinfvs_usg_loc(1:num_edge_dvols,1:ncell),      &
-                                    cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell))
-                  else
 #endif
-                    vsflux(icon) = - fluxvs(upstream,hhead(ivol),        &
-                                            hhead(jvol),relperm(ivol),   &
-                                            relperm(jvol),iups(icon),    &
-                                            cinfvs_a(i1))
+                  else if (fully_saturated) then
 #ifdef USG
-                  end if
-#endif
-                else if (fully_saturated) then
-#ifdef USG
-                  if (discretization_type > 0) then
+                    if (discretization_type > 0) then
 
 !c calculate gradient at the middle of edge and along the control volume face,
 !c this part can be further improved for better representation for a boundary volume
-                    grad_flow_mids = vector_zero
-                    flux_hls_corr = r0
+                      grad_flow_mids = vector_zero
+                      flux_hls_corr = r0
 
-                    if (b_use_cross_diffusion_flow) then
-                      call gradient_cross_diff(i1,ivol,jvol,uvsnew,    &
-                                    grad_locs,grad_flow_mids,          &
-                                    grad_weights,flux_hls_corr,        &
-                                    grad_flow_hls_loc)
-                    end if
+                      if (b_use_cross_diffusion_flow) then
+                        call gradient_cross_diff(i1,ivol,jvol,uvsnew,  &
+                                      grad_locs,grad_flow_mids,        &
+                                      grad_weights,flux_hls_corr,      &
+                                      grad_flow_hls_loc)
+                      end if
 
 !cdsu calculate influence coefficient for variable saturated flow
-                    call usg_face_utility_cinfvs(ivol,jvol,i1,cinfvs_usg_loc,&
-                                                 cinfvs_usg_cross_loc)
+                      call usg_face_utility_cinfvs(ivol,jvol,i1,       &
+                               cinfvs_usg_loc,cinfvs_usg_cross_loc)
 
-                    vsflux(icon) = -fluxfs_usg(uvsnew(ivol),uvsnew(jvol),&
-                        num_edge_dvols,ncell,                            &
-                        grad_flow_mids(1:num_edge_dvols,1:ncell),        &
-                        flux_hls_corr(1:num_edge_dvols,1:ncell),         &
-                        cinfvs_usg_loc(1:num_edge_dvols,1:ncell),        &
-                        cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell))
+                      vsflux(icon) = -fluxfs_usg(uvsnew(ivol),uvsnew(jvol),&
+                          num_edge_dvols,ncell,                            &
+                          grad_flow_mids(1:num_edge_dvols,1:ncell),        &
+                          flux_hls_corr(1:num_edge_dvols,1:ncell),         &
+                          cinfvs_usg_loc(1:num_edge_dvols,1:ncell),        &
+                          cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell))
 
-                  else
+                    else
 #endif
-                    vsflux(icon) = - fluxfs(uvsnew(ivol),uvsnew(jvol),   &
-                                            cinfvs_a(i1))
+                      vsflux(icon) = - fluxfs(uvsnew(ivol),uvsnew(jvol),   &
+                                              cinfvs_a(i1))
 
 #ifdef USG
-                  end if
+                    end if
 #endif
+                  end if
                 end if
-              end if
               
-              totvsflux = totvsflux + vsflux(icon)
+                totvsflux = totvsflux + vsflux(icon)
 
-            end if                  !(ivol.eq.jvol)
-          end do                    !loop over connected control volumes
+              end if                  !(ivol.eq.jvol)
+            end do                    !loop over connected control volumes
    
 !c  fluxes at second type control volumes
 
-        elseif ((btypevs(ibvs).eq.'second').or.       &
-            (btypevs(ibvs).eq.'seepage-second' .and.  &
-            ibits(seepage_bits(ibvs),1,1).eq.1) .or.  &
-            (btypevs(ibvs).eq.'free-drainage').or.    &
-            (btypevs(ibvs).eq.'point')) then
+          elseif ((btypevs(ibvs).eq.'second').or.       &
+              (btypevs(ibvs).eq.'seepage-second' .and.  &
+              ibits(seepage_bits(ibvs),1,1).eq.1) .or.  &
+              (btypevs(ibvs).eq.'free-drainage').or.    &
+              (btypevs(ibvs).eq.'point')) then
 
-          totvsflux = bcondvs(ibvs)
+            totvsflux = bcondvs(ibvs)
  
-        end if                      !boundary type
+          end if                      !boundary type
 
 !c  sum up total inflow and outflow
 
-        if (totvsflux.gt.r0) then   
-          totinflux = totinflux + totvsflux
-        else
-          totoutflux = totoutflux - totvsflux
-        end if
+          if (totvsflux.gt.r0) then   
+            totinflux = totinflux + totvsflux
+          else
+            totoutflux = totoutflux - totvsflux
+          end if
 
 !c  sum up total mass through specified boundary
-        if (ntmsb > 0) then
-          do itmsb = 1, ntmsb
-            if (btest(mproptmsb(ivol),itmsb-1)) then
-              if (totvsflux.gt.r0) then
-                tmsb_influx(itmsb) = tmsb_influx(itmsb) + totvsflux
-              else
-                tmsb_outflux(itmsb) = tmsb_outflux(itmsb) - totvsflux
+          if (ntmsb > 0 .and. isub == 0) then
+            do itmsb = 1, ntmsb
+              if (btest(mproptmsb(ivol),itmsb-1)) then
+                if (totvsflux.gt.r0) then
+                  tmsb_influx(itmsb) = tmsb_influx(itmsb) + totvsflux
+                else
+                  tmsb_outflux(itmsb) = tmsb_outflux(itmsb) - totvsflux
+                end if
               end if
-            end if
-          end do
-        end if
+            end do
+          end if
 
-      end do                        !loop over boundary control volumes
+        end do                        !loop over boundary control volumes
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif  
 
+!c  loop over internal boundaries for subdomains, 
+!c  should exclude physical boundaries since they are already considered 
+        if (isub > 0) then
+          do ibvs = 1, 2
+            i1 = subdomains_bdface_conn(ibvs,isub)
+            if (i1 > 0) then
+              ivol = subdomains_bdface(1,ibvs,isub)
+              jvol = subdomains_bdface(2,ibvs,isub)
+              icon = 1
+              if (.not.fully_saturated) then
+                if (upstream) then
+                  iups(icon) = 'i'                            !h_i >= h_j
+                  if (hhead(jvol).gt.hhead(ivol)) then        !h_j > h_i
+                    iups(icon) = 'j'
+                  end if
+                end if      
+                vsflux(icon) = - fluxvs(upstream,hhead(ivol),hhead(jvol),  &
+                                      relperm(ivol),relperm(jvol),         &
+                                      iups(icon),cinfvs_a(i1))                     
+              else if (fully_saturated) then                                                              
+                vsflux(icon) = - fluxfs(uvsnew(ivol),uvsnew(jvol),cinfvs_a(i1))
+              end if
+              if (vsflux(icon).gt.r0) then   
+                totinflux = totinflux + vsflux(icon)
+              else
+                totoutflux = totoutflux - vsflux(icon)
+              end if
+            end if
+          end do
+        end if
+
 #ifdef PETSC
-      call MPI_Allreduce(totinflux,totinflux_gbl,1,MPI_REAL8,MPI_SUM,  &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totinflux = totinflux_gbl    
+        call MPI_Allreduce(totinflux,totinflux_gbl,1,MPI_REAL8,MPI_SUM,  &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totinflux = totinflux_gbl    
       
-      call MPI_Allreduce(totoutflux,totoutflux_gbl,1,MPI_REAL8,MPI_SUM,&
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totoutflux = totoutflux_gbl 
-
-      if (ntmsb > 0) then
-        call MPI_Allreduce(tmsb_influx,tmsb_influx_gbl,ntmsb,MPI_REAL8,MPI_SUM,  &
+        call MPI_Allreduce(totoutflux,totoutflux_gbl,1,MPI_REAL8,MPI_SUM,&
                            Petsc_Comm_World,ierrcode)
         CHKERRQ(ierrcode)
-        tmsb_influx = tmsb_influx_gbl
+        totoutflux = totoutflux_gbl 
 
-        call MPI_Allreduce(tmsb_outflux,tmsb_outflux_gbl,ntmsb,MPI_REAL8,MPI_SUM,&
-                           Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        tmsb_outflux = tmsb_outflux_gbl
-      end if
+        if (ntmsb > 0 .and. isub == 0) then
+          call MPI_Allreduce(tmsb_influx,tmsb_influx_gbl,ntmsb,MPI_REAL8,MPI_SUM,  &
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          tmsb_influx = tmsb_influx_gbl
+
+          call MPI_Allreduce(tmsb_outflux,tmsb_outflux_gbl,ntmsb,MPI_REAL8,MPI_SUM,&
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          tmsb_outflux = tmsb_outflux_gbl
+        end if
 #endif
 
 !c  compute contributions from root water uptake
 
-      if (root_uptake) then
+        if (root_uptake) then
 
-        qroot_tot_act = r0    !CBF
+          qroot_tot_act = r0    !CBF
        
 !DSU - Fix bug in the parallel code modified in root_uptake
 #ifdef OPENMP
@@ -549,28 +593,35 @@
     !$omp reduction(+:qroot_tot_act)
     !$omp do schedule(static)
 #endif
-        do ivol = 1,nngl
+          do ivol = 1,nngl
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
+            if(node_idx_lg2l(ivol) < 0) then
               cycle
-          end if
+            end if
 #endif
-          qroot_tot_act = qroot_tot_act + cvol(ivol)*                  &
-                          rootwat(sanew,ivol,rsum_vprop)
+
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
+            end if
+
+            if (rld(ivol) > rverysmall) then
+              qroot_tot_act = qroot_tot_act + cvol(ivol)*              &
+                              rootwat(sanew,ivol,rsum_vprop)
+            end if
           
-          if (soilhydrfunc_field) then
-            if (h1dry_vol(ivol).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*              &
-                              evapo(sanew,ivol)
+            if (soilhydrfunc_field) then
+              if (h1dry_vol(ivol).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*            &
+                                evapo(sanew,ivol)
+              end if
+            else          
+              izn = mpropvs(ivol)
+              if (h1dry(izn).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*            &
+                                evapo(sanew,ivol)
+              end if
             end if
-          else          
-            izn = mpropvs(ivol)
-            if (h1dry(izn).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*              &
-                              evapo(sanew,ivol)
-            end if
-          end if
-        end do
+          end do
 
 #ifdef OPENMP
     !$omp end do
@@ -578,16 +629,16 @@
 #endif 
 
 #ifdef PETSC
-        call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,MPI_REAL8,  &
-                           MPI_SUM,Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        qroot_tot_act = qroot_tot_act_gbl
+          call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,        &
+                   MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          qroot_tot_act = qroot_tot_act_gbl
 #endif
 
 #ifdef ARCHISIMPLE
-      else if (pure_evap) then !FG if no root uptake, check for phys evap (according to simple formalism)
+        else if (pure_evap) then !FG if no root uptake, check for phys evap (according to simple formalism)
 
-        qroot_tot_act = r0!CBF
+          qroot_tot_act = r0!CBF
         
 !FG 07-2017 added open MP for this new loop. But it's not correctly modified :(
 !DSU - Fix bug in the parallel code modified in root_uptake
@@ -600,203 +651,210 @@
     !$omp reduction(+:qroot_tot_act)
     !$omp do schedule(static)
 #endif
-        do ivol = 1,nngl ! detect in which control volumes (zone-based) evaporation can occur!CBF
+          do ivol = 1,nngl ! detect in which control volumes (zone-based) evaporation can occur!CBF
                          !FG nngl used instead of nn (old version)
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
+            if(node_idx_lg2l(ivol) < 0) then
               cycle
-          end if
+            end if
 #endif
-          if (soilhydrfunc_field) then
-            if (h1dry_vol(ivol).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)    !CBF
+
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
             end if
-          else
-            izn = mpropvs(ivol)
-            if (h1dry(izn).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)    !CBF
+
+            if (soilhydrfunc_field) then
+              if (h1dry_vol(ivol).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)    !CBF
+              end if
+            else
+              izn = mpropvs(ivol)
+              if (h1dry(izn).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)    !CBF
+              end if
             end if
-          end if
-        end do!CBF
+          end do!CBF
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif 
 
 #ifdef PETSC
-        call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,MPI_REAL8,&
-                           MPI_SUM,Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
+          call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,MPI_REAL8,&
+                             MPI_SUM,Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
 
-        qroot_tot_act = qroot_tot_act_gbl
+          qroot_tot_act = qroot_tot_act_gbl
 #endif
 
 #endif
-      end if ! root_uptake
+        end if ! root_uptake
 
 !c  write total contributions to file   
 
-      imvs = imvs+1
+        imvs(isub) = imvs(isub) + 1
     
-      if (rank == 0 .and. b_enable_output .and.                        &
-          .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-        if (b_output_trans_binary) then
-          nvarsimvs = 5
-          realbuffer_gb(1:nvarsimvs) = (/time_io,totinflux,totoutflux, &
-                                   totvsstor,qroot_tot_act/)
-          call binary_write_data(imvs_mpi(imvs), 1,            &
-                       (/mtime/),offset_imvs_ijk(imvs),.true.)       
-          call binary_write_data(imvs_mpi(imvs), nvarsimvs,    &
-                       realbuffer_gb,offset_imvs(imvs),.true.) 
+        if (rank == 0 .and. b_enable_output .and.                        &
+            .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+          if (b_output_trans_binary) then
+            nvarsimvs = 5
+            realbuffer_gb(1:nvarsimvs) = (/time_io,totinflux,totoutflux, &
+                                     totvsstor,qroot_tot_act/)
+            call binary_write_data(imvs_mpi(imvs(isub)), 1,              &
+                         (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)       
+            call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,      &
+                         realbuffer_gb,offset_imvs(imvs(isub)),.true.) 
 
-          offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
+            offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) +          &
+                                      nvarsimvs*nfloatbit
+          else
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(imvs(isub),irecord)
+            end if
 
-        else
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imvs,irecord)
-          end if
-
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imvs,ascii_fmt) time_io,totinflux,totoutflux,        &
-                                     totvsstor,qroot_tot_act
+            if (i_append_sim < 1 .or.                                    &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(imvs(isub),ascii_fmt) time_io,totinflux,totoutflux,  &
+                                       totvsstor,qroot_tot_act
+            end if
           end if
         end if
-      end if
 
 !c  compute absolute and relative mass balance error 
 
-      rdummy1 = (totinflux-totoutflux-totvsstor-qroot_tot_act)
-      rdummy2 = abs(totinflux) + abs(totoutflux)
+        rdummy1 = (totinflux-totoutflux-totvsstor-qroot_tot_act)
+        rdummy2 = abs(totinflux) + abs(totoutflux)
 
-      if (rdummy2 < rsmall) then
-        if(rdummy1 < rsmall) then
-          relbalance_vs = 0.0d0
+        if (rdummy2 < rverysmall) then
+          if(rdummy1 < rverysmall) then
+            relbalance_vs = 0.0d0
+          else
+            relbalance_vs = 1.0d100
+          end if
         else
-          relbalance_vs = 1.0d100
+          relbalance_vs = rdummy1/rdummy2
         end if
-      else
-        relbalance_vs = rdummy1/rdummy2
-      end if
 
-      absbalance = rdummy1 * dens_h2o * delt
-      relbalance = absbalance/totvsmass * r100
+        absbalance = rdummy1 * dens_h2o * delt
+        relbalance = absbalance/totvsmass(isub) * r100
 
-      absbalance_vs = absbalance
+        absbalance_vs = absbalance
  
 !c  compute accumulative absolute and relative mass balance error 
 
-      culabsbalvs = culabsbalvs + absbalance
-      culrelbalvs = culabsbalvs/totvsmass*r100
+        culabsbalvs(isub) = culabsbalvs(isub) + absbalance
+        culrelbalvs = culabsbalvs(isub)/totvsmass(isub)*r100
 
-      imvs = imvs+1
+        imvs(isub) = imvs(isub)+1
     
-      if(rank == 0 .and. b_enable_output) then
-        if (b_output_trans_binary) then
-          nvarsimvs = 5
-          realbuffer_gb(1:nvarsimvs) = (/time_io,absbalance,relbalance,&
-                                   culabsbalvs,culrelbalvs/)
-          call binary_write_data(imvs_mpi(imvs), 1,            &
-                       (/mtime/),offset_imvs_ijk(imvs),.true.)       
-          call binary_write_data(imvs_mpi(imvs), nvarsimvs,    &
-                       realbuffer_gb,offset_imvs(imvs),.true.) 
+        if(rank == 0 .and. b_enable_output) then
+          if (b_output_trans_binary) then
+            nvarsimvs = 5
+            realbuffer_gb(1:nvarsimvs) = (/time_io,absbalance,relbalance,&
+                                     culabsbalvs(isub),culrelbalvs/)
+            call binary_write_data(imvs_mpi(imvs(isub)), 1,            &
+                         (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)       
+            call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,    &
+                         realbuffer_gb,offset_imvs(imvs(isub)),.true.) 
 
-          offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
+            offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) + nvarsimvs*nfloatbit
+          else
+            !c read accumulative absolute mass balance error at the restart point
+            !c For legacy mode, previous mass balance is read at restart point but
+            !c will not output until the second restart point is reached
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(imvs(isub),irecord)
+              if (irecord > 0) then
+                !c locate to the restart time and get previous results
+                call reposition_file(imvs(isub),irecord,time_io_rs)
+                read(imvs(isub),*,end=10,err=10) rdummy1,rdummy2,rdummy3,rdummy4
+                call reposition_file(imvs(isub),irecord)
 
-        else
-          !c read accumulative absolute mass balance error at the restart point
-          !c For legacy mode, previous mass balance is read at restart point but
-          !c will not output until the second restart point is reached
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imvs,irecord)
-            if (irecord > 0) then
-              !c locate to the restart time and get previous results
-              call reposition_file(imvs,irecord,time_io_rs)
-              read(imvs,*,end=10,err=10) rdummy1,rdummy2,rdummy3,rdummy4
-              call reposition_file(imvs,irecord)
-
-              culabsbalvs = culabsbalvs + rdummy4
-              culrelbalvs = culabsbalvs/totvsmass*r100
+                culabsbalvs(isub) = culabsbalvs(isub) + rdummy4
+                culrelbalvs = culabsbalvs(isub)/totvsmass(isub)*r100
+              end if
+10            continue
             end if
-10          continue
-          end if
 
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imvs,ascii_fmt) time_io,absbalance,relbalance,       &
-                                     culabsbalvs,culrelbalvs
+            if (i_append_sim < 1 .or.                                    &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(imvs(isub),ascii_fmt) time_io,absbalance,relbalance, &
+                                       culabsbalvs(isub),culrelbalvs
+            end if
           end if
         end if
-      end if
 
 !c  write total mass through specified boundary
-      if (ntmsb > 0) then
+        if (ntmsb > 0 .and. isub == 0) then
 
-        !c allocate memory since ntmsb is not available in mem_vs
-        if (.not. allocated(tmsb_influx_accu)) then
-          allocate(tmsb_influx_accu(ntmsb), stat = ierr)
-          call checkerr(ierr,'tmsb_influx_accu',ilog)
-          tmsb_influx_accu = r0
-          call memory_monitor(sizeof(tmsb_influx_accu),'tmsb_influx_accu',.true.)
-        end if
-        if (.not. allocated(tmsb_outflux_accu)) then
-          allocate(tmsb_outflux_accu(ntmsb), stat = ierr)
-          call checkerr(ierr,'tmsb_outflux_accu',ilog)
-          tmsb_outflux_accu = r0
-          call memory_monitor(sizeof(tmsb_outflux_accu),'tmsb_outflux_accu',.true.)
-        end if
+          !c allocate memory since ntmsb is not available in mem_vs
+          if (.not. allocated(tmsb_influx_accu)) then
+            allocate(tmsb_influx_accu(ntmsb), stat = ierr)
+            call checkerr(ierr,'tmsb_influx_accu',ilog)
+            tmsb_influx_accu = r0
+            call memory_monitor(sizeof(tmsb_influx_accu),'tmsb_influx_accu',.true.)
+          end if
+          if (.not. allocated(tmsb_outflux_accu)) then
+            allocate(tmsb_outflux_accu(ntmsb), stat = ierr)
+            call checkerr(ierr,'tmsb_outflux_accu',ilog)
+            tmsb_outflux_accu = r0
+            call memory_monitor(sizeof(tmsb_outflux_accu),'tmsb_outflux_accu',.true.)
+          end if
 
-        do itmsb = 1, ntmsb
-          imvs = imvs + 1
-          if (rank == 0 .and. b_enable_output .and.                    &
-              .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+          do itmsb = 1, ntmsb
+            imvs(isub) = imvs(isub) + 1
+            if (rank == 0 .and. b_enable_output .and.                    &
+                .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
 
-            tmsb_influx_accu(itmsb) = tmsb_influx_accu(itmsb) +        &
-                                      tmsb_influx(itmsb)*delt
-            tmsb_outflux_accu(itmsb) = tmsb_outflux_accu(itmsb) +      &
-                                       tmsb_outflux(itmsb)*delt
+              tmsb_influx_accu(itmsb) = tmsb_influx_accu(itmsb) +        &
+                                        tmsb_influx(itmsb)*delt
+              tmsb_outflux_accu(itmsb) = tmsb_outflux_accu(itmsb) +      &
+                                         tmsb_outflux(itmsb)*delt
 
-            if (b_output_trans_binary) then
-              nvarsimvs = 5
-              realbuffer_gb(1:nvarsimvs) = (/time_io,                  &
-                         tmsb_influx(itmsb),tmsb_outflux(itmsb),       &
-                         tmsb_influx_accu(itmsb),                      &
-                         tmsb_outflux_accu(itmsb)/)
-              call binary_write_data(imvs_mpi(imvs), 1,                &
-                           (/mtime/),offset_imvs_ijk(imvs),.true.)
-              call binary_write_data(imvs_mpi(imvs), nvarsimvs,        &
-                           realbuffer_gb,offset_imvs(imvs),.true.)
+              if (b_output_trans_binary) then
+                nvarsimvs = 5
+                realbuffer_gb(1:nvarsimvs) = (/time_io,                  &
+                           tmsb_influx(itmsb),tmsb_outflux(itmsb),       &
+                           tmsb_influx_accu(itmsb),                      &
+                           tmsb_outflux_accu(itmsb)/)
+                call binary_write_data(imvs_mpi(imvs(isub)), 1,          &
+                             (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)
+                call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,  &
+                             realbuffer_gb,offset_imvs(imvs(isub)),.true.)
+  
+                offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) +      &
+                                          nvarsimvs*nfloatbit
 
-              offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
-
-            else
-              if (mtime == mtime_append .and. i_append_sim >= 1) then
-                call reposition_file(imvs,irecord)
-                if (irecord > 0) then
-                  !c locate to the restart time and get previous results
-                  call reposition_file(imvs,irecord,time_io_rs)
-                  read(imvs,*,end=20,err=20) rdummy1,rdummy2,rdummy3,  &
-                                             rdummy4,rdummy5
-                  call reposition_file(imvs,irecord)
-
-                  tmsb_influx_accu(itmsb) = tmsb_influx_accu(itmsb) +  &
-                                            rdummy4
-                  tmsb_outflux_accu(itmsb) = tmsb_outflux_accu(itmsb) +&
-                                             rdummy5
+              else
+                if (mtime == mtime_append .and. i_append_sim >= 1) then
+                  call reposition_file(imvs(isub),irecord)
+                  if (irecord > 0) then
+                    !c locate to the restart time and get previous results
+                    call reposition_file(imvs(isub),irecord,time_io_rs)
+                    read(imvs(isub),*,end=20,err=20) rdummy1,rdummy2,    &
+                         rdummy3,rdummy4,rdummy5
+                    call reposition_file(imvs(isub),irecord)
+  
+                    tmsb_influx_accu(itmsb) = tmsb_influx_accu(itmsb) +  &
+                                              rdummy4
+                    tmsb_outflux_accu(itmsb) = tmsb_outflux_accu(itmsb) +&
+                                               rdummy5
+                  end if
+20                continue
                 end if
-20              continue
-              end if
 
-              if (i_append_sim < 1 .or.                                &
-                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
-                write(imvs,ascii_fmt)                                  &
-                      time_io,tmsb_influx(itmsb),tmsb_outflux(itmsb),  &
-                      tmsb_influx_accu(itmsb),tmsb_outflux_accu(itmsb)
+                if (i_append_sim < 1 .or.                                &
+                   (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                  write(imvs(isub),ascii_fmt)                            &
+                        time_io,tmsb_influx(itmsb),tmsb_outflux(itmsb),  &
+                        tmsb_influx_accu(itmsb),tmsb_outflux_accu(itmsb)
+                end if
               end if
             end if
-          end if
-        end do
-      end if
+          end do
+        end if
+
+      end do      !subdomains
 
       return
       end 

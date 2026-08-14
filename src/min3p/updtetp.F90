@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updtetp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updtetp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -132,7 +132,7 @@
 
           end if
 
-          tpot = pet - pe_soil - canopy_int * canopy_evap_factor 
+          tpot = pet - pe_soil - canopy_int * canopy_evap_factor(1) 
 
           if (tpot .lt. r0) then
             
@@ -146,7 +146,7 @@
 
             pe_soil = pet*solar_ratio  ! get potential evaporation from potential evapotranspiration (m/s)
           
-            tpot = pet-pe_soil-canopy_int*canopy_evap_factor  ! get potential transpiration (m/s) from energy balance 
+            tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)  ! get potential transpiration (m/s) from energy balance 
             
             pe_soil = pe_soil*toparea*solar_ratio*sec_per_days  !potential evaporation scaled up according to solar ratio (surface effect) and converted in m3/s
           
@@ -156,7 +156,7 @@
             
             pe_soil = pet*(1-scale_tree_growth)  ! get potential evaporation from potential evapotranspiration (m/s)
             
-            tpot = pet-pe_soil-canopy_int*canopy_evap_factor  ! get potential transpiration (m/s) from energy balance
+            tpot = pet-pe_soil-canopy_int*canopy_evap_factor(1)  ! get potential transpiration (m/s) from energy balance
           
             pe_soil = pe_soil*toparea*(1-scale_tree_growth)*sec_per_days  !potential evaporation scaled up according to scale_tree_growth (surface effect) and converted in m3/s*
           

@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readminx_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readminx_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -118,9 +118,10 @@
  
       use parm
       use chem
-      use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
+      use gen, only : rank, b_enable_output, b_enable_output_gen,      &
+                      idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif 
@@ -131,7 +132,7 @@
       integer :: i, ic, icur, icount, imx, iv, istart ,iend,           &
                  info_debug, l_name, nv
       
-      real*8 :: xnumt
+      real*8 :: xnumt, zbal
 
       character*1 junk
       character*72 name
@@ -141,7 +142,7 @@
       dimension xnumt(100)
       logical comment_line,done,found,next_entry
 
-      real*8, parameter :: r0 = 0.0d0, r10 = 10.0d0  
+      real*8, parameter :: r0 = 0.0d0, r10 = 10.0d0, rsmall = 1.0d-10
 
       info_debug = 0
       l_name = 0
@@ -172,6 +173,8 @@
 !c  read mineral name
 
           read(imdbs,*,err=996,end=999) name
+          call makelowercase(name)
+
           if (info_debug.gt.1) then
             write(*,*) trim(name)
           end if
@@ -189,6 +192,13 @@
         
           if (space_delimiter_dbs) then                 !merged space delimiters
             read(imdbs,'(a)',end=996,err=996) strbuffer
+
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -212,6 +222,9 @@
             end do
           else
             read(imdbs,*,err=996) nv,(namet(iv),xnumt(iv),iv=1,nv)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
           end if
 
 !c  check if all components for mineral are specified in general
@@ -301,26 +314,72 @@
 !c  read mineral name
  
             read(imdbs,*,err=997) name
- 
+            call makelowercase(name)
 !c  look for match, as long end of file is not reached or 
 !c  match is found
  
 !c  mineral is found --> read data
  
             if (name.eq.namemx(imx)) then
-                
+
+              if (rank == 0 .and. b_enable_output_gen) then
+                if (imx == 1) then
+                  write(igen,'(72a)') ('-',i=1,72)
+                  write(igen,'(a)') 'excluded mineral database entries read:'
+                end if
+                write(igen,'(a)') trim(name)
+                write(igen,'(a,1x,i0,100(1x,a,1x,1pe15.6e3))')         &
+                      'nv',nv,(trim(namet(iv)),xnumt(iv),iv=1,nv)
+                if (imx == nmx) then
+                  write(igen,'(72a)') ('-',i=1,72)
+                end if
+              end if
  
               done = .true.
 
 !c  read equilibrium constant and reaction stoichiometry
 
               read(imdbs,*,err=997) string1
-              if (temp_corr) then
-                read(imdbs,*,err=997) junk,junk
+              read(imdbs,*,err=997) junk
+
+
+              if (space_delimiter_dbs) then                 !merged space delimiters
+                read(imdbs,'(a)',end=997,err=997) strbuffer
+
+                if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                    index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                    len_trim(adjustl(strbuffer)) .eq. 0) then
+                  cycle
+                end if
+
+                !c make lower case and replace tab and quote with space
+                call makelowercase(strbuffer)
+                call replacecharacter(strbuffer, achar(9), strspace)
+                call replacecharacter(strbuffer, "'", strspace)
+                call replacecharacter(strbuffer, '"', strspace)
+                strbuffer = trim(adjustl(strbuffer))
+                iend = index(strbuffer,strspace)
+                if (iend <= 1) then
+                  goto 997
+                end if
+                read(strbuffer,*,end=997,err=997) nv
+
+                do iv = 1, nv
+                  strbuffer = trim(adjustl(strbuffer(iend:)))
+                  iend = index(strbuffer,strspace)
+                  namet(iv) = strbuffer(1:iend-1)
+
+                  strbuffer = trim(adjustl(strbuffer(iend:)))
+                  iend = index(strbuffer,strspace)
+                  read(strbuffer,*,end=997,err=997) xnumt(iv)
+                end do
               else
-                read(imdbs,*,err=997) junk
+                read(imdbs,*,err=997) nv,(namet(iv),xnumt(iv),iv=1,nv)
+                do iv = 1, nv
+                  call makelowercase(namet(iv))
+                end do
               end if
-              read(imdbs,*,err=997) nv,(namet(iv),xnumt(iv),iv=1,nv)
+
                                                                        
               read(imdbs,*,err=997) string2
                                                                        
@@ -459,7 +518,30 @@
                                ' excluded mineral is reversed'
             write(igen,'(72a)') ('-',i=1,72)
           end if 
-        end if       
+        end if     
+
+!c  check charge balance of the mineral and give error information if charge balance is not met
+        if (rank == 0 .and. b_enable_output) then
+          write(igen,'(72a)') ('-',i=1,72)
+          write(igen,'(a)') 'charge balance for excluded minerals: calculated charge'
+          write(igen,'(72a)') ('-',i=1,72)
+        end if
+        do imx = 1, nmx
+          istart = iamx(imx)
+          iend = iamx(imx+1)-1          
+          zbal = r0
+          do i = istart,iend
+            icur = jamx(i)
+            zbal = zbal + xnumx(i)*chargec(icur)
+          end do
+          if (rank == 0 .and. b_enable_output) then
+            if (abs(zbal) > rsmall) then
+              write(igen,'(a,1x,1pe15.6e3,1x,a)') namemx(imx),zbal,'(*)'
+            else            
+              write(igen,'(a,1x,1pe15.6e3)') namemx(imx),zbal
+            end if
+          end if
+        end do
 
       end if                     !(nmx,gt.0)
 
@@ -467,13 +549,13 @@
       if (rank == 0) then
         if (.not.use_dbs_bk) then
           write(*,'(1x,a)') 'start of database backup: mineral.dbs'
-          write(idbs_bk, '(a)') '<------ mineral(x).dbs: start of excluded minerals ------>'      
+          write(idbs_bk, '(a)') '<------ mineral.dbs: start of excluded minerals ------>'      
           do imx = 1,nmx
             rewind(imdbs)
             do while(.true.)
               if (readnextline(imdbs,strbuffer,lowercase=.false.,          &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namemx(imx))) == 2) then            !note, mineral name has quotes
+                if (startWithEntireName(strbuffer,namemx(imx),flagQuote=.true.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   do while(readnextline(imdbs,strbuffer,lowercase=.false., &
                            withcomment=.true.,original=.true.))
@@ -492,7 +574,7 @@
           end do
           rewind(imdbs)
           !write(idbs_bk, '(a)') "'end'" 
-          write(idbs_bk, '(a/)') '<------ mineral(x).dbs: end of excluded minerals ------>'
+          write(idbs_bk, '(a/)') '<------ mineral.dbs: end of excluded minerals ------>'
           write(*,'(1x,a)') 'end of database backup: mineral.dbs'
         end if
       end if

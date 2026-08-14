@@ -4,7 +4,7 @@
 !> $Revision: 726 $
 !> $Author: dsu $
 !> $Date: 2019-08-07 11:30:33 -0700 (Wed, 07 Aug 2019) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/rtrvpprm.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/rtrvpprm.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -68,7 +68,7 @@
 !c  fully saturated porous medium
 
       if (section_header.eq.      &
-     &    'initial condition - local geochemistry') then
+          'initial condition - local geochemistry') then
 
         swc = r1
         sac = r0
@@ -77,8 +77,8 @@
 !c  initial condition - reactive transport
 !c  fully saturated porous medium
 
-      elseif (section_header.eq.  &
-     &       'initial condition - reactive transport') then
+      else if (section_header.eq.  &
+             'initial condition - reactive transport') then
 
         swc = r1
         sac = r0
@@ -87,8 +87,8 @@
 !c  boundary conditions - reactive transport
 !c  consider only water phase
 
-      elseif (section_header.eq.  &
-     &       'boundary conditions - reactive transport') then
+      else if (section_header.eq.  &
+             'boundary conditions - reactive transport') then
 
         swc = r1
         sac = r0

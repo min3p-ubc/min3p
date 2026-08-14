@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/version/writeversion.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/version/writeversion.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -26,8 +26,8 @@ implicit none
 
       BuildLabelVersion = trim(MajorVersionNumber)//'.'//              &
                           trim(MinorVersionNumber)//'.'//              &
-                          trim(PatchVersionNumber)//'.'//            &
-                          trim(GlobalRevisionNumber)
+                          trim(PatchVersionNumber)//'('//              &
+                          trim(GlobalRevisionNumber)//')'
                           
 
 !> Platform information   
@@ -111,9 +111,9 @@ implicit none
 
       write(iunit, "(3a)") trim(adjustl(strcomment)), "Version     : ",trim(BuildLabelVersion)
 
-      write(iunit, "(3a)") trim(adjustl(strcomment)), "Commit date : ", trim(CommitDate)
+      write(iunit, "(3a)") trim(adjustl(strcomment)), "Commit time : ", trim(CommitTime)
 
-      write(iunit, "(3a)") trim(adjustl(strcomment)), "Build date  : ", trim(BuildDate)
+      write(iunit, "(3a)") trim(adjustl(strcomment)), "Build time  : ", trim(BuildTime)
 
       write(iunit, "(3a)") trim(adjustl(strcomment)), "Repository  : ", trim(RepositoryURL)
 

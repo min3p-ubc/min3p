@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/jacrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/jacrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -88,7 +88,7 @@
 !c                                - global system
 !c           cstor(n)           = storage term (aqueous phase)        * *
 !c           cvol(nn)           = nodal volumes                       + -
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -708,7 +708,7 @@
 !c        passive_uptake = calculate passive uptate term w/rootwat and q_root  (HG)
 !c ----------------------------------------------------------------------
  
-      subroutine jacrt
+    subroutine jacrt
  
       use parm
       use gen
@@ -759,7 +759,11 @@
       real*8 :: dissvol, dissvol1
       real*8 :: dummy, por_diff, por_temp, ratio, over_por     
       !c root uptake variables   !HG
-      real*8 :: qrootloc
+      real*8 :: qrootloc, zbal, zpos, zneg, zpos_inc, zneg_inc
+
+      integer :: ielect, iss
+      real*8 :: strioninc
+      real*8 :: area_surf
      
 !cdsu-------------------------------------------------------------------
 !cdsu---------------------Gas transport variables-----------------------
@@ -781,7 +785,7 @@
       integer :: i1, i2, iaq, ibl, icol, icon, ir, info_debug, ivol,   &
                  izn, izn_c, ig, isb, im, ic, ix, idiag, istart, iend, &
                  irow, isym, istop, im2, ldiag, lsym, jbl, jvol, i, j, &
-                 ingi
+                 ingi, ic_h
       real*8 :: dcstor, dgstor, drtinc, dcflux, dgflux
                   
 
@@ -860,38 +864,45 @@
       real*8    :: ludecomp(ng,ng,ncon), fmat(ng,ncon)
       real*8    :: gpivol_ivol, gpivol_jvol, gdens_ivol, gdens_jvol,   &
                    gvisc_ivol, gvisc_jvol
+
+!c solid solutions
+      real*8 :: dummyvec(nm)
       
 !c root respiration variables:
-      real*8 :: rootresp_current, rootresp_max, dresprate,      &
-                rootdens, rootresp(n), drootresp(n)
+      real*8 :: rootarup_current, dresprate, rootdens,                 &
+                rootarup(nc), drootarup(nc)
       
 !c ms variables    
-      real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),     &
+      real*8    :: ms_gflux(nc), ms_dgflux(nc), neflux(nc),            &
                    lumat2(ng-1,ng-1) 
       real*8 :: so_av, cinfrt, mdens_g_inc, dgmfrac(ng)
 
-     
-      external comptotc, dtotcong, rateredx, rhsrt,             &
-               secspec, sorbspc, totcona, totconc, totconcg,    &
-               totmin, totsorb, elecmigration, totconcfac,      &
-               wgprop, wgpropd, atotconc, ratemin, ratemin_new, &
-               aratemin, drategas, drategdd, drateint,          &
-               drateint_new, dratemin, dratemin_new, draterdx,  &
-               dtotconc, gasconc, molconc, rategas,             &
-               rategasd, rateint, rateint_new, tcorr, totint,   &
+      character*12 :: ctype_bulk(nc+nx)
+
+      real*8 :: swc, sac, porc, rdummy 
+      real*8 :: actvt(nc), totc(nc)
+
+      external comptotc, dtotcong, rateredx, rhsrt,                    &
+               secspec, sorbspc, totcona, totconc, totconcg,           &
+               totmin, totsorb, elecmigration, totconcfac,             &
+               wgprop, wgpropd, atotconc, ratemin, ratemin_new,        &
+               aratemin, drategas, drategdd, drateint,                 &
+               drateint_new, dratemin, dratemin_new, draterdx,         &
+               dtotconc, gasconc, molconc, rategas,                    &
+               rategasd, rateint, rateint_new, tcorr, totint,          &
                totredx, updtsvap
 
       !c root uptake variables !HG
-      real*8, external :: rootwat
+      real*8, external :: rootwat, soluteUptakeFunc
 
       real*8, external :: pressure_melt_k   
   
-      real*8 :: r0, r1, small, gsatmin, rsmallarea, rverysmall, &
+      real*8 :: r0, r1, small, gsatmin, rsmallarea, rverysmall,        &
                 enat, conv3
 
-      parameter (r0 = 0.0d0, r1 = 1.0d0, small = 1.0d-10,       &
-                 gsatmin=0.0d0, rsmallarea = 1.0d-8,            &
-                 rverysmall = 1.0d-30, conv3 = 1.0d3,           &
+      parameter (r0 = 0.0d0, r1 = 1.0d0, small = 1.0d-10,              &
+                 gsatmin=0.0d0, rsmallarea = 1.0d-8,                   &
+                 rverysmall = 1.0d-30, conv3 = 1.0d3,                  &
                  enat = 2.71828182845904509d0)
 
       real*8 :: rcvt
@@ -944,16 +955,16 @@
 #endif 
 
 !c  initialize local variables
-     relpgij  = r0 
-     densgij  = r0          
-     viscgij  = r0 
-     gpij     = r0  
-     dgpivol  = r0 
-     dmdens_i = r0 
-     ddens_i  = r0 
-     wfac     = r0
-     relpgi   = r0
-     relpgj   = r0
+      relpgij  = r0 
+      densgij  = r0          
+      viscgij  = r0 
+      gpij     = r0  
+      dgpivol  = r0 
+      dmdens_i = r0 
+      ddens_i  = r0 
+      wfac     = r0
+      relpgi   = r0
+      relpgj   = r0
 
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -989,12 +1000,13 @@
     !$omp grad_cgg_totcnew, grad_cgg_totviscnew, grad_cgg_electro,    &
     !$omp grad_cgg_totgnew,                                           &
 #endif
-    !$omp tid, i1, i2, iaq, ibl, ic, icon, idiag, iend,               &
+    !$omp tid, i1, i2, iaq, ibl, ic, ic_h, icon, idiag, iend, iss,    &
     !$omp ig, im, im2, ir, irow, isb, istart, isym, ivol, ivol_gbl,   &
     !$omp istop, ix, izn, izn_c, ingi, jbl, jvol, ldiag, lsym,        &
-    !$omp delta_totviscnew, delta_electromignew,                      &
-    !$omp qrootloc, rootresp, rootresp_current, rootresp_max,         &   !!Root uptake and
-    !$omp dresprate, drootresp, rootdens,                             &   !!respiration
+    !$omp ielect, delta_totviscnew, delta_electromignew, strioninc,   & 
+    !$omp qrootloc, rootarup, rootarup_current,                       &   !!Root uptake and
+    !$omp dresprate, drootarup, rootdens,                             &   !!respiration
+    !$omp zbal, zpos, zneg, zpos_inc, zneg_inc,                       &
     !$omp densgij, dg, dgpivol, dmdens_i, ddens_i, gij,  gmfracij,    &   !!Gas advection and dgm model
     !$omp gpivol_ivol, gpivol_jvol, gdens_ivol, gdens_jvol,           &
     !$omp gvisc_ivol, gvisc_jvol,                                     &
@@ -1008,7 +1020,7 @@
     !$omp dissvol, drtinc, dtota, dtotcflux, dtotgflux, dtotor,       &
     !$omp gflux, gstor, totcflux, totgflux, totor, totrateg,          &
     !$omp totsb_ion, totsb_surf, por_temp, ratio,                     &
-    !$omp over_por, por_diff, dissvol1)                                   !!if pore_clogging 
+    !$omp over_por, por_diff, dissvol1, dummyvec)                         !!if pore_clogging 
 #endif
       
 !cprovi-----------------------------------------------------------
@@ -1078,16 +1090,36 @@
                   "--> check temperature corrections, ivol",         &
                   ivol_gbl
             write(idbg, *) "--> dhad, dhbd", dhad(tid),dhbd(tid)
-            write(idbg, *) "--> eqx ", eqx(:,tid)
-            write(idbg, *) "--> eqg ", eqg(:,tid)
-            write(idbg, *) "--> eqm ", eqm(:,tid)
-            write(idbg, *) "--> rated ", rated(:,tid)
-            write(idbg, *) "--> eqmx ", eqmx(:,tid)
-            write(idbg, *) "--> eqr ", eqr(:,tid)
-            write(idbg, *) "--> eqsb_ion ", eqsb_ion(:,tid)
-            write(idbg, *) "--> eqsb_surf ", eqsb_surf(:,tid)
-            write(idbg, *) "--> eqaq ", eqaq(:,tid)
-            write(idbg, *) "--> ratecaq ", ratecaq(:,tid)
+            if (allocated(eqx)) then
+              write(idbg, *) "--> eqx ", eqx(:,tid)
+            end if
+            if (allocated(eqg)) then
+              write(idbg, *) "--> eqg ", eqg(:,tid)
+            end if        
+            if (allocated(eqm)) then   
+              write(idbg, *) "--> eqm ", eqm(:,tid)
+            end if
+            if (allocated(rated)) then
+              write(idbg, *) "--> rated ", rated(:,tid)
+            end if
+            if (allocated(eqmx)) then
+              write(idbg, *) "--> eqmx ", eqmx(:,tid)
+            end if
+            if (allocated(eqr)) then
+              write(idbg, *) "--> eqr ", eqr(:,tid)
+            end if
+            if (allocated(eqaq)) then
+              write(idbg, *) "--> eqaq ", eqaq(:,tid)
+            end if
+            if (allocated(ratecaq)) then
+              write(idbg, *) "--> ratecaq ", ratecaq(:,tid)
+            end if
+            if (allocated(eqsb_ion)) then
+              write(idbg, *) "--> eqsb_ion ", eqsb_ion(:,tid)
+            end if
+            if (allocated(eqsb_surf)) then
+              write(idbg, *) "--> eqsb_surf ", eqsb_surf(:,tid)
+            end if
           end if
         end if
 #endif
@@ -1104,7 +1136,7 @@
                   "-->jacrt->centrations before updtsvap, ivol",       &
                   ivol_gbl, " tid ", tid
             write(idbg, *) "--> cnew ", cnew(:,ivol)
-            write(idbg, *) "--> cx ", cx(:,ivol)
+            write(idbg, *) "--> cxnew ", cxnew(:,ivol)
             write(idbg, *) "--> gamma ", gamma(:,ivol)
             write(idbg, *) "--> sionnew ",sionnew(ivol)
             write(idbg, *) "--> dhad ", dhad(tid), " dhad-all ", dhad(:)
@@ -1115,8 +1147,9 @@
         end if
 #endif
 
-        call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),           & 
-     &                gamma(nc+1,ivol),sionnew(ivol),tid)
+        call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),        & 
+                      gamma(nc+1:,ivol),sionnew(ivol),                  &
+                      actvset(:,ivol),tid)
         
 #ifdef DEBUG
         if (info_debug > 10 .and. (ivol_gbl == ivol_track .or.         &
@@ -1133,7 +1166,7 @@
                   "--> check concentrations after updtsvap, ivol",     &
                   ivol_gbl
             write(idbg, *) "--> cnew ", cnew(:,ivol)
-            write(idbg, *) "--> cx ", cx(:,ivol)
+            write(idbg, *) "--> cxnew ", cxnew(:,ivol)
             write(idbg, *) "--> gamma ", gamma(:,ivol)
             write(idbg, *) "--> sionnew ",sionnew(ivol)
             write(idbg, *) "--> dhad ", dhad(tid)
@@ -1149,11 +1182,13 @@
 !c  -> double update of secondary variables 
 !c     - activitiy coefficients
 !c     - concentrations of secondary aqueous species
-!c     - ionic strength                                                 
- 
+!c     - ionic strength     
+
+
         if (update_activity(tid).eq.'double_update') then
-          call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),         &     
-     &                  gamma(nc+1,ivol),sionnew(ivol),tid)
+          call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &     
+                        gamma(nc+1:,ivol),sionnew(ivol),                &
+                        actvset(:,ivol),tid)
 #ifdef DEBUG
           if(info_debug > 10) then
             if(ivol_gbl == ivol_track .or. ivol_track == 0) then  
@@ -1161,7 +1196,7 @@
                  "--> check concentrations of secondary: double, ivol",&
                  ivol_gbl
               write(idbg, *) "--> cnew ", cnew(:,ivol)
-              write(idbg, *) "--> cx ", cx(:,ivol)
+              write(idbg, *) "--> cxnew ", cxnew(:,ivol)
               write(idbg, *) "--> gamma ", gamma(:,ivol)
               write(idbg, *) "--> sionnew ",sionnew(ivol)
               write(idbg, *) "--> dhad ", dhad(tid)
@@ -1185,14 +1220,14 @@
         
 !c  compute total aqueous component concentrations                      
 
-        call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol)) 
+        call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol)) 
 
 !c Calculate the total concentrations times correction factors - new time level !MX
         if (hmulti_diff) then               
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
                 
-            call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
+            call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
 
         end if
         
@@ -1210,7 +1245,7 @@
             write(idbg, *)                                             &
                "--> check total aqueous concentrations, ivol", ivol
             write(idbg, *) "--> cnew ", cnew(:,ivol)
-            write(idbg, *) "--> cx ", cx(:,ivol)
+            write(idbg, *) "--> cxnew ", cxnew(:,ivol)
             write(idbg, *) "--> totcnew ", totcnew(:,ivol)
           end if
         end if
@@ -1220,8 +1255,8 @@
 !c  non-competitive sorption                                            
 
         if (noncompetitive_sorption) then
-          call totcona(totanew(1,ivol),totcnew(1,ivol),                &
-                       distcoff_rt(1,ivol),sanew(ivol),pornew(ivol))     
+          call totcona(totanew(:,ivol),totcnew(:,ivol),                &
+                       distcoff_rt(:,ivol),sanew(ivol),pornew(ivol))     
         end if
         
 #ifdef DEBUG
@@ -1240,9 +1275,9 @@
 !c  reactions                                                           
 
         if (redox_equil.and.nr.gt.0) then
-          call comptotc(totcnew(1,ivol))
+          call comptotc(totcnew(:,ivol))
           if (noncompetitive_sorption) then
-            call comptotc(totanew(1,ivol))                              
+            call comptotc(totanew(:,ivol))                              
           end if
         end if
 !OPENMP Check: This part is not checked   
@@ -1257,7 +1292,7 @@
 
 #ifdef DEBUG
         if (info_debug > 10 .and. (ivol_gbl == ivol_track .or.         &
-            ivol_track == 0)) then
+            ivol_track == 0) .and. allocated(eqg)) then
           write(idbg,*)                                                &
                 "-->jacrt->tid, eqg(:,tid)", tid, eqg(:,tid)
         end if
@@ -1269,7 +1304,7 @@
         if (ng.gt.0) then
 
           do ig = 1,ng 
-            call gasconc(cnew(1,ivol),gamma(1,ivol),gnew(ig,ivol),ig,  &
+            call gasconc(cnew(:,ivol),gamma(:,ivol),gnew(ig,ivol),ig,  &
                          tkel(ivol),tid)
           end do
 #ifdef DEBUG
@@ -1285,13 +1320,13 @@
             end if
           end if
 #endif
-          call totconcg(gnew(1,ivol),totgnew(1,ivol))                       
+          call totconcg(gnew(:,ivol),totgnew(:,ivol))                       
 
 !c  compress total gaseous component concentration vector in case
 !c  of redox equilibrium reactions
 
           if (redox_equil.and.nr.gt.0) then
-            call comptotc(totgnew(1,ivol))
+            call comptotc(totgnew(:,ivol))
           end if
 
         end if                 !(ng.gt.0)
@@ -1314,7 +1349,7 @@
                 call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),    &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf, &
+                     gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf, &
                      iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,   &
                      nsb_surf,isb,0,sorption_type_ion,                &
                      sorption_type_surf,sorption_group,isactcexch)
@@ -1324,18 +1359,22 @@
           
           if(nsb_surf.gt.0) then
             do isb = 1,nsb_surf 
-              call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),       &
-                   eqsb_ion(:,tid),eqsb_surf(:,tid),                  &
-                   gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf,   &
+              call sorbspc(dummy,csb_surf(isb,tid),                   &
+                   cnew(n-nelect+1:n,ivol),                           &
+                   cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),      &
+                   gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf,   &
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,     &
                    nsb_surf,0,isb,sorption_type_ion,                  &
-                   sorption_type_surf,sorption_group,isactcexch)
+                   sorption_type_surf,sorption_group,isactcexch,      &
+                   elect_correction,name_elect_correction,nelect,     &
+                   dz_surf,totcnew(:,ivol),component_type,nlayer,     &
+                   mol_frac_ads)
             end do
           end if
 
           call totsorb(csb_ion(:,tid),csb_surf(:,tid),                &
-               chargesb_ion,rhobulk_g(ivol),totsnew_ion(1,ivol),      &
-               totsnew_surf(1,ivol),xnusb_ion,xnusb_surf,iasb_ion,    &
+               chargesb_ion,rhobulk_g(ivol),totsnew_ion(:,ivol),      &
+               totsnew_surf(:,ivol),xnusb_ion,xnusb_surf,iasb_ion,    &
                iasb_surf,jasb_ion,jasb_surf,nc,nsb_ion,nsb_surf,      &
                namec)
 
@@ -1343,11 +1382,11 @@
 !c  of redox equilibrium reactions
 
           if (redox_equil.and.nr.gt.0.and.nsb_ion.gt.0) then
-            call comptotc(totsnew_ion(1,ivol))
+            call comptotc(totsnew_ion(:,ivol))
           end if
           
           if (redox_equil.and.nr.gt.0.and.nsb_surf.gt.0) then
-            call comptotc(totsnew_surf(1,ivol))
+            call comptotc(totsnew_surf(:,ivol))
           end if
 
         end if  
@@ -1374,7 +1413,7 @@
         if (nm.gt.0) then        
 
 !c  compute total molar concentration in organic mixture 
-          call molconc(phiold(1,ivol),tid)   
+          call molconc(phiold(:,ivol),tid)   
           do im=1,nm
 
 !c  overall dissolution-precipitation rate
@@ -1399,17 +1438,16 @@
               else
                 rootdens = r1
               end if
-              call ratemin_new(totcnew(1,ivol),cnew(1,ivol),         &
-                            cx(1,ivol),gamma(1,ivol),gamma(nc+1,ivol),&
-                            sanew(ivol),ratemdp(im,ivol),             &
-                            phi(1,ivol),phiold(im,ivol),area(im,ivol),&
-                            rootdens,im,tid)
+              call ratemin_new(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol),  &
+                               gamma(:,ivol),gamma(nc+1:,ivol),sanew(ivol), &
+                               ratemdp(im,ivol),phi(:,ivol),phiold(im,ivol),&
+                               area(im,ivol),rootdens,im,tid)
               
             else
 
-              call ratemin(totcnew(1,ivol),cnew(1,ivol),cx(1,ivol),   &
-                           gamma(1,ivol),gamma(nc+1,ivol),            &
-                           ratemdp(im,ivol),phi(im,ivol),             &
+              call ratemin(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol), &
+                           gamma(:,ivol),gamma(nc+1,ivol),             &
+                           ratemdp(im,ivol),phi(im,ivol),              &
                            phiold(im,ivol),area(im,ivol),im,tid)
             end if      
           
@@ -1439,15 +1477,38 @@
 !c  modify computed rates in the same manner as done in the residual
 !c  assembly, moving the related code into modrate function.
             call modrate(ratemdp(im,ivol),cmnew(im,ivol),              &
-                         pornew(ivol),delt,im,tid)            
+                         pornew(ivol),delt,im,tid)  
 
           end do             !loop over minerals
+
+!cprovi-------------------------------------------------------------------------------
+!cprovi Compute the reaction rates for solid solutions
+!cprovi-------------------------------------------------------------------------------
+          if (solid_solutions) then 
+            ! Compute the reaction rates for the solid solution 
+            call ratess(ratemdp(:,ivol),area(:,ivol),cnew(:,ivol),        &
+                        cxnew(:,ivol),gamma(1:nc,ivol),gamma(nc+1:,ivol), &
+                        cmold(:,ivol),cmcmin(:,tid),delt,iter_rt)  
+            do iss = 1, nss     
+              do i1 = 1, nmin_ss(iss)  
+                im = idmin_ss(iss,i1)
+                if (dabs(ratemdp(im,ivol))<tinyrate) then
+                  ratemdp(im,ivol) = r0
+                end if
+                dissvol = ratemdp(im,ivol)*delt
+                !------------------------------------
+                if ((cmnew(im,ivol)+dissvol)<(r1+small)*cmcmin(im,tid)) then
+                  ratemdp(im,ivol) = -(cmnew(im,ivol)-cmcmin(im,tid))/delt
+                end if
+              end do
+            end do    
+          end if ! Solid solutions 
         
 !c  total source/sink terms towards total aqueous component
 !c  concentrations due to mineral dissolution precipitation 
 !c  reactions                                                           
  
-          call totmin(ratemdp(1,ivol),totmdp(1,ivol))
+          call totmin(ratemdp(:,ivol),totmdp(:,ivol))
 #ifdef DEBUG
           if (info_debug > 10 .and. (ivol_gbl == ivol_track .or.       &
               ivol_track == 0)) then
@@ -1463,7 +1524,7 @@
 !c  in case of redox equilibrium reactions                              
 
           if (redox_equil.and.nr.gt.0) then
-            call comptotc(totmdp(1,ivol))
+            call comptotc(totmdp(:,ivol))
           end if
 
         end if                       !(nm.gt.0)
@@ -1479,7 +1540,7 @@
 !c  calculate gas properties + molar fractions
         if (ng .gt. 0 .and. (gas_advection .or. dgm .or. maxwell)) then      
 
-          mdens_g(ivol) = gasm(ng, gnew(1,ivol))                   ! gas molar density               
+          mdens_g(ivol) = gasm(ng, gnew(:,ivol))                   ! gas molar density               
 
           do ig=1,ng
             gmfrac(ig,ivol) = gnew(ig,ivol) / mdens_g(ivol)    ! molar fractions
@@ -1525,7 +1586,7 @@
 #endif
 
       if (b_prtfile .and. tid == 1) then 
-       prt_react_jac_part(1) = cputime() - prt_react_jac_part(1)
+        prt_react_jac_part(1) = cputime() - prt_react_jac_part(1)
       end if
 
     
@@ -1596,34 +1657,34 @@
 !cprovi---------------------------------------------- 
 
         call pitzer (phase,gamma(1:nc,ivol),                          &
-     &               gamma(nc+1:nc+nx,ivol),                          &
-     &               cnew(1:nc,ivol),cx(1:nx,ivol),                   &
-     &               nc,nx,ilog)
+                     gamma(nc+1:nc+nx,ivol),                          &
+                     cnew(1:nc,ivol),cxnew(1:nx,ivol),                &
+                     nc,nx,ilog)
 
          else 
 !c  --> for free species
           do ic=1,nc
-            gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),           &
-     &                             sionnew(ivol),chargec(ic),         &
-     &                             dhac(ic),dhbc(ic),                 &
-     &                             dhad(tid),dhbd(tid),               &
-     &                             adav,bdav,acth2omin,nc,            &
-     &                             nx,namec(ic),namec,ic,             &
-     &                             issit,asit,basit,coepsil,          &
-     &                             iasit,jasit)
+            gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),        &
+                                   sionnew(ivol),chargec(ic),         &
+                                   dhac(ic),dhbc(ic),                 &
+                                   dhad(tid),dhbd(tid),               &
+                                   adav,bdav,acth2omin,nc,            &
+                                   nx,namec(ic),namec,ic,             &
+                                   issit,asit,basit,coepsil,          &
+                                   iasit,jasit)
           end do
         
 
 !c  --> for secondary aqueous species
           do ix=1,nx
-            gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol),        &
-     &                                sionnew(ivol),chargex(ix),      &
-     &                                dhax(ix),dhbx(ix),              &
-     &                                dhad(tid),dhbd(tid),            &
-     &                                adav,bdav,acth2omin,nc,         &
-     &                                nx,namex(ix),namec,             &
-     &                                nc+ix,issit,asit,basit,         &
-     &                                coepsil,iasit,jasit)
+            gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),     &
+                                      sionnew(ivol),chargex(ix),      &
+                                      dhax(ix),dhbx(ix),              &
+                                      dhad(tid),dhbd(tid),            &
+                                      adav,bdav,acth2omin,nc,         &
+                                      nx,namex(ix),namec,             &
+                                      nc+ix,issit,asit,basit,         &
+                                      coepsil,iasit,jasit)
           end do
          end if 
         end if
@@ -1631,13 +1692,19 @@
 !c recompute root water uptake for current control volume (HG written by DSU)
 !c and correct the flux by the passive factor (HG written by DSU)
 
+        qrootloc = r0
         if (passive_uptake) then
           if (rld(ivol)>rverysmall) then
-            qrootloc = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
-            if (rootwateruptake_field) then
-              qrootloc = qrootloc*uptakefactor_vol(ivol)
-            else
-              qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
+            if (itype_rootuptk_solut == 1) then
+              qrootloc = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              if (rootwateruptake_field) then
+                qrootloc = qrootloc*uptakefactor_vol(ivol)
+              else
+                qrootloc = qrootloc*uptakefactor(mpropvs(ivol))
+              end if
+            else if (itype_rootuptk_solut == 2) then
+              qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+              call cbalance(cnew(:,ivol),cxnew(:,ivol),zbal,zpos,zneg)
             end if
 
 #ifdef DEBUG
@@ -1651,6 +1718,51 @@
           end if   
         end if 
 
+!c  calculate root related respiration
+        rootarup = r0
+        if (root_uptake) then
+          if (itype_root_resp == 1) then
+            if (rld(ivol) > rverysmall) then
+              do ic = 1, nc-1
+                !c absorption or exudation by root
+                !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
+                if (resprate(ic,izn) < r0) then    !exudation by root
+                  rootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)
+                else                          !respiration by root
+                  !c inhibition by hyperbolic equation ([TotC]/([TotC]+[TotC_h]))^n
+                  rootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)*&             !mol/day
+                                 (totcnew(ic,ivol)/(totcnew(ic,ivol)+totc_uptake_hk(ic,izn)))**&
+                                 totc_uptake_hn(ic,izn)
+                end if
+              end do
+
+
+!c  modify respiration rate for h+1 when charge balance in uptake is enforced
+              if (resprate_charge(izn)) then
+                ic_h = 0
+                rootarup_current = r0
+                do ic = 1, nc-1
+                  if (namec(ic).eq.'h+1') then
+                    ic_h = ic
+                  else
+                    rootarup_current = rootarup_current - rootarup(ic)*chargec(ic)
+                  end if
+                end do
+                rootarup(ic_h) = rootarup_current
+              end if
+
+!c  compress source/sink term towards total aqueous component
+!c  concentrations due to root respiration/exudation
+!c  in case of redox equilibrium reactions                              
+
+              if (redox_equil.and.nr.gt.0) then
+                call comptotc(rootarup(1))
+              end if
+
+            end if
+          end if
+        end if
+        
 !c  get row pointers
 
         idiag = iavs(ivol)           !diagonal
@@ -1748,14 +1860,43 @@
             
           if (sorption_group.eq.'surface-complexation'.or.(nsb_surf.gt.0.and. &
               sorption_group.eq.'surface-complex and ion-exchange')) then  
-              do ic=1,n            
-
-                  totsb_surf(ic) = cvol(ivol)/delt                            &
-                           * (pornew(ivol)*sanew(ivol)*totsnew_surf(ic,ivol) -  &
+              do ic=1,n
+                totsb_surf(ic) = cvol(ivol)/delt *                            &
+                           (pornew(ivol)*sanew(ivol)*totsnew_surf(ic,ivol) -  &
                             porold(ivol)*saold(ivol)*totsold_surf(ic,ivol))
-
-        
               end do
+
+!cprovi--------------------------------------------------------------------------------------------------------
+!cprovi If electrostaic correction is performed, an additional equation for charge balance is included 
+!cprovi--------------------------------------------------------------------------------------------------------
+              if (elect_correction) then
+                area_surf=site_area(1)*site_mass(1)
+                do isb = 1,nsb_surf 
+                  call sorbspc(dummy,csb_surf(isb,tid),cnew(n-nelect+1:n,ivol),    &
+                               cec_g(ivol),eqsb_ion(:,tid),eqsb_surf(:,tid),       &
+                               gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf,    &
+                               iasb_ion,iasb_surf,jasb_ion,jasb_surf,nsb_ion,      &
+                               nsb_surf,0,isb,sorption_type_ion,                   &
+                               sorption_type_surf,sorption_group,isactcexch,       &
+                               elect_correction,name_elect_correction,nelect,      &
+                               dz_surf,totcnew(:,ivol),component_type,nlayer,      &
+                               mol_frac_ads)
+                end do
+!cprovi-------------------------------------------------------------------------
+!cprovi Compute the surface charge balance if the electrostatic correction is 
+!cprovi carried out (Only if the number of surface complexes is > 0.
+!cprovi-------------------------------------------------------------------------
+                call totchargesorb(totcharge_surf(n-nelect+1:n,tid),sionnew(ivol),    &
+                        cnew(n-nelect+1:n,ivol),csb_surf(:,tid),charge_surf,nsb_surf, &
+                        tkel(ivol),area_surf,cap_surf,name_elect_correction,          &
+                        nlayer,nelect,ncap)
+                !c Convert surface charge balance from C/L water to C,
+                do ielect = 1, nelect          
+                  totcharge_surf(n-nelect+ielect,tid) = cvol(ivol)*pornew(ivol)*      &
+                            sanew(ivol)*totcharge_surf(n-nelect+ielect,tid)
+                end do
+              end if 
+
           else
             totsb_surf = r0
           end if
@@ -1782,14 +1923,14 @@
 
           do iaq = 1,naq
             if (new_database) then
-              call rateint_new(rateaq(iaq,tid),totcnew(1,ivol),       &
-                               cnew(1,ivol),cx(1,ivol),gamma(1,ivol), &
-                               gamma(nc+1,ivol),phi(1,ivol),iaq,      &
-                               scalfac_aq_ivol(iaq,ivol),             &
+              call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),          &
+                               cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol), &
+                               gamma(nc+1,ivol),phi(:,ivol),iaq,         &
+                               scalfac_aq_ivol(iaq,ivol),                &
                                sanew(ivol),pornew(ivol),tid)
             else
-              call rateint(rateaq(iaq,tid),totcnew(1,ivol),           &
-                           cnew(1,ivol),gamma(1,ivol),phi(1,ivol),    &
+              call rateint(rateaq(iaq,tid),totcnew(:,ivol),           &
+                           cnew(:,ivol),gamma(:,ivol),phi(:,ivol),    &
                            iaq,scalfac_aq_ivol(iaq,ivol),tid)
             end if
           end do
@@ -1828,10 +1969,10 @@
  
         if (ng.gt.0.and.gas_removal) then
           if (density_dependence) then
-            call rategasd(gnew(1,ivol),tkel(ivol),uvsnew(ivol),        &
+            call rategasd(gnew(:,ivol),tkel(ivol),uvsnew(ivol),        &
                           sgnew(ivol),tid)
           else
-            call rategas(gnew(1,ivol),tkel(ivol),hhead(ivol),zg(ivol), &
+            call rategas(gnew(:,ivol),tkel(ivol),hhead(ivol),zg(ivol), &
                          sgnew(ivol),tid)
           end if
           call totconcg(rateg(:,tid),totrateg)
@@ -1840,9 +1981,9 @@
 !c  degassing [mol L^-1 bulk s^-1]
 
           do ic = 1,n
-            totrateg(ic) = cvol(ivol) * bulkconc(totrateg(ic),        &
-     &                                           sanew(ivol),         &
-     &                                           pornew(ivol))
+            totrateg(ic) = cvol(ivol) * bulkconc(totrateg(ic),         &
+                                                 sanew(ivol),          &
+                                                 pornew(ivol))
           end do
 
 !c  compress total rates for removal of aqueous components
@@ -1923,9 +2064,9 @@
 !c  overall oxidation-reduction rates for redox couples
 
           do ir = 1,nr
-            call rateredx(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),      &
-     &                    gamma(nc+1,ivol),rateor(ir,tid),            &
-     &                    totcnew(1,ivol),ir,tid)
+            call rateredx(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),    &
+                          gamma(nc+1,ivol),rateor(ir,tid),             &
+                          totcnew(:,ivol),ir,tid)
           end do
 
 !c  total source/sink terms towards total aqueous component
@@ -1936,8 +2077,8 @@
 
           do ic = 1,n
             totor(ic) = cvol(ivol) * bulkconc(totor(ic),              &
-     &                                        sanew(ivol),            &
-     &                                        pornew(ivol))    
+                                              sanew(ivol),            &
+                                              pornew(ivol))    
           end do
         else
           totor = r0
@@ -1961,26 +2102,7 @@
           totdp(:,tid) = r0
         end if
 
-!c  calculate root related respiration
-        if (root_uptake) then
-          do ic = 1, n
-            !c absorption or exudation by root
-            !c convert rld(ivol)*resprate(ic,izn) from mol/m^3 to mol/L bulk             
-            if (resprate(ic,izn) < r0) then    !exudation by root
-              rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-            else                          !respiration by root 
-              rootresp_current = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3         !mol/day
-              rootresp_max = (totcnew(ic,ivol)-                        &
-                              max(rverysmall,totc_uptake_min(ic,izn)))*&
-                              cvol(ivol)*pornew(ivol)*sanew(ivol)/delt               !mol/day
-              rootresp(ic) = min(rootresp_current,max(rootresp_max,r0))
-            end if
 
-          end do
-        else
-          rootresp = r0
-        end if
- 
 !c  compute fluxes between current control volume and adjacent
 !c  control volumes and total flux into current control volume
 
@@ -1991,14 +2113,29 @@
         end do
 
 !c add root water uptake term 7 Feb 2019 HG (written by DSU)
-
+!cprovi---------------------------------------------------------------------
+!cprovi Passive and active solute uptake
+!cprovi---------------------------------------------------------------------
         if (passive_uptake) then 
           if (rld(ivol)>rverysmall) then 
-            do ic = 1,n             
-              totcflux(ic) = totcflux(ic) + totcnew(ic,ivol) * qrootloc  
-            end do  
+            if (itype_rootuptk_solut == 1) then
+              do ic = 1,n             
+                totcflux(ic) = totcflux(ic) + totcnew(ic,ivol) * qrootloc  
+              end do  
+            else if (itype_rootuptk_solut == 2) then
+              do ic = 1,n             
+                totcflux(ic) = totcflux(ic) + cvol(ivol)*              &
+                               soluteUptakeFunc(qrootloc,              &
+                                 totcnew(ic,ivol),zpos,zneg,rld(ivol), &
+                                 sanew(ivol),pornew(ivol),ic,izn)  
+              end do
+            end if
           end if
-        end if    
+        end if 
+
+        if (root_uptake) then
+          totcflux(1:n) = totcflux(1:n) + rootarup(1:n)
+        end if
         
         if (ng.gt.0) then
           do ic=1,n
@@ -2064,7 +2201,7 @@
 !cdsu
 !cdsu calculate influence coefficient
 !cdsu
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
               call usg_face_utility_cinfrt_da_ic(ivol,jvol,i1,         &
                        cinfrt_da_ic_usg_loc,cinfrt_da_ic_usg_cross_loc)
             else
@@ -2139,9 +2276,9 @@
             end if
 #endif
 
-            call wgprop(totgnew(1,ivol),totgnew(1,jvol),totgij ,     &
-                      gnew(1,ivol)   ,gnew(1,jvol)   ,gij      ,     &
-                      gmfrac(1,ivol) ,gmfrac(1,jvol) ,gmfracij ,     &
+            call wgprop(totgnew(:,ivol),totgnew(:,jvol),totgij ,     &
+                      gnew(:,ivol)   ,gnew(:,jvol)   ,gij      ,     &
+                      gmfrac(:,ivol) ,gmfrac(:,jvol) ,gmfracij ,     &
                       relpgi         ,relpgj         ,relpgij  ,     &
                       gdens_ivol     ,gdens_jvol     ,densgij  ,     &
                       gvisc_ivol     ,gvisc_jvol     ,viscgij  ,     &
@@ -2171,7 +2308,7 @@
 
 #ifdef USG
               if (discretization_type > 0) then
-                call dgm_fluxdg(gnew(1,ivol)       ,gnew(1,jvol) ,    &
+                call dgm_fluxdg(gnew(:,ivol)       ,gnew(:,jvol) ,    &
                                 gij                ,gmfracij     ,    &
                                 zg(ivol)           ,zg(jvol)     ,    &
                                 densgij            ,gpij         ,    &
@@ -2186,7 +2323,7 @@
                                 dgm_gflux          ,neflux       )
               else
 #endif
-                call dgm_fluxdg (gnew(1,ivol)       ,gnew(1,jvol) ,    &
+                call dgm_fluxdg (gnew(:,ivol)       ,gnew(:,jvol) ,    &
                                  gij                ,gmfracij     ,    &
                                  zg(ivol)           ,zg(jvol)     ,    &
                                  densgij            ,gpij         ,    &
@@ -2226,17 +2363,17 @@
 
             else if (maxwell) then
 
-              call ms_fluxdg (gnew(1,ivol)        ,gnew(1,jvol) ,      &
-     &                        gij                 ,gmfracij     ,      &
-     &                        zg(ivol)            ,zg(jvol)     ,      &
-     &                        densgij             ,gpij         ,      &
-     &                        tkel(ivol)          ,tauij(i1)    ,      &
-     &                        gporij(i1)          ,deltaij(i1)  ,      &
-     &                        rverysmall          ,                    &
-     &                        ludecomp(1,1,icon)  ,                    &
-     &                        fmat(1,icon)        ,                    &
-     &                        ipvt(1,icon)        ,equimolar    ,      &
-     &                        ms_gflux            ,neflux       )
+              call ms_fluxdg (gnew(:,ivol)        ,gnew(:,jvol) ,      &
+                              gij                 ,gmfracij     ,      &
+                              zg(ivol)            ,zg(jvol)     ,      &
+                              densgij             ,gpij         ,      &
+                              tkel(ivol)          ,tauij(i1)    ,      &
+                              gporij(i1)          ,deltaij(i1)  ,      &
+                              rverysmall          ,                    &
+                              ludecomp(1,1,icon)  ,                    &
+                              fmat(1,icon)        ,                    &
+                              ipvt(1,icon)        ,equimolar    ,      &
+                              ms_gflux            ,neflux       )
 
             endif
 
@@ -2250,12 +2387,12 @@
 
           if (multi_diff) then
 
-            call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),          &
-                           cnew(:,jvol),cx(:,jvol),                    &
+            call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),       &
+                           cnew(:,jvol),cxnew(:,jvol),                 &
                            delta_totviscnew(:,tid))
 
-            call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),      &
-                               cnew(:,jvol),cx(:,jvol),                &
+            call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
                                delta_electromignew(:,tid))
 
 #ifdef DEBUG
@@ -2265,7 +2402,8 @@
                     "ivol",ivol,"jvol",jvol,                         &
                     "cnew(:,ivol)",cnew(:,ivol),                     &
                     "cnew(:,jvol)",cnew(:,jvol),                     &
-                    "cx(:,ivol)",cx(:,ivol),"cx(:,jvol)",cx(:,jvol)
+                    "cxnew(:,ivol)",cxnew(:,ivol),                   &
+                    "cxnew(:,jvol)",cxnew(:,jvol)
                 end if
             end if
 #endif
@@ -2277,7 +2415,7 @@
 !cprovi---------------------------------------------------------------
 !cprovi Bubbles use component dependent influence coefficient if specified
 !cprovi---------------------------------------------------------------
-            if (diff_coff) then
+            if (comp_dep_diff_coff) then
              cinfrt_da(i1) = cinfrt_da_ic(ic,i1)
 #ifdef USG
               if (discretization_type > 0) then
@@ -2497,7 +2635,7 @@
                 if (blanc_diff_g) then
 #ifdef USG
                   if (discretization_type > 0) then
-                    gasdiff_loc = gasdiff2(gmfrac(1,ivol),gmfrac(1,jvol),    &
+                    gasdiff_loc = gasdiff2(gmfrac(:,ivol),gmfrac(:,jvol),    &
                                            gpivol_ivol   ,gpivol_jvol   ,    &
                                            zg(ivol)      ,zg(jvol)      ,    &
                                            gdens_ivol    ,gdens_jvol    ,    &
@@ -2510,7 +2648,7 @@
 #endif
 !c                  diffusion coefficient calc'd with LeBlanc's law
                     cinfrt = cinfrt_dg(i1) * gasdiff2                        &
-                                    (gmfrac(1,ivol), gmfrac(1,jvol),         &
+                                    (gmfrac(:,ivol), gmfrac(:,jvol),         &
                                      gpivol_ivol   , gpivol_jvol   ,         &
                                      zg(ivol)      , zg(jvol)      ,         &
                                      gdens_ivol    , gdens_jvol    ,         &
@@ -2687,12 +2825,13 @@
                      totsb_ion(ic),totsb_surf(ic),                    &
                      totor(ic),totdp(ic,tid),                         &
                      totcflux(ic),totgflux(ic),totrateg(ic),          &
-                     rootresp(ic),totgasdecay(ic),b_use_gas_decay,    &
+                     totgasdecay(ic),b_use_gas_decay,                 &
                      totaqdecay(ic),b_use_aq_decay,                   &
                      totsorptiondecay(ic),b_use_sorption_decay,       &
-                     totaq_ngi(ic,tid),b_use_ngi,           &
-                     redox_equil,noncompetitive_sorption,             &
-                     component_type(ic),brt(irow))
+                     totaq_ngi(ic,tid),b_use_ngi,redox_equil,         &
+                     noncompetitive_sorption,component_type(ic),      &
+                     totcharge_surf(ic,tid),elect_correction,         &
+                     brt(irow))
 #ifdef DEBUG
           if(info_debug > 20) then
               if(ivol_gbl == ivol_track .or. ivol_track == 0) then
@@ -2772,7 +2911,7 @@
             do ir=1,nr
               ic = n+ir    
               call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),      &
-                   gamma(1,ivol),gamma(ic,ivol),xnur,iarc,jarc,nc,ir)
+                   gamma(:,ivol),gamma(ic,ivol),xnur,iarc,jarc,ir)
             end do
           end if
 
@@ -2781,20 +2920,20 @@
 
           do ix=1,nx
             call secspec(cinc(:,tid),cxinc(ix,tid),eqx(ix,tid),       &
-                 gamma(1,ivol),gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
+                 gamma(:,ivol),gamma(nc+ix,ivol),xnux,iax,jax,ix)
           end do
          
 !c  compute derivatives of total aqueous component concentrations
 !c  to be modified later, for better performance for USG as the derivation has already been saved
 
           if (analyt_deriv_rt) then
-            call atotconc(cnew(1,ivol),cx(1,ivol),jbl,tid)
+            call atotconc(cnew(:,ivol),cxnew(:,ivol),jbl,tid)
           else
             if (hmulti_diff) then
-                call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,izn)
-                call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+                call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,izn)
+                call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
             else   
-                call dtotconc(cnew(1,ivol),cx(1,ivol),drtinc,jbl,tid,0)
+                call dtotconc(cnew(:,ivol),cxnew(:,ivol),drtinc,jbl,tid,0)
             end if
           end if
 
@@ -2803,7 +2942,7 @@
 
           if (noncompetitive_sorption) then
           
-            call totcona(dtota,dtotc(:,tid),distcoff_rt(1,ivol),       &
+            call totcona(dtota,dtotc(:,tid),distcoff_rt(:,ivol),       &
                          sanew(ivol), pornew(ivol))
             do ic = 1,n
               dtota(ic) = cvol(ivol)/delt * dtota(ic)
@@ -2828,7 +2967,7 @@
           if (ng.gt.0) then
 
             do ig = 1,ng
-              call gasconc(cinc(:,tid),gamma(1,ivol),ginc(ig,tid),     &
+              call gasconc(cinc(:,tid),gamma(:,ivol),ginc(ig,tid),     &
                    ig,tkel(ivol),tid)
             end do
             
@@ -2848,8 +2987,8 @@
 
 !c  compute derivatives of total gaseous component concentrations 
 
-            call dtotcong(gnew(1,ivol),ginc(:,tid),dtotg(:,tid),xnug,drtinc, &
-     &                    iaga,jaga,nc,ng,jbl,namec)
+            call dtotcong(gnew(:,ivol),ginc(:,tid),dtotg(:,tid),xnug,drtinc, &
+                          iaga,jaga,nc,ng,jbl,namec)
             
 #ifdef DEBUG
             if(info_debug > 10) then
@@ -2879,11 +3018,11 @@
 
             if (gas_removal) then
               if (density_dependence) then
-                call drategdd(gnew(1,ivol),tkel(ivol),uvsnew(ivol),   &
-     &                        drtinc,tid)
+                call drategdd(gnew(:,ivol),tkel(ivol),uvsnew(ivol),   &
+                              drtinc,tid)
               else
-                call drategas(gnew(1,ivol),tkel(ivol),hhead(ivol),    &
-     &                        zg(ivol),drtinc,tid)         
+                call drategas(gnew(:,ivol),tkel(ivol),hhead(ivol),    &
+                              zg(ivol),drtinc,tid)         
               end if
               call totconcg(rateg(:,tid),totrateg)
 
@@ -2892,8 +3031,8 @@
 
               do ic = 1,n
                 totrateg(ic) = cvol(ivol) * bulkconc(totrateg(ic),    &
-     &                                               sanew(ivol),     &
-     &                                               pornew(ivol))
+                                                     sanew(ivol),     &
+                                                     pornew(ivol))
               end do
 
 !c  compress derivatives of total rates for removal of aqueous components
@@ -2950,7 +3089,7 @@
                 call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),    &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                      eqsb_ion(:,tid), eqsb_surf(:,tid),               &
-                     gamma(1,ivol),cnew(1,ivol),                      &
+                     gamma(:,ivol),cnew(:,ivol),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,isb,0,       &
                      sorption_type_ion,sorption_type_surf,            &
@@ -2958,7 +3097,7 @@
                 call sorbspc_m(dcsb_ion(isb,tid),dummy,cec_g(ivol),   &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol), cinc(:,tid),                      &
+                     gamma(:,ivol), cinc(:,tid),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,isb,0,       &
                      sorption_type_ion,sorption_type_surf,            &
@@ -2970,23 +3109,61 @@
             
             if(nsb_surf.gt.0) then
               do isb = 1,nsb_surf  
-                call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),     &
+                call sorbspc(dummy,csb_surf(isb,tid),                 &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol),cnew(1,ivol),                      &
+                     gamma(:,ivol),cnew(:,ivol),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,0,isb,       &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)
-                call sorbspc(dummy,dcsb_surf(isb,tid),cec_g(ivol),    &
+                     sorption_group,isactcexch,elect_correction,      &
+                     name_elect_correction,nelect,dz_surf,            &
+                     totcnew(:,ivol),component_type,nlayer,           &
+                     mol_frac_ads)
+
+                call sorbspc(dummy,dcsb_surf(isb,tid),                &
+                     cinc(n-nelect+1:n,tid),cec_g(ivol),              &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol), cinc(:,tid),                      &
+                     gamma(:,ivol), cinc(:,tid),                      &
                      xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,         &
                      jasb_ion,jasb_surf,nsb_ion,nsb_surf,0,isb,       &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)                
-                dcsb_surf(isb,tid) =                                  &
-                    (dcsb_surf(isb,tid) - csb_surf(isb,tid))/drtinc
+                     sorption_group,isactcexch,elect_correction,      &
+                     name_elect_correction,nelect,dz_surf,            &
+                     totcnew(:,ivol),component_type,nlayer,           &
+                     mol_frac_ads)
               end do
+
+!cprovi----------------------------------------------------------------------------------          
+!cprovi Compute the derivarive of electric charge balance with respect to primary species
+!cprovi for electrostatic surface complexation
+!cprovi----------------------------------------------------------------------------------
+              if (elect_correction) then  
+                area_surf = site_area(1)*site_mass(1)
+                call ionstr(cinc(:,tid),cxinc(:,tid),strioninc,       &
+                            chargec(:),chargex(:),nc-1-nelect,nx,     &
+                            namec(:))
+                call totchargesorb(dtotcharge_surf(n-nelect+1:n,tid),strioninc,        &
+                        cinc(n-nelect+1:n,tid),dcsb_surf(:,tid),charge_surf,nsb_surf,  &
+                        tkel(ivol),area_surf,cap_surf,name_elect_correction,           &
+                        nlayer,nelect,ncap)
+                   
+                do ielect=1,nelect  
+                  dtotcharge_surf(n-nelect+ielect,tid) = cvol(ivol)*pornew(ivol)*      &
+                             sanew(ivol)*dtotcharge_surf(n-nelect+ielect,tid)
+                  dtotcharge_surf(n-nelect+ielect,tid) =                               &
+                            (dtotcharge_surf(n-nelect+ielect,tid)-                     &
+                             totcharge_surf(n-nelect+ielect,tid))/drtinc
+                end do
+              end if  
+
+!cprovi----------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------          
+!cprovi----------------------------------------------------------------------------------              
+              do isb = 1,nsb_surf                
+                dcsb_surf(isb,tid) = (dcsb_surf(isb,tid) - csb_surf(isb,tid))/drtinc
+              end do
+
             end if
 
 !c  compute derivatives of of total sorbed component concentrations
@@ -3035,11 +3212,9 @@
 !c  to be used for computing derivatives of dissolution-precipitation,
 !c  oxidation-reduction rates and/or advective fluxes (Van Leer flux
 !c  limiter)
+!c  this is used for certain conditions before, but now always computed
 
-          if ((.not.redox_equil.and.nr.gt.0).or.(nm.gt.0).or.         &
-     &         naq.gt.0) then
-            call totconc(cinc(:,tid),cxinc(:,tid),totcinc(:,tid))
-          end if
+          call totconc(cinc(:,tid),cxinc(:,tid),totcinc(:,tid))
 
 !c  compute derivatives of intra-aqueous kinetic reactions
 
@@ -3047,15 +3222,15 @@
 
             do iaq = 1,naq
               if (new_database) then
-                call drateint_new(rateaq(iaq,tid),totcnew(1,ivol),    & 
-                                cnew(1,ivol),cx(1,ivol),gamma(1,ivol),&
-                                gamma(nc+1,ivol),phi(1,ivol),         &
-                                drtinc,iaq,scalfac_aq_ivol(iaq,ivol), &
-                                sanew(ivol),pornew(ivol),tid)
+                call drateint_new(rateaq(iaq,tid),totcnew(:,ivol),         & 
+                                  cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),&
+                                  gamma(nc+1,ivol),phi(:,ivol),            &
+                                  drtinc,iaq,scalfac_aq_ivol(iaq,ivol),    &
+                                  sanew(ivol),pornew(ivol),tid)
               else
                 
-                call drateint(rateaq(iaq,tid),totcnew(1,ivol),        &
-                              cnew(1,ivol),gamma(1,ivol),phi(1,ivol), &
+                call drateint(rateaq(iaq,tid),totcnew(:,ivol),        &
+                              cnew(:,ivol),gamma(:,ivol),phi(:,ivol), &
                               drtinc,iaq,scalfac_aq_ivol(iaq,ivol),   &
                               tid)
               end if
@@ -3070,8 +3245,8 @@
 
             do ic = 1,n
               dtotaq(ic,tid) = cvol(ivol) * bulkconc(dtotaq(ic,tid),  &
-     &                                           sanew(ivol),         &
-     &                                           pornew(ivol))        
+                                                 sanew(ivol),         &
+                                                 pornew(ivol))        
 
             end do
 
@@ -3082,9 +3257,9 @@
           if (.not.redox_equil.and.nr.gt.0) then
 
             do ir = 1,nr
-              call draterdx(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),    &
-     &                      gamma(nc+1,ivol),rateor(ir,tid),          &
-     &                      totcnew(1,ivol),drtinc,ir,tid,idbg)
+              call draterdx(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+                            gamma(nc+1,ivol),rateor(ir,tid),           &
+                            totcnew(:,ivol),drtinc,ir,tid,idbg)
             end do
 
 !c  derivative of total source/sink terms towards total aqueous 
@@ -3097,8 +3272,8 @@
 
             do ic = 1,n
               dtotor(ic) = cvol(ivol) * bulkconc(dtotor(ic),          &
-     &                                           sanew(ivol),         &
-     &                                           pornew(ivol))
+                                                 sanew(ivol),         &
+                                                 pornew(ivol))
             end do
 
           end if
@@ -3110,7 +3285,7 @@
           if (nm.gt.0) then
 
 !c  compute total molar concentration in organic mixture 
-            call molconc(phiold(1,ivol),tid)
+            call molconc(phiold(:,ivol),tid)
 
             do im=1,nm
 
@@ -3122,8 +3297,8 @@
               dissvol = ratemdp(im,ivol)*delt
 
               if ((cmnew(im,ivol)+dissvol).lt.                        &
-     &            (r1+small)*cmcmin(im,tid).or.                       &
-     &            dabs(ratemdp(im,ivol)).lt.tinyrate) then
+                  (r1+small)*cmcmin(im,tid).or.                       &
+                  dabs(ratemdp(im,ivol)).lt.tinyrate) then
 !cmbalmin            if ((cmnew(im,ivol).le.cmcmin(im).and.
 !cmbalmin     &           ratemdp(im,ivol).le.r0).or.
 !cmbalmin     &          (dabs(ratemdp(im,ivol)).lt.tinyrate)) then
@@ -3134,9 +3309,9 @@
 
                 if (analyt_deriv_rt) then
 
-                  call aratemin(totcnew(1,ivol),cnew(1,ivol),         &
-                                cx(1,ivol),gamma(1,ivol),             &
-                                gamma(nc+1,ivol),dratedp(im,tid),     &
+                  call aratemin(totcnew(:,ivol),cnew(:,ivol),         &
+                                cxnew(:,ivol),gamma(:,ivol),          &
+                                gamma(nc+1:,ivol),dratedp(im,tid),    &
                                 phi(im,ivol),phiold(im,ivol),         &
                                 area(im,ivol),im,jbl,ivol,tid)
 
@@ -3151,20 +3326,20 @@
                     else
                       rootdens = r1
                     end if
-                    call dratemin_new(totcnew(1,ivol),cnew(1,ivol),   &  
-                                    cx(1,ivol),gamma(1,ivol),         &
-                                    gamma(nc+1,ivol),sanew(ivol),     &
-                                    dratedp(im,tid),                  &
-                                    phi(1,ivol),phiold(im,ivol),      &
-                                    area(im,ivol),drtinc,rootdens,    &
-                                    im,ivol,tid)
+                    call dratemin_new(totcnew(:,ivol),cnew(:,ivol),    &  
+                                      cxnew(:,ivol),gamma(:,ivol),     &
+                                      gamma(nc+1:,ivol),sanew(ivol),   &
+                                      dratedp(im,tid),                 &
+                                      phi(:,ivol),phiold(im,ivol),     &
+                                      area(im,ivol),drtinc,rootdens,   &
+                                      im,ivol,tid)
                   else
 
-                    call dratemin(totcnew(1,ivol),cnew(1,ivol),       &  
-                                cx(1,ivol),gamma(1,ivol),             &
-                                gamma(nc+1,ivol),dratedp(im,tid),     &
-                                phi(im,ivol),phiold(im,ivol),         &
-                                area(im,ivol),drtinc,im,ivol,tid)
+                    call dratemin(totcnew(:,ivol),cnew(:,ivol),        &  
+                                  cxnew(:,ivol),gamma(:,ivol),         &
+                                  gamma(nc+1,ivol),dratedp(im,tid),    &
+                                  phi(im,ivol),phiold(im,ivol),        &
+                                  area(im,ivol),drtinc,im,ivol,tid)
                 
                  end if
                 end if
@@ -3176,7 +3351,7 @@
 
               if (.not.far_from_equil(im)) then
                 if (dlog10(satm(im,tid)).lt.supsatm(im) .and.         &
-     &              ratemdp(im,ivol).gt.r0) then
+                    ratemdp(im,ivol).gt.r0) then
 
                   dratedp(im,tid) = r0
 
@@ -3205,6 +3380,37 @@
               end if              
 
             end do
+
+!cprovi----------------------------------------------------------------------------------------
+!cprovi Modify the derivatives of the mineral reaction rates if solid solutions are calculated
+!cprovi Note that the derivatives of reaction rates for pure phases were previously stored 
+!cprovi in the vector 
+!cprovi----------------------------------------------------------------------------------------
+            if (solid_solutions) then                         
+              call ratess(dratedp(:,tid),area(:,ivol),cinc(:,tid),cxinc(:,tid),         &
+                          gamma(:,ivol),gamma(nc+1:,ivol),cmold(:,ivol),cmcmin(:,tid),  &
+                          delt,iter_rt)  
+              call ratess(dummyvec,area(:,ivol),cnew(:,ivol),cxnew(:,ivol),             &
+                          gamma(:,ivol),gamma(nc+1:,ivol),cmold(:,ivol),cmcmin(:,tid),  &
+                          delt,iter_rt)
+              do iss = 1, nss 
+                do i1 = 1, nmin_ss(iss)  
+                  im=idmin_ss(iss,i1)  
+                  dratedp(im,tid)=(dratedp(im,tid)-ratemdp(im,ivol))/drtinc
+                  dissvol = ratemdp(im,ivol)*delt
+                 
+                  if ((cmnew(im,ivol)+dissvol)<(r1+small)*cmcmin(im,tid) .or.           &
+                    dabs(ratemdp(im,ivol))<tinyrate) then    
+                    dratedp(im,tid) = r0
+                  end if
+                end do              
+              end do 
+              
+            end if  ! Solid solutions      
+!cprovi----------------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------------------        
+ 
 
 !c  derivatives of total source/sink terms due to dissolution/
 !c  precipitation reactions
@@ -3237,24 +3443,46 @@
           end do                       !influx (aqueous phase)
 
 !c calculate derivative of respiration (HG)
-          if (root_uptake) then 
-            !c derivative of respiration depends on the formula
-            !c if respiration rate is not related to solute concentration, 
-            !c as shown below, then derivative is zero
-            !c rootresp(ic) = cvol(ivol)*rld(ivol)*resprate(ic,izn)/conv3
-            !c drootresp(ic) = d(rootresp)/d(cnew) = r0
-            drootresp = r0
-          else
-            drootresp = r0
+          drootarup = r0
+          if (root_uptake) then
+            if (itype_root_resp == 1) then 
+              if (rld(ivol) > rverysmall) then
+
+                do ic = 1, n  
+                  if (resprate(ic,izn) > r0) then
+                    if (resprate_charge(izn) .and. namec(ic).eq.'h+1') then
+                      drootarup(ic) = r0
+                    else
+                      !c derivative of respiration depends on the formula 
+                      !c d(([TotC]/([TotC]+[TotC_h])^n) = n*[TotC_h][TotC]^(n-1)/([TotC]+[TotC_h])^(n+1))
+                      drootarup(ic) = cvol(ivol)*rld(ivol)/conv3*resprate(ic,izn)/   &                                
+                                      (totcinc(ic,tid)+totc_uptake_hk(ic,izn))**     &
+                                      (totc_uptake_hn(ic,izn)+1)*                    &
+                                      totc_uptake_hk(ic,izn)*totc_uptake_hn(ic,izn)* &
+                                      totcinc(ic,tid)**(totc_uptake_hn(ic,izn)-1)
+                    end if
+                  end if
+                end do
+              end if
+            end if
           end if 
               
 !croot - add derivative of root water uptake term (HG)
 
           if (passive_uptake) then
-            if (rld(ivol)>rverysmall) then
-              do ic = 1,n     
-                dtotcflux(ic) = dtotcflux(ic) - dtotc(ic,tid) * qrootloc 
-              end do 
+            if (rld(ivol) > rverysmall) then
+              if (itype_rootuptk_solut == 1) then
+                do ic = 1,n     
+                  dtotcflux(ic) = dtotcflux(ic) - dtotc(ic,tid) * qrootloc 
+                end do 
+              else if (itype_rootuptk_solut == 2) then
+                !c this part is commented in sergio's version
+                !do ic = 1,n  
+                !  dtotcflux(ic) = cvol(ivol)*soluteUptakeFunc(         &
+                !                  qrootloc,dtotc(ic,tid),rld(ivol),    &
+                !                  ic,izn)
+                !end do   
+              end if
             end if
           end if 
 
@@ -3346,14 +3574,14 @@
 #endif
 
 !c        calculate gas properties at interface according to weighting scheme
-              call wgpropd( totgnew(1,ivol),totgnew(1,jvol),totgij   , &
-     &                      relpgi         ,relpgj         ,relpgij  , &
-     &                      gdens_ivol     ,gdens_jvol     ,densgij  , &
-     &                      gvisc_ivol     ,gvisc_jvol     ,viscgij  , &
-     &                      gpivol_ivol    ,gpivol_jvol    ,gpij     , &
-     &                      zg(ivol)       ,zg(jvol)       ,           &
-     &                      spt_weight     ,iupsg(i1)      ,wfac     , &
-     &                      nc             ,ng             ,gacc     )
+              call wgpropd( totgnew(:,ivol),totgnew(:,jvol),totgij   , &
+                            relpgi         ,relpgj         ,relpgij  , &
+                            gdens_ivol     ,gdens_jvol     ,densgij  , &
+                            gvisc_ivol     ,gvisc_jvol     ,viscgij  , &
+                            gpivol_ivol    ,gpivol_jvol    ,gpij     , &
+                            zg(ivol)       ,zg(jvol)       ,           &
+                            spt_weight     ,iupsg(i1)      ,wfac     , &
+                            nc             ,ng             ,gacc     )
                
 !c ----- DGM module -------------------------------------------------------------
 !c           solve A dF/dy = dB/dy - dA/dy F
@@ -3361,16 +3589,16 @@
           
               if (dgm) then
               
-                call dgm_dfluxdg (gnew(1,ivol)  ,gnew(1,jvol)  ,       &
-     &                            dg            ,dgmfrac       ,       &
-     &                            zg(ivol)      ,zg(jvol)      ,       &
-     &                            densgij       ,gpij          ,       &
-     &                            tkel(ivol)    ,relpgij       ,       &
-     &                            tauij(i1)     ,gporij(i1)    ,       &
-     &                            deltaij(i1)   ,rverysmall    ,       &
-     &                            wfac          ,ipvt(1,icon)  ,       &
-     &                            ludecomp(1,1,icon)           ,       &
-     &                            fmat(1,icon)  ,dgm_dgflux    )
+                call dgm_dfluxdg (gnew(:,ivol)  ,gnew(:,jvol)  ,       &
+                                  dg            ,dgmfrac       ,       &
+                                  zg(ivol)      ,zg(jvol)      ,       &
+                                  densgij       ,gpij          ,       &
+                                  tkel(ivol)    ,relpgij       ,       &
+                                  tauij(i1)     ,gporij(i1)    ,       &
+                                  deltaij(i1)   ,rverysmall    ,       &
+                                  wfac          ,ipvt(1,icon)  ,       &
+                                  ludecomp(1,1,icon)           ,       &
+                                  fmat(1,icon)  ,dgm_dgflux    )
             
               endif
 
@@ -3387,16 +3615,16 @@
                   enddo
                 enddo
                 
-                call ms_dfluxdg  (gnew(1,ivol)    ,gnew(1,jvol)    ,   &
-     &                            dg              ,dgmfrac         ,   &
-     &                            zg(ivol)        ,zg(jvol)        ,   &
-     &                            densgij         ,gpij            ,   &
-     &                            tkel(ivol)      ,tauij(i1)       ,   &
-     &                            gporij(i1)      ,deltaij(i1)     ,   &
-     &                            rverysmall      ,wfac            ,   &
-     &                            ipvt(1,icon)    ,equimolar       ,   &
-     &                            lumat2          ,fmat(1,icon)    ,   &
-     &                            ms_gflux        ,ms_dgflux   )
+                call ms_dfluxdg  (gnew(:,ivol)    ,gnew(:,jvol)    ,   &
+                                  dg              ,dgmfrac         ,   &
+                                  zg(ivol)        ,zg(jvol)        ,   &
+                                  densgij         ,gpij            ,   &
+                                  tkel(ivol)      ,tauij(i1)       ,   &
+                                  gporij(i1)      ,deltaij(i1)     ,   &
+                                  rverysmall      ,wfac            ,   &
+                                  ipvt(1,icon)    ,equimolar       ,   &
+                                  lumat2          ,fmat(1,icon)    ,   &
+                                  ms_gflux        ,ms_dgflux   )
               
               endif
 
@@ -3415,11 +3643,11 @@
             if (multi_diff) then
 
               call totdyvisc(ivol,jvol,cinc(:,tid),cxinc(:,tid),       &
-                             cnew(:,ivol),cx(:,ivol),                  &
+                             cnew(:,ivol),cxnew(:,ivol),               &
                              delta_totviscnew(:,tid))
 
               call elecmigration(ivol,jvol,cinc(:,tid),cxinc(:,tid),   &
-                                 cnew(:,ivol),cx(:,ivol),              &
+                                 cnew(:,ivol),cxnew(:,ivol),           &
                                  delta_electromignew(:,tid))
 
 #ifdef DEBUG
@@ -3439,9 +3667,9 @@
                      write(idbg,*)                                     &
                      "ibl",ibl,                                        &
                      "cnew(ibl,ivol)",cnew(ibl,ivol),                  &
-                     "cx(ibl,ivol)",cx(ibl,ivol),                      &
+                     "cxnew(ibl,ivol)",cxnew(ibl,ivol),                &
                      "cnew(ibl,jvol)",cnew(ibl,jvol),                  &
-                     "cx(ibl,jvol)",cx(ibl,jvol),                      &
+                     "cxnew(ibl,jvol)",cxnew(ibl,jvol),                &
                      "cinc(ibl,tid)",cinc(ibl,tid),                    &
                      "cxinc(ibl,tid)",cxinc(ibl,tid)
                  end do
@@ -3482,7 +3710,7 @@
 !cdsu
 !cdsu calculate influence coefficient
 !cdsu
-              if (diff_coff) then
+              if (comp_dep_diff_coff) then
                 call usg_face_utility_cinfrt_da_ic(ivol,jvol,i1,       &
                          cinfrt_da_ic_usg_loc,cinfrt_da_ic_usg_cross_loc)
               else
@@ -3518,7 +3746,7 @@
 !cprovi----------------------------------------------------------------
 !cprovi Bubbles use component dependent influence coefficient if specified
 !cprovi----------------------------------------------------------------
-                if (diff_coff) then
+                if (comp_dep_diff_coff) then
                  cinfrt_da(i1) = cinfrt_da_ic(ibl,i1)
 #ifdef USG
                  if (discretization_type > 0) then
@@ -3749,7 +3977,7 @@
                     if (blanc_diff_g) then
 #ifdef USG
                       if (discretization_type > 0) then
-                        gasdiff_loc = gasdiff2(gmfrac(1,ivol),gmfrac(1,jvol),  &
+                        gasdiff_loc = gasdiff2(gmfrac(:,ivol),gmfrac(:,jvol),  &
                                            gpivol_ivol   ,gpivol_jvol   ,      &
                                            zg(ivol)      ,zg(jvol)      ,      &
                                            gdens_ivol    ,gdens_jvol    ,      &
@@ -3762,7 +3990,7 @@
 #endif
 !c                      diffusion coefficient calc'd with LeBlanc's law
                         cinfrt = cinfrt_dg(i1) * gasdiff2                      &
-                                        (gmfrac(1,ivol), gmfrac(1,jvol),       &
+                                        (gmfrac(:,ivol), gmfrac(:,jvol),       &
                                          gpivol_ivol   , gpivol_jvol   ,       &
                                          zg(ivol)      , zg(jvol)      ,       &
                                          gdens_ivol    , gdens_jvol    ,       &
@@ -3966,9 +4194,23 @@
      &                          pornew(ivol))
               end if
     
-!cprovi------------------------------------------------------------------------
-!cprovi------------------------------------------------------------------------
-!cprovi------------------------------------------------------------------------
+!cprovi-------------------------------------------------------------------  
+!cprovi root - add derivative of root water uptake term
+!cprovi-------------------------------------------------------------------
+              if (passive_uptake .and. itype_rootuptk_solut == 2) then
+                if (rld(ivol) > rverysmall) then
+                  !qrooloc is already calculated, no need to recalculated here
+                  !qrootloc = rootwat(sanew,ivol,rsum_vprop)/conv3
+                  call cbalance(cinc(:,tid),cxinc(:,tid),zbal,zpos_inc,zneg_inc)
+                  call cbalance(cnew(:,ivol),cxnew(:,ivol),zbal,zpos,zneg)
+                  zpos=(zpos_inc-zpos)/drtinc
+                  zneg=(zneg_inc-zneg)/drtinc
+                  dcstor = dcstor + cvol(ivol)*soluteUptakeFunc(       &
+                                    qrootloc,dtotc(ibl,tid),zpos,zneg, &
+                                    rld(ivol),sanew(ivol),pornew(ivol),&
+                                    ibl,izn)
+                end if
+              end if 
 
 !c  compute derivatives of storage terms for gaseous phase
 
@@ -3993,7 +4235,14 @@
 !c  --------------------------------------------------------------------
 
 !c  - storage and flux terms
-              if (component_type(ibl).eq.'aqueous') then
+              
+              if (component_type(ibl).eq.'electro' .and. elect_correction) then
+!cprovi---------------------------------------------------------------------------
+!cprovi Store the derivative of charge balance on the surface with respect to 
+!cprovi primary species. All species affects the charge balance on the surface.
+!cprovi---------------------------------------------------------------------------
+                art(i2) = art(i2) + cnew(jbl,ivol)*dtotcharge_surf(ibl,tid)               
+              else if (component_type(ibl).eq.'aqueous') then
                 art(i2) = art(i2) + cnew(jbl,ivol) * dcstor           &
      &                            + cnew(jbl,ivol) * dtotcflux(ibl)
 
@@ -4085,7 +4334,7 @@
 !c  --------------------------------------------------------------------
 !c  set derivative of respiration to Jacobian matrix (HG)
               if (root_uptake) then
-                art(i2) = art(i2) + cnew(jbl,ivol) * drootresp(ibl) 
+                art(i2) = art(i2) + cnew(jbl,ivol) * drootarup(ibl) 
               end if 
               
 !c  gaseous phase
@@ -4261,7 +4510,5 @@
       end if
       
 #endif
-!cdbg
 
-      return
-      end
+    end subroutine jacrt

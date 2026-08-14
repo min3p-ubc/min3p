@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updatelc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updatelc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -110,9 +110,8 @@
       
       integer :: tid
       
-      real*8 :: c, ulc, por
-
-      dimension c(*),ulc(*)
+      real*8 :: c(*), ulc(*)
+      real*8 :: por
 
       logical not_converged
       character*72 name

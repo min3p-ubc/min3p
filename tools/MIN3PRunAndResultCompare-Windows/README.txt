@@ -1,0 +1,1 @@
+This precompiled tool is for Windows OS. If you need the tool for Linux/Mac OS, or would like to get the source code, please visit git repository https://github.com/danielsue/BenchmarkVerificationTool. 

@@ -1,0 +1,7 @@
+title = "column effluent"
+variables = "time","d34S"
+zone t = "d34S", f=point       
+116.5         13.8
+133.4         10.2
+254.6         9.0
+394.1         25.1

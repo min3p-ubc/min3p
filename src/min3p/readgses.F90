@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readgses.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readgses.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -131,9 +131,10 @@
       use parm
       use chem
       use bbls
-      use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk
+      use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk,      &
+                      b_enable_output_gen
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -174,8 +175,16 @@
         do while (.true.)
           if (space_delimiter_dbs) then                  !merged space delimiters
             read(igdbs,'(a)',end=999,err=9999) strbuffer
-            !c make lower case and replace tab and quote with space
+
             call makelowercase(strbuffer)
+
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+
+            !c make lower case and replace tab and quote with space
             call replacecharacter(strbuffer, achar(9), strspace) 
             call replacecharacter(strbuffer, "'", strspace)
             call replacecharacter(strbuffer, '"', strspace)
@@ -219,6 +228,13 @@
             
             !c next line
             read(igdbs,'(a)',end=999,err=9999) strbuffer
+            
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+
             !c make lower case and replace tab and quote with space
             call makelowercase(strbuffer)
             call replacecharacter(strbuffer, achar(9), strspace)
@@ -243,6 +259,11 @@
           else                                           !fixed format
             read(igdbs,100,end=999,err=9999) name,dhc,eqt,gfw,        &
                  nv,(namet(iv),xnugt(iv),iv=1,nv)
+
+            call makelowercase(name)
+            do iv = 1, nv
+              call makelowercase(namet(iv))
+            end do
                   
             !cdsu this parameter is hardwired in bubble model.
             !cdsu put temperature dependent solubility coefficients
@@ -255,6 +276,11 @@
               read(igdbs,200,err=9999) name, dhc, eqt, gfw,  &
                    rgascon_a, rgascon_b, rgascon_c,          &
                    nv,(namet(iv),xnugt(iv),iv=1,nv)
+
+              call makelowercase(name)
+              do iv = 1, nv
+                call makelowercase(namet(iv))
+              end do
             end if                 
           end if
              
@@ -358,6 +384,13 @@
  
             if (space_delimiter_dbs) then                  !merged space delimiters
               read(igdbs,'(a)',err=9999) strbuffer
+
+              if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                  index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                  len_trim(adjustl(strbuffer)) .eq. 0) then
+                cycle
+              end if
+
               !c make lower case and replace tab and quote with space
               call makelowercase(strbuffer)
               call replacecharacter(strbuffer, achar(9), strspace) 
@@ -409,6 +442,13 @@
               
               !c next line
               read(igdbs,'(a)',end=9998,err=9999) strbuffer
+
+              if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                  index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                  len_trim(adjustl(strbuffer)) .eq. 0) then
+                cycle
+              end if
+
               !c make lower case and replace tab and quote with space
               call makelowercase(strbuffer)
               call replacecharacter(strbuffer, achar(9), strspace)
@@ -433,6 +473,11 @@
             else
               read(igdbs,100,err=9999) name,dhc,eqt,gfw,       &
                    nv,(namet(iv),xnugt(iv),iv=1,nv)
+
+              call makelowercase(name)
+              do iv = 1, nv
+                call makelowercase(namet(iv))
+              end do
                    
               !cdsu this parameter is hardwired in bubble model.
               !cdsu put temperature dependent solubility coefficients
@@ -445,6 +490,11 @@
                 read(igdbs,200,err=9999) name, dhc, eqt, gfw,  &
                      rgascon_a, rgascon_b, rgascon_c,          &
                      nv,(namet(iv),xnugt(iv),iv=1,nv)
+
+                call makelowercase(name)
+                do iv = 1, nv
+                  call makelowercase(namet(iv))
+                end do
 
                 if ((abs(dhc).gt.9.985e2).and.(abs(dhc).lt.9.995e2)) then
                   rgas_type = 'type_1'
@@ -490,6 +540,21 @@
 !c  complexed species is found --> assign permanent storage
  
             if (name.eq.nameg(ig)) then
+
+              if (rank == 0 .and. b_enable_output_gen) then
+                if (ig == 1) then
+                  write(igen,'(72a)') ('-',i=1,72)
+                  write(igen,'(a)') 'gas database entries read:'
+                end if
+                write(igen,'(a,3(a,1pe15.6e3))')                       &
+                      trim(name), ' dhc ', dhc,                        &
+                      ' eqt ', eqt, ' gfw ', gfw
+                write(igen,'(a,1x,i0,100(1x,a,1x,1pe15.6e3))')         &
+                      'nv', nv, (trim(namet(iv)),xnugt(iv),iv=1,nv)
+                if (ig == ng) then
+                  write(igen,'(72a)') ('-',i=1,72)
+                end if
+              end if
  
               done = .true.
  
@@ -657,7 +722,7 @@
             do while(.true.)
               if (readnextline(igdbs,strbuffer,lowercase=.false.,      &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(nameg(ig))) == 1) then
+                if (startWithEntireName(strbuffer,nameg(ig),flagQuote=.false.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   if (readnextline(igdbs, strbuffer, lowercase=.false.,&
                       original=.true.)) then

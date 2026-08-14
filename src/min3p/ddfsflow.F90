@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/ddfsflow.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/ddfsflow.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -238,7 +238,11 @@
       if (.not.heat_transport .or. decoupled_type_vs_heat > 1) then
         if(.not. allocated(avs)) then
           allocate (avs(njavs), stat = ierr)
-          avs = 0.0d0
+          if (nngl > 1) then
+            avs = 0.0
+          else
+            avs = 1.0
+          end if
           call checkerr(ierr,'avs',ilog)
           call memory_monitor(sizeof(avs),'avs',.true.)
         end if
@@ -728,9 +732,11 @@
           end if
 !c  clear arrays
  
-          call zero_r8(avs, size(avs, 1), 1, 1) 
-          call zero_r8(bvs, size(bvs, 1), 1, 1) 
-          call zero_r8(uvs, size(uvs, 1), 1, 1)
+          if (nngl > 1) then
+            call zero_r8(avs, size(avs, 1), 1, 1) 
+            call zero_r8(bvs, size(bvs, 1), 1, 1) 
+            call zero_r8(uvs, size(uvs, 1), 1, 1)
+          end if
  
           if (i_solver_type_flow == 0) then
             call zero_r8(afvs, size(afvs, 1), 1, 1)
@@ -1369,13 +1375,14 @@
         maxvol = i0
 
         do ibvs = 1, nbvs          
-          ivol = iabvs(ibvs)
-          if (ivol < 0) then
+          ivol = jabvs(ibvs)
+          if (ivol <= 0) then
             cycle  
           end if
           if ((btypevs(ibvs).eq.'second' .or. btypevs(ibvs).eq.'point' .or. &
                btypevs(ibvs).eq.'seepage-second') .and. &
-               uvsnew(ivol) > tol_freezing_pond(ibvs)) then
+               uvsnew(ivol) > tol_freezing_pond(ibvs) .and. &
+               bcondvs_on(ibvs)) then
             bcondvs(ibvs) = r0    
             b_freezing_pond = .true.
             reduce_timestep = .true.

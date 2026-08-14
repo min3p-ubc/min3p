@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/cbalance.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/cbalance.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -64,9 +64,9 @@
  
       implicit none
       
-      real*8 :: c,cx,zbal,zpos,zneg
+      real*8 :: zbal,zpos,zneg
  
-      dimension c(*),cx(nx)
+      real*8 :: c(*),cx(*)
 
       real*8, parameter :: r0 = 0.0d0, r100 = 1.0d2, tiny = 1.d-100
       

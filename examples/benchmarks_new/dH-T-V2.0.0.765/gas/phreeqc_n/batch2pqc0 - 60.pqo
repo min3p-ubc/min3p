@@ -1,0 +1,206 @@
+   Input file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\temp\phreeqc_n\batch2pqc0 - 60.pqi
+  Output file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\temp\phreeqc_n\batch2pqc0 - 60.pqo
+Database file: D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\temp\database\phreeqc\minteq-simple.dat
+
+------------------
+Reading data base.
+------------------
+
+	SOLUTION_MASTER_SPECIES
+	SOLUTION_SPECIES
+	SOLUTION_SPECIES
+	PHASES
+	END
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	DATABASE D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\temp\database\phreeqc\minteq-simple.dat
+	TITLE Example sul2pqc -- Transport with salinity dependent sulphate reduction 
+	SOLUTION 1
+	    temp      60
+	    pH        7.0
+	    redox     pe
+	    units     mol/kgw
+	    density   1
+		Ca	1.2665E-03    #9600.00
+		C	 2.5665E-03		#76.00
+	    water    1 # kg
+	END
+-----
+TITLE
+-----
+
+ Example sul2pqc -- Transport with salinity dependent sulphate reduction 
+
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	C                2.567e-003  2.567e-003
+	Ca               1.267e-003  1.267e-003
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                           Ionic strength  =  3.300e-003
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  1.753e-003
+                       Total CO2 (mol/kg)  =  2.567e-003
+                      Temperature (deg C)  =  60.00
+                  Electrical balance (eq)  =  7.804e-004
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  18.72
+                               Iterations  =   5
+                                  Total H  = 1.110158e+002
+                                  Total O  = 5.551392e+001
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   H+             1.063e-007  1.000e-007    -6.973    -7.000    -0.027      0.00
+   OH-            1.009e-008  9.426e-009    -7.996    -8.026    -0.029     (0)  
+   H2O            5.551e+001  9.999e-001     1.744    -0.000     0.000     18.32
+C(4)         2.567e-003
+   HCO3-          1.692e-003  1.585e-003    -2.772    -2.800    -0.028     (0)  
+   H2CO3          8.204e-004  8.210e-004    -3.086    -3.086     0.000     (0)  
+   CaHCO3+        4.798e-005  4.497e-005    -4.319    -4.347    -0.028     (0)  
+   CaCO3          5.022e-006  5.026e-006    -5.299    -5.299     0.000     (0)  
+   CO3-2          1.493e-006  1.149e-006    -5.826    -5.940    -0.114     (0)  
+Ca           1.267e-003
+   Ca+2           1.214e-003  9.378e-004    -2.916    -3.028    -0.112     (0)  
+   CaHCO3+        4.798e-005  4.497e-005    -4.319    -4.347    -0.028     (0)  
+   CaCO3          5.022e-006  5.026e-006    -5.299    -5.299     0.000     (0)  
+   CaOH+          3.804e-020  3.565e-020   -19.420   -19.448    -0.028     (0)  
+H(0)         1.036e-025
+   H2             5.179e-026  5.183e-026   -25.286   -25.285     0.000     (0)  
+O(0)         3.983e-032
+   O2             1.992e-032  1.993e-032   -31.701   -31.700     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(333 K,   1 atm)
+
+  Calcite          -0.15     -8.97   -8.82  CaCO3
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+	SOLUTION 0 #boundary
+	    temp      60
+	    pH        7.0
+	    pe        3.39   
+	    redox     pe
+	    units     mg/kgw
+	    density   1
+		Ca	  8.40
+		C	12.600
+	END
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 0.	
+
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	C                2.065e-004  2.065e-004
+	Ca               2.096e-004  2.096e-004
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.000    
+                                       pe  =   3.390    
+                        Activity of water  =   1.000
+                           Ionic strength  =  4.864e-004
+                       Mass of water (kg)  =  1.000e+000
+                 Total alkalinity (eq/kg)  =  1.377e-004
+                       Total CO2 (mol/kg)  =  2.065e-004
+                      Temperature (deg C)  =  60.00
+                  Electrical balance (eq)  =  2.815e-004
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  50.70
+                               Iterations  =   7
+                                  Total H  = 1.110127e+002
+                                  Total O  = 5.550684e+001
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma   cm3/mol
+
+   H+             1.026e-007  1.000e-007    -6.989    -7.000    -0.011      0.00
+   OH-            9.685e-009  9.427e-009    -8.014    -8.026    -0.012     (0)  
+   H2O            5.551e+001  1.000e+000     1.744    -0.000     0.000     18.32
+C(4)         2.065e-004
+   HCO3-          1.366e-004  1.330e-004    -3.864    -3.876    -0.012     (0)  
+   H2CO3          6.891e-005  6.892e-005    -4.162    -4.162     0.000     (0)  
+   CaHCO3+        7.760e-007  7.557e-007    -6.110    -6.122    -0.012     (0)  
+   CO3-2          1.073e-007  9.646e-008    -6.969    -7.016    -0.046     (0)  
+   CaCO3          8.446e-008  8.447e-008    -7.073    -7.073     0.000     (0)  
+Ca           2.096e-004
+   Ca+2           2.087e-004  1.877e-004    -3.680    -3.726    -0.046     (0)  
+   CaHCO3+        7.760e-007  7.557e-007    -6.110    -6.122    -0.012     (0)  
+   CaCO3          8.446e-008  8.447e-008    -7.073    -7.073     0.000     (0)  
+   CaOH+          7.329e-021  7.137e-021   -20.135   -20.146    -0.012     (0)  
+H(0)         1.720e-024
+   H2             8.600e-025  8.601e-025   -24.066   -24.065     0.000     (0)  
+O(0)         1.447e-034
+   O2             7.237e-035  7.238e-035   -34.140   -34.140     0.000     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(333 K,   1 atm)
+
+  Calcite          -1.92    -10.74   -8.82  CaCO3
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 3.
+------------------------------------
+
+	SELECTED_OUTPUT 
+	   file   profile_batch.sel 
+	   reset  false 
+	   solution 
+	   distance       true 
+	USER_PUNCH 
+	   headings -head time(h) ca_mol CO3_mol  pH  SI_Calcite mol_hco3, mol_CaHCO3
+	10 PUNCH TOTAL_TIME/3600, TOT("Ca"),  TOT("C"), -LA("H+"), SI("Calcite"),MOL("HCO3-"), MOL("CaHCO3+")
+	END
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 4.
+------------------------------------
+
+-------------------------------
+End of Run after 0.025 Seconds.
+-------------------------------
+

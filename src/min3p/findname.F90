@@ -4,7 +4,7 @@
 !> $Revision: 268 $
 !> $Author: dsu $
 !> $Date: 2015-01-09 17:00:41 -0800 (Fri, 09 Jan 2015) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/findname.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/findname.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -46,7 +46,8 @@
  
       subroutine findname(name,itmp,found_name)
 
-      use gen, only : rank, ilog      
+      use gen, only : rank, ilog   
+      use file_utility, only : makelowercase   
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -55,8 +56,9 @@
 
       integer :: itmp
       logical found_name
-      character*72 name,string
- 
+      character*72 name,string      
+      character*256 :: strbuffer
+
 !c  rewind input file
 
       rewind(itmp)
@@ -65,10 +67,21 @@
 
       found_name = .false.
       do while (.not.found_name)
-        read(itmp,*,err=1000,end=999) string
-        if (string.eq.name) then
-          found_name = .true.  
+        read(itmp,'(a)',err=999,end=999) strbuffer
+
+        call makelowercase(strbuffer)
+
+        strbuffer = adjustl(strbuffer)
+        if (len(trim(strbuffer)) < 1 .or. strbuffer(1:1) == '!') then
+          cycle
+        else
+          read(strbuffer,*,err=999,end=999) string
+
+          if (string.eq.name) then
+            found_name = .true.  
+          end if
         end if
+
       end do
 
 999   return
@@ -77,8 +90,10 @@
       backspace (unit=itmp, err=999)
       read(itmp,'(a)') string
       if (rank == 0) then
-        write(*,'(2a)') "Error in findname, error line: ",trim(string)
-        write(ilog,'(2a)') "Error in findname, error line: ",trim(string)
+        write(*,'(4a)') "Error in findname, error line: ",trim(string),&
+              " name ",trim(name)
+        write(ilog,'(4a)') "Error in findname, error line: ",trim(string),&
+              " name ",trim(name)
         close(ilog)
       end if
 

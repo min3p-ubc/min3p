@@ -4,7 +4,7 @@
 !> $Revision: 268 $
 !> $Author: dsu $
 !> $Date: 2015-01-09 17:00:41 -0800 (Fri, 09 Jan 2015) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/findkey.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/findkey.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -48,6 +48,8 @@
  
       subroutine findkey(keyword1,keyword2,itmp,found_keyword,    &
                 searching)
+
+      use file_utility, only : makelowercase
       
       implicit none
       
@@ -59,14 +61,15 @@
 !c  search for keyword1 in datablock bound by keyword2
 
       found_keyword = .false.
-    searching = .true.
+      searching = .true.
       do while (searching.and..not.found_keyword)
         read(itmp,*,end=999) string
-      write(*,*) string
+        call makelowercase(string)
+        write(*,*) string
         if (string.eq.keyword1) then
           found_keyword = .true.
-      elseif (string.eq.keyword2) then
-        searching = .false.
+        elseif (string.eq.keyword2) then
+          searching = .false.
         end if
       end do
 

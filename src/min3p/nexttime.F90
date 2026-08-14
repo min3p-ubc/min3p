@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/nexttime.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/nexttime.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -58,7 +58,7 @@
 !c                                - new time level [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity [meq/100g] + -
 !c                                - global system
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -536,35 +536,35 @@
 !cprovi Cuidado, las componentes pueden no ser acuosas
 !cprovi preguntarle a Uli 
 !cprovi---------------------------------------------- 
-              call pitzer (phase,gamma(1:nc,ivol),                    &
-                           gamma(nc+1:nc+nx,ivol),                    &
-                           cnew(1:nc,ivol),cx(1:nx,ivol),             &
+              call pitzer (phase,gamma(1:nc,ivol),                     &
+                           gamma(nc+1:nc+nx,ivol),                     &
+                           cnew(1:nc,ivol),cxnew(1:nx,ivol),           &
                            nc,nx,ilog)                                
             else 
 !c  --> for free species
 
               do ic=1,nc
-                gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),       &
-                                       sionnew(ivol),chargec(ic),     &
-                                       dhac(ic),dhbc(ic),             &
-                                       dhad(tid), dhbd(tid),          &
-                                       adav,bdav,acth2omin,nc,        &
-                                       nx,namec(ic),namec,ic,         &
-     &                                 issit,asit,basit,coepsil,      &
-     &                                 iasit,jasit)
+                gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),     &
+                                       sionnew(ivol),chargec(ic),      &
+                                       dhac(ic),dhbc(ic),              &
+                                       dhad(tid), dhbd(tid),           &
+                                       adav,bdav,acth2omin,nc,         &
+                                       nx,namec(ic),namec,ic,          &
+                                       issit,asit,basit,coepsil,       &
+                                       iasit,jasit)
               end do
 
 !c  --> for secondary aqueous species
 
               do ix=1,nx
-                gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol),    &
-                                          sionnew(ivol),chargex(ix),  &
-                                          dhax(ix),dhbx(ix),          &
-                                          dhad(tid),dhbd(tid),        &     
-                                          adav,bdav,acth2omin,nc,     &
-                                          nx,namex(ix),namec,         &
-     &                                    nc+ix,issit,asit,basit,     &
-     &                                    coepsil,iasit,jasit)
+                gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),  &
+                                          sionnew(ivol),chargex(ix),   &
+                                          dhax(ix),dhbx(ix),           &
+                                          dhad(tid),dhbd(tid),         &     
+                                          adav,bdav,acth2omin,nc,      &
+                                          nx,namex(ix),namec,          &
+                                          nc+ix,issit,asit,basit,      &
+                                          coepsil,iasit,jasit)
               end do
             end if 
           end if
@@ -585,14 +585,14 @@
 !c  reassign free species concentrations for next time level
 
           do ic = 1,n
-            c(ic,ivol) = cnew(ic,ivol)
+            cold(ic,ivol) = cnew(ic,ivol)
           end do
           
 !c  reassign secondary species concentrations for next time level   !MX May2014
           if (hmulti_diff) then
-                do ix = 1,nx
-                  cxold(ix,ivol) = cx(ix,ivol)
-                end do
+            do ix = 1,nx
+              cxold(ix,ivol) = cxnew(ix,ivol)
+            end do
           end if
           
 !c  redox equilibrium reactions
@@ -602,7 +602,7 @@
 
 !c  recompute total aqueous component concentrations
 
-            call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+            call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
 
 !c Calculate the secondary species concentrations cxold - old time level
             if (hmulti_diff) then
@@ -611,8 +611,8 @@
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
                 
-                call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
-                call totconcfac(c(1,ivol),cxold(1,ivol),totcoldf(1,ivol),izn)
+                call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
+                call totconcfac(cold(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
             
             end if
 
@@ -620,8 +620,8 @@
 !c  sorption)
             
             if (noncompetitive_sorption) then
-              call totcona(totanew(1,ivol),totcnew(1,ivol),           &
-                            distcoff_rt(1,ivol),sanew(ivol),pornew(ivol))
+              call totcona(totanew(:,ivol),totcnew(:,ivol),           &
+                            distcoff_rt(:,ivol),sanew(ivol),pornew(ivol))
             end if
             
           end if
@@ -631,9 +631,9 @@
 !c  compress total aqueous and sorbed (noncompetitive sorption)
 !c  component concentration vector
 
-            call comptotc(totcnew(1,ivol))
+            call comptotc(totcnew(:,ivol))
             if (noncompetitive_sorption) then
-              call comptotc(totanew(1,ivol))
+              call comptotc(totanew(:,ivol))
             end if
 
           end if
@@ -650,7 +650,7 @@
             
             if (noncompetitive_sorption) then
               totaold(ic,ivol) = totanew(ic,ivol)
-              !c to be checked later, decay
+              !c to be further checked, decay
               if (b_use_sorption_decay) then
                 totaold(ic,ivol) = totaold(ic,ivol)*enat**(-sorptiondecayconst(ic)*delt)
               end if
@@ -668,7 +668,7 @@
 
 !c  recompute total gaseous component concentrations
 
-              call totconcg(gnew(1,ivol),totgnew(1,ivol))
+              call totconcg(gnew(:,ivol),totgnew(:,ivol))
               
             end if
             
@@ -676,7 +676,7 @@
 
 !c  compress total gaseous component concentrations
 
-              call comptotc(totgnew(1,ivol))
+              call comptotc(totgnew(:,ivol))
 
             end if
 
@@ -705,41 +705,49 @@
 !c  recompute sorbed species concentrations
 
               do isb = 1,nsb_ion
-                call sorbspc(csb_ion(isb,tid),dummy,cec_g(ivol),      &
-                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),  &
-                     cnew(1,ivol),xnusb_ion,xnusb_surf,               &
+                call sorbspc(csb_ion(isb,tid),dummy,                  &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
+                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(:,ivol),  &
+                     cnew(:,ivol),xnusb_ion,xnusb_surf,               &
                      iasb_ion,iasb_surf,jasb_ion,                     &
                      jasb_surf,nsb_ion,nsb_surf,isb,0,                &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)
+                     sorption_group,isactcexch,                       &
+                     elect_correction,name_elect_correction,nelect,   &
+                     dz_surf,totcnew(:,ivol),component_type,nlayer,   &
+                     mol_frac_ads)
               end do
               
               do isb = 1,nsb_surf
-                call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),     &
-                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),  &
-                     cnew(1,ivol),xnusb_ion,xnusb_surf,               &
+                call sorbspc(dummy,csb_surf(isb,tid),                 &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
+                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(:,ivol),  &
+                     cnew(:,ivol),xnusb_ion,xnusb_surf,               &
                      iasb_ion,iasb_surf,jasb_ion,                     &
                      jasb_surf,nsb_ion,nsb_surf,0,isb,                &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)
+                     sorption_group,isactcexch,                       &
+                     elect_correction,name_elect_correction,nelect,   &
+                     dz_surf,totcnew(:,ivol),component_type,nlayer,   &
+                     mol_frac_ads)
               end do
 
 !c  recompute total sorbed component concentrations
 
               call totsorb(csb_ion(:,tid),csb_surf(:,tid),            &
                    chargesb_ion,rhobulk_g(ivol),                      &
-                   totsnew_ion(1,ivol),totsnew_surf(1,ivol),          &
+                   totsnew_ion(:,ivol),totsnew_surf(:,ivol),          &
                    xnusb_ion,xnusb_surf,                              &
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,nc,          &
                    nsb_ion,nsb_surf,namec)
                                                                       
 !c  compress total sorbed component concentration vector
               if(nsb_ion.gt.0) then
-                call comptotc(totsnew_ion(1,ivol))
+                call comptotc(totsnew_ion(:,ivol))
               end if
               
               if(nsb_surf.gt.0) then
-                call comptotc(totsnew_surf(1,ivol))
+                call comptotc(totsnew_surf(:,ivol))
               end if
 
             end if
@@ -884,7 +892,7 @@
           if (heat_transport.and.entalphy_change) then
               !sum_entalchg=r0
               !do ix=1,nx
-              !  sum_entalchg=sum_entalchg+dhcx(ix)*cx(ix,ivol)
+              !  sum_entalchg=sum_entalchg+dhcx(ix)*cxnew(ix,ivol)
               !end do
             
               !entalchg(ivol)=sum_entalchg

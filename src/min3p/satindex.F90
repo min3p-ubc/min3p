@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/satindex.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/satindex.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -68,11 +68,11 @@
  
       implicit none
       
-      real*8 :: c, eqsp, gammac, xnusp
-      integer :: ia, ja, isp
- 
-      dimension c(*),gammac(*),xnusp(*),ia(*),ja(*)
-      
+      real*8 :: eqsp
+      real*8 :: c(*),gammac(*),xnusp(*)
+      integer :: ia(*),ja(*)
+      integer :: isp 
+     
       !local variables
       real*8 :: r1, prodiap
       integer :: i, ic, istart, iend

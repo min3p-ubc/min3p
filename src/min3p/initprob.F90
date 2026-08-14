@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initprob.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initprob.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -93,8 +93,8 @@
 !c                      obsolete for simulation
 !c           inittemp = define temperature field and compute
 !c                      temperature-dependent constants
-!c         initplant= plant transpiration and passive/rejective 
-!c            uptake for variably saturated flow ! CBF
+!c           initplant= plant transpiration and passive/rejective 
+!c                      uptake for variably saturated flow ! CBF
 !c           mem_rt   = allocate memory for reactive transport 
 !c                      simulation
 !c           mem_vs   = allocate memory for variably-saturated
@@ -104,15 +104,15 @@
 !c           mem_hmcd = allocate memory for hybrid
 !c                      multicomponent diffusion model
 !c           mem_etr  = allocate memory for evapo-transpiration
-!c            parameters ! CBF
+!c                      parameters ! CBF
 !c           weed     = determine seondary aqueous species, which 
 !c                      are obsolete for simulation
 !c           binmattransp = assign binary values to matrix localizing
-!c            control volume subjected to transpiration 
-!c            (rld based) ! CBF
+!c                          control volume subjected to transpiration 
+!c                          (rld based) ! CBF
 !c           binmatevap = assign binary values to matrix localizing
-!c            control volume subjected to evaporation
-!c            (h1dry based) ! CBF
+!c                        control volume subjected to evaporation
+!c                        (h1dry based) ! CBF
 !c ----------------------------------------------------------------------
  
       subroutine initprob
@@ -131,6 +131,7 @@
       use chem 
       use phys 
       use bbls
+      use mimicMassDisp, only : nAdvGasDisp, mimicMassDisp_fileCreate
       use mip_bubble, only : mip_mt_enable, mip_ctrl_params,           &
                              mip_initial_cond, mip_boundary_vols
       use mip_output, only : mip_output_params
@@ -197,9 +198,9 @@
       external inittsgs,initcpvs,initcpdd,initcprt,sptldisc,           &
                initopgs,initcsys,opnmbfls,datstr_1,datstr_n,initcplc,  &
                initpppm,initppvs,initppdd,infcvs,initpprt,initicvs,    &
-               initicdd,initbcvs,initbcdd,initsatw, initicrt,initbcrt, &
+               initicdd,initbcvs,initbcdd,initsatw,initicrt,initbcrt,  &
                initppsn,initiice,initbcice,indextec,inittemp,initweed, &
-               mem_rt,mem_vs,mem_dd,weed,mem_hmcd,tcorr
+               mem_rt,mem_vs,mem_dd,weed,mem_hmcd,tcorr,mem_sub
      
       real*8, parameter :: rkelvin=273.15d0,r0=0.0d0,r1=1.0d0
 
@@ -211,6 +212,7 @@
         call sptldisc
       end if
     
+   
 !c  define geochemical system
       if (geo_chemistry) then
         call initcsys
@@ -342,11 +344,6 @@
         call mip_ctrl_params
       end if
 
-!c  output control parameters for reactive transport and/or
-!c  variably saturated flow and/or batch reaction
-
-      call initopgs
-
 !c  set up data structure, generate ordering vectors and perform 
 !c  symbolic factorization for 1d - Jacobian matrix
 !c  (variably saturated flow and reactive transport)
@@ -365,25 +362,33 @@
 #endif
       end if
 
+!c  output control parameters for reactive transport and/or
+!c  variably saturated flow and/or batch reaction
+
+      call initopgs
+
+!c  allocated memory space for subdomain mass balance related variables
+      call mem_sub
 
 !c  open mass balance files
 !c  write mass balance files only by the master process (thread)
       if(b_enable_output) then
 
           call opnmbfls
+          call opnmbfls_sub
 
           if(flux_out)then               !MCD
             call opnmbfls_mcd
+            call opnmbfls_mcd_sub
           end if
       end if
 
 !cprovi--------------------------------------------------------------
 !cprovi Open file corresponding to energy balance
 !cprovi--------------------------------------------------------------
-      if(rank == 0) then
-        if (heat_transport.and.energy_balance) then
-          call opnenergybal
-        end if
+      if (heat_transport.and.energy_balance) then
+        call opnenergybal
+        call opnenergybal_sub
       end if
 
 !c  physical parameters for ice sheet basal      
@@ -521,8 +526,6 @@
 !c  not density dependent
 !c  Partially parallelized, OpenMP, DSU
         if ((varsat_flow).and.(.not.density_dependence)) then
-          
-          culabsbalvs = r0
         
           call initicvs
 
@@ -556,6 +559,11 @@
 !c  Partially parallelized, OpenMP, DSU
           call initbcrt
 
+!cdsu mimic advective gas displacement
+          if (nAdvGasDisp > 0) then
+            call mimicMassDisp_fileCreate
+          end if          
+
 !c  determine seondary aqueous species, which are obsolete 
 !c  for simulation
           if (b_enable_output) then
@@ -568,9 +576,10 @@
         if (varsat_flow) then
           call mem_etr
 
-          if (root_uptake) then
-#ifdef ARCHISIMPLE
+          if (root_uptake) then             
             call initplant
+            call initppplant
+#ifdef ARCHISIMPLE
 !c CBF build binary matrix for transpiration
             call binmattransp
 #endif

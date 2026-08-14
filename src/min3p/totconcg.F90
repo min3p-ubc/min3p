@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/totconcg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/totconcg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -73,9 +73,7 @@
  
       implicit none
       
-      real*8 :: g, totg
-
-      dimension g(*),totg(*)
+      real*8 :: g(*), totg(*)
 
       real*8 :: r0
       

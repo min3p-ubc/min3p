@@ -1,0 +1,5278 @@
+#!MC 900
+$!VarSet |LFDSFN1| = '"..\gastest_4.gsg" "..\gastest_4.gsp" "..\gastest_4.gsm" "..\gastest_4.gsp" "..\gastest_4.gsi" "..\gastest_4.gst" "..\gastest_3.gsg" "..\gastest_3.gsp" "..\gastest_3.gsi" "..\gastest_3.gst" "..\gastest_2.gsg" "..\gastest_2.gsp" "..\gastest_2.gst" "..\gastest_2.gsi" "..\gastest_1.gsg" "..\gastest_1.gsi" "..\gastest_1.gsp" "..\gastest_1.gst"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz" "ch2o-ch4" "hco3-" "ch2o"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 8.55
+    Y2 = 11.05
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = GRAYSCALE
+$!COLORMAPCONTROL RESETTOFACTORY
+$!COLORMAP 
+  GRAYSCALE
+    {
+    CONTROLPOINT 1
+      {
+      LEADRGB
+        {
+        R = 126
+        G = 126
+        B = 126
+        }
+      }
+    CONTROLPOINT 2
+      {
+      LEADRGB
+        {
+        R = 143
+        G = 143
+        B = 143
+        }
+      TRAILRGB
+        {
+        R = 143
+        G = 143
+        B = 143
+        }
+      }
+    CONTROLPOINT 3
+      {
+      LEADRGB
+        {
+        R = 158
+        G = 158
+        B = 158
+        }
+      TRAILRGB
+        {
+        R = 158
+        G = 158
+        B = 158
+        }
+      }
+    CONTROLPOINT 4
+      {
+      LEADRGB
+        {
+        R = 174
+        G = 174
+        B = 174
+        }
+      TRAILRGB
+        {
+        R = 174
+        G = 174
+        B = 174
+        }
+      }
+    CONTROLPOINT 5
+      {
+      LEADRGB
+        {
+        R = 191
+        G = 191
+        B = 191
+        }
+      TRAILRGB
+        {
+        R = 191
+        G = 191
+        B = 191
+        }
+      }
+    CONTROLPOINT 6
+      {
+      LEADRGB
+        {
+        R = 207
+        G = 207
+        B = 207
+        }
+      TRAILRGB
+        {
+        R = 207
+        G = 207
+        B = 207
+        }
+      }
+    CONTROLPOINT 7
+      {
+      LEADRGB
+        {
+        R = 222
+        G = 222
+        B = 222
+        }
+      TRAILRGB
+        {
+        R = 222
+        G = 222
+        B = 222
+        }
+      }
+    CONTROLPOINT 8
+      {
+      LEADRGB
+        {
+        R = 240
+        G = 240
+        B = 240
+        }
+      TRAILRGB
+        {
+        R = 240
+        G = 240
+        B = 240
+        }
+      }
+    }
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 0.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 1.75
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [15]
+$!GLOBALCONTOUR 
+  VAR = 12
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 89.55
+      Y = 92.096
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 2
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.162041723728
+    RANGEMAX = 0.486125171185
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 5.03283113098E-018
+      CMAX = 0.648166894913
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+0.0497562189897
+0.0995124379794
+0.149268656969
+0.199024875959
+0.248781094948
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [3]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [4]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [5]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [6]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [7]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [8]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [9]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [10]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [11]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [12]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [13]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [14]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [15]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [16]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [17]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [18]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 85
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 150
+    GRSPACING = 25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 7
+    GRSPACING = 2.5
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.162041723728
+  ISOVALUE2 = 0.324083447456
+  ISOVALUE3 = 0.486125171185
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 14.7377094205
+    Y = 32.4584592145
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'CH_4' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 87.9044218621
+    Y = 94.6698316789
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = '(atm)' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 90.9530348805
+    Y = 86.0466119983
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 12
+    }
+  TEXT = '(atm)' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 1.875
+    }
+  WIDTH = 8.25
+  HEIGHT = 1.75
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [15]
+$!GLOBALCONTOUR 
+  VAR = 11
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 89.55
+      Y = 90.898
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 2
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.407098248601
+    RANGEMAX = 0.625655755401
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.297819495201
+      CMAX = 0.734934508801
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+0.5
+0.55
+0.6
+0.65
+0.7
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [3]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [4]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [5]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [6]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [7]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [8]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [9]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [10]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [11]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [12]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [13]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [14]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [15]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [16]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [17]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [18]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 85
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 150
+    GRSPACING = 25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 7
+    GRSPACING = 2.5
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.407098248601
+  ISOVALUE2 = 0.516377002001
+  ISOVALUE3 = 0.625655755401
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.5506728921
+    Y = 29.5840526543
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'N_2' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 90.7497940126
+    Y = 85.0884764782
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 12
+    }
+  TEXT = '(atm)' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 3.625
+    }
+  WIDTH = 8.25
+  HEIGHT = 1.75
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [18]
+$!GLOBALCONTOUR 
+  VAR = 36
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 89.55
+      Y = 80.837
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = EXPONENTIAL
+      PRECISION = 1
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -0.963884457946
+    RANGEMAX = 0
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -0.000637692573946
+      CMAX = 0
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+4
+1E-005
+0.0001
+0.00025
+0.0005
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [3]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [4]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [5]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [6]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [7]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [8]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [9]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [10]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [11]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [12]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [13]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [14]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [15]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [16]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [17]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [18]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 85
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 150
+    GRSPACING = 25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 7
+    GRSPACING = 2.5
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0
+  ISOVALUE2 = 0
+  ISOVALUE3 = 0
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 14.1279868169
+    Y = 31.9793914545
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'CH_2O' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 90.5465531447
+    Y = 77.4233923176
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 12
+    }
+  TEXT = '(mol L^-^1)' 
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 5.375
+    }
+  WIDTH = 8.25
+  HEIGHT = 1.75
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [16]
+$!GLOBALCONTOUR 
+  VAR = 34
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 89.55
+      Y = 89.581
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = EXPONENTIAL
+      PRECISION = 1
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -1.49543694761E-006
+    RANGEMAX = -4.98478982536E-007
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -1.99391593014E-006
+      CMAX = 0
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+-1.66159660845E-006
+-1.32927728676E-006
+-9.96957965071E-007
+-6.64638643381E-007
+-3.3231932169E-007
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [3]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [4]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [5]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [6]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [7]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [8]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [9]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [10]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [11]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [12]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [13]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [14]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [15]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [16]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [17]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [18]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 85
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 150
+    GRSPACING = 25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 7
+    GRSPACING = 2.5
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = -1.49543694761E-006
+  ISOVALUE2 = -9.96957965071E-007
+  ISOVALUE3 = -4.98478982536E-007
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 13.924745949
+    Y = 33.4165947346
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'R_C_H_2_O_-_C_H_4' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 81.8071958253
+    Y = 84.1303409581
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 12
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    COLOR = WHITE
+    }
+  TEXT = '(mol L^-^1 bulk day^-^1)' 
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 7.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 1.75
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [17]
+$!GLOBALCONTOUR 
+  VAR = 31
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 89.55
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 3
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -1.07022103667
+    RANGEMAX = 0
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -8.64000034332
+      CMAX = 0
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+4
+0.009
+0.08
+0.8
+8
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [3]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [4]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [5]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [6]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [7]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [8]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [9]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [10]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [11]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [12]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [13]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [14]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [15]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [16]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [17]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [18]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 85
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 150
+    GRSPACING = 25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = NONE
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 7
+    GRSPACING = 2.5
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 11
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0
+  ISOVALUE2 = 0
+  ISOVALUE3 = 0
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 14.7377094205
+    Y = 31.5003236944
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'K_x_x' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 90.7497940126
+    Y = 75.5071212775
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 12
+    }
+  TEXT = '(m day^-^1)' 
+### Frame Number 6 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 8.875
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [17]
+$!GLOBALCONTOUR 
+  VAR = 19
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 89.55
+      Y = 93
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 9
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 3
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -0.486125171185
+    RANGEMAX = 0
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -0.000139032999869
+      CMAX = 0
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+0.0134628365437
+0.0269256730874
+0.0403885096312
+0.0538513461749
+0.0673141827186
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [3]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [4]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [5]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [6]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [7]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [8]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [9]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [10]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = CYAN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [11]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = YELLOW
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [12]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [13]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = RED
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [14]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = GREEN
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [15]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = BLUE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLUE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [16]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = CYAN
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [17]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = YELLOW
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!FIELD  [18]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = PURPLE
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = PURPLE
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 28.874
+      X2 = 85
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 28.87
+    RANGEMIN = 0
+    RANGEMAX = 150
+    GRSPACING = 25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 9
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 9
+        }
+      OFFSET = 13
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 7
+    GRSPACING = 2.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 9
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 9
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0
+  ISOVALUE2 = 0
+  ISOVALUE3 = 0
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 14.9409502884
+    Y = 40.3630772551
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'S_g' 
+$!REMOVEVAR |LFDSFN1|
+$!SETSTYLEBASE CONFIG

@@ -4,7 +4,7 @@
 !> $Revision: 726 $
 !> $Author: dsu $
 !> $Date: 2019-08-07 11:30:33 -0700 (Wed, 07 Aug 2019) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/totredx.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/totredx.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -86,11 +86,9 @@
  
       implicit none
       
-      real*8 :: totoxrd
+      real*8 :: totoxrd(*)
       
       integer :: tid, idbg
-
-      dimension totoxrd(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       integer :: i, ic, ir, info_debug, istart, istop

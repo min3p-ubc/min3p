@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initopgs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initopgs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -175,6 +175,9 @@
       use gen
       use chem
       use nobleGasIngrowth
+#ifdef INTEL
+      use ifport
+#endif
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -198,9 +201,9 @@
       integer :: i, info_debug, l_string, ierr, im, istart, istop,     &
                  igb, igs, ivx, ivy, ivz, ivol, idum, itemp_vol,       &
                  imb, ic, icur, ix, i1, icount, ii, iiso, inic, izn,   &
-                 ilink, ierrcd
+                 ilink, isub, jvol, ierrcd, istat, isub_bit
       real*8 :: xcoord, ycoord, zcoord,                                &
-                dist_x, dist_y, dist_z, dist_min, dist, zout,          &
+                dist_x, dist_y, dist_z, dist_min, dist, dist2, zout,   &
                 xcoord2(2), ycoord2(2), zcoord2(2),                    &
                 xpmin, xpmax, ypmin, ypmax, zpmin, zpmax
       
@@ -210,8 +213,10 @@
 
       external checkerr, findstrg, readbloc, rsort
 
-      logical found, found_section, found_subsection, use_coord
-      character*72 subsection
+      logical :: found, found_section, found_subsection, use_coord,    &
+                 found_interface, is_exist, flag_stop
+      character*16 :: strTemp      
+      character*72 :: subsection, strSubDir
       
 #ifdef PETSC
       DOUBLE PRECISION :: mpireduce_in(2), mpireduce_out(2)
@@ -221,8 +226,8 @@
 
       integer, parameter :: nread = 4
       real*8, parameter :: small = 1.0d-10,tiny = 1.0d-300,            &
-                           small_spatial = 1.0d-6,                     &
-                           r0=0.0d0, rhalf = 0.5d0, r1 = 1.0d0
+                           small_spatial = 1.0d-6, r0=0.0d0,           &
+                           rhalf = 0.5d0, r1 = 1.0d0
 
       ierrcd = 0
       
@@ -248,7 +253,8 @@
       b_output_binary = .false.
       b_output_trans_binary = .false.
       b_output_mpiio_single = .true.
-      b_output_separate_mesh_result = .false.      
+      b_output_separate_mesh_result = .false.  
+      ascii_fmt_comma = .false.    
       hdf5_compress_level = 0
 
 
@@ -316,20 +322,28 @@
         end if
 #endif
 
+        subsection = 'use comma as data delimiter'
+        call findstrg(subsection,itmp,found_subsection)
+        if (found_subsection) then
+          ascii_fmt_comma = .true.
+        end if
+
         subsection = 'use double precision'  
         call findstrg(subsection,itmp,found_subsection)
         if (found_subsection) then
-          ascii_fmt = '(1000(1pe25.17e3))'
-          ascii_fmt_iir = '(2(i10,1x),1000(1pe25.17e3))'
+          if (ascii_fmt_comma) then
+            ascii_fmt = '(1000(1pe25.17e3,","))'
+          else
+            ascii_fmt = '(1000(1pe25.17e3))'
+          end if
         else
-          ascii_fmt = '(1000(1pe15.6e3))'
-          ascii_fmt_iir = '(2(i10,1x),1000(1pe15.6e3))'
+          if (ascii_fmt_comma) then
+            ascii_fmt = '(1000(1pe15.6e3,","))'
+          else
+            ascii_fmt = '(1000(1pe15.6e3))'
+          end if
         end if
         
-        if (.not.varsat_flow .and. .not.reactive_transport) then
-          return  
-        end if
-
 #ifdef PETSC
         subsection = 'use separated file for spatial subdomain output' 
         call findstrg(subsection,itmp,found_subsection)
@@ -986,8 +1000,7 @@
                   istop = ngb
                 end if
                 ierrcd = 8
-                read(itmp,*,err=999,end=999) (ngb_vol(igb),           &
-     &                                      igb=istart,istop)
+                read(itmp,*,err=999,end=999) (ngb_vol(igb), igb=istart,istop)
 
               end do
               
@@ -1031,8 +1044,7 @@
                 if (rank == 0) then  
                   write(ilog,*) 'ABNORMAL EXIT from initopgs'
                   write(ilog,*) 'ngb_vol > nn'
-                  write(ilog,*) 'check section "output control" ',     &
-     &                          'in input file'
+                  write(ilog,*) 'check section "output control" in input file'
                 end if
 #ifdef PETSC
                 call petsc_mpi_finalize
@@ -1044,6 +1056,8 @@
           end if              !(found_subsection)
        
 !c  output for total flux/mass through specified interface
+!c  method 1: user specified two points, either by coordinates or node id
+!c  note: this method can be applied to 1D, 2D and 3D
 !c ----------------------------------------------------------------------
           subsection = 'output of transient data for interface fluxes'
 
@@ -1204,10 +1218,289 @@
                 end if
               end do
             end do            
-          end if              !(found_subsection) 
-          
-        end if                !(reactive_transport or transient_flow)
+          end if              !(found_subsection)
 
+
+!c  method 2: user specified interface coordinate
+!c  note: this method can be applied to 1D only for the current version
+!c ----------------------------------------------------------------------
+          subsection = 'output of transient data for 1d interface fluxes'
+
+          call findstrg(subsection,itmp,found_subsection)
+
+          if (found_subsection .and. discretization_type == 0) then
+
+            gb_output_faceflux = .true.
+            ierrcd = 9
+            read(itmp,*,err=999,end=999) ngb_ijface    !number of control volumes
+
+            allocate (ngb_vol_ijface(2,ngb_ijface), stat = ierr)
+            ngb_vol_ijface = 0 
+            call checkerr(ierr,'ngb_vol_ijface',ilog)  
+            call memory_monitor(sizeof(ngb_vol_ijface),'ngb_vol_ijface',.true.)
+            
+            allocate (ngb_vol_ijface_jtemp(ngb_ijface), stat = ierr)
+            ngb_vol_ijface_jtemp = 0 
+            call checkerr(ierr,'ngb_vol_ijface_jtemp',ilog) 
+            call memory_monitor(sizeof(ngb_vol_ijface_jtemp),'ngb_vol_ijface_jtemp',.true.)
+            
+            allocate (ngb_vol_ijface_area(ngb_ijface), stat = ierr)
+            ngb_vol_ijface_area = 0.0d0
+            call checkerr(ierr,'ngb_vol_ijface_area',ilog) 
+            call memory_monitor(sizeof(ngb_vol_ijface_area),'ngb_vol_ijface_area',.true.)
+            
+            allocate (ngb_vol_ijface_velratio(3,ngb_ijface), stat = ierr)
+            ngb_vol_ijface_velratio = 0.0d0
+            call checkerr(ierr,'ngb_vol_ijface_velratio',ilog) 
+            call memory_monitor(sizeof(ngb_vol_ijface_velratio),'ngb_vol_ijface_velratio',.true.)
+               
+!allocate binary output control parameters for breakthrough data
+!currently not supported
+
+!c  number of time steps between output 
+            ierrcd = 10
+            read(itmp,*,err=999,end=999) ngb_step_ijface
+
+!c  assign control volume using user specified xyz coordinates
+!c  assumes level model domain
+            
+            do igb = 1,ngb_ijface
+              ierrcd = 11
+              read(itmp,*,err=999,end=999) xcoord, ycoord, zcoord
+              
+              found_interface = .false.
+              ngb_vol_ijface(:,igb) = -1
+
+              do ivol = 1, nngl
+
+                istart = iavs(ivol)+1      !pointer - start of row
+                istop = iavs(ivol+1)-1     !pointer - end of row
+
+                do i1 = istart, istop      !loop over connections
+                  jvol = javs(i1)          !column pointer
+
+                  dist = (xg(ivol)-xcoord)*(xg(jvol)-xcoord) +         &
+                         (yg(ivol)-ycoord)*(yg(jvol)-ycoord) +         &
+                         (zg(ivol)-zcoord)*(zg(jvol)-zcoord)
+
+                  if (dist < r0) then
+                    ngb_vol_ijface(1,igb) = ivol
+                    ngb_vol_ijface(2,igb) = jvol
+                    found_interface = .true.
+
+                    exit
+                  end if
+                end do
+
+                if (found_interface) then
+                  exit
+                end if
+
+              end do
+
+              if (any(ngb_vol_ijface(:,igb) < 1)) then
+
+                if (rank == 0) then
+                  write(*,*) 'Error in interface input: ',igb
+                  write(ilog,*) 'Error in interface input: ',igb
+                end if
+
+                goto 997
+              end if
+
+            end do !igb = 1,ngb_ijface
+       
+          end if              !(found_subsection)
+
+!c ----------------------------------------------------------------------
+!c  output of mass balance for the selected subdomains
+!c  note: this method can be applied to 1D only for the current version
+!c ----------------------------------------------------------------------
+          subsection = 'output of mass balance for 1d subdomains'
+
+          subdomains_n = 0
+
+          call findstrg(subsection,itmp,found_subsection)
+
+          if (found_subsection) then
+            gb_output_faceflux = .true.
+            ierrcd = 21
+            read(itmp,*,err=999,end=999) subdomains_n    !number of control volumes
+
+            if (subdomains_n < 0) then
+              goto 996
+            end if
+
+            allocate (subdomains_bdface_conn(2,subdomains_n), stat = ierr)
+            subdomains_bdface_conn = 0 
+            call checkerr(ierr,'subdomains_bdface_conn',ilog)  
+            call memory_monitor(sizeof(subdomains_bdface_conn),'subdomains_bdface_conn',.true.)
+      
+            allocate (subdomains_bdface(2,2,subdomains_n), stat = ierr)
+            subdomains_bdface = 0 
+            call checkerr(ierr,'subdomains_bdface',ilog)  
+            call memory_monitor(sizeof(subdomains_bdface),'subdomains_bdface',.true.)          
+          end if
+
+          !bit flag of subdomains, initialize with position 0 true for the entire domain 
+          allocate(subdomains_bits(ceiling(max(subdomains_n,1)/30.0),nngl), stat = ierr)
+          subdomains_bits = 1
+          call checkerr(ierr,'subdomains_bits',ilog)  
+          call memory_monitor(sizeof(subdomains_bits),'subdomains_bits',.true.)
+
+!allocate binary output control parameters for breakthrough data
+!currently not supported
+          if (subdomains_n > 0) then
+
+!c  number of time steps between output 
+            ierrcd = 22
+            read(itmp,*,err=999,end=999) subdomains_skip
+
+!c  assign control volume using user specified xyz coordinates
+!c  assumes level model domain
+             
+            do isub = 1,subdomains_n
+
+              isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
+
+              ierrcd = 23
+              read(itmp,*,err=999,end=999) xcoord2(1), ycoord2(1), zcoord2(1), &
+                                           xcoord2(2), ycoord2(2), zcoord2(2)
+
+              if (xcoord2(1) > xcoord2(2)) then
+                xcoord2(1) = xcoord2(1) + small_spatial
+                xcoord2(2) = xcoord2(2) - small_spatial
+              else if (xcoord2(1) < xcoord2(2)) then
+                xcoord2(1) = xcoord2(1) - small_spatial
+                xcoord2(2) = xcoord2(2) + small_spatial
+              end if
+
+              if (ycoord2(1) > ycoord2(2)) then
+                ycoord2(1) = ycoord2(1) + small_spatial
+                ycoord2(2) = ycoord2(2) - small_spatial
+              else if (ycoord2(1) < ycoord2(2)) then
+                ycoord2(1) = ycoord2(1) - small_spatial
+                ycoord2(2) = ycoord2(2) + small_spatial
+              end if
+
+              if (zcoord2(1) > zcoord2(2)) then
+                zcoord2(1) = zcoord2(1) + small_spatial
+                zcoord2(2) = zcoord2(2) - small_spatial
+              else if (zcoord2(1) < zcoord2(2)) then
+                zcoord2(1) = zcoord2(1) - small_spatial
+                zcoord2(2) = zcoord2(2) + small_spatial
+              end if
+              
+              subdomains_bdface(:,:,isub) = -1
+
+              do i = 1, 2
+                found_interface = .false.
+
+                do ivol = 1, nngl
+                 
+                  dist = (xg(ivol)-xcoord2(1))*(xg(ivol)-xcoord2(2)) +   &
+                         (yg(ivol)-ycoord2(1))*(yg(ivol)-ycoord2(2)) +   &
+                         (zg(ivol)-zcoord2(1))*(zg(ivol)-zcoord2(2))
+
+                  !c the specified coordinate is same as a point
+                  if (dist <= r0) then
+
+                    istart = iavs(ivol)+1      !pointer - start of row
+                    istop = iavs(ivol+1)-1     !pointer - end of row
+                    
+                    do i1 = istart, istop      !loop over connections
+                      jvol = javs(i1)          !column pointer
+
+                      dist = (xg(jvol)-xcoord2(1))*(xg(jvol)-xcoord2(2)) +   &
+                             (yg(jvol)-ycoord2(1))*(yg(jvol)-ycoord2(2)) +   &
+                             (zg(jvol)-zcoord2(1))*(zg(jvol)-zcoord2(2))
+
+                      dist2 = (xcoord2(i)-xg(ivol))*(xcoord2(i)-xg(jvol)) +   &
+                              (ycoord2(i)-yg(ivol))*(ycoord2(i)-yg(jvol)) +   &
+                              (zcoord2(i)-zg(ivol))*(zcoord2(i)-zg(jvol))
+
+                      !c find the pair
+                      if (dist > r0 .and. dist2 <= r0) then
+                        subdomains_bdface(1,i,isub) = jvol      !outside subdomain
+                        subdomains_bdface(2,i,isub) = ivol      !inside subdomain
+                        subdomains_bdface_conn(i,isub) = isymvs(i1)
+
+                        found_interface = .true.
+                        exit  
+                      end if    
+                    end do  
+                  end if                  
+
+                  if (found_interface) then
+                    exit
+                  end if
+                end do
+
+                !c the coordinate is beyond the range of domain
+                if (any(subdomains_bdface(:,i,isub) < 1)) then
+                  dist_min = 1.0d300
+                  do ivol = 1, nngl
+                    dist = (xg(ivol)-xcoord2(i))**2 + (yg(ivol)-ycoord2(i))**2 + &
+                           (zg(ivol)-zcoord2(i))**2
+                    if (dist < dist_min) then
+                      dist_min = dist
+                      subdomains_bdface(:,i,isub) = ivol   
+                    end if
+                  end do
+                end if 
+              end do   
+
+              !c lable the subdomain by bit operation
+              do ivol = 1, nngl
+                dist = (xg(ivol)-xcoord2(1))*(xg(ivol)-xcoord2(2)) +   &
+                       (yg(ivol)-ycoord2(1))*(yg(ivol)-ycoord2(2)) +   &
+                       (zg(ivol)-zcoord2(1))*(zg(ivol)-zcoord2(2))
+
+                if (dist <= small) then                    
+                  subdomains_bits(ceiling(max(isub,1)/30.0),ivol) =    &
+                    ibset(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)
+                end if
+              end do
+
+!c  create folder for mass balance output for subdomains
+              write(strSubDir,'(a,i0)') "subdomain_", isub
+              
+#ifdef INTEL
+              inquire(directory=trim(strSubDir),exist=is_exist)
+#else
+              inquire(file=trim(strSubDir),exist=is_exist)
+#endif
+
+              if (.not.is_exist) then
+                flag_stop = .false.
+                if (rank == 0) then
+#ifdef INTEL
+                  istat = system('mkdir '//trim(strSubDir))
+#else
+                  call system('mkdir '//trim(strSubDir), status=istat)
+#endif
+                  if (istat /= 0) then
+                    flag_stop = .true.
+                    write(*,*) 'Error to create subdomain folder ',trim(strSubDir)
+                    write(ilog,*) 'Error to create subdomain folder ',trim(strSubDir)
+                  end if
+                
+                end if
+#ifdef PETSC
+                call MPI_BCAST(flag_stop, 1, MPI_LOGICAL, 0, Petsc_Comm_World, &
+                               ierrcode)
+                CHKERRQ(ierrcode)
+#endif
+                if (flag_stop) then
+                  goto 995
+                end if
+              end if 
+
+            end do            !isub = 1,subdomains_n
+
+          end if              !(found_subsection)          
+
+        end if                !(reactive_transport or transient_flow)
 
 !c  output for total flux/mass through specified boundary nodes
 !c ----------------------------------------------------------------------
@@ -1475,6 +1768,9 @@
           do i=1,nip
             ierrcd = 17
             read(itmp,*,err=999,end=999) inic, (namet(ii),ii = 1,inic)
+            do ii = 1,inic
+              call makelowercase(namet(ii))
+            end do
             read(itmp,*,err=999,end=999) (isodeltat(ii), ii=1,inic-1)    
             iamdisoo(i+1) = iamdisoo(i) + inic
             icount = 0
@@ -1545,22 +1841,22 @@
           do imb = 1,nmb
             ierrcd = 19
             read(itmp,*,err=999,end=999) namemb(imb)
+            call makelowercase(namemb(imb))
           end do
 
         end if           !(found_subsection)
 
       end if             !(found_section)
+
+!c  allocate memory space for subdomains_bits if 'output contorl' section is not found or for non-reactive steady state problem
+      if (.not.allocated(subdomains_bits)) then
+        !bit flag of subdomains, initialize with position 0 true for the entire domain 
+        allocate(subdomains_bits(1,nngl), stat = ierr)
+        subdomains_bits = 1
+        call checkerr(ierr,'subdomains_bits',ilog)  
+        call memory_monitor(sizeof(subdomains_bits),'subdomains_bits',.true.)
+      end if
       
-      if (.not.varsat_flow .and. .not.reactive_transport) then
-        return  
-      end if
-
-!c  return to calling routine if appropriate
-
-      if (.not.reactive_transport.and..not.transient_flow) then
-        return
-      end if
-
 !c  write output control parameters to generic output file
       if (b_enable_output .and. b_enable_output_gen) then
         write(igen,'(/72a)')('-',i=1,72)
@@ -1613,7 +1909,7 @@
 
 !c  assign depth coordinate in terms of depth or elevation
           if(ivol > 0) then
-            zout = zoutput(depth_output,zg(ivol),elevmax)
+            zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 #ifdef PETSC
             write(igen,'(2(a,i10,1x),3(a,1pe15.6e3,a))')              &
      &                          'local ivol = ',ivol,                 &
@@ -1749,19 +2045,41 @@
  
       goto 1000
 
-!998   continue
+995   continue
 
       if (rank == 0) then
-        write(ilog,*) 'error reading input file'
-        write(ilog,*) 'section "',section_header(:l_string),'"'
-        write(ilog,*) 'transient output coordinates    &                 
-     &                 outside of model domain'
+        write(*,*) 'Error in creating subdomain folder for mass balance output'
+        write(ilog,*) 'Error in creating subdomain folder for mass balance output'
         close(ilog)
       end if
 #ifdef PETSC
       call petsc_mpi_finalize
 #endif
-      stop
+      stop 
+
+996   continue
+
+      if (rank == 0) then
+        write(*,*) 'Error: number of subdomains cannot be negative'
+        write(ilog,*) 'Error: number of subdomains cannot be negative'
+        close(ilog)
+      end if
+#ifdef PETSC
+      call petsc_mpi_finalize
+#endif
+      stop 
+
+997   continue
+
+      if (rank == 0) then
+        write(*,*) 'Error in finding interface/boundary, please check the input'
+        write(ilog,*) 'Error in finding interface/boundary, please check the input'
+        close(ilog)
+      end if
+#ifdef PETSC
+      call petsc_mpi_finalize
+#endif
+      stop 
 
 999   continue
       if (rank == 0) then

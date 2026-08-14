@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/ionstr.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/ionstr.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -57,14 +57,13 @@
 
       implicit none
 
-      character*72 namec
-      real*8 :: c, cx, chargec, chargex
+      character*72 :: namec(*)
+      real*8 :: c(*), cx(*), chargec(*), chargex(*)
       integer :: nc, nx
-      dimension c(*),cx(*),chargec(*),chargex(*),namec(*)
       
-      real*8 :: r0, rhalf, strion
+      real*8 :: strion
       integer :: ic, ix
-      parameter (r0 = 0.0d0, rhalf = 0.5d0)
+      real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0
 
 !c  initialize ionic strength
 

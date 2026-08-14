@@ -4,7 +4,7 @@
 !> $Revision: 880 $
 !> $Author: dsu $
 !> $Date: 2024-02-19 14:19:39 -0800 (Mon, 19 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/version/Version.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/version/Version.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -13,7 +13,7 @@
 !>
 !> Module description: This module contains version information and  
 !>                     respository information including 
-!>                     version number, commit date and build data,
+!>                     version number, commit time and build data,
 !>                     repository URL et al. 
 !>
 !>
@@ -27,22 +27,45 @@
 Module Version
 
     implicit none
-    
-    Character(4) :: MajorVersionNumber = "2"            !< Major version, manually replaced
-    Character(4) :: MinorVersionNumber = "6"            !< Minor version, manually replaced
-    Character(10) :: PatchVersionNumber = "3"          !< Patch number, manually replaced
-    Character(10) :: GlobalRevisionNumber = "881"   !< Global revision, automatically replaced
-                                                        !< It's best to manually update this value to the new revision number
-                                                        !< so that user without repository info can get correct revision number.
-                                                        !< For example, if the current revision number after revision update is 123, 
-                                                        !< then the next available revision number is 124, this value will be 
-                                                        !< updated automatically to 124 when user compile the code with access to repository.
-                                                        !< However, if user does not have access to the repository, this value remains 123.
 
-    Character(32) :: CommitDate = "2026/05/04 09:50:30"            !< Commit date, automatically replaced
-    Character(32) :: BuildDate = "2026/05/04 09:50:30"              !< Build date, automatically replaced
-    Character(256) :: RepositoryURL = "https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan"         !< Repository URL, automatically replaced
+#ifdef WINDOWS
+#include "RepoParams.h"
+#endif
     
+    Character(4) :: MajorVersionNumber = "3"             !< Major version, manually replaced
+    Character(4) :: MinorVersionNumber = "0"             !< Minor version, manually replaced
+    Character(10) :: PatchVersionNumber = "0"            !< Patch number, manually replaced
+    
+#if defined(GITVERSION)
+    Character(32) :: GlobalRevisionNumber = GITVERSION
+#else
+    Character(32) :: GlobalRevisionNumber = "unknown"
+#endif
+
+#if defined(GITCOMMITTIME)
+    Character(32) :: CommitTime = GITCOMMITTIME
+#else
+    Character(32) :: CommitTime = "unknown"
+#endif
+
+    
+#if defined(GITREPURL)
+#if defined(GITBRANCH)
+    Character(256) :: RepositoryURL = GITREPURL//"(@"//GITBRANCH//")"
+#else
+    Character(256) :: RepositoryURL = GITREPURL
+#endif
+#else
+    Character(256) :: RepositoryURL = "unknown"
+#endif
+
+!< Build time, automatically replaced
+#if defined(BUILDTIME)
+    Character(32) :: BuildTime = BUILDTIME
+#else
+    Character(32) :: BuildTime = "unknown"
+#endif
+
     Character(256) :: BuildLabelVersion = ""            !< Version info in the log file, automatically configured
     Character(256) :: BuildLabelMode = ""               !< Build mode in the log file, automatically configured  
     Character(256) :: BuildLabelSystem = ""             !< System info in the log file, automatically configured 

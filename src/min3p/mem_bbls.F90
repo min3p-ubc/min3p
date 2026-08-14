@@ -4,7 +4,7 @@
 !> $Revision: 786 $
 !> $Author: dsu $
 !> $Date: 2021-01-06 21:41:32 -0800 (Wed, 06 Jan 2021) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mem_bbls.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mem_bbls.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

@@ -1,0 +1,520 @@
+# Database for Spycher et al., 2011, GCA U reoxidation
+# Based on output listing of THOUGH REACT for initial conditions provided by Nicolas Spycher, 03/11/2011
+
+SOLUTION_MASTER_SPECIES
+Alkalinity	CO3-2		2.0     HCO3    61.0173
+E		e-		0	0	0
+O		H2O		0	O	16.00
+O(-2)		H2O		0	O
+O(0)		O2		0	O
+C		CO3-2		2.0	CO3	12.0111
+C(4)		CO3-2		2.0	CO3	12.0111
+Ca		Ca+2		0.0	Ca	40.078
+Cl		Cl-		0.0	Cl	35.453
+Fe		Fe+3		-2.0	Fe	55.847
+Fe(3)		Fe+3		-2.0	Fe             
+Feii  		Feii+2		0.0	Fe  55.847
+H		H+		-1.0	H	1.0079
+H(0)		H2		0	H
+H(1)		H+		-1.0	H
+K		K+		0.0	K	39.0983
+Mg		Mg+2		0.0	Mg	24.305
+Na		Na+		0.0	Na	22.9898
+Sulfate		Sulfate-2	0.0	S	96.066
+S		HS-		1.0	S	32.066
+U		U+4		-4.0	U	238.029
+U(4)		U+4		-4.0	U
+Acetate		Acetate-	1.0	59.045	59.045
+Lac Lac- 0.0 1. 1.
+Pip Pip- 0.0 1. 1.
+Uranyl Uranyl+2 0. 270.028 270.028
+Lactate_u       Lactate_u       0.0    Lactate_u        1.0
+Lactate_u2      Lactate_u2       0.0    Lactate_u2        1.0      
+#Biomass         Biomass         0.0     Biomass         113
+Ureduced        Ureduced       0.0    Ureduced        1.0
+Fereduced       Fereduced       0.0    Fereduced        1.0
+Ureox           Ureox         0.0      Ureox         1.0
+Sulfur_s        Sulfur_s         0.0      Sulfur_s         1.0
+
+SOLUTION_SPECIES
+
+Lactate_u = Lactate_u
+        log_k	0.0
+	-gamma	0.0	0.0
+
+Lactate_u2 = Lactate_u2
+        log_k	0.0
+	-gamma	0.0	0.0
+
+#Biomass = Biomass
+#        log_k	0.0
+
+Ureduced = Ureduced
+        log_k	0.0
+	-gamma	0.0	0.0
+
+Fereduced = Fereduced
+        log_k	0.0
+	-gamma	0.0	0.0
+
+Ureox = Ureox
+        log_k	0.0
+	-gamma	0.0	0.0
+
+Sulfur_s = Sulfur_s
+        log_k	0.0
+	-gamma	0.0	0.0
+
+Lac- = Lac-
+	log_k 0.0
+	-gamma	3.72	0.0
+
+Uranyl+2 = Uranyl+2
+	log_k 0.0
+	-gamma	4.28  0.0
+
+Pip- = Pip-
+	log_k 0.0
+	-gamma	3.72	0.0
+
+e- = e-
+	log_k 0
+	
+H2O = H2O
+	log_k 0
+	-gamma	0.0  0
+
+CO3-2 = CO3-2
+	log_k 0
+	-gamma	4.42 	0.0
+
+Ca+2 = Ca+2
+	log_k 0
+	-gamma	4.3267     0.0
+
+Cl- = Cl-
+	log_k 0
+	-gamma	3.72	0.0
+
+Fe+3 = Fe+3
+	log_k 0
+	-gamma	4.445	0.0
+	
+Feii+2 = Feii+2
+	log_k 0
+	-gamma	4.16	0.0
+
+H+ = H+
+	log_k 0
+	-gamma	4.89	0.0
+
+K+ = K+
+	log_k 0
+	-gamma	4.08	0.0
+
+Mg+2 = Mg+2
+	log_k 0
+	-gamma	4.10667 0.0
+
+Na+ = Na+
+	log_k 0
+	-gamma	3.72	0.0
+	
+Sulfate-2 = Sulfate-2
+	log_k 0
+	-gamma	4.64667	0.0
+	
+HS- = HS-
+	log_k 0
+	-gamma	3.75	0.0
+
+U+4 = U+4
+	log_k 0
+	-gamma	4.696	0.0
+
+Uranyl+2 = Uranyl+2
+	log_k 0.0
+	-gamma	4.28	0.0
+	
+Acetate- = Acetate-
+	log_k 0
+	-gamma	3.72	0.0
+
+
+
+SOLUTION_SPECIES
+	          
+### Water ####
+
+2H2O =  O2 + 4H+ + 4e-  
+ 	log_k   -85.9951
+	-gamma	0.0	0.0
+
+2 H+ + 2 e- = H2
+        log_k   -3.15
+	-gamma	3.5	0.0  ##
+
+H2O = OH- + H+
+	log_k	-13.9951 #-13.997
+	-gamma	3.31	0.0
+	
+Pip- + H+ = HPip
+	log_k   7.2 #7.0
+	-gamma	0.0	0.0  ##
+
+Lac- + H+ = HLac
+	log_k 3.8629
+	-gamma	0.0	0.0
+
+H+ + Acetate- = H(Acetate)
+	log_k	3.85 #4.757
+	-gamma	0.0	0.0
+
+H+ + CO3-2 = HCO3-
+	log_k	10.329
+	-gamma	4.01	0.0
+
+2H+ + CO3-2 = CO2 + H2O
+	log_k	16.6737 #16.681
+	-gamma	0.0	0.0  ##
+
+Ca+2 + HCO3- = CaCO3 + H+
+	log_k -7.002
+	-gamma	0.0	0.0
+
+Ca+2 + Cl- = CaCl+
+	log_k  -0.2925 #-0.696
+	-gamma	4.12	0.0
+	
+Ca+2 + 2Cl- = CaCl2
+	log_k  -0.6436 #-0.644
+	-gamma	0.0	0.0
+	
+Ca+2 + HCO3- = CaHCO3+
+	log_k   1.0467 #1.047
+	-gamma	4.0	0.0
+	
+Ca+2 + H2O = CaOH+  + H+
+	log_k  -12.8333 #-12.8500
+	-gamma	4.12	0.0
+	
+Ca+2 + Sulfate-2 = CaSulfate
+	log_k 2.1110
+	-gamma	0.0	0.0
+
+Feii+2 + 2CO3-2 = Feii(CO3)2-2
+	log_k	7.1604 #7.45  #(from King et al. 1998)
+	-gamma	4.54667	0.0	##
+
+Feii+2 + 3H2O = Feii(OH)3- + 3H+
+	log_k   -31.0 #-32.9620
+	-gamma	3.72	0.0
+
+Feii+2 + 4H2O = Feii(OH)4-2 + 4H+
+	log_k           -46
+	-gamma	4.54667	0.0
+
+Fe+3 + 2 Sulfate-2 = Fe(Sulfate)2-
+	log_k	3.2137 #3.214 #5.38
+	-gamma	3.72	0.0
+
+2Fe+3 + 2H2O = Fe2(OH)2+4 + 2H+
+	log_k	-2.95 #-7.283  #-2.95  # TOUGH: -7.283 
+	-gamma	4.696	0.0
+
+3 Fe+3 + 4 H2O = Fe3(OH)4+5 + 4 H+
+	log_k	-6.3
+	-gamma	4.89	0.0
+
+Feii+2 + CO3-2 = FeiiCO3
+	log_k	5.4502
+	-gamma	0.0	0.0
+
+Feii+2 + Cl- = FeiiCl+
+	log_k  -0.1605
+	-gamma	4.12	0.0
+
+Fe+3 + Cl- = FeCl+2
+	log_k	1.4799 #1.48 # TOUGH: -2.80 
+	-gamma	4.28	0.0
+
+Feii+2 + 2Cl- = FeiiCl2
+	log_k   -8.1716 #-2.45
+	-gamma	0.0	0.0
+	
+Feii+2 + CO3-2 + H+ = FeiiHCO3+
+	log_k	11.799
+	-gamma	4.12  0
+
+Feii+2 + H2O = FeiiO + 2H+
+	log_k	-20.4052
+	-gamma	0.0	0.0  ##
+
+Fe+3 + H2O = FeO+ + 2H+
+	log_k	-5.6498  #-5.650
+	-gamma	4.12	0.0  
+	
+Fe+3 + 2H2O = FeO2- + 4H+
+	log_k	-21.6203	
+	-gamma	3.72	0.0  
+
+Feii+2 + H2O = FeiiOH+ + H+
+	log_k	 -9.3148 #-9.315
+	-gamma	4.12	0.0
+
+Fe+3  + H2O = FeOH+2 + H+
+	log_k   -2.2047 #-4.38
+	-gamma  4.28	0.0
+	
+Feii+2 + HS- = FeiiS + H+
+	log_k	-2.2	
+	-gamma	0.0	0.0   ##
+	
+Feii+2 + Sulfate-2 = FeiiSulfate
+	log_k	2.2	
+	-gamma	0.0	0.0
+	
+Fe+3 + Sulfate-2 = FeSulfate+
+	log_k	1.9276 #1.93 #4.04 # TOUGH: 1.93 
+	-gamma	4.12	0.0
+
+H+ + HS- = H2S
+	log_k	6.9877 #7.02
+	-gamma	0.0	0.0
+
+2H+ + Sulfate-2 = H2Sulfate
+	log_k   1.0209  #0.0 #-1.0209 # from Sevinc # TOUGH: 0.0
+	-gamma	0.0	0.0
+	
+Fe+3 + 2H2O = HFeO2 + 3H+
+	log_k	-12.018
+	-gamma	0.0	0.0  ##
+
+Feii+2 + 2H2O = HFeiiO2- + 3H+
+    log_k           -29.2070 #-33.9880 # TOUGH: 33.9880 # Sevinc: -39.482 (calculated using logK value from Misawa-1973)
+	-gamma	3.72	0.0  ##
+	
+H+ + Sulfate-2 = HSulfate-
+	log_k	1.9791 #1.99
+	-gamma	4.28	0.0
+
+4Mg+2 + 4H2O = Mg4(OH)4+4 + 4H+
+	log_k   -39.75
+	-gamma	4.696	0.0
+
+Mg+2 + CO3-2 = MgCO3
+	log_k	2.9791 #2.98
+	-gamma	0.0	0.0
+	
+Mg+2 + Cl- = MgCl+
+	log_k           -0.1349
+	-gamma	4.12	0.0
+	
+Mg+2 + H+ + CO3-2 = MgHCO3+
+	log_k	11.3647 #11.339
+	-gamma	4.12	0.0
+
+Mg+2 + H2O = MgOH+ + H+
+	log_k	-11.6825 #-11.397
+	-gamma	4.12	0.0  ##
+
+Mg+2 + Sulfate-2 = MgSulfate
+	log_k	2.2298 #2.26
+	-gamma	0.0	0.0
+
+Na+ + CO3-2 = NaCO3-
+	log_k	0.5145 #1.27
+	-gamma	3.72	0.0
+
+Na+ + Cl- = NaCl
+	log_k           -0.777
+	-gamma	0.0	0.0
+
+Na+ + H+ + CO3-2 = NaHCO3
+	log_k	10.4831 #10.079
+	-gamma	0.0	0.0
+
+Na+ + H2O = NaOH + H+
+	log_k	-14.2047 #-14.18
+	-gamma	0.0	0.0
+
+Na+ + Sulfate-2 = NaSulfate-
+	log_k	0.700 #0.73
+	-gamma	3.72	0.0
+
+HS- = S-2 + H+
+	log_k	-12.9352 #-12.918
+	-gamma	4.54667	0.0
+
+11Uranyl+2 + 6CO3-2 + 12H2O = (Uranyl)11(CO3)6(OH)12-2 + 12H+
+	log_k  36.1191 #36.12
+	-gamma	4.54667	0.0    
+
+2Uranyl+2 + 2H2O = (Uranyl)2(OH)2+2 + 2H+
+	log_k    -5.6565 #-5.659
+	-gamma	4.28	0.0
+
+2Uranyl+2 + CO3-2 + 3H2O = (Uranyl)2(CO3)(OH)3- + 3H+
+	log_k  -0.9158 #-0.916
+	-gamma	3.72	0.0
+
+2Uranyl+2 + H2O = (Uranyl)2OH+3 + H+
+	log_k -2.729
+	-gamma	4.515	0.0
+
+3Uranyl+2 + 6CO3-2 = (Uranyl)3(CO3)6-6
+	log_k 53.881
+	-gamma	5.6743	0.0
+	
+3Uranyl+2 + 4H2O = (Uranyl)3(OH)4+2 + 4H+
+	log_k   -11.9618 #-11.96
+	-gamma	4.28	0.0
+
+3Uranyl+2 + 5H2O = (Uranyl)3(OH)5+ + 5H+
+	log_k   -15.6191 #-15.62
+	-gamma	4.12	0.0
+
+3Uranyl+2 + 7H2O = (Uranyl)3(OH)7- + 7H+
+	log_k   -31.0836 #-32.2
+	-gamma	3.72	0.0
+
+3Uranyl+2 + CO3-2 + 3H2O = (Uranyl)3O(OH)2(HCO3)+ + 3H+
+	log_k 0.5833
+	-gamma	4.12	0.0
+
+4Uranyl+2 + 7H2O = (Uranyl)4(OH)7+ + 7H+
+	log_k   -21.9946 #-21.995
+	-gamma	4.12	0.0
+
+U+4 + 4CO3-2 = U(CO3)4-4
+	log_k 35.0549
+	-gamma	5.297	0.0
+
+U+4 + 5CO3-2 = U(CO3)5-6
+	log_k 33.8203
+	-gamma	5.6743	0.0
+
+U+4 + 2Sulfate-2 = U(Sulfate)2
+	log_k   10.3431 #10.5
+	-gamma	0.0	0.0
+
+U+4 + Cl- = UCl+3
+	log_k  1.6997 #1.697
+	-gamma	4.515	0.0
+
+Uranyl+2 + 2Sulfate-2 = Uranyl(Sulfate)2-2
+	log_k   3.9697 #4.3
+	-gamma	4.54667	0.0
+
+Uranyl+2 + Cl- = UranylCl+
+	log_k   0.1463 #0.141
+	-gamma	4.12	0.0
+
+Uranyl+2 + 2Cl- = UranylCl2
+	log_k   -1.1362 #-1.146
+	-gamma	0.0	0.0
+
+Uranyl+2 + Sulfate-2 = UranylSulfate
+	log_k   3.0594 #3.18
+	-gamma	0.0	0.0
+
+Uranyl+2 + H2O = UranylOH+ + H+
+	log_k -5.2173
+	-gamma	4.12	0.0
+
+2H2O + Uranyl+2 = Uranyl(OH)2 + 2H+
+	log_k    -12.15 #-12.152
+	-gamma	0.0	0.0
+
+Uranyl+2 + 3H2O = Uranyl(OH)3- + 3H+
+	log_k   -20.25 #-20.246
+	-gamma	3.72	0.0
+
+Uranyl+2 + 4H2O = Uranyl(OH)4-2 + 4H+
+	log_k -32.40
+	-gamma  4.54667	0.0
+	
+U+4 + H2O = UOH+3 + H+
+	log_k   -0.5408 #-0.541
+	-gamma	4.515	0.0
+
+U+4 + 2H2O = U(OH)2+2 + 2H+
+	log_k   -1.09 #-1.091
+	-gamma  4.28	0.0  ##
+
+U+4 + 3H2O = U(OH)3+ + 3H+
+	log_k -4.69
+	-gamma  4.12	0.0  ##
+
+U+4 + 4H2O = U(OH)4 + 4H+
+	log_k -9.98
+	-gamma	0.0	0.0
+
+U+4 + Sulfate-2 = USulfate+2
+	log_k   6.4927 #6.6
+	-gamma	4.28	0.0
+
+Uranyl+2 + CO3-2 = UranylCO3
+	log_k 9.9402
+	-gamma  0.0	0.0
+
+Uranyl+2 + 2CO3-2 = Uranyl(CO3)2-2
+	log_k 16.6104
+	-gamma  4.54667	0.0
+
+Uranyl+2 + 3CO3-2 = Uranyl(CO3)3-4
+	log_k 21.8406
+	-gamma  5.296	0.0	
+
+Ca+2 + Uranyl+2 + 3CO3-2 = CaUranyl(CO3)3-2
+	log_k 27.1806
+	-gamma  4.54667	0.0 ##
+
+2Ca+2 + Uranyl+2 + 3CO3-2 = Ca2Uranyl(CO3)3
+	log_k 30.7006
+	-gamma  0.0	0.0  ##
+
+
+
+PHASES
+Uraninite
+UO2 + 4H+ = U+4 + 2H2O
+#log_k -4.88
+log_k 1.42 #biogenic uraninite
+
+Schoepite
+Uranyl(OH)2:H2O + 2H+ = Uranyl+2 + 3H2O
+log_k 4.844
+-no_check
+
+Calcite
+CaCO3 = Ca+2 + CO3-2
+log_k -8.48
+
+Hematite
+Fe2O3 + 6H+ = 2Fe+3 + 3H2O
+log_k 0.1086
+
+Ferrihydrite
+Fe(OH)3 + 3H+ = Fe+3 + 3H2O
+log_k 3.116
+
+Goethite
+FeOOH + 3H+ = Fe+3 + 2H2O
+log_k 0.535
+
+Siderite
+FeiiCO3 = Feii+2 + CO3-2
+log_k	-10.521
+
+Mackinawite
+FeiiS + H+ = Feii+2 + HS-
+log_k	-3.5
+
+CO2(g)
+CO2 + H2O = 2H+ + CO3-2
+log_k -18.1426
+
+
+END
+

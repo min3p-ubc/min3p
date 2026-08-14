@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/chem.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/chem.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -62,6 +62,7 @@
 !c                                reactions
 !c           nc                 = number of components including h2o
 !c           nbio               = number of biomass components
+!c           na                 = number of aqueous components
 !c           nna                = number of non-aqueous components
 !c           ncorder(nc)        = ordering array for components
 !c                                ncorder(old order) = new order 
@@ -240,6 +241,7 @@
       integer (type_i4), allocatable :: iter_lc(:)
       integer (type_i4) :: naq
       integer (type_i4) :: nbio
+      integer (type_i4) :: na
       integer (type_i4) :: nna
       integer (type_i4) :: nc
       integer (type_i4) :: nx
@@ -251,6 +253,8 @@
       integer (type_i4) :: nph_steps
       
       integer (type_i4) :: nip              !isotope
+
+      integer (type_i4) :: nzn_inirt        !number of zones - initial condition of reactive transport
 
       integer (type_i4) :: linear_solver_lc !linear solver type of local chemistry, 0 - Gaussian (default), 1 - QR, 2 - SVD
 
@@ -447,6 +451,7 @@
       integer (type_i4) :: ilbs
       integer (type_i4) :: ilbt
       integer (type_i4) :: ilbv
+      integer (type_i4) :: ilbis
       integer (type_i4) :: ilbx
       integer (type_i4) :: ilbac
 
@@ -2271,5 +2276,41 @@
       integer*8 :: offset_ilbis_ijk
       integer*8 :: offset_ilbac_ijk
       integer*8 :: offset_ilbre_ijk
+
+!cprovi------------------------------------------------------------------
+!cprovi Variables and parameters for the electrostatic surface 
+!cprovi complexation.
+!cprovi Added by Sergio A. Bea, May 2015
+!cprovi------------------------------------------------------------------
+      logical                     :: elect_correction= .false.      ! .true. if electrostaic correction is performed
+      logical                     :: mol_frac_ads= .false.          ! .true. activity of surface complexes are evaluated as molar fractions
+      character*72                :: name_elect_correction=''       ! Name of the model for electrostatic corrections 
+      integer                     :: nelect=0                       ! Number of electrostatic terms 
+      integer                     :: nlayer=0                       ! Number of layers
+      integer                     :: ncap=0                         ! Number of constant capacitances
+      real (type_r8), allocatable :: totcharge_surf(:,:)            ! Charge balance on the surface  
+      real (type_r8), allocatable :: dtotcharge_surf(:,:)           ! Derivative of charge balance on the surface
+      real (type_r8), allocatable :: dz_surf(:,:)                   ! Net change in surface charge due to the formation of the surface species [nlayer,nsb_surf]
+      real (type_r8), allocatable :: charge_surf(:,:)               ! Net change in surface charge due to the formation of the surface species [nlayer,nsb_surf]
+      real (type_r8), allocatable :: cap_surf(:)                    ! Constant capacitance for the constant capacitance model 
+
+!cprovi------------------------------------------------------------------
+!cprovi Variables and parameters for solid solution implementation 
+!cprovi Added by Sergio A. Bea, June 2015
+!cprovi------------------------------------------------------------------
+      logical                     :: solid_solutions= .false.       ! .true. solid solutions are included in the model
+      logical, allocatable        :: chemical_zoning_ss(:)          ! .true. only reaction rates reflect the mineral proportions
+      logical, allocatable        :: non_ideal_solid_solution(:)    ! Type of solid solutions (e.g., ideal solid solutions) 
+      integer                     :: nss=0                          ! Number of solid solutions 
+      integer, allocatable        :: nmin_ss(:)                     ! Number of end-member in the solid solution [nss]
+      integer, allocatable        :: idmin_ss(:,:)                  ! Global index number of end-member in the solid solution [nss,nm]      
+      real (type_r8), allocatable :: xss(:,:,:)                     ! Molar fractions for the different end-members in the solid solution [nss,nm] 
+      real (type_r8), allocatable :: lambda_ss(:,:,:)               ! Activity coefficients for non-ideal solid solutions [nss,nm] 
+      real (type_r8), allocatable :: satm_ss(:,:)                   ! IAP/K of the solid solution [nss] 
+      real (type_r8), allocatable :: gugg0_ss(:)                    ! Guggenheim coefficient 0
+      real (type_r8), allocatable :: gugg1_ss(:)                    ! Guggenheim coefficient 1 
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
+!c ----------------------------------------------------------------------
       
       end module chem

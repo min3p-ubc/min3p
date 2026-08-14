@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/ddtds_energybal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/ddtds_energybal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -303,7 +303,7 @@
             !cprovi Compute density at given concentration using Pitzer equations
             !cprovi-------------------------------------------------------------------
             cpz_loc(1:nc)=cnew(1:nc,ivol)
-            cpz_loc(nc+1:nc+nx)=cx(1:nx,ivol)  
+            cpz_loc(nc+1:nc+nx)=cxnew(1:nx,ivol)  
             !computer_density_ : m_phase (compute_density_) 
             !                    -> m_aqueousphase (compute_density_) 
             !                    -> m_aqueousphasepitzer (compute_density_)

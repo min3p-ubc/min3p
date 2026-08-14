@@ -1,0 +1,1043 @@
+#!MC 900
+$!VarSet |LFDSFN1| = '"..\gastest_8.gsp"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz"'
+$!VarSet |LFDSFN2| = '"..\gastest_8.gsp"'
+$!VarSet |LFDSVL2| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz"'
+$!VarSet |LFDSFN3| = '"..\gastest_8.gsg"'
+$!VarSet |LFDSVL3| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz"'
+$!VarSet |LFDSFN4| = '"..\gastest_8.gsg"'
+$!VarSet |LFDSVL4| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz"'
+$!VarSet |LFDSFN5| = '"..\gastest_8.gsg"'
+$!VarSet |LFDSVL5| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 8.55
+    Y2 = 11.05
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 6.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 31
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 90.854
+      Y = 95.761
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 3
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -1.07022103667
+    RANGEMAX = 0
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -8.64000034332
+      CMAX = 0
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+4
+0.009
+0.08
+0.8
+8
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 91.453
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 149.999167842
+    GRSPACING = 25
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 5
+    GRSPACING = 2.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0
+  ISOVALUE2 = 0
+  ISOVALUE3 = 0
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'K_x_x' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN2|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL2|' 
+$!REMOVEVAR |LFDSVL2|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 8.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 19
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 91.667
+      Y = 94.084
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 3
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -0.486125171185
+    RANGEMAX = 0
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -0.000139032999869
+      CMAX = 0
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+0.0819449673096
+0.163889934619
+0.245834901929
+0.327779869239
+0.409724836548
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 18.713
+      X2 = 92.337
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 18.72
+    RANGEMIN = 0
+    RANGEMAX = 149.999725696
+    GRSPACING = 25
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 5
+    GRSPACING = 2.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0
+  ISOVALUE2 = 0
+  ISOVALUE3 = 0
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'S_g' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN3|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL3|' 
+$!REMOVEVAR |LFDSVL3|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 4.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 10
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 90.651
+      Y = 92.408
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 3
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -0.0962051516399
+    RANGEMAX = 0
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -0.0768423900008
+      CMAX = 0
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+0.0573192406446
+0.068607673049
+0.0798961054534
+0.0911845378578
+0.102472970262
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 91.453
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 149.999167842
+    GRSPACING = 25
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 5
+    GRSPACING = 2.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0
+  ISOVALUE2 = 0
+  ISOVALUE3 = 0
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'CO_2' 
+### Frame Number 4 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN4|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL4|' 
+$!REMOVEVAR |LFDSVL4|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 2.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 11
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 90.975
+      Y = 96.647
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 2
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.407098248601
+    RANGEMAX = 0.625655755401
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.297819495201
+      CMAX = 0.734934508801
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+0.251688438157
+0.348354270061
+0.445020101964
+0.541685933868
+0.638351765772
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 91.453
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 149.999167842
+    GRSPACING = 25
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 5
+    GRSPACING = 2.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.407098248601
+  ISOVALUE2 = 0.516377002001
+  ISOVALUE3 = 0.625655755401
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'N_2' 
+### Frame Number 5 ###
+$!CREATENEWFRAME 
+$!READDATASET  '|LFDSFN5|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL5|' 
+$!REMOVEVAR |LFDSVL5|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 0.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 12
+  LEGEND
+    {
+    SHOW = YES
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 90.569
+      Y = 94.97
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 2
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.162041723728
+    RANGEMAX = 0.486125171185
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 5.03283113098E-018
+      CMAX = 0.648166894913
+      }
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+5
+0.113227953513
+0.226455907027
+0.33968386054
+0.452911814054
+0.566139767567
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.797
+      Y1 = 19.551
+      X2 = 91.453
+      Y2 = 94.139
+      }
+    }
+  DEPXTOYRATIO = 0.145
+  XDETAIL
+    {
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 149.999167842
+    GRSPACING = 25
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+  YDETAIL
+    {
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 5
+    GRSPACING = 2.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.162041723728
+  ISOVALUE2 = 0.324083447456
+  ISOVALUE3 = 0.486125171185
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'CH_4' 
+$!REMOVEVAR |LFDSFN5|
+$!REMOVEVAR |LFDSFN4|
+$!REMOVEVAR |LFDSFN3|
+$!REMOVEVAR |LFDSFN2|
+$!REMOVEVAR |LFDSFN1|
+$!SETSTYLEBASE CONFIG

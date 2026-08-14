@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/msysdd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/msysdd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -113,9 +113,9 @@
 #endif
 #endif
 
-      integer :: ivol
+      integer :: ivol, isub, isub_bit
       
-      real*8 :: rpor, vsmass, totv_a, totv_g
+      real*8 :: rpor, vsmass, totv_a, totv_g, rtemp_sub
 
       integer :: nvarsimvs, irecord
       
@@ -127,12 +127,20 @@
 #endif
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+
+      do isub = 0, subdomains_n
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
+
+        imvs(isub) = imvs_first(isub)
       
 !c  compute total system mass
 !c  variably saturated conditions:
 !c  replace uvsold and saold by 0 -> can use storage function 
 
-      totvsmass = r0
+        totvsmass(isub) = r0
+
+        rtemp_sub = r0
       
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -140,23 +148,27 @@
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
     !$omp private(ivol, rpor, vsmass)                                 &
-    !$omp reduction(+:totvsmass)
+    !$omp reduction(+:rtemp_sub)
     !$omp do schedule(static)
 #endif 
-      do ivol = 1,nngl  
+        do ivol = 1,nngl  
           
           !exclude ghost nodes
 #ifdef PETSC
           if(node_idx_lg2l(ivol) < 0) then
-              cycle
+            cycle
           end if
 #endif
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+            cycle
+          end if
+
           if (modify_por(ivol)) then
-             rpor=porosity_flow(porold(ivol),                 &
-                  uvsnew(ivol),uvsold(ivol),stor(ivol),       &
-                  por_stress_dt(ivol),por_init(ivol),facpormin)   
+            rpor = porosity_flow(porold(ivol),                 &
+                   uvsnew(ivol),uvsold(ivol),stor(ivol),       &
+                   por_stress_dt(ivol),por_init(ivol),facpormin)   
           else
-             rpor=pornew(ivol)
+            rpor=pornew(ivol)
           end if
           
           vsmass = cvol(ivol) * sanew(ivol) * rpor * density(ivol)
@@ -165,26 +177,27 @@
             vsmass = vsmass + cvol(ivol)*sgnew(ivol)*rpor*densvnew(ivol)
           end if
 
-          totvsmass = totvsmass + vsmass
-
-      end do
+          rtemp_sub = rtemp_sub + vsmass
+        end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
 
+        totvsmass(isub) = totvsmass(isub) + rtemp_sub
+
 #ifdef PETSC     
-      call MPI_Allreduce(totvsmass, totvsmass_gbl,1,MPI_REAL8,MPI_SUM, &
-                         Petsc_Comm_World,ierrcode)
-      CHKERRQ(ierrcode)
-      totvsmass = totvsmass_gbl
+        call MPI_Allreduce(totvsmass(isub), totvsmass_gbl,1,MPI_REAL8,MPI_SUM, &
+                           Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        totvsmass(isub) = totvsmass_gbl
 #endif
 
 !c  compute total volumes for aqueous and gaseous phase
-       if (evaporation) then
+        if (evaporation) then
           
-         totv_a = r0
-         totv_g = r0
+          totv_a = r0
+          totv_g = r0
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_msysdd_2)                       &
@@ -194,73 +207,76 @@
     !$omp reduction(+:totv_a, totv_g)
     !$omp do schedule(static)
 #endif
-         do ivol = 1,nngl
-           !exclude ghost nodes
+          do ivol = 1,nngl
+            !exclude ghost nodes
 #ifdef PETSC
-           if(node_idx_lg2l(ivol) < 0) then
-               cycle
-           end if
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if
 #endif
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
+            end if
           
-           if (modify_por(ivol)) then
-             rpor=porosity_flow(porold(ivol),                 &
-                  uvsnew(ivol),uvsold(ivol),stor(ivol),       &
-                  por_stress_dt(ivol),por_init(ivol),facpormin)   
-           else
-             rpor=pornew(ivol)
-           end if
-           totv_a = totv_a + sanew(ivol)*rpor*                &
-                    density(ivol)*cvol(ivol)
-           totv_g = totv_g + sgnew(ivol)*rpor*                &
-                             cvol(ivol)*densvnew(ivol)
-         end do
+            if (modify_por(ivol)) then
+              rpor=porosity_flow(porold(ivol),                 &
+                   uvsnew(ivol),uvsold(ivol),stor(ivol),       &
+                   por_stress_dt(ivol),por_init(ivol),facpormin)   
+            else
+              rpor=pornew(ivol)
+            end if
+            totv_a = totv_a + sanew(ivol)*rpor*                &
+                     density(ivol)*cvol(ivol)
+            totv_g = totv_g + sgnew(ivol)*rpor*                &
+                              cvol(ivol)*densvnew(ivol)
+          end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
 
 #ifdef PETSC     
-         call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,    &
-                            Petsc_Comm_World,ierrcode)
-         CHKERRQ(ierrcode)
-         totv_a = totv_a_gbl
-         call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,    &
-                            Petsc_Comm_World,ierrcode)
-         CHKERRQ(ierrcode)
-         totv_g = totv_g_gbl
+          call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,    &
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          totv_a = totv_a_gbl
+          call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,    &
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          totv_g = totv_g_gbl
 #endif
  
 !c  write total contributions to file   
 
-         imvs = imvs_first
+          if(rank == 0 .and. b_enable_output .and.                     &
+             .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+            if (b_output_trans_binary) then
+              nvarsimvs = 4
+              realbuffer_gb(1:nvarsimvs) = (/time_io,totvsmass(isub),  &
+                                             totv_a,totv_g/)
+              call binary_write_data(imvs_mpi(imvs(isub)), 1,          &
+                           (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)      
+              call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,  &
+                           realbuffer_gb,offset_imvs(imvs(isub)),.true.) 
 
-         if(rank == 0 .and. b_enable_output .and.                      &
-            .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-           if (b_output_trans_binary) then
-             nvarsimvs = 4
-             realbuffer_gb(1:nvarsimvs) = (/time_io,totvsmass,totv_a,  &
-                                            totv_g/)
-             call binary_write_data(imvs_mpi(imvs), 1,         &
-                          (/mtime/),offset_imvs_ijk(imvs),.true.)      
-             call binary_write_data(imvs_mpi(imvs), nvarsimvs, &
-                          realbuffer_gb,offset_imvs(imvs),.true.) 
+              offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) +      &
+                                        nvarsimvs*nfloatbit
 
-             offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
+            else
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(imvs(isub),irecord)
+              end if
 
-           else
-             if (mtime == mtime_append .and. i_append_sim >= 1) then
-               call reposition_file(imvs,irecord)
-             end if
-
-             if (i_append_sim < 1 .or.                                 &
-                (mtime >= mtime_append .and. i_append_sim >= 1)) then
-               write(imvs,ascii_fmt) time_io,totvsmass,totv_a,totv_g
-             end if
-           end if
-         end if
-       else  
-         totv_a = r0
-         totv_g = r0
+              if (i_append_sim < 1 .or.                                &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                write(imvs(isub),ascii_fmt) time_io,totvsmass(isub),   &
+                                            totv_a,totv_g
+              end if
+            end if
+          end if
+        else  
+          totv_a = r0
+          totv_g = r0
          
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -271,71 +287,75 @@
     !$omp reduction(+:totv_a, totv_g)
     !$omp do schedule(static)
 #endif
-         do ivol = 1,nngl
-           !exclude ghost nodes
+          do ivol = 1,nngl
+            !exclude ghost nodes
 #ifdef PETSC
-           if(node_idx_lg2l(ivol) < 0) then
-               cycle
-           end if 
+            if(node_idx_lg2l(ivol) < 0) then
+              cycle
+            end if 
 #endif
-             
-           if (modify_por(ivol)) then
-             rpor=porosity_flow(porold(ivol),                         &
-                  uvsnew(ivol),uvsold(ivol),stor(ivol),               &
-                  por_stress_dt(ivol),por_init(ivol),facpormin)   
-           else
-             rpor=pornew(ivol)
-           end if
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
+            end if
+
+            if (modify_por(ivol)) then
+              rpor=porosity_flow(porold(ivol),                         &
+                   uvsnew(ivol),uvsold(ivol),stor(ivol),               &
+                   por_stress_dt(ivol),por_init(ivol),facpormin)   
+            else
+              rpor=pornew(ivol)
+            end if
            
-           totv_a = totv_a + sanew(ivol)*rpor*cvol(ivol)
-           totv_g = totv_g + sgnew(ivol)*rpor*cvol(ivol)
-         end do
+            totv_a = totv_a + sanew(ivol)*rpor*cvol(ivol)
+            totv_g = totv_g + sgnew(ivol)*rpor*cvol(ivol)
+          end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
 
 #ifdef PETSC     
-         call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,    &
-                            Petsc_Comm_World,ierrcode)
-         CHKERRQ(ierrcode)
-         totv_a = totv_a_gbl
-         call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,    &
-                            Petsc_Comm_World,ierrcode)
-         CHKERRQ(ierrcode)
-         totv_g = totv_g_gbl
+          call MPI_Allreduce(totv_a, totv_a_gbl,1,MPI_REAL8,MPI_SUM,   &
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          totv_a = totv_a_gbl
+          call MPI_Allreduce(totv_g, totv_g_gbl,1,MPI_REAL8,MPI_SUM,   &
+                             Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          totv_g = totv_g_gbl
 #endif
  
 !c  write total contributions to file   
 
-         imvs = imvs_first
+          if(rank == 0 .and. b_enable_output .and.                     &
+             .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
+            if (b_output_trans_binary) then
+              nvarsimvs = 4
+              realbuffer_gb(1:nvarsimvs) = (/time_io,totvsmass(isub),  &
+                                             totv_a,totv_g/)
+              call binary_write_data(imvs_mpi(imvs(isub)), 1,          &
+                           (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)      
+              call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,  &
+                           realbuffer_gb,offset_imvs(imvs(isub)),.true.) 
 
-         if(rank == 0 .and. b_enable_output .and.                      &
-            .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
-           if (b_output_trans_binary) then
-             nvarsimvs = 4
-             realbuffer_gb(1:nvarsimvs) = (/time_io,totvsmass,totv_a,  &
-                                            totv_g/)
-             call binary_write_data(imvs_mpi(imvs), 1,         &
-                          (/mtime/),offset_imvs_ijk(imvs),.true.)      
-             call binary_write_data(imvs_mpi(imvs), nvarsimvs, &
-                          realbuffer_gb,offset_imvs(imvs),.true.) 
+              offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) +      &
+                                        nvarsimvs*nfloatbit
 
-             offset_imvs(imvs) = offset_imvs(imvs)+nvarsimvs*nfloatbit
+            else
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(imvs(isub),irecord)
+              end if
 
-           else
-             if (mtime == mtime_append .and. i_append_sim >= 1) then
-               call reposition_file(imvs,irecord)
-             end if
-
-             if (i_append_sim < 1 .or.                                 &
-                (mtime >= mtime_append .and. i_append_sim >= 1)) then
-               write(imvs,ascii_fmt) time_io,totvsmass,totv_a,totv_g
-             end if
-           end if
-         end if
-         
-      end if 
+              if (i_append_sim < 1 .or.                                &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                write(imvs(isub),ascii_fmt) time_io,totvsmass(isub),   &
+                                            totv_a,totv_g
+              end if
+            end if
+          end if
+        end if 
+      
+      end do      !subdomains
       
       return
       end 

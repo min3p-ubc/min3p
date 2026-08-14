@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initpprt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initpprt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -135,6 +135,7 @@
       use geometry  
       use multidiff, only : mdiff_ic_tensor, mdiff_ix_tensor,          &
                             type_mdiff_ic_coeff, type_mdiff_ix_coeff
+      use file_unit, only : lun_get
       use file_utility, only : rewind_first_record
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
@@ -146,7 +147,7 @@
 
       external findstrg, readbloc, findstrginzone
 
-      logical found_section, found_subsection
+      logical found_section, found_subsection, flag_error
       character*72 subsection
       
       character*20 :: equi
@@ -773,8 +774,8 @@
 !cprovi--------------------------------------------------------
 !cprovi Read component dependent diffusion coefficients
 !cprovi--------------------------------------------------------        
-        diff_coff = .false.
-        type_diff_ic_coeff = -1
+        comp_dep_diff_coff = .false.
+        type_diff_ic_coeff = 0
         diff_ic_tensor = tensor_zero
 
         subsection =                                                   &
@@ -784,7 +785,7 @@
 
         if (found_subsection) then
 
-          diff_coff = .true.
+          comp_dep_diff_coff = .true.
           type_diff_ic_coeff = 0
 
           if (b_enable_output .and. b_enable_output_gen) then
@@ -817,7 +818,7 @@
 
         if (found_subsection) then
 
-          diff_coff = .true.
+          comp_dep_diff_coff = .true.
           type_diff_ic_coeff = 1
 
           if (b_enable_output .and. b_enable_output_gen) then
@@ -857,7 +858,7 @@
 
         if (found_subsection) then
 
-          diff_coff = .true.
+          comp_dep_diff_coff = .true.
           type_diff_ic_coeff = 2
 
           if (discretization_type == 0) then
@@ -1175,7 +1176,7 @@
 !c  read correction factors of porosity for primary species
 
               subsection = 'porosity correction factor of primary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 
@@ -1207,7 +1208,7 @@
 !c  read correction factors of tortuosity for primary species
 
               subsection = 'tortuosity correction factor of primary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 
@@ -1239,7 +1240,7 @@
 !c  read correction factors of porosity for secondary species
 
               subsection = 'porosity correction factor of secondary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 
@@ -1272,7 +1273,7 @@
 !c  read correction factors of tortuosity for secondary species
 
               subsection = 'tortuosity correction factor of secondary species for hMCD diffusion'
-                
+              call makelowercase(subsection)
 !c  search temporary data file for current material property zone
 !c  and write to scratch file
 

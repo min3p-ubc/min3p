@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/cvolume.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/cvolume.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -516,8 +516,8 @@
 
 !c  output total control volume to screen and log file
       if (rank == 0 .and. b_enable_output) then
-        write(*,'(1x,a,1x,e16.8)') 'Total volume of simulation domain',cvol_tot
-        write(ilog,'(1x,a,1x,e16.8)') 'Total volume of simulation domain',cvol_tot
+        write(*,'(a,1x,e16.8)') 'Total volume of simulation domain',cvol_tot
+        write(ilog,'(a,1x,e16.8)') 'Total volume of simulation domain',cvol_tot
       end if
 
       info_dbg = 0

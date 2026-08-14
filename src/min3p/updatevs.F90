@@ -4,7 +4,7 @@
 !> $Revision: 878 $
 !> $Author: dsu $
 !> $Date: 2024-02-14 20:08:49 -0800 (Wed, 14 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updatevs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updatevs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -274,15 +274,13 @@
         end if
 
         uvsnew(ivol) = uvsnew(ivol)+uvs(ivol)    !update primary unknown
-        hhead(ivol) = uvsnew(ivol)+zg(ivol)      !and hydraulic head
-       
-!#ifdef DEBUG
-!        if(ivol == 14) then
-!            write(idbg,'(3(a,1x,e,1x))')                               &
-!                  "-->updatevs hhead(ivol)", hhead(ivol),              &
-!                  "uvsnew(ivol)",uvsnew(ivol),"zg(ivol)",zg(ivol)
-!        end if
-!#endif
+
+!cdsu bug fix in updating hydraulic head, 2024-06-12
+        if (fully_saturated) then 
+          hhead(ivol) = uvsnew(ivol)
+        else if (variably_saturated) then
+          hhead(ivol) = uvsnew(ivol)+zg(ivol)    !and hydraulic head
+        end if
 
         uvsabs  = dabs(uvs(ivol))
         

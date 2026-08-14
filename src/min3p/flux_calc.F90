@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/flux_calc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/flux_calc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -59,7 +59,7 @@
 !c                                - global system
 !c           cstor(n)           = storage term (aqueous phase)        * *
 !c           cvol(nn)           = nodal volumes                       + -
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -652,12 +652,14 @@
 !cdsu !c  -> update only concentrations of secondary aqueous species
 !cdsu !c     and compute ionic strength
 !cdsu 
-!cdsu         call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),    &
-!cdsu      &                gamma(nc+1,ivol),sionnew(ivol),tid)
+!cdsu         call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+!cdsu                       gamma(nc+1,ivol),sionnew(ivol),            &
+!cdsu                       actvset(:,ivol),tid)
 !cdsu         
 !cdsu         if (hmulti_diff) then
-!cdsu           call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),        &
-!cdsu      &                  gammaold(nc+1,ivol),sionold(ivol),tid)  
+!cdsu           call updtsvap(c(:,ivol),cxold(:,ivol),gammaold(:,ivol),&
+!cdsu                         gammaold(nc+1,ivol),sionold(ivol),       &
+!cdsu                         actvset(:,ivol),tid)
 !cdsu         end if       !MX test
 !cdsu 
 !cdsu 
@@ -669,14 +671,15 @@
 !cdsu  
 !cdsu         if (update_activity(tid).eq.'double_update') then
 !cdsu 
-!cdsu           call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),    &
-!cdsu      &                  gamma(nc+1,ivol),sionnew(ivol),tid)
+!cdsu           call updtsvap(cnew(:,ivol),cx(:,ivol),gamma(:,ivol),   &
+!cdsu                         gamma(nc+1,ivol),sionnew(ivol),          &
+!cdsu                         actvset(:,ivol),tid)
 !cdsu 
 !cdsu         end if
 !cdsu 
 !cdsu !c  compute total aqueous component concentrations
 !cdsu 
-!cdsu         call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+!cdsu         call totconc(cnew(:,ivol),cx(:,ivol),totcnew(:,ivol))
 !cdsu         
 !cdsu !c Calculate the secondary species concentrations totcnewf and totcoldf
 !cdsu         if (hmulti_diff) then
@@ -685,8 +688,8 @@
 !cdsu !c  compute total concentrations of aqueous primary and secondary
 !cdsu !c  species times the correction factors
 !cdsu                 
-!cdsu             call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
-!cdsu             call totconcfac(c(1,ivol),cxold(1,ivol),totcoldf(1,ivol),izn)
+!cdsu             call totconcfac(cnew(:,ivol),cx(:,ivol),totcnewf(:,ivol),izn)
+!cdsu             call totconcfac(c(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
 !cdsu 
 !cdsu         end if
 !cdsu 
@@ -764,12 +767,12 @@
 
           if (multi_diff) then
 
-            call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),          &
-                           cnew(:,jvol),cx(:,jvol),                    &
+            call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),       &
+                           cnew(:,jvol),cxnew(:,jvol),                 &
                            delta_totviscnew(:,tid))
 
-            call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),      &
-                               cnew(:,jvol),cx(:,jvol),                &
+            call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),   &
+                               cnew(:,jvol),cxnew(:,jvol),             &
                                delta_electromignew(:,tid))
           end if
 

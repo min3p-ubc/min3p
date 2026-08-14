@@ -1,0 +1,27 @@
+!
+!Self-described unstructured grid generation file
+!This example is for mesh generation test only
+!
+
+!**********************************************************************
+!example input parameters for polyhedra 3d delaunay mesh
+!**********************************************************************
+
+'polyhedra 3d delaunay mesh'
+
+'domain file path'
+'clem3d.off'
+
+'global domain mesh criteria'
+0.1, 25.0, 0.1, 0.1, 2.0, 0.1  !mesh criteria in edge_size, facet_angel, facet_size,
+                                   !facet_distance, cell_radius_edge_ratio, global size
+
+'lloyd optimization parameters'
+10, 10.0                           !maximum iteration and time limit
+
+'exude optimization parameters'
+10.0, 10.0                         !sliver bound and time limit
+
+'perturb optimization parameters'
+10.0, 10.0                         !sliver bound and time limit
+

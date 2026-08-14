@@ -1,0 +1,227 @@
+#!MC 900
+$!VarSet |LFDSFN1| = '"..\gastest.gsv"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz" "ch2o(f)" "c6h6(r)" "residula(r)" "porosity"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 8.55
+    Y2 = 11.05
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = GRAYSCALE
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.14177
+    Y = 6.1082
+    }
+  WIDTH = 8.25
+  HEIGHT = 2.0168
+$!FRAMEMODE  = TWOD
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALCONTOUR 
+  VAR = 35
+  LEGEND
+    {
+    SHOWHEADER = NO
+    XYPOS
+      {
+      X = 90.854
+      Y = 95.761
+      }
+    TEXTSHAPE
+      {
+      HEIGHT = 10
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 3
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.0250000004475
+    RANGEMAX = 0.0750000011426
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 1.00000001335E-010
+      CMAX = 0.10000000149
+      }
+    REVERSECOLORMAP = YES
+    }
+$!CONTOURLEVELS NEW
+  RAWDATA
+1
+0.0500000007951
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    COLOR = BLACK
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    SURFACESTOPLOT = KPLANES
+    POINTSTOPLOT = SURFACESONLY
+    }
+$!TWODAXIS 
+  XVAR = 1
+  YVAR = 3
+$!VIEW FIT
+$!TWODAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      X1 = 12.8
+      Y1 = 19.55
+      X2 = 91.453
+      Y2 = 94.139
+      }
+    DRAWBORDER = YES
+    LINETHICKNESS = 0.8
+    }
+  DEPXTOYRATIO = 0.145
+  AXISMODE = INDEPENDENT
+  XDETAIL
+    {
+    SHOWAXISLINE = NO
+    AUTOGRID = NO
+    AXISPOSITION = 19.55
+    RANGEMIN = 0
+    RANGEMAX = 200
+    GRSPACING = 50
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 12
+        }
+      OFFSET = 2
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 12
+        }
+      OFFSET = 8
+      }
+    }
+  YDETAIL
+    {
+    SHOWAXISLINE = NO
+    AUTOGRID = NO
+    ISREVERSED = YES
+    AXISPOSITION = 12.8
+    RANGEMIN = 0
+    RANGEMAX = 7
+    GRSPACING = 2.5
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 12
+        }
+      }
+    TICKS
+      {
+      LINETHICKNESS = 0.8
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depth (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 12
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.0250000004475
+  ISOVALUE2 = 0.0500000007951
+  ISOVALUE3 = 0.0750000011426
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!REMOVEVAR |LFDSFN1|
+$!SETSTYLEBASE CONFIG

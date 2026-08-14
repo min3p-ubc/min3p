@@ -1,0 +1,88 @@
+DATABASE D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\gas\database\phreeqc\minteq-simple.dat
+TITLE Temperature - gas exchange benchmarking
+
+SOLUTION_SPECIES
+ 1.0000 H2O  =  H2 +0.5000 O2   
+      log_k        -44.61  #   -46.1066
+	-delta_H	65.636  kcal  #  275.588	kJ/mol	# Calculated enthalpy of reaction	H2
+#	Enthalpy of formation:	-1 kcal/mol
+#        -analytic 6.6835e+001 1.7172e-002 -1.8849e+004 -2.4092e+001 4.2501e+005
+#       -Range:  0-300
+
+#2H2O = O2 + 4H+ + 4e- 
+#        log_k           -86.08
+#        delta_h 134.79 kcal
+#2 H+ + 2 e- = H2
+#        log_k           -3.15
+#        delta_h -1.759  kcal
+
+PHASES
+O2(g) 
+   O2 = O2
+        log_k   -2.8980
+        delta_h  -1.844    kcal  # from MIN3P database gases.dbs
+
+
+
+SOLUTION 1
+    temp      5.0
+    pH        7.0
+#    pe        -3.3471
+#    redox     pe
+    units     mol/kgw
+    density   1
+     O(0)    2.0e-3
+     Na	 1.0e-5
+     Cl	 1.0e-5	
+
+    -water    1 # kg
+
+#EQUILIBRIUM_PHASES 1
+#    O2(g)           -0.21
+	
+#GAS_PHASE 1  
+#     -fixed_pressure
+#     -pressure       1.001
+#     -volume         1.0
+#     -temperature    25.0
+#     CO2(g)          1.078501E-002
+#     O2(g)           7.912478E-002
+#     N2(g)           9.1009021E-01
+
+
+
+
+END
+
+
+SOLUTION 2
+    temp      25.0
+    pH        7.0
+#    pe        -3.3471
+#    redox     pe
+    units     mol/kgw
+    density   1
+     O(0)    2.0e-3 
+     Na	 1.0e-5
+     Cl	 1.0e-5	
+
+    -water    1 # kg
+
+END
+
+SOLUTION 3
+    temp      60.0
+    pH        7.0
+#    pe        -3.3471
+#    redox     pe
+    units     mol/kgw
+    density   1
+     O(0)    2.0e-3
+     Na	 1.0e-5
+     Cl	 1.0e-5	
+
+    -water    1 # kg
+
+END
+
+

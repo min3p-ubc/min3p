@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/energy_bal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/energy_bal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -51,7 +51,7 @@
 !c
 !c           integer*4:
 !c           ----------
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           iavs(nn+1)         = row pointer array for avs           + -
 !c           imvs               = unit number, mass balance -         + *
@@ -177,7 +177,8 @@
 #endif
 #endif
       
-      integer :: i1, i2, ibheat, ibvs, icon, ivol, istart, iend, jvol,im
+      integer :: i1, i2, ibheat, ibvs, icon, ivol, istart, iend, jvol, &
+                 im, isub_bit
       real*8 :: area_ivol, coeff, ddbdflux_energybal, densloc,         &
                 diff_vapour, heatflux, totheatstor, rpor, heatstor,    &
                 temploc, totheatflux, totinflux, totoutflux,           &
@@ -204,7 +205,7 @@
                            r3 = 3.0d0, r100 = 100.0d0, r1d3 = 1.0d3
       real*8, parameter :: rhalf = 0.5d0
       
-      integer :: nvarsimheat, irecord
+      integer :: isub, nvarsimheat, irecord
       
 #ifdef USG
       integer :: icell, idvol, kvol, ndvol, ncell, nrelp
@@ -242,103 +243,107 @@
 !cprovi  Parallelized, OpenMP, DSU
 !cprovi----------------------------------------------------
       call energysys 
+
+!c  loop over entire domain and subdomains
+      do isub = 0, subdomains_n
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
 !cprovi----------------------------------------------------
 !cprovi for transient conditions -> compute changes 
 !cprovi in storage 
 !cprovi----------------------------------------------------
-      totheatstor = r0
+        totheatstor = r0
       
-      if (isstorheat) then
+        if (isstorheat) then
         
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_energy_bal_1)                   &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(ivol, heatstor, rpor, totsinksource, relheat_iw)    &
+    !$omp private(ivol, heatstor, rpor, totsinksource, relheat_iw)                                                   &
     !$omp reduction(+:totheatstor)
     !$omp do schedule(static)
 #endif
         
-        do ivol = 1,nngl
+          do ivol = 1,nngl
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
+            if(node_idx_lg2l(ivol) < 0) then
               cycle
-          end if
-#endif
+            end if
+#endif            
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
+            end if
         
-          if (modify_por(ivol)) then
-            rpor=porosity_flow(porold(ivol), &
-                 uvsnew(ivol),uvsold(ivol),stor(ivol),  &
-                 por_stress_dt(ivol),por_init(ivol),facpormin)   
-          else
-            rpor=pornew(ivol)
-          end if 
+            if (modify_por(ivol)) then
+              rpor = porosity_flow(porold(ivol),uvsnew(ivol),uvsold(ivol), &
+                                   stor(ivol),por_stress_dt(ivol),         &
+                                   por_init(ivol),facpormin)   
+            else
+              rpor = pornew(ivol)
+            end if 
         
-          if (b_icewater_heat) then
-            relheat_iw = r1
-          else
-            relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,heatcapi, &
-                                          uvsnew(ivol))
-          end if
+            if (b_icewater_heat) then
+              relheat_iw = r1
+            else
+              relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,        &
+                                            heatcapi,uvsnew(ivol))
+            end if
         
-          heatstor = cvol(ivol)*storheat(delt,delt,tempnew(ivol),  & 
-                     tempold(ivol),sanew(ivol),saold(ivol), &
-                     density(ivol),densold(ivol),density(ivol),densold(ivol), &
-                     r0,r0,r0,r0,denssolid(ivol), & 
-                     rpor,porold(ivol),heatcapw*relheat_iw,  &
-                     heatcaps(ivol),.true.,.false., &
-                     cdens1,cdens2,cdens3,cdens4)  
+            heatstor = cvol(ivol)*                                         &
+                       storheat(delt,delt,tempnew(ivol),tempold(ivol),     &
+                                sanew(ivol),saold(ivol),density(ivol),     &
+                                densold(ivol),density(ivol),densold(ivol), &
+                                r0,r0,r0,r0,denssolid(ivol),rpor,          &
+                                porold(ivol),heatcapw*relheat_iw,          &
+                                heatcaps(ivol),.true.,.false.,             &
+                                cdens1,cdens2,cdens3,cdens4)  
                      
                      
-          if (evaporation) then
-             
+            if (evaporation) then             
               heatstor = heatstor + cvol(ivol)*storevap(delt,tempnew(ivol),&
                                     tempold(ivol),sgnew(ivol),sgold(ivol), &
-                                    densvnew(ivol),densvold(ivol), &
+                                    densvnew(ivol),densvold(ivol),         &
                                     rpor,porold(ivol),heatcapv)
               heatstor = heatstor + cvol(ivol)*storevap(delt,latvapnew(ivol),&
                                     latvapold(ivol),sgnew(ivol),sgold(ivol), &
                                     densvnew(ivol),densvold(ivol), &
                                     rpor,porold(ivol),r1)
-          end if   
+            end if   
        
-          totsinksource = r0
-          if (reaction_heat) then
-            do im = 1, nm
-              if (cmnew(im,ivol).gt.1.0d-10) then
-                if (reaction_type(im).eq.'dissolution_far_from_equilibrium' .or. &
-                    reaction_type(im).eq.'reversible') then
-                  totsinksource = totsinksource + r1d3*cvol(ivol)*     &
-                                  cal2jou*ratemdp(im,ivol)*dscm(im) 
-                end if 
-              end if      
-            end do
-            heatstor = heatstor + totsinksource
-          end if                      
-                     
-                 
-          totheatstor = totheatstor + heatstor
-         
-        end do
+            totsinksource = r0
+            if (reaction_heat) then
+              do im = 1, nm
+                if (cmnew(im,ivol).gt.1.0d-10) then
+                  if (reaction_type(im).eq.'dissolution_far_from_equilibrium' .or. &
+                      reaction_type(im).eq.'reversible') then
+                    totsinksource = totsinksource + r1d3*cvol(ivol)*cal2jou* &
+                                    ratemdp(im,ivol)*dscm(im) 
+                  end if 
+                end if      
+              end do
+              heatstor = heatstor + totsinksource
+            end if                      
+
+            totheatstor = totheatstor + heatstor
+          end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
       
 #ifdef PETSC
-        call MPI_Allreduce(totheatstor, totheatstor_gbl,1,MPI_REAL8,           & 
-                   MPI_SUM, Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        totheatstor = totheatstor_gbl
+          call MPI_Allreduce(totheatstor, totheatstor_gbl,1,MPI_REAL8, & 
+                     MPI_SUM, Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          totheatstor = totheatstor_gbl
 #endif
-
-      end if 
+        end if 
 
 !c  compute fluxes across boundary
 
-      totinflux = r0               
-      totoutflux = r0
+        totinflux = r0               
+        totoutflux = r0
 !cprovi--------------------------------------------------------------------------------------
 !cprovi Boundary conditions for energy balance
 !cprovi--------------------------------------------------------------------------------------    
@@ -380,392 +385,392 @@
 #endif
 #endif
 
-
-      do ibheat = 1,nbheat
+        do ibheat = 1,nbheat
         
-        ivol = iabheat(ibheat)
+          ivol = iabheat(ibheat)
         
-        if (ivol < 0) then
-          cycle  
-        end if
+          if (ivol < 0) then
+            cycle  
+          end if
         
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
-#endif        
-        totheatflux = r0
+          end if
+#endif
 
-        if (b_icewater_heat) then
-          relheat_iw = r1
-        else
-          relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,heatcapi,   &
-                                        uvsnew(ivol))
-        end if
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+            cycle
+          end if
+
+          totheatflux = r0
+
+          if (b_icewater_heat) then
+            relheat_iw = r1
+          else
+            relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,      &
+                                          heatcapi,uvsnew(ivol))
+          end if
 
 !c  modify for second type flow boundary condition and
 !c  point source boundary
 !c  calculate mass flux
-        if (btypeheat(ibheat)=='free') then
+          if (btypeheat(ibheat)=='free') then
 
-          totheatflux=ddbdflux_energybal(ivol,density(ivol),&
-                                         viscosity(ivol))
+            totheatflux=ddbdflux_energybal(ivol,density(ivol),         &
+                                           viscosity(ivol))
           
-          if (totheatflux<r0) then
-            temploc=tempnew(ivol)           
-            if (isboussinesq) then  
-              densloc=r1
+            if (totheatflux<r0) then
+              temploc=tempnew(ivol)           
+              if (isboussinesq) then  
+                densloc=r1
+              else
+                densloc=density(ivol)
+              end if
             else
-              densloc=density(ivol)
+              temploc=bcondheat(ibheat)
+              if (isboussinesq) then  
+                densloc=ssdens(ivol)/density(ivol)
+              else
+                densloc=ssdens(ivol)*heatcapw*relheat_iw
+              end if
             end if
-          else
-            temploc=bcondheat(ibheat)
-            if (isboussinesq) then  
-              densloc=ssdens(ivol)/density(ivol)
+          
+            if (massflux_second) then  
+              totheatflux=totheatflux*temploc
             else
-              densloc=ssdens(ivol)*heatcapw*relheat_iw
+              totheatflux=totheatflux*densloc*temploc
             end if
-          end if
           
-          if (massflux_second) then  
-             totheatflux=totheatflux*temploc
-          else
-             totheatflux=totheatflux*densloc*temploc
-          end if
+          elseif (btypeheat(ibheat)=='fluxw+') then
           
+            totheatflux=ddbdflux_energybal(ivol,density(ivol),         &
+                                           viscosity(ivol))
           
-        elseif (btypeheat(ibheat)=='fluxw+') then
-          
-          totheatflux=ddbdflux_energybal(ivol,density(ivol),&
-                                         viscosity(ivol))
-          
-          if (totheatflux<r0) then
-            heatflux = r0
-            temploc=r0
-            densloc=r0
-          else
-            temploc=bcondheat(ibheat)
-            if (isboussinesq) then  
-              densloc=ssdens(ivol)/density(ivol)
+            if (totheatflux<r0) then
+              heatflux = r0
+              temploc=r0
+              densloc=r0
             else
-              densloc=ssdens(ivol)*heatcapw*relheat_iw
+              temploc=bcondheat(ibheat)
+              if (isboussinesq) then  
+                densloc=ssdens(ivol)/density(ivol)
+              else
+                densloc=ssdens(ivol)*heatcapw*relheat_iw
+              end if
             end if
-          end if
           
-          if (massflux_second) then  
-            totheatflux=totheatflux*temploc
-          else
-            totheatflux=totheatflux*densloc*temploc 
-          end if
-          
-            
-        else if ((btypeheat(ibheat)=='second') .or.  &
-                 (btypeheat(ibheat).eq.'point')) then
- 
-          totheatflux = bcondheat(ibheat) 
-          
-        else if (btypeheat(ibheat)=='atmospheric'.and.evaporation) then  
+            if (massflux_second) then  
+              totheatflux=totheatflux*temploc
+            else
+              totheatflux=totheatflux*densloc*temploc 
+            end if
+
+          else if ((btypeheat(ibheat)=='second') .or.  &
+                   (btypeheat(ibheat).eq.'point')) then
+
+            totheatflux = bcondheat(ibheat) 
+
+          else if (btypeheat(ibheat)=='atmospheric'.and.evaporation) then  
   
-          ibvs = ivol2bvs(ivol)
-          if(ibvs > 0) then
-            area_ivol = bcondvs(ibvs)
-            call jacbevap(ivol,' ',totwflux_atm,tothflux_atm) 
-            totheatflux = tothflux_atm*area_ivol
-          end if
+            ibvs = ivol2bvs(ivol)
+            if(ibvs > 0) then
+              area_ivol = bcondvs(ibvs)
+              call jacbevap(ivol,' ',totwflux_atm,tothflux_atm) 
+              totheatflux = tothflux_atm*area_ivol
+            end if
  
-        elseif ((btypeheat(ibheat)=='first').or.   &
-                (btypeheat(ibheat)=='seepage'.and. &
-                 bcondheat(ibheat)<r0)) then
+          else if ((btypeheat(ibheat)=='first').or.   &
+                   (btypeheat(ibheat)=='seepage'.and. &
+                    bcondheat(ibheat)<r0)) then
 
-          icon=0  
-          istart = iavs(ivol)+1                                       
-          iend = iavs(ivol+1)-1
+            icon=0  
+            istart = iavs(ivol)+1                                       
+            iend = iavs(ivol+1)-1
 
 !cprovi---------------------------------------------------------------
 !cprovi Loop on connected control volumes
 !cprovi---------------------------------------------------------------             
-          do i1=istart,iend          !loop over connected control volumes 
+            do i1=istart,iend          !loop over connected control volumes 
           
-            icon = icon + 1
-            jvol = javs(i1)
+              icon = icon + 1
+              jvol = javs(i1)
 
 #ifdef USG
-            if (discretization_type > 0) then
-              ncell = janumcell(i1)
-            end if
+              if (discretization_type > 0) then
+                ncell = janumcell(i1)
+              end if
 #endif
 
-            heatflux_a(icon)=r0
-            heatflux_c(icon)=r0
-            heatflux_d(icon)=r0
-            vsfluxheat(icon)=r0
-            if (evaporation) then
-              vapfluxheat(icon)=r0
-              heatflux_v(icon)=r0
-            end if
+              heatflux_a(icon)=r0
+              heatflux_c(icon)=r0
+              heatflux_d(icon)=r0
+              vsfluxheat(icon)=r0
+              if (evaporation) then
+                vapfluxheat(icon)=r0
+                heatflux_v(icon)=r0
+              end if
 
-            del_p(icon) = uvsnew(jvol) - uvsnew(ivol)
-            del_z(icon) = zg(jvol) - zg(ivol)
+              del_p(icon) = uvsnew(jvol) - uvsnew(ivol)
+              del_z(icon) = zg(jvol) - zg(ivol)
 !cprovi---------------------------------------------------------------             
 !cprovi     
 !cprovi---------------------------------------------------------------  
-            if (del_z(icon)/=r0) then
+              if (del_z(icon)/=r0) then
 !cprovi---------------------------------------------------------------  
 !cprovi Compute the average density
 !cprovi---------------------------------------------------------------             
-              rho_av_loc = rhalf * (density(ivol) + density(jvol))
-              if (av_dens_z) then
-                del_p(icon)=rho_av_loc*(uvsnew(jvol)/density(jvol)-uvsnew(ivol)/density(ivol))
-              end if
+                rho_av_loc = rhalf * (density(ivol) + density(jvol))
+                if (av_dens_z) then
+                  del_p(icon)=rho_av_loc*(uvsnew(jvol)/density(jvol)-uvsnew(ivol)/density(ivol))
+                end if
 !cprovi---------------------------------------------------------------  
 !c  convert del_z to total elevation potential wrt fluid pressure
 !c  and calculate difference in total pressure potential
 !cprovi---------------------------------------------------------------   
 
-              del_z(icon) = del_z(icon) * rho_av_loc * gacc
-              del_p(icon) = del_p(icon) + del_z(icon)
-            end if
-
-            if (b_use_fixed_flow_vel) then
-              
-              if (b_use_zero_flow_vel) then
-                vsfluxheat(icon) = r0
-                heatflux_a(icon) = r0
-              else
-                !c TBD
+                del_z(icon) = del_z(icon) * rho_av_loc * gacc
+                del_p(icon) = del_p(icon) + del_z(icon)
               end if
+
+              if (b_use_fixed_flow_vel) then
+              
+                if (b_use_zero_flow_vel) then
+                  vsfluxheat(icon) = r0
+                  heatflux_a(icon) = r0
+                else
+                  !c TBD
+                end if
             
-            else
+              else
 
 #ifdef USG
 !c calculate gradient for jvol
-              if (discretization_type > 0) then
+                if (discretization_type > 0) then
 
-                grad_ddflow_mids = vector_zero
-                flux_ddflow_hls_corr = r0
+                  grad_ddflow_mids = vector_zero
+                  flux_ddflow_hls_corr = r0
 
-                if (isadvective) then
+                  if (isadvective) then
 
 !c calculate gradient at the middle of edge and along the control volume face,
 !c this part can be further improved for better representation for a boundary volume
-                  if (b_use_cross_diffusion_flow) then
-                    call gradient_cross_diff_dd(i1,ivol,jvol,          &
-                                  grad_locs,grad_ddflow_mids,          &
-                                  grad_weights,flux_ddflow_hls_corr,   &
-                                  grad_ddflow_hls_loc)                    
+                    if (b_use_cross_diffusion_flow) then
+                      call gradient_cross_diff_dd(i1,ivol,jvol,        &
+                                    grad_locs,grad_ddflow_mids,        &
+                                    grad_weights,flux_ddflow_hls_corr, &
+                                    grad_ddflow_hls_loc)                    
+                    end if
+
                   end if
 
-                end if
 
-
-                grad_temp_mids = vector_zero
-                flux_temp_hls_corr = r0
-                if (isconductive .or. isdispersive .or. evaporation) then
+                  grad_temp_mids = vector_zero
+                  flux_temp_hls_corr = r0
+                  if (isconductive .or. isdispersive .or. evaporation) then
 !c calculate gradient at the middle of edge and along the control volume face,
 !c this part can be further improved for better representation for a boundary volume
-                  if (b_use_cross_diffusion_heat) then
-                    call gradient_cross_diff(i1,ivol,jvol,tempnew,     &
-                                  grad_locs,grad_temp_mids,            &
-                                  grad_weights,flux_temp_hls_corr,     &
-                                  grad_temp_hls_loc)   
+                    if (b_use_cross_diffusion_heat) then
+                      call gradient_cross_diff(i1,ivol,jvol,tempnew,   &
+                                    grad_locs,grad_temp_mids,          &
+                                    grad_weights,flux_temp_hls_corr,   &
+                                    grad_temp_hls_loc)   
+                    end if
                   end if
 
-                end if
 
-
-                grad_flow_mids = vector_zero
-                flux_flow_hls_corr = r0
-                if (evaporation) then
+                  grad_flow_mids = vector_zero
+                  flux_flow_hls_corr = r0
+                  if (evaporation) then
 !c calculate gradient at the middle of edge and along the control volume face,
 !c this part can be further improved for better representation for a boundary volume
-                  if (b_use_cross_diffusion_flow) then
-                    call gradient_cross_diff(i1,ivol,jvol,uvsnew,      &
-                                  grad_locs,grad_flow_mids,            &
-                                  grad_weights,flux_flow_hls_corr,     &
-                                  grad_flow_hls_loc)
+                    if (b_use_cross_diffusion_flow) then
+                      call gradient_cross_diff(i1,ivol,jvol,uvsnew,    &
+                                    grad_locs,grad_flow_mids,          &
+                                    grad_weights,flux_flow_hls_corr,   &
+                                    grad_flow_hls_loc)
+                    end if
                   end if
-
-                end if
 
 !cdsu calculate influence coefficient for variable saturated flow
-                call usg_face_utility_cinfvs(ivol,jvol,i1,cinfvs_usg_loc,&
-                                            cinfvs_usg_cross_loc)
+                  call usg_face_utility_cinfvs(ivol,jvol,i1,cinfvs_usg_loc,&
+                                              cinfvs_usg_cross_loc)
 
-                if (evaporation) then
-                  if (split_divdensv) then
-                    call usg_face_utility_cinfevap_t(ivol,jvol,i1,       &
-                             cinfevap_t_usg_loc,cinfevap_t_usg_cross_loc)
-                    call usg_face_utility_cinfevap_pa(ivol,jvol,i1,      &
-                             cinfevap_pa_usg_loc,cinfevap_pa_usg_cross_loc)
-                  else
-                    call usg_face_utility_cinfevap_pa(ivol,jvol,i1,      &
-                             cinfevap_pa_usg_loc,cinfevap_pa_usg_cross_loc)
+                  if (evaporation) then
+                    if (split_divdensv) then
+                      call usg_face_utility_cinfevap_t(ivol,jvol,i1,       &
+                               cinfevap_t_usg_loc,cinfevap_t_usg_cross_loc)
+                      call usg_face_utility_cinfevap_pa(ivol,jvol,i1,      &
+                               cinfevap_pa_usg_loc,cinfevap_pa_usg_cross_loc)
+                    else
+                      call usg_face_utility_cinfevap_pa(ivol,jvol,i1,      &
+                               cinfevap_pa_usg_loc,cinfevap_pa_usg_cross_loc)
+                    end if
                   end if
-                end if
 
-                if (isconductive) then
-                  call usg_face_utility_cinfheat_c(ivol,jvol,i1,         &
-                           cinfheat_c_usg_loc,cinfheat_c_usg_cross_loc)
-                end if
+                  if (isconductive) then
+                    call usg_face_utility_cinfheat_c(ivol,jvol,i1,         &
+                             cinfheat_c_usg_loc,cinfheat_c_usg_cross_loc)
+                  end if
 
-                if (isdispersive) then
-                  call usg_face_utility_cinfheat_d(ivol,jvol,i1,         &
-                           cinfheat_d_usg_loc,cinfheat_d_usg_cross_loc)
-                end if
+                  if (isdispersive) then
+                    call usg_face_utility_cinfheat_d(ivol,jvol,i1,         &
+                             cinfheat_d_usg_loc,cinfheat_d_usg_cross_loc)
+                  end if
 
-              end if
+                end if
 #endif
 
 !cprovi--------------------------------------------------------------------------
 !cprovi Advective term
 !cprovi--------------------------------------------------------------------------
-              if (isadvective) then
+                if (isadvective) then
 
-                if (b_icewater_heat) then
-                  relheat_iw = r1
-                else
-                  relheat_iw = relheat_freezing((tempnew(ivol)+tempnew(jvol))*0.5d0, &
-                                                 heatcapw,heatcapi,                  &
-                                                 (uvsnew(ivol)+uvsnew(jvol))*0.5d0)
-                end if
+                  if (b_icewater_heat) then
+                    relheat_iw = r1
+                  else
+                    relheat_iw = relheat_freezing((tempnew(ivol)+tempnew(jvol))*0.5d0, &
+                                                   heatcapw,heatcapi,                  &
+                                                   (uvsnew(ivol)+uvsnew(jvol))*0.5d0)
+                  end if
 #ifdef USG
-                if (discretization_type > 0) then
+                  if (discretization_type > 0) then
 
-                  relps_loc = 0.0d0
-                  if (is_cell_based_relp) then
-                    nrelp = ncell
-                    do icell = 1, ncell
-                      i2 = jacell(icell,i1)
-                      if (i2 >0) then
-                        relps_loc(icell) = relperm(i2)
-                      end if
-                    end do
+                    relps_loc = 0.0d0
+                    if (is_cell_based_relp) then
+                      nrelp = ncell
+                      do icell = 1, ncell
+                        i2 = jacell(icell,i1)
+                        if (i2 >0) then
+                          relps_loc(icell) = relperm(i2)
+                        end if
+                      end do
+                    else
+                      nrelp = 2
+                      relps_loc(1:2) = (/relperm(ivol),relperm(jvol)/)
+                    end if
+
+                    vsfluxheat(icon) = darcy_energybal_usg(del_p(icon),del_p(icon),      &
+                                          num_edge_dvols,ncell,                          &
+                                          grad_ddflow_mids(1:num_edge_dvols,1:ncell),    &
+                                          flux_ddflow_hls_corr(1:num_edge_dvols,1:ncell),&
+                                          density(ivol),density(jvol),                   &
+                                          viscosity(ivol),viscosity(jvol),               &
+                                          is_cell_based_relp,nrelp,relps_loc(1:nrelp),   &
+                                          cinfvs_usg_loc(1:num_edge_dvols,1:ncell),      &
+                                          cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell),&
+                                          ups_heat,isboussinesq)
+
+                    if (isboussinesq) then
+                      heatflux_a(icon)=fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
+                                                vsfluxheat(icon),nngl,tempold,i2up,      &
+                                                sp_weight_heat,r1,r1)
+                    else
+                      heatflux_a(icon)=heatcapw*relheat_iw*                              &
+                                       fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
+                                                vsfluxheat(icon),nngl,tempold,i2up,      &
+                                                sp_weight_heat,r1,r1)
+                    end if
+
                   else
-                    nrelp = 2
-                    relps_loc(1:2) = (/relperm(ivol),relperm(jvol)/)
-                  end if
-
-                  vsfluxheat(icon) = darcy_energybal_usg(del_p(icon),del_p(icon),      &
-                                        num_edge_dvols,ncell,                          &
-                                        grad_ddflow_mids(1:num_edge_dvols,1:ncell),    &
-                                        flux_ddflow_hls_corr(1:num_edge_dvols,1:ncell),&
-                                        density(ivol),density(jvol),                   &
-                                        viscosity(ivol),viscosity(jvol),               &
-                                        is_cell_based_relp,nrelp,relps_loc(1:nrelp),   &
-                                        cinfvs_usg_loc(1:num_edge_dvols,1:ncell),      &
-                                        cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell),&
-                                        ups_heat,isboussinesq)
-
-                  if (isboussinesq) then
-                    heatflux_a(icon)=fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
-                                              vsfluxheat(icon),nngl,tempold,i2up,      &
-                                              sp_weight_heat,r1,r1)
-                  else
-                    heatflux_a(icon)=heatcapw*relheat_iw*                              &
-                                     fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
-                                              vsfluxheat(icon),nngl,tempold,i2up,      &
-                                              sp_weight_heat,r1,r1)
-                  end if
-
-                else
 #endif
 
-                  vsfluxheat(icon) = darcy_energybal(del_p(icon),del_p(icon),          &
-                                                     density(ivol),density(jvol),      &
-                                                     viscosity(ivol),viscosity(jvol),  &
-                                                     relperm(ivol),relperm(jvol),      &
-                                                     cinfvs_a(i1),ups_heat,isboussinesq)
+                    vsfluxheat(icon) = darcy_energybal(del_p(icon),del_p(icon),          &
+                                                       density(ivol),density(jvol),      &
+                                                       viscosity(ivol),viscosity(jvol),  &
+                                                       relperm(ivol),relperm(jvol),      &
+                                                       cinfvs_a(i1),ups_heat,isboussinesq)
 
 
-                  if (isboussinesq) then
-                    heatflux_a(icon)=fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
-                                              vsfluxheat(icon),nngl,tempold,           &
-                                              i2up,sp_weight_heat,                     &
-                                              distcells(i1,1),distcells(i1,2))
-                  else
-                    heatflux_a(icon)=heatcapw*relheat_iw*                              &
-                                     fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
-                                              vsfluxheat(icon),nngl,tempold,i2up,      &
-                                              sp_weight_heat,distcells(i1,1),          &
-                                              distcells(i1,2))
-                  end if
+                    if (isboussinesq) then
+                      heatflux_a(icon)=fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
+                                                vsfluxheat(icon),nngl,tempold,           &
+                                                i2up,sp_weight_heat,                     &
+                                                distcells(i1,1),distcells(i1,2))
+                    else
+                      heatflux_a(icon)=heatcapw*relheat_iw*                              &
+                                       fluxheat(tempnew(ivol),tempnew(jvol),ivol,jvol,   &
+                                                vsfluxheat(icon),nngl,tempold,i2up,      &
+                                                sp_weight_heat,distcells(i1,1),          &
+                                                distcells(i1,2))
+                    end if
 
 #ifdef USG
-                end if
+                  end if
 #endif
-              end if 
-            end if
+                end if 
+              end if
 
 
 !cprovi--------------------------------------------------------------------------
 !cprovi Conductive fluxes
 !cprovi--------------------------------------------------------------------------
-            del_temp(icon) = tempnew(jvol) - tempnew(ivol)
+              del_temp(icon) = tempnew(jvol) - tempnew(ivol)
 
-            if (isconductive) then
+              if (isconductive) then
 
-              if (b_icewater_heat) then
-                relheat_iw = r1
-              else
-                relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,heatcapi, &
-                                              uvsnew(ivol))
-              end if
+                if (b_icewater_heat) then
+                  relheat_iw = r1
+                else
+                  relheat_iw = relheat_freezing(tempnew(ivol),heatcapw,heatcapi, &
+                                                uvsnew(ivol))
+                end if
 
-              if (isboussinesq) then
-                 coeff = r1/(heatcapw*relheat_iw*density(ivol))
-              else
-                 coeff = r1
-              end if
+                if (isboussinesq) then
+                  coeff = r1/(heatcapw*relheat_iw*density(ivol))
+                else
+                  coeff = r1
+                end if
 
 #ifdef USG
-              if (discretization_type > 0) then
-                heatflux_c(icon) = - fluxdd_usg(                               &
-                         del_temp(icon),num_edge_dvols,ncell,                  &
-                         grad_temp_mids(1:num_edge_dvols,1:ncell),             &
-                         flux_temp_hls_corr(1:num_edge_dvols,1:ncell),         &
-                         cinfheat_c_usg_loc(1:num_edge_dvols,1:ncell),         &
-                         cinfheat_c_usg_cross_loc(1:num_edge_dvols,1:ncell),   &
-                         .false.,1,(/coeff/))
-              else
+                if (discretization_type > 0) then
+                  heatflux_c(icon) = - fluxdd_usg(                               &
+                           del_temp(icon),num_edge_dvols,ncell,                  &
+                           grad_temp_mids(1:num_edge_dvols,1:ncell),             &
+                           flux_temp_hls_corr(1:num_edge_dvols,1:ncell),         &
+                           cinfheat_c_usg_loc(1:num_edge_dvols,1:ncell),         &
+                           cinfheat_c_usg_cross_loc(1:num_edge_dvols,1:ncell),   &
+                           .false.,1,(/coeff/))
+                else
 #endif
-                heatflux_c(icon) = - fluxdd(del_temp(icon),cinfheat_c(i1),coeff)
+                  heatflux_c(icon) = - fluxdd(del_temp(icon),cinfheat_c(i1),coeff)
 #ifdef USG
-              end if
+                end if
 #endif
 
-            end if
+              end if
 !cprovi--------------------------------------------------------------------------
 !cprovi Dispersive fluxes 
 !cprovi--------------------------------------------------------------------------                
-            if (isdispersive) then
+              if (isdispersive) then
 
-              if (b_icewater_heat) then
-                relheat_iw = r1
-              else
-                relheat_iw = relheat_freezing((tempnew(ivol)+tempnew(jvol))*0.5d0,       &
-                                               heatcapw,heatcapi,                        &
-                                              (uvsnew(ivol)+uvsnew(jvol))*0.5d0)
-              end if
+                if (b_icewater_heat) then
+                  relheat_iw = r1
+                else
+                  relheat_iw = relheat_freezing((tempnew(ivol)+tempnew(jvol))*0.5d0,       &
+                                                 heatcapw,heatcapi,                        &
+                                                (uvsnew(ivol)+uvsnew(jvol))*0.5d0)
+                end if
 
 #ifdef USG
-              if (discretization_type > 0) then
-                heatflux_d(icon) = diff_vapour_usg(tempnew(ivol),tempnew(jvol),           &
-                                       num_edge_dvols,ncell,                              &
-                                       grad_temp_mids(1:num_edge_dvols,1:ncell),          &
-                                       flux_temp_hls_corr(1:num_edge_dvols,1:ncell),      &
-                                       density(ivol),density(jvol),                       &
-                                       pornew(ivol),pornew(jvol),                         &
-                                       sanew(ivol),sanew(jvol),                           &
-                                       cinfheat_d_usg_loc(1:num_edge_dvols,1:ncell),      &
-                                       cinfheat_d_usg_cross_loc(1:num_edge_dvols,1:ncell),&
-                                       r1,r1,heatcapw*relheat_iw,ups_heat,isboussinesq)
-              else
+                if (discretization_type > 0) then
+                  heatflux_d(icon) = diff_vapour_usg(tempnew(ivol),tempnew(jvol),           &
+                                         num_edge_dvols,ncell,                              &
+                                         grad_temp_mids(1:num_edge_dvols,1:ncell),          &
+                                         flux_temp_hls_corr(1:num_edge_dvols,1:ncell),      &
+                                         density(ivol),density(jvol),                       &
+                                         pornew(ivol),pornew(jvol),                         &
+                                         sanew(ivol),sanew(jvol),                           &
+                                         cinfheat_d_usg_loc(1:num_edge_dvols,1:ncell),      &
+                                         cinfheat_d_usg_cross_loc(1:num_edge_dvols,1:ncell),&
+                                         r1,r1,heatcapw*relheat_iw,ups_heat,isboussinesq)
+                else
 #endif
-                heatflux_d(icon) = diff_vapour(tempnew(ivol),tempnew(jvol),               &
-                                        density(ivol),density(jvol),                      &
-                                        pornew(ivol),pornew(jvol),                        &
-                                        sanew(ivol),sanew(jvol),cinfheat_d(i1),           &
-                                        r1,r1,heatcapw*relheat_iw,ups_heat,isboussinesq)
+                  heatflux_d(icon) = diff_vapour(tempnew(ivol),tempnew(jvol),               &
+                                          density(ivol),density(jvol),                      &
+                                          pornew(ivol),pornew(jvol),                        &
+                                          sanew(ivol),sanew(jvol),cinfheat_d(i1),           &
+                                          r1,r1,heatcapw*relheat_iw,ups_heat,isboussinesq)
 #ifdef USG
               end if
 #endif
@@ -859,62 +864,63 @@
       
           end do                          !loop - boundary control volumes
 
-      end if
+        end if
       
-      if (totheatflux>r0) then   
+        if (totheatflux>r0) then   
           totinflux = totinflux + totheatflux
-      else
+        else
           totoutflux = totoutflux - totheatflux
-      end if
+        end if
 
-    end do                        !loop over boundary control volumes
+      end do                        !loop over boundary control volumes
+
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
 
 #ifdef PETSC
-    call MPI_Allreduce(totinflux, totinflux_gbl,1,MPI_REAL8,           & 
-               MPI_SUM, Petsc_Comm_World,ierrcode)
-    CHKERRQ(ierrcode)
-    totinflux = totinflux_gbl
+      call MPI_Allreduce(totinflux, totinflux_gbl,1,MPI_REAL8,         & 
+                 MPI_SUM, Petsc_Comm_World,ierrcode)
+      CHKERRQ(ierrcode)
+      totinflux = totinflux_gbl
     
-    call MPI_Allreduce(totoutflux, totoutflux_gbl,1,MPI_REAL8,         & 
-               MPI_SUM, Petsc_Comm_World,ierrcode)
-    CHKERRQ(ierrcode)
-    totoutflux = totoutflux_gbl    
+      call MPI_Allreduce(totoutflux, totoutflux_gbl,1,MPI_REAL8,       & 
+                 MPI_SUM, Petsc_Comm_World,ierrcode)
+      CHKERRQ(ierrcode)
+      totoutflux = totoutflux_gbl    
 #endif
 
 !cprovi----------------------------------------------------------------
 !cprovi  write total contributions to file   
 !cprovi----------------------------------------------------------------
-    imheat = imheat + 1
+      imheat(isub) = imheat(isub) + 1
     
-    if(rank == 0 .and. b_enable_output) then    
-      if (b_output_trans_binary) then
-        nvarsimheat = 4
-        realbuffer_gb(1:nvarsimheat)=(/time_io,totinflux,totoutflux,   &
-                                     totheatstor/)
-        call binary_write_data(imheat_mpi(imheat), 1,          &
-                     (/mtime/),offset_imheat_ijk(imheat),.true.)
-        call binary_write_data(imheat_mpi(imheat), nvarsimheat,&
-                     realbuffer_gb,offset_imheat(imheat),.true.) 
+      if(rank == 0 .and. b_enable_output) then    
+        if (b_output_trans_binary) then
+          nvarsimheat = 4
+          realbuffer_gb(1:nvarsimheat)=(/time_io,totinflux,totoutflux, &
+                                       totheatstor/)
+          call binary_write_data(imheat_mpi(imheat(isub)), 1,          &
+                       (/mtime/),offset_imheat_ijk(imheat(isub)),.true.)
+          call binary_write_data(imheat_mpi(imheat(isub)), nvarsimheat,&
+                       realbuffer_gb,offset_imheat(imheat(isub)),.true.) 
 
-        offset_imheat(imheat) = offset_imheat(imheat) +                &
-                                nvarsimheat*nfloatbit
+          offset_imheat(imheat(isub)) = offset_imheat(imheat(isub)) +  &
+                                  nvarsimheat*nfloatbit
 
-      else
-        if (mtime == mtime_append .and. i_append_sim >= 1) then
-          call reposition_file(imheat,irecord)
-        end if
+        else
+          if (mtime == mtime_append .and. i_append_sim >= 1) then
+            call reposition_file(imheat(isub),irecord)
+          end if
 
-        if (i_append_sim < 1 .or.                                      &
-           (mtime >= mtime_append .and. i_append_sim >= 1)) then
-          write(imheat,ascii_fmt) time_io,totinflux,totoutflux,        &
-                                       totheatstor
+          if (i_append_sim < 1 .or.                                    &
+             (mtime >= mtime_append .and. i_append_sim >= 1)) then
+            write(imheat(isub),ascii_fmt) time_io,totinflux,totoutflux,&
+                                          totheatstor
+          end if
         end if
       end if
-    end if
     
 !cprovi---------------------------------------------------------------
 !cprovi  compute absolute and relative mass balance error 
@@ -927,35 +933,37 @@
       culabsbalheat = culabsbalheat + absbalance
       culrelbalheat = culabsbalheat/totenergy*r100
 
-      imheat = imheat + 1
+      imheat(isub) = imheat(isub) + 1
       
       if(rank == 0 .and. b_enable_output) then
         if (b_output_trans_binary) then
           nvarsimheat = 5
-          realbuffer_gb(1:nvarsimheat)=(/time_io,absbalance,relbalance,  &
+          realbuffer_gb(1:nvarsimheat)=(/time_io,absbalance,relbalance,&
                                    culabsbalheat,culrelbalheat/)
-          call binary_write_data(imheat_mpi(imheat), 1,          &
-                       (/mtime/),offset_imheat_ijk(imheat),.true.)
-          call binary_write_data(imheat_mpi(imheat), nvarsimheat,&
-                       realbuffer_gb,offset_imheat(imheat),.true.) 
+          call binary_write_data(imheat_mpi(imheat(isub)), 1,          &
+                       (/mtime/),offset_imheat_ijk(imheat(isub)),.true.)
+          call binary_write_data(imheat_mpi(imheat(isub)), nvarsimheat,&
+                       realbuffer_gb,offset_imheat(imheat(isub)),.true.) 
 
-          offset_imheat(imheat) = offset_imheat(imheat) +              &
-                                  nvarsimheat*nfloatbit
+          offset_imheat(imheat(isub)) = offset_imheat(imheat(isub)) +  &
+                                        nvarsimheat*nfloatbit
 
         else
           if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imheat,irecord)
+            call reposition_file(imheat(isub),irecord)
           end if
 
           if (i_append_sim < 1 .or.                                    &
              (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imheat,ascii_fmt) time_io,absbalance,                &
+            write(imheat(isub),ascii_fmt) time_io,absbalance,          &
                   relbalance,culabsbalheat,culrelbalheat
           end if
         end if
     
       end if
 
+      end do      ! subdomains
+
       return
   
-  end subroutine   
+      end subroutine   

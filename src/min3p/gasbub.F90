@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/gasbub.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/gasbub.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -468,12 +468,12 @@
       end if
       
       do ic=1,nc
-        gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),                &
+        gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol),             &
                                sionnew(ivol),chargec(ic),              &
                                dhac(ic),dhbc(ic),dhad(tid),dhbd(tid),  &
                                adav,bdav,acth2omin,nc,                 &
                                nx,namec(ic),namec,ic,issit,asit,basit, &
-                   coepsil,iasit,jasit)
+                               coepsil,iasit,jasit)
       end do
          
 !c initialize variables
@@ -492,11 +492,11 @@
       end if
 
       if ((uvsnew(ivol).ge.aentry_loc)                                &
-               .and.(.not.unsaturated(ivol))) then    ! if saturated 
+           .and.(.not.unsaturated(ivol))) then    ! if saturated 
 
         do ig=1,ng
             
-          call gasconc(cnew(1,ivol),gamma(1,ivol),gnew(ig,ivol),ig,    & 
+          call gasconc(cnew(:,ivol),gamma(:,ivol),gnew(ig,ivol),ig,    & 
                        tkel(ivol),tid)
 
           ip=gas_pair(ig)
@@ -510,10 +510,10 @@
           istart = iaga(ig)
           iend = iaga(ig+1)-1
           do i = istart,iend
-              ic = jaga(i)
-              if (namec(ic).ne.namec(ip)) then
-                g_term = g_term/((gamma(ic,ivol)*cnew(ic,ivol))**xnug(i))
-              end if
+            ic = jaga(i)
+            if (namec(ic).ne.namec(ip)) then
+              g_term = g_term/((gamma(ic,ivol)*cnew(ic,ivol))**xnug(i))
+            end if
           end do
 
 !c calculate henry's law factor starting with component term
@@ -558,14 +558,12 @@
         
 !c calculate total component concentration in aq. and gas phase
 
-        
           tot_gas(ig,ivol) = sanew(ivol) * aqueous_gas(ig) +           &
                             (r1-sanew(ivol)) * gnew(ig,ivol)            
 
 !c calculate total pressure based on tot_gas               
 
           sum_pressure = sum_pressure+tot_gas(ig,ivol)/k_henry(ig,ivol)
-        
         end do
 
 
@@ -573,22 +571,20 @@
 
         tot_press = pres_atm+uvsnew(ivol)*rho_w*gacc/pa_atm
 
-
 !c if sum_pressure is greater than tot_press then a gas phase is present 
 !c and calculate the volume of the gas phase
 
         if (sum_pressure.gt.tot_press) then            !if gas phase present
 
-            call solvsg(ivol,tot_press,sgsolve_failed(tid))
+          call solvsg(ivol,tot_press,sgsolve_failed(tid))
 
-            if (sgsolve_failed(tid)) then
-              sgsolved_temp(tid)=.true.
-            end if
+          if (sgsolve_failed(tid)) then
+            sgsolved_temp(tid)=.true.
+          end if
         else
-            sanew(ivol) = r1
+          sanew(ivol) = r1
         end if
-                !if (sanew(ivol).gt.(r1-1.0d-06))then
-                 !  sanew(ivol)=r1
+
         if (sanew(ivol).lt.swr(izn)) then
           sanew(ivol)=swr(izn)
         end if
@@ -736,10 +732,10 @@
 #ifdef DEBUG  
     if (b_enable_output .and. discretization_type == 0 .and.           &
         bflag_dbg .and. mtime.eq.2 .and. ibub.eq.r1) then     
-        write(idbg,'(8a,8a,8a,15a,15a,15a,15a,15a,15a)')               &
-          '    time','    ibub',' ivol_max', '    sanew_c    ',        &
-          '     sanew     ',' updated_sanew','    delsamax   ',        &
-          '    sfactor    ','  updatefactor '                           
+      write(idbg,'(8a,8a,8a,15a,15a,15a,15a,15a,15a)')                 &
+        '    time','    ibub',' ivol_max', '    sanew_c    ',          &
+        '     sanew     ',' updated_sanew','    delsamax   ',          &
+        '    sfactor    ','  updatefactor '                           
     end if
 #endif
                                                                         
@@ -794,41 +790,41 @@
         aentry_loc = aentry(izn)
       end if
 
-      if ((uvsnew(ivol).ge.aentry_loc).and.                           &
+      if ((uvsnew(ivol).ge.aentry_loc).and.                            &
           (.not.unsaturated(ivol))) then    ! if saturated
-          if (relaxation) then
-            if(sanew(ivol).lt.sanew_c(ivol)) then
-               sanew(ivol)=sanew_c(ivol)-                              &
-                 updatefactor*(dabs(sanew(ivol)-sanew_c(ivol)))
-            else
-               sanew(ivol)=sanew_c(ivol)+                              &
-                 updatefactor*(dabs(sanew(ivol)-sanew_c(ivol)))
-            end if
-          end if !relaxation
+        if (relaxation) then
+          if(sanew(ivol).lt.sanew_c(ivol)) then
+             sanew(ivol)=sanew_c(ivol)-                                &
+            updatefactor*(dabs(sanew(ivol)-sanew_c(ivol)))
+          else
+            sanew(ivol)=sanew_c(ivol)+                                 &
+            updatefactor*(dabs(sanew(ivol)-sanew_c(ivol)))
+          end if
+        end if !relaxation
 
 !c limit del Sa for very small timesteps
-          !if (mtime.lt.r100) then
-          delsa = dabs(sanew(ivol) - sanew_b(ivol))
+        !if (mtime.lt.r100) then
+        delsa = dabs(sanew(ivol) - sanew_b(ivol))
 #ifdef OPENMP
-          if (dabs(delsa).gt.dabs(maxval_omp(tid))) then
-             maxval_omp(tid) = delsa
-             maxvol_omp(tid) = ivol  
-          end if
+        if (dabs(delsa).gt.dabs(maxval_omp(tid))) then
+           maxval_omp(tid) = delsa
+           maxvol_omp(tid) = ivol  
+        end if
 #else
-          if (dabs(delsa).gt.dabs(delsa_max)) then
-             delsa_max = delsa
-             ivol_max = ivol
-             sanew_temp = sanew(ivol)
-          end if
+        if (dabs(delsa).gt.dabs(delsa_max)) then
+           delsa_max = delsa
+           ivol_max = ivol
+           sanew_temp = sanew(ivol)
+        end if
 #endif
 
-          if (delsa.gt.delsa_delt) then
-             if (sanew(ivol).lt.sanew_b(ivol)) then
-                 sanew(ivol) = sanew_b(ivol) - delsa_delt   
-             else
-                 sanew(ivol) = sanew_b(ivol) + delsa_delt
-             end if
-          end if    
+        if (delsa.gt.delsa_delt) then
+          if (sanew(ivol).lt.sanew_b(ivol)) then
+            sanew(ivol) = sanew_b(ivol) - delsa_delt   
+          else
+            sanew(ivol) = sanew_b(ivol) + delsa_delt
+          end if
+        end if    
       end if    ! if saturated
     end do       ! do ivol
 #ifdef OPENMP
@@ -904,33 +900,33 @@
         aentry_loc = aentry(izn)
       end if
 
-      if ((uvsnew(ivol).ge.aentry_loc).and.                           &
+      if ((uvsnew(ivol).ge.aentry_loc).and.                            &
           (.not.unsaturated(ivol))) then    ! if saturated            
-          do ig=1,ng
-              ip=gas_pair(ig)
+        do ig=1,ng
+          ip=gas_pair(ig)
 
-              partial_pressure=tot_gas(ig,ivol)/                       &
-                        (k_henry(ig,ivol)*sanew(ivol)+(r1-sanew(ivol))/&
-                           rgasatm/tkel(ivol))   
-              cnew(ip,ivol)=partial_pressure*eqg(ig,tid)/gamma(ip,ivol)
+          partial_pressure=tot_gas(ig,ivol)/                           &
+                    (k_henry(ig,ivol)*sanew(ivol)+(r1-sanew(ivol))/    &
+                       rgasatm/tkel(ivol))   
+          cnew(ip,ivol)=partial_pressure*eqg(ig,tid)/gamma(ip,ivol)
 
-              istart = iaga(ig)
-              iend = iaga(ig+1)-1
-              do i = istart,iend
-                  ic = jaga(i)
-                  if (namec(ic).ne.namec(ip)) then
-                      cnew(ip,ivol) = cnew(ip,ivol)  /                 &
-                          ((gamma(ic,ivol)*cnew(ic,ivol))**xnug(i))
-                  end if
-              end do
-          end do      ! do ig
-
-          do ic=1,nc-1
-            if (.not.update_component(ic)) then
-              cnew(ic,ivol)=c_update(ic,ivol)*sanew_c(ivol)/sanew(ivol)
+          istart = iaga(ig)
+          iend = iaga(ig+1)-1
+          do i = istart,iend
+            ic = jaga(i)
+            if (namec(ic).ne.namec(ip)) then
+                cnew(ip,ivol) = cnew(ip,ivol)  /                       &
+                    ((gamma(ic,ivol)*cnew(ic,ivol))**xnug(i))
             end if
           end do
-          sgnew(ivol)=r1-sanew(ivol)
+        end do      ! do ig
+
+        do ic=1,nc-1
+          if (.not.update_component(ic)) then
+            cnew(ic,ivol)=c_update(ic,ivol)*sanew_c(ivol)/sanew(ivol)
+          end if
+        end do
+        sgnew(ivol)=r1-sanew(ivol)
       end if                                !if saturated
     end do                                  !ivol 
 #ifdef OPENMP
@@ -945,13 +941,13 @@
 !c  skip ghost nodes
 #ifdef PETSC
         if(node_idx_lg2l(ivol) < 0) then
-            cycle
+          cycle
         end if
 #endif
         ivol_l = ivol_l + 1
         
 !c  assign depth coordinate in terms of depth or elevation
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
         
         if (b_output_binary) then
           realbuffer((ivol_l-1)*nvars+1:(ivol_l-1)*nvars+6) = (/       &

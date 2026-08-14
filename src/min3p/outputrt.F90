@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/outputrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/outputrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -53,7 +53,7 @@
 !c                                - new time level [moles/l bulk]
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l h2o]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity (meq/100g) + -
 !c                                - global system
@@ -1056,24 +1056,24 @@
                                                                         
           if (initial_condition) then                                     
             write(ifls,'(/2a/72a)')'Master variables, initial ',       &
-     &                             'condition',('-',i=1,72)             
+                                   'condition',('-',i=1,72)             
           else                                                          
             write(ifls,'(/a,1pe15.6e3,1x,a/72a)')                      &
-     &            'Master variables, T = ',                            &
-     &            time_io,time_unit(:l_time_unit),('-',i=1,72)          
+                  'Master variables, T = ',                            &
+                  time_io,time_unit(:l_time_unit),('-',i=1,72)          
           end if
                                                                         
           write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                   &
-     &                        suffix(:l_sufx)//'.gsm'
+                              suffix(:l_sufx)//'.gsm'
                                                                         
           write(ifls,'(2a)')                                           &
-     &          'column   entry                           ','unit'      
+                'column   entry                           ','unit'      
           write(ifls,'(2a)')                                           &
-     &          '1        x                               ','m'         
+                '1        x                               ','m'         
           write(ifls,'(2a)')                                           &
-     &          '2        y                               ','m'         
+                '2        y                               ','m'         
           write(ifls,'(2a)')                                           &
-     &          '3        z                               ','m'  
+                '3        z                               ','m'  
          
           if ((ph_output).and.(pe_output)) then                           
             write(ifls,'(a,30x,a)')  '4        pH','-'                    
@@ -1081,45 +1081,48 @@
             write(ifls,'(a,30x,a)')  '6        Eh','mV'                   
             write(ifls,'(a,18x,a)')  '7        ionic strength','-'        
             write(ifls,'(a,12x,a)')  '8        carbonate alkalinity',    &
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,8x,a)')   '9        non-carbonate alkalinity',&
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,22x,a)')  '10       alkalinity','eq/L'         
             write(ifls,'(a,12x,a)')  '11       carbonate alkalinity',    &
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,8x,a)')   '12       non-carbonate alkalinity',&
-     &                               'mg/L CaCO3'
+                                     'mg/L CaCO3'
             write(ifls,'(a,22x,a)')  '13       alkalinity','mg/L CaCO3'
             write(ifls,'(a,21x,a)')  '14       temperature','C'
+            write(ifls,'(a,18x,a)')  '15       charge balance','%'
           elseif ((.not.ph_output).and.(pe_output)) then
             write(ifls,'(a,30x,a)')  '4        pe','-'
             write(ifls,'(a,30x,a)')  '5        Eh','mV'
             write(ifls,'(a,18x,a)')  '6        ionic strength','-'
             write(ifls,'(a,12x,a)')  '7        carbonate alkalinity',    &
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,8x,a)')   '8        non-carbonate alkalinity',&
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,22x,a)')  '9        alkalinity','eq/L'         
             write(ifls,'(a,12x,a)')  '10       carbonate alkalinity',    &
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,8x,a)')   '11       non-carbonate alkalinity',&
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,22x,a)')  '12       alkalinity','mg/L CaCO3'   
-            write(ifls,'(a,21x,a)')  '13       temperature','C'           
+            write(ifls,'(a,21x,a)')  '13       temperature','C'
+            write(ifls,'(a,18x,a)')  '14       charge balance','%'
           elseif ((ph_output).and.(.not.pe_output)) then                  
             write(ifls,'(a,30x,a)')  '4        pH','-'                    
             write(ifls,'(a,18x,a)')  '5        ionic strength','-'        
             write(ifls,'(a,12x,a)')  '6        carbonate alkalinity',    &
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,8x,a)')   '7        non-carbonate alkalinity',&
-     &                               'eq/L'                               
+                                     'eq/L'                               
             write(ifls,'(a,22x,a)')  '8        alkalinity','eq/L'         
             write(ifls,'(a,12x,a)')  '9        carbonate alkalinity',    &
-     &                               'mg/L CaCO3'                         
+                                     'mg/L CaCO3'                         
             write(ifls,'(a,8x,a)')   '10       non-carbonate alkalinity',&
-     &                               'mg/L CaCO3'
+                                     'mg/L CaCO3'
             write(ifls,'(a,22x,a)')  '11       alkalinity','mg/L CaCO3'
             write(ifls,'(a,21x,a)')  '12       temperature','C'
+            write(ifls,'(a,18x,a)')  '13       charge balance','%'
           end if
           
           end if
@@ -1267,24 +1270,24 @@
                                                                        
             if (initial_condition) then                                  
               write(ifls,'(/2a/72a)')'Partial gas pressures, initial ',&
-     &                               'condition',('-',i=1,72)           
+                                     'condition',('-',i=1,72)           
             else                                                        
               write(ifls,'(/2a,1pe15.6e3,1x,a/72a)')                   &
-     &              'Partial gas pressures, ','T = ',                  &
-     &              time_io,time_unit(:l_time_unit),('-',i=1,72)        
+                    'Partial gas pressures, ','T = ',                  &
+                    time_io,time_unit(:l_time_unit),('-',i=1,72)        
             end if
                                                                         
             write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                 &
-     &                          suffix(:l_sufx)//'.gsg'
+                                suffix(:l_sufx)//'.gsg'
                                                                         
             write(ifls,'(2a)')                                         &
-     &            'column   entry                           ','unit'    
+                  'column   entry                           ','unit'    
             write(ifls,'(2a)')                                         &
-     &            '1        x                               ','m'       
+                  '1        x                               ','m'       
             write(ifls,'(2a)')                                         &
-     &            '2        y                               ','m'       
+                  '2        y                               ','m'       
             write(ifls,'(2a)')                                         &
-     &            '3        z                               ','m'       
+                  '3        z                               ','m'       
             do ig = 1,ng                                                
               if (ig.lt.7) then                                         
                 write(ifls,'(i1,8x,a30,2x,a)') ig+3,nameg(ig),'atm'      
@@ -1293,7 +1296,7 @@
               end if                                                    
             end do                                                      
             write(ifls,'(2a)')                                         &
-     &           '3+ng+1   total gas pressure              ','atm'
+                 '3+ng+1   total gas pressure              ','atm'
             
           end if
 
@@ -1324,24 +1327,24 @@
             
               if (initial_condition) then
                   write(ifls,'(/2a/72a)')'Mole fractions, initial ',   &
-     &                                   'condition',('-',i=1,72)
+                                         'condition',('-',i=1,72)
               else
                   write(ifls,'(/2a,1pe15.6e3,1x,a/72a)')               &
-     &                  'Mole fractions, ','T = ',                     &
-     &                  time_io,time_unit(:l_time_unit),('-',i=1,72)
+                        'Mole fractions, ','T = ',                     &
+                        time_io,time_unit(:l_time_unit),('-',i=1,72)
               end if
               
               write(ifls,'(/a/)') prefix(:l_prfx)//'_'//               &
-     &              suffix(:l_sufx)//'.gs2'
+                    suffix(:l_sufx)//'.gs2'
               
               write(ifls,'(2a)')                                       &
-     &              'column   entry                           ','unit'  
+                    'column   entry                           ','unit'  
               write(ifls,'(2a)')                                       &
-     &              '1        x                               ','m'     
+                    '1        x                               ','m'     
               write(ifls,'(2a)')                                       &
-     &              '2        y                               ','m'     
+                    '2        y                               ','m'     
               write(ifls,'(2a)')                                       &
-     &              '3        z                               ','m'
+                    '3        z                               ','m'
               do ig = 1,ng
                 if (ig.lt.7) then
                   write(ifls,'(i1,8x,a30,2x,a)') ig+3,nameg(ig),'[-]'
@@ -1354,7 +1357,13 @@
             
             if (.not.initial_condition) then
               call velocity_g (l_sufx, suffix, nngl, njavs, cinfrad,   &
-                               radial_coord)
+                               radial_coord, 1, 1, 1, 1, 1, 1)
+            end if
+
+          else
+            if (.not.initial_condition) then
+              call velocity_g (l_sufx, suffix, nngl, njavs, cinfrad,   &
+                               radial_coord, 0, 2, 0, 0, 0, 0)
             end if
            
           end if
@@ -1406,10 +1415,10 @@
             do ig = 1,ng                                               
               if (ig.lt.7) then                                        
                 write(ifls,'(i1,8x,a30,2x,a)') ig+3,nameg(ig),        &
-     &                                        'mol L^-1 d^-1'          
+     &                                        'moles/l h2o/day'          
               else                                                     
                 write(ifls,'(i2,7x,a30,2x,a)') ig+3,nameg(ig),        &
-     &                                        'mol L^-1 d^-1'
+     &                                        'moles/l h2o/day'
               end if
             end do
             
@@ -1506,42 +1515,42 @@
 
 !c  primary surface species
 
-            do isites = 1,nsites
-              ic = iaic(isites)
-              if (isites+nanc.lt.7) then
-                write(ifls,'(i1,8x,a30,2x,a)')isites+nanc+3,namec(ic),&
-                                              output_unit_sb_surf           
-              else                                                     
-                write(ifls,'(i2,7x,a30,2x,a)')isites+nanc+3,namec(ic),&
-                                              output_unit_sb_surf
-              end if
-            end do
+              do isites = 1,nsites
+                ic = iaic(isites)
+                if (isites+nanc.lt.7) then
+                  write(ifls,'(i1,8x,a30,2x,a)')isites+nanc+3,namec(ic),&
+                                                output_unit_sb_surf           
+                else                                                     
+                  write(ifls,'(i2,7x,a30,2x,a)')isites+nanc+3,namec(ic),&
+                                                output_unit_sb_surf
+                end if
+              end do
 
 !c  secondary surface species
 
-            do isb = 1,nsb_ion
-              if (isb+nanc+nsites.lt.7) then
-                write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_ion(isb),        &
-                                              output_unit_sb_ion           
-              else                                                     
-                write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_ion(isb),        &
-                                              output_unit_sb_ion
-              end if
-            end do
+              do isb = 1,nsb_ion
+                if (isb+nanc+nsites.lt.7) then
+                  write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_ion(isb),        &
+                                                output_unit_sb_ion           
+                else                                                     
+                  write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_ion(isb),        &
+                                                output_unit_sb_ion
+                end if
+              end do
             
-            do isb = 1,nsb_surf
-              if (isb+nanc+nsites.lt.7) then
-                write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_surf(isb),       &
-                                              output_unit_sb_surf           
-              else                                                     
-                write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
-                                              namesb_surf(isb),       &
-                                              output_unit_sb_surf
-              end if
-            end do
+              do isb = 1,nsb_surf
+                if (isb+nanc+nsites.lt.7) then
+                  write(ifls,'(i1,8x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_surf(isb),       &
+                                                output_unit_sb_surf           
+                else                                                     
+                  write(ifls,'(i2,7x,a30,2x,a)') isb+nsites+nanc+3,     &
+                                                namesb_surf(isb),       &
+                                                output_unit_sb_surf
+                end if
+              end do
          
             end if          !nsb.gt.0
             
@@ -2501,14 +2510,14 @@
 !c  recompute total aqueous component concentrations
 
         if (redox_equil.and.nr.gt.0) then
-          call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+          call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
         end if
 
 !c  write results
 
 !c  assign depth coordinate in terms of depth or elevation
 
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
 !c  calculate concentrations of sorbed species and convert the unit to mol/L H2O
 !c  when 'combined output of aquous and sorbed concentrations' is specified
@@ -2521,7 +2530,7 @@
               call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),    &
                    cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                   gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf, &
+                   gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf, &
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,           &
                    nsb_ion,nsb_surf,isb,0,                          &
                    sorption_type_ion,sorption_type_surf,            &
@@ -2555,13 +2564,17 @@
             end if      
             
             do isb = 1,nsb_surf
-              call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),       &
+              call sorbspc(dummy,csb_surf(isb,tid),                   &
+                   cnew(nc-nelect:nc-1,ivol),cec_g(ivol),             &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                  &
-                   gamma(1,ivol),cnew(1,ivol),                        &
+                   gamma(:,ivol),cnew(:,ivol),                        &
                    xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,           &
                    jasb_ion,jasb_surf,nsb_ion,                        &
                    nsb_surf,0,isb,sorption_type_ion,                  &
-                   sorption_type_surf,sorption_group,isactcexch) 
+                   sorption_type_surf,sorption_group,isactcexch,      &
+                   elect_correction,name_elect_correction,nelect,     &
+                   dz_surf,totcnew(:,ivol),component_type,nlayer,     &
+                   mol_frac_ads) 
 
 !c  add up exchanged species and convert from [meq/100g] solid to 
 !c  [mmol/100g solid]
@@ -2622,7 +2635,7 @@
 ! cdsu ---------------------------------------------------------------
         
         if (multi_diff) then
-          call cbalance(cnew(:,ivol),cx(:,ivol),zbal,zpos,zneg)
+          call cbalance(cnew(:,ivol),cxnew(:,ivol),zbal,zpos,zneg)
                     
 ! prc ----------------------------------------------------------------
 ! prc Charge Balance distribution
@@ -2674,7 +2687,7 @@
 !c  compress vector containing total aqueous component concentrations
 
         if (redox_equil.and.nr.gt.0) then
-          call comptotc(totcnew(1,ivol))
+          call comptotc(totcnew(:,ivol))
         end if
         
       end do
@@ -3526,26 +3539,52 @@
                            b_output_mpiio_single,.false.)
                
               tec_variables(1:3) = [character(len=72):: "x", "y", "z"]
-              do ianc=1,nanc
-                tec_variables(3+ianc) = nameanc(ianc)(:l_nameanc(ianc))  
-              end do
+
+              if (nsb_ion.eq.0.and.nsb_surf.eq.0) then
+                do ianc=1,nanc
+                  tec_variables(3+ianc) = nameanc(ianc)(:l_nameanc(ianc))  
+                end do                
+              
+                nvarsgsb = 3+nanc
+              elseif (.not.noncompetitive_sorption) then                
+                do isites=1,nsites
+                  tec_variables(3+isites) =                            &
+                      namec(iaic(isites))(:l_namec(iaic(isites)))   
+                end do
+              
+                do isb=1,nsb_ion
+                  tec_variables(3+nsites+isb) =                        &
+                      namesb_ion(isb)(:l_namesb_ion(isb))  
+                end do
+              
+                do isb=1,nsb_surf
+                  tec_variables(3+nsites+nsb_ion+isb) =                &
+                      namesb_surf(isb)(:l_namesb_surf(isb))
+                end do
+              
+                nvarsgsb = 3+nsites+nsb_ion+nsb_surf
+              else
+                do ianc=1,nanc
+                  tec_variables(3+ianc) = nameanc(ianc)(:l_nameanc(ianc))  
+                end do
                 
-              do isites=1,nsites
-                tec_variables(3+nanc+isites) =                         &
-                    namec(iaic(isites))(:l_namec(iaic(isites)))   
-              end do
+                do isites=1,nsites
+                  tec_variables(3+nanc+isites) =                       &
+                      namec(iaic(isites))(:l_namec(iaic(isites)))   
+                end do
               
-              do isb=1,nsb_ion
-                tec_variables(3+nanc+nsites+isb) =                     &
-                    namesb_ion(isb)(:l_namesb_ion(isb))  
-              end do
+                do isb=1,nsb_ion
+                  tec_variables(3+nanc+nsites+isb) =                   &
+                      namesb_ion(isb)(:l_namesb_ion(isb))  
+                end do
               
-              do isb=1,nsb_surf
-                tec_variables(3+nanc+nsites+nsb_ion+isb) =             &
-                    namesb_surf(isb)(:l_namesb_surf(isb))
-              end do
+                do isb=1,nsb_surf
+                  tec_variables(3+nanc+nsites+nsb_ion+isb) =           &
+                      namesb_surf(isb)(:l_namesb_surf(isb))
+                end do
               
-              nvarsgsb = 3+nanc+nsites+nsb_ion+nsb_surf
+                nvarsgsb = 3+nanc+nsites+nsb_ion+nsb_surf
+              end if
               
               call tecplot_binary_write_variable(Petsc_Comm_World,     &
                            igsb,nvarsgsb, tec_variables(1:nvarsgsb),   &
@@ -4906,19 +4945,20 @@
 
 !c  assign depth coordinate in terms of depth or elevation
 
-          zout = zoutput(depth_output,zg(ivol),elevmax)
+          zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
  
 !c  update secondary variables before output
- 
-          call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),        &
-     &                  gamma(nc+1,ivol),sionnew(ivol),tid)
+
+          call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
+                        gamma(nc+1,ivol),sionnew(ivol),                &
+                        actvset(:,ivol),tid)
           
-          if (hmulti_diff) then
-          
-            call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),   &
-     &                    gammaold(nc+1,ivol),sionold(ivol),tid)  
+          if (hmulti_diff) then          
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &
+                          gammaold(nc+1,ivol),sionold(ivol),           &
+                          actvset(:,ivol),tid)  
           end if       !MX test
-     
+
 !c  free species and aqueous complex concentrations
           if (extended_output_gs) then
             if (b_output_binary) then
@@ -4929,12 +4969,12 @@
               end do
               
               do ix=1, nxout
-                realbuffer((ivol_l-1)*nvarsgsc+2+nc+ix) = cx(ix,ivol)   
+                realbuffer((ivol_l-1)*nvarsgsc+2+nc+ix) = cxnew(ix,ivol)   
               end do
             else
               write(igsc,ascii_fmt) xg(ivol),yg(ivol),zout,            &
                                           (cnew(ic,ivol),ic=1,nc-1),   &
-                                          (cx(ix,ivol),ix=1,nxout)
+                                          (cxnew(ix,ivol),ix=1,nxout)
             end if
             
             !c activity coefficients
@@ -4959,15 +4999,15 @@
 
 !c  master variables
           ! Compute charge balance
-          call cbalance(cnew(:,ivol),cx(:,ivol),zbal,zpos,zneg) 
+          call cbalance(cnew(:,ivol),cxnew(:,ivol),zbal,zpos,zneg) 
 
-          call phpe(cnew(1,ivol),gamma(1,ivol),ph,pe,eh,tkel(ivol))
+          call phpe(cnew(:,ivol),gamma(:,ivol),ph,pe,eh,tkel(ivol))
 
           if (compute_alkalinity) then
             call alkcalc(alk_carb,alk_noncarb,alk_tot,                &
-     &                   alk_carb_mg,alk_noncarb_mg,alk_tot_mg,       &
-     &                   alkfacc,alkfacx,cnew(1,ivol),cx(1,ivol),     &
-     &                   iax,jax,nc,nx,namec,namex)                    
+                         alk_carb_mg,alk_noncarb_mg,alk_tot_mg,       &
+                         alkfacc,alkfacx,cnew(:,ivol),cxnew(:,ivol),  &
+                         iax,jax,nc,nx,namec,namex)                    
           else                                        !MX              
              alk_carb = r0                                             
              alk_noncarb = r0                                          
@@ -5029,9 +5069,9 @@
 !c  recompute oxidation-reduction rates
 
             do ir = 1,nr
-              call rateredx(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),    &
-     &                      gamma(nc+1,ivol),rateor(ir,tid),          &
-     &                      totcnew(1,ivol),ir,tid)                        
+              call rateredx(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+                            gamma(nc+1,ivol),rateor(ir,tid),           &
+                            totcnew(:,ivol),ir,tid)                        
             end do
 
               if (b_output_binary) then
@@ -5055,15 +5095,15 @@
                                                                        
             do iaq = 1,naq
               if (new_database) then                                   
-                call rateint_new(rateaq(iaq,tid),totcnew(1,ivol),     &
-                                 cnew(1,ivol),cx(1,ivol),             &
-                                 gamma(1,ivol),gamma(nc+1,ivol),      &
-                                 phi(1,ivol),iaq,                     &
+                call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),     &
+                                 cnew(:,ivol),cxnew(:,ivol),          &
+                                 gamma(:,ivol),gamma(nc+1,ivol),      &
+                                 phi(:,ivol),iaq,                     &
                                  scalfac_aq_ivol(iaq,ivol),           &
                                  sanew(ivol),pornew(ivol),tid)
               else                                                     
-                call rateint(rateaq(iaq,tid),totcnew(1,ivol),         &
-                             cnew(1,ivol),gamma(1,ivol),phi(1,ivol),  &
+                call rateint(rateaq(iaq,tid),totcnew(:,ivol),         &
+                             cnew(:,ivol),gamma(:,ivol),phi(:,ivol),  &
                              iaq,scalfac_aq_ivol(iaq,ivol),tid)
               end if
             end do
@@ -5143,10 +5183,10 @@
             if (gas_removal) then
 
               if (density_dependence) then
-                call rategasd(gnew(1,ivol),tkel(ivol),uvsnew(ivol),    &
+                call rategasd(gnew(:,ivol),tkel(ivol),uvsnew(ivol),    &
                               sgnew(ivol),tid)
               else
-                call rategas(gnew(1,ivol),tkel(ivol),hhead(ivol),      &
+                call rategas(gnew(:,ivol),tkel(ivol),hhead(ivol),      &
                              zg(ivol),sgnew(ivol),tid)                      
               end if
                 
@@ -5174,14 +5214,14 @@
           if (noncompetitive_sorption) then
           
             if (redox_equil.and.nr.gt.0) then
-              call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+              call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
             end if
 
-            call totcona(totan(:,tid),totcnew(1,ivol),                 &
-                         distcoff_rt(1,ivol),sanew(ivol),pornew(ivol))
+            call totcona(totan(:,tid),totcnew(:,ivol),                 &
+                         distcoff_rt(:,ivol),sanew(ivol),pornew(ivol))
 
             if (redox_equil.and.nr.gt.0) then
-              call comptotc(totcnew(1,ivol))
+              call comptotc(totcnew(:,ivol))
             end if
 
 !c  compress concentration vector for output
@@ -5204,7 +5244,7 @@
                 call sorbspc_m(csb_ion(isb,tid),dummy,cec_g(ivol),    &
                      cec_fraction_g(idx_nsites_ion(isb),ivol),        &
                      eqsb_ion(:,tid),eqsb_surf(:,tid),                &
-                     gamma(1,ivol),cnew(1,ivol),xnusb_ion,xnusb_surf, &
+                     gamma(:,ivol),cnew(:,ivol),xnusb_ion,xnusb_surf, &
                      iasb_ion,iasb_surf,jasb_ion,jasb_surf,           &
                      nsb_ion,nsb_surf,isb,0,                          &
                      sorption_type_ion,sorption_type_surf,            &
@@ -5212,13 +5252,17 @@
             end do  
                         
             do isb = 1,nsb_surf
-              call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),       &
+              call sorbspc(dummy,csb_surf(isb,tid),                   &
+                   cnew(nc-nelect:nc-1,ivol),cec_g(ivol),             &
                    eqsb_ion(:,tid),eqsb_surf(:,tid),                  &
-                   gamma(1,ivol),cnew(1,ivol),                        &
+                   gamma(:,ivol),cnew(:,ivol),                        &
                    xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,           &
                    jasb_ion,jasb_surf,nsb_ion,                        &
                    nsb_surf,0,isb,sorption_type_ion,                  &
-                   sorption_type_surf,sorption_group,isactcexch)    
+                   sorption_type_surf,sorption_group,isactcexch,      &
+                   elect_correction,name_elect_correction,nelect,     &
+                   dz_surf,totcnew(:,ivol),component_type,nlayer,     &
+                   mol_frac_ads)    
             end do
         
           end if
@@ -5248,7 +5292,7 @@
 
             elseif (.not.noncompetitive_sorption) then
               
-              if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
+              if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
           
                 if (b_output_binary) then
                   realbuffer7((ivol_l-1)*nvarsgsb+1:(ivol_l-1)*        &
@@ -5313,7 +5357,7 @@
 
             else
               
-              if (trim(output_unit_sb_surf) .eq. 'mol/L H2O') then
+              if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
                 if (b_output_binary) then  
                   realbuffer7((ivol_l-1)*nvarsgsb+1:(ivol_l-1)*        &
                             nvarsgsb+3) = (/xg(ivol),yg(ivol),zout/)
@@ -5398,7 +5442,7 @@
 !c  compute total molar concentration of organic mixture
 !c  in solid phase
 
-            call molconc(phiold(1,ivol),tid)
+            call molconc(phiold(:,ivol),tid)
 
             do im=1,nm
 
@@ -5448,8 +5492,8 @@
                                                                         
                 else if (reaction_type(im).ne.'raoult') then
                    
-                  satm(im,tid) = satindex(cnew(1,ivol),eqm(im,tid),   &
-     &                                gamma(1,ivol),xnum,iam,jam,im)
+                  satm(im,tid) = satindex(cnew(:,ivol),eqm(im,tid),   &
+     &                                gamma(:,ivol),xnum,iam,jam,im)
                   satm_log(im) = dlog10(satm(im,tid))
 
 !c  effective saturation indices for dissolution form organic mixtures
@@ -5463,8 +5507,8 @@
 
 !c  pure phase saturation index
 
-                  satm(im,tid) = satindex(cnew(1,ivol),eqm(im,tid),   &
-     &                                gamma(1,ivol),xnum,iam,jam,im)
+                  satm(im,tid) = satindex(cnew(:,ivol),eqm(im,tid),   &
+                                      gamma(:,ivol),xnum,iam,jam,im)
 
 !c  effective solubility according to Raoult's Law
 
@@ -5507,16 +5551,16 @@
                 else
                   rootdens = r1
                 end if
-                call ratemin_new(totcnew(1,ivol),cnew(1,ivol),        &
-                                 cx(1,ivol),gamma(1,ivol),            &
+                call ratemin_new(totcnew(:,ivol),cnew(:,ivol),        &
+                                 cxnew(:,ivol),gamma(:,ivol),         &
                                  gamma(nc+1,ivol),sanew(ivol),        &
                                  ratemdp(im,ivol),                    &
-                                 phi(1,ivol),phiold(im,ivol),         &
+                                 phi(:,ivol),phiold(im,ivol),         &
                                  area(im,ivol),rootdens,im,tid)  
               else                                                     
-                call ratemin(totcnew(1,ivol),cnew(1,ivol),cx(1,ivol), &
-                             gamma(1,ivol),gamma(nc+1,ivol),          &
-                             ratemdp(im,ivol),phi(im,ivol),           &
+                call ratemin(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol), &
+                             gamma(:,ivol),gamma(nc+1,ivol),             &
+                             ratemdp(im,ivol),phi(im,ivol),              &
                              phiold(im,ivol),area(im,ivol),im,tid)
               end if
 
@@ -5678,8 +5722,8 @@
           if (nmx.gt.0) then
 
             do imx = 1,nmx
-              satmx(imx) =  satindex(cnew(1,ivol),eqmx(imx,tid),       &
-                                     gamma(1,ivol),xnumx,iamx,jamx,imx)
+              satmx(imx) =  satindex(cnew(:,ivol),eqmx(imx,tid),       &
+                                     gamma(:,ivol),xnumx,iamx,jamx,imx)
             end do
             
             if (b_output_binary) then

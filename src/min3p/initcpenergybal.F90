@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initcpenergybal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcpenergybal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -525,6 +525,7 @@
       if (found_subsection) then
         ierrcd = 7
         read(itmp,*,err=999,end=999) name
+        call makelowercase(name)
         if (name=='sutra') then
           iviscomodel=1
         else if (name=='diersch') then
@@ -569,9 +570,9 @@
 !cprovi Read if energy balance must be computed
 !cprovi Default value => false
 !cprovi----------------------------------------------------
-      imheat=0
-      imheat_first=0
-      imheat_last=0
+      !imheat=0
+      !imheat_first=0
+      !imheat_last=0
       culabsbalheat = r0
       culrelbalheat = r0
 

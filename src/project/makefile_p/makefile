@@ -4,6 +4,8 @@
 #
 # last modified:   Danyang Su - Nov. 13, 2019
 #
+# URL: https://github.com/min3p-ubc/min3p/blob/main/src/project/makefile_p/makefile
+#
 
 # Conditional parameters, please leave the variable empty (DO NOT PUT FALSE instead) if the given condition is FALSE.
 # e.g., 'with-debug = true' or 'with-debug = false' or 'with-debug = xxx' means debug is turned on.
@@ -16,11 +18,16 @@ with-intel-after2018 =
 with-gcc = true
 with-pgi =
 
+with-fallow-mismatch = true
+
+with-repo-info = true
+with-build-info = true
+
 with-lis = 
 with-metis =
 with-cgal = 
-with-gpl = 
-with-archisimple = 
+with-gpl = true
+with-archisimple = true
 with-usg = true
 with-mem-monitor = true
 
@@ -78,6 +85,30 @@ FFLAGS := $(FFLAGS) -qoverride-limits
 CXXFLAGS := $(CXXFLAGS) -qoverride-limits
 endif
 
+ifdef with-fallow-mismatch
+FFLAGS := $(FFLAGS) -fallow-argument-mismatch
+endif
+
+########## Repository Version and build options ###########
+ifdef with-repo-info
+GIT_VERSION := $(shell git describe --dirty --always --tags)
+FPPFLAGS := $(FPPFLAGS) -DGITVERSION=\"$(GIT_VERSION)\"
+
+GIT_COMMITTIME := $(shell git log -1 --format=%cd --date=format-local:"%Y-%m-%dT%T%z")
+FPPFLAGS := $(FPPFLAGS) -DGITCOMMITTIME=\"$(GIT_COMMITTIME)\"
+
+GIT_REPURL := $(shell git config --get remote.origin.url)
+FPPFLAGS := $(FPPFLAGS) -DGITREPURL=\"$(GIT_REPURL)\"
+
+GIT_BRANCH := $(shell git branch --show-current)
+FPPFLAGS := $(FPPFLAGS) -DGITBRANCH=\"$(GIT_BRANCH)\"
+endif
+
+ifdef with-build-info
+# Get the build time stamp
+BUILD_TIME=$(shell date +"%Y-%m-%dT%T%z")
+FPPFLAGS := $(FPPFLAGS) -DBUILDTIME=\"$(BUILD_TIME)\"
+endif
 
 ################## LIS options #####################
 # To enable LIS solver, set LIS installation path (LIS_DIR) and architecture (LIS_ARCH) 
@@ -110,6 +141,7 @@ DLIB := $(DLIB) -L/usr/local/lib -rdynamic /usr/local/lib/libmpfr.so /usr/local/
 FPPFLAGS := $(FPPFLAGS) -DCGAL
 CPPFLAGS := $(CPPFLAGS) -DUSECGAL
 endif
+
 
 ################## GPL options #####################
 ifdef with-gpl
@@ -218,9 +250,9 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/fluxfs.o\
 	$(SRC)min3p/dtotcong.o\
 	$(SRC)min3p/satfpres_app.o\
+	$(SRC)min3p/totchargesorb.o\
 	$(SRC)min3p/rhsrt.o\
 	$(SRC)min3p/icnvrt.o\
-	$(SRC)min3p/findstrg.o\
 	$(SRC)min3p/zoutput.o\
 	$(SRC)min3p/vhoff.o\
 	$(SRC)min3p/satfpres.o\
@@ -245,12 +277,10 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/crc.o\
 	$(SRC)min3p/bunsen.o\
 	$(SRC)min3p/simq.o\
-	$(SRC)min3p/findkey.o\
 	$(SRC)min3p/storddfs.o\
 	$(SRC)gas_advection/relpfsat_g.o\
 	$(SRC)dgm/madd.o\
 	$(SRC)phase_class/tools/lubksb.o\
-	$(SRC)min3p/findzone.o\
 	$(SRC)min3p/dhconst.o\
 	$(SRC)gas_advection/wgprop.o\
 	$(SRC)min3p/secspec.o\
@@ -287,6 +317,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/gen.o\
 	$(SRC)min3p/pressure_melt_k.o\
 	$(SRC)min3p/biol.o\
+	$(SRC)min3p/soluteUptakeFunc.o\
 	$(SRC)usg/fluxvs_usg.o\
 	$(SRC)usg/fluxdd_usg.o\
 	$(SRC)usg/fluxfs_usg.o\
@@ -303,6 +334,9 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)usg/metis_iface.o\
 	$(SRC)min3p/file_unit.o\
 	$(SRC)min3p/file_utility.o\
+	$(SRC)min3p/findstrg.o\
+	$(SRC)min3p/findkey.o\
+	$(SRC)min3p/findzone.o\
 	$(SRC)phase_class/tools/xpath/m_path.o\
 	$(SRC)phase_class/tools/xmlreader/m_handlers.o\
 	$(SRC)solver/solver_results.o\
@@ -323,6 +357,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)phase_class/phase/m_aqueousphase.o\
 	$(SRC)phase_class/phase/m_phase.o\
 	$(SRC)min3p/chem.o\
+	$(SRC)min3p/mimicMassDisp.o\
 	$(SRC)noble_gas/nobleGasIngrowth.o\
 	$(SRC)min3p/serveParams.o\
 	$(SRC)solver/solver.o\
@@ -340,16 +375,19 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/vapor_prop.o\
 	$(SRC)min3p/trans_evap_info.o\
 	$(SRC)min3p/tranbcrt.o\
+	$(SRC)min3p/updtbcrt.o\
 	$(SRC)min3p/stddmass.o\
 	$(SRC)min3p/seepface.o\
 	$(SRC)min3p/readsorb.o\
 	$(SRC)min3p/ratemin_new.o\
+	$(SRC)solver/netlib_gn.o\
 	$(SRC)mip_mt/mip_math.o\
 	$(SRC)mip_mt/mip_bubble.o\
 	$(SRC)mip_mt/mip_output.o\
 	$(SRC)min3p/root_output.o\
 	$(SRC)min3p/opnpgfls.o\
 	$(SRC)min3p/opnmbfls.o\
+	$(SRC)min3p/opnmbfls_sub.o\
 	$(SRC)min3p/mem_nm.o\
 	$(SRC)min3p/mem_irm.o\
 	$(SRC)min3p/mem_heat.o\
@@ -438,6 +476,8 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)parallel_io/dumpstring.o\
 	$(SRC)min3p/diff_grad.o\
 	$(SRC)solver/ws209.o\
+	$(SRC)solver/r8lib_module.o\
+	$(SRC)solver/qr_svd_module.o\
 	$(SRC)min3p/updtsvmp.o\
 	$(SRC)min3p/tprfdd.o\
 	$(SRC)min3p/totcona.o\
@@ -445,6 +485,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/nexttime.o\
 	$(SRC)min3p/mem_nsb.o\
 	$(SRC)min3p/mbaldd.o\
+	$(SRC)min3p/ratess.o\
 	$(SRC)min3p/jaclc.o\
 	$(SRC)min3p/jacddfs.o\
 	$(SRC)usg/infcrt_g_usg.o\
@@ -536,7 +577,6 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)icesheet/updtice_scalfac.o\
 	$(SRC)usg/infcrt_mcd_usg.o\
 	$(SRC)usg/hydrostatic_pitzerdens_usg.o\
-	$(SRC)dgm/gasdiff_s.o\
 	$(SRC)min3p/energy_bal.o\
 	$(SRC)min3p/datstr_n.o\
 	$(SRC)min3p/welcome_pc.o\
@@ -566,6 +606,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/readcomp.o\
 	$(SRC)min3p/phcorr.o\
 	$(SRC)min3p/opnmbfls_mcd.o\
+	$(SRC)min3p/opnmbfls_mcd_sub.o\
 	$(SRC)min3p/modrate.o\
 	$(SRC)min3p/mbalrt.o\
 	$(SRC)min3p/jacbvs_energybal.o\
@@ -574,7 +615,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/readsit.o\
 	$(SRC)usg/infcrt_a_usg.o\
 	$(SRC)min3p/iajart.o\
-	$(SRC)dgm/gasdiff2_s.o\
+	$(SRC)dgm/gasdiff2.o\
 	$(SRC)gas_advection/fluxvg.o\
 	$(SRC)min3p/dratemin.o\
 	$(SRC)min3p/diffcoff_mcd.o\
@@ -590,6 +631,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/opndbfls_pc.o\
 	$(SRC)min3p/mem_vs.o\
 	$(SRC)min3p/mem_rt.o\
+	$(SRC)min3p/mem_sub.o\
 	$(SRC)min3p/initicvs.o\
 	$(SRC)min3p/initiice.o\
 	$(SRC)usg/infheat_d_usg.o\
@@ -642,6 +684,7 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/rstatlc.o\
 	$(SRC)min3p/raoult.o\
 	$(SRC)min3p/opnenergybal.o\
+	$(SRC)min3p/opnenergybal_sub.o\
 	$(SRC)min3p/msysvs.o\
 	$(SRC)dgm/ms_dfluxdg.o\
 	$(SRC)min3p/mem_ng.o\
@@ -650,7 +693,6 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/initbcenergybal.o\
 	$(SRC)min3p/infevap.o\
 	$(SRC)min3p/i2upfind_heat.o\
-	$(SRC)dgm/gasdiff2.o\
 	$(SRC)min3p/elecmigration.o\
 	$(SRC)min3p/comptotc.o\
 	$(SRC)usg/velovapour_usg.o\
@@ -669,10 +711,14 @@ OBJS = $(SRC)min3p/parm.o\
 	$(SRC)min3p/cputime_pc.o\
 	$(SRC)min3p/pitzer/closepitzer.o\
 	$(SRC)min3p/mem_etr.o\
+	$(SRC)min3p/updtRootParams.o\
 	$(SRC)min3p/initplant.o\
+	$(SRC)min3p/initppplant.o\
 	$(SRC)min3p/rew.o\
 	$(SRC)min3p/evapo.o\
 	$(SRC)min3p/updtetp.o\
+	$(SRC)min3p/ArchiSimple.o\
+	$(SRC)min3p/RootTyp1.o\
 	$(SRC)min3p/updtrootdensity.o
 
 min3p: $(OBJS)

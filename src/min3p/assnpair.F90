@@ -4,7 +4,7 @@
 !> $Revision: 303 $
 !> $Author: dsu $
 !> $Date: 2015-05-04 10:58:10 -0700 (Mon, 04 May 2015) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/assnpair.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/assnpair.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

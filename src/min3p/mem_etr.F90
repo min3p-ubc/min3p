@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mem_etr.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mem_etr.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -50,7 +50,7 @@
 !c           DSU Comment - Not necessary to declare qrootinc and dqroot as global variables
 !c
 !c
-!c           uptakefactor(nzn)    = passive uptake factor (by zone)
+!c           uptakefactor(nzn)    = passive solute uptake factor (by zone)
 !c           rootlengthdens(nzn)  = root length density
 !c           rld(nngl)            = root length density  in each control volume,
 !c                                  read from external file
@@ -76,6 +76,7 @@
       use phys
       use dual
       use biol
+      use chem
       
       implicit none
 
@@ -125,6 +126,47 @@
           call memory_monitor(sizeof(rld),'rld',.true.)
         end if
 
+ !cprovi------------------------------------------------------------
+ !cprovi Added by Sergio Andr�s Bea
+ !cprovi 20/04/2017
+ !cprovi------------------------------------------------------------
+        if (reactive_transport) then
+          allocate (fm_uptake(nc-1,nzn), stat = ierr)
+          call checkerr(ierr,'fm_uptake',ilog)
+          fm_uptake = r0
+          call memory_monitor(sizeof(fm_uptake),'fm_uptake',.true.)
+
+          allocate (km_uptake(nc-1,nzn), stat = ierr)
+          call checkerr(ierr,'km_uptake',ilog)
+          km_uptake = r0
+          call memory_monitor(sizeof(km_uptake),'km_uptake',.true.)
+
+          allocate (tot_min_uptake(nc-1,nzn), stat = ierr)
+          call checkerr(ierr,'tot_min_uptake',ilog)
+          tot_min_uptake = r0
+          call memory_monitor(sizeof(tot_min_uptake),'tot_min_uptake',.true.)
+
+          allocate (fac_uptake(nc-1,nzn), stat = ierr)
+          call checkerr(ierr,'fac_uptake',ilog)
+          fac_uptake = r0
+          call memory_monitor(sizeof(fac_uptake),'fac_uptake',.true.)
+
+          allocate (order1_uptake(nc-1,nzn), stat = ierr)
+          call checkerr(ierr,'order1_uptake',ilog)
+          order1_uptake = r0
+          call memory_monitor(sizeof(order1_uptake),'order1_uptake',.true.)
+
+          allocate (exudation_rate(nc-1,nzn), stat = ierr)
+          call checkerr(ierr,'exudation_rate',ilog)
+          exudation_rate = r0
+          call memory_monitor(sizeof(exudation_rate),'exudation_rate',.true.)
+          
+          allocate (fchargebal_coeff(nc-1,nzn), stat = ierr)
+          call checkerr(ierr,'fchargebal_coeff',ilog)
+          fchargebal_coeff = r0
+          call memory_monitor(sizeof(fchargebal_coeff),'fchargebal_coeff',.true.)
+        end if 
+
       end if
 
 !cdsu evaporation and transpiration fluxes - variably saturated flow
@@ -161,16 +203,31 @@
       !call memory_monitor(sizeof(dqroot),'dqroot',.true.)
       
       !c rate for root respiration
-      allocate(resprate(n,nzn), stat = ierr)
+      allocate(resprate(nc-1,nzn), stat = ierr)
       call checkerr(ierr,'resprate',ilog)
       resprate = r0
       call memory_monitor(sizeof(resprate),'resprate',.true.)
-      
+           
       !c specified minimum aqueous concentration to activate solute uptake.
-      allocate(totc_uptake_min(n,nzn), stat = ierr)
+      allocate(totc_uptake_min(nc-1,nzn), stat = ierr)
       call checkerr(ierr,'totc_uptake_min',ilog)
       totc_uptake_min = 0.0d0
       call memory_monitor(sizeof(totc_uptake_min),'totc_uptake_min',.true.)
+
+      allocate(totc_uptake_hk(nc-1,nzn), stat = ierr)
+      call checkerr(ierr,'totc_uptake_hk',ilog)
+      totc_uptake_hk = 0.0d0
+      call memory_monitor(sizeof(totc_uptake_hk),'totc_uptake_hk',.true.)
+
+      allocate(totc_uptake_hn(nc-1,nzn), stat = ierr)
+      call checkerr(ierr,'totc_uptake_hn',ilog)
+      totc_uptake_hn = 1.0d0
+      call memory_monitor(sizeof(totc_uptake_hn),'totc_uptake_hn',.true.)
+
+      allocate(resprate_charge(nzn), stat = ierr)
+      call checkerr(ierr,'resprate_charge',ilog)
+      resprate_charge = .false.
+      call memory_monitor(sizeof(resprate_charge),'resprate_charge',.true.)
 
       return
 

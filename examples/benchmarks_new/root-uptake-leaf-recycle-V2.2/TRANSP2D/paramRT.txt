@@ -1,0 +1,166 @@
+===========================================================================
+           PARAMETRES DE LA SIMULATION POUR ROOT TYP  (Arbre avec 3 types)
+===========================================================================
+
+0.5 # X position of the seed (in MIN3P domain, meters) 
+0 # Y position of the seed (in MIN3P domain, meters)     
+1 # Z position of the seed (in MIN3P domain, meters)    
+1                                     Nombre d'axes transplantees
+9                                     Nombre de vagues de reiteration
+5000 6000 7000 8000 9000 9100 9200 9300 9400    Dates de reiteration
+0.0                                   Coefficient d'augmentation du diamètre
+
+TYPE 0 (ORGANES TRANSPLANTES, BASE DE LA TIGE)
+3.1416 0.02 Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+1.0         Duree de developpement primordium, en jours
+10.0 0.2    Parametres de croissance Asymptote et vitesse initiale (moyennes)
+0.0 0.0     Parametres de croissance (ecart-types)
+0.1 0.0     Parametres distance inter-ramif (moyenne ecart-type)
+-1          Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.2         Intensité du gravitropisme
+0.0         Sensibilité à la contrainte mecanique
+4.0         Diametre primaire, de la pointe de la racine
+10000.0     Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+10000.0     Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
+-1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.4 0.6 0.0 0.0 0.0 0.0 0.0 Proportion des types (0..7) parmi les ramifs
+
+TYPE 1 (Racines primaires verticales)
+2.0 0.2     Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+7.0         Duree de developpement primordium, en jours
+10000.0 0.5 Parametres de croissance Asymptote et vitesse initiale (moyennes)
+0.0 0.0     Parametres de croissance (ecart-types)
+1.0 0.0     Parametres distance inter-ramif (moyenne ecart-type)
++1          Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.1         Intensité du gravitropisme
+0.1         Sensibilité à la contrainte mecanique
+0.4         Diametre primaire, de la pointe de la racine
+2000.0      Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+10000.0     Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
++1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.0 0.00 1.0 0.0 0.0 0.0 0.0 Proportion des types (0..7) parmi les ramifs
+
+TYPE 2 (Racines primaires horizontales)
+1.8 0.2     Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+7.0         Duree de developpement primordium, en jours
+20000.0 0.5 Parametres de croissance Asymptote et vitesse initiale (moyennes)
+0.0 0.0     Parametres de croissance (ecart-types)
+1.0 0.0     Parametres distance inter-ramif (moyenne ecart-type)
+0           Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.1         Intensité du gravitropisme
+0.1         Sensibilité à la contrainte mecanique
+0.4         Diametre primaire, de la pointe de la racine
+2000.0      Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+10000.0     Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
+-1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 Proportion des types (0..7) parmi les ramifs
+
+TYPE 3 (LATERALES PEU VIGOUREUSES)
+1.2 0.2   Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+8.0         Duree de developpement primordium, en jours
+20.0 0.3    Parametres de croissance Asymptote et vitesse initiale (moyennes)
+4.0 0.1     Parametres de croissance (ecart-types)
+10000.0 0.0 Parametres distance inter-ramif (moyenne ecart-type)
+2           Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.05        Intensité du gravitropisme
+0.1         Sensibilité à la contrainte mecanique
+0.25         Diametre primaire, de la pointe de la racine
+50.0        Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+1000.0      Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
+-1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 Proportion des types (0..7) parmi les ramifs
+
+TYPE 4 (NON UTILISE)
+1.4 0.1   Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+8.0         Duree de developpement primordium, en jours
+4.0 0.4    Parametres de croissance Asymptote et vitesse initiale (moyennes)
+1.0 0.0     Parametres de croissance (ecart-types)
+100.0 0.0    Parametres distance inter-ramif (moyenne ecart-type)
+2           Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.01         Intensité du gravitropisme
+0.1         Sensibilité à la contrainte mecanique
+0.03         Diametre primaire, de la pointe de la racine
+40.0        Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+10000.0      Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
+-1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 Proportion des types (0..7) parmi les ramifs
+
+TYPE 5 (NON UTILISE)
+1.57 0.0   Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+0.0         Duree de developpement primordium, en jours
+2.0 0.4    Parametres de croissance Asymptote et vitesse initiale (moyennes)
+0.0 0.0     Parametres de croissance (ecart-types)
+11.0 0.0    Parametres distance inter-ramif (moyenne ecart-type)
+0           Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.0         Intensité du gravitropisme
+0.3         Sensibilité à la contrainte mecanique
+0.04         Diametre primaire, de la pointe de la racine
+15.0      Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+1000.0      Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
+-1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 Proportion des types (0..7) parmi les ramifs
+
+TYPE 6 (NON UTILISE)
+1.57 0.0   Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+0.0         Duree de developpement primordium, en jours
+2.0 0.4    Parametres de croissance Asymptote et vitesse initiale (moyennes)
+0.0 0.0     Parametres de croissance (ecart-types)
+11.0 0.0    Parametres distance inter-ramif (moyenne ecart-type)
+0           Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.0         Intensité du gravitropisme
+0.3         Sensibilité à la contrainte mecanique
+0.04         Diametre primaire, de la pointe de la racine
+15.0      Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+1000.0      Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
+-1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 Proportion des types (0..7) parmi les ramifs
+
+TYPE 7 (NON UTILISE)
+1.57 0.0   Angle d'insertion sur l'ordre precedent (moyenne ecart-type)
+0.7 0.05    Angle d'insertion lors d'une réitération (moyenne ecart-type)
+0.0         Duree de developpement primordium, en jours
+2.0 0.4    Parametres de croissance Asymptote et vitesse initiale (moyennes)
+0.0 0.0     Parametres de croissance (ecart-types)
+11.0 0.0    Parametres distance inter-ramif (moyenne ecart-type)
+0           Type de gravitropisme (0 : plagio, -1 et +1 : geo - ou +, 2 : exo)
+0.0         Intensité du gravitropisme
+0.3         Sensibilité à la contrainte mecanique
+0.04         Diametre primaire, de la pointe de la racine
+15.0      Duree entre arrêt de croissance et necrose, en jours
+0.0         Probabilité de réitération
+0 0         Nombres mini et maxi d'axes lors d'une réitération
+1000.0      Age de déclenchement de la possibilité de transformation
+0.0         Probabilité de transformation
+-1          Sens de la transformation (-1: vers le type inférieur, +1 : type >)
+0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 Proportion des types (0..7) parmi les ramifs
+
+===========================================================================
+

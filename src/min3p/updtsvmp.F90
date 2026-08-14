@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updtsvmp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updtsvmp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -123,13 +123,12 @@
 
       implicit none
       
-      real*8 :: cmnewm, cmoldm, phim, aream, ratem, satindex, deltsv
+      real*8 :: cmnewm(*), cmoldm(*), phim(*), aream(*), ratem(*), satindex(*)
+      real*8 :: deltsv
       integer :: ivol, tid
       
       integer :: i1, im, im2, info_dbg, istart, istop
       real*8 :: ratio, rtemp, tpvf, ratio_por
-       
-      dimension cmnewm(*),cmoldm(*),phim(*),aream(*),ratem(*), satindex(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r2 = 2.0d0,         &
                  r3 = 3.0d0, r1000 = 1.0d3, rzero = 1.0d-11      
@@ -167,8 +166,8 @@
 
               if (ivol .gt. 0) then
                 rads(im,tid) = aream(im) * radi(im)**r3               &
-     &                 / (r3 * scalfac(im) * phi_init(im,ivol)        &
-     &                 +  aream(im) * radi(im)**r2)
+                       / (r3 * scalfac(im) * phi_init(im,ivol)        &
+                       +  aream(im) * radi(im)**r2)
               end if
             end if                  !reaction(type(im)
 
@@ -184,25 +183,19 @@
           end do
 
 !c  update mineral concentrations in [moles/l bulk]
- 
           cmnewm(im) = dmax1(cmoldm(im)+totratem(im,tid)*deltsv,      &
                        cmcmin(im,tid))
 
-!c  compute ratio of new and old mineral concentration
- 
+          !c compute ratio of new and old mineral concentration
           ratio = cmnewm(im)/cmoldm(im)
- 
+
 !c  update volume fractions of minerals
  
-          if (.not. pore_clogging) then
-              
+          if (.not. pore_clogging) then         
             phim(im) = ratio*phim(im)
           else
-!c            cm_init(im,ivol) = 1000.d0 * phi_init(im,ivol) *       &
-!c                               densm(im) / gfwm(im)
             phim(im) = cmnewm(im) * gfwm(im)/(densm(im)*1000.0d0)
-          end if
-       
+          end if      
 
         end if            !exclusion of dependent minerals
 

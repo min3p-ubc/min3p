@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mem_nc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mem_nc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -458,6 +458,19 @@
       totcsn_surf=0.0d0
       call checkerr(ierr,'totcsn_surf',ilog)
       call memory_monitor(sizeof(totcsn_surf),'totcsn_surf',.true.)
+
+!cprovi------------------------------------------------------------------------------------
+!cprovi------------------------------------------------------------------------------------
+!cprovi------------------------------------------------------------------------------------
+      allocate (totcharge_surf(nc-1,nthreads), stat = ierr)
+      totcharge_surf = 0.0d0
+      call checkerr(ierr,'totcharge_surf',ilog)
+      call memory_monitor(sizeof(totcharge_surf),'totcharge_surf',.true.)
+
+      allocate (dtotcharge_surf(nc-1,nthreads), stat = ierr)
+      dtotcharge_surf = 0.0d0
+      call checkerr(ierr,'dtotcharge_surf',ilog)
+      call memory_monitor(sizeof(dtotcharge_surf),'dtotcharge_surf',.true.)
 
       !allocate (totcso(nc-1), stat = ierr)
       !totcso=0.0d0

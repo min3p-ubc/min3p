@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readsit.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readsit.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -120,7 +120,8 @@
       use multidiff
       use gen, only : rank, b_enable_output, idbs_bk, use_dbs_bk,      &
                       mem_cur, mem_max, memory_monitor
-      use file_utility, only : makelowercase, replacecharacter, readnextline
+      use file_utility, only : makelowercase, replacecharacter,        &
+          readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif 
@@ -330,7 +331,7 @@
           rewind(isitdbs)
           do while(readnextline(isitdbs,strbuffer,original=.true.))
             do icx = 1, ncx
-              if (index(adjustl(strbuffer),trim(namecx(icx))) >= 1) then
+              if (startWithEntireName(strbuffer,namecx(icx),flagQuote=.false.)) then
                 write(idbs_bk,'(a)') trim(strbuffer)
               end if
             end do

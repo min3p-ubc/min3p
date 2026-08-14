@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/surfcomp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/surfcomp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -149,7 +149,7 @@
 !c                       (composition of surface sites)
 !c ----------------------------------------------------------------------
  
-      subroutine surfcomp(cnew,gammac,sw,por,ilog,tid)
+      subroutine surfcomp(cnew,gammac,sw,por,strion,ilog,tid)
  
       use parm
       use chem
@@ -162,7 +162,8 @@
  
       implicit none
       
-      real*8 :: cnew, gammac, sw, por
+      real*8 :: cnew(*), gammac(*)
+      real*8 :: sw, por, strion
       
       integer :: ilog, tid
       
@@ -175,8 +176,6 @@
       logical not_converged, over_flow_lc
 
       character*72 zone_name 
-
-      dimension cnew(*),gammac(*)
 
       !real*8 :: alc_bk(nc-1,nc-1), blc_bk(nc-1), rnorm
       
@@ -217,13 +216,14 @@
         do while (not_converged) 
 
           if (iter_lc(tid).lt.maxit_lc) then
+!c Set to zero the jacobian and residual  
 
             iter_lc(tid) = iter_lc(tid)+1
             ittot_lc(tid) = ittot_lc(tid)+1
 
 !c  construct Jacobian matrix and rhs-vector 
 
-            call jacsurf(cnew,gammac,sw,por,tid)
+            call jacsurf(cnew,gammac,sw,por,strion,tid)
 
 !c  solve for update
 !c  linear solver type of local chemistry, 0 - Gaussian (default), 1 - QR, 2 - SVD

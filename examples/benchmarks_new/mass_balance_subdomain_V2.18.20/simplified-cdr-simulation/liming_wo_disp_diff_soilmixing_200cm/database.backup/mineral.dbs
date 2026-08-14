@@ -1,0 +1,235 @@
+'calcite'
+'surface'
+ 100.0894    2.7100
+ 2  'ca+2'    1.000  'co3-2'    1.000
+'reversible'    8.4750  2.5850
+!
+'actinolite-crit'
+'surface'
+853.16  3.135
+7  'ca+2' 2.7  'mg+2' 3.1 'h4sio4' 7.38  'h+1' -13.95  'fe+2' 0.97  'h2o' -5.52  'na+1'  0.41
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 3
+'pathway' 1
+'log rate constant'  -10.7
+'activation energy' 88.0
+'fractional C^c' 1
+'h+1'  0.25
+'end pathway'
+'pathway' 2
+'log rate constant' -13.2
+'activation energy' 88.0
+'end pathway'
+'pathway' 3
+'log rate constant' -13.37
+'activation energy' 51.0
+'fractional C^c'  1
+'h+1' -0.13
+'end pathway'
+!
+'epidote-marieni'
+'surface'
+483.2226  3.471426724
+8  'ca+2' 2.07  'mn+3' 0.01 'h4sio4' 3.0  'h+1' -13.47   'fe+3' 1.02  'h2o' 0.71  'al+3'  2.08  'ti(oh)4'  0.01
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 3
+'pathway' 1
+'log rate constant'  -9.4546
+'activation energy' 60.0
+'fractional C^c' 1
+'h+1'  0.56
+'end pathway'
+'pathway' 2
+'log rate constant' -11.8582
+'activation energy' 43.2
+'end pathway'
+'pathway' 3
+'log rate constant' -16.2645
+'activation energy' 42.3
+'fractional C^c'  1
+'h+1' -0.4
+'end pathway'
+!-------------------------------------------------------------------------------------------------------------------
+'albite-ph-d'
+'surface'
+262.2250  2.620
+5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution'  -2.5920  17.400
+'parallel reaction pathways' 2
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+'quartz-td'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'irreversible dissolution'   3.9800  -5.9900
+'parallel reaction pathways' 1
+'pathway' 1
+'log rate constant'  -13.99
+'activation energy' 87.6
+'end pathway'
+!
+'chlorite-crit'
+'surface'
+555.7969  2.68358312
+6  'mg+2' 2.79  'fe+2' 1.62  'al+3' 2.1  'h4sio4' 2.81 'h+1' -15.12  'h2o' 6.76
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 3
+'pathway' 1
+'log rate constant'  -10.0
+'activation energy' 88.0
+'fractional C^c' 1
+'h+1'  0.36
+'end pathway'
+'pathway' 2
+'log rate constant' -14.0
+'activation energy' 88.0
+'end pathway'
+'pathway' 3
+'log rate constant' -12.39
+'activation energy' 51.0
+'fractional C^c'  1
+'h+1' -0.03
+'end pathway'
+!
+'titanite-td'
+'surface'
+196.0405  3.48
+5  'ti(oh)4' 1.000  'ca+2' 1.000  'h4sio4' 1.000  'h+1' -2.000  'h2o' -3.000
+'irreversible dissolution'   0.0e0  0.0e0
+'parallel reaction pathways' 2
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+'albite-n'
+'surface'
+262.2250  2.620
+5  'na+1' 1.000  'al+3' 1.000  'h4sio4' 3.000  'h+1' -4.000  'h2o' -4.000
+'irreversible dissolution - log K control '  -2.5920  17.400
+'parallel reaction pathways' 2
+'pathway' 1
+'log rate constant'  -9.690
+'activation energy' 13.900
+'fractional C^c' 1
+'h+1'  0.490
+'end pathway'
+'pathway' 2
+'log rate constant' -14.150
+'activation energy' 13.900
+'fractional C^c'  1
+'h+1' -0.300
+'end pathway'
+!
+'ch2o-o2-td'
+'surface'
+30.02088  100.0000
+3  'o2(aq)' -1.000  'co3-2' 1.000  'h+1' 2.000
+'irreversible dissolution'
+'hyperbolic C^c' 1
+'o2(aq)'  1.0d-10 1.000
+!
+'ferrihydrite'
+'surface'
+ 104.8692    4.3713
+ 3  'h+1'   -3.000  'fe+3'    1.000  'h2o'    3.000
+'reversible'   -4.8910  0.0000
+!
+'al(oh)3(am)'
+'surface'
+  78.0034    2.3500
+ 3  'h+1'   -3.000  'al+3'    1.000  'h2o'    3.000
+'reversible'   -10.800  22.8000
+!
+'sio2(a,pt)'
+'surface'
+  60.0848    2.6500
+ 2  'h2o'   -2.000  'h4sio4'    1.000
+'reversible'    2.7100  -3.9100
+!
+'uan-fertilizer-n'
+'surface'
+36.96 1000.0
+4  'nh4+1' 1.2814  'no3-1' 0.2814  'h2o' 0.25  'co3-2' 0.5
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'k-fertilizer'
+'surface'
+140.2  1000.0
+2  'cl-1' 1.000  'k+1' 1.000
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'urea-phosphate'
+'surface'
+158.05  1000.0
+5  'nh4+1' 2.000  'h2o' -2.000  'co3-2' 1.000  'po4-3' 1.000  'h+1' 3.000
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'turnover-26-12-2024'
+'surface'
+100.0   1000.0
+7 'ca+2'	0.1297	'mg+2'	0.0445	'po4-3'	0.1510	'k+1'	0.2074	'no3-1'	0.0260	'nh4+1'	0.4414	'h+1'	-0.5182
+'irreversible dissolution'
+!----------------------------------------------------------------------------------------------
+'ion-exchange-ca'
+'surface'
+100.0  1000.0
+2  'al+3' 1.0  'ca+2' -1.5
+'irreversible dissolution'
+'hyperbolic C^c' 1
+'ca+2'     1.0d-05    2.00
+!----------------------------------------------------------------------------------------------
+'soca+_kin'
+'surface'
+100.0   1000.0
+2  'h+1'  1.0  'ca+2'  -1.0
+'irreversible dissolution'
+'hyperbolic C^a' 1
+'oh-'    1.0e-07    1.00
+'hyperbolic T^a' 1
+'ca+2'   1.0e-07    1.00
+'inhibition C^a' 1
+'h+1' 1.0e-07  1.000
+!----------------------------------------------------------------------------------------------
+'somg+_kin'
+'surface'
+100.0   1000.0
+2  'h+1'  1.0  'mg+2'  -1.0
+'irreversible dissolution'
+'hyperbolic C^a' 1
+'oh-'    1.0e-07    1.00
+'hyperbolic T^a' 1
+'mg+2'   1.0e-07    1.00
+'inhibition C^a' 1
+'h+1' 1.0e-07  1.000
+!----------------------------------------------------------------------------------------------
+'lactate-exud'
+'surface'
+100.0   1000.0
+2  'lactate'  1.0  'h+1'  1.0
+'irreversible dissolution'
+'hyperbolic C^a' 1
+'oh-'    1.0e-07    1.0
+!'inhibition C^a' 1
+!
+'end'

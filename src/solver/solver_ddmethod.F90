@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/solver/solver_ddmethod.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/solver/solver_ddmethod.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -28,6 +28,11 @@ module solver_dd
     use solver_snes_common  
     
     implicit none  
+
+    interface solver_dd_local_to_global
+      module procedure solver_dd_local_to_global_r1d
+      module procedure solver_dd_local_to_global_r2d
+    end interface solver_dd_local_to_global
 
     integer, parameter :: n_binary_limit = 1024          !2147483647
 
@@ -1388,8 +1393,8 @@ module solver_dd
                        nvyls, nvyle, nvzls, nvzle, nvxgls, nvxgle,     &
                        nvygls, nvygle, nvzgls, nvzgle, nn, nngl,       &
                        nngbl, node_idx_lg2l, node_idx_lg2g,            &
-                       node_idx_lg2pg, node_idx_l2lg, rank, ilog,      &
-                       mem_cur, mem_max, memory_monitor,               &
+                       node_idx_lg2pg, node_idx_l2lg, node_owner_rank, &
+                       rank, ilog, mem_cur, mem_max, memory_monitor,   &
                        node_idx_vel_lg2g
         use petsc_mpi_common, only : petsc_mpi_finalize
     
@@ -1460,6 +1465,11 @@ module solver_dd
         !allocate(node_idx_lb2pg(nngl), stat = ierr)
         !call checkerr(ierr,'node_idx_lb2pg',ilog)
         !node_idx_lb2pg = -1
+
+        allocate(node_owner_rank(nngl), stat = ierr)
+        call checkerr(ierr,'node_owner_rank',ilog)
+        node_owner_rank = -1
+        call memory_monitor(sizeof(node_owner_rank),'node_owner_rank',.true.)
 
         ivol = 1
         ivol_l = 1
@@ -1719,12 +1729,6 @@ module solver_dd
         call ISLocalToGlobalMappingRestoreIndicesF90(ltogm,ltog,ierr)
         CHKERRQ(ierr)
 #endif
-        
-        if(info_debug > 1) then
-            call petsc_mpi_finalize
-            stop
-        end if
-        
    
     end subroutine solver_dd_mapping_set
    
@@ -5876,7 +5880,7 @@ module solver_dd
       use gen, only : ilog, idbg, nprcs, rank, str_rank,               &
                       b_enable_output, prefix, l_prfx,                 &
                       mem_cur, mem_max, memory_monitor,                &
-                      node_idx_g2lg, cell_idx_g2lg,                    &
+                      node_idx_g2lg, cell_idx_g2lg, node_owner_rank,   &
                       node_idx_lg2l, node_idx_lg2g, node_idx_lg2pg,    &
                       node_idx_l2lg, cell_idx_lg2g, node_idx_vel_lg2g
       use m_heat_transport, only : heat_transport, decoupled_type_vs_heat
@@ -6020,6 +6024,11 @@ module solver_dd
       !allocate(node_idx_lb2pg(num_nodes), stat = ierr)
       !call checkerr(ierr,'node_idx_lb2pg',ilog)
       !node_idx_lb2pg = -1
+
+      allocate(node_owner_rank(num_nodes), stat = ierr)
+      call checkerr(ierr,'node_owner_rank',ilog)
+      node_owner_rank = -1
+      call memory_monitor(sizeof(node_owner_rank),'node_owner_rank',.true.)
 
       !c get coordinates array
       call VecGetArrayF90(gc,coords,ierr)
@@ -6568,6 +6577,332 @@ module solver_dd
 
 #endif
     end subroutine solver_dd_mapping_set_dmplex
+
+!>
+!>  get node owner ship, here we use the DMDA of flow/heat part.
+!>
+    subroutine solver_dd_get_node_rank()
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 8)
+#include <petsc/finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <petsc/finclude/petsclog.h>
+#endif
+        use petscdmda
+#endif
+    
+        use gen, only : rank, nngl, node_owner_rank, flag_non_interlaced
+        use petsc_mpi_common, only : petsc_mpi_finalize
+        
+        implicit none
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 6 && PETSC_VERSION_MINOR < 8)
+#include <petsc/finclude/petscsys.h>
+#include <petsc/finclude/petscvec.h>
+#include <petsc/finclude/petscvec.h90>
+#include <petsc/finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <petsc/finclude/petsclog.h>
+#endif
+#elif (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR < 6)
+#include <finclude/petscsys.h>
+#include <finclude/petscvec.h>
+#include <finclude/petscvec.h90>
+#include <finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <finclude/petsclog.h>
+#endif
+#endif
+
+
+        !c local variables
+        PetscErrorCode :: ierr
+        PetscInt :: i, j
+
+        !c pointer variable to switch between flow and decoupled heat transport
+        PetscScalar, pointer :: vecpointer(:)
+
+        !Zero entries
+        call VecZeroEntries(x_flow_loc, ierr)
+        CHKERRQ(ierr)
+          
+        !Get a pointer to vector data when you need access to the array        
+        call VecGetArrayF90(x_flow_loc, vecpointer, ierr)
+        CHKERRQ(ierr)
+          
+        !Compute the function over the locally owned part of the grid 
+        if(flag_non_interlaced) then
+          do i = 1, nngl
+            vecpointer(2*i-1) = rank
+            !vecpointer(2*i) = rank
+          end do
+        else
+          do i = 1, nngl
+            vecpointer(i) = rank
+          end do
+        end if
+          
+        !Restore the vector when you no longer need access to the array
+        call VecRestoreArrayF90(x_flow_loc,vecpointer,ierr)
+        CHKERRQ(ierr)
+          
+        !Insert values into global vector
+        call DMLocalToGlobalBegin(dmda_flow%da,x_flow_loc,INSERT_VALUES,&
+                                  x_flow,ierr)
+        CHKERRQ(ierr)
+
+        !By placing code between these two statements, computations can be
+        !done while messages are in transition.
+        call DMLocalToGlobalEnd(dmda_flow%da,x_flow_loc,INSERT_VALUES,  &
+                                x_flow,ierr)
+        CHKERRQ(ierr)
+
+        !  Scatter ghost points to local vector, using the 2-step process
+        !     DMGlobalToLocalBegin(), DMGlobalToLocalEnd().
+        !  By placing code between these two statements, computations can be
+        !  done while messages are in transition. 
+        call DMGlobalToLocalBegin(dmda_flow%da,x_flow,INSERT_VALUES,   &
+                                  x_flow_loc,ierr)
+        CHKERRQ(ierr)
+        call DMGlobalToLocalEnd(dmda_flow%da,x_flow,INSERT_VALUES,     &
+                                  x_flow_loc,ierr) 
+        CHKERRQ(ierr)
+       
+        call VecGetArrayF90(x_flow_loc,vecpointer,ierr)
+        CHKERRQ(ierr)
+
+        if(flag_non_interlaced) then
+          do i = 1, nngl
+            node_owner_rank(i) = int(vecpointer(2*i-1))
+            !node_idx_l2lg(i) = vecpointer(2*i)
+          end do
+        else
+          do i = 1, nngl
+            node_owner_rank(i) = int(vecpointer(i))
+          end do
+        end if
+        
+        call VecRestoreArrayF90(x_flow_loc,vecpointer,ierr)
+        CHKERRQ(ierr)
+    
+    end subroutine solver_dd_get_node_rank
+
+!>
+!>  exchange value for all ghost node, here we use the DMDA of flow/heat part.
+!>
+    subroutine solver_dd_local_to_global_r1d(rval)
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 8)
+#include <petsc/finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <petsc/finclude/petsclog.h>
+#endif
+        use petscdmda
+#endif    
+        use gen, only : rank, nngl, node_owner_rank, flag_non_interlaced
+        use petsc_mpi_common, only : petsc_mpi_finalize
+        
+        implicit none
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 6 && PETSC_VERSION_MINOR < 8)
+#include <petsc/finclude/petscsys.h>
+#include <petsc/finclude/petscvec.h>
+#include <petsc/finclude/petscvec.h90>
+#include <petsc/finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <petsc/finclude/petsclog.h>
+#endif
+#elif (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR < 6)
+#include <finclude/petscsys.h>
+#include <finclude/petscvec.h>
+#include <finclude/petscvec.h90>
+#include <finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <finclude/petsclog.h>
+#endif
+#endif
+        
+        !c arguments
+        real*8, allocatable :: rval(:)
+
+        !c local variables
+        PetscErrorCode :: ierr
+        PetscInt :: i
+
+        !c pointer variable to switch between flow and decoupled heat transport
+        PetscScalar, pointer :: vecpointer(:)
+
+        !Zero entries
+        call VecZeroEntries(x_flow_loc, ierr)
+        CHKERRQ(ierr)
+        
+        !Get a pointer to vector data when you need access to the array        
+        call VecGetArrayF90(x_flow_loc, vecpointer, ierr)
+        CHKERRQ(ierr)
+        
+        !Compute the function over the locally owned part of the grid 
+        if(flag_non_interlaced) then
+          do i = 1, nngl
+            vecpointer(2*i-1) = rval(i)
+            !vecpointer(2*i) = rank
+          end do
+        else
+          do i = 1, nngl
+            vecpointer(i) = rval(i)
+          end do
+        end if
+        
+        !Restore the vector when you no longer need access to the array
+        call VecRestoreArrayF90(x_flow_loc,vecpointer,ierr)
+        CHKERRQ(ierr)
+        
+        !Insert values into global vector
+        call DMLocalToGlobalBegin(dmda_flow%da,x_flow_loc,INSERT_VALUES,&
+                                  x_flow,ierr)
+        CHKERRQ(ierr)
+
+        !By placing code between these two statements, computations can be
+        !done while messages are in transition.
+        call DMLocalToGlobalEnd(dmda_flow%da,x_flow_loc,INSERT_VALUES,  &
+                                x_flow,ierr)
+        CHKERRQ(ierr)
+
+        !  Scatter ghost points to local vector, using the 2-step process
+        !     DMGlobalToLocalBegin(), DMGlobalToLocalEnd().
+        !  By placing code between these two statements, computations can be
+        !  done while messages are in transition. 
+        call DMGlobalToLocalBegin(dmda_flow%da,x_flow,INSERT_VALUES,   &
+                                  x_flow_loc,ierr)
+        CHKERRQ(ierr)
+        call DMGlobalToLocalEnd(dmda_flow%da,x_flow,INSERT_VALUES,     &
+                                x_flow_loc,ierr) 
+        CHKERRQ(ierr)
+       
+        call VecGetArrayF90(x_flow_loc,vecpointer,ierr)
+        CHKERRQ(ierr)
+  
+        if(flag_non_interlaced) then
+          do i = 1, nngl
+            rval(i) = vecpointer(2*i-1)
+          end do
+        else
+          do i = 1, nngl
+            rval(i) = vecpointer(i)
+          end do
+        end if
+        
+        call VecRestoreArrayF90(x_flow_loc,vecpointer,ierr)
+        CHKERRQ(ierr)
+
+    end subroutine solver_dd_local_to_global_r1d
+
+!>
+!>  exchange value for all ghost node, here we use the DMDA of flow/heat part.
+!>
+    subroutine solver_dd_local_to_global_r2d(nsize,rval)
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 8)
+#include <petsc/finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <petsc/finclude/petsclog.h>
+#endif
+        use petscdmda
+#endif    
+        use gen, only : rank, nngl, node_owner_rank, flag_non_interlaced
+        use petsc_mpi_common, only : petsc_mpi_finalize
+        
+        implicit none
+#if (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR >= 6 && PETSC_VERSION_MINOR < 8)
+#include <petsc/finclude/petscsys.h>
+#include <petsc/finclude/petscvec.h>
+#include <petsc/finclude/petscvec.h90>
+#include <petsc/finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <petsc/finclude/petsclog.h>
+#endif
+#elif (PETSC_VERSION_MAJOR >= 3 && PETSC_VERSION_MINOR < 6)
+#include <finclude/petscsys.h>
+#include <finclude/petscvec.h>
+#include <finclude/petscvec.h90>
+#include <finclude/petscdmda.h>
+#ifdef PETSC_USE_LOG
+#include <finclude/petsclog.h>
+#endif
+#endif
+        
+        !c arguments
+        integer :: nsize
+        real*8, allocatable :: rval(:,:)
+
+        !c local variables
+        PetscErrorCode :: ierr
+        PetscInt :: i, isize
+
+        !c pointer variable to switch between flow and decoupled heat transport
+        PetscScalar, pointer :: vecpointer(:)
+
+        do isize = 1, nsize
+
+          !Zero entries
+          call VecZeroEntries(x_flow_loc, ierr)
+          CHKERRQ(ierr)
+          
+          !Get a pointer to vector data when you need access to the array        
+          call VecGetArrayF90(x_flow_loc, vecpointer, ierr)
+          CHKERRQ(ierr)
+          
+          !Compute the function over the locally owned part of the grid 
+          if(flag_non_interlaced) then
+            do i = 1, nngl
+              vecpointer(2*i-1) = rval(isize,i)
+              !vecpointer(2*i) = rank
+            end do
+          else
+            do i = 1, nngl
+              vecpointer(i) = rval(isize,i)
+            end do
+          end if
+          
+          !Restore the vector when you no longer need access to the array
+          call VecRestoreArrayF90(x_flow_loc,vecpointer,ierr)
+          CHKERRQ(ierr)
+          
+          !Insert values into global vector
+          call DMLocalToGlobalBegin(dmda_flow%da,x_flow_loc,INSERT_VALUES,&
+                                    x_flow,ierr)
+          CHKERRQ(ierr)
+
+          !By placing code between these two statements, computations can be
+          !done while messages are in transition.
+          call DMLocalToGlobalEnd(dmda_flow%da,x_flow_loc,INSERT_VALUES,  &
+                                  x_flow,ierr)
+          CHKERRQ(ierr)
+
+          !  Scatter ghost points to local vector, using the 2-step process
+          !     DMGlobalToLocalBegin(), DMGlobalToLocalEnd().
+          !  By placing code between these two statements, computations can be
+          !  done while messages are in transition. 
+          call DMGlobalToLocalBegin(dmda_flow%da,x_flow,INSERT_VALUES,   &
+                                    x_flow_loc,ierr)
+          CHKERRQ(ierr)
+          call DMGlobalToLocalEnd(dmda_flow%da,x_flow,INSERT_VALUES,     &
+                                    x_flow_loc,ierr) 
+          CHKERRQ(ierr)
+       
+          call VecGetArrayF90(x_flow_loc,vecpointer,ierr)
+          CHKERRQ(ierr)
+  
+          if(flag_non_interlaced) then
+            do i = 1, nngl
+              rval(isize,i) = vecpointer(2*i-1)
+            end do
+          else
+            do i = 1, nngl
+              rval(isize,i) = vecpointer(i)
+            end do
+          end if
+          
+          call VecRestoreArrayF90(x_flow_loc,vecpointer,ierr)
+          CHKERRQ(ierr)
+
+        end do
+
+    end subroutine solver_dd_local_to_global_r2d
 
 end module solver_dd
     

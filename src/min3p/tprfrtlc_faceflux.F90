@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/tprfrtlc_faceflux.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tprfrtlc_faceflux.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -12,7 +12,7 @@
 !c subroutine tprfvs
 !c -----------------
 !c
-!c write transient data of interface flux for aqueous species 
+!c write transient data of interface flux for aqueous species and gas phases
 !c to output file
 !c
 !c written by:      Danyang Su - Nov 27, 2017
@@ -45,7 +45,7 @@
 !c 
 !c --------------------------------------------------------------------------
 
-      subroutine tprfrtlc_faceflux(ivol,jvol,igb,ngb_tstep)
+      subroutine tprfrtlc_faceflux(ivol,jvol,igb,ngb_tstep,flag_skip)
  
 #ifdef PETSC
 #include <petscversion.h>
@@ -54,17 +54,38 @@
       use petscsys
 #endif
 #endif
-      use gen, only : ngb_vol_ijface_jtemp, xg, yg, zg,nfloatbit,      &
-                      realbuffer_gb, igcvel, offset_igcvel,            &
-                      ngb_vol_ijface_area, offset_igcvel_ijk,          &
-                      ngb_vol_ijface_velratio, time_io, n,             &
-                      cnew, cx, totcnew, cinfrt_va,                    &
-                      cinfrt_da, cinfvs_a, pornew, sanew,              &
-                      type_averaging_De, b_output_trans_binary
-      use multidiff, only : multi_diff, delta_totviscnew,              &
+
+      use dgml
+      use chem
+      use phys
+      use gen, only : ngb_vol_ijface_jtemp, xg, yg, zg, nfloatbit,            &
+                      delt, realbuffer_gb, ngb_vol_ijface_area,               &
+                      ifrt, offset_ifrt, offset_ifrt_ijk,                     &
+                      ifga, offset_ifga, offset_ifga_ijk,                        &
+                      ngb_vol_ijface_velratio, time_io, n, delt,              &
+                      mtime, mtime_append, i_append_sim, time_io_rs,          &
+                      ifrt_vx_adv_accu,ifrt_vy_adv_accu,ifrt_vz_adv_accu,     &
+                      ifrt_vx_dif_accu,ifrt_vy_dif_accu,ifrt_vz_dif_accu,     &
+                      ifrt_vx_mig_accu,ifrt_vy_mig_accu,ifrt_vz_mig_accu,     &
+                      ifrt_vx_tot_accu,ifrt_vy_tot_accu,ifrt_vz_tot_accu,     &
+                      ifga_vx_adv_accu,ifga_vy_adv_accu,ifga_vz_adv_accu,        &
+                      ifga_vx_dif_accu,ifga_vy_dif_accu,ifga_vz_dif_accu,        &
+                      ifga_vx_tot_accu,ifga_vy_tot_accu,ifga_vz_tot_accu,        &
+                      ifga_vx_dgm_accu,ifga_vy_dgm_accu,ifga_vz_dgm_accu,        &
+                      ifga_vx_neq_accu,ifga_vy_neq_accu,ifga_vz_neq_accu,        &
+                      ascii_fmt, cnew, cxnew, totcnew, cinfrt_va, cinfrt_da,  &
+                      cinfvs_a, pornew, sanew, type_averaging_De,             &
+                      gmfrac, totgnew, gnew, gij, gacc, gmfracij, totgij,     &
+                      gporij, relpermg, permij, cinfvs_g, tkel, iupsg,        &
+                      cinfrt_dg, gas_advection,  gas_gravity,                 &
+                      b_output_trans_binary, ilog      
+
+      use multidiff, only : multi_diff, delta_totviscnew, tauij, deltaij,     &
                             delta_electromignew, cinfrt_mcd
                             
       use module_binary_mpiio, only : binary_write_data
+      
+      use file_utility, only : reposition_file 
 
 #ifdef OPENMP
       use omp_lib 
@@ -80,21 +101,47 @@
 #endif
       
       integer :: ivol, jvol, jtemp, igb, ngb_tstep
-      
+      logical :: flag_skip
+
       !c local variables
-      integer :: i1, nvars, ic, tid
+      integer :: i1, nvars, ic, tid, irecord
       real*8 :: areai, velxratio, velyratio, velzratio,                &
                 aflux_adv, aflux_dif, aflux_mig, aflux_tot,            &
                 vela_adv, vela_dif, vela_mig, vela_tot,                &
-                vela_adv_x, vela_dif_x, vela_mig_x, vela_tot_x,        &
-                vela_adv_y, vela_dif_y, vela_mig_y, vela_tot_y,        &
-                vela_adv_z, vela_dif_z, vela_mig_z, vela_tot_z
-      
-      character*1 :: iups         
-      real*8, external :: fluxv_vl, fluxd, fluxv_vl_dp, fluxd_dp
-      external elecmigration
+                vela_dgm, vela_neq,                                    &
+                vela_adv_x, vela_adv_y, vela_adv_z,                    &
+                vela_dif_x, vela_dif_y, vela_dif_z,                    &
+                vela_mig_x, vela_mig_y, vela_mig_z,                    &
+                vela_tot_x, vela_tot_y, vela_tot_z,                    &
+                vela_dgm_x, vela_dgm_y, vela_dgm_z,                    &
+                vela_neq_x, vela_neq_y, vela_neq_z
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0      
+!c    advective flux calculations                   
+      character*12 spt_weight
+
+!c  dgm calculations
+      integer*4 :: ipvt(ng)
+      real*8    :: ludecomp(ng,ng)
+      real*8    :: dgm_gflux(nc), dgflux_cd_dgm(n)
+      real*8    :: fmat(ng) 
+
+!c  maxwell stefan
+      real*8     ms_gflux(nc), neflux(nc)
+      
+!c    more variables (gas)
+      real*8 :: relpgij, densgij, viscgij, cinfrt,                     &
+                diff, gpij, gpivol_ivol, gpivol_jvol,                  &
+                gdens_ivol, gdens_jvol, gvisc_ivol, gvisc_jvol
+                
+      real*8 :: dgflux_ca(n), dgflux_cd(n)
+      
+      character*1 :: iups   
+      real*8 :: rdummys(31)      
+      real*8, external :: fluxv_vl, fluxvg, fluxd, fluxv_vl_dp,        &
+                          fluxd_dp, gasp_m, gasd_m, gasv, gasdiff2
+      external elecmigration, wgprop
+
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, rverysmall = 1.d-30  
       
       i1 = ngb_vol_ijface_jtemp(igb)
 
@@ -116,15 +163,16 @@
 !c compute flux along the control volume interface
 
       if (multi_diff) then
-        call totdyvisc(ivol,jvol,cnew(:,ivol),cx(:,ivol),          &
-                       cnew(:,jvol),cx(:,jvol),                    &
+        call totdyvisc(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),           &
+                       cnew(:,jvol),cxnew(:,jvol),                     &
                        delta_totviscnew(:,tid))
 
-        call elecmigration(ivol,jvol,cnew(:,ivol),cx(:,ivol),      &
-                           cnew(:,jvol),cx(:,jvol),                &
+        call elecmigration(ivol,jvol,cnew(:,ivol),cxnew(:,ivol),       &
+                           cnew(:,jvol),cxnew(:,jvol),                 &
                            delta_electromignew(:,tid))
       end if
       
+!c compute fluxes and velocities for aqueous species and write to output file
       do ic = 1, n
 
         aflux_adv = r0
@@ -169,7 +217,7 @@
         vela_adv_x = vela_adv * velxratio
         vela_adv_y = vela_adv * velyratio
         vela_adv_z = vela_adv * velzratio
-        
+       
         vela_dif_x = vela_dif * velxratio
         vela_dif_y = vela_dif * velyratio
         vela_dif_z = vela_dif * velzratio
@@ -182,30 +230,353 @@
         vela_tot_y = vela_tot * velyratio
         vela_tot_z = vela_tot * velzratio
 
+        ifrt_vx_adv_accu(ic,igb) = ifrt_vx_adv_accu(ic,igb) + vela_adv_x*delt
+        ifrt_vy_adv_accu(ic,igb) = ifrt_vy_adv_accu(ic,igb) + vela_adv_y*delt
+        ifrt_vz_adv_accu(ic,igb) = ifrt_vz_adv_accu(ic,igb) + vela_adv_z*delt
+
+        ifrt_vx_dif_accu(ic,igb) = ifrt_vx_dif_accu(ic,igb) + vela_dif_x*delt
+        ifrt_vy_dif_accu(ic,igb) = ifrt_vy_dif_accu(ic,igb) + vela_dif_y*delt
+        ifrt_vz_dif_accu(ic,igb) = ifrt_vz_dif_accu(ic,igb) + vela_dif_z*delt
+
+        ifrt_vx_mig_accu(ic,igb) = ifrt_vx_mig_accu(ic,igb) + vela_mig_x*delt
+        ifrt_vy_mig_accu(ic,igb) = ifrt_vy_mig_accu(ic,igb) + vela_mig_y*delt
+        ifrt_vz_mig_accu(ic,igb) = ifrt_vz_mig_accu(ic,igb) + vela_mig_z*delt
+
+        ifrt_vx_tot_accu(ic,igb) = ifrt_vx_tot_accu(ic,igb) + vela_tot_x*delt
+        ifrt_vy_tot_accu(ic,igb) = ifrt_vy_tot_accu(ic,igb) + vela_tot_y*delt
+        ifrt_vz_tot_accu(ic,igb) = ifrt_vz_tot_accu(ic,igb) + vela_tot_z*delt
+
 !c  write data back to file
-        if (b_output_trans_binary) then
-          nvars = 13 
-          realbuffer_gb(1:nvars)= (/time_io,                           &
-                                    vela_adv_x,vela_adv_y,vela_adv_z,  &
-                                    vela_dif_x,vela_dif_y,vela_dif_z,  &
-                                    vela_mig_x,vela_mig_y,vela_mig_z,  &
-                                    vela_tot_x,vela_tot_y,vela_tot_z/)
+        if (.not.flag_skip) then
+          nvars = 25 
+          if (b_output_trans_binary) then
+            realbuffer_gb(1:nvars)= (/time_io,                                         &
+              vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
+              vela_mig_x,vela_mig_y,vela_mig_z,vela_tot_x,vela_tot_y,vela_tot_z,       &
+              ifrt_vx_adv_accu(ic,igb),ifrt_vy_adv_accu(ic,igb),ifrt_vz_adv_accu(ic,igb), &
+              ifrt_vx_dif_accu(ic,igb),ifrt_vy_dif_accu(ic,igb),ifrt_vz_dif_accu(ic,igb), &
+              ifrt_vx_mig_accu(ic,igb),ifrt_vy_mig_accu(ic,igb),ifrt_vz_mig_accu(ic,igb), &
+              ifrt_vx_tot_accu(ic,igb),ifrt_vy_tot_accu(ic,igb),ifrt_vz_tot_accu(ic,igb)/)
+            
+            call binary_write_data(ifrt(ic,igb), 1, (/ngb_tstep/),     &
+                        offset_ifrt_ijk(ic,igb),.true.)
+            call binary_write_data(ifrt(ic,igb), nvars, realbuffer_gb, &
+                        offset_ifrt(ic,igb),.true.) 
           
-          call binary_write_data(igcvel(ic,igb), 1, (/ngb_tstep/),     &
-                      offset_igcvel_ijk(ic,igb),.true.)
-          call binary_write_data(igcvel(ic,igb), nvars, realbuffer_gb, &
-                      offset_igcvel(ic,igb),.true.) 
-        
-          offset_igcvel(ic,igb) = offset_igcvel(ic,igb) + nvars*nfloatbit
-        else
-          write(igcvel(ic,igb),'(13e15.6e3)') time_io,                 &
-                            vela_adv_x,vela_adv_y,vela_adv_z,          &
-                            vela_dif_x,vela_dif_y,vela_dif_z,          &
-                            vela_mig_x,vela_mig_y,vela_mig_z,          &
-                            vela_tot_x,vela_tot_y,vela_tot_z
+            offset_ifrt(ic,igb) = offset_ifrt(ic,igb) + nvars*nfloatbit
+          else
+  
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(ifrt(ic,igb),irecord)
+  
+              if (irecord > 0) then
+                !c locate to the restart time and get previous results
+                call reposition_file(ifrt(ic,igb),irecord,time_io_rs)
+                read(ifrt(ic,igb),*,end=10,err=10) rdummys(1:nvars)
+                !c reposition to the line to append results
+                call reposition_file(ifrt(ic,igb),irecord)
+  
+                !c get the last record and add to the current value for accumulative results
+                ifrt_vx_adv_accu(ic,igb) = ifrt_vx_adv_accu(ic,igb) + rdummys(14)
+                ifrt_vy_adv_accu(ic,igb) = ifrt_vy_adv_accu(ic,igb) + rdummys(15)
+                ifrt_vz_adv_accu(ic,igb) = ifrt_vz_adv_accu(ic,igb) + rdummys(16)
+                ifrt_vx_dif_accu(ic,igb) = ifrt_vx_dif_accu(ic,igb) + rdummys(17)
+                ifrt_vy_dif_accu(ic,igb) = ifrt_vy_dif_accu(ic,igb) + rdummys(18)
+                ifrt_vz_dif_accu(ic,igb) = ifrt_vz_dif_accu(ic,igb) + rdummys(19)
+                ifrt_vx_mig_accu(ic,igb) = ifrt_vx_mig_accu(ic,igb) + rdummys(20)
+                ifrt_vy_mig_accu(ic,igb) = ifrt_vy_mig_accu(ic,igb) + rdummys(21)
+                ifrt_vz_mig_accu(ic,igb) = ifrt_vz_mig_accu(ic,igb) + rdummys(22)
+                ifrt_vx_tot_accu(ic,igb) = ifrt_vx_tot_accu(ic,igb) + rdummys(23)
+                ifrt_vy_tot_accu(ic,igb) = ifrt_vy_tot_accu(ic,igb) + rdummys(24)
+                ifrt_vz_tot_accu(ic,igb) = ifrt_vz_tot_accu(ic,igb) + rdummys(25)
+              end if
+10            continue
+            end if
+  
+            if (i_append_sim < 1 .or.                                                    &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(ifrt(ic,igb),ascii_fmt) time_io,                                   &
+                vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
+                vela_mig_x,vela_mig_y,vela_mig_z,vela_tot_x,vela_tot_y,vela_tot_z,       &
+                ifrt_vx_adv_accu(ic,igb),ifrt_vy_adv_accu(ic,igb),ifrt_vz_adv_accu(ic,igb), &
+                ifrt_vx_dif_accu(ic,igb),ifrt_vy_dif_accu(ic,igb),ifrt_vz_dif_accu(ic,igb), &
+                ifrt_vx_mig_accu(ic,igb),ifrt_vy_mig_accu(ic,igb),ifrt_vz_mig_accu(ic,igb), &
+                ifrt_vx_tot_accu(ic,igb),ifrt_vy_tot_accu(ic,igb),ifrt_vz_tot_accu(ic,igb)
+            end if  
+          end if
         end if
 
-      enddo
+      end do
+
+!c compute fluxes and velocities for gas phases, and write to output file
+      if (ng > 0) then
+
+!c  pressure, density, viscosity, relative permeability
+        gpivol_ivol = gasp_m(mdens_g(ivol),ivol)
+        gpivol_jvol = gasp_m(mdens_g(jvol),jvol)
+        gdens_ivol  = gasd_m(mdens_g(ivol),gmfrac(:,ivol))
+        gdens_jvol  = gasd_m(mdens_g(jvol),gmfrac(:,jvol))
+        gvisc_ivol  = gasv(gmfrac(:,ivol))
+        gvisc_jvol  = gasv(gmfrac(:,jvol))
+
+!c  calculate gas properties at interface according to weighting scheme
+        call wgprop(totgnew(:,ivol),totgnew(:,jvol),totgij   , &
+                    gnew(:,ivol)   ,gnew(:,jvol)   ,gij      , &
+                    gmfrac(:,ivol) ,gmfrac(:,jvol) ,gmfracij , &
+                    relpermg(ivol) ,relpermg(jvol) ,relpgij  , &
+                    gdens_ivol     ,gdens_jvol     ,densgij  , &
+                    gvisc_ivol     ,gvisc_jvol     ,viscgij  , &
+                    gpivol_ivol    ,gpivol_jvol    ,gpij     , &
+                    zg(ivol)       ,zg(jvol)       ,           &
+                    spt_weight     ,iupsg(i1)      ,           &
+                    nc             ,ng             ,gacc     )
+
+!c ----- Dusty Gas module -------------------------------------------------------
+
+        if (dgm) then
+
+!c         solve A F = B
+!c         computes fluxes F of all gas components at current c.v. interphase
+
+          call dgm_fluxdg (gnew(:,ivol)     ,gnew(:,jvol)  ,   &
+                           gij              ,gmfracij      ,   &
+                           zg(ivol)         ,zg(jvol)      ,   &
+                           densgij          ,gpij          ,   &
+                           tkel(ivol)       ,permij(i1)    ,   &
+                           relpgij          ,tauij(i1)     ,   &
+                           gporij(i1)       ,deltaij(i1)   ,   &
+                           rverysmall       ,                  &
+                           ludecomp         ,                  &
+                           fmat             ,                  &
+                           ipvt             ,                  &
+                           dgm_gflux        ,neflux       )
+
+!c ----- Maxwell Stefan module --------------------------------------------------
+
+        else if (maxwell) then
+
+          call ms_fluxdg (gnew(:,ivol)     ,gnew(:,jvol)    ,  &
+                          gij              ,gmfracij        ,  &
+                          zg(ivol)         ,zg(jvol)        ,  &
+                          densgij          ,gpij            ,  &
+                          tkel(ivol)       ,tauij(i1)       ,  &
+                          gporij(i1)       ,deltaij(i1)     ,  &
+                          rverysmall       ,                   &
+                          ludecomp         ,fmat            ,  &
+                          ipvt             ,equimolar       ,  &
+                          ms_gflux         ,neflux       )
+
+        endif
+
+!c find flux between control volume pair
+
+!c  loop for contribution from gas components
+        do ic = 1, n
+
+          if (gas_advection) then
+            dgflux_ca(ic) = fluxvg(gpivol_ivol ,gpivol_jvol ,  &
+                                   zg(ivol)    ,zg(jvol)    ,  &
+                                   totgij(ic)  ,relpgij     ,  &
+                                   densgij     ,viscgij     ,  &
+                                   cinfvs_g(i1),               &
+                                   gas_gravity ,gacc)
+          else
+            dgflux_ca(ic) = r0
+          endif  
+
+!c ----------------gas diffusion -------------------------
+!c ---------------- fick's law, business as usual -------------------------
+                       
+          if (blanc_diff_g) then
+!c        diffusion coefficient calc'd with LeBlanc's law
+
+            diff  = gasdiff2(gmfrac(:,ivol),gmfrac(:,jvol),    &
+                             gpivol_ivol   ,gpivol_jvol   ,    &
+                             zg(ivol)      ,zg(jvol)      ,    &
+                             gdens_ivol    ,gdens_jvol    ,    &
+                             ic            ,                   &
+                             iupsg(i1)  ,spt_weight    )
+
+            cinfrt = cinfrt_dg(i1) * diff
+
+          else 
+!c        single constant diffusion
+            cinfrt = cinfrt_dg(i1)
+          endif 
+
+          dgflux_cd(ic) =  - fluxd(totgnew(ic,ivol),          & !diff flux
+                                   totgnew(ic,jvol),          &
+                                   cinfrt)
+
+          if (dgm) then
+
+            if (gporij(i1).lt.rverysmall) then
+               dgflux_cd_dgm(ic) = r0
+               neflux(ic) = r0
+            else
+
+              dgflux_cd_dgm(ic) = cinfrt_dg(i1)             &
+                                  * deltaij(i1)             &
+                                  * dgm_gflux(ic)           &
+                                  / tauij(i1)               &
+                                  / gporij(i1)               
+                                                                
+              neflux(ic) = cinfrt_dg(i1)                    &
+                                  * deltaij(i1)             &
+                                  * neflux(ic)              &
+                                  / tauij(i1)               &
+                                  / gporij(i1) 
+            endif
+
+          else if (maxwell) then
+
+!c           check if there is gas phase
+            if (gporij(i1).lt.rverysmall) then
+              dgflux_cd_dgm(ic) = r0
+              neflux(ic) = r0
+            else
+
+              dgflux_cd_dgm(ic) = cinfrt_dg(i1)             &
+                                  * deltaij(i1)             &
+                                  * ms_gflux(ic)            &
+                                  / tauij(i1)               &
+                                  / gporij(i1)
+                                                                
+              neflux(ic) = cinfrt_dg(i1)                    &
+                                  * deltaij(i1)             &
+                                  * neflux(ic)              &
+                                  / tauij(i1)               &
+                                  / gporij(i1)
+
+            endif
+
+          else
+            dgflux_cd_dgm(ic) = dgflux_cd(ic)
+            neflux(ic)        = r0
+          endif
+
+
+
+!c  velocity is the flux (m^3/day) divided
+!c  by the interfacial area between the two control volumes
+
+          vela_adv = dgflux_ca(ic) / areai * 1.0d+3
+          vela_dif = dgflux_cd(ic) / areai * 1.0d+3
+          vela_tot = vela_adv + vela_dif
+          vela_dgm = dgflux_cd_dgm(ic) / areai * 1.0d+3
+          vela_neq = neflux(ic) / areai * 1.0d+3
+
+          vela_adv_x = vela_adv * velxratio
+          vela_adv_y = vela_adv * velyratio
+          vela_adv_z = vela_adv * velzratio
+
+          vela_dif_x = vela_dif * velxratio
+          vela_dif_y = vela_dif * velyratio
+          vela_dif_z = vela_dif * velzratio
+
+          vela_tot_x = vela_tot * velxratio
+          vela_tot_y = vela_tot * velyratio
+          vela_tot_z = vela_tot * velzratio
+
+          vela_dgm_x = vela_dgm * velxratio
+          vela_dgm_y = vela_dgm * velyratio
+          vela_dgm_z = vela_dgm * velzratio
+
+          vela_neq_x = vela_neq * velxratio
+          vela_neq_y = vela_neq * velyratio
+          vela_neq_z = vela_neq * velzratio
+
+          ifga_vx_adv_accu(ic,igb) = ifga_vx_adv_accu(ic,igb) + vela_adv_x*delt
+          ifga_vy_adv_accu(ic,igb) = ifga_vy_adv_accu(ic,igb) + vela_adv_y*delt
+          ifga_vz_adv_accu(ic,igb) = ifga_vz_adv_accu(ic,igb) + vela_adv_z*delt
+
+          ifga_vx_dif_accu(ic,igb) = ifga_vx_dif_accu(ic,igb) + vela_dif_x*delt
+          ifga_vy_dif_accu(ic,igb) = ifga_vy_dif_accu(ic,igb) + vela_dif_y*delt
+          ifga_vz_dif_accu(ic,igb) = ifga_vz_dif_accu(ic,igb) + vela_dif_z*delt
+
+          ifga_vx_tot_accu(ic,igb) = ifga_vx_tot_accu(ic,igb) + vela_tot_x*delt
+          ifga_vy_tot_accu(ic,igb) = ifga_vy_tot_accu(ic,igb) + vela_tot_y*delt
+          ifga_vz_tot_accu(ic,igb) = ifga_vz_tot_accu(ic,igb) + vela_tot_z*delt
+
+          ifga_vx_dgm_accu(ic,igb) = ifga_vx_dgm_accu(ic,igb) + vela_dgm_x*delt
+          ifga_vy_dgm_accu(ic,igb) = ifga_vy_dgm_accu(ic,igb) + vela_dgm_y*delt
+          ifga_vz_dgm_accu(ic,igb) = ifga_vz_dgm_accu(ic,igb) + vela_dgm_z*delt
+
+          ifga_vx_neq_accu(ic,igb) = ifga_vx_neq_accu(ic,igb) + vela_neq_x*delt
+          ifga_vy_neq_accu(ic,igb) = ifga_vy_neq_accu(ic,igb) + vela_neq_y*delt
+          ifga_vz_neq_accu(ic,igb) = ifga_vz_neq_accu(ic,igb) + vela_neq_z*delt
+
+!c  write data back to file
+          if (.not.flag_skip) then
+            nvars = 19       !31 
+            if (b_output_trans_binary) then
+              realbuffer_gb(1:nvars)= (/time_io,                                         &
+                vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
+                vela_tot_x,vela_tot_y,vela_tot_z,                                        &
+                !vela_dgm_x,vela_dgm_y,vela_dgm_z,vela_neq_x,vela_neq_y,vela_neq_z,       &
+                ifga_vx_adv_accu(ic,igb),ifga_vy_adv_accu(ic,igb),ifga_vz_adv_accu(ic,igb), &
+                ifga_vx_dif_accu(ic,igb),ifga_vy_dif_accu(ic,igb),ifga_vz_dif_accu(ic,igb), &
+                ifga_vx_tot_accu(ic,igb),ifga_vy_tot_accu(ic,igb),ifga_vz_tot_accu(ic,igb)/)
+                !ifga_vx_dgm_accu(ic,igb),ifga_vy_dgm_accu(ic,igb),ifga_vz_dgm_accu(ic,igb), &
+                !ifga_vx_neq_accu(ic,igb),ifga_vy_neq_accu(ic,igb),ifga_vz_neq_accu(ic,igb)/)
+                
+              
+              call binary_write_data(ifga(ic,igb), 1, (/ngb_tstep/),     &
+                          offset_ifga_ijk(ic,igb),.true.)
+              call binary_write_data(ifga(ic,igb), nvars, realbuffer_gb, &
+                          offset_ifga(ic,igb),.true.) 
+            
+              offset_ifga(ic,igb) = offset_ifga(ic,igb) + nvars*nfloatbit
+            else
+    
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(ifga(ic,igb),irecord)
+    
+                if (irecord > 0) then
+                  !c locate to the restart time and get previous results
+                  call reposition_file(ifga(ic,igb),irecord,time_io_rs)
+                  read(ifga(ic,igb),*,end=20,err=20) rdummys(1:nvars)
+                  !c reposition to the line to append results
+                  call reposition_file(ifga(ic,igb),irecord)
+    
+                  !c get the last record and add to the current value for accumulative results
+                  ifga_vx_adv_accu(ic,igb) = ifga_vx_adv_accu(ic,igb) + rdummys(11)
+                  ifga_vy_adv_accu(ic,igb) = ifga_vy_adv_accu(ic,igb) + rdummys(12)
+                  ifga_vz_adv_accu(ic,igb) = ifga_vz_adv_accu(ic,igb) + rdummys(13)
+                  ifga_vx_dif_accu(ic,igb) = ifga_vx_dif_accu(ic,igb) + rdummys(14)
+                  ifga_vy_dif_accu(ic,igb) = ifga_vy_dif_accu(ic,igb) + rdummys(15)
+                  ifga_vz_dif_accu(ic,igb) = ifga_vz_dif_accu(ic,igb) + rdummys(16)
+                  ifga_vx_tot_accu(ic,igb) = ifga_vx_tot_accu(ic,igb) + rdummys(17)
+                  ifga_vy_tot_accu(ic,igb) = ifga_vy_tot_accu(ic,igb) + rdummys(18)
+                  ifga_vz_tot_accu(ic,igb) = ifga_vz_tot_accu(ic,igb) + rdummys(19)
+                  !ifga_vx_dgm_accu(ic,igb) = ifga_vx_dgm_accu(ic,igb) + rdummys(26)
+                  !ifga_vy_dgm_accu(ic,igb) = ifga_vy_dgm_accu(ic,igb) + rdummys(27)
+                  !ifga_vz_dgm_accu(ic,igb) = ifga_vz_dgm_accu(ic,igb) + rdummys(28)
+                  !ifga_vx_neq_accu(ic,igb) = ifga_vx_neq_accu(ic,igb) + rdummys(29)
+                  !ifga_vy_neq_accu(ic,igb) = ifga_vy_neq_accu(ic,igb) + rdummys(30)
+                  !ifga_vz_neq_accu(ic,igb) = ifga_vz_neq_accu(ic,igb) + rdummys(31)
+                end if
+20              continue
+              end if
+  
+              if (i_append_sim < 1 .or.                                                    &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                write(ifga(ic,igb),ascii_fmt) time_io,                                      &
+                  vela_adv_x,vela_adv_y,vela_adv_z,vela_dif_x,vela_dif_y,vela_dif_z,       &
+                  vela_tot_x,vela_tot_y,vela_tot_z,                                        &
+                  !vela_dgm_x,vela_dgm_y,vela_dgm_z,vela_neq_x,vela_neq_y,vela_neq_z,       &
+                  ifga_vx_adv_accu(ic,igb),ifga_vy_adv_accu(ic,igb),ifga_vz_adv_accu(ic,igb), &
+                  ifga_vx_dif_accu(ic,igb),ifga_vy_dif_accu(ic,igb),ifga_vz_dif_accu(ic,igb), &
+                  ifga_vx_tot_accu(ic,igb),ifga_vy_tot_accu(ic,igb),ifga_vz_tot_accu(ic,igb)
+                  !ifga_vx_dgm_accu(ic,igb),ifga_vy_dgm_accu(ic,igb),ifga_vz_dgm_accu(ic,igb), &
+                  !ifga_vx_neq_accu(ic,igb),ifga_vy_neq_accu(ic,igb),ifga_vz_neq_accu(ic,igb)
+              end if  
+            end if
+          end if
+
+        end do    !c loop for contribution from gas components
+
+      end if
          
       return
       end subroutine tprfrtlc_faceflux

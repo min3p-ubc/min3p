@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/infcrtdd_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/infcrtdd_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -114,7 +114,7 @@
                       uvsnew, sonew, relperm, fully_saturated,         &
                       variably_saturated, njavs, nngl,                 &
                       tortuosity_corr, time, tfinal, cinfrt_da_ic,     &
-                      diff_coff, diff_ic, diff_ic_tensor,              &
+                      comp_dep_diff_coff, diff_ic, diff_ic_tensor,     &
                       type_diff_coeff, type_diff_ic_coeff,             &
                       useAnisoTauCorr, useAnisoDispCorr,               &
                       useAnisoCondCorr, assigned_tau, tau,             &
@@ -571,17 +571,22 @@
 
           end if          
 
-!cprovi-------------------------------------------------------------------
-!cprovi-------------------------------------------------------------------
-!cprovi Not harmonic average in porosity 
-!cprovi-------------------------------------------------------------------
-!cprovi-------------------------------------------------------------------
-      
-          if (.not.harmonic_porosity) then
-         
-            !c average of ivol-jvol, can be other interpolation methods
-            porav = 0.5d0*(min(r1, pornew(ivol))+                      &
-                           min(r1,pornew(jvol)))
+!cdsu-------------------------------------------------------------------
+!cdsu 'pseudo element' based averaging that parameter is averaged at
+!cdsu cell-level. For example, for 2D (V1-V2-V3-VV4) cell, parameter at 
+!cdsu control volume interface V1-V2 is averaged based on all the parameters
+!cdsu at V1,V2,V3 and V4, NOT only V1 and V2.
+!cdsu-------------------------------------------------------------------
+          if (type_averaging_De.eq.'pseudo element') then
+
+            if (harmonic_porosity) then
+              porav = math_common_harmonic(min(r1,pornew(ivol)),       &
+                                           min(r1,pornew(jvol)))
+            else
+              porav = 0.5d0*(min(r1,pornew(ivol))+                     &
+                             min(r1,pornew(jvol)))
+            end if
+
             if (assigned_tau) then
               tauav = 0.5d0*(tau(ivol)*tau_fac(ivol)+                  &
                              tau(jvol)*tau_fac(jvol))
@@ -614,45 +619,17 @@
             else if (type_diff_coeff > 0) then
               diffav_tensor = diff_a_tensor
             end if
-            if (.not.diff_coff) then
-              if (type_averaging_De .ne. 'arithmetic De' ) then
-                if (type_diff_coeff == 0) then
-                  diff_eff = diffcoff(diffav,satav,porav,              &
-                                    tortuosity_corr,assigned_tau,      &
-                                    tauav,type_tortuosity,marchieav,   &
-                                    so_av,tor_corr_a_mq,tor_corr_b_mq)
-                else if (type_diff_coeff > 0) then
-                  diff_eff_tensor = diffcoff(diffav_tensor,satav,porav,&
-                                    tortuosity_corr,assigned_tau,      &
-                                    tauav,type_tortuosity,marchieav,   &
-                                    so_av,tor_corr_a_mq,tor_corr_b_mq)
-                end if
-              else
-                por_i = min( r1, pornew(ivol) )
-                por_j = min( r1, pornew(jvol) )
-        
-                if (type_diff_coeff == 0) then
-                  diff_eff_i = diffcoff(diffav,satav,por_i,              &
-                                       tortuosity_corr,assigned_tau,     &
-                                       tauav,type_tortuosity,marchieav,  &
-                                       so_av,tor_corr_a_mq,tor_corr_b_mq)
-                  diff_eff_j = diffcoff(diffav,satav,por_j,              &
-                                       tortuosity_corr,assigned_tau,     &
-                                       tauav,type_tortuosity,marchieav,  &
-                                       so_av,tor_corr_a_mq,tor_corr_b_mq)
-                  diff_eff = (diff_eff_i + diff_eff_j)/2.0d0
-                else if (type_diff_coeff > 0) then
-                  diff_eff_i_tensor = diffcoff(diffav_tensor,satav,por_i,&
-                                       tortuosity_corr,assigned_tau,     &
-                                       tauav,type_tortuosity,marchieav,  &
-                                       so_av,tor_corr_a_mq,tor_corr_b_mq)
-                  diff_eff_j_tensor = diffcoff(diffav_tensor,satav,por_j,&
-                                       tortuosity_corr,assigned_tau,     &
-                                       tauav,type_tortuosity,marchieav,  &
-                                       so_av,tor_corr_a_mq,tor_corr_b_mq)
-                  diff_eff_tensor = (diff_eff_i_tensor +                 &
-                                     diff_eff_j_tensor)/2.0d0
-                end if
+            if (.not.comp_dep_diff_coff) then
+              if (type_diff_coeff == 0) then
+                diff_eff = diffcoff(diffav,satav,porav,              &
+                                  tortuosity_corr,assigned_tau,      &
+                                  tauav,type_tortuosity,marchieav,   &
+                                  so_av,tor_corr_a_mq,tor_corr_b_mq)
+              else if (type_diff_coeff > 0) then
+                diff_eff_tensor = diffcoff(diffav_tensor,satav,porav,&
+                                  tortuosity_corr,assigned_tau,      &
+                                  tauav,type_tortuosity,marchieav,   &
+                                  so_av,tor_corr_a_mq,tor_corr_b_mq)
               end if
 
               if (b_water_freezing) then

@@ -4,7 +4,7 @@
 !> $Revision: 609 $
 !> $Author: dsu $
 !> $Date: 2018-09-14 11:47:55 -0700 (Fri, 14 Sep 2018) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/findstrg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/findstrg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -48,6 +48,8 @@
 !c ----------------------------------------------------------------------
  
       subroutine findstrg(subsection,itmp,found_subsection)
+
+      use file_utility, only : makelowercase
       
       implicit none
 
@@ -56,7 +58,7 @@
       logical found_subsection
 !c  change from 72 to 256 to support long string, e.g., database full path
       character*256 string
- 
+
 !c  rewind input file
 
       rewind(itmp)
@@ -66,6 +68,7 @@
       found_subsection = .false.
       do while (.not.found_subsection)
         read(itmp,*,err=999,end=999) string
+        call makelowercase(string)
         if (string.eq.subsection) then
           found_subsection = .true.
         end if
@@ -76,6 +79,8 @@
 
       
       subroutine findstrginzone(subsection,itmp,found_subsection)
+
+      use file_utility, only : makelowercase
       
       implicit none
 
@@ -84,7 +89,7 @@
       logical found_subsection      
 !c  change from 72 to 256 to support long string, e.g., database full path
       character*256 string
- 
+
 !c  rewind input file
 
       rewind(itmp)
@@ -94,6 +99,7 @@
       found_subsection = .false.
       do while (.not.found_subsection)
         read(itmp,*,err=999,end=999) string
+        call makelowercase(string)
         if (string.eq.subsection) then
           found_subsection = .true.
         end if
@@ -108,6 +114,8 @@
 
     
       subroutine findstrginblock(strblockname,subsection,itmp,found_subsection)
+
+      use file_utility, only : makelowercase
       
       implicit none
 
@@ -127,9 +135,11 @@
       found_subsection = .false.
       do while (.not.found_subsection)
         read(itmp,*,err=999,end=999) string
+        call makelowercase(string)
         if (string.eq.strblockname) then
           do while (.not.found_subsection)
             read(itmp,*,err=999,end=999) string
+            call makelowercase(string)
             if (string.eq.subsection) then
               found_subsection = .true.
               goto 999

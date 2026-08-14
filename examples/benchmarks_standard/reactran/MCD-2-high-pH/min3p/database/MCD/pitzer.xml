@@ -1,0 +1,386 @@
+
+<pitzerdatabase>
+<b0>
+ <coeff sps1="al+3" sps2="so4-2"      value="0.854"/>
+ <coeff sps1="na+1" sps2="cl-1"       value="0.0765"/>
+ <coeff sps1="k+1" sps2="cl-1"        value="0.04835"/>
+ <coeff sps1="mg+2" sps2="cl-1"       value="0.35235"/>
+ <coeff sps1="ca+2" sps2="cl-1"       value="0.3159"/>
+ <coeff sps1="mgoh+" sps2="cl-1"    value="-0.1"/>
+ <coeff sps1="h+1" sps2="cl-1"        value="0.1775"/>
+ <coeff sps1="li+1" sps2="cl-1"       value="0.1494"/>
+ <coeff sps1="sr+2" sps2="cl-1"       value="0.2858"/>
+ <coeff sps1="fe+2" sps2="cl-1"       value="0.335925"/>
+ <coeff sps1="mn+2" sps2="cl-1"       value="0.327225"/>
+ <coeff sps1="ba+2" sps2="cl-1"      value="0.2628"/>
+ <coeff sps1="cab(oh)4+" sps2="cl-1" value="0.12"/>
+ <coeff sps1="mgb(oh)4+" sps2="cl-1" value="0.16"/>
+ <coeff sps1="na+1" sps2="br-"      value="0.0973"/>
+ <coeff sps1="k+1" sps2="br-"       value="0.0569"/>
+ <coeff sps1="h+1" sps2="br-"       value="0.1960"/>
+ <coeff sps1="mg+2" sps2="br-"     value="0.4327"/>
+ <coeff sps1="ca+2" sps2="br-"     value="0.3816"/>
+ <coeff sps1="li+1" sps2="br-"      value="0.1748"/>
+ <coeff sps1="sr+2" sps2="br-"     value="0.331125"/>
+ <coeff sps1="ba+2" sps2="br-"     value="0.31455"/>
+ <coeff sps1="na+1" sps2="so4-2"    value="0.01958"/>
+ <coeff sps1="k+1" sps2="so4-2"     value="0.04995"/>
+ <coeff sps1="mg+2" sps2="so4-2"   value="0.221"/>
+ <coeff sps1="ca+2" sps2="so4-2"   value="0.2"/>
+ <coeff sps1="h+1" sps2="so4-2"     value="0.0298"/>
+ <coeff sps1="li+1" sps2="so4-2"    value="0.136275"/>
+ <coeff sps1="sr+2" sps2="so4-2"   value="0.220"/>
+ <coeff sps1="fe+2" sps2="so4-2"   value="0.2568"/>
+ <coeff sps1="mn+2" sps2="so4-2"   value="0.2065"/>
+ <coeff sps1="na+1" sps2="hso4-"    value="0.0454"/>
+ <coeff sps1="k+1" sps2="hso4-"     value="-0.0003"/>
+ <coeff sps1="mg+2" sps2="hso4-"   value="0.4746"/>
+ <coeff sps1="ca+2" sps2="hso4-"   value="0.2145"/>
+ <coeff sps1="h+1" sps2="hso4-"     value="0.2065"/>
+ <coeff sps1="fe+2" sps2="hso4-"   value="0.4273"/>
+ <coeff sps1="na+1" sps2="oh-"      value="0.0864"/>
+ <coeff sps1="k+1" sps2="oh-"       value="0.1298"/>
+ <coeff sps1="ca+2" sps2="oh-"     value="-0.1747"/>
+ <coeff sps1="li+1" sps2="oh-"      value="0.015"/>
+ <coeff sps1="ba+2" sps2="oh-"     value="0.17175"/>
+ <coeff sps1="na+1" sps2="hco3-"    value="0.0277"/>
+ <coeff sps1="mg+2" sps2="hco3-"   value="0.329"/>
+ <coeff sps1="k+1" sps2="hco3-"     value="0.0296"/>
+ <coeff sps1="ca+2" sps2="hco3-"   value="0.4"/>
+ <coeff sps1="sr+2" sps2="hco3-"   value="0.12"/>
+ <coeff sps1="na+1" sps2="co3-2"    value="0.0399"/>
+ <coeff sps1="k+1" sps2="co3-2"     value="0.1488"/>
+ <coeff sps1="na+1" sps2="b(oh)4-"  value="-0.0427"/>
+ <coeff sps1="na+1" sps2="b3o3(oh)4-"  value="-0.056"/>
+ <coeff sps1="na+1" sps2="b4o5(oh)4-2" value="-0.11"/>
+ <coeff sps1="k+1" sps2="b(oh)4-"      value="0.035"/>
+ <coeff sps1="k+1" sps2="b3o3(oh)4-"   value="-0.13"/>
+ <coeff sps1="k+1" sps2="b4o5(oh)4-2"  value="-0.022"/>
+ <coeff sps1="na+1" sps2="h3sio4-"     value="0.043"/>            
+ <coeff sps1="na+1" sps2="h2sio4-2"    value="0.32"/>      
+</b0>
+<b1>
+  <coeff sps1="al+3" sps2="so4-2" value="18.53"/>
+  <coeff sps1="na+1" sps2="cl-1" value="0.2664"/>
+  <coeff sps1="k+1" sps2="cl-1" value="0.2122"/>
+  <coeff sps1="mg+2" sps2="cl-1" value="1.6815"/>
+  <coeff sps1="ca+2" sps2="cl-1" value="1.614"/>
+  <coeff sps1="mgoh+" sps2="cl-1" value="1.658"/>
+  <coeff sps1="h+1" sps2="cl-1" value="0.2945"/>
+  <coeff sps1="li+1" sps2="cl-1" value="0.3074"/>
+  <coeff sps1="sr+2" sps2="cl-1" value="1.66725"/>
+  <coeff sps1="fe+2" sps2="cl-1" value="1.53225"/>
+  <coeff sps1="mn+2" sps2="cl-1" value="1.55025"/>
+  <coeff sps1="ba+2" sps2="cl-1" value="1.49625"/>
+  <coeff sps1="na+1" sps2="br-" value="0.2791"/>
+  <coeff sps1="k+1" sps2="br-" value="0.2212"/>
+  <coeff sps1="h+1" sps2="br-" value="0.3564"/>
+  <coeff sps1="mg+2" sps2="br-" value="1.753"/>
+  <coeff sps1="ca+2" sps2="br-" value="1.613"/>
+  <coeff sps1="li+1" sps2="br-" value="0.2547"/>
+  <coeff sps1="sr+2" sps2="br-" value="1.7115"/>
+  <coeff sps1="ba+2" sps2="br-" value="1.56975"/>
+  <coeff sps1="na+1" sps2="so4-2" value="1.113"/>
+  <coeff sps1="k+1" sps2="so4-2" value="0.7793"/>
+  <coeff sps1="mg+2" sps2="so4-2" value="3.343"/>
+  <coeff sps1="ca+2" sps2="so4-2" value="3.1973"/>
+  <coeff sps1="li+1" sps2="so4-2" value="1.2705"/>
+  <coeff sps1="sr+2" sps2="so4-2" value="2.88"/>
+  <coeff sps1="fe+2" sps2="so4-2" value="3.063"/>
+  <coeff sps1="mn+2" sps2="so4-2" value="2.9511"/>
+  <coeff sps1="na+1" sps2="hso4-" value="0.398"/>
+  <coeff sps1="k+1" sps2="hso4-" value="0.1735"/>
+  <coeff sps1="mg+2" sps2="hso4-" value="1.729"/>
+  <coeff sps1="ca+2" sps2="hso4-" value="2.53"/>
+  <coeff sps1="h+1" sps2="hso4-" value="0.5556"/>
+  <coeff sps1="fe+2" sps2="hso4-" value="3.48"/>
+  <coeff sps1="na+1" sps2="oh-" value="0.253"/>
+  <coeff sps1="k+1" sps2="oh-" value="0.32"/>
+  <coeff sps1="ca+2" sps2="oh-" value="-0.2303"/>
+  <coeff sps1="li+1" sps2="oh-" value="0.14"/>
+  <coeff sps1="ba+2" sps2="oh-" value="1.2"/>
+  <coeff sps1="na+1" sps2="hco3-" value="0.0411"/>
+  <coeff sps1="k+1" sps2="hco3-" value="-0.013"/>
+  <coeff sps1="mg+2" sps2="hco3-" value="0.6072"/>
+  <coeff sps1="ca+2" sps2="hco3-" value="2.977"/>
+  <coeff sps1="na+1" sps2="co3-2" value="1.389"/>
+  <coeff sps1="k+1" sps2="co3-2" value="1.43"/>
+  <coeff sps1="na+1" sps2="b(oh)4-" value="0.089"/>
+  <coeff sps1="na+1" sps2="b3o3(oh)4-" value="-0.910"/>
+  <coeff sps1="na+1" sps2="b4o5(oh)4-2" value="-0.40"/>
+  <coeff sps1="k+1" sps2="b(oh)4-" value="0.14"/>
+  <coeff sps1="na+1" sps2="h3sio4-" value="0.24"/>
+  <coeff sps1="na+1" sps2="h2sio4-2" value="0.13"/>    
+</b1>
+<b2>
+  <coeff sps1="al+3" sps2="so4-2" value="-500.0"/>
+  <coeff sps1="mg+2" sps2="so4-2" value="-37.23"/>
+  <coeff sps1="ca+2" sps2="so4-2" value="-54.24"/>
+  <coeff sps1="sr+2" sps2="so4-2" value="-41.8"/>
+  <coeff sps1="fe+2" sps2="so4-2" value="-42.0"/>
+  <coeff sps1="mn+2" sps2="so4-2" value="-40.0"/>
+  <coeff sps1="ca+2" sps2="oh-" value="-5.72"/>
+</b2>
+<cfi>
+  <coeff sps1="al+3" sps2="so4-2" value="-0.0911"/>
+  <coeff sps1="na+1" sps2="cl-1" value="0.00127"/>
+  <coeff sps1="k+1" sps2="cl-1" value="-0.00084"/>
+  <coeff sps1="mg+2" sps2="cl-1" value="0.00519"/>
+  <coeff sps1="ca+2" sps2="cl-1" value="-0.00034"/>
+  <coeff sps1="h+1" sps2="cl-1" value="0.0008"/>
+  <coeff sps1="li+1" sps2="cl-1" value="0.00359"/>
+  <coeff sps1="sr+2" sps2="cl-1" value="-0.0013046"/>
+  <coeff sps1="fe+2" sps2="cl-1" value="-0.0086072"/>
+  <coeff sps1="mn+2" sps2="cl-1" value="-0.0204972"/>
+  <coeff sps1="ba+2" sps2="cl-1" value="-0.0193782"/>
+  <coeff sps1="na+1" sps2="br-" value="0.00116"/>
+  <coeff sps1="k+1" sps2="br-" value="-0.00180"/>
+  <coeff sps1="h+1" sps2="br-" value="0.00827"/>
+  <coeff sps1="mg+2" sps2="br-" value="0.00312"/>
+  <coeff sps1="ca+2" sps2="br-" value="-0.00257"/>
+  <coeff sps1="li+1" sps2="br-" value="0.0053"/>
+  <coeff sps1="sr+2" sps2="br-" value="0.00122506"/>
+  <coeff sps1="ba+2" sps2="br-" value="-0.0159576"/>
+  <coeff sps1="na+1" sps2="so4-2" value="0.00497"/>
+  <coeff sps1="mg+2" sps2="so4-2" value="0.025"/>
+  <coeff sps1="h+1" sps2="so4-2" value="0.0438"/>
+  <coeff sps1="li+1" sps2="so4-2" value="-0.0039933"/>
+  <coeff sps1="sr+2" sps2="so4-2" value="0.019"/>
+  <coeff sps1="fe+2" sps2="so4-2" value="0.0209"/>
+  <coeff sps1="mn+2" sps2="so4-2" value="0.01636"/>
+  <coeff sps1="na+1" sps2="oh-" value="0.0044"/>
+  <coeff sps1="k+1" sps2="oh-" value="0.0041"/>
+  <coeff sps1="k+1" sps2="hco3-" value="-0.008"/>
+  <coeff sps1="na+1" sps2="co3-2" value="0.0044"/>
+  <coeff sps1="k+1" sps2="co3-2" value="-0.0015"/>
+  <coeff sps1="na+1" sps2="b(oh)4-" value="0.0114"/>
+
+</cfi>
+
+<theta>
+  
+  <coeff sps1="k+1" sps2="na+1" value="-0.012"/>
+  <coeff sps1="k+1" sps2="fe+2" value="-0.07"/>
+  <coeff sps1="mg+2" sps2="na+1" value="0.07"/>
+  <coeff sps1="ca+2" sps2="na+1" value="0.07"/>
+  <coeff sps1="h+1" sps2="na+1" value="0.036"/>
+  <coeff sps1="ca+2" sps2="k+1" value="0.032"/>
+  <coeff sps1="h+1" sps2="k+1" value="0.005"/>
+  <coeff sps1="ca+2" sps2="mg+2" value="0.007"/>
+  <coeff sps1="h+1" sps2="mg+2" value="0.1"/>
+  <coeff sps1="h+1" sps2="ca+2" value="0.092"/>
+  <coeff sps1="so4-2" sps2="cl-1" value="0.02"/>
+  <coeff sps1="hso4-" sps2="cl-1" value="-0.006"/>
+  <coeff sps1="oh-" sps2="cl-1" value="-0.05"/>
+  <coeff sps1="hco3-" sps2="cl-1" value="0.03"/>
+  <coeff sps1="co3-2" sps2="cl-1" value="-0.02"/>
+  <coeff sps1="b(oh)4-" sps2="cl-1" value="-0.065"/>
+  <coeff sps1="b3o3(oh)4-" sps2="cl-1" value="0.12"/>
+  <coeff sps1="b4o5(oh)4-2" sps2="cl-1" value="0.074"/>
+  <coeff sps1="oh-" sps2="br-" value="-0.065"/>
+  <coeff sps1="oh-" sps2="so4-2" value="-0.013"/>
+  <coeff sps1="hco3-" sps2="so4-2" value="0.01"/>
+  <coeff sps1="co3-2" sps2="so4-2" value="0.02"/>
+  <coeff sps1="b(oh)4-" sps2="so4-2" value="-0.012"/>
+  <coeff sps1="b3o3(oh)4-" sps2="so4-2" value="0.10"/>
+  <coeff sps1="b4o5(oh)4-2" sps2="so4-2" value="0.12"/>
+  <coeff sps1="co3-2" sps2="oh-" value="0.1"/>
+  <coeff sps1="co3-2" sps2="hco3-" value="-0.04"/>
+  <coeff sps1="b3o3(oh)4-" sps2="hco3-" value="-0.10"/>
+  <coeff sps1="b4o5(oh)4-2" sps2="hco3-" value="-0.087"/>                            
+</theta>
+<psi>
+  <coeff sps1="na+1" sps2="k+1" sps3="cl-1" value="-0.0018"/>
+  <coeff sps1="na+1" sps2="k+1" sps3="br-" value="-0.0022"/>
+  <coeff sps1="na+1" sps2="k+1" sps3="so4-2" value="-0.010"/>
+  <coeff sps1="na+1" sps2="k+1" sps3="hco3-" value="-0.003"/>
+  <coeff sps1="na+1" sps2="k+1" sps3="co3-2" value="0.003"/>
+  <coeff sps1="na+1" sps2="ca+2" sps3="cl-1" value="-0.007"/>
+  <coeff sps1="na+1" sps2="ca+2" sps3="so4-2" value="-0.055"/>
+  <coeff sps1="na+1" sps2="mg+2" sps3="cl-1" value="-0.012"/>
+  <coeff sps1="na+1" sps2="mg+2" sps3="so4-2" value="-0.015"/>
+  <coeff sps1="na+1" sps2="h+1" sps3="cl-1" value="-0.004"/>
+  <coeff sps1="na+1" sps2="h+1" sps3="br-" value="-0.012"/>
+  <coeff sps1="na+1" sps2="h+1" sps3="hso4-" value="-0.0129"/>
+  <coeff sps1="k+1" sps2="ca+2" sps3="cl-1" value="-0.025"/>
+  <coeff sps1="k+1" sps2="mg+2" sps3="cl-1" value="-0.022"/>
+  <coeff sps1="k+1" sps2="mg+2" sps3="so4-2" value="-0.048"/>
+  <coeff sps1="k+1" sps2="h+1" sps3="cl-1" value="-0.011"/>
+  <coeff sps1="k+1" sps2="h+1" sps3="br-" value="-0.021"/>
+  <coeff sps1="k+1" sps2="h+1" sps3="so4-2" value="0.197"/>
+  <coeff sps1="k+1" sps2="h+1" sps3="hso4-" value="-0.0265"/>
+  <coeff sps1="k+1" sps2="fe+2" sps3="so4-2" value="-0.03"/>
+  <coeff sps1="k+1" sps2="al+3" sps3="so4-2" value="-0.08"/>
+  <coeff sps1="ca+2" sps2="mg+2" sps3="cl-1" value="-0.012"/>
+  <coeff sps1="ca+2" sps2="mg+2" sps3="so4-2" value="0.024"/>
+  <coeff sps1="ca+2" sps2="h+1" sps3="cl-1" value="-0.015"/>
+  <coeff sps1="mg+2" sps2="mgoh+    " sps3="cl-1" value="0.028"/>
+  <coeff sps1="mg+2" sps2="h+1" sps3="cl-1" value="-0.011"/>
+  <coeff sps1="mg+2" sps2="h+1" sps3="hso4-" value="-0.0178"/>
+  <coeff sps1="cl-1" sps2="br-" sps3="k+1" value="0.0000"/>
+  <coeff sps1="cl-1" sps2="so4-2" sps3="na+1" value="0.0014"/>
+  <coeff sps1="cl-1" sps2="so4-2" sps3="ca+2" value="-0.018"/>
+  <coeff sps1="cl-1" sps2="so4-2" sps3="mg+2" value="-0.004"/>
+  <coeff sps1="cl-1" sps2="hso4-" sps3="na+1" value="-0.006"/>
+  <coeff sps1="cl-1" sps2="hso4-" sps3="h+1" value="0.013"/>
+  <coeff sps1="cl-1" sps2="oh-" sps3="na+1" value="-0.006"/>
+  <coeff sps1="cl-1" sps2="oh-" sps3="k+1" value="-0.006"/>
+  <coeff sps1="cl-1" sps2="oh-" sps3="ca+2" value="-0.025"/>
+  <coeff sps1="cl-1" sps2="hco3-" sps3="na+1" value="-0.015"/>
+  <coeff sps1="cl-1" sps2="hco3-" sps3="mg+2" value="-0.096"/>
+  <coeff sps1="cl-1" sps2="co3-2" sps3="na+1" value="0.0085"/>
+  <coeff sps1="cl-1" sps2="co3-2" sps3="k+1" value="0.004"/>
+  <coeff sps1="cl-1" sps2="b(oh)4-" sps3="na+1" value="-0.0073"/>
+  <coeff sps1="cl-1" sps2="b3o3(oh)4-" sps3="na+1" value="-0.024"/>
+  <coeff sps1="cl-1" sps2="b4o5(oh)4-2" sps3="na+1" value="0.026"/>
+  <coeff sps1="so4-2" sps2="hso4-" sps3="na+1" value="-0.0094"/>
+  <coeff sps1="so4-2" sps2="hso4-" sps3="k+1" value="-0.0677"/>
+  <coeff sps1="so4-2" sps2="hso4-" sps3="mg+2" value="-0.0425"/>
+  <coeff sps1="so4-2" sps2="oh-" sps3="na+1" value="-0.009"/>
+  <coeff sps1="so4-2" sps2="oh-" sps3="k+1" value="-0.050"/>
+  <coeff sps1="so4-2" sps2="hco3-" sps3="na+1" value="-0.005"/>
+  <coeff sps1="so4-2" sps2="hco3-" sps3="mg+2" value="-0.161"/>
+  <coeff sps1="so4-2" sps2="co3-2" sps3="na+1" value="-0.005"/>
+  <coeff sps1="so4-2" sps2="co3-2" sps3="k+1" value="-0.009"/>
+  <coeff sps1="oh-" sps2="co3-2" sps3="na+1" value="-0.017"/>
+  <coeff sps1="oh-" sps2="co3-2" sps3="k+1" value="-0.01"/>
+  <coeff sps1="oh-" sps2="br-" sps3="na+1" value="-0.018"/>
+  <coeff sps1="oh-" sps2="br-" sps3="k+1" value="-0.014"/>
+  <coeff sps1="hco3-" sps2="co3-2" sps3="na+1" value="0.002"/>
+  <coeff sps1="hco3-" sps2="co3-2" sps3="k+1" value="0.012"/>
+</psi>
+
+<lambda>
+  <coeff sps1="cl-1" sps2="co2(aq)" value="-0.005"/>
+  <coeff sps1="na+1" sps2="h2co3" value="0.1"/>
+  <coeff sps1="k+1" sps2="h2co3" value="0.051"/>
+  <coeff sps1="mg+2" sps2="h2co3" value="0.183"/>
+  <coeff sps1="ca+2" sps2="h2co3" value="0.183"/>
+  <coeff sps1="cl-1" sps2="h2co3" value="-0.005"/>
+  <coeff sps1="so4-2" sps2="h2co3" value="0.097"/>
+  <coeff sps1="hso4-" sps2="h2co3" value="-0.003"/>
+  <coeff sps1="na+1" sps2="b(oh)3" value="-0.097"/>
+  <coeff sps1="k+1" sps2="b(oh)3" value="-0.14"/>
+  <coeff sps1="cl-1" sps2="b(oh)3" value="0.091"/>
+  <coeff sps1="so4-2" sps2="b(oh)3" value="0.018"/>
+  <coeff sps1="b3o3(oh)4-" sps2="b(oh)3" value="-0.20"/>
+  <coeff sps1="na+1" sps2="co2(aq)" value="0.1"/>
+  <coeff sps1="ca+2" sps2="co2(aq)" value="0.183"/>
+  <coeff sps1="mg+2" sps2="co2(aq)" value="0.183"/>
+  <coeff sps1="so4-2" sps2="co2(aq)" value="0.097"/>
+  <coeff sps1="hso4-" sps2="co2(aq)" value="-0.003"/>
+  <coeff sps1="na+1" sps2="sio2(aq)" value="0.0925"/>
+  <coeff sps1="ca+2" sps2="sio2(aq)" value="0.0659"/>
+  <coeff sps1="mg+2" sps2="sio2(aq)" value="0.06"/>
+  <coeff sps1="oh-" sps2="sio2(aq)" value="0.1816"/>
+  <coeff sps1="so4-2" sps2="sio2(aq)" value="0.02"/>
+  <coeff sps1="hco3-" sps2="sio2(aq)" value="0.015"/>
+</lambda>
+
+<vol0>
+ 
+        <coeff sps1="na+1" sps2="cl-1" value="16.68"/>
+        <coeff sps1="k+1" sps2="cl-1"  value="26.87"/>
+        <coeff sps1="ca+2" sps2="cl-1" value="17.4193"/>
+        <coeff sps1="mg+2" sps2="cl-1" value="13.734"/>
+        <coeff sps1="na+1" sps2="so4-2" value="11.787"/>
+        <coeff sps1="k+1" sps2="so4-2" value="32.167"/>
+        <coeff sps1="ca+2" sps2="so4-2" value="0.0"/>
+        <coeff sps1="mg+2" sps2="so4-2" value="-7.839"/>
+        <coeff sps1="na+1" sps2="hco3-" value="23.181"/>
+        <coeff sps1="k+1" sps2="hco3-" value="33.371"/>
+        <coeff sps1="ca+2" sps2="hco3-" value="0.0"/>
+        <coeff sps1="mg+2" sps2="hco3-" value="0.0"/>
+        <coeff sps1="na+1" sps2="co3-2" value="-6.48"/>
+        <coeff sps1="k+1" sps2="co3-2" value="13.9"/>
+        <coeff sps1="ca+2" sps2="co3-2" value="0.0"/>
+        <coeff sps1="mg+2" sps2="co3-2" value="0.0"/>
+        
+</vol0>
+
+<b0vol>
+ 
+        <coeff sps1="na+1" sps2="cl-1"    value="     1.2340e-5"/>
+        <coeff sps1="k+1" sps2="cl-1"     value="     1.3949d-5"/>
+        <coeff sps1="ca+2" sps2="cl-1"   value="    1.32870e-5"/>
+        <coeff sps1="mg+2" sps2="cl-1"   value="    1.38330e-5"/>
+        <coeff sps1="na+1" sps2="so4-2"  value="      5.308e-5"/>
+        <coeff sps1="k+1" sps2="so4-2"   value="      3.348e-5"/>
+        <coeff sps1="ca+2" sps2="so4-2" value="           0.0"/>
+        <coeff sps1="mg+2" sps2="so4-2" value="     4.9329d-5"/>
+        <coeff sps1="na+1" sps2="hco3-"  value="     -1.162d-5"/>
+        <coeff sps1="k+1" sps2="hco3-"   value="    -0.2705d-5"/>
+        <coeff sps1="ca+2" sps2="hco3-" value="           0.0"/>
+        <coeff sps1="mg+2" sps2="hco3-" value="           0.0"/>
+        <coeff sps1="na+1" sps2="co3-2"  value="       5.98e-5"/>
+        <coeff sps1="k+1" sps2="co3-2"   value="     3.2889e-5"/>
+        <coeff sps1="ca+2" sps2="co3-2" value="           0.0"/>
+        <coeff sps1="mg+2" sps2="co3-2" value="           0.0"/>
+        
+</b0vol>
+
+<b1vol>
+ 
+        <coeff sps1="na+1" sps2="cl-1"    value="           0.0"/>
+        <coeff sps1="k+1" sps2="cl-1"     value="     0.0235d-4"/>
+        <coeff sps1="ca+2" sps2="cl-1"   value="           0.0"/>
+        <coeff sps1="mg+2" sps2="cl-1"   value="           0.0"/>
+        <coeff sps1="na+1" sps2="so4-2"  value="      1.234e-4"/>
+        <coeff sps1="k+1" sps2="so4-2"   value="      2.380e-4"/>
+        <coeff sps1="ca+2" sps2="so4-2" value="     	  0.0"/>
+        <coeff sps1="mg+2" sps2="so4-2" value="     1.4838d-4"/>
+        <coeff sps1="na+1" sps2="hco3-"  value="       1.78d-4"/>
+        <coeff sps1="k+1" sps2="hco3-"   value="      1.695d-4"/>
+        <coeff sps1="ca+2" sps2="hco3-" value="     	  0.0"/>
+        <coeff sps1="mg+2" sps2="hco3-" value="     	  0.0"/>
+        <coeff sps1="na+1" sps2="co3-2"  value="      0.816e-4"/>
+        <coeff sps1="k+1" sps2="co3-2"   value="       2.07e-4"/>
+        <coeff sps1="ca+2" sps2="co3-2" value="     	  0.0"/>
+        <coeff sps1="mg+2" sps2="co3-2" value="     	  0.0"/>
+        
+</b1vol>
+
+<b2vol>
+ 
+        <coeff sps1="na+1" sps2="cl-1"    value="           0.0"/>
+        <coeff sps1="k+1" sps2="cl-1"     value="           0.0"/>
+        <coeff sps1="ca+2" sps2="cl-1"   value="           0.0"/>
+        <coeff sps1="mg+2" sps2="cl-1"   value="           0.0"/>
+        <coeff sps1="na+1" sps2="so4-2"  value="           0.0"/>
+        <coeff sps1="k+1" sps2="so4-2"   value="           0.0"/>
+        <coeff sps1="ca+2" sps2="so4-2" value="           0.0"/>
+        <coeff sps1="mg+2" sps2="so4-2" value="      1.679d-2"/>
+        <coeff sps1="na+1" sps2="hco3-"  value="           0.0"/>
+        <coeff sps1="k+1" sps2="hco3-"   value="           0.0"/>
+        <coeff sps1="ca+2" sps2="hco3-" value="           0.0"/>
+        <coeff sps1="mg+2" sps2="hco3-" value="           0.0"/>
+        <coeff sps1="na+1" sps2="co3-2"  value="           0.0"/>
+        <coeff sps1="k+1" sps2="co3-2"   value="           0.0"/>
+        <coeff sps1="ca+2" sps2="co3-2" value="           0.0"/>
+        <coeff sps1="mg+2" sps2="co3-2" value="           0.0"/>
+        
+</b2vol>
+
+<cfivol>
+ 
+        <coeff sps1="na+1" sps2="cl-1"    value="     -6.4500e-7"/>
+        <coeff sps1="k+1" sps2="cl-1"     value="     -8.6970d-7"/>
+        <coeff sps1="ca+2" sps2="cl-1"   value="      -2.175e-7"/>
+        <coeff sps1="mg+2" sps2="cl-1"   value="       -3.57e-7"/>
+        <coeff sps1="na+1" sps2="so4-2"  value="      -27.94e-7"/>
+        <coeff sps1="k+1" sps2="so4-2"   value="            0.0"/>
+        <coeff sps1="ca+2" sps2="so4-2" value="            0.0"/>
+        <coeff sps1="mg+2" sps2="so4-2" value="        1.92d-7"/>
+        <coeff sps1="na+1" sps2="hco3-"  value="            0.0"/>
+        <coeff sps1="k+1" sps2="hco3-"   value="            0.0"/>
+        <coeff sps1="ca+2" sps2="hco3-" value="            0.0"/>
+        <coeff sps1="mg+2" sps2="hco3-" value="            0.0"/>
+        <coeff sps1="na+1" sps2="co3-2"  value="       -32.5e-7"/>
+        <coeff sps1="k+1" sps2="co3-2"   value="       -7.47e-7"/>
+        <coeff sps1="ca+2" sps2="co3-2" value="            0.0"/>
+        <coeff sps1="mg+2" sps2="co3-2" value="            0.0"/>
+        
+</cfivol>
+
+</pitzerdatabase>
+

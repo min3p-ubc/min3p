@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/raoult.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/raoult.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -116,7 +116,8 @@
  
       implicit none
       
-      real*8 :: c, gammac, ratem, phim, phimold, aream 
+      real*8 :: c(*),gammac(*)
+      real*8 :: ratem, phim, phimold, aream 
       integer :: im, tid
       
       integer :: istart, istop, ireac
@@ -124,8 +125,6 @@
       real*8 :: conc_mol, frac_mol
       real*8, external :: satindex
       
-      dimension c(*),gammac(*)
-
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0      
 
 !c  compute effective dissolution rate

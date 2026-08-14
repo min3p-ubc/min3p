@@ -4,7 +4,7 @@
 !> $Revision: 533 $
 !> $Author: dsu $
 !> $Date: 2017-10-16 11:50:08 -0700 (Mon, 16 Oct 2017) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/molconc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/molconc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -71,13 +71,11 @@
  
       implicit none
       
-      real*8 :: phim
+      real*8 :: phim(*)
       
       integer :: tid, im
       
       real*8 :: conc_mol_add
-
-      dimension phim(*)
 
       real*8, parameter :: r0 = 0.0d0, r2 = 2.0d0, huge = 1.0d300   
       

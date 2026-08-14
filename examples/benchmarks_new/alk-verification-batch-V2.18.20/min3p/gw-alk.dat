@@ -1,0 +1,856 @@
+! albite.dat
+! batch test example - weathering of calcite (fast) and albite (slow)
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Batch problem - Dissolution of albite and calcite'
+.true.                        ;varsat_flow                                  			
+.true.                        ;steady_flow               erw_comm: to get started! once the model is set up, transient flow, can be included, of course                             			
+.true.                        ;fully_saturated           erw_comm: saturated conditions along GW flow path, this is a closed system                   			
+.true.                        ;reactive_transport   
+
+'done'
+
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'..\database\td-erw'
+
+'compute alkalinity'
+
+!erw_comm: use same chemical components as for soil profile model
+'components'
+19                             ;number of components (nc-1)
+'ca+2'                         ;component names
+'mg+2'
+'al+3'
+'cl-1'
+'na+1'
+'k+1'
+'so4-2'
+'h4sio4'
+'h+1'
+'o2(aq)'
+'co3-2'
+'po4-3'
+'no3-1'
+'nh4+1'
+'n2(aq)'
+'hs-1'
+'fe+2'
+'fe+3'
+'lactate'
+                        
+        
+'secondary aqueous species'
+77                             ;number of secondary aqueous species
+'khso4(aq)'
+'h2so4(aq)'
+'feco3+'
+'oh-'
+'h3sio4-'
+'h2sio4-2'
+'nh3aq'
+'nh4so4-'
+'mgoh+'
+'mgco3aq'
+'mghco3+'
+'mgso4aq'
+'mgpo4-'
+'mgh2po4+'
+'mghpo4aq'
+'koh'
+'naoh'
+'caoh+'
+'cahco3+'
+'caco3aq'
+'caso4aq'
+'cahso4+'
+'cahpo4aq'
+'capo4-'
+'cah2po4+'
+'naco3-'
+'nahco3aq'
+'naso4-'
+'nahpo4-'
+'kso4-'
+'khpo4-'
+'aloh+2'
+'al(oh)2+'
+'al(oh)4-'
+'also4+'
+'alhso42+'
+'al(so4)2-'
+'al(oh)3aq'
+'feoh+'
+'feoh3-1'
+'feso4aq'
+'fehso4+'
+'fehco3+'
+'feco3aq'
+'feh2po4+'
+'feoh2aq'
+'fehpo4aq'
+'feoh+2'
+'fehpo4+'
+'feso4+'
+'fehso42+'
+'fecl+2'
+'fecl+'
+'fecl2+'
+'fecl3aq'
+'feoh2+'
+'feoh3aq'
+'feoh4-'
+'feh2po4+2'
+'fe(so4)2-'
+'fe2(oh)2+4'
+'fe3(oh)4+5'
+'hco3-'
+'h2co3aq'
+'hso4-'
+'hpo4-2'
+'h2po4-'
+'h3po4'
+'mg-(lact)2'
+'mg-(lact)+'
+'ca-(lact)2'
+'ca-(lact)+'
+'h-(lact)'
+'al2-lact'
+'al-lact2+'
+'al-lact3'
+'al-lact++'
+
+
+
+'redox couples' 
+0  ;3                         ;number of redox couples (nr)
+'fe+2'   'fe+3'               ;names of redox couples   erw_comm: allows Fe(II) to accumuate in pore water, in case conditions along flow path become anoxic 
+'so4-2'  'hs-1'               ;implication at discharge point: all aklalinity may be lost due to Fe(II) oxidation
+'n2(aq)' 'no3-1'
+
+
+'gases'
+3                             ;number of gases
+'o2(g)'                       ;names of gases
+'co2(g)' 
+'n2(g)'
+
+'minerals'
+20                             ;number of minerals
+'calcite'                      ;
+'calcite-10'                   ;        new added
+'dolomite'                     ;
+'siderite(d)'                  ;
+'gypsum'                       ;
+'albite-wateq4f-logk'          ;logK
+'anorthite-ph2'                ;        new added felsic rock
+'orthoclase-logk-br'           ;logK
+'actinolite-crit-logk'         ;logK
+'chlorite-crit-logk'           ;logK
+'augite-logk-br'               ;logK
+'diopside-logk-br'             ;logK
+'labradorite-logk-br'          ;logK
+'kaolinite'                    ;secondary phase
+'sio2(a,pt)'                   ;secondary phase
+'al(oh)3(am)'                  ;secondary phase
+'ferrihydrite'                 ;secondary phase in most cases
+'mackinawite'                  ;secondary phase
+'som-ox-o2'                    ;organic
+'co2source-1000'               ;co2 eq with atmospheric pCO2 1000ppm, use 'co2source' for 420ppm
+
+
+'excluded minerals'
+2
+'aragonite'
+'magnesite'
+'done'
+
+!   			
+! Section 3: spatial discretization                                         			
+! --------------------------------------------------------------------------			
+!   			
+'spatial discretization'                                                    			
+1                             ;number of discretization intervals in x			
+6                             ;number of control volumes in x			
+0.0  5.0                      ;xmin,xmax erw_comm: assume 1 km long flow path from field to stream, discretized in 10 m segments			
+1                             ;number of discretization intervals in y      			
+1                             ;number of control volumes in y               			
+0.0 1.0                       ;ymin,ymax                                    "			
+1                             ;number of discretization intervals in z
+1                             ;zmin,zmax
+0.0 1.0
+
+'done'                                                                      			
+!   			
+! Section 4: time step control - global system                              			
+! --------------------------------------------------------------------------			
+!   			
+'time step control - global system'                                         			
+'years'                      ;time unit    erw_comm: changed to years to make this easier to process for output, can be changed as needed                                			
+0.0                          ;time at start of solution       erw_comm:include spin-up of 10 years              			
+10.0                         ;final solution time                           			
+0.1d0                        ;maximum time step			
+1.0d-10                      ;minimum time step			
+
+'done'	
+
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'                                   			
+			
+'finite minerals'                                                           			
+.true.                        ;update geometrical parameters of minerals    			
+			
+'newton iteration settings'                                                 			
+1.d-4                         ;factor for numerical differentiation         			
+1.d-6                         ;convergence tolerance                        			
+			
+'maximum ionic strength'                                                    			
+100.0d0                       ;max. ionic strength                          			
+			
+'minimum activity for h2o'                                                  			
+0.01d0                        ;min. activity for h2o                        			
+			
+'output time unit'                                                          			
+'days'                        ;time unit (local chemistry)                  			
+			
+'done'   
+
+!   			
+! Section 6: control parameters - variably saturated flow                   			
+! --------------------------------------------------------------------------			
+!   			
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+1000                          ;msolvit_vs, max. number of solver iterations
+0                             ;idetail_vs, solver information level
+1.0d-7                        ;restol_vs, solver residual tolerance
+1.0d-7                        ;deltol_vs, solver update tolerance
+
+'done'
+
+!   			
+! Section 7: control parameters - reactive transport                        			
+! --------------------------------------------------------------------------			
+!   			
+'control parameters - reactive transport'   
+
+'tortuosity correction'
+'millington'
+			
+'mass balance settings'                                                     			
+.true.                        ;compute mass balance                         			
+			
+'spatial weighting'                                                         			
+'upstream'                    ;spatial weighting        'centered'         			
+			
+'activity update settings'                                                  			
+'time_lagged'                 ;type of activity update                      			
+							
+'newton iteration settings'
+1.0d-5                        ;increment h for numerical differentiation
+15                            ;anticipated number of Newton iterations
+50                            ;max. number of Newton iterations
+2.0d0                         ;anticipated update in log cycles
+5.0d0                         ;maximum update in log cycles
+1.0d-5                        ;convergence tolerance (global system)
+			
+'solver settings'                                                           			
+1                             ;incomplete factorization level               			
+100                           ;max. number of solver iterations             			
+0                             ;solver information level                     			
+1.d-9                         ;solver residual tolerance                    			
+1.d-9                         ;solver update tolerance                      			
+.true.                        ;rcm ordering                                 			
+			
+'done'                                                                      			
+!   			
+! Section 8: output control                                                 			
+! --------------------------------------------------------------------------			
+!   			
+'output control'
+
+'use comma as data delimiter'
+
+'output of spatial data'                                                    			
+1                            ;number of output times (spatial data)    erw_comm: for the time being reduced number of output times
+10.0
+
+'done'
+
+!   			
+! Section 9: physical parameters - porous medium                            			
+! --------------------------------------------------------------------------			
+!   			
+'physical parameters - porous medium'                                       			
+1                             ;number of property zones      erw_comm: assuming initially constant mineralogy along flowpath, one zone only.               						
+! --------------------------------		
+'number and name of zone'                                                   			
+1			
+'aquifer'                                                                   			
+			
+0.5                           ;porosity               erw_comm: picked typical value 
+	
+'extent of zone'                                                            			
+0.0 5.0  0.0 1.0  0.0 1.0			
+			
+'end of zone' 
+
+'done'			
+!   			
+! Section 10: physical parameters - variably saturated flow                 			
+! --------------------------------------------------------------------------			
+!   			
+'physical parameters - variably saturated flow'			
+	
+! --------------------------------------------------------------------------			
+'aquifer'			
+			
+'hydraulic conductivity in x-direction'       		
+1.0e-30                        ;K_xx  m/s  erw_comm: set to typical value for now
+			
+'specific storage coefficient'			
+1.0d-5
+
+'end of zone'
+
+'done'
+!   			
+! Section 11: physical parameters - reactive transport                      			
+! --------------------------------------------------------------------------			
+!   			
+'physical parameters - reactive transport'                                  			
+			
+'diffusion coefficients'                                                    			
+1.0e-30  ;2.4d-09                       ;free diffusion coefficient in water
+1.0e-30  ;2.1d-05                       ;free diffusion coefficient in air
+! --------------------------------------------------------------------------			
+
+'aquifer'			
+			
+'longitudinal dispersivity'			
+1.0e-30  ;0.01d0			              ;erw_comm: set to small value since dispersion can gove "odd" results when presenting results on log scale, as is common in geochemistry
+			
+'end of zone'			
+	
+'done'	
+
+!			
+! Data Block 12: initial condition - variably saturated flow                			
+! --------------------------------------------------------------------------			
+!   			
+'initial condition - variably saturated flow'                               			
+1                             ;number of zones   
+	
+! --------------------------------------------------------------------------			
+'number and name of zone'                                                   			
+1			
+'entire domain'                                                                    			
+			
+'initial condition'                                                         			
+0.0           ;hydraulic head  erw_comm: random, irrelevant under steady state flow conditions
+			
+'extent of zone'                                                            			
+0.0 5.0  0.0 1.0  0.0 1.0			
+			
+'end of zone'                                                               			
+			
+'done'   
+!			
+! Data Block 13: boundary conditions - variably saturated flow              			
+! --------------------------------------------------------------------------			
+!   			
+'boundary conditions - variably saturated flow'                             			
+0                            ;number of zones                              			
+			
+'done'   
+
+! Data Block 14: initial conditions - reactive transport 
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+6                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'solution-1'
+
+'concentration input'
+1.02E-03  'free'    ;'ca+2'
+2.10E-03  'free'    ;'mg+2'
+1.49E-05  'free'    ;'al+3'
+1.50E-04  'charge'  ;'cl-1'
+3.69E-05  'free'    ;'na+1'
+2.23E-06  'free'    ;'k+1'
+1.40E-05  'free'    ;'so4-2'
+1.95E-03  'free'    ;'h4sio4'
+6.0       'ph'      ;'h+1'
+2.28E-04  'free'    ;'o2(aq)'
+5.63E-03  'free'    ;'co3-2'
+3.43E-06  'free'    ;'po4-3'
+2.35E-05  'free'    ;'no3-1'
+1.77E-10  'free'    ;'nh4+1'
+5.15E-04  'free'    ;'n2(aq)'
+1.00E-20  'free'    ;'hs-1'
+4.98E-17  'free'    ;'fe+2'
+4.16E-08  'free'    ;'fe+3'
+1.41E-03  'free'    ;'lactate'
+
+'guess for ph'
+7.0
+
+'mineral input'
+1.0e-10       .false.   'constant'   ;calcite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;calcite-10
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;dolomite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;siderite(d)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;gypsum
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;albite-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;anorthite-ph2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;orthoclase-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;actinolite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;chlorite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;augite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;diopside-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;labradorite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;kaolinite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;sio2(a,pt)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;al(oh)3(am)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;ferrihydrite
+1.0e-10       1.0e-50   0.00000      
+1.0e-10       .false.   'constant'   ;mackinawite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;som-ox-o2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;co2source-1000
+1.0e-10       1.0e-50   0.00000
+
+'extent of zone'                                                            			
+0.0 0.5  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'solution-2'
+
+'concentration input'
+1.02E-03  'free'    ;'ca+2'
+2.10E-03  'free'    ;'mg+2'
+1.49E-05  'free'    ;'al+3'
+1.50E-04  'charge'  ;'cl-1'
+3.69E-05  'free'    ;'na+1'
+2.23E-06  'free'    ;'k+1'
+1.40E-05  'free'    ;'so4-2'
+1.95E-03  'free'    ;'h4sio4'
+6.5       'ph'      ;'h+1'
+2.28E-04  'free'    ;'o2(aq)'
+5.63E-03  'free'    ;'co3-2'
+3.43E-06  'free'    ;'po4-3'
+2.35E-05  'free'    ;'no3-1'
+1.77E-10  'free'    ;'nh4+1'
+5.15E-04  'free'    ;'n2(aq)'
+1.00E-20  'free'    ;'hs-1'
+4.98E-17  'free'    ;'fe+2'
+4.16E-08  'free'    ;'fe+3'
+1.41E-03  'free'    ;'lactate'
+
+'guess for ph'
+7.0
+
+'mineral input'
+1.0e-10       .false.   'constant'   ;calcite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;calcite-10
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;dolomite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;siderite(d)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;gypsum
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;albite-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;anorthite-ph2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;orthoclase-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;actinolite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;chlorite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;augite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;diopside-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;labradorite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;kaolinite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;sio2(a,pt)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;al(oh)3(am)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;ferrihydrite
+1.0e-10       1.0e-50   0.00000      
+1.0e-10       .false.   'constant'   ;mackinawite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;som-ox-o2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;co2source-1000
+1.0e-10       1.0e-50   0.00000
+
+'extent of zone'                                                            			
+0.5 1.5  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'solution-3'
+
+'concentration input'
+1.02E-03  'free'    ;'ca+2'
+2.10E-03  'free'    ;'mg+2'
+1.49E-05  'free'    ;'al+3'
+1.50E-04  'charge'  ;'cl-1'
+3.69E-05  'free'    ;'na+1'
+2.23E-06  'free'    ;'k+1'
+1.40E-05  'free'    ;'so4-2'
+1.95E-03  'free'    ;'h4sio4'
+7.0       'ph'      ;'h+1'
+2.28E-04  'free'    ;'o2(aq)'
+5.63E-03  'free'    ;'co3-2'
+3.43E-06  'free'    ;'po4-3'
+2.35E-05  'free'    ;'no3-1'
+1.77E-10  'free'    ;'nh4+1'
+5.15E-04  'free'    ;'n2(aq)'
+1.00E-20  'free'    ;'hs-1'
+4.98E-17  'free'    ;'fe+2'
+4.16E-08  'free'    ;'fe+3'
+1.41E-03  'free'    ;'lactate'
+
+'guess for ph'
+7.0
+
+'mineral input'
+1.0e-10       .false.   'constant'   ;calcite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;calcite-10
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;dolomite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;siderite(d)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;gypsum
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;albite-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;anorthite-ph2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;orthoclase-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;actinolite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;chlorite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;augite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;diopside-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;labradorite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;kaolinite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;sio2(a,pt)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;al(oh)3(am)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;ferrihydrite
+1.0e-10       1.0e-50   0.00000      
+1.0e-10       .false.   'constant'   ;mackinawite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;som-ox-o2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;co2source-1000
+1.0e-10       1.0e-50   0.00000
+
+'extent of zone'                                                            			
+1.5 2.5  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'Solution-4'
+
+'concentration input'
+1.02E-03  'free'    ;'ca+2'
+2.10E-03  'free'    ;'mg+2'
+1.49E-05  'free'    ;'al+3'
+1.50E-04  'charge'  ;'cl-1'
+3.69E-05  'free'    ;'na+1'
+2.23E-06  'free'    ;'k+1'
+1.40E-05  'free'    ;'so4-2'
+1.95E-03  'free'    ;'h4sio4'
+7.0       'ph'      ;'h+1'
+2.28E-04  'free'    ;'o2(aq)'
+5.63E-04  'free'    ;'co3-2'
+3.43E-06  'free'    ;'po4-3'
+2.35E-05  'free'    ;'no3-1'
+1.77E-10  'free'    ;'nh4+1'
+5.15E-04  'free'    ;'n2(aq)'
+1.00E-20  'free'    ;'hs-1'
+4.98E-17  'free'    ;'fe+2'
+4.16E-08  'free'    ;'fe+3'
+1.41E-03  'free'    ;'lactate'
+
+'guess for ph'
+7.0
+
+'mineral input'
+1.0e-10       .false.   'constant'   ;calcite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;calcite-10
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;dolomite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;siderite(d)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;gypsum
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;albite-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;anorthite-ph2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;orthoclase-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;actinolite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;chlorite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;augite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;diopside-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;labradorite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;kaolinite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;sio2(a,pt)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;al(oh)3(am)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;ferrihydrite
+1.0e-10       1.0e-50   0.00000      
+1.0e-10       .false.   'constant'   ;mackinawite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;som-ox-o2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;co2source-1000
+1.0e-10       1.0e-50   0.00000
+
+'extent of zone'                                                            			
+2.5 3.5  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'Solution-5'
+
+'concentration input'
+1.02E-03  'free'    ;'ca+2'
+2.10E-03  'free'    ;'mg+2'
+1.49E-05  'free'    ;'al+3'
+1.50E-04  'charge'  ;'cl-1'
+3.69E-05  'free'    ;'na+1'
+2.23E-06  'free'    ;'k+1'
+1.40E-05  'free'    ;'so4-2'
+1.95E-03  'free'    ;'h4sio4'
+8.0       'ph'      ;'h+1'
+2.28E-04  'free'    ;'o2(aq)'
+5.63E-04  'free'    ;'co3-2'
+3.43E-06  'free'    ;'po4-3'
+2.35E-05  'free'    ;'no3-1'
+1.77E-10  'free'    ;'nh4+1'
+5.15E-04  'free'    ;'n2(aq)'
+1.00E-20  'free'    ;'hs-1'
+4.98E-17  'free'    ;'fe+2'
+4.16E-08  'free'    ;'fe+3'
+1.41E-03  'free'    ;'lactate'
+
+'guess for ph'
+7.0
+
+'mineral input'
+1.0e-10       .false.   'constant'   ;calcite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;calcite-10
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;dolomite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;siderite(d)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;gypsum
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;albite-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;anorthite-ph2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;orthoclase-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;actinolite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;chlorite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;augite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;diopside-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;labradorite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;kaolinite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;sio2(a,pt)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;al(oh)3(am)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;ferrihydrite
+1.0e-10       1.0e-50   0.00000      
+1.0e-10       .false.   'constant'   ;mackinawite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;som-ox-o2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;co2source-1000
+1.0e-10       1.0e-50   0.00000
+
+'extent of zone'                                                            			
+3.5 4.5  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+6
+'Solution-6'
+
+'concentration input'
+1.02E-03  'free'    ;'ca+2'
+2.10E-03  'free'    ;'mg+2'
+1.49E-05  'free'    ;'al+3'
+1.50E-04  'charge'  ;'cl-1'
+3.69E-05  'free'    ;'na+1'
+2.23E-06  'free'    ;'k+1'
+1.40E-05  'free'    ;'so4-2'
+1.95E-03  'free'    ;'h4sio4'
+9.0       'ph'      ;'h+1'
+2.28E-04  'free'    ;'o2(aq)'
+5.63E-04  'free'    ;'co3-2'
+3.43E-06  'free'    ;'po4-3'
+2.35E-05  'free'    ;'no3-1'
+1.77E-10  'free'    ;'nh4+1'
+5.15E-04  'free'    ;'n2(aq)'
+1.00E-20  'free'    ;'hs-1'
+4.98E-17  'free'    ;'fe+2'
+4.16E-08  'free'    ;'fe+3'
+1.41E-03  'free'    ;'lactate'
+
+'guess for ph'
+7.0
+
+'mineral input'
+1.0e-10       .false.   'constant'   ;calcite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;calcite-10
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;dolomite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;siderite(d)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;gypsum
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;albite-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;anorthite-ph2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;orthoclase-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;actinolite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;chlorite-crit-logk
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;augite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;diopside-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;labradorite-logk-br
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;kaolinite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;sio2(a,pt)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;al(oh)3(am)
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;ferrihydrite
+1.0e-10       1.0e-50   0.00000      
+1.0e-10       .false.   'constant'   ;mackinawite
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;som-ox-o2
+1.0e-10       1.0e-50   0.00000
+1.0e-10       .false.   'constant'   ;co2source-1000
+1.0e-10       1.0e-50   0.00000
+
+'extent of zone'                                                            			
+4.5 5.0  0.0 1.0  0.0 1.0
+
+'end of zone'
+
+'done'
+
+!			
+! Section 15: boundary conditions - reactive transport			
+! --------------------------------------------------------------------------			
+!			
+'boundary conditions - reactive transport'			
+0                             ;number of zones			
+
+'done'

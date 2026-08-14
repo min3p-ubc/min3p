@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/fsflow.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/fsflow.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -198,28 +198,32 @@
 !c  allocate memory for solver
       
       if (.not. allocated(avs)) then
-          allocate (avs(njavs), stat = ierr)
+        allocate (avs(njavs), stat = ierr)
+        if (nngl > 1) then
           avs = 0.0
-          call checkerr(ierr,'avs',ilog)
-          call memory_monitor(sizeof(avs),'avs',.true.)
+        else
+          avs = 1.0
+        end if
+        call checkerr(ierr,'avs',ilog)
+        call memory_monitor(sizeof(avs),'avs',.true.)
       end if
       
       if (i_solver_type_flow == 0) then
-          if (.not. allocated(afvs)) then
-              allocate (afvs(njafvs), stat = ierr)
-              afvs=0.0d0 
-              call checkerr(ierr,'afvs',ilog)
-              call memory_monitor(sizeof(afvs),'afvs',.true.)
-          end if
+        if (.not. allocated(afvs)) then
+          allocate (afvs(njafvs), stat = ierr)
+          afvs=0.0d0 
+          call checkerr(ierr,'afvs',ilog)
+          call memory_monitor(sizeof(afvs),'afvs',.true.)
+        end if
       end if
 
 !c  clear arrays
   
-      call zero_r8(avs,njavs,1,1)
-  
-      call zero_r8(bvs,nngl,1,1)
-  
-      call zero_r8(uvs,nngl,1,1)
+      if (nngl > 1) then
+        call zero_r8(avs,njavs,1,1)  
+        call zero_r8(bvs,nngl,1,1)  
+        call zero_r8(uvs,nngl,1,1)
+      end if
 
 !c  assemble matrix and rhs-vector
       prt_flow_jac = cputime()
@@ -698,8 +702,8 @@
               stop
             else
               if (rank == 0 .and. b_enable_output .and. idetail_vs.gt.0) then
-                write(*,*) 'Reduce time step: newton iteration diverged'
-                write(ilog,*) 'Reduce time step: newton iteration diverged'
+                write(*,*) 'reduce time step: newton iteration diverged'
+                write(ilog,*) 'reduce time step: newton iteration diverged'
               end if
             end if
           end if
@@ -826,13 +830,14 @@
         maxvol = i0
 
         do ibvs = 1, nbvs          
-          ivol = iabvs(ibvs)
-          if (ivol < 0) then
+          ivol = jabvs(ibvs)
+          if (ivol <= 0) then
             cycle  
           end if
           if ((btypevs(ibvs).eq.'second' .or. btypevs(ibvs).eq.'point' .or. &
                btypevs(ibvs).eq.'seepage-second') .and. &
-               uvsnew(ivol) > tol_freezing_pond(ibvs)) then
+               uvsnew(ivol) > tol_freezing_pond(ibvs) .and. &
+               bcondvs_on(ibvs)) then
             bcondvs(ibvs) = r0
             b_freezing_pond = .true.
             reduce_timestep = .true.

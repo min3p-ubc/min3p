@@ -4,7 +4,7 @@
 !> $Revision: 268 $
 !> $Author: dsu $
 !> $Date: 2015-01-09 17:00:41 -0800 (Fri, 09 Jan 2015) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/opntemp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/opntemp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -63,6 +63,7 @@
       use gen
       use chem
       use file_unit, only : lun_get
+      use file_utility, only : rewind_first_record
 
       implicit none
       
@@ -78,6 +79,9 @@
 !c  open file containing temperature data
 
       open(item,file=prefix(:l_prfx)//'.tem',status='old')
+
+      !cdsu skip comment line and rewind to the first record
+      call rewind_first_record(item)
  
 !c  read time interval, number of data points and associated depths
 !c  and allocate memory

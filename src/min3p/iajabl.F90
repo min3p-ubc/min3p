@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/iajabl.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/iajabl.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -377,8 +377,26 @@
                         icur_sorbs(ncur_sorbs) = ic
                     end if
                 end if
-              end do              
-            end do
+              end do
+              !cprovi---------------------------------------------------------------
+              !cprovi It is because electrostatic terms affect the sorbed species
+              !cprovi if electrostatic correction is chosen 
+              !cprovi---------------------------------------------------------------
+              if (elect_correction) then
+                 i1 = n-nelect
+                 do i2 = 1, nelect
+                     if ((i1+i2).eq.ibl) then
+                       if(all(icur_sorbs(1:n) /= ibl,1)) then                    
+                          ncur_sorbs = ncur_sorbs + 1
+                          icur_sorbs(ncur_sorbs) = i1+i2
+                       end if
+                     end if
+                 end do
+               end if 
+              !cprovi---------------------------------------------------------------
+              !cprovi---------------------------------------------------------------
+              !cprovi---------------------------------------------------------------
+            end do            
           end if
 
         end do

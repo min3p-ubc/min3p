@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/tprfrtlc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tprfrtlc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -395,7 +395,8 @@
 !c           updtsvap  = update secondary variables in aqueous phase
 !c ----------------------------------------------------------------------
 
-      subroutine tprfrtlc(totc,c,cx,gammac,gammax,cm,g,cec_l,distcoff,&
+      subroutine tprfrtlc(totc,c,cx,gammac,gammax,actvt,              &
+                          cm,g,cec_l,distcoff,                        &
                           aream,phim,phimold,strion,                  &
                           tempkel,hhead,xg,yg,zg,                     &
                           time,deltat,sw,porvol,fibt,fibc,fibm,       &
@@ -443,7 +444,7 @@
                       ilog, b_writeversion_tecplot, backup_frequency,  &
                       b_output_trans_binary, realbuffer_gb,            &
                       b_output_multizone,b_output_activity,            &
-                      mem_cur, mem_max, memory_monitor,                &
+                      mem_cur, mem_max, memory_monitor, time_io_rs,    &
                       nfloatbit, idbg, ascii_fmt, extended_output_gb,  &
                       b_water_freezing_ratemin, water_freezing_ratemin,&
                       ngb_step, ngb_step_bk, mpropc,                   &
@@ -474,17 +475,18 @@
                  l_indep_var,l_prfx,l_zone_name,ntstp,ngb_tstep  
 
       integer :: i_append_sim, mtime_append
-      
-      real*8 :: c, cx, gammac, gammax, strion, totc, time, rootdens,   &
-                zbal, zpos, zneg, ph, pe, eh,                          &
-                tempkel, xg, yg, zg, alk_carb,                         &
-                alk_noncarb, alk_tot, alk_carb_mg, alk_noncarb_mg,     &
-                alk_tot_mg, pres_tot, g, hhead, phim, distcoff,        &
-                sw, porvol, dummy, cec_l, phimold, conc_mol,           &
-                frac_mol, ratem, aream, cm, deltat, gammatemp, tottemp
+
+      real*8 :: totc(*),c(*),cx(*),cm(*),g(*),distcoff(*),gammac(*),   &
+                gammax(*),actvt(*),aream(*),phim(*),phimold(*)
+
+      real*8 :: strion, time, rootdens, zbal, zpos, zneg, ph, pe, eh,  &
+                tempkel, xg, yg, zg, alk_carb, alk_noncarb, alk_tot,   &
+                alk_carb_mg, alk_noncarb_mg, alk_tot_mg,               &
+                pres_tot, hhead, sw, porvol, dummy, cec_l,             &
+                conc_mol, frac_mol, ratem, deltat, gammatemp, tottemp
       real*8, external :: satindex, pressure_melt_k
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r1d3 = 1.0d3
  
       external alkcalc, comptotc, phpe, rateredx,                      &
                sorbspc, totconc, molconc, rategas, rategasd,           &
@@ -496,8 +498,7 @@
                                                                        
       logical tec_header,update_porosity
                                                                        
-      dimension totc(*),c(*),cx(*),cm(*),g(*),distcoff(*),gammac(*),   &
-                gammax(*),aream(*),phim(*),phimold(*)
+      real*8 :: rdummys(200)
       
       character*72, allocatable :: nametemp(:)
       integer (type_i4), allocatable :: l_nametemp(:)
@@ -1296,10 +1297,10 @@
               
 !c  file header 
                 if (b_output_trans_binary) then
-                  offset_bx = 0  
+                  offset_bgr = 0  
                   call tecplot_binary_write_header(PETSC_COMM_SELF,    &
                                fibgr, "#!TDV102",'dataset '//          &
-                               prefix(:l_prfx),offset_bx,.true.,.true.)  
+                               prefix(:l_prfx),offset_bgr,.true.,.true.)  
                   
                   nvars = ng + 1
                   tec_variables(1) = indep_var(:l_indep_var)
@@ -1309,7 +1310,7 @@
                   
                   call tecplot_binary_write_variable(PETSC_COMM_SELF,  &
                                fibgr,nvars,tec_variables(1:nvars),     &
-                               offset_bx,.true.,.true.) 
+                               offset_bgr,.true.,.true.) 
                 else if (b_use_tectitle) then
                   if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                     write(fibgr,'(3a)') 'title = "dataset ',           &
@@ -1364,12 +1365,12 @@
               
                 if (b_output_trans_binary) then
                  call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,   &
-                              fibgr,trim(strbuffer),offset_bx, 1, 1, 1,&
+                              fibgr,trim(strbuffer),offset_bgr, 1, 1, 1,&
                               .true.,.true.,b_output_multizone)
-                 offset_bgr_ijk = offset_bx - 5*4
+                 offset_bgr_ijk = offset_bgr - 5*4
                  
                  call tecplot_binary_write_section(PETSC_COMM_SELF,    &
-                              fibgr,nvars,0,offset_bx,.true.,.true.,   &
+                              fibgr,nvars,0,offset_bgr,.true.,.true.,   &
                               b_output_multizone) 
                 end if
               end if
@@ -1396,10 +1397,10 @@
             
 !c  file header 
               if (b_output_trans_binary) then
-                offset_bgr = 0  
+                offset_bi = 0  
                 call tecplot_binary_write_header(PETSC_COMM_SELF,      &
                              fibi, "#!TDV102",'dataset '//             &
-                             prefix(:l_prfx),offset_bgr,.true.,.true.)  
+                             prefix(:l_prfx),offset_bi,.true.,.true.)  
     
                 nvars = nr + 1
                 tec_variables(1) = indep_var(:l_indep_var)
@@ -1607,28 +1608,55 @@
                              fibb, "#!TDV102",'dataset '//             &
                              prefix(:l_prfx),offset_bi,.true.,.true.)  
     
-                nvars = nanc+nsites+nsb_ion+nsb_surf+1
-                
-                tec_variables(1) = indep_var(:l_indep_var)
-                do ianc=1,nanc
-                  tec_variables(ianc+1) = nameanc(ianc)(:l_nameanc(ianc))  
-                end do
-                do isites=1,nsites
-                  tec_variables(nanc+isites+1) =                       &
-                      namec(iaic(isites))(:l_namec(iaic(isites)))
-                end do
-                do isb=1,nsb_ion
-                  tec_variables(nanc+nsites+isb+1) =                   &
-                      namesb_ion(isb)(:l_namesb_ion(isb))
-                end do
-                do isb=1,nsb_surf
-                  tec_variables(nanc+nsites+nsb_ion+isb+1) =           &
-                      namesb_surf(isb)(:l_namesb_surf(isb))
-                end do
+                if (nsb_ion.eq.0.and.nsb_surf.eq.0) then
+                  nvars = nanc+1
+                  
+                  tec_variables(1) = indep_var(:l_indep_var)
+                  do ianc=1,nanc
+                    tec_variables(ianc+1) = nameanc(ianc)(:l_nameanc(ianc))  
+                  end do                  
+                else if (.not.noncompetitive_sorption) then
+                  nvars = nsites+nsb_ion+nsb_surf+1
+                  
+                  tec_variables(1) = indep_var(:l_indep_var)
+                  do isites=1,nsites
+                    tec_variables(nanc+isites+1) =                       &
+                        namec(iaic(isites))(:l_namec(iaic(isites)))
+                  end do
+                  do isb=1,nsb_ion
+                    tec_variables(nanc+nsites+isb+1) =                   &
+                        namesb_ion(isb)(:l_namesb_ion(isb))
+                  end do
+                  do isb=1,nsb_surf
+                    tec_variables(nanc+nsites+nsb_ion+isb+1) =           &
+                        namesb_surf(isb)(:l_namesb_surf(isb))
+                  end do
+                else
+                  nvars = nanc+nsites+nsb_ion+nsb_surf+1
+                  
+                  tec_variables(1) = indep_var(:l_indep_var)
+                  do ianc=1,nanc
+                    tec_variables(ianc+1) = nameanc(ianc)(:l_nameanc(ianc))  
+                  end do
+                  do isites=1,nsites
+                    tec_variables(nanc+isites+1) =                       &
+                        namec(iaic(isites))(:l_namec(iaic(isites)))
+                  end do
+                  do isb=1,nsb_ion
+                    tec_variables(nanc+nsites+isb+1) =                   &
+                        namesb_ion(isb)(:l_namesb_ion(isb))
+                  end do
+                  do isb=1,nsb_surf
+                    tec_variables(nanc+nsites+nsb_ion+isb+1) =           &
+                        namesb_surf(isb)(:l_namesb_surf(isb))
+                  end do
+                end if
                 
                 call tecplot_binary_write_variable(PETSC_COMM_SELF,    &
                              fibb, nvars, tec_variables(1:nvars),      &
                              offset_bi,.true.,.true.)
+
+
               else if (b_use_tectitle) then
                 if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                   write(fibb,'(3a)') 'title = "dataset ',              &
@@ -1818,10 +1846,10 @@
 
 !c  file header
               if (b_output_trans_binary) then
-                offset_bs = 0  
+                offset_bv = 0  
                 call tecplot_binary_write_header(PETSC_COMM_SELF,      &
                              fibv, "#!TDV102",'dataset '//             &
-                             prefix(:l_prfx),offset_bs,.true.,.true.)  
+                             prefix(:l_prfx),offset_bv,.true.,.true.)  
     
                 nvars = nm+2
                 tec_variables(1) = indep_var(:l_indep_var)
@@ -1832,7 +1860,7 @@
   
                 call tecplot_binary_write_variable(PETSC_COMM_SELF,    &
                              fibv, nvars,tec_variables(1:nvars),       &
-                             offset_bs,.true.,.true.) 
+                             offset_bv,.true.,.true.) 
               else if (b_use_tectitle) then
                 if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                   write(fibv,'(3a)') 'title = "dataset ',              &
@@ -1887,12 +1915,12 @@
             
               if (b_output_trans_binary) then
                 call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,    &
-                             fibv,trim(strbuffer),offset_bs, 1, 1, 1,  &
+                             fibv,trim(strbuffer),offset_bv, 1, 1, 1,  &
                              .true.,.true.,b_output_multizone)
-                offset_bv_ijk = offset_bs - 5*4
+                offset_bv_ijk = offset_bv - 5*4
                 
                 call tecplot_binary_write_section(PETSC_COMM_SELF,fibv,&
-                             nvars,0,offset_bs,.true.,.true.,          &
+                             nvars,0,offset_bv,.true.,.true.,          &
                              b_output_multizone)
               end if
 
@@ -1913,10 +1941,10 @@
             
 !c  file header 
               if (b_output_trans_binary) then
-                offset_bv = 0  
+                offset_bd = 0  
                 call tecplot_binary_write_header(PETSC_COMM_SELF,      &
                              fibd, "#!TDV102",'dataset '//             &
-                             prefix(:l_prfx),offset_bv,.true.,.true.)  
+                             prefix(:l_prfx),offset_bd,.true.,.true.)  
                 
                 istart = iamd(1)                                          
                 istop = iamd(nm+1)-1 
@@ -1928,7 +1956,7 @@
   
                 call tecplot_binary_write_variable(PETSC_COMM_SELF,    &
                              fibd,nvars,tec_variables(1:nvars),        &
-                             offset_bv,.true.,.true.) 
+                             offset_bd,.true.,.true.) 
               else if (b_use_tectitle) then
                 if (i_append_sim < 1 .or. .not.b_rewind_valid) then
                   write(fibd,'(3a)') 'title = "dataset ',              &
@@ -1988,12 +2016,12 @@
             
               if (b_output_trans_binary) then
                 call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,    &
-                             fibd,trim(strbuffer),offset_bv, 1, 1, 1,  &
+                             fibd,trim(strbuffer),offset_bd, 1, 1, 1,  &
                              .true.,.true.,b_output_multizone)
-                offset_bd_ijk = offset_bv - 5*4
+                offset_bd_ijk = offset_bd - 5*4
                 
                 call tecplot_binary_write_section(PETSC_COMM_SELF,fibd,&
-                             nvars,0,offset_bv,.true.,.true.,          &
+                             nvars,0,offset_bd,.true.,.true.,          &
                              b_output_multizone) 
               end if
 
@@ -2680,7 +2708,7 @@
 !c  concentrations of sorbed species
 !c ----------------------------------------------------------------------
 
-            if (nsb_ion.gt.0.or.nsb_surf.gt.0) then
+            if (nsb_ion.gt.0.or.nsb_surf.gt.0.or.noncompetitive_sorption) then
 
               if (.not. b_output_trans_binary) then
                 b_rewind_valid = check_rewind_status(fibb)
@@ -2698,18 +2726,38 @@
 !c  file header          
                 write(fibb,'(3a)') '# title = "dataset ',              &
                                      prefix(:l_prfx),'"'
-                write(fibb,'(1000a)') '# variables = "',               &
-                       indep_var(:l_indep_var),'"',                    &
-                     (',"',nameanc(ianc)                               &
-                     (:l_nameanc(ianc)),                               &
-                     '"',ianc=1,nanc),                                 &
-                    (',"',namec(iaic(isites))                          &
-                    (:l_namec(iaic(isites))),'"',                      &
-                     isites=1,nsites),                                 &
-                    (',"',namesb_ion(isb)(:l_namesb_ion(isb)),'"',     &
-                     isb=1,nsb_ion),                                   &
-                    (',"',namesb_surf(isb)(:l_namesb_surf(isb)),'"',   &
-                     isb=1,nsb_surf)
+
+                if (nsb_ion.eq.0.and.nsb_surf.eq.0) then
+                  write(fibb,'(1000a)') '# variables = "',             &
+                         indep_var(:l_indep_var),'"',                  &
+                       (',"',nameanc(ianc)                             &
+                       (:l_nameanc(ianc)),                             &
+                       '"',ianc=1,nanc)
+                elseif (.not.noncompetitive_sorption) then
+                  write(fibb,'(1000a)') '# variables = "',             &
+                         indep_var(:l_indep_var),'"',                  &
+                      (',"',namec(iaic(isites))                        &
+                      (:l_namec(iaic(isites))),'"',                    &
+                       isites=1,nsites),                               &
+                      (',"',namesb_ion(isb)(:l_namesb_ion(isb)),'"',   &
+                       isb=1,nsb_ion),                                 &
+                      (',"',namesb_surf(isb)(:l_namesb_surf(isb)),'"', &
+                       isb=1,nsb_surf)
+                else
+                  write(fibb,'(1000a)') '# variables = "',             &
+                         indep_var(:l_indep_var),'"',                  &
+                       (',"',nameanc(ianc)                             &
+                       (:l_nameanc(ianc)),                             &
+                       '"',ianc=1,nanc),                               &
+                      (',"',namec(iaic(isites))                        &
+                      (:l_namec(iaic(isites))),'"',                    &
+                       isites=1,nsites),                               &
+                      (',"',namesb_ion(isb)(:l_namesb_ion(isb)),'"',   &
+                       isb=1,nsb_ion),                                 &
+                      (',"',namesb_surf(isb)(:l_namesb_surf(isb)),'"', &
+                       isb=1,nsb_surf)
+                end if
+
                                                                        
 !c  zone record
                                                                         
@@ -2975,11 +3023,29 @@
         return
       end if
 
-!c  update secondary variables before print-out
-      call updtsvap(c,cx,gammac,gammax,strion,tid)
-  
-!c  total aqueous component concentrations  
-      call totconc(c,cx,totc)
+
+!c  master variables
+
+      ! Compute charge balance
+      call cbalance(c,cx,zbal,zpos,zneg)
+
+      ! Compute pH, pe, Eh
+      call phpe(c,gammac,ph,pe,eh,tempkel)      
+
+      ! Compute alkalinity
+      if (compute_alkalinity) then
+        call alkcalc(alk_carb,alk_noncarb,alk_tot,                   &
+                     alk_carb_mg,alk_noncarb_mg,alk_tot_mg,          &
+                     alkfacc,alkfacx,c,cx,                           &
+                     iax,jax,nc,nx,namec,namex)
+      else                     !CMX
+        alk_carb=r0
+        alk_noncarb=r0
+        alk_tot=r0
+        alk_carb_mg=r0
+        alk_noncarb_mg=r0
+        alk_tot_mg=r0
+      end if
 
       !c  print out results of current time step
 
@@ -3075,27 +3141,6 @@
             end if
           end if
         end if     !c activity coefficients
-
-!c  master variables
-
-        ! Compute charge balance
-        call cbalance(c,cx,zbal,zpos,zneg)
-
-        call phpe(c,gammac,ph,pe,eh,tempkel)      
-
-        if (compute_alkalinity) then
-          call alkcalc(alk_carb,alk_noncarb,alk_tot,                   &
-                       alk_carb_mg,alk_noncarb_mg,alk_tot_mg,          &
-                       alkfacc,alkfacx,c,cx,                           &
-                       iax,jax,nc,nx,namec,namex)
-        else                     !CMX
-          alk_carb=r0
-          alk_noncarb=r0
-          alk_tot=r0
-          alk_carb_mg=r0
-          alk_noncarb_mg=r0
-          alk_tot_mg=r0
-        end if
 
         if (b_output_trans_binary) then
           if ((ph_output).and.(pe_output)) then
@@ -3321,61 +3366,161 @@
 !c  competitive sorption
 
         if (nsb_ion.gt.0) then
-            do isb = 1,nsb_ion 
-                  call sorbspc_m(csb_ion(isb,tid),dummy,cec_l,         &
-                       cec_fraction(idx_nsites_ion(isb)),              &
-                       eqsb_ion(:,tid),eqsb_surf(:,tid),               &
-                       gammac,c,xnusb_ion,xnusb_surf,                  &
-                       iasb_ion,iasb_surf,jasb_ion,jasb_surf,          &
-                       nsb_ion,nsb_surf,isb,0,                         &
-                       sorption_type_ion,sorption_type_surf,           &
-                       sorption_group,isactcexch)
-            end do  
+          do isb = 1,nsb_ion 
+            call sorbspc_m(csb_ion(isb,tid),dummy,cec_l,         &
+                 cec_fraction(idx_nsites_ion(isb)),              &
+                 eqsb_ion(:,tid),eqsb_surf(:,tid),               &
+                 gammac,c,xnusb_ion,xnusb_surf,                  &
+                 iasb_ion,iasb_surf,jasb_ion,jasb_surf,          &
+                 nsb_ion,nsb_surf,isb,0,                         &
+                 sorption_type_ion,sorption_type_surf,           &
+                 sorption_group,isactcexch)
+          end do  
         end if
       
         if (nsb_surf.gt.0) then
           do isb = 1,nsb_surf
-            call sorbspc(dummy,csb_surf(isb,tid),cec_l,                &
-                 eqsb_ion(:,tid),eqsb_surf(:,tid),                     &
+            call sorbspc(dummy,csb_surf(isb,tid),c(nc-nelect:nc-1),    &
+                 cec_l,eqsb_ion(:,tid),eqsb_surf(:,tid),               &
                  gammac,c,xnusb_ion,xnusb_surf,                        &
                  iasb_ion,iasb_surf,jasb_ion,jasb_surf,                &
                  nsb_ion,nsb_surf,0,isb,                               &
                  sorption_type_ion,sorption_type_surf,                 &
-                 sorption_group,isactcexch)
+                 sorption_group,isactcexch,                            &
+                 elect_correction,name_elect_correction,nelect,        &
+                 dz_surf,totc,component_type,nlayer,                   &
+                 mol_frac_ads)
           end do
         end if
 
 !c  output - sorbed species
 
-        if (nsb_ion .gt. 0 .or. nsb_surf.gt.0 .or.                     &
-            noncompetitive_sorption) then
+        if (nsb_ion.gt.0.or.nsb_surf.gt.0.or.noncompetitive_sorption) then
 
-          if (b_output_trans_binary) then
-            nvars = nanc+nsites+nsb_ion+nsb_surf+1
-            realbuffer_gb(1:nvars) =  (/time,                          &
-                  (totan(ianc,tid),ianc=1,nanc),                       &
-                  (c(iaic(isites)),isites=1,nsites),                   &
-                  (csb_ion(isb,tid),isb=1,nsb_ion),                    &
-                  (csb_surf(isb,tid),isb=1,nsb_surf)/)
-            call binary_write_data(fibb, 1,(/ngb_tstep/),              &
-                         offset_bb_ijk,.true.)
-            call binary_write_data(fibb, nvars,                        &
-                         realbuffer_gb,offset_bi,.true.) 
+          if (nsb_ion.eq.0.and.nsb_surf.eq.0) then
+            if (b_output_trans_binary) then
+              nvars = nanc+1
+              if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
+                realbuffer_gb(1:nvars) =  (/time,                      &
+                      (totan(ianc,tid),ianc=1,nanc)/)
+              else if (trim(output_unit_sb_surf) .eq. 'mol/l bulk') then
+                realbuffer_gb(1:nvars) =  (/time,                      &
+                      (totan(ianc,tid),ianc=1,nanc)/)
+              end if
 
-            offset_bi = offset_bi + nvars*nfloatbit
+              call binary_write_data(fibb, 1,(/ngb_tstep/),            &
+                           offset_bb_ijk,.true.)
+              call binary_write_data(fibb, nvars,                      &
+                           realbuffer_gb,offset_bi,.true.) 
+  
+              offset_bi = offset_bi + nvars*nfloatbit
+  
+            else
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(fibb,irecord)
+              end if
+  
+              if (i_append_sim < 1 .or.                                &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
+                  write(fibb,ascii_fmt) time,                          &
+                        (totan(ianc,tid),ianc=1,nanc)
+                else if (trim(output_unit_sb_surf) .eq. 'mol/l bulk') then
+                  write(fibb,ascii_fmt) time,                          &
+                      (totan(ianc,tid),ianc=1,nanc)
+                end if
 
-          else
-            if (mtime == mtime_append .and. i_append_sim >= 1) then
-              call reposition_file(fibb,irecord)
+              end if
             end if
+          else if (.not.noncompetitive_sorption) then
+            if (b_output_trans_binary) then
+              nvars = nsites+nsb_ion+nsb_surf+1
+              if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
+                realbuffer_gb(1:nvars) =  (/time,                      &
+                      (c(iaic(isites)),isites=1,nsites),               &
+                      (csb_ion(isb,tid),isb=1,nsb_ion),                &
+                      (csb_surf(isb,tid),isb=1,nsb_surf)/)
+              else if (trim(output_unit_sb_surf) .eq. 'mol/l bulk') then
+                realbuffer_gb(1:nvars) =  (/time,                      &
+                      (c(iaic(isites))*sw*porvol,isites=1,nsites),     &
+                      (csb_ion(isb,tid),isb=1,nsb_ion),                &
+                      (csb_surf(isb,tid)*sw*porvol,isb=1,nsb_surf)/)
+              end if
 
-            if (i_append_sim < 1 .or.                                  &
-               (mtime >= mtime_append .and. i_append_sim >= 1)) then
-              write(fibb,ascii_fmt) time,                              &
-                    (totan(ianc,tid),ianc=1,nanc),                     &
-                    (c(iaic(isites)),isites=1,nsites),                 &
-                    (csb_ion(isb,tid),isb=1,nsb_ion),                  &
-                    (csb_surf(isb,tid),isb=1,nsb_surf)
+              call binary_write_data(fibb, 1,(/ngb_tstep/),            &
+                           offset_bb_ijk,.true.)
+              call binary_write_data(fibb, nvars,                      &
+                           realbuffer_gb,offset_bi,.true.) 
+  
+              offset_bi = offset_bi + nvars*nfloatbit
+  
+            else
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(fibb,irecord)
+              end if
+  
+              if (i_append_sim < 1 .or.                                &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
+                  write(fibb,ascii_fmt) time,                          &
+                        (c(iaic(isites)),isites=1,nsites),             &
+                        (csb_ion(isb,tid),isb=1,nsb_ion),              &
+                        (csb_surf(isb,tid),isb=1,nsb_surf)
+                else if (trim(output_unit_sb_surf) .eq. 'mol/l bulk') then
+                  write(fibb,ascii_fmt) time,                          &
+                      (c(iaic(isites))*sw*porvol,isites=1,nsites),     &
+                      (csb_ion(isb,tid),isb=1,nsb_ion),                &
+                      (csb_surf(isb,tid)*sw*porvol,isb=1,nsb_surf)
+                end if
+
+              end if
+            end if
+          else
+            if (b_output_trans_binary) then
+              nvars = nanc+nsites+nsb_ion+nsb_surf+1
+              if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
+                realbuffer_gb(1:nvars) =  (/time,                      &
+                      (totan(ianc,tid),ianc=1,nanc),                   &
+                      (c(iaic(isites)),isites=1,nsites),               &
+                      (csb_ion(isb,tid),isb=1,nsb_ion),                &
+                      (csb_surf(isb,tid),isb=1,nsb_surf)/)
+              else if (trim(output_unit_sb_surf) .eq. 'mol/l bulk') then
+                realbuffer_gb(1:nvars) =  (/time,                      &
+                      (totan(ianc,tid),ianc=1,nanc),                   &
+                      (c(iaic(isites))*sw*porvol,isites=1,nsites),     &
+                      (csb_ion(isb,tid),isb=1,nsb_ion),                &
+                      (csb_surf(isb,tid)*sw*porvol,isb=1,nsb_surf)/)
+              end if
+
+              call binary_write_data(fibb, 1,(/ngb_tstep/),            &
+                           offset_bb_ijk,.true.)
+              call binary_write_data(fibb, nvars,                      &
+                           realbuffer_gb,offset_bi,.true.) 
+  
+              offset_bi = offset_bi + nvars*nfloatbit
+  
+            else
+              if (mtime == mtime_append .and. i_append_sim >= 1) then
+                call reposition_file(fibb,irecord)
+              end if
+  
+              if (i_append_sim < 1 .or.                                &
+                 (mtime >= mtime_append .and. i_append_sim >= 1)) then
+                if (trim(output_unit_sb_surf) .eq. 'mol/l h2o') then
+                  write(fibb,ascii_fmt) time,                          &
+                        (totan(ianc,tid),ianc=1,nanc),                 &
+                        (c(iaic(isites)),isites=1,nsites),             &
+                        (csb_ion(isb,tid),isb=1,nsb_ion),              &
+                        (csb_surf(isb,tid),isb=1,nsb_surf)
+                else if (trim(output_unit_sb_surf) .eq. 'mol/l bulk') then
+                  write(fibb,ascii_fmt) time,                          &
+                      (totan(ianc,tid),ianc=1,nanc),                   &
+                      (c(iaic(isites))*sw*porvol,isites=1,nsites),     &
+                      (csb_ion(isb,tid),isb=1,nsb_ion),                &
+                      (csb_surf(isb,tid)*sw*porvol,isb=1,nsb_surf)
+                end if
+
+              end if
             end if
           end if
         end if
@@ -3517,13 +3662,25 @@
           !end do
        
           if (update_porosity) then
+            nvars = nm+2
             if (b_output_trans_binary) then
-              nvars = nm+2
               realbuffer_gb(1:nvars) =  (/time,(phi_out(im),im=1,nm),  &
                                           porvol/)
             else
               if (mtime == mtime_append .and. i_append_sim >= 1) then
                 call reposition_file(fibv,irecord)
+
+                if (irecord > 0) then
+                  !c locate to the restart time and get previous results
+                  call reposition_file(fibv,irecord,time_io_rs)
+                  read(fibv,*,end=100,err=100) rdummys(1:nvars)
+                  !c reposition to the line to append results
+                  call reposition_file(fibv,irecord)
+  
+                  phim(1:nm) = phim(1:nm) + rdummys(2:nm+1)
+
+                end if
+100             continue
               end if
   
               if (i_append_sim < 1 .or.                                &
@@ -3533,13 +3690,24 @@
             end if
 
           else
+            nvars = nm+2
             if (b_output_trans_binary) then
-              nvars = nm+2
               realbuffer_gb(1:nvars) =  (/time,(phi_out(im),im=1,nm),  &
                                           porvol/)
             else
               if (mtime == mtime_append .and. i_append_sim >= 1) then
                 call reposition_file(fibv,irecord)
+                if (irecord > 0) then
+                  !c locate to the restart time and get previous results
+                  call reposition_file(fibv,irecord,time_io_rs)
+                  read(fibv,*,end=200,err=200) rdummys(1:nvars)
+                  !c reposition to the line to append results
+                  call reposition_file(fibv,irecord)
+
+                  phim(1:nm) = phim(1:nm) + rdummys(2:nm+1)
+
+                end if
+200             continue
               end if
   
               if (i_append_sim < 1 .or.                                &
@@ -3554,11 +3722,11 @@
             call binary_write_data(fibv, 1,(/ngb_tstep/),              &
                          offset_bv_ijk,.true.)
             call binary_write_data(fibv, nvars,                        &
-                         realbuffer_gb,offset_bs,.true.) 
-            offset_bs = offset_bs + nvars*nfloatbit
+                         realbuffer_gb,offset_bv,.true.) 
+            offset_bv = offset_bv + nvars*nfloatbit
           end if
 
-!c  mineral dissolution-precipitation rates
+!c  mineral dissolution-precipitation rates and mass over time
 
           do im = 1,nm
 
@@ -3596,11 +3764,9 @@
 
           end do
 
-!CMX
           istart = iamd(1)
           istop = iamd(nm+1)-1    
-!CMX
-        
+
           if (b_output_trans_binary) then
             nvars = istop-istart+2
             realbuffer_gb(1:nvars) =  (/time,(ratemp(ireac,tid),       &
@@ -3608,9 +3774,9 @@
             call binary_write_data(fibd, 1,(/ngb_tstep/),              &
                          offset_bd_ijk,.true.)
             call binary_write_data(fibd, nvars,                        &
-                         realbuffer_gb,offset_bv,.true.) 
+                         realbuffer_gb,offset_bd,.true.) 
 
-            offset_bv = offset_bv + nvars*nfloatbit
+            offset_bd = offset_bd + nvars*nfloatbit
 
           else
             if (mtime == mtime_append .and. i_append_sim >= 1) then
@@ -3690,9 +3856,9 @@
           if (b_output_trans_binary) then
             nvars = i1+1
             realbuffer_gb(1:nvars) =  (/time,(valuetemp(imi),imi=1,i1)/)
-            call binary_write_data(fibis, 1,(/ngb_tstep/),           &
+            call binary_write_data(fibis, 1,(/ngb_tstep/),             &
                          offset_bis_ijk,.true.)
-            call binary_write_data(fibis, nvars,                     &
+            call binary_write_data(fibis, nvars,                       &
                          realbuffer_gb,offset_bis,.true.) 
 
             offset_bis = offset_bis + nvars*nfloatbit
@@ -3709,12 +3875,6 @@
           end if
         
         end if
-      end if
-      
-!c  compress total aqueous component concentration vector in case of
-!c  equilibrium reactions.
-      if (redox_equil.and.nr.gt.0) then
-        call comptotc(totc) 
       end if
 
       call memory_monitor(-sizeof(nametemp),'nametemp',.false.)

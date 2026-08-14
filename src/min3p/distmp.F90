@@ -4,7 +4,7 @@
 !> $Revision: 533 $
 !> $Author: dsu $
 !> $Date: 2017-10-16 11:50:08 -0700 (Mon, 16 Oct 2017) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/distmp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/distmp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -71,9 +71,7 @@
       
       integer :: tid
       
-      real*8 :: cmnewm,phim,aream
-
-      dimension cmnewm(*),phim(*),aream(*)
+      real*8 :: cmnewm(*),phim(*),aream(*)
       
       integer :: i1, im, im2, istart, istop
       

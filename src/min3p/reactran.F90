@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/reactran.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/reactran.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -49,7 +49,7 @@
 !c           art(njart)         = jacobian matrix                     * *    
 !c           afrt(njafrt)       = incomplete factorization            * *
 !c           brt(nn*n)          = rhs vector                          * *
-!c           c(nc,nn)           = concentrations of free species      + +
+!c           cold(nc,nn)        = concentrations of free species      + +
 !c                                - old time level [moles/l water]
 !c           cinfvs(njavs)      = influence coefficients              + -
 !c                                (variably saturated flow)
@@ -59,7 +59,7 @@
 !c                                - new time level [moles/l bulk]
 !c           cmold(nm,nn)       = mineral concentrations              + +
 !c                                - old time level [moles/l bulk]]
-!c           cx(nx,nn)          = concentrations of secondary aqueous + +
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + +
 !c                                species [moles/l water]
 !c           delt               = time step                           + -
 !c           deltol_rt          = solver update tolerance             + -
@@ -326,6 +326,7 @@
       use bbls
       use biol
       use nobleGasIngrowth
+      use mimicMassDisp
       use mip_bubble, only : mip_mt_enable
       use multidiff, only : mdiff_ic_tensor, mdiff_ix_tensor,          &
                             type_mdiff_ic_coeff, type_mdiff_ix_coeff,  &
@@ -373,10 +374,11 @@
 #endif
 
       integer :: i, i1, ic, ilist, info_debug, ipest, ierr, ivol,      &
-                 i2, i3, ii, ireac, istart, istop, istart2, istop2,    &
+                 i2, i3, ii, ireac, istart, iend, istart2, iend2,      &
                  ic2, icur, icount, next, ivolume, nexvol, maxvol,     &
-                 n_unknown_rt, iunit, im, izn, inpl
-      real*8 :: sia_abs, ups_flow_loc, uuu, gammatemp
+                 n_unknown_rt, iunit, ig, im, izn, inpl
+      real*8 :: sia_abs, ups_flow_loc, uuu, gammatemp,                 &
+                rvoidLiter, dispMassGas, dispMassAq
       real*8, external :: satindex, cputime
       
       integer :: ifile, idummy, iskip, nskip
@@ -384,19 +386,22 @@
       
       integer :: tid, istatus
 
+      real*8 :: swc, sac, porc, rdummy, area_surf 
+      real*8 :: actvt(nc), totc(nc)
+
       external checkerr, zero_r8, infcrt_a, infcrtdd, infcrt_g,        &
                jacrt, jacbrt, updatert, mbalrt,                        &
                tsteprt, incompletefactorization, ws209,                &
                diffcoff_mcd,mbal_mcd,infcrt_mcd, giups,                &
                tcorr, updtsvap, updtsvmp
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, conv3 = 1.0d3,      &
-                           rverysmall = 1.0d-30
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r100 = 100.0d0,     &
+                           conv3 = 1.0d3, rverysmall = 1.0d-30
       
       !mole water to liter water, 1mole water = 0.018L
       real*8, parameter :: rwater_mole2liter =  0.018d0  
 
-      logical over_flow, b_redo_symbfac
+      logical :: over_flow, b_redo_symbfac, bflag
       
 #ifdef OPENMP
       tid = omp_get_thread_num() + 1
@@ -448,12 +453,12 @@
                        idbg, ilog, fully_saturated,                   &
                        variably_saturated, njavs, nngl,               &
                        tortuosity_corr, half_cells,time,tfinal,       &
-                       cinfrt_da_ic,diff_coff, nc,                    &
+                       cinfrt_da_ic,comp_dep_diff_coff, nc,           &
                        diff_ic, diff_ic_tensor, type_diff_ic_coeff,   &
                        assigned_tau,tau,type_tortuosity,marchies,     &
                        harmonic_porosity,delx,dely,delz,av_dens_z,    &
                        ups_flow_loc,gacc,cinfrad,radial_coord,tau_fac,&
-                       sonew) 
+                       sonew,type_averaging_De) 
 #ifdef USG
           else
             call infcrtdd_usg
@@ -474,13 +479,12 @@
                          idbg, ilog, upstream, fully_saturated,       &
                          variably_saturated, njavs, nngl,             &
                          tortuosity_corr, half_cells,cinfrt_da_ic,    &
-                         diff_coff, nc, diff_ic,                      &
+                         comp_dep_diff_coff, nc, diff_ic,             &
                          diff_ic_tensor, type_diff_ic_coeff,          &
                          assigned_tau,tau,type_tortuosity,marchies,   &
                          cinfrad,radial_coord,multi_diff,tau_fac,     &
                          harmonic_porosity, delx,dely,delz,           &
-                         type_averaging_De, xg,                       &
-                         sonew,oil_saturation)
+                         type_averaging_De, sonew,oil_saturation)
 #ifdef USG
           else
             call infcrt_a_usg
@@ -1211,7 +1215,7 @@
 !c_bubbles reset flow variables also
             end if 
             do ic=1,n
-              cnew(ic,ivol) = c(ic,ivol)
+              cnew(ic,ivol) = cold(ic,ivol)
             end do
             if (nm.gt.r0)then
               do im=1,nm
@@ -1235,24 +1239,7 @@
       
 !cdbg
       b_mpi_process_flag = .false.
-
-#ifdef DEBUG
-      if (info_debug.gt.0) then
-        write(idbg,'(/a,i3)')  'Reactran Newton iterations ',         &
-     &                          iter_rt
-                                                                       
-        write(idbg,'(/a,3a/)') 'ivol   ',                             &
-     &                         'conc. update        ',                &
-     &                         'c old               ',                &
-     &                         'c new               '
-
-        do ivol = 1,nngl
-          uuu = cnew(1,ivol) - c(1,ivol)
-          write(idbg,'(I3,3es20.10)') ivol,uuu,c(1,ivol),cnew(1,ivol)
-        end do
-      end if
-#endif
-      
+     
       if (info_debug.gt.1) then
         b_mpi_process_flag = .true.
         
@@ -1309,11 +1296,13 @@
             call tcorr(tkel(ivol),ivol,tid)           
           end if
   
-          call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),         &
-                        gamma(nc+1,ivol),sionnew(ivol),tid)
+          call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
+                        gamma(nc+1,ivol),sionnew(ivol),                &
+                        actvset(:,ivol),tid)
           if (hmulti_diff) then
-                call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),&        !MX June 2014
-                              gammaold(nc+1,ivol),sionold(ivol),tid)
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &        !MX June 2014
+                          gammaold(nc+1,ivol),sionold(ivol),           &
+                          actvset(:,ivol),tid)
           end if
 
         end if
@@ -1321,10 +1310,10 @@
 !c  recompute total concentrations vectors
       
         if (redox_equil_rt.and.nr.gt.0) then
-          call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+          call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
 
           if (ng.gt.0) then
-              call totconcg(gnew(1,ivol),totgnew(1,ivol))
+              call totconcg(gnew(:,ivol),totgnew(:,ivol))
           end if  
         end if
 
@@ -1483,8 +1472,8 @@
     !$omp if (nngl > numofloops_thred_global)                         &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private (ivol,tid,inpl,i,i1,i2,i3,ii,im,ireac,istart,istop, &
-    !$omp istart2,istop2,ic,ic2,icur,icount,next,gammatemp)
+    !$omp private (ivol,tid,inpl,i,i1,i2,i3,ii,im,ireac,istart,iend,  &
+    !$omp istart2,iend2,ic,ic2,icur,icount,next,gammatemp)
 #endif
 
 #ifdef OPENMP
@@ -1509,11 +1498,13 @@
             call tcorr(tkel(ivol),ivol,tid)           
           end if
    
-          call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),         & 
-                        gamma(nc+1,ivol),sionnew(ivol),tid)
+          call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      & 
+                        gamma(nc+1,ivol),sionnew(ivol),                &
+                        actvset(:,ivol),tid)
           if (hmulti_diff) then
-             call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),   &        !MX June 2014
-                         gammaold(nc+1,ivol),sionold(ivol),tid)
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol), &        !MX June 2014
+                          gammaold(nc+1,ivol),sionold(ivol),           &
+                          actvset(:,ivol),tid)
           end if
 
 !c         THH edit: pass ivol # to updtsvmp to use in updating surface areas
@@ -1530,26 +1521,26 @@
                       satm(im,tid) = eqm(im,tid)**(-r1)
                       ireac = iamd(im)
                       istart = iam(im)
-                      istop = iam(im+1)-1
+                      iend = iam(im+1)-1
 
-                      do i1 = istart, istop ! loop through components in mineral
+                      do i1 = istart, iend ! loop through components in mineral
                         icount = 0
                         ic = jam(i1)
                         next = 0
                         do i = 1, nifrm(im)  ! loop through isotope sets
                           istart2 = next + iamdiso(im)
                           icur = iamdiso2(im) + i - 1
-                          istop2 = iamdiso(im) + jamdiso2(icur) - 1
+                          iend2 = iamdiso(im) + jamdiso2(icur) - 1
                           next = jamdiso2(icur)
                           gammatemp = r0
                           !loop through isotope compents in set
-                          do i2 = istart2, istop2
+                          do i2 = istart2, iend2
                             ii = jamdiso(i2)
                             !check to see if component is an isotope
                             if (ii.eq.ic) then
                               icount = icount + 1
                               !if so sum the isotope activities
-                              do i3 = istart2, istop2
+                              do i3 = istart2, iend2
                                   ic2 = jamdiso(i3)
                                   gammatemp = gammatemp+gamma(ic2,ivol)*cnew(ic2,ivol)
                               end do
@@ -1563,15 +1554,15 @@
                         end if
                       end do   !i1
                     else
-                      satm(im,tid) = satindex(cnew(1,ivol),eqm(im,tid),&
-                                        gamma(1,ivol),xnum,iam,jam,im)
+                      satm(im,tid) = satindex(cnew(:,ivol),eqm(im,tid),&
+                                        gamma(:,ivol),xnum,iam,jam,im)
                     end if
                   end if
                 end if
               end do
-
-              call updtsvmp(cmnew(1,ivol),cmold(1,ivol),phi(1,ivol),   &
-                            area(1,ivol),ratemdp(1,ivol),satm(1,tid),  &
+              
+              call updtsvmp(cmnew(:,ivol),cmold(:,ivol),phi(:,ivol),   &
+                            area(:,ivol),ratemdp(:,ivol),satm(1,tid),  &
                             delt,ivol,tid)
               
 !c         added by Anna H Jan 24, 2014 to remove water during hydrate carb pptn
@@ -1635,13 +1626,13 @@
           tid = 1
 #endif
 
-          call totconc(cnew(1,ivol),cx(1,ivol),totcnew(1,ivol))
+          call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
 
           if (hmulti_diff) then
-            call totconc(c(1,ivol),cxold(1,ivol),totcold(1,ivol))
+            call totconc(cold(:,ivol),cxold(:,ivol),totcold(:,ivol))
           end if
           if (ng.gt.0) then
-            call totconcg(gnew(1,ivol),totgnew(1,ivol))
+            call totconcg(gnew(:,ivol),totgnew(:,ivol))
           end if
         end do
 #ifdef OPENMP
@@ -1660,8 +1651,82 @@
         return
       end if
 
+!c  mimic advective gas displacement
+      if (nAdvGasDisp > 0) then
+        advGasDispBdMass = r0
+        advGasAqDispBdMass = r0
+#ifdef OPENMP
+    !$omp parallel                                                    &
+    !$omp if (nngl > numofloops_thred_global)                         &
+    !$omp num_threads(numofthreads_global)                            &
+    !$omp default(shared)                                             &
+    !$omp private(i, ig, ic, ivol, istart, iend, bflag,               &
+    !$omp dispMassGas, dispMassAq, rvoidLiter)                        &
+    !$omp reduction(+:advGasDispBdMass,advGasAqDispBdMass)
+    !$omp do schedule(static)
+#endif
+        do ivol = 1, nngl
+#ifdef PETSC
+          if(node_idx_lg2l(ivol) < 0) then
+            cycle
+          end if
+#endif
+          bflag = .false.
+          do ig = 1, ng
+            if (mimicAdvGasDisp(ig)) then
+              dispMassGas = gnew(ig,ivol) - advGasDispBd(ig)
+              if (dispMassGas > r0) then
+                bflag = .true.
+                rvoidLiter = cvol(ivol)*pornew(ivol)*conv3
+                advGasDispBdMass(ig) = advGasDispBdMass(ig) +            &
+                      dispMassGas*rvoidLiter*sgnew(ivol)
+                gnew(ig,ivol) = advGasDispBd(ig)
+                istart = iaga(ig)
+                iend = iaga(ig+1)-1
+                do i = istart, iend
+                  ic = jaga(i)
+                  dispMassAq = cnew(ic,ivol) - advGasAqDispBd(ig)
+                  if (dispMassAq > r0) then
+                    cnew(ic,ivol) = advGasAqDispBd(ig)
+                    advGasAqDispBdMass(ig) = advGasAqDispBdMass(ig) +    &
+                       dispMassAq*rvoidLiter*sanew(ivol)
+                  end if
+                end do
+              end if
+            end if
+          end do
+
+          !c update total concentration for aqueous phase and gas phase
+          if (bflag) then
+            call totconc(cnew(:,ivol),cxnew(:,ivol),totcnew(:,ivol))
+            if (ng.gt.0) then
+              call totconcg(gnew(:,ivol),totgnew(:,ivol))
+            end if
+          end if
+
+        end do
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+
+#ifdef PETSC
+        call MPI_Allreduce(advGasDispBdMass, advGasDispBdMassGbl,      &
+             ng, MPI_REAL8, MPI_SUM, Petsc_Comm_World,ierrcode)
+        CHKERRQ(ierrcode)
+        advGasDispBdMass = advGasDispBdMassGbl
+    
+        call MPI_Allreduce(advGasAqDispBdMass, advGasAqDispBdMassGbl,  &
+             ng, MPI_REAL8, MPI_SUM, Petsc_Comm_World, ierrcode)
+        CHKERRQ(ierrcode)
+        advGasAqDispBdMass = advGasAqDispBdMassGbl 
+#endif   
+      end if   
+
 !c  mass balance computation for reactive transport
 !c  Parallelized , OpenMP, DSU
+
+
 
       if (mass_balance_rt .and. ngb_step == ngb_step_bk) then
         call mbalrt

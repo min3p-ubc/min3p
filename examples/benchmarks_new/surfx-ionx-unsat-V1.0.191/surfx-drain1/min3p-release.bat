@@ -1,0 +1,1 @@
+..\..\..\..\Bin\Current_beta_version\MIN3P_THCm_x64.exe

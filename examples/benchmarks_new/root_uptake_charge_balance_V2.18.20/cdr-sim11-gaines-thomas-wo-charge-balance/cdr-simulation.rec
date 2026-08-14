@@ -1,0 +1,489 @@
+
+                  PEST RUN RECORD: CASE cdr_simulation
+
+
+PEST Version: 18.0
+
+
+PEST run mode:-
+
+   Parameter estimation mode
+
+
+Case dimensions:-
+
+   Number of parameters                           :     9
+   Number of adjustable parameters                :     4
+   Number of parameter groups                     :     2
+   Number of observations                         :    14
+   Number of prior estimates                      :     0
+
+
+Model command line(s):-
+
+   "min3p_td_run.bat"
+
+
+Jacobian command line:-
+
+   na
+
+
+Model interface files:-
+
+   Templates:
+      cdr_simulation.tpl
+   for model input files:
+      cdr_simulation.in
+
+   (Parameter values written using single precision protocol.)
+   (Decimal point always included.)
+
+   Instruction files:
+      cdr_simulation.ins
+   for reading model output files:
+      cdr_simulation_out.dat
+
+
+PEST-to-model message file:-
+
+   na
+
+
+Derivatives calculation:-
+
+Param        Increment   Increment   Increment   Forward or   Multiplier  Method
+group        type                    low bound   central      (central)   (central)
+rsa          relative    1.0000E-02   none         switch       2.000     parabolic
+resp         relative    1.0000E-02   none         switch       2.000     parabolic
+
+
+Parameter definitions:-
+
+Name         Trans-            Change       Initial        Lower          Upper
+             formation         limit        value          bound          bound
+epidote_1    none              factor      120.730        1.00000        300.000    
+chlorite_1   none              factor      256.788        1.00000        400.000    
+actinolite_1 none              factor      54.7060        1.00000        200.000    
+titanite_1   none              factor      8.01726       0.100000        100.000    
+resp_het     fixed               na       1.800000E-09      na             na
+epidote_2    tied epidote_1      na        43.7128          na             na
+chlorite_2   tied chlorite_1     na        92.9750          na             na
+actinolite_2 tied actinolite_1   na        19.8073          na             na
+titanite_2   tied titanite_1     na        2.90280          na             na
+
+Name         Group          Scale         Offset        Model command number
+epidote_1    rsa           1.00000        0.00000            1
+chlorite_1   rsa           1.00000        0.00000            1
+actinolite_1 rsa           1.00000        0.00000            1
+titanite_1   rsa           1.00000        0.00000            1
+resp_het     resp          1.00000        0.00000            1
+epidote_2    rsa           1.00000        0.00000            1
+chlorite_2   rsa           1.00000        0.00000            1
+actinolite_2 rsa           1.00000        0.00000            1
+titanite_2   rsa           1.00000        0.00000            1
+
+
+Prior information:-
+
+   No prior information supplied
+
+
+Observations:-
+
+Observation name        Observation       Weight       Group
+ ca_0                    3257.00         1.0000E-02   tot         
+ mg_0                    3285.00         1.0000E-02   tot         
+ ca_1                    4283.00         1.0000E-02   tot         
+ mg_1                    4129.00         1.0000E-02   tot         
+ ca_2                    4952.00          1.000       tot         
+ mg_2                    5259.00          1.000       tot         
+ ca_3                    5665.00          1.000       tot         
+ mg_3                    6071.00          1.000       tot         
+ ca_4                    7546.00         1.0000E-02   tot         
+ mg_4                    6852.00          1.000       tot         
+ resp_1                  1.79200          1.000       resp        
+ resp_2                  2.06300          1.000       resp        
+ resp_3                  2.02900          1.000       resp        
+ resp_4                  2.01000          1.000       resp        
+
+
+Control settings:-
+
+   Initial lambda                                               :  5.0000    
+   Lambda adjustment factor                                     :  2.0000    
+   Sufficient new/old phi ratio per optimisation iteration      : 0.30000    
+   Limiting relative phi reduction between lambdas              : 3.00000E-02
+   Maximum trial lambdas per iteration                          :  10
+   Forgive model run failure during lamda testing               : no
+   Forgive model run failure during Jacobian runs               : no
+
+   Perform Broyden's update of Jacobian matrix                  : no
+   Undertake observation re-referencing                         : no
+
+   Maximum  factor  parameter change (factor-limited changes)   :  3.0000
+   Maximum relative parameter change (relative-limited changes) : na
+   Fraction of initial parameter values used in computing
+   change limit for near-zero parameters                        : 1.00000E-03
+   Allow bending of parameter upgrade vector                    : no
+   Allow parameters to stick to their bounds                    : no
+
+   Relative phi reduction below which to begin use of
+   central derivatives                                          : 0.10000             
+   Iteration at which to first consider derivatives switch      :   1
+
+   Relative phi reduction indicating convergence                : 0.10000E-01
+   Number of phi values required within this range              :   3
+   Maximum number of consecutive failures to lower phi          :   3
+   Minimal relative parameter change indicating convergence     : 0.10000E-01
+   Number of consecutive iterations with minimal param change   :   3
+   Maximum number of optimisation iterations                    :  30
+
+   Attempt automatic user intervention                          : no
+
+   Attempt reuse of parameter sensitivities                     : no
+
+   Scale parameters by their bounds                             : no
+
+
+File saving options: -
+
+   Save best JCO file                                           : yes
+   Save multiple JCO files                                      : no
+   Save multiple REI files                                      : no
+   Save multiple PAR files                                      : no
+
+
+                            OPTIMISATION RECORD
+
+
+INITIAL CONDITIONS: 
+   Sum of squared weighted residuals (ie phi)               =  1.04562E+05
+   Contribution to phi from observation group "tot"         =  1.04562E+05
+   Contribution to phi from observation group "resp"        =  0.11279    
+
+      Current parameter values
+      epidote_1        120.730    
+      chlorite_1       256.788    
+      actinolite_1     54.7060    
+      titanite_1       8.01726    
+      resp_het        1.800000E-09
+      epidote_2        43.7128    
+      chlorite_2       92.9750    
+      actinolite_2     19.8073    
+      titanite_2       2.90280    
+
+
+OPTIMISATION ITERATION NO.        : 1
+   Model calls so far             : 1
+   Starting phi for this iteration                          :  1.04562E+05
+   Contribution to phi from observation group "tot"         :  1.04562E+05
+   Contribution to phi from observation group "resp"        :  0.11279    
+
+       Lambda =   5.0000     ----->
+          Phi =   16338.      (  0.156 of starting phi)
+
+   No more lambdas: phi is less than 0.3000 of starting phi
+   Lowest phi this iteration:   16338.    
+
+      Current parameter values                 Previous parameter values
+      epidote_1        146.643                 epidote_1         120.730    
+      chlorite_1       247.662                 chlorite_1        256.788    
+      actinolite_1     34.3634                 actinolite_1      54.7060    
+      titanite_1       23.5575                 titanite_1        8.01726    
+      resp_het        1.800000E-09             resp_het         1.800000E-09
+      epidote_2        53.0948                 epidote_2         43.7128    
+      chlorite_2       89.6707                 chlorite_2        92.9750    
+      actinolite_2     12.4419                 actinolite_2      19.8073    
+      titanite_2       8.52943                 titanite_2        2.90280    
+   Maximum   factor change:  2.938     ["titanite_1"]
+   Maximum relative change:  1.938     ["titanite_1"]
+
+
+OPTIMISATION ITERATION NO.        : 2
+   Model calls so far             : 6
+   Starting phi for this iteration                          :   16338.    
+   Contribution to phi from observation group "tot"         :   16337.    
+   Contribution to phi from observation group "resp"        :  0.11181    
+
+       Lambda =   2.5000     ----->
+          Phi =   20972.      (  1.284 times starting phi)
+
+       Lambda =   1.2500     ----->
+          Phi =   26962.      (  1.650 times starting phi)
+
+       Lambda =   5.0000     ----->
+          Phi =   17547.      (  1.074 times starting phi)
+
+       Lambda =   10.000     ----->
+          Phi =   16157.      (  0.989 of starting phi)
+
+       Lambda =   20.000     ----->
+          Phi =   15696.      (  0.961 of starting phi)
+
+   No more lambdas: relative phi reduction between lambdas less than 0.0300
+   Lowest phi this iteration:   15696.    
+   Relative phi reduction between optimisation iterations less than 0.1000
+   Switch to higher order derivatives calculation
+
+      Current parameter values                 Previous parameter values
+      epidote_1        147.750                 epidote_1         146.643    
+      chlorite_1       246.875                 chlorite_1        247.662    
+      actinolite_1     31.7471                 actinolite_1      34.3634    
+      titanite_1       26.0545                 titanite_1        23.5575    
+      resp_het        1.800000E-09             resp_het         1.800000E-09
+      epidote_2        53.4958                 epidote_2         53.0948    
+      chlorite_2       89.3857                 chlorite_2        89.6707    
+      actinolite_2     11.4946                 actinolite_2      12.4419    
+      titanite_2       9.43351                 titanite_2        8.52943    
+   Maximum   factor change:  1.106     ["titanite_1"]
+   Maximum relative change: 0.1060     ["titanite_1"]
+
+
+OPTIMISATION ITERATION NO.        : 3
+   Model calls so far             : 15
+   Starting phi for this iteration                          :   15696.    
+   Contribution to phi from observation group "tot"         :   15696.    
+   Contribution to phi from observation group "resp"        :  0.11184    
+
+       Lambda =   20.000     ----->
+          Phi =   14722.      (  0.938 of starting phi)
+
+       Lambda =   10.000     ----->
+          Phi =   14567.      (  0.928 of starting phi)
+
+   No more lambdas: relative phi reduction between lambdas less than 0.0300
+   Lowest phi this iteration:   14567.    
+
+      Current parameter values                 Previous parameter values
+      epidote_1        150.714                 epidote_1         147.750    
+      chlorite_1       246.982                 chlorite_1        246.875    
+      actinolite_1     32.1504                 actinolite_1      31.7471    
+      titanite_1       27.2689                 titanite_1        26.0545    
+      resp_het        1.800000E-09             resp_het         1.800000E-09
+      epidote_2        54.5688                 epidote_2         53.4958    
+      chlorite_2       89.4244                 chlorite_2        89.3857    
+      actinolite_2     11.6407                 actinolite_2      11.4946    
+      titanite_2       9.87321                 titanite_2        9.43351    
+   Maximum   factor change:  1.047     ["titanite_1"]
+   Maximum relative change: 4.6611E-02 ["titanite_1"]
+
+
+OPTIMISATION ITERATION NO.        : 4
+   Model calls so far             : 25
+   Starting phi for this iteration                          :   14567.    
+   Contribution to phi from observation group "tot"         :   14567.    
+   Contribution to phi from observation group "resp"        :  0.11118    
+
+       Lambda =   5.0000     ----->
+          Phi =   14603.      (  1.003 times starting phi)
+
+       Lambda =   2.5000     ----->
+          Phi =   14562.      (  1.000 of starting phi)
+
+   No more lambdas: relative phi reduction between lambdas less than 0.0300
+   Lowest phi this iteration:   14562.    
+
+      Current parameter values                 Previous parameter values
+      epidote_1        150.849                 epidote_1         150.714    
+      chlorite_1       247.093                 chlorite_1        246.982    
+      actinolite_1     32.0869                 actinolite_1      32.1504    
+      titanite_1       27.0570                 titanite_1        27.2689    
+      resp_het        1.800000E-09             resp_het         1.800000E-09
+      epidote_2        54.6176                 epidote_2         54.5688    
+      chlorite_2       89.4646                 chlorite_2        89.4244    
+      actinolite_2     11.6177                 actinolite_2      11.6407    
+      titanite_2       9.79651                 titanite_2        9.87321    
+   Maximum   factor change:  1.008     ["titanite_1"]
+   Maximum relative change: 7.7685E-03 ["titanite_1"]
+
+
+OPTIMISATION ITERATION NO.        : 5
+   Model calls so far             : 35
+   Starting phi for this iteration                          :   14562.    
+   Contribution to phi from observation group "tot"         :   14562.    
+   Contribution to phi from observation group "resp"        :  0.11170    
+
+       Lambda =   1.2500     ----->
+          Phi =   14591.      (  1.002 times starting phi)
+
+       Lambda =  0.62500     ----->
+          Phi =   14694.      (  1.009 times starting phi)
+
+       Lambda =   2.5000     ----->
+          Phi =   14745.      (  1.013 times starting phi)
+
+   No more lambdas: phi rising
+   Lowest phi this iteration:   14591.    
+
+      Current parameter values                 Previous parameter values
+      epidote_1        152.511                 epidote_1         150.849    
+      chlorite_1       249.483                 chlorite_1        247.093    
+      actinolite_1     30.7022                 actinolite_1      32.0869    
+      titanite_1       26.4919                 titanite_1        27.0570    
+      resp_het        1.800000E-09             resp_het         1.800000E-09
+      epidote_2        55.2197                 epidote_2         54.6176    
+      chlorite_2       90.3300                 chlorite_2        89.4646    
+      actinolite_2     11.1163                 actinolite_2      11.6177    
+      titanite_2       9.59190                 titanite_2        9.79651    
+   Maximum   factor change:  1.045     ["actinolite_1"]
+   Maximum relative change: 4.3155E-02 ["actinolite_1"]
+
+   Optimisation complete: the  3 lowest phi's are within a relative distance
+                          of eachother of 1.000E-02
+   Total model calls:     46
+
+   The model has been run one final time using best parameters. 
+   Thus all model input files contain best parameter values, and model 
+   output files contain model results based on these parameters.
+
+
+                            OPTIMISATION RESULTS
+
+
+Adjustable parameters ----->
+
+Parameter        Estimated         95% percent confidence limits
+                 value             lower limit       upper limit
+ epidote_1       150.849           -52.2691           353.966    
+ chlorite_1      247.093           -1306.23           1800.41    
+ actinolite_1    32.0869           -282.118           346.292    
+ titanite_1      27.0570           -896.325           950.439    
+
+Note: confidence limits provide only an indication of parameter uncertainty.
+      They rely on a linearity assumption which  may not extend as far in 
+      parameter space as the confidence limits themselves - see PEST manual.
+
+
+Tied parameters ----->
+
+Parameter      Estimated value
+ epidote_2       54.6176    
+ chlorite_2      89.4646    
+ actinolite_2    11.6177    
+ titanite_2      9.79651    
+
+
+Fixed parameters ----->
+
+Parameter      Fixed value
+ resp_het       1.800000E-09
+
+See file cdr_simulation.sen for parameter sensitivities.
+
+
+Observations ----->
+
+Observation            Measured       Calculated     Residual       Weight     Group
+                       value          value
+ca_0                   3257.00        3257.00        0.00000       1.0000E-02  tot         
+mg_0                   3285.00        3285.00        0.00000       1.0000E-02  tot         
+ca_1                   4283.00        4209.50        73.5000       1.0000E-02  tot         
+mg_1                   4129.00        4243.30       -114.300       1.0000E-02  tot         
+ca_2                   4952.00        4987.30       -35.3000        1.000      tot         
+mg_2                   5259.00        5161.80        97.2000        1.000      tot         
+ca_3                   5665.00        5643.50        21.5000        1.000      tot         
+mg_3                   6071.00        6047.30        23.7000        1.000      tot         
+ca_4                   7546.00        6206.00        1340.00       1.0000E-02  tot         
+mg_4                   6852.00        6903.60       -51.6000        1.000      tot         
+resp_1                 1.79200        2.09900      -0.307000        1.000      resp        
+resp_2                 2.06300        2.01690       4.610000E-02    1.000      resp        
+resp_3                 2.02900        1.95700       7.200000E-02    1.000      resp        
+resp_4                 2.01000        1.90930       0.100700        1.000      resp        
+
+See file cdr_simulation.res for more details of residuals in graph-ready format.
+
+See file cdr_simulation.seo for composite observation sensitivities.
+
+
+Objective function ----->
+
+  Sum of squared weighted residuals (ie phi)                =   14562.    
+  Contribution to phi from observation group "tot"          =   14562.    
+  Contribution to phi from observation group "resp"         =  0.11170    
+
+
+Correlation Coefficient ----->
+
+  Correlation coefficient                                   =  0.99993    
+
+
+Analysis of residuals ----->
+
+  All residuals:-
+     Number of residuals with non-zero weight                       =    14
+     Mean value of non-zero weighted residuals                      =   4.886    
+     Maximum weighted residual [observation "mg_2"]                 =   97.20    
+     Minimum weighted residual [observation "mg_4"]                 =  -51.60    
+     Standard variance of weighted residuals                        =   1456.    
+     Standard error of weighted residuals                           =   38.16    
+
+     Note: the above variance was obtained by dividing the objective 
+     function by the number of system degrees of freedom (ie. number of 
+     observations with non-zero weight plus number of prior information 
+     articles with non-zero weight minus the number of adjustable parameters.)
+     If the degrees of freedom is negative the divisor becomes 
+     the number of observations with non-zero weight plus the number of 
+     prior information items with non-zero weight.
+
+  Residuals for observation group "tot":-
+     Number of residuals with non-zero weight                       =    10
+     Mean value of non-zero weighted residuals                      =   6.849    
+     Maximum weighted residual [observation "mg_2"]                 =   97.20    
+     Minimum weighted residual [observation "mg_4"]                 =  -51.60    
+     "Variance" of weighted residuals                               =   1456.    
+     "Standard error" of weighted residuals                         =   38.16    
+
+     Note: the above "variance" was obtained by dividing the sum of squared 
+     residuals by the number of items with non-zero weight.
+
+  Residuals for observation group "resp":-
+     Number of residuals with non-zero weight                       =     4
+     Mean value of non-zero weighted residuals                      = -2.2050E-02
+     Maximum weighted residual [observation "resp_4"]               =  0.1007    
+     Minimum weighted residual [observation "resp_1"]               = -0.3070    
+     "Variance" of weighted residuals                               =  2.7925E-02
+     "Standard error" of weighted residuals                         =  0.1671    
+
+     Note: the above "variance" was obtained by dividing the sum of squared 
+     residuals by the number of items with non-zero weight.
+
+
+K-L information statistics ----->
+
+
+  AIC   =   107.2595    
+  AICC  =   114.7595    
+  BIC   =   110.4548    
+  KIC   =   64.78631    
+
+Parameter covariance matrix ----->
+
+              epidote_1    chlorite_1  actinolite_1  titanite_1 
+epidote_1       8311.      -6.1203E+04   1.2370E+04  -3.7208E+04
+chlorite_1    -6.1203E+04   4.8606E+05  -9.8271E+04   2.8740E+05
+actinolite_1   1.2370E+04  -9.8271E+04   1.9888E+04  -5.8133E+04
+titanite_1    -3.7208E+04   2.8740E+05  -5.8133E+04   1.7176E+05
+
+
+Parameter correlation coefficient matrix ----->
+
+              epidote_1    chlorite_1  actinolite_1  titanite_1 
+epidote_1       1.000      -0.9629       0.9621      -0.9848    
+chlorite_1    -0.9629        1.000      -0.9995       0.9947    
+actinolite_1   0.9621      -0.9995        1.000      -0.9946    
+titanite_1    -0.9848       0.9947      -0.9946        1.000    
+
+
+Normalized eigenvectors of parameter covariance matrix ----->
+
+              Vector_1     Vector_2     Vector_3     Vector_4   
+epidote_1      0.5376       0.6657      -0.5063      -0.1069    
+chlorite_1     4.1156E-02  -0.2567      -0.4717       0.8425    
+actinolite_1   0.7821      -0.5931       8.6709E-02  -0.1704    
+titanite_1     0.3123       0.3731       0.7166       0.4997    
+
+
+Eigenvalues ----->
+
+                6.496        38.33        1834.       6.8415E+05

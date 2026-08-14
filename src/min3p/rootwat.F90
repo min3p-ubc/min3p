@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/rootwat.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/rootwat.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -192,7 +192,7 @@
 
 !c method 2: correction according to the discontinuous function of Feddes (1978)
 
-        elseif (cmws.eq.2) then
+        else if (cmws.eq.2) then
 
           if (satwnew(ivol).le.satwlim_loc) then    !100% reduction if Sa < wilting point
             alpha = r0
@@ -209,13 +209,20 @@
 
 !c method 3:  no reduction factor
 
-        elseif (cmws.eq.3) then
+        else if (cmws.eq.3) then
 
           if (satwnew(ivol).le.satwlim_loc) then
             alpha = r0
           else          
             alpha = r1
           end if
+
+!c method 4: calculate reduction factor (Van Genuchten, 1987)
+        else if (cmws.eq.4) then
+!c-----------------------------------------------------------------------------------
+!c In this case h50 = rew0_i and p = p1_i
+!c-----------------------------------------------------------------------------------
+          alpha = r1 / (r1 + (uvsnew(ivol)/rew0_loc)**p1_loc)
 
         endif ! cmws
 
@@ -226,11 +233,13 @@
         v_prop = satwnew(ivol) * rld(ivol) * cvol(ivol)/rsum ! CBF RLD, DSU rsum_vprop
      
         rootwat = v_prop * alpha * tpot / cvol(ivol)  !FG August 2021 - scale_tree_growth and toparea discarded as conversion done before now, as well
-                                                        ! tpot already corrected for the effect top area if vegetation growth, and expressed in m3/s
-                                                        ! rootwat in s-1 therefore here
+                                                      ! tpot already corrected for the effect top area if vegetation growth, and expressed in m3/s
+                                                      ! rootwat in s-1 therefore here
 
 !cdsu----------------------------------------------------------
-!cdsu node based root water uptake parameters for output only
+!cdsu node based root water uptake parameters for output only.
+!cdsu It's not a good design to set alpha_vol and v_prop_vol values 
+!cdsu inside rootwat function. To be modified in the future.
 !cdsu----------------------------------------------------------
         alpha_vol(ivol) = alpha
         v_prop_vol(ivol) = v_prop
@@ -239,4 +248,4 @@
 
       return
 
-    end
+    end function rootwat

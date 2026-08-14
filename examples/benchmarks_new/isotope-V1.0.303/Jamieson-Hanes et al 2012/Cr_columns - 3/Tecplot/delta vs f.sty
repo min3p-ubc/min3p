@@ -1,0 +1,311 @@
+#!MC 1100
+$!SETSTYLEBASE FACTORY
+$!PLOTTYPE  = XYLINE
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 6.8863
+    Y = 0.125
+    }
+  WIDTH = 2.7378
+  HEIGHT = 2.7378
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 25
+  BOXASPECTRATIOLIMIT = 25
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-7]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!BLANKING 
+  VALUE
+    {
+    INCLUDE = YES
+    CONSTRAINT 1
+      {
+      INCLUDE = YES
+      VALUECUTOFF = 0.0001
+      VARA = 26
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 4
+    XAXISVAR = 26
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = CUSTOM2
+    LINEPATTERN = DOTTED
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 5
+    XAXISVAR = 26
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = CUSTOM2
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [3]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 6
+    XAXISVAR = 26
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = CUSTOM2
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [4]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 7
+    XAXISVAR = 26
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [5]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 8
+    XAXISVAR = 26
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [6]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 9
+    XAXISVAR = 26
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINEPATTERN = DOTTED
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [7]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 25
+    YAXISVAR = 16
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = GREEN
+    LINETHICKNESS = 0.8
+    }
+  SYMBOLS
+    {
+    COLOR = CUSTOM1
+    FILLMODE = USELINECOLOR
+    FILLCOLOR = GREEN
+    SIZE = 4
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  VIEWPORTPOSITION
+    {
+    X1 = 15
+    Y1 = 15
+    X2 = 87.833
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1.0500000000000003
+    ISREVERSED = YES
+    GRSPACING = 0.2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'f' 
+      TEXTSHAPE
+        {
+        HEIGHT = 6.6
+        }
+      OFFSET = 8
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = -0.20000000000000007
+    RANGEMAX = 5
+    GRSPACING = 1
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = '<greek>d</greek><sup>53</sup>Cr' 
+      TEXTSHAPE
+        {
+        HEIGHT = 6.6
+        }
+      OFFSET = 8
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 17.37246652572234
+    Y = 88.9352513958
+    }
+  TEXT = 'c) Effluent' 
+$!SETSTYLEBASE CONFIG

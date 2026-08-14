@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/icrtlczn.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/icrtlczn.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -332,7 +332,8 @@
       character*72 name, name_irm, nametemp, nametemp1
 
       real*8, parameter :: r0 = 0.0d0, r_1 = 0.1d0, r1 = 1.0d0,        &
-                           r1000 = 1.0d+3, tiny = 1.0e-3      
+                           r1000 = 1.0d+3, tiny = 1.0e-3,              &
+                           rd_30 = 1.0d-30      
       
 #ifdef OPENMP
       tid = omp_get_thread_num() + 1
@@ -482,9 +483,7 @@
 
       if (nm.gt.0) then
         reactive_minerals = .true.
-      end if
-
-      if (nm.eq.0) then
+      else
         reactive_minerals = .false.
         lb_output = .false.
         delt_lc(:) = r1
@@ -625,6 +624,8 @@
             ierrcd = 9
             read(icnv,*,err=999,end=999) nametemp
             read(icnv,*,err=999,end=999) sdtype(i), nfact
+
+            call makelowercase(nametemp)
           
             if (sdtype(i) .eq. 'equation') then
               icount = 0
@@ -672,6 +673,7 @@
 !c read the inhibition component. Note: only one component is allowed.    
               ierrcd = 12          
               read(icnv,*,err=999,end=999) nametemp1
+              call makelowercase(nametemp1)
               icount_ic = 0
               do ic=1,nc
                 if (nametemp1 .eq. namec(ic)) then
@@ -729,11 +731,13 @@
             found = .false.
             ierrcd = 14
             read(icnv,*,err=999,end=999) name
+            call makelowercase(name)
             do ic = 1,nc
               if (name.eq.namec(ic)) then
                 backspace(icnv)
                 ierrcd = 15
                 read (icnv,*,err=999,end=999) name, distcoff_lc(ic)
+                call makelowercase(name)
                 found = .true.
               end if
             end do
@@ -820,6 +824,8 @@
               read(icnv,*,err=999,end=999) name,sitemass,sitearea,    &
                                           sitedens
 
+              call makelowercase(name)
+
               site_mass_tmp(isites) = sitemass * sitearea * sitedens  &
                                       * 1.0d+18 / avog_const
 
@@ -881,7 +887,7 @@
 !c  section 'surface sites of ion-exchange' within Data block 2: geochemical system.
 
         if (nsites_ion .gt. 1) then
-            subsection = 'CEC fraction of multisite ion exchange'
+            subsection = 'cec fraction of multisite ion exchange'
 
             call findstrg(subsection,icnv,found_subsection)
 
@@ -938,7 +944,9 @@
               read(icnv,*,err=999,end=999) name,sitemass,sitearea,    &
                                           sitedens
               site_mass_tmp(isites) = sitemass * sitearea * sitedens  &
-                                     * 1.0d+18 / avog_const                                          
+                                     * 1.0d+18 / avog_const
+                                     
+              call makelowercase(name)
 
               if (name.eq.namec(ic)) then
                 site_area(isites) = sitearea
@@ -1080,7 +1088,7 @@
               ierrcd = 24
               read(icnv,*,end=999,err=999) phimin(im), areac(im),     & 
                                           supsatm(im), phinuc(im)              
-             elseif (update_type(im).eq.'exponent') then
+            elseif (update_type(im).eq.'exponent') then
                ierrcd = 25
               read(icnv,*,end=999,err=999) phimin(im), areac(im),     &
                                           expphi(im)
@@ -1109,13 +1117,13 @@
 
 !c  -> modify minimum mineral volume fraction to avoid division by zero
 
-          if (phimin(im).lt.1.0d-50) then
-            phimin(im)= 1.0d-50
-          end if
+            if (phimin(im).lt.1.0d-50) then
+              phimin(im)= 1.0d-50
+            end if
 !c  -> modify volume fraction nucleation threshold to avoid zero
-          if (phinuc(im).lt.phimin(im)) then
+            if (phinuc(im).lt.phimin(im)) then
               phinuc(im) = phimin(im)
-          end if
+            end if
           
          
 !c  -> modify level of supersaturation required for precipitation,
@@ -1181,6 +1189,7 @@
             ierrcd = 30
             do iirm = 1, nirm
               read(icnv,*,err=999,end=999) name_irm
+              call makelowercase(name_irm)
               found = .false.
 
               do im = 1, nm
@@ -1411,18 +1420,18 @@
 !c  Freundlich isotherm
            
         do ic = 1,nc
-        if (isotherm_type(ic).eq.'freundlich') then
-        end if
-      end do
+          if (isotherm_type(ic).eq.'freundlich') then
+          end if
+        end do
 
 !c  Langmuir isotherm
 
         do ic = 1,nc
-        if (isotherm_type(ic).eq.'langmuir') then
-        end if
-      end do
+          if (isotherm_type(ic).eq.'langmuir') then
+          end if
+        end do
 
-    end if
+      end if
 
 !c  competitive sorption
 

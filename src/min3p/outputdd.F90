@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/outputdd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/outputdd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -138,7 +138,7 @@
 !c
 !c local:    real*8:
 !c           ------- 
-!c           fhead              = freshwater head 
+!c           fhead              = equivalent freshwater head 
 !c           qroot              = root water uptake for current
 !c                                control volume
 !c           theta_a            = aqueous phase content         
@@ -223,7 +223,8 @@
       real*8, external :: pressure_melt_k
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, eps=1.0d-300,       &
-              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5                        
+              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5,              &
+              rverysmall = 1.0d-30                        
                                                                        
       real*8, allocatable  :: ddens_dvi(:)
       real*8, allocatable  :: totc(:)
@@ -479,7 +480,7 @@
 !cprovi Store the concentration vector for aqueous species               
 !cprovi--------------------------------------------------------
                cpz_loc(1:nc)=r0 ! cnew(1:nc,ivol)
-               cpz_loc(nc+1:nc+nx)= r0 ! cx(1:nx,ivol)
+               cpz_loc(nc+1:nc+nx)= r0 ! cxnew(1:nx,ivol)
 !cprovi--------------------------------------------------------
 !cprovi Compute the increment for dissolution/precipitation 
 !cprovi--------------------------------------------------------               
@@ -563,7 +564,7 @@
             ddensreact_dt = ddensreact_dt / delt
             ddensmix_dt = ddens_dt - ddensreact_dt
             
-            zout = zoutput(depth_output,zg(ivol),elevmax)
+            zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
             
             if (b_output_binary) then
               realbuffer((ivol_l-1)*(6+nm)+1:ivol_l*(6+nm)-nm) = (/    &
@@ -1349,15 +1350,14 @@
 
           phead = uvsnew(ivol)/(density(ivol) * gacc)
 
-          fhead = phead + zg(ivol)
-
-!c        phead = uvsnew(ivol)/(ref_dens * gacc)
-!c        fhead = phead + zg(ivol)
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+          fhead = zg(ivol) + phead*(density(ivol)/ref_dens)
 
 
 !c  assign depth coordinate in terms of depth or elevation
 
-          zout = zoutput(depth_output,zg(ivol),elevmax)
+          zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
           theta_a = pornew(ivol) * sanew(ivol)
 
@@ -1404,7 +1404,11 @@
 
 !c  compute root water uptake for current control volume
             if (root_uptake) then
-              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              if (rld(ivol) > rverysmall) then
+                transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              else
+                transp = r0
+              end if
             else
               transp = r0
             end if
@@ -2116,12 +2120,15 @@
           
 !c  calculate pressure and freshwater heads
           phead = uvsnew(ivol)/(density(ivol) * gacc)
-          fhead = phead * density(ivol)/ref_dens + zg(ivol)
+          
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+          fhead = zg(ivol) + phead*(density(ivol)/ref_dens)
 
 
 !c  assign depth coordinate in terms of depth or elevation
 
-          zout = zoutput(depth_output,zg(ivol),elevmax)
+          zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
 
           theta_a = pornew(ivol) * sanew(ivol)
           theta_n = pornew(ivol) * snnew(ivol)
@@ -2175,7 +2182,11 @@
 
 !c  compute root water uptake for current control volume
             if (root_uptake) then
-              transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              if (rld(ivol) > rverysmall) then
+                transp = cvol(ivol)*rootwat(sanew,ivol,rsum_vprop)
+              else
+                transp = r0
+              end if
             else
               transp = r0
             end if

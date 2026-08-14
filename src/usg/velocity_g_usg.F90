@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/velocity_g_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/velocity_g_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -37,7 +37,8 @@
 !c                              =                                     + -
 !c --------------------------------------------------------------------------
 #ifdef USG
-      subroutine velocity_g_usg
+      subroutine velocity_g_usg(bit_gsa, bit_gsga, bit_gsf, bit_gsr,   &
+                                bit_gsy, bit_gsk)
 
 #ifdef PETSC
 #include <petscversion.h>
@@ -91,6 +92,9 @@
 
       external gasp_m, gasd_m, gasv, gasdiff2, wgprop,                 &
                fluxvg_vel_usg
+
+!c    passed variables
+      integer :: bit_gsa, bit_gsga, bit_gsf, bit_gsr, bit_gsy, bit_gsk
 
 !c    local variables
       integer :: i, ic, ig, ivol, jvol, kvol, idvol, icell, icell2,    &
@@ -323,9 +327,9 @@
             relpgj = relpermg(jvol)
           end if
 
-          call wgprop(totgnew(1,ivol),totgnew(1,jvol),totgij   ,       &
-                      gnew(1,ivol)   ,gnew(1,jvol)   ,gij      ,       &
-                      gmfrac(1,ivol) ,gmfrac(1,jvol) ,gmfracij ,       &
+          call wgprop(totgnew(:,ivol),totgnew(:,jvol),totgij   ,       &
+                      gnew(:,ivol)   ,gnew(:,jvol)   ,gij      ,       &
+                      gmfrac(:,ivol) ,gmfrac(:,jvol) ,gmfracij ,       &
                       relpgi         ,relpgj         ,relpgij  ,       &
                       gdens_ivol     ,gdens_jvol     ,densgij  ,       &
                       gvisc_ivol     ,gvisc_jvol     ,viscgij  ,       &
@@ -343,7 +347,7 @@
 !c           solve A F = B
 !c           computes fluxes F of all gas components at current c.v. interphase
 
-            call dgm_fluxdg(gnew(1,ivol)     ,gnew(1,jvol)  ,          &
+            call dgm_fluxdg(gnew(:,ivol)     ,gnew(:,jvol)  ,          &
                             gij              ,gmfracij      ,          &
                             zg(ivol)         ,zg(jvol)      ,          &
                             densgij          ,gpij          ,          &
@@ -355,7 +359,7 @@
                             fmat             ,ipvt          ,          &
                             dgm_gflux        ,neflux       )
 
-            call diff_grad(gnew(1,ivol)  ,gnew(1,jvol) ,               &
+            call diff_grad(gnew(:,ivol)  ,gnew(:,jvol) ,               &
                            gmfracij      ,                             &
                            zg(ivol)      ,zg(jvol)     ,               &
                            densgij       ,tkel(ivol)   ,               &
@@ -367,7 +371,7 @@
 
           else if (maxwell) then
 
-            call ms_fluxdg (gnew(1,ivol)     ,gnew(1,jvol)    ,        &
+            call ms_fluxdg (gnew(:,ivol)     ,gnew(:,jvol)    ,        &
                             gij              ,gmfracij        ,        &
                             zg(ivol)         ,zg(jvol)        ,        &
                             densgij          ,gpij            ,        &
@@ -507,7 +511,7 @@
 
             if (blanc_diff_g) then
 !c            diffusion coefficient calc'd with LeBlanc's law
-              gasdiff_loc = gasdiff2 (gmfrac(1,ivol),gmfrac(1,jvol),   &
+              gasdiff_loc = gasdiff2 (gmfrac(:,ivol),gmfrac(:,jvol),   &
                                       gpivol_ivol   ,gpivol_jvol   ,   &
                                       zg(ivol)      ,zg(jvol)      ,   &
                                       gdens_ivol    ,gdens_jvol    ,   &
@@ -683,236 +687,720 @@
       !c note: binary output using separated file for each subdomain is
       !c deprecated for unstructured grid version
 
-      if (b_output_binary) then
+      if (bit_gsa > 0) then
+
+        if (b_output_binary) then        
 
 #ifdef PETSC_HDF
-        strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.vlg'
-        if (b_output_separate_mesh_result) then
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
+          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.vlg'
+          if (b_output_separate_mesh_result) then
+            strfilename_result = trim(strfilename)//'.h5'
+            strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
+          else
+            strfilename_result = trim(strfilename)//'.h5'
+            strfilename_mesh = strfilename_result
+          end if
+
+          !c open corresponding xmf file to be loaded by paraview
+          if (rank == 0) then
+            ixmf = lun_get()
+            open(ixmf,file=trim(strfilename)//'.xmf',status='unknown', &
+                 form='formatted')
+          end if
+
+          !c initialize fortran interface
+          call h5open_f(hdf5_ierr)
+
+          !c setup file access property list with parallel I/O access
+          call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
+          call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,          &
+                                  MPI_INFO_NULL, hdf5_ierr)
+          !c create the file collectively
+          call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,        &
+                           file_id, hdf5_ierr, access_prp = plist_id)
+
+          !c write attribute
+          call hdf5_usg_write_attribute(file_id)
+
+          if (.not. b_output_separate_mesh_result) then
+            !c write mesh data
+            call hdf5_usg_write_mesh_data(file_id)
+          end if
+
+          !c open corresponding xmf file for mesh and domain decomposition
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
+          end if
+
+          !c create a group for the mesh data set
+          strbuffer = "results"
+          !c create and open a group
+          call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,       &
+                           OBJECT_NAMELEN_DEFAULT_F)
+#endif
         else
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = strfilename_result
+          open(igsa,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//       &
+               trim(adjustl(str_rank))//'.vlg.vtk',                    &
+               status='unknown',form='formatted')
         end if
 
-        !c open corresponding xmf file to be loaded by paraview
-        if (rank == 0) then
-          ixmf = lun_get()
-          open(ixmf,file=trim(strfilename)//'.xmf',status='unknown',   &
-               form='formatted')
+
+        if (rank == 0 .and. b_enable_output) then
+
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                       &
+                     'Average interfacial gas phase velocities, T = ', &
+                      time_io,time_unit,('-',i=1,72)
+
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                   &
+                     suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg.vtk'
+
+          write(ifls,'(2a)')                                           &
+                  'column   entry                           ','unit'
+          write(ifls,'(2a)')                                           &
+                  '1        x                               ','m'
+          write(ifls,'(2a)')                                           &
+                  '2        y                               ','m'
+          write(ifls,'(2a)')                                           &
+                  '3        z                               ','m'
+          write(ifls,'(2a)')                                           &
+                  '4        v_x                             ','m/d'
+          write(ifls,'(2a)')                                           &
+                  '5        v_y                             ','m/d'
+          write(ifls,'(2a)')                                           &
+                  '6        v_z                             ','m/d'
+          write(ifls,'(2a)')                                           &
+                  '7        p_t_o_t                         ','atm'
+
         end if
 
-        !c initialize fortran interface
-        call h5open_f(hdf5_ierr)
-
-        !c setup file access property list with parallel I/O access
-        call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
-        call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,            &
-                                MPI_INFO_NULL, hdf5_ierr)
-        !c create the file collectively
-        call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,          &
-                         file_id, hdf5_ierr, access_prp = plist_id)
-
-        !c write attribute
-        call hdf5_usg_write_attribute(file_id)
-
-        if (.not. b_output_separate_mesh_result) then
-          !c write mesh data
-          call hdf5_usg_write_mesh_data(file_id)
+        if (.not. b_output_binary) then
+          write(strbuffer,'(a,1x,1pe15.6e3,1x,a)')                     &
+                  "Average gas phase velocities, solution time = ",    &
+                  time_io,time_unit
+          call write_mesh_data_vtk_ascii(igsa,trim(adjustl(strbuffer)))
+  
+          write(igsa,'(a,1x,i12)') "POINT_DATA",nngl
         end if
 
-        !c open corresponding xmf file for mesh and domain decomposition
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
+        !c write advective velocity vector
+        if (b_output_binary) then
+#ifdef PETSC_HDF
+          allocate(realbuffer(num_nodes*3), stat = ierr)
+          call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
+          call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
 
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
+          do ivol = 1, num_nodes
+            realbuffer((ivol-1)*3+1) = vels_v(ivol)%x
+            realbuffer((ivol-1)*3+2) = vels_v(ivol)%y
+            realbuffer((ivol-1)*3+3) = vels_v(ivol)%z
+          end do
 
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
+          call hdf5_usg_write_group_data_vec(group_id,"velocity_g",3,  &
+                    num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                      "results","velocity_g","Vector","Node",          &
+                      num_nodes_gbl,3)
           end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
+          call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
+          deallocate(realbuffer)
+#endif
+        else
+          write(igsa,'(a)') "VECTORS velocity_g double"
+          do ivol = 1, nngl
+            write(igsa,'(3(1pe15.6e3,1x))')                            &
+                  vels_v(ivol)%x, vels_v(ivol)%y, vels_v(ivol)%z
+          end do
+        end if
+
+        !c write p_t_o_t
+        if (b_output_binary) then
+#ifdef PETSC_HDF
+          allocate(realbuffer(num_nodes), stat = ierr)
+          call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
+          call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
+
+          do ivol = 1, num_nodes
+            realbuffer(ivol) = gasp_m(mdens_g(ivol),ivol)/pa_atm
+          end do
+          call hdf5_usg_write_group_data_1d(group_id,"p_t_o_t",          &
+                    num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result,   &
+                      "results","p_t_o_t","Scalar","Node",num_nodes_gbl,1)
           end if
+          call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
+          deallocate(realbuffer)
+#endif
+        else
+          write(igsa,'(a)') "SCALARS p_t_o_t double"
+          write(igsa,'(a)') "LOOKUP_TABLE default"
+          do ivol = 1, nngl
+            gpi = gasp_m(mdens_g(ivol),ivol)/pa_atm   ! gas pressure
+            write(igsa,ascii_fmt) gpi
+          end do
         end if
 
-        !c create a group for the mesh data set
-        strbuffer = "results"
-        !c create and open a group
-        call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,         &
-                         OBJECT_NAMELEN_DEFAULT_F)
-#endif
-      else
-        open(igsa,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//         &
-             trim(adjustl(str_rank))//'.vlg.vtk',                      &
-             status='unknown',form='formatted')
-      end if
-
-      if (rank == 0 .and. b_enable_output) then
-
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                         &
-                   'Average interfacial gas phase velocities, T = ',   &
-                    time_io,time_unit,('-',i=1,72)
-
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                     &
-                   suffix(:l_sufx)//trim(adjustl(str_rank))//'.vlg.vtk'
-
-        write(ifls,'(2a)')                                             &
-                'column   entry                           ','unit'
-        write(ifls,'(2a)')                                             &
-                '1        x                               ','m'
-        write(ifls,'(2a)')                                             &
-                '2        y                               ','m'
-        write(ifls,'(2a)')                                             &
-                '3        z                               ','m'
-        write(ifls,'(2a)')                                             &
-                '4        v_x                             ','m/d'
-        write(ifls,'(2a)')                                             &
-                '5        v_y                             ','m/d'
-        write(ifls,'(2a)')                                             &
-                '6        v_z                             ','m/d'
-        write(ifls,'(2a)')                                             &
-                '7        p_t_o_t                         ','atm'
-
-      end if
-
-      if (.not. b_output_binary) then
-        write(strbuffer,'(a,1x,1pe15.6e3,1x,a)')                       &
-                "Average gas phase velocities, solution time = ",      &
-                time_io,time_unit
-        call write_mesh_data_vtk_ascii(igsa,trim(adjustl(strbuffer)))
-
-        write(igsa,'(a,1x,i12)') "POINT_DATA",nngl
-      end if
-
-
-      !c write advective velocity vector
-      if (b_output_binary) then
+        if (b_output_binary) then
 #ifdef PETSC_HDF
-        allocate(realbuffer(num_nodes*3), stat = ierr)
-        call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
-        call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
+          !c close group
+          call h5gclose_f(group_id,hdf5_ierr)
 
-        do ivol = 1, num_nodes
-          realbuffer((ivol-1)*3+1) = vels_v(ivol)%x
-          realbuffer((ivol-1)*3+2) = vels_v(ivol)%y
-          realbuffer((ivol-1)*3+3) = vels_v(ivol)%z
-        end do
+          !c close file
+          call h5pclose_f(plist_id, hdf5_ierr)
+          call h5fclose_f(file_id, hdf5_ierr)
 
-        call hdf5_usg_write_group_data_vec(group_id,"velocity_g",3,    &
-                  num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+          !c close FORTRAN interface
+          call h5close_f(hdf5_ierr)
 
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result,   &
-                    "results","velocity_g","Vector","Node",            &
-                    num_nodes_gbl,3)
-        end if
-        call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
-        deallocate(realbuffer)
+          !c close xmf file
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_finalize(ixmf)
+            close(ixmf)
+            call lun_free(ixmf)
+          end if
 #endif
-      else
-        write(igsa,'(a)') "VECTORS velocity_g double"
-        do ivol = 1, nngl
-          write(igsa,'(3(1pe15.6e3,1x))')                              &
-                vels_v(ivol)%x, vels_v(ivol)%y, vels_v(ivol)%z
-        end do
+        else
+          close(igsa)
+        end if
+
       end if
 
-      !c write p_t_o_t
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        allocate(realbuffer(num_nodes), stat = ierr)
-        call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
-        call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
-
-        do ivol = 1, num_nodes
-          realbuffer(ivol) = gasp_m(mdens_g(ivol),ivol)/pa_atm
-        end do
-        call hdf5_usg_write_group_data_1d(group_id,"p_t_o_t",          &
-                  num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result,   &
-                    "results","p_t_o_t","Scalar","Node",num_nodes_gbl,1)
-        end if
-        call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
-        deallocate(realbuffer)
-#endif
-      else
-        write(igsa,'(a)') "SCALARS p_t_o_t double"
-        write(igsa,'(a)') "LOOKUP_TABLE default"
-        do ivol = 1, nngl
-          gpi = gasp_m(mdens_g(ivol),ivol)/pa_atm   ! gas pressure
-          write(igsa,ascii_fmt) gpi
-        end do
-      end if
-
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        !c close group
-        call h5gclose_f(group_id,hdf5_ierr)
-
-        !c close file
-        call h5pclose_f(plist_id, hdf5_ierr)
-        call h5fclose_f(file_id, hdf5_ierr)
-
-        !c close FORTRAN interface
-        call h5close_f(hdf5_ierr)
-
-        !c close xmf file
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_finalize(ixmf)
-          close(ixmf)
-          call lun_free(ixmf)
-        end if
-#endif
-      else
-        close(igsa)
-      end if
 
       igsa2 = igsa
 
 !c  velocity of gases species in mixture
 !c  File extension name was changed from .gsa to .gsga as the flux
 !c  output result takes the extension name .gsa.
-      do ic=1,n
 
-        igsa2 = igsa2+1
+      if (bit_gsga > 0) then
 
-        call icnvrt(0,ic,suffix2,l_sfx2,ierr)
+        do ic=1,n
 
-        if (ierr > 0) then
+          igsa2 = igsa2+1
+
+          call icnvrt(0,ic,suffix2,l_sfx2,ierr)
+
+          if (ierr > 0) then
 #ifdef PETSC
-          call petsc_mpi_finalize
+            call petsc_mpi_finalize
 #endif
-          write(*,*) "Error in icnvrt function in velocity_g"
-          write(ilog,*) "Error in icnvrt function in velocity_g"
-          close(ilog)
-          stop
-        end if
+            write(*,*) "Error in icnvrt function in velocity_g"
+            write(ilog,*) "Error in icnvrt function in velocity_g"
+            close(ilog)
+            stop
+          end if
 
-        !c file for result and mesh
-        !c note: binary output using separated file for each subdomain is
-        !c deprecated for unstructured grid version
+          !c file for result and mesh
+          !c note: binary output using separated file for each subdomain is
+          !c deprecated for unstructured grid version
+          if (b_output_binary) then
+            strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
+                          suffix2(:l_sfx2)//'.gsga'
+            if (b_output_separate_mesh_result) then
+              strfilename_result = trim(strfilename)//'.h5'
+              strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
+            else
+              strfilename_result = trim(strfilename)//'.h5'
+              strfilename_mesh = strfilename_result
+            end if
+          else
+            strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
+               suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsga'
+          end if
+
+          if (b_output_binary) then
+#ifdef PETSC_HDF
+            !c open corresponding xmf file to be loaded by paraview
+            if (rank == 0) then
+              ixmf = lun_get()
+              open(ixmf,file=trim(strfilename)//'.xmf',status='unknown', &
+                   form='formatted')
+            end if
+
+            !c initialize fortran interface
+            call h5open_f(hdf5_ierr)
+
+            !c setup file access property list with parallel I/O access
+            call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
+            call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,        &
+                                    MPI_INFO_NULL, hdf5_ierr)
+            !c create the file collectively
+            call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,      &
+                             file_id, hdf5_ierr, access_prp = plist_id)
+
+            !c write attribute
+            call hdf5_usg_write_attribute(file_id)
+
+            if (.not. b_output_separate_mesh_result) then
+              !c write mesh data
+              call hdf5_usg_write_mesh_data(file_id)
+            end if
+
+            !c open corresponding xmf file for mesh and domain decomposition
+            if (rank == 0) then
+              call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
+            end if
+
+            !c create a group for the mesh data set
+            strbuffer = "results"
+            !c create and open a group
+            call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,     &
+                             OBJECT_NAMELEN_DEFAULT_F)
+#endif
+          else
+            open(igsa2,file=trim(strfilename)//'.vtk',                 &
+                 status='unknown', form='formatted')
+          end if
+
+          if (rank == 0 .and. b_enable_output) then
+
+            write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)') &
+                  'Average interfacial gas fluxes for component: ',    &
+                   namec(ic)(:l_namec(ic)),' T = ',                    &
+                   time_io,time_unit,('-',i=1,72)
+
+            write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                 &
+                        suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//       &
+                        trim(adjustl(str_rank))//'.gsga.vtk'
+
+            write(ifls,'(2a)')                                           &
+                'column   entry                           ','unit'
+            write(ifls,'(2a)')                                           &
+                '1        x                               ','m'
+            write(ifls,'(2a)')                                           &
+                '2        y                               ','m'
+            write(ifls,'(2a)')                                           &
+                '3        z                               ','m'
+            write(ifls,'(2a)')                                           &
+                '4        v_x advection                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '5        v_y advection                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '6        v_z advection                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '7        v_x diffusion                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '8        v_y diffusion                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '9        v_z diffusion                   ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '10       v_x total                       ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '11       v_y total                       ','moles/m^2/d'
+            write(ifls,'(2a)')                                           &
+                '12       v_z total                       ','moles/m^2/d'
+
+            if (btest(bit_gsga,0)) then
+              write(ifls,'(2a)')                                           &
+                  '13       v_x DGM / M-S diffusion         ','moles/m^2/d'
+              write(ifls,'(2a)')                                           &
+                  '14       v_y DGM / M-S diffusion         ','moles/m^2/d'
+              write(ifls,'(2a)')                                           &
+                  '15       v_z DGM / M-S diffusion         ','moles/m^2/d'
+              write(ifls,'(2a)')                                           &
+                  '16       v_x non-equimolar diffusion     ','moles/m^2/d'
+              write(ifls,'(2a)')                                           &
+                  '17       v_y non-equimolar diffusion     ','moles/m^2/d'
+              write(ifls,'(2a)')                                           &
+                  '18       v_z non-equimolar diffusion     ','moles/m^2/d'
+            end if
+
+          end if
+
+          if (.not. b_output_binary) then
+            write(strbuffer,'(3a,1pe15.6e3,1x,a)')                       &
+                  "advection and diffusion fluxes of gas phase for ",    &
+                  trim(namec(ic)),", solution time = ",time_io,time_unit
+            call write_mesh_data_vtk_ascii(igsa2,trim(adjustl(strbuffer)))
+
+            write(igsa2,'(a,1x,i12)') "POINT_DATA",nngl
+          end if
+
+          if (b_output_binary) then
+            allocate(realbuffer(num_nodes*3), stat = ierr)
+            call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
+            call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
+          end if
+
+          !c write advective velocity vector
+          if (b_output_binary) then
+#ifdef PETSC_HDF
+            do ivol = 1, num_nodes
+              realbuffer((ivol-1)*3+1) = vels_ca(ic,ivol)%x
+              realbuffer((ivol-1)*3+2) = vels_ca(ic,ivol)%y
+              realbuffer((ivol-1)*3+3) = vels_ca(ic,ivol)%z
+            end do
+
+            call hdf5_usg_write_group_data_vec(group_id,"velocity_adv",3,&
+                      num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+
+            if (rank == 0) then
+              call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                        "results","velocity_adv","Vector","Node",        &
+                        num_nodes_gbl,3)
+            end if
+#endif
+          else
+            write(igsa2,'(a)') "VECTORS velocity_adv double"
+            do ivol = 1, nngl
+              write(igsa2,'(3(1pe15.6e3,1x))') vels_ca(ic,ivol)%x,       &
+                    vels_ca(ic,ivol)%y, vels_ca(ic,ivol)%z
+            end do
+          end if
+
+          !c write diffusive velocity vector
+          if (b_output_binary) then
+#ifdef PETSC_HDF
+            do ivol = 1, num_nodes
+              realbuffer((ivol-1)*3+1) = vels_cd(ic,ivol)%x
+              realbuffer((ivol-1)*3+2) = vels_cd(ic,ivol)%y
+              realbuffer((ivol-1)*3+3) = vels_cd(ic,ivol)%z
+            end do
+
+            call hdf5_usg_write_group_data_vec(group_id,"velocity_dif",3,&
+                      num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+
+            if (rank == 0) then
+              call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                        "results","velocity_dif","Vector","Node",        &
+                        num_nodes_gbl,3)
+            end if
+#endif
+          else
+            write(igsa2,'(a)') "VECTORS velocity_dif double"
+            do ivol = 1, nngl
+              write(igsa2,'(3(1pe15.6e3,1x))') vels_cd(ic,ivol)%x,     &
+                    vels_cd(ic,ivol)%y, vels_cd(ic,ivol)%z
+            end do
+          end if
+
+          !c write total velocity vector
+          if (b_output_binary) then
+#ifdef PETSC_HDF
+            do ivol = 1, num_nodes
+              realbuffer((ivol-1)*3+1) = vels_ca(ic,ivol)%x+           &
+                                         vels_cd(ic,ivol)%x
+              realbuffer((ivol-1)*3+2) = vels_ca(ic,ivol)%y+           &
+                                         vels_cd(ic,ivol)%y
+              realbuffer((ivol-1)*3+3) = vels_ca(ic,ivol)%z+           &
+                                         vels_cd(ic,ivol)%z
+            end do
+
+            call hdf5_usg_write_group_data_vec(group_id,"velocity_tot",3,&
+                      num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+
+            if (rank == 0) then
+              call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                        "results","velocity_tot","Vector","Node",        &
+                        num_nodes_gbl,3)
+            end if
+#endif
+          else
+            write(igsa2,'(a)') "VECTORS velocity_tot double"
+            do ivol = 1, nngl
+              write(igsa2,'(3(1pe15.6e3,1x))')                         &
+                   vels_ca(ic,ivol)%x+vels_cd(ic,ivol)%x,              &
+                   vels_ca(ic,ivol)%y+vels_cd(ic,ivol)%y,              &
+                   vels_ca(ic,ivol)%z+vels_cd(ic,ivol)%z
+            end do
+          end if
+
+          !c write DGM / M-S diffusion velocity vector
+          if (btest(bit_gsga,0)) then
+            if (b_output_binary) then
+#ifdef PETSC_HDF
+              do ivol = 1, num_nodes
+                realbuffer((ivol-1)*3+1) = vels_dgm(ic,ivol)%x
+                realbuffer((ivol-1)*3+2) = vels_dgm(ic,ivol)%y
+                realbuffer((ivol-1)*3+3) = vels_dgm(ic,ivol)%z
+              end do
+
+              call hdf5_usg_write_group_data_vec(group_id,               &
+                        "velocity_dif_dgm",3,num_nodes_loc,num_nodes_gbl,&
+                        offset_nodes,realbuffer)
+
+              if (rank == 0) then
+                call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                          "results","velocity_dif_dgm","Vector","Node",    &
+                          num_nodes_gbl,3)
+              end if
+#endif
+            else
+              write(igsa2,'(a)') "VECTORS velocity_dif_dgm double"
+              do ivol = 1, nngl
+                write(igsa2,'(3(1pe15.6e3,1x))') vels_dgm(ic,ivol)%x,    &
+                      vels_dgm(ic,ivol)%y, vels_dgm(ic,ivol)%z
+              end do
+            end if
+
+            !c write non-equimolar diffusion velocity vector
+            if (b_output_binary) then
+#ifdef PETSC_HDF
+              do ivol = 1, num_nodes
+                realbuffer((ivol-1)*3+1) = vels_neq(ic,ivol)%x
+                realbuffer((ivol-1)*3+2) = vels_neq(ic,ivol)%y
+                realbuffer((ivol-1)*3+3) = vels_neq(ic,ivol)%z
+              end do
+
+              call hdf5_usg_write_group_data_vec(group_id,               &
+                        "velocity_dif_neq",3,num_nodes_loc,num_nodes_gbl,&
+                        offset_nodes,realbuffer)
+
+              if (rank == 0) then
+                call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                          "results","velocity_dif_neq","Vector","Node",    &
+                          num_nodes_gbl,3)
+              end if
+#endif
+            else
+              write(igsa2,'(a)') "VECTORS velocity_dif_neq double"
+              do ivol = 1, nngl
+                write(igsa2,'(3(1pe15.6e3,1x))') vels_neq(ic,ivol)%x,    &
+                      vels_neq(ic,ivol)%y, vels_neq(ic,ivol)%z
+              end do
+            end if
+
+          end if
+
+          if (b_output_binary) then
+            call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
+            deallocate(realbuffer)
+          end if
+
+          if (b_output_binary) then
+#ifdef PETSC_HDF
+            !c close group
+            call h5gclose_f(group_id,hdf5_ierr)
+
+            !c close file
+            call h5pclose_f(plist_id, hdf5_ierr)
+            call h5fclose_f(file_id, hdf5_ierr)
+
+            !c close FORTRAN interface
+            call h5close_f(hdf5_ierr)
+
+            !c close xmf file
+            if (rank == 0) then
+              call hdf5_usg_write_xmf_finalize(ixmf)
+              close(ixmf)
+              call lun_free(ixmf)
+            end if
+#endif
+          else
+            close(igsa2)
+          end if
+
+        enddo
+
+      end if
+
+      igsa_last = igsa2
+
+      igsf2 = igsf_first
+
+
+!c  variable diffusion coefficients
+
+      if (blanc_diff_g) then
+
+        if (bit_gsf > 0) then
+
+          do ic=1,n
+
+            igsf2 = igsf2+1
+
+            call icnvrt(0,ic,suffix2,l_sfx2,ierr)
+
+            if (ierr > 0) then
+#ifdef PETSC
+              call petsc_mpi_finalize
+#endif
+              write(*,*) "Error in icnvrt function in velocity_g"
+              write(ilog,*) "Error in icnvrt function in velocity_g"
+              close(ilog)
+              stop
+            end if
+
+            !c file for result and mesh
+            !c note: binary output using separated file for each subdomain is
+            !c deprecated for unstructured grid version
+            if (b_output_binary) then
+              strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
+                            suffix2(:l_sfx2)//'.gsf'
+              if (b_output_separate_mesh_result) then
+                strfilename_result = trim(strfilename)//'.h5'
+                strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
+              else
+                strfilename_result = trim(strfilename)//'.h5'
+                strfilename_mesh = strfilename_result
+              end if
+            else
+              strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
+                 suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsf'
+            end if
+
+            if (b_output_binary) then
+
+#ifdef PETSC_HDF
+              !c open corresponding xmf file to be loaded by paraview
+              if (rank == 0) then
+                ixmf = lun_get()
+                open(ixmf,file=trim(strfilename)//'.xmf',              &
+                     status='unknown',form='formatted')
+              end if
+
+              !c initialize fortran interface
+              call h5open_f(hdf5_ierr)
+
+              !c setup file access property list with parallel I/O access
+              call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
+              call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,        &
+                                      MPI_INFO_NULL, hdf5_ierr)
+              !c create the file collectively
+              call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,      &
+                               file_id, hdf5_ierr, access_prp = plist_id)
+  
+              !c write attribute
+              call hdf5_usg_write_attribute(file_id)
+
+              if (.not. b_output_separate_mesh_result) then
+                !c write mesh data
+                call hdf5_usg_write_mesh_data(file_id)
+              end if
+
+              !c open corresponding xmf file for mesh and domain decomposition
+              if (rank == 0) then
+                call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
+              end if
+
+              !c create a group for the mesh data set
+              strbuffer = "results"
+              !c create and open a group
+              call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,   &
+                               OBJECT_NAMELEN_DEFAULT_F)
+#endif
+            else
+              open(igsf2,file=trim(strfilename)//'.vtk',                 &
+                   status='unknown',form='formatted')
+            end if
+
+            if (rank == 0 .and. b_enable_output) then
+              write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)') &
+                    'Species-dependent gas diffusion coefficients: ',    &
+                    namec(ic)(:l_namec(ic)),' T = ',                     &
+                    time_io,time_unit,('-',i=1,72)
+
+              write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                 &
+                                  suffix(:l_sufx)//'_'//                 &
+                                  suffix2(:l_sfx2)//'.gsf.vtk'
+
+              write(ifls,'(2a)')                                         &
+                    'column   entry                           ','unit'
+              write(ifls,'(2a)')                                         &
+                    '1        x                               ','m'
+              write(ifls,'(2a)')                                         &
+                    '2        y                               ','m'
+              write(ifls,'(2a)')                                         &
+                    '3        z                               ','m'
+              write(ifls,'(2a)')                                         &
+                    '4        Dxx                             ','m2/d'
+              write(ifls,'(2a)')                                         &
+                    '5        Dyy                             ','m2/d'
+              write(ifls,'(2a)')                                         &
+                    '6        Dzz                             ','m2/d'
+            end if
+
+
+            if (.not. b_output_binary) then
+              write(strbuffer,'(3a,1pe15.6e3,1x,a)')                     &
+                    "Species-dependent gas diffusion coefficients for ", &
+                    trim(namec(ic)), ", solution time = ",time_io,time_unit
+              call write_mesh_data_vtk_ascii(igsf2,trim(adjustl(strbuffer)))
+
+              write(igsf2,'(a,1x,i12)') "POINT_DATA",nngl
+            end if
+
+            !c write advective velocity vector
+            if (b_output_binary) then
+#ifdef PETSC_HDF
+              allocate(realbuffer(num_nodes*3), stat = ierr)
+              call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
+              call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
+              do ivol = 1, num_nodes
+                realbuffer((ivol-1)*3+1) = gasdiff_usg(ic,ivol)%x/sec_per_days
+                realbuffer((ivol-1)*3+2) = gasdiff_usg(ic,ivol)%y/sec_per_days
+                realbuffer((ivol-1)*3+3) = gasdiff_usg(ic,ivol)%z/sec_per_days
+              end do
+
+              call hdf5_usg_write_group_data_vec(group_id,"diff_coeff",3,  &
+                        num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+
+              if (rank == 0) then
+                call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                          "results","diff_coeff","Vector","Node",          &
+                          num_nodes_gbl,3)
+              end if
+              call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
+              deallocate(realbuffer)
+#endif
+            else
+              write(igsf2,'(a)') "VECTORS diff_coeff double"
+              do ivol = 1, nngl
+                write(igsf2,'(3(1pe15.6e3,1x))')                           &
+                      gasdiff_usg(ic,ivol)%x/sec_per_days,                 &
+                      gasdiff_usg(ic,ivol)%y/sec_per_days,                 &
+                      gasdiff_usg(ic,ivol)%z/sec_per_days
+              end do
+            end if
+
+            if (b_output_binary) then
+#ifdef PETSC_HDF
+              !c close group
+              call h5gclose_f(group_id,hdf5_ierr)
+
+              !c close file
+              call h5pclose_f(plist_id, hdf5_ierr)
+              call h5fclose_f(file_id, hdf5_ierr)
+
+              !c close FORTRAN interface
+              call h5close_f(hdf5_ierr)
+
+              !c close xmf file
+              if (rank == 0) then
+                call hdf5_usg_write_xmf_finalize(ixmf)
+                close(ixmf)
+                call lun_free(ixmf)
+              end if
+#endif
+            else
+              close(igsf2)
+            end if
+
+          enddo
+
+        endif
+
+      end if
+
+      if (b_output_binary) then
+        allocate(realbuffer(num_nodes), stat = ierr)
+        call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
+        call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
+      end if
+
+      igsf_last = igsf2
+
+!c   open files for density
+      !c file for result and mesh
+      !c note: binary output using separated file for each subdomain is
+      !c deprecated for unstructured grid version
+
+      if (bit_gsr > 0) then
+
         if (b_output_binary) then
-          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
-                        suffix2(:l_sfx2)//'.gsga'
+          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsr'
           if (b_output_separate_mesh_result) then
             strfilename_result = trim(strfilename)//'.h5'
             strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
@@ -921,11 +1409,158 @@
             strfilename_mesh = strfilename_result
           end if
         else
-          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
-             suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsga'
+          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//          &
+                        trim(adjustl(str_rank))//'.gsr'
         end if
 
         if (b_output_binary) then
+
+#ifdef PETSC_HDF
+          !c open corresponding xmf file to be loaded by paraview
+          if (rank == 0) then
+            ixmf = lun_get()
+            open(ixmf,file=trim(strfilename)//'.xmf',status='unknown',   &
+                 form='formatted')
+          end if
+
+          !c initialize fortran interface
+          call h5open_f(hdf5_ierr)
+
+          !c setup file access property list with parallel I/O access
+          call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
+          call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,          &
+                                  MPI_INFO_NULL, hdf5_ierr)
+          !c create the file collectively
+          call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,        &
+                           file_id, hdf5_ierr, access_prp = plist_id)
+
+          !c write attribute
+          call hdf5_usg_write_attribute(file_id)
+
+          if (.not. b_output_separate_mesh_result) then
+            !c write mesh data
+            call hdf5_usg_write_mesh_data(file_id)
+          end if
+
+          !c open corresponding xmf file for mesh and domain decomposition
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
+          end if
+
+          !c create a group for the mesh data set
+          strbuffer = "results"
+          !c create and open a group
+          call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,       &
+                           OBJECT_NAMELEN_DEFAULT_F)
+#endif
+        else
+          open(igsr,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//       &
+               trim(adjustl(str_rank))//'.gsr.vtk',                    &
+               status='unknown',form='formatted')
+        end if
+
+        if (rank == 0 .and. b_enable_output) then
+
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                       &
+                     'Density of the gas phase, T = ',                 &
+                      time_io,time_unit,('-',i=1,72)
+
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
+                              trim(adjustl(str_rank))//'.gsr'
+
+          write(ifls,'(2a)')                                           &
+                  'column   entry                           ','unit'
+          write(ifls,'(2a)')                                           &
+                  '1        x                               ','m'
+          write(ifls,'(2a)')                                           &
+                  '2        y                               ','m'
+          write(ifls,'(2a)')                                           &
+                  '3        z                               ','m'
+          write(ifls,'(2a)')                                           &
+                  '4        density                         ','g/l'
+
+        end if
+
+        if (.not. b_output_binary) then
+          write(strbuffer,'(a,1x,1pe15.6e3,1x,a)')                     &
+                  "Density of the gas phase, solution time = ",        &
+                  time_io,time_unit
+          call write_mesh_data_vtk_ascii(igsr,trim(adjustl(strbuffer)))
+
+          write(igsr,'(a,1x,i12)') "POINT_DATA",nngl
+        end if
+
+        !c write p_t_o_t
+        if (b_output_binary) then
+#ifdef PETSC_HDF
+          do ivol = 1, num_nodes
+            realbuffer(ivol) = gasd_m(mdens_g(ivol),gmfrac(:,ivol))
+          end do
+          call hdf5_usg_write_group_data_1d(group_id,"density",         &
+                    num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result,  &
+                      "results","density","Scalar","Node",num_nodes_gbl,1)
+          end if
+#endif
+        else
+          write(igsr,'(a)') "SCALARS density double"
+          write(igsr,'(a)') "LOOKUP_TABLE default"
+          do ivol = 1, nngl
+            den = gasd_m(mdens_g(ivol),gmfrac(:,ivol))
+            write(igsr,ascii_fmt) den
+          end do
+        end if
+
+        if (b_output_binary) then
+#ifdef PETSC_HDF
+          !c close group
+          call h5gclose_f(group_id,hdf5_ierr)
+
+          !c close file
+          call h5pclose_f(plist_id, hdf5_ierr)
+          call h5fclose_f(file_id, hdf5_ierr)
+
+          !c close FORTRAN interface
+          call h5close_f(hdf5_ierr)
+
+          !c close xmf file
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_finalize(ixmf)
+            close(ixmf)
+            call lun_free(ixmf)
+          end if
+#endif
+        else
+          close(igsr)
+        end if
+
+      end if
+
+
+!c   open files for viscosity
+
+      if (bit_gsy> 0) then
+
+        !c file for result and mesh
+        !c note: binary output using separated file for each subdomain is
+        !c deprecated for unstructured grid version
+        if (b_output_binary) then
+          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsy'
+          if (b_output_separate_mesh_result) then
+            strfilename_result = trim(strfilename)//'.h5'
+            strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
+          else
+            strfilename_result = trim(strfilename)//'.h5'
+            strfilename_mesh = strfilename_result
+          end if
+        else
+          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//        &
+                        trim(adjustl(str_rank))//'.gsy'
+        end if
+
+        if (b_output_binary) then
+
 #ifdef PETSC_HDF
           !c open corresponding xmf file to be loaded by paraview
           if (rank == 0) then
@@ -955,34 +1590,7 @@
 
           !c open corresponding xmf file for mesh and domain decomposition
           if (rank == 0) then
-            call hdf5_usg_write_xmf_initialize(ixmf)
-            call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,        &
-                      cell_type,num_cells_gbl,num_nodes_gbl,           &
-                      num_nodes_per_cell)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_rank",       &
-                      "Scalar","Node",num_nodes_gbl,1)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_rank",          &
-                      "Scalar","Cell",num_cells_gbl,1)
-
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_lg2g",       &
-                      "Scalar","Node",num_nodes_gbl,1)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_lg2g",          &
-                      "Scalar","Cell",num_cells_gbl,1)
-
-            if (b_use_node_matids) then
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_matid",    &
-                        "Scalar","Node",num_nodes_gbl,1)
-            end if
-            if (b_use_cell_matids) then
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_matid",       &
-                        "Scalar","Cell",num_cells_gbl,1)
-            end if
+            call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
           end if
 
           !c create a group for the mesh data set
@@ -992,69 +1600,245 @@
                            OBJECT_NAMELEN_DEFAULT_F)
 #endif
         else
-          open(igsa2,file=trim(strfilename)//'.vtk',                   &
-               status='unknown', form='formatted')
+          open(igsy,file=trim(strfilename)//'.vtk',                    &
+               status='unknown',form='formatted')
         end if
 
         if (rank == 0 .and. b_enable_output) then
 
-          write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)')   &
-                'Average interfacial gas fluxes for component: ',      &
-                 namec(ic)(:l_namec(ic)),' T = ',                      &
-                 time_io,time_unit,('-',i=1,72)
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                       &
+                     'Viscosity of the gas phase, T = ',               &
+                      time_io,time_unit,('-',i=1,72)
 
-          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                   &
-                      suffix(:l_sufx)//'_'//suffix2(:l_sfx2)//         &
-                      trim(adjustl(str_rank))//'.gsga.vtk'
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//suffix(:l_sufx)//  &
+                     trim(adjustl(str_rank))//'.gsy'
 
           write(ifls,'(2a)')                                           &
-              'column   entry                           ','unit'
+                  'column   entry                           ','unit'
           write(ifls,'(2a)')                                           &
-              '1        x                               ','m'
+                  '1        x                               ','m'
           write(ifls,'(2a)')                                           &
-              '2        y                               ','m'
+                  '2        y                               ','m'
           write(ifls,'(2a)')                                           &
-              '3        z                               ','m'
+                  '3        z                               ','m'
           write(ifls,'(2a)')                                           &
-              '4        v_x advection                   ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '5        v_y advection                   ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '6        v_z advection                   ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '7        v_x Fick s diffusion            ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '8        v_y Fick s diffusion            ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '9        v_z Fick s diffusion            ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '10       v_x total                       ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '11       v_y total                       ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '12       v_z total                       ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '13       v_x DGM / M-S diffusion         ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '14       v_y DGM / M-S diffusion         ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '15       v_z DGM / M-S diffusion         ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '16       v_x non-equimolar diffusion     ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '17       v_y non-equimolar diffusion     ','moles/m^2/d'
-          write(ifls,'(2a)')                                           &
-              '18       v_z non-equimolar diffusion     ','moles/m^2/d'
+                  '4        viscosity                       ','Pa s'
 
         end if
 
         if (.not. b_output_binary) then
-          write(strbuffer,'(3a,1pe15.6e3,1x,a)')                       &
-                "advection and diffusion fluxes for ", trim(namec(ic)),&
-                ", solution time = ",time_io,time_unit
-          call write_mesh_data_vtk_ascii(igsa2,trim(adjustl(strbuffer)))
+          write(strbuffer,'(a,1x,1pe15.6e3,1x,a)')                     &
+                  "Viscosity of the gas phase, solution time = ",      &
+                  time_io,time_unit
+          call write_mesh_data_vtk_ascii(igsy,trim(adjustl(strbuffer)))
 
-          write(igsa2,'(a,1x,i12)') "POINT_DATA",nngl
+          write(igsy,'(a,1x,i12)') "POINT_DATA",nngl
+        end if
+
+        !c write p_t_o_t
+        if (b_output_binary) then
+#ifdef PETSC_HDF
+          do ivol = 1, num_nodes
+            realbuffer(ivol) = gasv(gmfrac(:,ivol))
+          end do
+          call hdf5_usg_write_group_data_1d(group_id,"viscosity",      &
+                    num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                      "results","viscosity","Scalar","Node",num_nodes_gbl,1)
+          end if
+#endif
+        else
+          write(igsy,'(a)') "SCALARS viscosity double"
+          write(igsy,'(a)') "LOOKUP_TABLE default"
+          do ivol = 1, nngl
+            write(igsy,ascii_fmt) gasv(gmfrac(:,ivol))
+          end do
+        end if
+
+        if (b_output_binary) then
+#ifdef PETSC_HDF
+          !c close group
+          call h5gclose_f(group_id,hdf5_ierr)
+
+          !c close file
+          call h5pclose_f(plist_id, hdf5_ierr)
+          call h5fclose_f(file_id, hdf5_ierr)
+
+          !c close FORTRAN interface
+          call h5close_f(hdf5_ierr)
+
+          !c close xmf file
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_finalize(ixmf)
+            close(ixmf)
+            call lun_free(ixmf)
+          end if
+#endif
+        else
+          close(igsy)
+        end if
+
+      end if
+
+      if (b_output_binary) then
+        call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
+        deallocate(realbuffer)
+      end if
+
+!c  gas phase velocity
+
+      if (bit_gsk > 0) then
+
+        !c file for result and mesh
+        !c note: binary output using separated file for each subdomain is
+        !c deprecated for unstructured grid version
+        if (b_output_binary) then
+          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsk'
+          if (b_output_separate_mesh_result) then
+            strfilename_result = trim(strfilename)//'.h5'
+            strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
+          else
+            strfilename_result = trim(strfilename)//'.h5'
+            strfilename_mesh = strfilename_result
+          end if
+        else
+          strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//        &
+                        trim(adjustl(str_rank))//'.gsk'
+        end if
+
+        if (b_output_binary) then
+
+#ifdef PETSC_HDF
+          !c open corresponding xmf file to be loaded by paraview
+          if (rank == 0) then
+            ixmf = lun_get()
+            open(ixmf,file=trim(strfilename)//'.xmf',status='unknown', &
+                 form='formatted')
+          end if
+
+          !c initialize fortran interface
+          call h5open_f(hdf5_ierr)
+
+          !c setup file access property list with parallel I/O access
+          call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
+          call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,          &
+                                  MPI_INFO_NULL, hdf5_ierr)
+          !c create the file collectively
+          call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,        &
+                           file_id, hdf5_ierr, access_prp = plist_id)
+
+          !c write attribute
+          call hdf5_usg_write_attribute(file_id)
+
+          if (.not. b_output_separate_mesh_result) then
+            !c write mesh data
+            call hdf5_usg_write_mesh_data(file_id)
+          end if
+
+          !c open corresponding xmf file for mesh and domain decomposition
+          if (rank == 0) then
+            call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
+          end if
+
+          !c create a group for the mesh data set
+          strbuffer = "results"
+          !c create and open a group
+          call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,       &
+                           OBJECT_NAMELEN_DEFAULT_F)
+#endif
+        else
+          open(igsk,file=trim(strfilename)//'.vtk',                    &
+               status='unknown',form='formatted')
+        end if
+
+        if (rank == 0 .and. b_enable_output) then
+
+          write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
+                     'Advective and Diffusive driving force gradients', &
+                      time_io,time_unit,('-',i=1,72)
+
+          write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
+                              suffix(:l_sufx)//'.gsk'
+
+          write(ifls,'(2a)')                                            &
+                  'column   entry                           ','unit'
+          write(ifls,'(2a)')                                            &
+                  '1        x                               ','m'
+          write(ifls,'(2a)')                                            &
+                  '2        y                               ','m'
+          write(ifls,'(2a)')                                            &
+                  '3        z                               ','m'
+          write(ifls,'(2a)')                                            &
+                  '4        grad_adv_x                      ','m^3/d'
+          write(ifls,'(2a)')                                            &
+                  '5        grad_adv_y                      ','m^3/d'
+          write(ifls,'(2a)')                                            &
+                  '6        grad_adv_z                      ','m^3/d'
+          do ic = 1,ng
+            strvar32 = trim(nameg(ic))//"_diff_x"
+            if(ic+6 < 10) then
+              write(ifls,'(i1,8x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+            else if (ic+6 >= 10 .and. ic+6 < 100) then
+              write(ifls,'(i2,7x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+            else if (ic+6 >= 100 .and. ic+6 < 1000) then
+              write(ifls,'(i3,6x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+            else if (ic+6 >= 1000 .and. ic+6 < 10000) then
+              write(ifls,'(i4,5x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+            else
+              write(ifls,'(i8,1x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
+            end if
+          end do
+
+          do ic = 1,ng
+            strvar32 = trim(nameg(ic))//"_diff_y"
+            if (ic+ng+6 < 10) then
+              write(ifls,'(i1,8x,2a)') ic+ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else if (ic+ng+6 >= 10 .and. ic+ng+6 < 100) then
+              write(ifls,'(i2,7x,2a)') ic+ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else if (ic+ng+6 >= 100 .and. ic+ng+6 < 1000) then
+              write(ifls,'(i3,6x,2a)') ic+ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else if (ic+ng+6 >= 1000 .and. ic+ng+6 < 10000) then
+              write(ifls,'(i4,5x,2a)') ic+ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            else
+              write(ifls,'(i8,1x,2a)') ic+ng+6,strvar32,               &
+                    'moles L^-1 m^-1'
+            end if
+          end do
+
+          do ic = 1,ng
+            strvar32 = trim(nameg(ic))//"_diff_z"
+            if (ic+2*ng+6 < 10) then
+              write(ifls,'(i1,8x,2a)') ic+2*ng+6,strvar32,             &
+                    'moles L^-1 m^-1'
+            else if (ic+2*ng+6 >= 10 .and. ic+2*ng+6 < 100) then
+              write(ifls,'(i2,7x,2a)') ic+2*ng+6,strvar32,             &
+                    'moles L^-1 m^-1'
+            else if (ic+2*ng+6 >= 100 .and. ic+2*ng+6 < 1000) then
+              write(ifls,'(i3,6x,2a)') ic+2*ng+6,strvar32,             &
+                    'moles L^-1 m^-1'
+            else if (ic+2*ng+6 >= 1000 .and. ic+2*ng+6 < 10000) then
+              write(ifls,'(i4,5x,2a)') ic+2*ng+6,strvar32,             &
+                    'moles L^-1 m^-1'
+            else
+              write(ifls,'(i8,1x,2a)') ic+2*ng+6,strvar32,             &
+                    'moles L^-1 m^-1'
+            end if
+          end do
+
+        end if
+
+        if (.not. b_output_binary) then
+          write(strbuffer,'(2a,1pe15.6e3,1x,a)')                         &
+                "Advective and Diffusive driving force gradients",       &
+                ", solution time = ",time_io,time_unit
+          call write_mesh_data_vtk_ascii(igsk,trim(adjustl(strbuffer)))
+  
+          write(igsk,'(a,1x,i12)') "POINT_DATA",nngl
         end if
 
         if (b_output_binary) then
@@ -1067,138 +1851,52 @@
         if (b_output_binary) then
 #ifdef PETSC_HDF
           do ivol = 1, num_nodes
-            realbuffer((ivol-1)*3+1) = vels_ca(ic,ivol)%x
-            realbuffer((ivol-1)*3+2) = vels_ca(ic,ivol)%y
-            realbuffer((ivol-1)*3+3) = vels_ca(ic,ivol)%z
+            realbuffer((ivol-1)*3+1) = vels_grad(ivol)%x
+            realbuffer((ivol-1)*3+2) = vels_grad(ivol)%y
+            realbuffer((ivol-1)*3+3) = vels_grad(ivol)%z
           end do
-
-          call hdf5_usg_write_group_data_vec(group_id,"velocity_adv",3,&
+          call hdf5_usg_write_group_data_vec(group_id,"grad_adv",3,    &
                     num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
 
           if (rank == 0) then
             call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
-                      "results","velocity_adv","Vector","Node",        &
+                      "results","grad_adv","Vector","Node",            &
                       num_nodes_gbl,3)
           end if
 #endif
         else
-          write(igsa2,'(a)') "VECTORS velocity_adv double"
+          write(igsk,'(a)') "VECTORS grad_adv double"
           do ivol = 1, nngl
-            write(igsa2,'(3(1pe15.6e3,1x))') vels_ca(ic,ivol)%x,       &
-                  vels_ca(ic,ivol)%y, vels_ca(ic,ivol)%z
+            write(igsk,'(3(1pe15.6e3,1x))') vels_grad(ivol)%x,           &
+                  vels_grad(ivol)%y, vels_grad(ivol)%z
           end do
         end if
 
-        !c write diffusive velocity vector
-        if (b_output_binary) then
+        do ig = 1, ng
+          if (b_output_binary) then
 #ifdef PETSC_HDF
-          do ivol = 1, num_nodes
-            realbuffer((ivol-1)*3+1) = vels_cd(ic,ivol)%x
-            realbuffer((ivol-1)*3+2) = vels_cd(ic,ivol)%y
-            realbuffer((ivol-1)*3+3) = vels_cd(ic,ivol)%z
-          end do
+            do ivol = 1, num_nodes
+              realbuffer((ivol-1)*3+1) = grad_gasdiff(ig,ivol)%x
+              realbuffer((ivol-1)*3+2) = grad_gasdiff(ig,ivol)%y
+              realbuffer((ivol-1)*3+3) = grad_gasdiff(ig,ivol)%z
+            end do
+            call hdf5_usg_write_group_data_vec(group_id,trim(nameg(ig)),3, &
+                      num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
 
-          call hdf5_usg_write_group_data_vec(group_id,"velocity_dif",3,&
-                    num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-
-          if (rank == 0) then
-            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
-                      "results","velocity_dif","Vector","Node",        &
-                      num_nodes_gbl,3)
-          end if
+            if (rank == 0) then
+              call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
+                        "results",trim(nameg(ig)),"Vector","Node",       &
+                        num_nodes_gbl,3)
+            end if
 #endif
-        else
-          write(igsa2,'(a)') "VECTORS velocity_dif double"
-          do ivol = 1, nngl
-            write(igsa2,'(3(1pe15.6e3,1x))') vels_cd(ic,ivol)%x,       &
-                  vels_cd(ic,ivol)%y, vels_cd(ic,ivol)%z
-          end do
-        end if
-
-        !c write total velocity vector
-        if (b_output_binary) then
-#ifdef PETSC_HDF
-          do ivol = 1, num_nodes
-            realbuffer((ivol-1)*3+1) = vels_ca(ic,ivol)%x+             &
-                                       vels_dgm(ic,ivol)%x
-            realbuffer((ivol-1)*3+2) = vels_ca(ic,ivol)%y+             &
-                                       vels_dgm(ic,ivol)%y
-            realbuffer((ivol-1)*3+3) = vels_ca(ic,ivol)%z+             &
-                                       vels_dgm(ic,ivol)%z
-          end do
-
-          call hdf5_usg_write_group_data_vec(group_id,"velocity_tot",3,&
-                    num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-
-          if (rank == 0) then
-            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
-                      "results","velocity_tot","Vector","Node",        &
-                      num_nodes_gbl,3)
+          else
+            write(igsk,'(3a)') "VECTORS grad_diff_",trim(nameg(ig))," double"
+            do ivol = 1, nngl
+              write(igsk,'(3(1pe15.6e3,1x))') grad_gasdiff(ig,ivol)%x,   &
+                    grad_gasdiff(ig,ivol)%y, grad_gasdiff(ig,ivol)%z
+            end do
           end if
-#endif
-        else
-          write(igsa2,'(a)') "VECTORS velocity_tot double"
-          do ivol = 1, nngl
-            write(igsa2,'(3(1pe15.6e3,1x))')                           &
-                 vels_ca(ic,ivol)%x+vels_dgm(ic,ivol)%x,               &
-                 vels_ca(ic,ivol)%y+vels_dgm(ic,ivol)%y,               &
-                 vels_ca(ic,ivol)%z+vels_dgm(ic,ivol)%z
-          end do
-        end if
-
-        !c write DGM / M-S diffusion velocity vector
-        if (b_output_binary) then
-#ifdef PETSC_HDF
-          do ivol = 1, num_nodes
-            realbuffer((ivol-1)*3+1) = vels_dgm(ic,ivol)%x
-            realbuffer((ivol-1)*3+2) = vels_dgm(ic,ivol)%y
-            realbuffer((ivol-1)*3+3) = vels_dgm(ic,ivol)%z
-          end do
-
-          call hdf5_usg_write_group_data_vec(group_id,                 &
-                    "velocity_dif_dgm",3,num_nodes_loc,num_nodes_gbl,  &
-                    offset_nodes,realbuffer)
-
-          if (rank == 0) then
-            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
-                      "results","velocity_dif_dgm","Vector","Node",    &
-                      num_nodes_gbl,3)
-          end if
-#endif
-        else
-          write(igsa2,'(a)') "VECTORS velocity_dif_dgm double"
-          do ivol = 1, nngl
-            write(igsa2,'(3(1pe15.6e3,1x))') vels_dgm(ic,ivol)%x,      &
-                  vels_dgm(ic,ivol)%y, vels_dgm(ic,ivol)%z
-          end do
-        end if
-
-        !c write non-equimolar diffusion velocity vector
-        if (b_output_binary) then
-#ifdef PETSC_HDF
-          do ivol = 1, num_nodes
-            realbuffer((ivol-1)*3+1) = vels_neq(ic,ivol)%x
-            realbuffer((ivol-1)*3+2) = vels_neq(ic,ivol)%y
-            realbuffer((ivol-1)*3+3) = vels_neq(ic,ivol)%z
-          end do
-
-          call hdf5_usg_write_group_data_vec(group_id,                 &
-                    "velocity_dif_neq",3,num_nodes_loc,num_nodes_gbl,  &
-                    offset_nodes,realbuffer)
-
-          if (rank == 0) then
-            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
-                      "results","velocity_dif_neq","Vector","Node",    &
-                      num_nodes_gbl,3)
-          end if
-#endif
-        else
-          write(igsa2,'(a)') "VECTORS velocity_dif_neq double"
-          do ivol = 1, nngl
-            write(igsa2,'(3(1pe15.6e3,1x))') vels_neq(ic,ivol)%x,      &
-                  vels_neq(ic,ivol)%y, vels_neq(ic,ivol)%z
-          end do
-        end if
+        end do
 
         if (b_output_binary) then
           call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
@@ -1225,828 +1923,8 @@
           end if
 #endif
         else
-          close(igsa2)
+          close(igsk)
         end if
-
-      enddo
-
-      igsa_last = igsa2
-
-      igsf2 = igsf_first
-
-!c  variable diffusion coefficients
-      if (blanc_diff_g) then
-
-        do ic=1,n
-
-          igsf2 = igsf2+1
-
-          call icnvrt(0,ic,suffix2,l_sfx2,ierr)
-
-          if (ierr > 0) then
-#ifdef PETSC
-            call petsc_mpi_finalize
-#endif
-            write(*,*) "Error in icnvrt function in velocity_g"
-            write(ilog,*) "Error in icnvrt function in velocity_g"
-            close(ilog)
-            stop
-          end if
-
-          !c file for result and mesh
-          !c note: binary output using separated file for each subdomain is
-          !c deprecated for unstructured grid version
-          if (b_output_binary) then
-            strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'//   &
-                          suffix2(:l_sfx2)//'.gsf'
-            if (b_output_separate_mesh_result) then
-              strfilename_result = trim(strfilename)//'.h5'
-              strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
-            else
-              strfilename_result = trim(strfilename)//'.h5'
-              strfilename_mesh = strfilename_result
-            end if
-          else
-            strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'_'// &
-               suffix2(:l_sfx2)//trim(adjustl(str_rank))//'.gsf'
-          end if
-
-          if (b_output_binary) then
-
-#ifdef PETSC_HDF
-            !c open corresponding xmf file to be loaded by paraview
-            if (rank == 0) then
-              ixmf = lun_get()
-              open(ixmf,file=trim(strfilename)//'.xmf',                &
-                   status='unknown',form='formatted')
-            end if
-
-            !c initialize fortran interface
-            call h5open_f(hdf5_ierr)
-
-            !c setup file access property list with parallel I/O access
-            call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
-            call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,        &
-                                    MPI_INFO_NULL, hdf5_ierr)
-            !c create the file collectively
-            call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,      &
-                             file_id, hdf5_ierr, access_prp = plist_id)
-
-            !c write attribute
-            call hdf5_usg_write_attribute(file_id)
-
-            if (.not. b_output_separate_mesh_result) then
-              !c write mesh data
-              call hdf5_usg_write_mesh_data(file_id)
-            end if
-
-            !c open corresponding xmf file for mesh and domain decomposition
-            if (rank == 0) then
-              call hdf5_usg_write_xmf_initialize(ixmf)
-              call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,      &
-                        cell_type,num_cells_gbl,num_nodes_gbl,         &
-                        num_nodes_per_cell)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_rank",     &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_rank",        &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_lg2g",     &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_lg2g",        &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              if (b_use_node_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                &
-                          strfilename_mesh,"domain","vertices_matid",  &
-                          "Scalar","Node",num_nodes_gbl,1)
-              end if
-              if (b_use_cell_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                &
-                          strfilename_mesh,"domain","cells_matid",     &
-                          "Scalar","Cell",num_cells_gbl,1)
-              end if
-            end if
-
-            !c create a group for the mesh data set
-            strbuffer = "results"
-            !c create and open a group
-            call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,     &
-                             OBJECT_NAMELEN_DEFAULT_F)
-#endif
-          else
-            open(igsf2,file=trim(strfilename)//'.vtk',                 &
-                 status='unknown',form='formatted')
-          end if
-
-          if (rank == 0 .and. b_enable_output) then
-            write(ifls,'(/a, a, 1x, a, 1p, 1pe15.6e3, 1x, a, /, 72a)') &
-                  'Species-dependent gas diffusion coefficients: ',    &
-                  namec(ic)(:l_namec(ic)),' T = ',                     &
-                  time_io,time_unit,('-',i=1,72)
-
-            write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                 &
-                                suffix(:l_sufx)//'_'//                 &
-                                suffix2(:l_sfx2)//'.gsf.vtk'
-
-            write(ifls,'(2a)')                                         &
-                  'column   entry                           ','unit'
-            write(ifls,'(2a)')                                         &
-                  '1        x                               ','m'
-            write(ifls,'(2a)')                                         &
-                  '2        y                               ','m'
-            write(ifls,'(2a)')                                         &
-                  '3        z                               ','m'
-            write(ifls,'(2a)')                                         &
-                  '4        Dxx                             ','m2/d'
-            write(ifls,'(2a)')                                         &
-                  '5        Dyy                             ','m2/d'
-            write(ifls,'(2a)')                                         &
-                  '6        Dzz                             ','m2/d'
-          end if
-
-
-          if (.not. b_output_binary) then
-            write(strbuffer,'(3a,1pe15.6e3,1x,a)')                     &
-                  "Species-dependent gas diffusion coefficients for ", &
-                  trim(namec(ic)), ", solution time = ",time_io,time_unit
-            call write_mesh_data_vtk_ascii(igsf2,trim(adjustl(strbuffer)))
-
-            write(igsf2,'(a,1x,i12)') "POINT_DATA",nngl
-          end if
-
-          !c write advective velocity vector
-          if (b_output_binary) then
-#ifdef PETSC_HDF
-            allocate(realbuffer(num_nodes*3), stat = ierr)
-            call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
-            call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
-            do ivol = 1, num_nodes
-              realbuffer((ivol-1)*3+1) = gasdiff_usg(ic,ivol)%x/sec_per_days
-              realbuffer((ivol-1)*3+2) = gasdiff_usg(ic,ivol)%y/sec_per_days
-              realbuffer((ivol-1)*3+3) = gasdiff_usg(ic,ivol)%z/sec_per_days
-            end do
-
-            call hdf5_usg_write_group_data_vec(group_id,"diff_coeff",3,  &
-                      num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-
-            if (rank == 0) then
-              call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
-                        "results","diff_coeff","Vector","Node",          &
-                        num_nodes_gbl,3)
-            end if
-            call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
-            deallocate(realbuffer)
-#endif
-          else
-            write(igsf2,'(a)') "VECTORS diff_coeff double"
-            do ivol = 1, nngl
-              write(igsf2,'(3(1pe15.6e3,1x))')                           &
-                    gasdiff_usg(ic,ivol)%x/sec_per_days,                 &
-                    gasdiff_usg(ic,ivol)%y/sec_per_days,                 &
-                    gasdiff_usg(ic,ivol)%z/sec_per_days
-            end do
-          end if
-
-          if (b_output_binary) then
-#ifdef PETSC_HDF
-            !c close group
-            call h5gclose_f(group_id,hdf5_ierr)
-
-            !c close file
-            call h5pclose_f(plist_id, hdf5_ierr)
-            call h5fclose_f(file_id, hdf5_ierr)
-
-            !c close FORTRAN interface
-            call h5close_f(hdf5_ierr)
-
-            !c close xmf file
-            if (rank == 0) then
-              call hdf5_usg_write_xmf_finalize(ixmf)
-              close(ixmf)
-              call lun_free(ixmf)
-            end if
-#endif
-          else
-            close(igsf2)
-          end if
-
-        enddo
-
-      endif
-
-      if (b_output_binary) then
-        allocate(realbuffer(num_nodes), stat = ierr)
-        call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
-        call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
-      end if
-
-      igsf_last = igsf2
-
-!c   open files for density
-      !c file for result and mesh
-      !c note: binary output using separated file for each subdomain is
-      !c deprecated for unstructured grid version
-      if (b_output_binary) then
-        strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsr'
-        if (b_output_separate_mesh_result) then
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
-        else
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = strfilename_result
-        end if
-      else
-        strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//          &
-                      trim(adjustl(str_rank))//'.gsr'
-      end if
-
-      if (b_output_binary) then
-
-#ifdef PETSC_HDF
-        !c open corresponding xmf file to be loaded by paraview
-        if (rank == 0) then
-          ixmf = lun_get()
-          open(ixmf,file=trim(strfilename)//'.xmf',status='unknown',   &
-               form='formatted')
-        end if
-
-        !c initialize fortran interface
-        call h5open_f(hdf5_ierr)
-
-        !c setup file access property list with parallel I/O access
-        call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
-        call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,            &
-                                MPI_INFO_NULL, hdf5_ierr)
-        !c create the file collectively
-        call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,          &
-                         file_id, hdf5_ierr, access_prp = plist_id)
-
-        !c write attribute
-        call hdf5_usg_write_attribute(file_id)
-
-        if (.not. b_output_separate_mesh_result) then
-          !c write mesh data
-          call hdf5_usg_write_mesh_data(file_id)
-        end if
-
-        !c open corresponding xmf file for mesh and domain decomposition
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
-        end if
-
-        !c create a group for the mesh data set
-        strbuffer = "results"
-        !c create and open a group
-        call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,         &
-                         OBJECT_NAMELEN_DEFAULT_F)
-#endif
-      else
-        open(igsr,file=prefix(:l_prfx)//'_'//suffix(:l_sufx)//         &
-             trim(adjustl(str_rank))//'.gsr.vtk',                      &
-             status='unknown',form='formatted')
-      end if
-
-      if (rank == 0 .and. b_enable_output) then
-
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                         &
-                   'Density of the gas phase, T = ',                   &
-                    time_io,time_unit,('-',i=1,72)
-
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//suffix(:l_sufx)//    &
-                            trim(adjustl(str_rank))//'.gsr'
-
-        write(ifls,'(2a)')                                             &
-                'column   entry                           ','unit'
-        write(ifls,'(2a)')                                             &
-                '1        x                               ','m'
-        write(ifls,'(2a)')                                             &
-                '2        y                               ','m'
-        write(ifls,'(2a)')                                             &
-                '3        z                               ','m'
-        write(ifls,'(2a)')                                             &
-                '4        density                         ','g/l'
-
-      end if
-
-      if (.not. b_output_binary) then
-        write(strbuffer,'(a,1x,1pe15.6e3,1x,a)')                       &
-                "Density of the gas phase, solution time = ",          &
-                time_io,time_unit
-        call write_mesh_data_vtk_ascii(igsr,trim(adjustl(strbuffer)))
-
-        write(igsr,'(a,1x,i12)') "POINT_DATA",nngl
-      end if
-
-      !c write p_t_o_t
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        do ivol = 1, num_nodes
-          realbuffer(ivol) = gasd_m(mdens_g(ivol),gmfrac(:,ivol))
-        end do
-        call hdf5_usg_write_group_data_1d(group_id,"density",           &
-                  num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result,    &
-                    "results","density","Scalar","Node",num_nodes_gbl,1)
-        end if
-#endif
-      else
-        write(igsr,'(a)') "SCALARS density double"
-        write(igsr,'(a)') "LOOKUP_TABLE default"
-        do ivol = 1, nngl
-          den = gasd_m(mdens_g(ivol),gmfrac(:,ivol))
-          write(igsr,ascii_fmt) den
-        end do
-      end if
-
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        !c close group
-        call h5gclose_f(group_id,hdf5_ierr)
-
-        !c close file
-        call h5pclose_f(plist_id, hdf5_ierr)
-        call h5fclose_f(file_id, hdf5_ierr)
-
-        !c close FORTRAN interface
-        call h5close_f(hdf5_ierr)
-
-        !c close xmf file
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_finalize(ixmf)
-          close(ixmf)
-          call lun_free(ixmf)
-        end if
-#endif
-      else
-        close(igsr)
-      end if
-
-
-!c   open files for density
-      !c file for result and mesh
-      !c note: binary output using separated file for each subdomain is
-      !c deprecated for unstructured grid version
-      if (b_output_binary) then
-        strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsy'
-        if (b_output_separate_mesh_result) then
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
-        else
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = strfilename_result
-        end if
-      else
-        strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//          &
-                      trim(adjustl(str_rank))//'.gsy'
-      end if
-
-      if (b_output_binary) then
-
-#ifdef PETSC_HDF
-        !c open corresponding xmf file to be loaded by paraview
-        if (rank == 0) then
-          ixmf = lun_get()
-          open(ixmf,file=trim(strfilename)//'.xmf',status='unknown',   &
-               form='formatted')
-        end if
-
-        !c initialize fortran interface
-        call h5open_f(hdf5_ierr)
-
-        !c setup file access property list with parallel I/O access
-        call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
-        call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,            &
-                                MPI_INFO_NULL, hdf5_ierr)
-        !c create the file collectively
-        call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,          &
-                         file_id, hdf5_ierr, access_prp = plist_id)
-
-        !c write attribute
-        call hdf5_usg_write_attribute(file_id)
-
-        if (.not. b_output_separate_mesh_result) then
-          !c write mesh data
-          call hdf5_usg_write_mesh_data(file_id)
-        end if
-
-        !c open corresponding xmf file for mesh and domain decomposition
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
-        end if
-
-        !c create a group for the mesh data set
-        strbuffer = "results"
-        !c create and open a group
-        call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,         &
-                         OBJECT_NAMELEN_DEFAULT_F)
-#endif
-      else
-        open(igsy,file=trim(strfilename)//'.vtk',                      &
-             status='unknown',form='formatted')
-      end if
-
-      if (rank == 0 .and. b_enable_output) then
-
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                         &
-                   'Viscosity of the gas phase, T = ',                 &
-                    time_io,time_unit,('-',i=1,72)
-
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//suffix(:l_sufx)//    &
-                   trim(adjustl(str_rank))//'.gsy'
-
-        write(ifls,'(2a)')                                             &
-                'column   entry                           ','unit'
-        write(ifls,'(2a)')                                             &
-                '1        x                               ','m'
-        write(ifls,'(2a)')                                             &
-                '2        y                               ','m'
-        write(ifls,'(2a)')                                             &
-                '3        z                               ','m'
-        write(ifls,'(2a)')                                             &
-                '4        viscosity                       ','Pa s'
-
-      end if
-
-      if (.not. b_output_binary) then
-        write(strbuffer,'(a,1x,1pe15.6e3,1x,a)')                       &
-                "Viscosity of the gas phase, solution time = ",        &
-                time_io,time_unit
-        call write_mesh_data_vtk_ascii(igsy,trim(adjustl(strbuffer)))
-
-        write(igsy,'(a,1x,i12)') "POINT_DATA",nngl
-      end if
-
-      !c write p_t_o_t
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        do ivol = 1, num_nodes
-          realbuffer(ivol) = gasv(gmfrac(:,ivol))
-        end do
-        call hdf5_usg_write_group_data_1d(group_id,"density",           &
-                  num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result,    &
-                    "results","density","Scalar","Node",num_nodes_gbl,1)
-        end if
-#endif
-      else
-        write(igsy,'(a)') "SCALARS density double"
-        write(igsy,'(a)') "LOOKUP_TABLE default"
-        do ivol = 1, nngl
-          write(igsy,ascii_fmt) gasv(gmfrac(:,ivol))
-        end do
-      end if
-
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        !c close group
-        call h5gclose_f(group_id,hdf5_ierr)
-
-        !c close file
-        call h5pclose_f(plist_id, hdf5_ierr)
-        call h5fclose_f(file_id, hdf5_ierr)
-
-        !c close FORTRAN interface
-        call h5close_f(hdf5_ierr)
-
-        !c close xmf file
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_finalize(ixmf)
-          close(ixmf)
-          call lun_free(ixmf)
-        end if
-#endif
-      else
-        close(igsy)
-      end if
-
-      if (b_output_binary) then
-        call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
-        deallocate(realbuffer)
-      end if
-
-!c  gas phase velocity
-      !c file for result and mesh
-      !c note: binary output using separated file for each subdomain is
-      !c deprecated for unstructured grid version
-      if (b_output_binary) then
-        strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.gsk'
-        if (b_output_separate_mesh_result) then
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = prefix(:l_prfx)//'_domain.h5'
-        else
-          strfilename_result = trim(strfilename)//'.h5'
-          strfilename_mesh = strfilename_result
-        end if
-      else
-        strfilename = prefix(:l_prfx)//'_'//suffix(:l_sufx)//          &
-                      trim(adjustl(str_rank))//'.gsk'
-      end if
-
-      if (b_output_binary) then
-
-#ifdef PETSC_HDF
-        !c open corresponding xmf file to be loaded by paraview
-        if (rank == 0) then
-          ixmf = lun_get()
-          open(ixmf,file=trim(strfilename)//'.xmf',status='unknown',   &
-               form='formatted')
-        end if
-
-        !c initialize fortran interface
-        call h5open_f(hdf5_ierr)
-
-        !c setup file access property list with parallel I/O access
-        call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, hdf5_ierr)
-        call h5pset_fapl_mpio_f(plist_id, Petsc_Comm_World,            &
-                                MPI_INFO_NULL, hdf5_ierr)
-        !c create the file collectively
-        call h5fcreate_f(strfilename_result, H5F_ACC_TRUNC_F,          &
-                         file_id, hdf5_ierr, access_prp = plist_id)
-
-        !c write attribute
-        call hdf5_usg_write_attribute(file_id)
-
-        if (.not. b_output_separate_mesh_result) then
-          !c write mesh data
-          call hdf5_usg_write_mesh_data(file_id)
-        end if
-
-        !c open corresponding xmf file for mesh and domain decomposition
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
-        end if
-
-        !c create a group for the mesh data set
-        strbuffer = "results"
-        !c create and open a group
-        call h5gcreate_f(file_id,strbuffer,group_id,hdf5_ierr,         &
-                         OBJECT_NAMELEN_DEFAULT_F)
-#endif
-      else
-        open(igsk,file=trim(strfilename)//'.vtk',                      &
-             status='unknown',form='formatted')
-      end if
-
-      if (rank == 0 .and. b_enable_output) then
-
-        write(ifls,'(/a,1pe15.6e3,1x,a,/72a)')                        &
-                   'Advective and Diffusive driving force gradients', &
-                    time_io,time_unit,('-',i=1,72)
-
-        write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                    &
-                            suffix(:l_sufx)//'.gsk'
-
-        write(ifls,'(2a)')                                            &
-                'column   entry                           ','unit'
-        write(ifls,'(2a)')                                            &
-                '1        x                               ','m'
-        write(ifls,'(2a)')                                            &
-                '2        y                               ','m'
-        write(ifls,'(2a)')                                            &
-                '3        z                               ','m'
-        write(ifls,'(2a)')                                            &
-                '4        grad_adv_x                      ','m^3/d'
-        write(ifls,'(2a)')                                            &
-                '5        grad_adv_y                      ','m^3/d'
-        write(ifls,'(2a)')                                            &
-                '6        grad_adv_z                      ','m^3/d'
-        do ic = 1,ng
-          strvar32 = trim(nameg(ic))//"_diff_x"
-          if(ic+6 < 10) then
-            write(ifls,'(i1,8x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
-          else if (ic+6 >= 10 .and. ic+6 < 100) then
-            write(ifls,'(i2,7x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
-          else if (ic+6 >= 100 .and. ic+6 < 1000) then
-            write(ifls,'(i3,6x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
-          else if (ic+6 >= 1000 .and. ic+6 < 10000) then
-            write(ifls,'(i4,5x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
-          else
-            write(ifls,'(i8,1x,2a)') ic+6,strvar32,'moles L^-1 m^-1'
-          end if
-        end do
-
-        do ic = 1,ng
-          strvar32 = trim(nameg(ic))//"_diff_y"
-          if (ic+ng+6 < 10) then
-            write(ifls,'(i1,8x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else if (ic+ng+6 >= 10 .and. ic+ng+6 < 100) then
-            write(ifls,'(i2,7x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else if (ic+ng+6 >= 100 .and. ic+ng+6 < 1000) then
-            write(ifls,'(i3,6x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else if (ic+ng+6 >= 1000 .and. ic+ng+6 < 10000) then
-            write(ifls,'(i4,5x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          else
-            write(ifls,'(i8,1x,2a)') ic+ng+6,strvar32,                 &
-                  'moles L^-1 m^-1'
-          end if
-        end do
-
-        do ic = 1,ng
-          strvar32 = trim(nameg(ic))//"_diff_z"
-          if (ic+2*ng+6 < 10) then
-            write(ifls,'(i1,8x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else if (ic+2*ng+6 >= 10 .and. ic+2*ng+6 < 100) then
-            write(ifls,'(i2,7x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else if (ic+2*ng+6 >= 100 .and. ic+2*ng+6 < 1000) then
-            write(ifls,'(i3,6x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else if (ic+2*ng+6 >= 1000 .and. ic+2*ng+6 < 10000) then
-            write(ifls,'(i4,5x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          else
-            write(ifls,'(i8,1x,2a)') ic+2*ng+6,strvar32,               &
-                  'moles L^-1 m^-1'
-          end if
-        end do
-
-      end if
-
-      if (.not. b_output_binary) then
-        write(strbuffer,'(2a,1pe15.6e3,1x,a)')                         &
-              "Advective and Diffusive driving force gradients",       &
-              ", solution time = ",time_io,time_unit
-        call write_mesh_data_vtk_ascii(igsk,trim(adjustl(strbuffer)))
-
-        write(igsk,'(a,1x,i12)') "POINT_DATA",nngl
-      end if
-
-      if (b_output_binary) then
-        allocate(realbuffer(num_nodes*3), stat = ierr)
-        call checkerr(ierr,'velocity_g_usg-realbuffer',ilog)
-        call memory_monitor(sizeof(realbuffer),'realbuffer',.true.)
-      end if
-
-      !c write advective velocity vector
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        do ivol = 1, num_nodes
-          realbuffer((ivol-1)*3+1) = vels_grad(ivol)%x
-          realbuffer((ivol-1)*3+2) = vels_grad(ivol)%y
-          realbuffer((ivol-1)*3+3) = vels_grad(ivol)%z
-        end do
-        call hdf5_usg_write_group_data_vec(group_id,"grad_adv",3,      &
-                  num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result,   &
-                    "results","grad_adv","Vector","Node",              &
-                    num_nodes_gbl,3)
-        end if
-#endif
-      else
-        write(igsk,'(a)') "VECTORS grad_adv double"
-        do ivol = 1, nngl
-          write(igsk,'(3(1pe15.6e3,1x))') vels_grad(ivol)%x,           &
-                vels_grad(ivol)%y, vels_grad(ivol)%z
-        end do
-      end if
-
-      do ig = 1, ng
-        if (b_output_binary) then
-#ifdef PETSC_HDF
-          do ivol = 1, num_nodes
-            realbuffer((ivol-1)*3+1) = grad_gasdiff(ig,ivol)%x
-            realbuffer((ivol-1)*3+2) = grad_gasdiff(ig,ivol)%y
-            realbuffer((ivol-1)*3+3) = grad_gasdiff(ig,ivol)%z
-          end do
-          call hdf5_usg_write_group_data_vec(group_id,trim(nameg(ig)),3, &
-                    num_nodes_loc,num_nodes_gbl,offset_nodes,realbuffer)
-
-          if (rank == 0) then
-            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_result, &
-                      "results",trim(nameg(ig)),"Vector","Node",       &
-                      num_nodes_gbl,3)
-          end if
-#endif
-        else
-          write(igsk,'(3a)') "VECTORS grad_diff_",trim(nameg(ig))," double"
-          do ivol = 1, nngl
-            write(igsk,'(3(1pe15.6e3,1x))') grad_gasdiff(ig,ivol)%x,   &
-                  grad_gasdiff(ig,ivol)%y, grad_gasdiff(ig,ivol)%z
-          end do
-        end if
-      end do
-
-      if (b_output_binary) then
-        call memory_monitor(-sizeof(realbuffer),'realbuffer',.true.)
-        deallocate(realbuffer)
-      end if
-
-      if (b_output_binary) then
-#ifdef PETSC_HDF
-        !c close group
-        call h5gclose_f(group_id,hdf5_ierr)
-
-        !c close file
-        call h5pclose_f(plist_id, hdf5_ierr)
-        call h5fclose_f(file_id, hdf5_ierr)
-
-        !c close FORTRAN interface
-        call h5close_f(hdf5_ierr)
-
-        !c close xmf file
-        if (rank == 0) then
-          call hdf5_usg_write_xmf_finalize(ixmf)
-          close(ixmf)
-          call lun_free(ixmf)
-        end if
-#endif
-      else
-        close(igsk)
       end if
 
 !c  release memory space

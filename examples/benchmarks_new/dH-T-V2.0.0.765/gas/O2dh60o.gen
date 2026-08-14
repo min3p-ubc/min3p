@@ -1,0 +1,156 @@
+#Program     : MIN3P-HPC.
+#Version     : 2.0.16.765
+#Commit date : 2020/03/16 17:06:38
+#Build date  : 2020/04/07 09:34:36
+#Repository  : https://biot.eos.ubc.ca/svn/min3p_thcm/branches/mxie_sulAq
+#Platform    : Debug_X64
+#System      : Windows
+#Solver      : WS209
+#Parallel    : Sequential
+generic output file for dataset O2dh60
+
+------------------------------------------------------------------------
+global control parameters
+------------------------------------------------------------------------
+
+gas temperature - batch problem                                         
+
+simulation of:
+batch test with kinetically controlled dissolution-
+precipitation reactions
+
+
+------------------------------------------------------------------------
+geochemical system
+------------------------------------------------------------------------
+
+database: ./database/default                                                                                                                                                                                                                                              
+redox master variable: o2(aq)
+input units: mol/l       
+temperature =  60.00 deg C
+
+number of components:                           =          5
+
+aqueous components:
+-------------------
+h+1                                                                     
+o2(aq)                                                                  
+na+1                                                                    
+cl-1                                                                    
+h2o                                                                     
+
+number of aqueous complexes:                    =          2
+
+aqueous complexes:
+------------------
+h2(aq)                                                                  
+oh-                                                                     
+
+number of gases:                                =          2
+
+gases:
+------
+o2(g)                                                                   
+h2(g)                                                                   
+
+------------------------------------------------------------------------
+control parameters - local geochemistry
+------------------------------------------------------------------------
+
+factor for numerical differentiation            =   1.000000E-004
+convergence tolerance                           =   1.000000E-006
+max. ionic strength                             =   5.000000E-001
+min. activity for h2o                           =   5.000000E-001
+minimum reaction rate considered                =   0.000000E+000
+
+------------------------------------------------------------------------
+initial condition - local geochemistry
+------------------------------------------------------------------------
+ 
+number of zones                                 =          1
+
+************************************************************************
+background chemistry - aquifer                                          
+************************************************************************
+
+control parameters: 
+------------------------------------------------------------------------
+
+equilibration only for aqueous species
+
+input parameters: 
+------------------------------------------------------------------------
+
+total aqueous component concentrations:
+---------------------------------------
+component             conc.
+---------------------------
+o2(aq)         1.000000E-003
+na+1           1.000000E-005
+cl-1           1.000000E-005
+
+aqueous components with fixed activities:
+-----------------------------------------
+species               actv.
+---------------------------
+h+1            1.000000E-007
+
+guess for pH of solution:          pH =  7.0000
+
+results:
+------------------------------------------------------------------------
+
+computed pH of solution:           pH =       7.0000
+computed pe of solution:           pe =      13.7545
+computed Eh of solution:           Eh =     906.7493 mV
+ionic strength:                     I =   1.058548E-005
+
+total concentrations - aqueous phase:
+--------------------------------------
+species               conc.
+---------------------------
+h+1           -9.709666E-007
+o2(aq)         1.000000E-003
+na+1           1.000000E-005
+cl-1           1.000000E-005
+
+components as species in solution:
+----------------------------------
+species               conc.          gamma
+------------------------------------------
+h+1            1.000000E-007  1.000000E+000
+o2(aq)         1.000000E-003  1.000000E+000
+na+1           1.000000E-005  1.000000E+000
+cl-1           1.000000E-005  1.000000E+000
+h2o            1.000000E+000  1.000000E+000
+
+secondary aqueous species:
+--------------------------
+species               conc.          gamma
+------------------------------------------
+oh-            1.070967E-006  1.000000E+000
+h2(aq)         8.810679E-039  1.000000E+000
+
+gases:
+-------
+species               conc.  partial pres.
+------------------------------------------
+o2(g)          4.011230E-002  1.096521E+000
+h2(g)          1.133080E-043  3.097419E-042
+
+charge balance:
+---------------
+sum of positive charge:   1.010000E-005   sum of negative charge:   1.107097E-005
+charge balance error:      4.586312E+000 %
+
+general run specific statistics ...
+------------------------------------------------------------------------
+
+total number of Newton iterations       =          7
+total number of time steps              =          0
+
+------------------------------------------------------------------------
+
+         ***************** normal exit ******************
+
+

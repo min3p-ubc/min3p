@@ -4,7 +4,7 @@
 !> $Revision: 533 $
 !> $Author: dsu $
 !> $Date: 2017-10-16 11:50:08 -0700 (Mon, 16 Oct 2017) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/atotconc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/atotconc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -89,12 +89,11 @@
  
       implicit none
       
-      real*8 :: c, cx
       integer :: jbl
       
       integer :: tid
 
-      dimension c(*),cx(*)
+      real*8 :: c(*),cx(*)
  
       real*8, parameter :: r0 = 0.0d0
 

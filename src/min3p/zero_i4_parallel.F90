@@ -4,7 +4,7 @@
 !> $Revision: 609 $
 !> $Author: dsu $
 !> $Date: 2018-09-14 11:47:55 -0700 (Fri, 14 Sep 2018) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/zero_i4_parallel.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/zero_i4_parallel.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -53,10 +53,10 @@
  
       implicit none
 
-      integer*4 i4(*), i0, i
-      integer :: n1, n2, n3, nentries
+      integer*4 :: i4(*)
+      integer*4 :: i, n1, n2, n3, nentries
 
-      parameter (i0 = 0)
+      integer*4, parameter :: i0 = 0
  
       nentries = n1*n2*n3
 

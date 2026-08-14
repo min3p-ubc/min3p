@@ -4,7 +4,7 @@
 !> $Revision: 786 $
 !> $Author: dsu $
 !> $Date: 2021-01-06 21:41:32 -0800 (Wed, 06 Jan 2021) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/dgm/diffcoff_g.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/dgm/diffcoff_g.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -14,9 +14,9 @@
 !c
 !c compute effective diffusion coefficient in the gas phase
 !c
-!c 'same as aqueous'  : default to diff_coff.f
+!c 'same as aqueous'  : default to comp_dep_diff_coff.f
 !c 'millington'       : millington-quirk =  S_p^10/3 * por^4/3
-!c                      (see diff_coff.f)
+!c                      (see comp_dep_diff_coff.f)
 !c 'no correction'    : tortuosity = 1.0
 !c 'moldrup repacked' : moldup-repacked  =  S_p^5/2 * por^3/2
 !c

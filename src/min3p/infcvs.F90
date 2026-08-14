@@ -4,7 +4,7 @@
 !> $Revision: 878 $
 !> $Author: dsu $
 !> $Date: 2024-02-14 20:08:49 -0800 (Wed, 14 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/infcvs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/infcvs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -374,12 +374,14 @@
                   if (density_dependence) then
                     viscosity_ij = (viscosity(ivol)+viscosity(jvol))/2.0d0
                     cinfvs(jtemp) = aperture_ij**2/viscosity_ij/12.0d0/&
-                                    (delx_i+delx_j)*areaf
+                                    (delx_i+delx_j)
                   else
                     cinfvs(jtemp) = aperture_ij**2/visc_h2o/12.0d0/    &
-                                    (delx_i+delx_j)*dens_h2o*gacc*areaf
+                                    (delx_i+delx_j)*dens_h2o*gacc
                   end if
-                  cinfvs(jtemp) = cinfvs(jtemp)*sec_per_days
+                  cinfvs(jtemp) = cinfvs(jtemp)*areaf*                 &
+                                  (fracFlowCoeff(ivol)+                &
+                                   fracFlowCoeff(jvol))/2.0
                 else
                   cinfvs(jtemp) = cxx_ij*areaf/(cxx_i*delx_j+cxx_j*delx_i)
                 end if
@@ -459,12 +461,14 @@
                   if (density_dependence) then
                     viscosity_ij = (viscosity(ivol)+viscosity(jvol))/2.0d0
                     cinfvs(jtemp) = aperture_ij**2/viscosity_ij/12.0d0/&
-                                    (delx_i+delx_j)*areaf
+                                    (delx_i+delx_j)
                   else
                     cinfvs(jtemp) = aperture_ij**2/visc_h2o/12.0d0/    &
-                                    (delx_i+delx_j)*dens_h2o*gacc*areaf
+                                    (delx_i+delx_j)*dens_h2o*gacc
                   end if
-                  cinfvs(jtemp) = cinfvs(jtemp)*sec_per_days
+                  cinfvs(jtemp) = cinfvs(jtemp)*areaf*                 &
+                                  (fracFlowCoeff(ivol)+                &
+                                   fracFlowCoeff(jvol))/2.0
                 else
                   cinfvs(jtemp) = cxx_ij*areaf/(cxx_i*delx_j+cxx_j*delx_i)
                 end if
@@ -551,12 +555,14 @@
                   if (density_dependence) then
                     viscosity_ij = (viscosity(ivol)+viscosity(jvol))/2.0d0
                     cinfvs(jtemp) = aperture_ij**2/viscosity_ij/12.0d0/&
-                                    (dely_i+dely_j)*areaf
+                                    (dely_i+dely_j)
                   else
                     cinfvs(jtemp) = aperture_ij**2/visc_h2o/12.0d0/    &
-                                    (dely_i+dely_j)*dens_h2o*gacc*areaf
+                                    (dely_i+dely_j)*dens_h2o*gacc
                   end if
-                  cinfvs(jtemp) = cinfvs(jtemp)*sec_per_days
+                  cinfvs(jtemp) = cinfvs(jtemp)*areaf*                 &
+                                  (fracFlowCoeff(ivol)+                &
+                                   fracFlowCoeff(jvol))/2.0
                 else
                   cinfvs(jtemp) = cyy_ij*areaf/(cyy_i*dely_j+cyy_j*dely_i)
                 end if
@@ -632,12 +638,14 @@
                   if (density_dependence) then
                     viscosity_ij = (viscosity(ivol)+viscosity(jvol))/2.0d0
                     cinfvs(jtemp) = aperture_ij**2/viscosity_ij/12.0d0/&
-                                    (dely_i+dely_j)*areaf
+                                    (dely_i+dely_j)
                   else
                     cinfvs(jtemp) = aperture_ij**2/visc_h2o/12.0d0/    &
-                                    (dely_i+dely_j)*dens_h2o*gacc*areaf
+                                    (dely_i+dely_j)*dens_h2o*gacc
                   end if
-                  cinfvs(jtemp) = cinfvs(jtemp)*sec_per_days
+                  cinfvs(jtemp) = cinfvs(jtemp)*areaf*                 &
+                                  (fracFlowCoeff(ivol)+                &
+                                   fracFlowCoeff(jvol))/2.0
                 else
                   cinfvs(jtemp) = cyy_ij*areaf/(cyy_i*dely_j+cyy_j*dely_i)
                 end if
@@ -734,12 +742,14 @@
                   if (density_dependence) then
                     viscosity_ij = (viscosity(ivol)+viscosity(jvol))/2.0d0
                     cinfvs(jtemp) = aperture_ij**2/viscosity_ij/12.0d0/&
-                                    (delz_i+delz_j)*areaf
+                                    (delz_i+delz_j)
                   else
                     cinfvs(jtemp) = aperture_ij**2/visc_h2o/12.0d0/    &
-                                    (delz_i+delz_j)*dens_h2o*gacc*areaf
+                                    (delz_i+delz_j)*dens_h2o*gacc
                   end if
-                  cinfvs(jtemp) = cinfvs(jtemp)*sec_per_days
+                  cinfvs(jtemp) = cinfvs(jtemp)*areaf*                 &
+                                  (fracFlowCoeff(ivol)+                &
+                                   fracFlowCoeff(jvol))/2.0
                 else
                   cinfvs(jtemp) = czz_ij*areaf/(czz_i*delz_j+czz_j*delz_i)
                 end if
@@ -830,12 +840,14 @@
                   if (density_dependence) then
                     viscosity_ij = (viscosity(ivol)+viscosity(jvol))/2.0d0
                     cinfvs(jtemp) = aperture_ij**2/viscosity_ij/12.0d0/&
-                                    (delz_i+delz_j)*areaf
+                                    (delz_i+delz_j)
                   else
                     cinfvs(jtemp) = aperture_ij**2/visc_h2o/12.0d0/    &
-                                    (delz_i+delz_j)*dens_h2o*gacc*areaf
+                                    (delz_i+delz_j)*dens_h2o*gacc
                   end if
-                  cinfvs(jtemp) = cinfvs(jtemp)*sec_per_days
+                  cinfvs(jtemp) = cinfvs(jtemp)*areaf*                 &
+                                  (fracFlowCoeff(ivol)+                &
+                                   fracFlowCoeff(jvol))/2.0
                 else
                   cinfvs(jtemp) = czz_ij*areaf/(czz_i*delz_j+czz_j*delz_i)
                 end if

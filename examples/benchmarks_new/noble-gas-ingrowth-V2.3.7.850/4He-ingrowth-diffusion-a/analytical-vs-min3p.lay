@@ -1,0 +1,188 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"analytical.gst" "4He-ingrowth-diffusion_8.gst"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "4he(aq)"'
+$!SetStyleBase Factory
+$!GlobalPaper 
+  PaperSizeInfo
+    {
+    Letter
+      {
+      Width = 8.5
+      Height = 11
+      LeftHardClipOffset = 0.125
+      RightHardClipOffset = 0.125
+      TopHardClipOffset = 0.125
+      BottomHardClipOffset = 0.125
+      }
+    }
+$!Page 
+  Name = 'Untitled'
+  PaperAttributes
+    {
+    BackgroundColor = White
+    IsTransparent = Yes
+    OrientPortrait = No
+    ShowGrid = Yes
+    ShowRuler = No
+    ShowPaper = No
+    PaperSize = Letter
+    RulerSpacing = OneInch
+    PaperGridSpacing = HalfInch
+    RegionInWorkArea
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!ReadDataSet  '|LFDSFN1|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  ResetStyle = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL1|'
+$!RemoveVar |LFDSVL1|
+$!RemoveVar |LFDSFN1|
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 0.25
+    }
+  Width = 5
+  Height = 8
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [1-2]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    Show = Yes
+    Box
+      {
+      BoxType = None
+      }
+    XYPos
+      {
+      X = 98.317
+      Y = 98.497
+      }
+    }
+$!LineMap  [1]
+  Name = 'Analytical'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Color = Black
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Black
+    FillColor = Red
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = 'MIN3P'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 4
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Show = No
+    Color = Green
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Color = Black
+    FillColor = Green
+    SkipMode = ByFrameUnits
+    Skipping = 5
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+  ViewportPosition
+    {
+    X1 = 17.622
+    Y1 = 10.519
+    X2 = 92.622
+    Y2 = 87.519
+    }
+  ViewportTopSnapTarget = 87.5185449358
+$!XYLineAxis 
+  XDetail 1
+    {
+    RangeMin = 0
+    RangeMax = 5.9999999999999997285E-07
+    GRSpacing = 2E-07
+    Title
+      {
+      TitleMode = UseText
+      Text = '<sup>4</sup>He concnetration (mol L<sup>-1</sup>)'
+      Offset = 5
+      }
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = 0
+    RangeMax = 100.01000000000000512
+    IsReversed = Yes
+    GRSpacing = 20
+    Title
+      {
+      TitleMode = UseText
+      Text = 'Depth (m)'
+      Offset = 10
+      }
+    }
+$!LinePlotLayers 
+  ShowSymbols = Yes
+$!FrameControl ActivateByNumber
+  Frame = 1
+$!SetStyleBase Config

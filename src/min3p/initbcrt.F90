@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initbcrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initbcrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -357,6 +357,10 @@
       use chem
       use dens
       use phys
+      use writeversion
+      use mimicMassDisp
+      use file_utility, only : reposition_file, check_rewind_status,   &
+                               rewind_first_record
 #ifdef OPENMP
       use omp_lib 
 #endif
@@ -390,8 +394,8 @@
       
       integer :: tid, i, iaq, ic, ix, icount, itemp, ierr, ibz, ibrt,  &
                  ibrt_start, ibrt_stop, ig, itid, ivol, l_string,      &
-                 ibz_ice, istart, iend, jtemp, jtemp1, jtemp2,         &
-                 nbrt_usg, ierrcd
+                 ibz_ice, istart, iend, j, jtemp, jtemp1, jtemp2,      &
+                 nbrt_usg, ntemp, ierrcd
       
       real*8 :: sac, sgc, porc, xbmin, xbmax, ybmin, ybmax,            &
                 zbmin, zbmax, rtemp_scaling, areaf
@@ -406,7 +410,8 @@
       logical xy_plane,xz_plane,yz_plane,found,found_section,          &
               found_subsection
       character*32 btypezn, bctypefunc
-      character*72 subsection
+      character*72 subsection, strtemp
+
 #ifdef USG
       real*8 :: ratio_flux
       integer :: icell, icell2, iface, cindex, idvol, idvol_r,         &
@@ -422,7 +427,7 @@
       
       logical iserror      
      
-      integer, parameter :: iscreen=6
+      integer, parameter :: i0=0
       
       character(len=100) :: msg 
 
@@ -500,8 +505,6 @@
       implicit_surface_surf = .false.
       explicit_surface_surf = .false.
       
-      b_fluxd_bcond_zn = .false.
-
 !c  read number of boundary zones
 
       ierrcd = 1
@@ -572,6 +575,20 @@
       call checkerr(ierr,'dijbrt',ilog)
       call memory_monitor(sizeof(dijbrt),'dijbrt',.true.)
 
+      allocate (ivol2brt(nngl), stat = ierr)
+      ivol2brt=0 
+      call checkerr(ierr,'ivol2brt',ilog)
+      call memory_monitor(sizeof(ivol2brt),'ivol2brt',.true.)
+
+      allocate (ivol2bzrt(nngl), stat = ierr)
+      ivol2bzrt=0
+      call checkerr(ierr,'ivol2bzrt',ilog)
+      call memory_monitor(sizeof(ivol2bzrt),'ivol2bzrt',.true.)
+
+      allocate (bzrt_nparms(nbzrt), stat = ierr)
+      bzrt_nparms = 0
+      call checkerr(ierr,'bzrt_nparms',ilog)
+      call memory_monitor(sizeof(bzrt_nparms),'bzrt_nparms',.true.)   
 
 
 #ifdef USG
@@ -772,6 +789,9 @@
             (btypezn.eq.'mixed-evap') .or.            &
             (btypezn.eq.'point')) then
 
+!c  save the number of components to be used in transient reactive transport boundary condition.
+          bzrt_nparms(ibz) = nc-1
+
           if (rank == 0 .and. b_enable_output) then  
             write(ilog,'(a/72a)') zone_name,('-',i=1,72)
           end if
@@ -871,47 +891,15 @@
           
           ctype_bzrt_init(1:nc-1,ibz) = ctype(1:nc-1)
          
-!c  define if diffusive flux is applied for third or mixed boundary condition
-!c  for mixed boundary condition, diffusive flux is a default
-          if (btypezn.eq.'mixed' .or. btypezn.eq.'mixed-evap') then
-            b_fluxd_bcond_zn = .true.
-          end if
+!c  define if diffusion flux is applied for third or mixed boundary condition
+!c  for aqueous phase
 
-          subsection = 'include diffusive flux for third/mixed boundary condition'
+          b_fluxd_bcond_zn = .false.
+
+          subsection = 'include aqueous diffusion flux at boundary'
           call findstrg(subsection,icnv,found_subsection)
           if (found_subsection) then
             b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'exclude diffusive flux for third/mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .false.
-          end if
-
-          !c the following keywords are deprecated
-          subsection = 'include diffusive flux for mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'include diffusive flux from mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection) 
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .true.
-          end if
-
-          subsection = 'exclude diffusive flux for mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .false.
-          end if
-
-          subsection = 'exclude diffusive flux from mixed boundary condition'
-          call findstrg(subsection,icnv,found_subsection)
-          if (found_subsection) then
-            b_fluxd_bcond_zn = .false.
           end if
           
 !c  define guess for pH
@@ -956,6 +944,39 @@
           end if
           
           phguess_init(ibz) = phguess
+
+!cdsu  mimic advective gas displacement to allow gas be displaced out of the domain
+!cdsu  if that is present above the concentration at the boundary.
+          subsection = 'mimic advective gas displacement'
+
+          call findstrg(subsection,icnv,found_subsection)
+
+          if (found_subsection) then
+            ierrcd = 15
+            read(icnv,*,err=999,end=999) nAdvGasDisp
+
+            if (nAdvGasDisp > 0 .and. .not.allocated(mimicAdvGasDisp)) then
+              call mimicMassDisp_mem
+            end if
+
+            do i = 1, nAdvGasDisp
+              read(icnv,*,err=999,end=999) strtemp
+              do ig = 1, ng
+                if (trim(nameg(ig)).eq.trim(strtemp)) then
+                  mimicAdvGasDisp(ig) = .true.
+                  idxAdvGasDisp(i) = ig
+                  exit
+                end if
+              end do
+            end do
+
+            if (rank == 0 .and. b_enable_output) then
+              write(*,'(/2a/)') ' warning: mimic advective gas displacement ',   &
+                         'CANNOT be applied for gases with hydrolysis'
+              write(ilog,'(/2a/)') ' warning: mimic advective gas displacement ',&
+                         'CANNOT be applied for gases with hydrolysis'
+            end if
+          end if
          
 !c_bubbles - spatial dependent intra-aqueous scaling factors
 
@@ -1104,9 +1125,10 @@
 
 !c  compute concentration distribution at boundary
           call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-     &                 cgc,sac,sgc,porc,igen,ilog,tid,idbg,tec_header,&
-     &                 prefix,l_prfx,zone_name,l_zone_name,           &
-     &                 mtime,i_append_sim,mtime_append)
+                       actv,cgc,sac,sgc,porc,                         &
+                       igen,ilog,tid,idbg,tec_header,                 &
+                       prefix,l_prfx,zone_name,l_zone_name,           &
+                       mtime,i_append_sim,mtime_append,.true.)
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain
@@ -1164,6 +1186,27 @@
 
         end if
 
+!c initialize parameters for 'mimic advective gas displacement'
+        if (nAdvGasDisp > 0) then
+          do j = 1, nAdvGasDisp
+            ig = idxAdvGasDisp(j)
+            if (mimicAdvGasDisp(ig)) then
+              istart = iaga(ig)
+              iend = iaga(ig+1)-1
+              do i = istart,iend
+                ic = jaga(i)
+                advGasAqDispBd(ig) = ccnew(ic)
+                call gasconc(ccnew,gamma_l,advGasDispBd(ig),ig,tempk,tid)
+              end do
+
+              !c check the unit conversion
+              !write(*,*) '-> ig',ig,' mimicAdvGasDisp ',mimicAdvGasDisp(ig),&
+              !           ' advGasAqDispBd(mol/L water) ',advGasAqDispBd(ig),&
+              !           ' advGasDispBd(mol/L air) ',advGasDispBd(ig),&
+              !           ' advGasDispBd(atm) ',advGasDispBd(ig)*rgasatm*tempk
+            end if
+          end do
+        end if
 
 !c  assign boundary condition to control volumes located in boundary zone
 
@@ -1432,6 +1475,9 @@
             btypert(ivol) = btypezn
 
             b_fluxd_bcond(ivol) = b_fluxd_bcond_zn
+
+            ivol2brt(ivol) = ibrt
+            ivol2bzrt(ivol) = ibz
 
             if (btypert(ivol).eq.'mixed' .or.                          &
                 btypert(ivol).eq.'mixed-evap' .or.                     &
@@ -2111,7 +2157,7 @@
                 !cprovi Copy the molalities in the local vector 
                 !cprovi------------------------------------------------
                    cpz_loc(1:nc)=cnew(1:nc,ivol)
-                   cpz_loc(nc+1:nc+nx)=cx(1:nx,ivol)  
+                   cpz_loc(nc+1:nc+nx)=cxnew(1:nx,ivol)  
                  call compute_density_ (phase,0.0d0,0.0d0,cpz_loc,      &
                                       ssdens(ivol),.false.,iserror)
                  if (iserror) then 
@@ -2276,7 +2322,7 @@
         end do                                 !boundary zone
 
       end do                                   !number of zones
-      
+
 !---------------------------------------------------------------------------------     
 !---------------------------------------------------------------------------------      
 !---------------------------------------------------------------------------------      
@@ -2356,12 +2402,14 @@
             end if
 
 !c  compute concentration distribution at boundary
-            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),         &
-                         cgc,sac,sgc,porc,igen,ilog,tid,idbg,tec_header,   &
-                         prefix,l_prfx,zone_name,l_zone_name,              &
-                         mtime,i_append_sim,mtime_append)
+            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,    &
+                         cgc,sac,sgc,porc,igen,ilog,tid,idbg,              &
+                         tec_header,prefix,l_prfx,zone_name,l_zone_name,   &
+                         mtime,i_append_sim,mtime_append,.true.)
             call minmaxwd(cxc,totcn(:,tid))
-            ctype='free' 
+
+!c  clear array ctype for transport calculations
+            ctype = 'free'
 
 !c  compute total aqueous component concentrations
             call totconc(ccnew,cxc,totcn(:,tid))  
@@ -2713,12 +2761,12 @@
       enddo
 
 !c  clear array ctype for transport calculations
+      ctype = 'free'
 
-      do ic = 1,nc-1
-        ctype(ic) = 'free'
-      end do
-
-!c  determine if transient source chemistry is to be used
+!cdsu------------------------------------------------------------------
+!cdsu  determine if transient source chemistry is to be used
+!cdsu  note: the format is different from transient boundary conditions
+!cdsu------------------------------------------------------------------
 
       subsection = 'update boundary conditions'
 
@@ -2755,7 +2803,75 @@
 
       end if
 
+!cdsu------------------------------------------------------------------
+!cdsu  read transient boundary conditions from file
+!cdsu------------------------------------------------------------------
+      update_bcrt = .false.
+      update_bcrt_value_only = .false.      
+
+      subsection = 'transient boundary conditions: values only'
+      call findstrg(subsection,itmp,found_subsection)
+      if (found_subsection) then
+        update_bcrt = .true.
+        update_bcrt_value_only = .true.
+      end if
+
+!cdsu linear interpolation for boundary conditions, only if the 
+!cdsu boundary condition type remains the same
+      b_interpolation_bcrt = .false.
+      b_first_update_bcrt = .false.
+
+      if (update_bcrt_value_only) then
+        subsection = 'linear interpolation of boundary conditions'
+        call findstrg(subsection,itmp,found_subsection) 
+        if (found_subsection) then
+          b_interpolation_bcrt = .true.
+          b_first_update_bcrt = .true.
+        end if 
+      end if  
+
+!c  allocate memory space for transient boundary conditions if needed
+      if (update_bcrt) then
+        allocate (bcondrt_prev(nc,nbrt), stat = ierr)
+        call checkerr(ierr,'bcondrt_prev',ilog)
+        call memory_monitor(sizeof(bcondrt_prev),'bcondrt_prev',.true.)
+
+        allocate (bcondrt_next(nc,nbrt), stat = ierr)
+        call checkerr(ierr,'bcondrt_next',ilog)
+        call memory_monitor(sizeof(bcondrt_next),'bcondrt_next',.true.)
+      end if
+
+!c  read transient boundary conditions from file if needed
+      if (update_bcrt) then
+        ibcrt = lun_get()
+        open(ibcrt,file=prefix(:l_prfx)//'.bcrt',err=997, status='old')
+        !cdsu skip comment line and rewind to the first record
+        call rewind_first_record(ibcrt)
+        read(ibcrt,*,err=998,end=998) time_bcrt
+      end if
+
       goto 1000
+
+997   continue
+      if (rank == 0) then
+        write(ilog,*) 'SIMULATION TERMINATED' 
+        write(ilog,*) 'file ', prefix(:l_prfx)//'.bcrt missing'
+      end if
+#ifdef PETSC
+      call petsc_mpi_finalize
+#endif
+      stop
+
+998   continue
+      if (rank == 0) then
+        write(ilog,*) 'SIMULATION TERMINATED' 
+        write(ilog,*) 'error reading file ', prefix(:l_prfx)//'.bcrt'
+        close(ilog)
+      end if
+#ifdef PETSC
+      call petsc_mpi_finalize
+#endif
+      stop
 
 999   continue
       if (rank == 0) then
@@ -2774,7 +2890,7 @@
 10    continue 
       if (rank == 0) then
         write (ilog,*) msg
-        write (iscreen,*) msg
+        write (*,*) msg
       end if
 #ifdef PETSC
       call petsc_mpi_finalize

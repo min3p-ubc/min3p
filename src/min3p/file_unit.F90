@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/file_unit.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/file_unit.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -83,9 +83,9 @@ module file_unit
     
     integer :: max_lun_used
 
-    integer, parameter :: min_lun = 30000             !File number 1-30000 is reserved for binary output
-                                                      !as binary output automatically generate file unit
-    integer, parameter :: max_lun = 65545             !Maximum file number of 65536 including input files
+    integer, parameter :: min_lun = 1000000             !File number 1-1000000 is reserved for binary output
+                                                        !as binary output automatically generate file unit
+    integer, parameter :: max_lun = 2000000             !Maximum file number of 65536 including input files
     
     logical, dimension(min_lun:max_lun) :: lun_open = .false.
     

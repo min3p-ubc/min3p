@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/hdf5_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/hdf5_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -143,14 +143,14 @@ module hdf5_usg
     call h5awrite_f(attr_id, atype_id, attr_data, data_dims, hdf5_ierr)
     call h5aclose_f(attr_id, hdf5_ierr)
 
-    aname = "Commit date"
-    attr_data(1) = trim(CommitDate)
+    aname = "Commit time"
+    attr_data(1) = trim(CommitTime)
     call h5acreate_f(file_id, aname, atype_id, aspace_id, attr_id, hdf5_ierr)
     call h5awrite_f(attr_id, atype_id, attr_data, data_dims, hdf5_ierr)
     call h5aclose_f(attr_id, hdf5_ierr)
 
-    aname = "Build date"
-    attr_data(1) = trim(BuildDate)
+    aname = "Build time"
+    attr_data(1) = trim(BuildTime)
     call h5acreate_f(file_id, aname, atype_id, aspace_id, attr_id, hdf5_ierr)
     call h5awrite_f(attr_id, atype_id, attr_data, data_dims, hdf5_ierr)
     call h5aclose_f(attr_id, hdf5_ierr)
@@ -1428,9 +1428,9 @@ module hdf5_usg
   !>
   subroutine hdf5_usg_write_mesh_data(file_id)
 
-    use gen, only : rank, realbuffer_hdf, integerbuffer_hdf,           &
+    use gen, only : rank, realbuffer_hdf, integerbuffer_hdf, zg_depth, &
                     node_idx_lg2pg, mem_cur, mem_max, memory_monitor,  &
-                    node_idx_lg2g, cell_idx_lg2g, ilog
+                    node_idx_lg2g, cell_idx_lg2g, ilog, depth_output
     use usg_mesh_data, only : num_nodes_loc, num_nodes, num_nodes_gbl, &
                               num_cells_loc, num_cells, num_cells_gbl, &
                               nodes, cells, offset_nodes, offset_cells,&
@@ -1467,15 +1467,17 @@ module hdf5_usg
 
     if (b_mesh_output_scale) then
       do inode = 1, num_nodes
+        zout = zoutput(depth_output,nodes(inode)%z,zg_depth(inode))
         realbuffer_hdf((inode-1)*3+1) = nodes(inode)%x*mesh_output_scale%x
         realbuffer_hdf((inode-1)*3+2) = nodes(inode)%y*mesh_output_scale%y
-        realbuffer_hdf((inode-1)*3+3) = nodes(inode)%z*mesh_output_scale%z
+        realbuffer_hdf((inode-1)*3+3) = zout*mesh_output_scale%z
       end do
     else
       do inode = 1, num_nodes
+        zout = zoutput(depth_output,nodes(inode)%z,zg_depth(inode))
         realbuffer_hdf((inode-1)*3+1) = nodes(inode)%x
         realbuffer_hdf((inode-1)*3+2) = nodes(inode)%y
-        realbuffer_hdf((inode-1)*3+3) = nodes(inode)%z
+        realbuffer_hdf((inode-1)*3+3) = zout
       end do
     end if
 
@@ -1530,6 +1532,10 @@ module hdf5_usg
     !c write cell natural ordering to the group
     call hdf5_usg_write_group_data_1d(group_id,"cells_lg2g",           &
                 num_cells_loc,num_cells_gbl,offset_cells,cell_idx_lg2g)
+
+    !c write depth data
+    call hdf5_usg_write_group_data_1d(group_id,"depth",                &
+              num_nodes_loc,num_nodes_gbl,offset_nodes,zg_depth)
 
     !c write node material property id to the group
     if (b_use_node_matids) then
@@ -1587,7 +1593,6 @@ module hdf5_usg
     logical, allocatable :: iflags(:)
 
     real*8 :: zout
-    real*8, external :: zoutput
     external :: checkerr
 
     !c create a group for the mesh data set
@@ -1885,6 +1890,55 @@ module hdf5_usg
 14  format (6x,'</Attribute>')
 
   end subroutine hdf5_usg_write_xmf_attribute
+
+  !>
+  !> write corresponding xmf file for mesh and domain decomposition
+  !>
+  subroutine hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
+
+    use gen, only : zg_depth
+    use usg_mesh_data, only : cell_type, num_cells_gbl, num_nodes_gbl, &
+        num_nodes_per_cell, b_use_node_matids, b_use_cell_matids
+
+    implicit none
+
+    integer, intent(in) :: ixmf
+    character*256 :: strfilename_mesh
+
+    call hdf5_usg_write_xmf_initialize(ixmf)
+    call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,      &
+              cell_type,num_cells_gbl,num_nodes_gbl,         &
+              num_nodes_per_cell)
+    call hdf5_usg_write_xmf_attribute(ixmf,                  &
+              strfilename_mesh,"domain","vertices_rank",     &
+              "Scalar","Node",num_nodes_gbl,1)
+    call hdf5_usg_write_xmf_attribute(ixmf,                  &
+              strfilename_mesh,"domain","cells_rank",        &
+              "Scalar","Cell",num_cells_gbl,1)
+
+    call hdf5_usg_write_xmf_attribute(ixmf,                  &
+              strfilename_mesh,"domain","vertices_lg2g",     &
+              "Scalar","Node",num_nodes_gbl,1)
+    call hdf5_usg_write_xmf_attribute(ixmf,                  &
+              strfilename_mesh,"domain","cells_lg2g",        &
+              "Scalar","Cell",num_cells_gbl,1)
+
+    call hdf5_usg_write_xmf_attribute(ixmf,                  &
+              strfilename_mesh,"domain","depth",             &
+              "Scalar","Node",num_nodes_gbl,1)
+
+    if (b_use_node_matids) then
+      call hdf5_usg_write_xmf_attribute(ixmf,                &
+                strfilename_mesh,"domain","vertices_matid",  &
+                "Scalar","Node",num_nodes_gbl,1)
+    end if
+    if (b_use_cell_matids) then
+      call hdf5_usg_write_xmf_attribute(ixmf,                &
+                strfilename_mesh,"domain","cells_matid",     &
+                "Scalar","Cell",num_cells_gbl,1)
+    end if
+
+  end subroutine hdf5_usg_write_xmf_mesh_all
 
 end module hdf5_usg
 

@@ -4,7 +4,7 @@
 !> $Revision: 880 $
 !> $Author: dsu $
 !> $Date: 2024-02-19 14:19:39 -0800 (Mon, 19 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/timeloop.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/timeloop.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -80,7 +80,7 @@
 !c           cec_g(nn)          = cation exchange capacity [meq/100g] + -
 !c                                - global system
 !c           cpuint             = cpu-time (intermediate) [seconds]   + +
-!c           cx(nx,nn)          = concentrations of secondary aqueous + *
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + *
 !c                                species [moles/l water]
 !c           delt               = time step                           + -
 !c           delt_io            = time step (I/O units)               + -
@@ -411,7 +411,8 @@
 
 #ifdef USG
       use geometry
-      use usg_mesh_data, only : cvol_method, num_cells, CellCenter
+      use usg_mesh_data, only : cvol_method, num_cells, num_nodes,     &
+                                CellCenter, cell_zg_depth
       use usg_ice_sheet, only : usg_ice_compute_dpicedt,               &
                                 ice_thickness_new, ice_thickness_old
 #endif
@@ -480,7 +481,7 @@
       !Local variables
       character(256) :: str_filepath
 
-      integer :: ibubreact_tol, ibubflow_tol, ic, im, izn, irecord
+      integer :: ibubreact_tol, ibubflow_tol, ic, ig, im, izn, irecord
       integer :: iiz, niz, istart, iend, iskip
 
       real(type_r8) :: c_tol, c_diff, uvs_tol, uvs_diff, aentry_loc, rdummy
@@ -588,7 +589,7 @@
             write(ilog,'(/1x,a)')'output is disabled, please wait ...'
         end if
       end if                  !end if MPI rank 0
-
+      
       tiny_delt = max(min((deltmax-deltmin)/r10,deltmin),tinytime_global)
 
 !cdsu for steady state flow running in transient mode, mark the start time and final time
@@ -978,6 +979,27 @@
               write(*,*) 'delt - i: ', delt
             end if
 
+!c  adjust time step to target read times for reactive transport transient boundary conditions
+            if (update_bcrt .and. .not.tran_steady_flow) then
+              if (b_relax_timestep) then
+                time_check = min(time_check,time_bcrt*time_factor)
+              end if
+
+              if ((time+delt>time_bcrt*time_factor .and.               &
+                  (time_bcrt*time_factor-time>tiny_delt .or.           &
+                  b_updtbc_min_timestep)) .or.                         &
+                  (time+delt.lt.time_bcrt*time_factor+tiny_delt .and.  &
+                  time+delt.gt.time_bcrt*time_factor-tiny_delt)) then
+                delt = time_bcrt*time_factor-time
+                delt = dmax1(delt, deltmin)
+              end if
+
+            end if
+
+            if (delt_debug > 0 .and. rank == 0) then
+              write(*,*) 'delt - h2: ', delt
+            end if        
+
 !c  adjust time step to target read times for transient boundary conditions
 !c  for ice sheet model
             if (update_bcice .and. .not.tran_steady_flow) then              
@@ -1063,7 +1085,26 @@
               end if
 
             end if
-          
+
+!c  check if the solution time exceeds the next atmospheric condition update time
+            if (read_atm .and. .not.tran_steady_flow) then
+              if (b_relax_timestep) then
+                time_check = min(time_check,time_atm*time_factor)
+              end if
+
+              if ((time+delt.gt.time_atm*time_factor .and.             &
+                   time_atm*time_factor-time > tiny_delt) .or.         &
+                  (time+delt.lt.time_atm*time_factor+tiny_delt .and.   &
+                  time+delt.gt.time_atm*time_factor-tiny_delt)) then
+                delt = time_atm*time_factor-time
+                delt = dmax1(delt, deltmin)
+              end if
+
+              if (delt_debug > 0 .and. rank == 0) then
+                write(*,*) 'delt - m: ', delt
+              end if
+            end if
+         
           end if
          
         end if          !(mtime.gt.1)
@@ -1171,7 +1212,7 @@
 
           if (reactive_transport) then
             sionnew = sionold
-            cnew(1:n,:) = c(1:n,:)
+            cnew(1:n,:) = cold(1:n,:)
           end if
 
 #ifdef USG
@@ -1567,7 +1608,6 @@
                   end if
                 end do
                 
-                do izn = 1, nzn
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_global)                         &
@@ -1577,21 +1617,23 @@
     !$omp reduction(+:rcm_totcvol)
     !$omp do schedule(static)
 #endif                                  
-                  do ivol = 1, nngl
+                do ivol = 1, nngl
 #ifdef PETSC
-                    if(node_idx_lg2l(ivol) < 0) then
-                      cycle
-                    end if
+                  if(node_idx_lg2l(ivol) < 0) then
+                    cycle
+                  end if
 #endif
+
+                  do izn = 1, nzn
                     if (ibits(rcm_flag_cvol(ivol),izn-1,1) > 0) then
                       rcm_totcvol(izn) = rcm_totcvol(izn) + cvol(ivol)
                     end if
                   end do
+                end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
-                end do
                 
 #ifdef PETSC
                 call MPI_Allreduce(rcm_totcvol, rcm_totcvol_gbl,nzn,   &
@@ -1660,14 +1702,26 @@
         time_io = time/time_factor
         delt_io = delt/time_factor
         
+!cdsu Update boundary condition here 
+
 !cprovi----------------------------------------------------
 !cprovi Update atmospheric parameters  
 !cprovi----------------------------------------------------       
         if (evaporation .and. variably_saturated .and. .not.tran_steady_flow) then
-           call updtbcatm
-        end if 
+          call updtbcatm
+        end if  
 
-!cdsu update boundary conditions for variably saturated flow      
+!cprovi----------------------------------------------------
+!cprovi Update root length density zones  
+!cprovi----------------------------------------------------       
+        if (rootparam_trans .and. variably_saturated .and. .not.tran_steady_flow) then
+          call updtRootParams
+        end if  
+
+!cprovi----------------------------------------------------
+!cprovi update boundary conditions for variably 
+!cprovi saturated flow
+!cprovi----------------------------------------------------        
         if (update_bcvs .and. .not.tran_steady_flow) then
           if (density_dependence) then
             call updtbcdd
@@ -1676,13 +1730,20 @@
           end if
         end if
 
-!cdsu update boundary conditions for heat transport 
+!cprovi----------------------------------------------------
+!cprovi update boundary conditions for heat transport 
+!cprovi----------------------------------------------------        
         if (update_bcheat .and. .not.tran_steady_flow) then
           call updtbcenergybal
+        end if  
+
+!cdsu update boundary conditions for reactive transport
+        if (update_bcrt .and. .not.tran_steady_flow) then
+          call updtbcrt
         end if
 
 !c update transient dispersivity
-        if (reactive_transport .and. update_disprt .and.             &
+        if (reactive_transport .and. update_disprt .and.               &
             .not. tran_steady_flow) then
           call updtdisprt
         end if
@@ -1691,7 +1752,8 @@
 !c FG July 2017 - root density update (see previous comment on an alternative position for this call,
 !c FG set from Feb 2015).
         if (root_uptake .and. .not.tran_steady_flow) then
-          if ((coupled_as).or.(coupled_rt).or.(inside_rld)) then
+            
+          if (coupled_as.or.coupled_rt.or.inside_rld.or.rootparam_trans) then
             call updtrootdensity
           else
             if(rootlengthdens_field)then
@@ -1708,26 +1770,14 @@
                   close(irld)
                   call lun_free(irld)
                 end if
-              else
-                if (rank == 0 .and. b_enable_output) then
-                  write(*,'(/1x,a/)') 'RLD NOT UPDATED, PREVIOUSLY READ FROM *.rld FILE'
-                  write(ilog,'(/1x,a/)') 'RLD NOT UPDATED, PREVIOUSLY READ FROM *.rld FILE'
-                end if
               end if
-            else
-              if (rank == 0 .and. b_enable_output) then
-                write(*,'(/1x,a/)') 'RLD NOT UPDATED, INITIALLY READ FROM *.dat FILE : '
-                write(ilog,'(/1x,a/)') 'RLD NOT UPDATED, INITIALLY READ FROM *.dat FILE : '
-              endif
             end if
           endif
         end if
 
 !c  update etp and canopy dependent parameters    !CBF
         if ((root_uptake .or. pure_evap) .and. .not.tran_steady_flow) then
-#ifdef ARCHISIMPLE
           call updtetp
-#endif
         end if
 
 
@@ -1752,6 +1802,7 @@
         end if
 
         b_updtbc_recall = .false.
+
 
 !cprovi----------------------------------------------------
 !cprovi Ice sheet loading/unloding is computed
@@ -1779,13 +1830,19 @@
               !Parallelized, OpenMP, DSU
               if (ice_sheet_type == 0) then
 #ifdef USG
-                if (discretization_type > 0 .and.                      &
-                    is_cell_based_perm_cond) then
-                  call modify_for_permafrost_ (ice_sheet,permx,        &
-                          permy,permz,num_cells,time_io,               &
-                          CellCenter(:)%x,CellCenter(:)%z,             &
-                          numofthreads_global, numofloops_thred_global,&
-                          iserror)
+                if (discretization_type > 0) then                  
+                  if (is_cell_based_perm_cond) then
+                      call modify_for_permafrost_ (ice_sheet,permx,        &
+                              permy,permz,num_cells,time_io,               &
+                              CellCenter(:)%x,CellCenter(:)%z,             &
+                              numofthreads_global, numofloops_thred_global,&
+                              iserror,cell_zg_depth(:))
+                  else
+                    call modify_for_permafrost_ (ice_sheet,permx,          &
+                            permy,permz,num_nodes,time_io,xg,zg,           &
+                            numofthreads_global,numofloops_thred_global,   &
+                            iserror,zg_depth)
+                  end if
                 else
 #endif
                   call modify_for_permafrost_ (ice_sheet,permx,        &
@@ -1876,7 +1933,7 @@
         !c  allocate mask for porosities
         modify_por=.true.
         if (nbvs>0) then
-          modify_por(abs(iabvs(1:nbvs)))=.false.
+          modify_por(abs(jabvs(1:nbvs)))=.false.
         end if
 
         if (compute_ice_sheet_loading  .and. .not.tran_steady_flow) then
@@ -2030,8 +2087,6 @@
         
         prt_nonlinear_flow = cputime()
         
-        
-
 !c  store current densities and compute change in porosity by vertical stress 
 !c  cdsu add tds_old and densold_pitzer here, previous version only has denold here only.
         if (density_dependence) then
@@ -2466,7 +2521,7 @@
                       c_diff=c_update(ic,ivol)-cnew(ic,ivol)
                       c_tol=c_update(ic,ivol)*bubreact_tol                   
 
-                      if (dabs(c_diff).gt.tol_rt)then
+                      if (dabs(c_diff).gt.bubreact_tol)then
                         ibubreact_tol=ibubreact_tol+1
                       end if
                     end do 
@@ -2540,7 +2595,8 @@
                     if (uvsnew(ivol).ge.aentry_loc) then    ! if saturated
                       uvs_diff=sanew_b(ivol)-sanew(ivol)
                       uvs_tol=sanew_b(ivol)*bubflow_tol
-                      if (dabs(uvs_diff).gt.tol_vs)then
+
+                      if (dabs(uvs_diff).gt.bubflow_tol)then
                          ibubflow_tol=ibubflow_tol+1
                       end if 
                     end if
@@ -2575,7 +2631,7 @@
                     if (uvsnew(ivol).ge.aentry_loc) then    ! if saturated
                       uvs_diff=uvsnew_b(ivol)-uvsnew(ivol)
                       uvs_tol=uvsnew_b(ivol)*bubflow_tol
-                      if (dabs(uvs_diff).gt.tol_vs)then
+                      if (dabs(uvs_diff).gt.bubflow_tol)then
                          ibubflow_tol=ibubflow_tol+1
                       end if 
                     end if
@@ -2599,8 +2655,8 @@
               else if (rank == 0 .and. b_enable_output .and. .not.     &
                 ((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
                 if (ibubflow_tol.gt.0) then                 
-                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
-                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
+                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - A",ibub
+                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - A",ibub
                 end if
               end if
               
@@ -2715,25 +2771,15 @@
                   do ic=1,nc-1
                     c_diff=c_update(ic,ivol)-cnew(ic,ivol)
                     c_tol=c_update(ic,ivol)*bubreact_tol
-                    if (dabs(c_diff).gt.tol_rt)then
-                      ibubreact_tol=ibubreact_tol+1
-              
-!c    if (ibub.gt.10) then
-!c      write(ilog,'(a,i6,a14,4(1pe15.6e3))') 'bub',ivol,namec(ic),        &
-!c            c_update(ic,ivol),cnew(ic,ivol),c_diff,c_tol
-!c      write(ilog,'(a,1x,l2)')'unsaturated', unsaturated(ivol)
-!c    end if
+                    if (dabs(c_diff).gt.bubreact_tol)then
+                      ibubreact_tol=ibubreact_tol+1              
                     end if
-                  end do 
+                  end do
+
                   uvs_diff=uvsnew_b(ivol)-uvsnew(ivol)
                   uvs_tol=uvsnew_b(ivol)*bubflow_tol
-                  if (dabs(uvs_diff).gt.tol_vs)then
+                  if (dabs(uvs_diff).gt.bubflow_tol)then
                      ibubflow_tol=ibubflow_tol+1
-!c    if (ibub.gt.10) then
-!c      write(ilog,'(a,i6,4(1pe15.6e3))')'flow',ivol, uvsnew_b(ivol),      &
-!c            uvsnew(ivol),uvs_diff,uvs_tol
-!c      write(ilog,'(a,1x,l2)')'unsaturated', unsaturated(ivol)
-!c    end if
                   end if
                 end do
 #ifdef OPENMP
@@ -2766,8 +2812,8 @@
                   write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for reactive transport",ibub
                 end if
                 if (ibubflow_tol.gt.0) then
-                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
-                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow",ibub
+                  write(*,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - B",ibub
+                  write(ilog,'(/1x,a,1x,i6,1x)') "Bubble iteration for flow - B",ibub
                 end if
               end if
 
@@ -3190,7 +3236,10 @@
              (mtime == mtime_append .and. i_append_sim >= 1) .or.      &   !DSU: locate and append results when simulation is restarted (requrired)
              (mod(rsrt_cnt+1,backup_frequency) .eq. 0))) then              !DSU: write current timestep when restart point is reached (required)
             
-            ngb_tstep = ngb_tstep + 1  
+            ngb_tstep = ngb_tstep + 1 
+
+            !c save this for global use without passing argument
+            ngb_tstep_gbl = ngb_tstep    
 
             if (transient_flow.or.reactive_transport) then
               if (gb_output) then
@@ -3258,14 +3307,14 @@
                     end if
                     
                     if (density_dependence) then
-                      call tprfrtlc(totcnew(1,ivol),cnew(1,ivol),        &
-                             cx(1,ivol),gamma(1,ivol),                   &
-                             gamma(nc+1,ivol),cmnew(1,ivol),             &
-                             gnew(1,ivol),cec_g(ivol),                   &
-                             distcoff_rt(1,ivol),area(1,ivol),           &
-                             phi(1,ivol),phiold(1,ivol),                 &
-                             sionnew(ivol),tkel(ivol),                   &
-                             uvsnew(ivol),xg(ivol),yg(ivol),zg(ivol),    &
+                      call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),        &
+                             cxnew(:,ivol),gamma(:,ivol),                &
+                             gamma(nc+1,ivol),actvset(:,ivol),           &
+                             cmnew(:,ivol),gnew(:,ivol),cec_g(ivol),     &
+                             distcoff_rt(:,ivol),area(:,ivol),           &
+                             phi(:,ivol),phiold(:,ivol),sionnew(ivol),   &
+                             tkel(ivol),uvsnew(ivol),                    &
+                             xg(ivol),yg(ivol),zg(ivol),                 &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
                              igbt,igbc,igbm,igbg,igbgr,igbi,igbb,        &
                              igbs,igbv,igbd,igbx,igbis,igbac,igbre,      &
@@ -3288,14 +3337,14 @@
                              l_zone_name,update_porosity,                &
                              mtime,i_append_sim,mtime_append)
                     else
-                      call tprfrtlc(totcnew(1,ivol),cnew(1,ivol),        &
-                             cx(1,ivol),gamma(1,ivol),                   &
-                             gamma(nc+1,ivol),cmnew(1,ivol),             &
-                             gnew(1,ivol),cec_g(ivol),                   &
-                             distcoff_rt(1,ivol),area(1,ivol),           &
-                             phi(1,ivol),phiold(1,ivol),                 &
-                             sionnew(ivol),tkel(ivol),                   &
-                             hhead(ivol),xg(ivol),yg(ivol),zg(ivol),     &
+                      call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),        &
+                             cxnew(:,ivol),gamma(:,ivol),                &
+                             gamma(nc+1,ivol),actvset(:,ivol),           &
+                             cmnew(:,ivol),gnew(:,ivol),cec_g(ivol),     &
+                             distcoff_rt(:,ivol),area(:,ivol),           &
+                             phi(:,ivol),phiold(:,ivol),sionnew(ivol),   &
+                             tkel(ivol),hhead(ivol),                     &
+                             xg(ivol),yg(ivol),zg(ivol),                 &
                              time_io,delt,sanew(ivol),pornew(ivol),      &
                              igbt,igbc,igbm,igbg,igbgr,igbi,igbb,        &
                              igbs,igbv,igbd,igbx,igbis,igbac,igbre,      &
@@ -3388,17 +3437,32 @@
               do igb = 1,ngb_ijface
                 call tprfvs_faceflux(ngb_vol_ijface(1,igb),            &
                                      ngb_vol_ijface(2,igb),igb,        &
-                                     ngb_tstep_ijface+1)  
+                                     ngb_tstep_ijface+1,.false.)  
               end do
             end if
             if (reactive_transport) then                
               do igb = 1,ngb_ijface
                 call tprfrtlc_faceflux(ngb_vol_ijface(1,igb),          &
                                        ngb_vol_ijface(2,igb),igb,      &
-                                       ngb_tstep_ijface+1)  
+                                       ngb_tstep_ijface+1,.false.)  
               end do
             end if
             igb_step_ijface = 0
+          else
+            if (transient_flow) then                
+              do igb = 1,ngb_ijface
+                call tprfvs_faceflux(ngb_vol_ijface(1,igb),            &
+                                     ngb_vol_ijface(2,igb),            &
+                                     igb,0,.true.)  
+              end do
+            end if
+            if (reactive_transport) then                
+              do igb = 1,ngb_ijface
+                call tprfrtlc_faceflux(ngb_vol_ijface(1,igb),          &
+                                       ngb_vol_ijface(2,igb),          &
+                                       igb,0,.true.)   
+              end do
+            end if
           end if
         end if                !(gb_output_faceflux)  
 
@@ -3410,12 +3474,12 @@
           if(discretization_type == 0) then
             !velodd seems not necessary to call to calculate courant
             !if user specified maximum courant is very large.
-            call velodd(nvxgl,nvygl,nvzgl,iavs,javs,cinfvs_a,dimcv, xg,&
-                        yg, zg, uvsnew, density, viscosity,            &
+            call velodd(nvxgl,nvygl,nvzgl,iavs,javs,cinfvs_a,dimcv,    &
+                        xg, yg, zg, uvsnew, density, viscosity,        &
                         relperm, idbg, ilog,ivel, fully_saturated,     &
                         njavs, nngl, nn, half_cells, pornew, sanew,    &
-                        delt, courant_max, courant_num, iprint,time_io,&
-                        cinfrad,radial_coord,0)
+                        delt, courant_max, courant_num, iprint,        &
+                        time_io,cinfrad,radial_coord,0)
 #ifdef USG
           else if (discretization_type > 0) then
             !velodd_usg seems not necessary to call to calculate courant
@@ -3441,7 +3505,6 @@
         if(b_enable_output .and. .not.tran_steady_flow)  then
           call restart_w
         end if
-
 
 !cdsu ------------------------------------------------------------------------
 !cdsu move boundary condition update of reactive tranport here

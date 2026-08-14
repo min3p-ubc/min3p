@@ -111,6 +111,8 @@ if (ispitzerdens) then
  read(1,*) ndim
  do i=1,ndim 
    read(1,*) name,molw,molv
+   call makelowercase(name)
+
    do j=1,nc
      if (name==namec(j)) then
         molweight(j)=molw    

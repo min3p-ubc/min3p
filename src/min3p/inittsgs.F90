@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/inittsgs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/inittsgs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -240,6 +240,7 @@
 !c  save current time in i/o units
 
       time_io = time
+      time_io_ini = time
 
       if (b_interpolation_bcvs) then
         time_bcvs_prev = time_io
@@ -263,7 +264,7 @@
 
       !c diferent tiny time (e.g., 1.0d-12 and 1.0d-10) were used in different functions in the old code, 
       !c here we revised the code to use a consistent one.
-      tinytime_global = max(deltmin*1.0d-2,1.0d-12)
+      tinytime_global = max(deltmin*1.0d-2,1.0d-10)
       deltmax_global = deltmax      
 
 !c set initial time step size to minimum time step specified

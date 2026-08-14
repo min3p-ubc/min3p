@@ -4,7 +4,7 @@
 !> $Revision: 878 $
 !> $Author: dsu $
 !> $Date: 2024-02-14 20:08:49 -0800 (Wed, 14 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initcpdd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcpdd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -493,6 +493,7 @@
           ierrcd = 9
           do inpl = 1,nnpl
             read(itmp,*,err=999,end=999) namenpl(inpl)
+            call makelowercase(namenpl(inpl))
           end do
 
 !c  define length of napl names
@@ -652,6 +653,7 @@
           ierrcd = 13
           do ic = 1,ndd
             read(itmp,*,err=999,end=999) namedd(ic)
+            call makelowercase(namedd(ic))
           end do
 
 !c create gram formula weight vector with gram formula weights for

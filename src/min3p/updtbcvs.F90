@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updtbcvs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updtbcvs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -59,7 +59,7 @@
 !c                                parameters internal time units
 !c           time_factor        = conversion factor from I/O time     + -
 !c                                units to internal time units
-!c           time_io            = current solution time (I/O units)   + -
+!c           time_check            = current solution time (I/O units)   + -
 !c           tfinal             = final solution time                 + -
 !c           xg(nn)             = spatial coordinates in x-direction  + -
 !c           yg(nn)             = spatial coordinates in y-direction  + -
@@ -240,14 +240,12 @@
         if(rank == 0 .and. b_enable_output)  then   
                                                                        
           write(*,*)
-          write(*,*) 'update boundary conditions - ',                  &
-                     'variably saturated flow'
+          write(*,*) 'update boundary conditions - variably saturated flow'
           write(*,*) ('-',i=1,72)
           write(*,*)
 
           write(ilog,*)
-          write(ilog,'(2a)') 'update boundary conditions - ',          &
-                             'variably saturated flow'
+          write(ilog,'(a)') 'update boundary conditions - variably saturated flow'
           write(ilog,'(72a)')('-',i=1,72)
           write(ilog,*)
         
@@ -317,6 +315,19 @@
         call checkerr(ierr,'rwork_next',ilog)
         call memory_monitor(sizeof(rwork_next),'rwork_next',.true.)
 
+!c  allocate array for boundary condition switch
+        if (update_bcvs_switch) then
+          allocate (lwork(nbzvs), stat = ierr)
+          lwork=.false.
+          call checkerr(ierr,'lwork',ilog)
+          call memory_monitor(sizeof(lwork),'lwork',.true.)
+
+          allocate (lwork_next(nbzvs), stat = ierr)
+          lwork_next=.false.
+          call checkerr(ierr,'lwork_next',ilog)
+          call memory_monitor(sizeof(lwork_next),'lwork_next',.true.)
+        end if
+
 !c  assign new boundary conditions for variably-saturated flow
 
         if (b_first_update_bcvs .and.                                  &
@@ -326,19 +337,37 @@
           b_updt_next_only = b_first_update_bcvs
           backspace(ibcvs)
 
-          read(ibcvs,*,err=998,end=997) time_bcvs_prev,                &
-              (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          if (update_bcvs_switch) then
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),           &
+                (lwork(ibz),ibz=1,nbzvs)
+          else
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          end if
 
           do while (time_check < time_bcvs_prev)
             backspace(ibcvs)
             backspace(ibcvs)
-            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
           end do
           
           do while (time_check > time_bcvs)
-            read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,         &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
             !c end of file has reached
             if (iflag < 0) then
               time_bcvs = (tfinal+delt)/time_factor
@@ -348,15 +377,28 @@
               if (time_check < time_bcvs_prev) then
                 backspace(ibcvs)
                 backspace(ibcvs)
-                read(ibcvs,*,err=998,end=997) time_bcvs_prev,          &
-                    (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                if (update_bcvs_switch) then
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),     &
+                      (lwork(ibz),ibz=1,nbzvs)
+                else
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                end if
                 exit
               end if
             end if
           end do          
 
-          read(ibcvs,*,err=998,iostat=iflag) time_bcvs,                &
-              (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          if (update_bcvs_switch) then
+            read(ibcvs,*,err=998,iostat=iflag) time_bcvs,              &
+                (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),      &
+                (lwork_next(ibz),ibz=1,nbzvs)
+          else
+            read(ibcvs,*,err=998,iostat=iflag) time_bcvs,              &
+                (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          end if
+
           !c end of file has reached
           if (iflag < 0) then
             time_bcvs = (tfinal+delt)/time_factor
@@ -364,19 +406,38 @@
           end if    
         else
           backspace(ibcvs)
-          read(ibcvs,*,err=998,end=997) time_bcvs_prev,                &
-              (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          if (update_bcvs_switch) then
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),           &
+                (lwork(ibz),ibz=1,nbzvs)
+          else
+            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
+                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+          end if
 
           do while (time_check < time_bcvs_prev)
             backspace(ibcvs)
             backspace(ibcvs)
-            read(ibcvs,*,err=998,end=997) time_bcvs_prev,              &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,end=997) time_bcvs_prev,            &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
           end do
           
           do while (time_check > time_bcvs)
-            read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,         &
-                (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),         &
+                  (lwork(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs_prev,       &
+                  (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
+
             !c end of file has reached
             if (iflag < 0) then
               time_bcvs = (tfinal+delt)/time_factor
@@ -386,8 +447,14 @@
               if (time_check < time_bcvs_prev) then
                 backspace(ibcvs)
                 backspace(ibcvs)
-                read(ibcvs,*,err=998,end=997) time_bcvs_prev,          &
-                    (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                if (update_bcvs_switch) then
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),     &
+                      (lwork(ibz),ibz=1,nbzvs)
+                else
+                  read(ibcvs,*,err=998,end=997) time_bcvs_prev,        &
+                      (rwork(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+                end if
                 exit
               end if
             end if
@@ -395,8 +462,15 @@
           
          
           if (b_interpolation_bcvs) then
-            read(ibcvs,*,err=998,iostat=iflag) time_bcvs,              &
-                (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            if (update_bcvs_switch) then
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs,            &
+                  (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs),    &
+                  (lwork_next(ibz),ibz=1,nbzvs)
+            else
+              read(ibcvs,*,err=998,iostat=iflag) time_bcvs,            &
+                  (rwork_next(1:bzvs_nparms(ibz),ibz),ibz=1,nbzvs)
+            end if
+
             !c end of file has reached
             if (iflag < 0) then
               time_bcvs = (tfinal+delt)/time_factor
@@ -413,9 +487,9 @@
         if (update_bcvs_value_only) then
           if (nbvs > 0) then
             do ibvs = 1, nbvs
-              ivol = iabvs(ibvs)
+              ivol = jabvs(ibvs)
 
-              if (ivol < 0) then
+              if (ivol <= 0) then
                 cycle  
               end if
 
@@ -1007,7 +1081,7 @@
 !cprovi------------------------------------------------------------------
 !cprovi 
 !cprovi------------------------------------------------------------------                  
-              iabvs(nbvs)=ivol
+              jabvs(nbvs)=ivol
               btypevs(nbvs)=btypezn
 
               ivol2bvs(ivol) = nbvs
@@ -1440,6 +1514,12 @@
               else if (btypezn.eq.'free-drainage') then
                 gradf_bvs(nbvs) = rwork(1,ibz)
               end if     !(btypezn.eq.'first'.or.btypezn.eq.'second')
+
+              !c boundary condition switch
+              if (update_bcvs_switch) then
+                bcondvs_on(nbvs) = lwork(ibz)
+              end if
+
             end if       !(zg(ivol).gt.zbmin).and.(zg(ivol).lt.zbmax)
                          !(yg(ivol).gt.ybmin).and.(yg(ivol).lt.ybmax)
                          !(xg(ivol).gt.xbmin).and.(xg(ivol).lt.xbmax)
@@ -1457,33 +1537,44 @@
         call memory_monitor(-sizeof(rwork_next),'rwork_next',.true.)
         deallocate (rwork_next, stat = ierr)
         call checkerr(ierr,'rwork_next',ilog)
+
+!c  deallocate array for boundary condition switch
+        if (update_bcvs_switch) then
+          call memory_monitor(-sizeof(lwork),'lwork',.true.)
+          deallocate (lwork, stat = ierr)
+          call checkerr(ierr,'lwork',ilog)
+
+          call memory_monitor(-sizeof(lwork_next),'lwork_next',.true.)
+          deallocate (lwork_next, stat = ierr)
+          call checkerr(ierr,'lwork_next',ilog)
+        end if
         
-!c  array iabvs
+!c  array jabvs
 
         allocate (iwork(nbvs), stat = ierr)
         call checkerr(ierr,'iwork',ilog)
         call memory_monitor(sizeof(iwork),'iwork',.true.)
         
         do ibvs = 1,nbvs
-          iwork(ibvs) = iabvs(ibvs)
+          iwork(ibvs) = jabvs(ibvs)
         end do
         
-        call memory_monitor(-sizeof(iabvs),'iabvs',.true.)
-        deallocate (iabvs, stat = ierr)
-        call checkerr(ierr,'iabvs',ilog)
+        call memory_monitor(-sizeof(jabvs),'jabvs',.true.)
+        deallocate (jabvs, stat = ierr)
+        call checkerr(ierr,'jabvs',ilog)
         
-        allocate (iabvs(nbvs), stat = ierr)
-        call checkerr(ierr,'iabvs',ilog)
-        call memory_monitor(sizeof(iabvs),'iabvs',.true.)
+        allocate (jabvs(nbvs), stat = ierr)
+        call checkerr(ierr,'jabvs',ilog)
+        call memory_monitor(sizeof(jabvs),'jabvs',.true.)
         
         do ibvs = 1,nbvs
-          iabvs(ibvs) = iwork(ibvs)
+          jabvs(ibvs) = iwork(ibvs)
         end do
 
         do ibvs = 1,nbvs
           do i = nbvs, ibvs + 1, -1
-            if (iabvs(i) == iabvs(ibvs)) then
-              iabvs(ibvs) = -iabvs(ibvs)
+            if (jabvs(i) == jabvs(ibvs)) then
+              jabvs(ibvs) = -jabvs(ibvs)
               exit
             end if
           end do
@@ -1539,8 +1630,8 @@
       else if (b_interpolation_bcvs) then
         if (nbvs > 0) then
           do ibvs = 1, nbvs
-            ivol = iabvs(ibvs)
-            if (ivol < 0) then
+            ivol = jabvs(ibvs)
+            if (ivol <= 0) then
               cycle  
             end if
             btypezn = btypevs(ibvs)

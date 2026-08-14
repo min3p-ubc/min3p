@@ -4,7 +4,7 @@
 !> $Revision: 177 $
 !> $Author: dsu $
 !> $Date: 2014-04-10 14:28:52 -0700 (Thu, 10 Apr 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/zero_r8.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/zero_r8.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -55,8 +55,7 @@
       integer :: n1, n2, n3
       
       integer :: i, nentries
-      real*8 :: r0
-      parameter (r0 = 0.0d0)
+      real*8, parameter :: r0 = 0.0d0
  
       nentries = n1*n2*n3
 

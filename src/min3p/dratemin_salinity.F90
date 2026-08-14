@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/dratemin_salinity.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/dratemin_salinity.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -19,16 +19,15 @@
       integer :: i, ic
       integer :: info_debug
       
-      real*8 :: totc, c, ratem      
+      real*8 :: ratem      
       real*8 :: prodrc, prodrcinc
       real*8 :: salinity, sar
       real*8 :: salinityinc, sarinc
       real*8 :: a, b
 
-      dimension c(*),totc(*)
+      real*8 :: c(*),totc(*)
 
-      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
-      real, parameter  :: pi = 3.141592653589793d0
+      real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, pi = 3.141592653589793d0
       
       !This is not needed when interface is declared
       !external raoult     

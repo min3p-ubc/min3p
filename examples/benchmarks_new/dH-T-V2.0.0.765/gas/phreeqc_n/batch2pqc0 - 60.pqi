@@ -1,0 +1,104 @@
+DATABASE D:\MIN3P_THCm\mxie_sulAq\benchmarking\dhc_verif\calcite_dh_5_batch\temp\database\phreeqc\minteq-simple.dat
+TITLE Example sul2pqc -- Transport with salinity dependent sulphate reduction 
+# D:\MIN3P_THCm\mxie_thcmv1.0.440_dsg\benchmarks_added\sulfurPQC\phreeqc
+#PITZER
+#	-macinnes true
+#	-redox true
+
+#SOLUTION_MASTER_SPECIES
+#S(-2)		HS-	1.0	S
+#C(0)		CH2O  0.0   C
+
+
+#RATES
+########
+#Calcite
+########
+# Example of KINETICS data block for calcite rate:
+#	KINETICS 1
+#	Calcite
+#		-tol    1e-10
+#		-m0	 1.e-1
+#		-m	 1.e-1
+#		-parms	4.0e-8	  1.0e-10
+#Calcite
+#  -start
+#   1 rem	parm(1) = A/V, 1/dm	parm(2) = exponent for m/m0
+#
+#   10 si_cc = si("Calcite")
+#   20 if (m <= parm(2)  and si_cc < 0) then goto 200
+##   120   moles = parm(1) * (1 - 10^(si_cc))
+#   120   moles = parm(1) * (1 - sr("Calcite"))
+#   130   moles = moles * time
+#   200 save moles
+#  -end
+
+
+SOLUTION 1
+    temp      60
+    pH        7.0
+#    pe        -3.3471
+    redox     pe
+    units     mol/kgw
+    density   1
+	Ca	1.2665E-03    #9600.00
+#	Na	4.6289E+00  charge   #94000.00  charge
+#	Mg	1.3985E-01    #3400.00
+#	K	6.6493E-02    #2600.00
+#	Cl	 5.4438E+00		#193000.00  
+#	S(6) 6.2460E-03		#600.00
+	C	 2.5665E-03		#76.00
+#	S(-2)	3.0237E-15		#1.0e-10
+    -water    1 # kg
+
+#KINETICS 1
+#	Calcite
+#		-tol    1e-8
+#		-m0	 10.83024671   # = 0.1*10^3/(0.25*36.9336)=Vmi*10^3/(n*Vm[i]) in [mol/kgW]
+#		-m	10.83024671 
+#		-parms	16.0e-8	  1.0e-10    # MIN3P parm(1) is in the unit of mol/L bulk/s, PHREEQC is in mol/s/1kgW or 1LH2O, porosity is 0.25, 1/0.25=4
+#		#-parms	4.0e-8	  1.0e-10
+#	Anhydrite
+#		-tol    1e-8
+#		-m0	 27.68884659	# = 0.32*10^3/(0.25*46.228)
+#		-m	 27.68884659
+#		-parms	16.0e-9	  0.5e-10
+#		#-parms	4.0e-9	  0.5e-10
+
+
+END
+
+
+
+SOLUTION 0 #boundary
+    temp      60
+    pH        7.0
+    pe        3.39   
+    redox     pe
+    units     mg/kgw
+    density   1
+	Ca	  8.40
+#	Na	189.00  charge
+#	Mg	  0.097
+#	K	 72.00
+#	Cl	164.00  
+#	S(6)  1.0e-10
+	C	12.600
+#	S(-2)  1.0e-10
+#	Oxg 	-6.6110E-24
+
+END
+
+
+
+SELECTED_OUTPUT 
+   -file   profile_batch.sel 
+   -reset  false 
+   -solution 
+   -distance       true 
+USER_PUNCH 
+   -headings -head time(h) ca_mol CO3_mol  pH  SI_Calcite mol_hco3, mol_CaHCO3
+10 PUNCH TOTAL_TIME/3600, TOT("Ca"),  TOT("C"), -LA("H+"), SI("Calcite"),MOL("HCO3-"), MOL("CaHCO3+")
+
+END
+

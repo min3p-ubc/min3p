@@ -4,7 +4,7 @@
 !> $Revision: 296 $
 !> $Author: dsu $
 !> $Date: 2015-04-07 13:22:37 -0700 (Tue, 07 Apr 2015) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/dgm/totmin_w.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/dgm/totmin_w.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -72,9 +72,9 @@
 
       implicit none
       
-      real*8 :: ratem, totm_w
+      real*8 :: totm_w
 
-      dimension ratem(*)
+      real*8 :: ratem(*)
       
       integer :: i, ic, im, istart, iend
 

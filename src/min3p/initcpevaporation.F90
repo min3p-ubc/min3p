@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initcpevaporation.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcpevaporation.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -156,6 +156,7 @@
       use dens
       use chem
       use file_unit, only : lun_get
+      use file_utility, only : rewind_first_record
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -217,6 +218,7 @@
 !cprovi surface tension of water at 25oC
 !cprovi------------------------------------------------------      
       subsection = 'surface tension of water at 25oC'
+      call makelowercase(subsection)
       ! Surface tension of water at 25oC (71.89 gr s2) 
       gammaw0 = 71.89d0  
       call findstrg(subsection,itmp,found_subsection)
@@ -629,24 +631,22 @@
 !cprovi------------------------------------------------      
 !cprovi Open atmospheric parameters from file      
 !cprovi------------------------------------------------      
-      if (read_atm) then
-      
-         time_atm=r0
-         !iatm = 52 
+      if (read_atm) then      
+         time_atm = time_io_ini
          iatm = lun_get()
-         open(iatm,file=prefix(:l_prfx)//'.atm',      & 
-     &        status='old',access='sequential',       &
-     &        err=997) 
-         read (iatm,*)
-         read (iatm,*)
-         read (iatm,*)
+         open(iatm,file=prefix(:l_prfx)//'.atm',status='old',          &
+              access='sequential',err=997) 
+        !read (iatm,*)
+        !read (iatm,*)
+        !read (iatm,*)
 
+        !cdsu skip comment line and rewind to the first record
+        call rewind_first_record(iatm)
       end if  
 !cprovi-------------------------------------------------------------
 !cprovi Update atmospheric boundary conditions
 !cprovi-------------------------------------------------------------       
       call updtbcatm
-
 
       goto 1000
 
@@ -683,10 +683,7 @@
 #ifdef PETSC
       call petsc_mpi_finalize
 #endif
-      stop
-      
-      
-            
+      stop            
 
 1000  return
       end

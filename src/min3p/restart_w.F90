@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/restart_w.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/restart_w.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -44,13 +44,13 @@
 !c                                - new time level
 !c           sgold(nn)          = gaseous phase saturation            * +
 !c                                - old time level
-!c           c(nc,nn)           = concentrations of free species      * +
+!c           cold(nc,nn)        = concentrations of free species      * +
 !c                                - old time level [moles/l water]
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity [meq/100g] + -
 !c                                - global system
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -644,14 +644,14 @@
               realbuffer_irsrt(ivars_irsrt+1) = sionold(ivol)
               ivars_irsrt = ivars_irsrt + 1
               do ic = 1,n
-                realbuffer_irsrt(ivars_irsrt+2*ic-1) = c(ic,ivol)
+                realbuffer_irsrt(ivars_irsrt+2*ic-1) = cold(ic,ivol)
                 realbuffer_irsrt(ivars_irsrt+2*ic) = totcold(ic,ivol)
               end do
               ivars_irsrt = ivars_irsrt + 2*n
             else
               write(irsrt,'(1e22.14)', ADVANCE='no') sionold(ivol)
               do ic = 1,n
-                write(irsrt,'(2e22.14)', ADVANCE='no') c(ic,ivol),     &
+                write(irsrt,'(2e22.14)', ADVANCE='no') cold(ic,ivol),  &
                                                        totcold(ic,ivol)
               end do
             end if

@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/multidiff.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/multidiff.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -73,8 +73,6 @@ module multidiff
     
 !    real (type_r8), allocatable :: SumChargeMicropore(:)
 
-    real (type_r8), allocatable :: DonnanPotentialTmp(:)  
-      
 ! prc --------------------------------------------------------------------
 ! prc --------------------------------------------------------------------
 ! prc --------------------------------------------------------------------

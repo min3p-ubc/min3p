@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readmin.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readmin.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -287,6 +287,8 @@
 
           read(imdbs,*,err=999) name
 
+          call makelowercase(name)
+
 !c  look for match, as long end of file is not reached or
 !c  match is found
 
@@ -361,9 +363,14 @@
 
             if (far_from_equil(im)) then
               read(imdbs,*,err=999) nv,(namet(iv),xnumt(iv),iv=1,nv)
+              do iv = 1,nv
+                call makelowercase(namet(iv))
+              end do
             else
-              read(imdbs,*,err=999) eqms(im),nv,                      &
-     &                              (namet(iv),xnumt(iv),iv=1,nv)
+              read(imdbs,*,err=999) eqms(im),nv,(namet(iv),xnumt(iv),iv=1,nv)
+              do iv = 1,nv
+                call makelowercase(namet(iv))
+              end do
               eqms(im) = r10 ** (-eqms(im))
             end if
 
@@ -452,8 +459,8 @@
 !c  define length of namemp(ireac)
 
                 l_namemp(ireac) = index(namemp(ireac),' ')-1
-                if (l_namemp(ireac).eq.-1.or.l_namemp(ireac).gt.14) then
-                  l_namemp(ireac) = 14
+                if (l_namemp(ireac).eq.-1.or.l_namemp(ireac).gt.72) then
+                  l_namemp(ireac) = 72
                 end if
 
 !c  read data
@@ -492,8 +499,9 @@
 
                 if (ndt+ndc+ndcx.gt.0) then
 
-                  read(imdbs,*,err=999) (namet(i),ordt(i),            &
-     &                                   i=1,ndt+ndc+ndcx)
+                  read(imdbs,*,err=999) (namet(i),ordt(i),i=1,ndt+ndc+ndcx)
+
+                  call makelowercase(namet(i))
 
 !c  check if all components/species involved in particular reaction
 !c  are specified in general input file and assign pointer to species
@@ -627,7 +635,7 @@
                 if (nmdm.gt.0) then
 
                   read(imdbs,*,err=999) (namet(i),value(i),value2(i),i=1,nmdm)
-
+                  call makelowercase(namet(i))
 !c  check if all reactants involved in monod terms
 !c  are specified as components
 !c  assign pointer to species and order of reaction
@@ -687,7 +695,7 @@
                 if (nmdi.gt.0) then
 
                   read(imdbs,*,err=999) (namet(i),value(i),i=1,nmdi)
-
+                  call makelowercase(namet(i))
 !c  check if all reactants involved in inhibition terms
 !c  are specified as components
 !c  assign pointer to species and order of reaction

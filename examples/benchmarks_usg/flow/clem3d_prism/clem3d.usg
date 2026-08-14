@@ -1,0 +1,40 @@
+!
+!Self-described unstructured grid generation file
+!
+
+!GMS 3d mesh supports the orginal gms mesh layout or the triangulated 
+!prism mesh. The original gms mesh can be 2d triangle mesh or 2d 
+!quadrilateral mesh or mixed triangle quadrilateral mesh. The generated 
+!3d mesh is either prism or hexahedra mesh or mixed prism hexahedra mesh.
+
+'gms 3d mesh'
+
+'mesh type'
+'original'
+!'prism'
+
+'gms mesh file path'
+'clem3d-gms-layers/clem3d.gms'
+
+'number of layers'
+11
+
+'gms layer file path from top to bottom'
+'clem3d-gms-layers/clem3d-layer0.dat'
+'clem3d-gms-layers/clem3d-layer1.dat'
+'clem3d-gms-layers/clem3d-layer2.dat'
+'clem3d-gms-layers/clem3d-layer3.dat'
+'clem3d-gms-layers/clem3d-layer4.dat'
+'clem3d-gms-layers/clem3d-layer5.dat'
+'clem3d-gms-layers/clem3d-layer6.dat'
+'clem3d-gms-layers/clem3d-layer7.dat'
+'clem3d-gms-layers/clem3d-layer8.dat'
+'clem3d-gms-layers/clem3d-layer9.dat'
+'clem3d-gms-layers/clem3d-layer10.dat'
+
+'output layer range'
+1, 11
+
+!'output surface mesh'
+!'../domain_gms/surface.off'
+

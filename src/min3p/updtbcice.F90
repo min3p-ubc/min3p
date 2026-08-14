@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updtbcice.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updtbcice.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -130,14 +130,12 @@
         if(rank == 0 .and. b_enable_output)  then   
                                                                        
           write(*,*)
-          write(*,*) 'update boundary conditions - ',                  &
-                     'ice sheet loading/unloading'
+          write(*,*) 'update boundary conditions - ice sheet loading/unloading'
           write(*,*) ('-',i=1,72)
           write(*,*)
 
           write(ilog,*)
-          write(ilog,'(2a)') 'update boundary conditions - ',          &
-                             'ice sheet loading/unloading'
+          write(ilog,'(a)') 'update boundary conditions - ice sheet loading/unloading'
           write(ilog,'(72a)')('-',i=1,72)
           write(ilog,*)
         

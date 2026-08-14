@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initicenergybal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initicenergybal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -567,10 +567,11 @@
         read(itmp,*,err=999,end=999) toptemp
 
 #ifdef USG
-        if (b_use_layered_mesh) then
+        if (discretization_type > 0) then
           do ivol = 1, nngl
-            maxz = layer_nodes_top(node_to_layer_node(ivol))%z
-            tempnew(ivol) = toptemp + gradtemp * (maxz-zg(ivol))
+            !maxz = layer_nodes_top(node_to_layer_node(ivol))%z
+            !tempnew(ivol) = toptemp + gradtemp * (maxz-zg(ivol))
+            tempnew(ivol) = toptemp + gradtemp * zg_depth(ivol)
             tempold(ivol) = tempnew(ivol) 
           end do 
         else

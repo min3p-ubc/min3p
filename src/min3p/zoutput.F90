@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/zoutput.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/zoutput.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -42,14 +42,14 @@
 !c external: -  
 !c ----------------------------------------------------------------------
  
-      real*8 function zoutput(depth_output,z,elevmax)
+      real*8 function zoutput(depth_output,z,depth)
  
       implicit none
-      real*8 :: z, elevmax
+      real*8 :: z, depth
       logical depth_output
 
       if (depth_output) then
-        zoutput = elevmax - z
+        zoutput = depth
       else
         zoutput = z
       end if

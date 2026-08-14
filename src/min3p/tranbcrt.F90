@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/tranbcrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/tranbcrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -271,6 +271,7 @@
       use parm
       use gen
       use chem
+      use mimicMassDisp
 
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
@@ -279,7 +280,8 @@
       
      
       integer :: tid, i, ibrt, ibrt_start, ibrt_stop, ibz, ic, icount, &
-                 ig, itemp, ivol, iaq, itid, ierrcd, l_string
+                 ig, itemp, ivol, istart, iend, iaq, itid, ierrcd, j,  &
+                 l_string
       real*8 ::  sac, sgc, porc
       real*8, external :: boundary_func
       
@@ -292,6 +294,7 @@
                rtrvpprm, setsize, totconc, totconcg, minmaxwd_mpi
 
       real*8, parameter :: r1 = 1.0d0, r1000 = 1.0d+3
+      integer, parameter :: i0 = 0
 
       ierrcd = 0
 
@@ -584,10 +587,11 @@
 
 !c  compute concentration distribution at boundary
 
-            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),     &
-                       cgc,sac,sgc,porc,igen,ilog,tid,idbg,tec_header, &
-                       prefix,l_prfx,zone_name,l_zone_name,            &
-                       mtime,i_append_sim,mtime_append)
+            call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,&
+                         cgc,sac,sgc,porc,igen,ilog,tid,idbg,          &
+                         tec_header,prefix,l_prfx,                     &
+                         zone_name,l_zone_name,                        &
+                         mtime,i_append_sim,mtime_append,.true.)
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain
@@ -598,6 +602,28 @@
             if(b_enable_output .and. b_enable_output_gen)  then 
               call outputlc(ccnew,cxc,gamma_l(1),gamma_l(nc+1),        &
                             cgc,igen,ilog,tid,section_header)
+            end if
+
+!c update parameters for 'mimic advective gas displacement'
+            if (nAdvGasDisp > 0) then
+              do j = 1, nAdvGasDisp
+                ig = idxAdvGasDisp(j)
+                if (mimicAdvGasDisp(ig)) then
+                  istart = iaga(ig)
+                  iend = iaga(ig+1)-1
+                  do i = istart,iend
+                    ic = jaga(i)
+                    advGasAqDispBd(ig) = ccnew(ic)
+                    call gasconc(ccnew,gamma_l,advGasDispBd(ig),ig,tempk,tid)
+                  end do
+    
+                  !c check the unit conversion
+                  !write(*,*) '-> ig',ig,' mimicAdvGasDisp ',mimicAdvGasDisp(ig),&
+                  !           ' advGasAqDispBd(mol/L water) ',advGasAqDispBd(ig),&
+                  !           ' advGasDispBd(mol/L air) ',advGasDispBd(ig),&
+                  !           ' advGasDispBd(atm) ',advGasDispBd(ig)*rgasatm*tempk
+                end if
+              end do
             end if
 
 !c  assign boundary condition to control volumes located in boundary zone

@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/restart_r.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/restart_r.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -44,13 +44,13 @@
 !c                                - new time level
 !c           sgold(nn)          = gaseous phase saturation            * +
 !c                                - old time level
-!c           c(nc,nn)           = concentrations of free species      * +
+!c           cold(nc,nn)        = concentrations of free species      * +
 !c                                - old time level [moles/l water]
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
 !c           cec_g(nn)          = cation exchange capacity [meq/100g] + -
 !c                                - global system
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           distcoff_rt(nc,nn) = sorption distribution coefficient   + -
 !c                                [-], [l bulk/l bulk]
@@ -348,10 +348,10 @@
 #endif
       
       integer :: i, ic, ig, im, isb, ivol, ivol_bottom, ix, izn, itz,   &
-                 bcvs_cnt, bcheat_cnt, bcice_cnt, disprt_cnt,           &
+                 bcvs_cnt, bcheat_cnt, bcrt_cnt, bcice_cnt, disprt_cnt, &
                  ice_scalfac_cnt, itsrc_idx, ierr, ierrcd, iunit_file
       
-      real*8 :: rdummy, rtemp, strion, acoff, actw, time_temp, time_rs, &
+      real*8 :: rdummy, rtemp, acoff, actw, strion, time_temp, time_rs, &
                 time_tsrc, aentry_loc
       
       integer :: tid
@@ -548,7 +548,6 @@
       end if
 
 !cdsu set the time index to update root density
-#ifdef ARCHISIMPLE
       if (root_uptake .and. rld_field_update) then
         time_temp = time_io*time_factor
 
@@ -556,6 +555,7 @@
         do i = 1, rld_update_num
           if (time_temp >= rld_update_time(i)) then
             !c update root length density
+            rld_update_skip = i-1
             call updtrootdensity_ext
           else
             rld_update_index = i
@@ -563,7 +563,6 @@
           end if
         end do
       end if
-#endif
 
 !cdsu  set the time index of component-mineral recycle
       if ((passive_uptake .or. root_uptake) .and. nrcm_tz > 0) then
@@ -869,7 +868,7 @@
           if(b_binary_restart_read) then
             sionold(ivol) = realbuffer_irsrt(ivar+1)
             do ic = 1,n
-              c(ic,ivol) = realbuffer_irsrt(ivar+2*ic)
+              cold(ic,ivol) = realbuffer_irsrt(ivar+2*ic)
               totcold(ic,ivol) = realbuffer_irsrt(ivar+2*ic+1)
             end do
             ivar = ivar + 2*n+1
@@ -883,7 +882,7 @@
             do ic = 1,n
               ierrcd = 10
               read(irsrt,'(2e22.14)',ADVANCE='no',err=998,end=999)     &
-                   c(ic,ivol),totcold(ic,ivol)
+                   cold(ic,ivol),totcold(ic,ivol)
             end do
           end if
          
@@ -1147,7 +1146,7 @@
     !$omp if (nngl > numofloops_thred_restart_1)                      &
     !$omp num_threads(numofthreads_global)                            &
     !$omp default(shared)                                             &
-    !$omp private(tid, ivol, izn, ix, strion, aentry_loc, dummy)
+    !$omp private(tid, ivol, izn, ix, aentry_loc, strion, dummy)
     !$omp do schedule(static)
 #endif
       do ivol=1,nngl
@@ -1219,7 +1218,7 @@
 !c  reassign free species concentrations for next time level
 
           do ic = 1,n
-            cnew(ic,ivol) = c(ic,ivol)
+            cnew(ic,ivol) = cold(ic,ivol)
             totcnew(ic,ivol) = totcold(ic,ivol)
           end do
 
@@ -1230,13 +1229,15 @@
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
 
-            call updtsvap(c(1,ivol),cxold(1,ivol),gammaold(1,ivol),   &
-     &                    gammaold(nc+1,ivol),sionold(ivol),tid) 
-            call updtsvap(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),        &
-     &                  gamma(nc+1,ivol),sionnew(ivol),tid)
+            call updtsvap(cold(:,ivol),cxold(:,ivol),gammaold(:,ivol),   &
+                          gammaold(nc+1,ivol),sionold(ivol),             &
+                          actvset(:,ivol),tid) 
+            call updtsvap(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),      &
+                          gamma(nc+1,ivol),sionnew(ivol),                &
+                          actvset(:,ivol),tid)
                 
-            call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
-            call totconcfac(c(1,ivol),cxold(1,ivol),totcoldf(1,ivol),izn)
+            call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
+            call totconcfac(cold(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
 
           end if
          
@@ -1254,9 +1255,9 @@
 !c  compress total aqueous and sorbed (noncompetitive sorption)
 !c  component concentration vector
 
-            call comptotc(totcnew(1,ivol))
+            call comptotc(totcnew(:,ivol))
             if (noncompetitive_sorption) then
-              call comptotc(totanew(1,ivol))
+              call comptotc(totanew(:,ivol))
             end if
 
           end if
@@ -1266,14 +1267,14 @@
 !c  compute concentrations of aqueous complexes
  
           do ix = 1,nx
-            call secspec(c(1,ivol),cx(ix,ivol),eqx(ix,tid),gamma(1,ivol),&
-                         gamma(nc+ix,ivol),xnux,iax,jax,nc,ix)
-
+            call secspec(cold(:,ivol),cxnew(ix,ivol),eqx(ix,tid),      &
+                         gamma(:,ivol),gamma(nc+ix,ivol),xnux,         &
+                         iax,jax,ix)
           end do
  
 !c  update ionic strength
  
-          call ionstr(c,cx,strion,chargec,chargex,nc-1,nx,namec)
+          call ionstr(cold,cxnew,strion,chargec,chargex,nc-1,nx,namec)
  
 !c  make sure new ionic strength is not larger than maximum
 !c  allowed ionic strength to avoid convergence problems
@@ -1299,36 +1300,36 @@
 !cprovi Pitzer equations 
 !cprovi---------------------------------------------- 
               call pitzer (phase,gamma(1:nc,ivol),                    &
-     &                     gamma(nc+1:nc+nx,ivol),                    &
-     &                     cnew(1:nc,ivol),cx(1:nx,ivol),             &
-     &                     nc,nx,ilog)
+                           gamma(nc+1:nc+nx,ivol),                    &
+                           cnew(1:nc,ivol),cxnew(1:nx,ivol),          &
+                           nc,nx,ilog)
             else
 !cprovi----------------------------------------------    
 !cprovi for free species
 !cprovi----------------------------------------------
 
               do ic=1,nc
-                   gamma(ic,ivol) = acoff(cnew(1,ivol),cx(1,ivol),    &
-     &                              sionnew(ivol),chargec(ic),        &
-     &                              dhac(ic),dhbc(ic),                &
-     &                              dhad(tid),dhbd(tid),              &
-     &                              adav,bdav,acth2omin,nc,           &
-     &                              nx,namec(ic),namec,ic,            &
-     &                              issit,asit,basit,coepsil,         &
-     &                              iasit,jasit)
+                   gamma(ic,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol), &
+                                          sionnew(ivol),chargec(ic),  &
+                                          dhac(ic),dhbc(ic),          &
+                                          dhad(tid),dhbd(tid),        &
+                                          adav,bdav,acth2omin,nc,     &
+                                          nx,namec(ic),namec,ic,      &
+                                          issit,asit,basit,coepsil,   &
+                                          iasit,jasit)
               end do
 
 !c  --> for secondary aqueous species
 
               do ix=1,nx
-                   gamma(nc+ix,ivol) = acoff(cnew(1,ivol),cx(1,ivol), &
-     &                                 sionnew(ivol),chargex(ix),     &
-     &                                 dhax(ix),dhbx(ix),             &
-     &                                 dhad(tid),dhbd(tid),           &
-     &                                 adav,bdav,acth2omin,nc,        &
-     &                                 nx,namex(ix),namec,            &
-     &                                 nc+ix,issit,asit,basit,        &
-     &                                 coepsil,iasit,jasit)
+                   gamma(nc+ix,ivol) = acoff(cnew(:,ivol),cxnew(:,ivol), &
+                                             sionnew(ivol),chargex(ix),  &
+                                             dhax(ix),dhbx(ix),          &
+                                             dhad(tid),dhbd(tid),        &
+                                             adav,bdav,acth2omin,nc,     &
+                                             nx,namex(ix),namec,         &
+                                             nc+ix,issit,asit,basit,     &
+                                             coepsil,iasit,jasit)
               end do
                
             end if
@@ -1358,7 +1359,7 @@
 
 !c  recompute total gaseous component concentrations
 
-              call totconcg(gnew(1,ivol),totgnew(1,ivol))
+              call totconcg(gnew(:,ivol),totgnew(:,ivol))
 
             end if
 
@@ -1366,7 +1367,7 @@
 
             if (redox_equil_rt.and.nr.gt.0) then
 
-              call comptotc(totgnew(1,ivol))
+              call comptotc(totgnew(:,ivol))
 
             end if
 
@@ -1395,41 +1396,49 @@
 !c  recompute sorbed species concentrations
 
               do isb = 1,nsb_ion
-                call sorbspc(csb_ion(isb,tid),dummy,cec_g(ivol),      &
-                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),  &
-                     cnew(1,ivol),xnusb_ion,xnusb_surf,               &
+                call sorbspc(csb_ion(isb,tid),dummy,                  &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
+                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(:,ivol),  &
+                     cnew(:,ivol),xnusb_ion,xnusb_surf,               &
                      iasb_ion,iasb_surf,jasb_ion,                     &
                      jasb_surf,nsb_ion,nsb_surf,isb,0,                &
-                     sorption_type_ion,                               &
-                     sorption_type_surf,sorption_group,isactcexch)
+                     sorption_type_ion, sorption_type_surf,           &
+                     sorption_group,isactcexch,                       &
+                     elect_correction,name_elect_correction,nelect,   &
+                     dz_surf,totcnew(:,ivol),component_type,nlayer,   &
+                     mol_frac_ads)
               end do
               
               do isb = 1,nsb_surf
-                call sorbspc(dummy,csb_surf(isb,tid),cec_g(ivol),     &
-                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(1,ivol),  &
-                     cnew(1,ivol),xnusb_ion,xnusb_surf,               &
+                call sorbspc(dummy,csb_surf(isb,tid),                 &
+                     cnew(n-nelect+1:n,ivol),cec_g(ivol),             &
+                     eqsb_ion(:,tid),eqsb_surf(:,tid),gamma(:,ivol),  &
+                     cnew(:,ivol),xnusb_ion,xnusb_surf,               &
                      iasb_ion,iasb_surf,jasb_ion,                     &
                      jasb_surf,nsb_ion,nsb_surf,0,isb,                &
                      sorption_type_ion,sorption_type_surf,            &
-                     sorption_group,isactcexch)
+                     sorption_group,isactcexch,                       &
+                     elect_correction,name_elect_correction,nelect,   &
+                     dz_surf,totcnew(:,ivol),component_type,nlayer,   &
+                     mol_frac_ads)
               end do
 
 !c  recompute total sorbed component concentrations
 
               call totsorb(csb_ion(:,tid),csb_surf(:,tid),            &
                    chargesb_ion,rhobulk_g(ivol),                      &
-                   totsnew_ion(1,ivol),totsnew_surf(1,ivol),          &
+                   totsnew_ion(:,ivol),totsnew_surf(:,ivol),          &
                    xnusb_ion,xnusb_surf,                              &
                    iasb_ion,iasb_surf,jasb_ion,jasb_surf,nc,          &
                    nsb_ion,nsb_surf,namec)
 
 !c  compress total sorbed component concentration vector
               if(nsb_ion.gt.0) then
-                call comptotc(totsnew_ion(1,ivol))
+                call comptotc(totsnew_ion(:,ivol))
               end if
               
               if(nsb_surf.gt.0) then
-                call comptotc(totsnew_surf(1,ivol))
+                call comptotc(totsnew_surf(:,ivol))
               end if
               
             end if
@@ -1629,7 +1638,40 @@
       
       end if
 
+      if (update_bcrt) then
+        bcrt_cnt=0
+        time_temp = time_io_ini - tinytime_global
 
+        if (rank == 0 .and. b_enable_output) then
+          write(*,*) "restart - update reactive transport boundary condition"
+          write(ilog,*) "restart - update reactive transport boundary condition"
+        end if
+      
+        !rewind(ibcrt)
+        !cdsu skip comment line and rewind to the first record
+        call rewind_first_record(ibcrt)
+        do while (time_io.gt.time_temp)
+          time_bcrt_prev = time_temp
+          read(ibcrt,*,err=998,end=1990) time_temp
+          bcrt_cnt=bcrt_cnt+1
+        end do
+
+1990    continue
+
+        if (time_io.gt.time_temp) then
+          !cdsu set the time to the final time later
+          time_bcrt = 1.1d0*tfinal/time_factor
+          !cdsu backspace of this file, need for updtbcrt and updtbcdd
+          backspace(ibcrt)
+        else
+          time_bcrt = time_temp
+        end if
+
+        call updtbcrt
+
+        b_restart_update_bcrt = .false.
+
+      end if
 
       !c update ice boundary condition
       if (update_bcice) then

@@ -1,0 +1,326 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"cdr-simulation_o.mas" "subdomain_1/cdr-simulation_o.mas" "subdomain_2/cdr-simulation_o.mas" "subdomain_3/cdr-simulation_o.mas" "subdomain_4/cdr-simulation_o.mas" "subdomain_5/cdr-simulation_o.mas"'
+$!VarSet |LFDSVL1| = '"time" "tracer"'
+$!SetStyleBase Factory
+$!GlobalPaper 
+  PaperSizeInfo
+    {
+    Letter
+      {
+      Width = 8.5
+      Height = 11
+      LeftHardClipOffset = 0.125
+      RightHardClipOffset = 0.125
+      TopHardClipOffset = 0.125
+      BottomHardClipOffset = 0.125
+      }
+    }
+$!Page 
+  Name = 'Untitled'
+  PaperAttributes
+    {
+    BackgroundColor = White
+    IsTransparent = Yes
+    OrientPortrait = No
+    ShowGrid = Yes
+    ShowRuler = No
+    ShowPaper = No
+    PaperSize = Letter
+    RulerSpacing = OneInch
+    PaperGridSpacing = HalfInch
+    RegionInWorkArea
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!ReadDataSet  '|LFDSFN1|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  ResetStyle = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL1|'
+$!RemoveVar |LFDSVL1|
+$!RemoveVar |LFDSFN1|
+$!AlterData  [1]
+  IgnoreDivideByZero = Yes
+  Equation = '{all subdomain tracer}=V2[2]+V2[3]+V2[4]+V2[5]+V2[6]'
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 0.25
+    }
+  Width = 9
+  Height = 8
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [1-7]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    Show = Yes
+    TextShape
+      {
+      SizeUnits = Point
+      Height = 15
+      }
+    Box
+      {
+      BoxType = None
+      }
+    XYPos
+      {
+      X = 88.424
+      Y = 84.639
+      }
+    }
+$!LineMap  [1]
+  Name = 'total mass - entire domain'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Red
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = 'total mass - subdomain 1'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Green
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = 'total mass - subdomain 2'
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Blue
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = 'total mass - subdomain 3'
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom1
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [5]
+  Name = 'total mass - subdomain 4'
+  Assign
+    {
+    Zone = 5
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom3
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Custom3
+    FillColor = Custom3
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [6]
+  Name = 'total mass - subdomain 5'
+  Assign
+    {
+    Zone = 6
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Purple
+    LineThickness = 0.4
+    }
+  Symbols
+    {
+    Show = No
+    Color = Purple
+    FillColor = Purple
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [7]
+  Name = 'total mass - all subdomains'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 3
+    }
+  Lines
+    {
+    Show = No
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    Size = 1
+    LineThickness = 0.2
+    SkipMode = ByFrameUnits
+    Skipping = 3
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+$!XYLineAxis 
+  XDetail 1
+    {
+    CoordScale = Log
+    RangeMin = 0.0040004000000000003098
+    RangeMax = 4.0003999999999999559
+    GRSpacing = 0.5
+    Title
+      {
+      TitleMode = UseText
+      Text = 'time [years]'
+      }
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = 5.9999998095931352334E-20
+    RangeMax = 594.20522756958007449
+    GRSpacing = 100
+    Title
+      {
+      TitleMode = UseText
+      Text = 'total aqueous mass [moles]'
+      Offset = 8
+      }
+    }
+$!LinePlotLayers 
+  ShowSymbols = Yes
+$!FrameControl ActivateByNumber
+  Frame = 1
+$!SetStyleBase Config

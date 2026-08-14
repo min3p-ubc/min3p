@@ -1,0 +1,334 @@
+ 
+SIMULATION
+  SIMULATION_TYPE SUBSURFACE
+  PROCESS_MODELS
+    SUBSURFACE_FLOW flow
+      MODE RICHARDS
+    /
+    SUBSURFACE_TRANSPORT transport
+      GLOBAL_IMPLICIT
+    /
+  /
+END
+
+SUBSURFACE
+
+#=========================== useful tranport parameters ==================
+
+#UNIFORM_VELOCITY 27.814752 0.d0 0.d0 m/yr
+REFERENCE_DENSITY 1000.d0
+
+#=========================== chemistry ========================================
+CHEMISTRY
+  PRIMARY_SPECIES
+    Tracer
+  /
+  OUTPUT
+    all
+    TOTAL
+  /
+END
+
+#=========================== solver options ===================================
+NEWTON_SOLVER FLOW
+  #RTOL 1.d-12
+  RTOL 1.d-20
+  #ATOL 1.d-12
+  #STOL 1.e-60
+  #DTOL 1.e4
+  ITOL_UPDATE 1.d0
+  #NO_INFINITY_NORM
+  #NO_PRINT_CONVERGENCE
+  #PRINT_DETAILED_CONVERGENCE
+END
+
+LINEAR_SOLVER FLOW
+  #KSP_TYPE GMRES
+  #PC_TYPE NONE
+  #KSP_TYPE PREONLY
+  #PC_TYPE LU
+  #SOLVER GMRES
+END
+
+NEWTON_SOLVER TRANSPORT
+  RTOL 1.d-12
+  ATOL 1.d-12
+  STOL 1.e-60
+  DTOL 1.e4
+  #ITOL_UPDATE 1.d-4
+  #NO_INFINITY_NORM
+  #NO_PRINT_CONVERGENCE
+  #PRINT_DETAILED_CONVERGENCE
+END
+
+LINEAR_SOLVER TRANSPORT
+  #KSP_TYPE GMRES
+  #PC_TYPE NONE
+  #KSP_TYPE PREONLY
+  #PC_TYPE LU
+  #SOLVER GMRES
+END
+
+#===========================    material  ========================================
+
+MATERIAL_PROPERTY plate
+  ID 1
+  POROSITY 0.25
+  TORTUOSITY 1.d0
+  ROCK_DENSITY 2.0E3
+  LONGITUDINAL_DISPERSIVITY 60.96
+  CHARACTERISTIC_CURVES cc1
+  PERMEABILITY
+    PERM_X 9.08163422d-9
+    PERM_Y 9.08163422d-9
+    PERM_Z 9.08163422d-9
+  /
+END
+
+CHARACTERISTIC_CURVES cc1
+  SATURATION_FUNCTION VAN_GENUCHTEN
+    LIQUID_RESIDUAL_SATURATION 0.5d-1
+    M 0.75
+    ALPHA 1.d-3
+  /
+  PERMEABILITY_FUNCTION MUALEM
+    LIQUID_RESIDUAL_SATURATION 0.1d0
+    M 0.5d0
+  /
+  PERMEABILITY_FUNCTION MUALEM_VG_GAS
+    LIQUID_RESIDUAL_SATURATION 0.1d0
+    GAS_RESIDUAL_SATURATION 0.1d0
+    M 0.5d0
+  /
+END
+
+EOS WATER
+  DENSITY CONSTANT 1000.
+  VISCOSITY CONSTANT 0.00089 Pa-s
+END
+
+FLUID_PROPERTY
+  DIFFUSION_COEFFICIENT 0.0001249998
+END
+
+#===========================    grid   ========================================
+
+GRID
+  TYPE unstructured ./stripf.mesh
+END
+
+
+#=========================    boundary   ======================================
+
+REGION all
+  COORDINATES
+    0.0d0 0.0d0 0.0d0
+    1371.6d0 914.4d0 1.0d0
+  /
+END
+
+REGION west_face
+  FACE WEST
+  COORDINATES
+    0.d0 0.d0 0.d0
+    0.d0 914.4d0 1.0d0
+  /
+END
+
+REGION strip_face
+  FACE WEST
+  COORDINATES
+    0.d0 121.92d0 0.d0
+    0.d0 609.6d0 1.0d0
+  /
+END
+
+
+REGION east_face
+  FACE EAST
+  COORDINATES
+    1371.6d0 0.d0 0.d0
+    1371.6d0 914.4d0 1.0d0
+  /
+END
+
+REGION north_face
+  FACE NORTH
+  COORDINATES
+    0.d0 914.4d0 0.d0
+    1371.6d0 914.4d0 1.0d0
+  /
+END
+
+REGION south_face
+  FACE SOUTH
+  COORDINATES
+    0.d0  0.d0  0.d0
+    1371.6d0 0.d0 1.0d0
+  /
+END
+
+#===========================    timestep   ========================================
+
+TIME
+  FINAL_TIME 3000.0 day
+  INITIAL_TIMESTEP_SIZE 1.d-4 day
+  MAXIMUM_TIMESTEP_SIZE 10.0 day at 0.d0 day
+END
+
+OUTPUT
+  TIMES day 1500.0  3000.0
+  FORMAT TECPLOT POINT
+  FORMAT HDF5
+  FORMAT VTK
+  PRINT_COLUMN_IDS
+  VELOCITY_AT_CENTER
+END
+
+#========================    flow condition  =====================================
+
+FLOW_CONDITION initial
+  TYPE
+    PRESSURE dirichlet
+  /
+  PRESSURE 8961120.0d0
+END
+
+FLOW_CONDITION west_face
+  TYPE
+    PRESSURE dirichlet
+  /
+  PRESSURE 8961238.5556 Pa
+END
+
+FLOW_CONDITION strip_face
+  TYPE
+    PRESSURE dirichlet
+  /
+  PRESSURE 8961238.5556 Pa
+END
+
+FLOW_CONDITION east_face
+  TYPE
+    PRESSURE dirichlet
+  /
+  PRESSURE 8961120.0 Pa
+END
+
+FLOW_CONDITION north_face
+  TYPE
+    FLUX neumann
+  /
+  FLUX 0.d0 m/yr
+END
+
+FLOW_CONDITION south_face
+  TYPE
+    FLUX neumann
+  /
+  FLUX 0.d0 m/yr
+END
+
+
+#=========================== constraints ======================================
+CONSTRAINT initial
+  CONCENTRATIONS
+    Tracer 1.0d-20  T
+  /
+END
+
+CONSTRAINT boundary
+  CONCENTRATIONS
+    Tracer 1.0d-20  T
+  /
+END
+
+CONSTRAINT outlet
+  CONCENTRATIONS
+    Tracer 1.0d-20  T
+  /
+END
+
+CONSTRAINT inlet
+  CONCENTRATIONS
+#    Tracer 0.0282064  T
+     Tracer 0.048688387   T
+  /
+END
+
+
+#========================   transport condition  =====================================
+TRANSPORT_CONDITION initial
+  TYPE dirichlet
+  CONSTRAINT_LIST
+    0.0d0 initial
+  /
+END
+
+TRANSPORT_CONDITION boundary
+  TYPE dirichlet
+  CONSTRAINT_LIST
+    0.0d0 boundary
+  /
+END
+
+TRANSPORT_CONDITION outlet
+  TYPE zero_gradient
+  CONSTRAINT_LIST
+    0.0d0 outlet
+  /
+END
+
+TRANSPORT_CONDITION inlet
+  TYPE dirichlet
+  CONSTRAINT_LIST
+    0.0d0 inlet
+  /
+END
+
+
+#=========================== condition couplers ===============================
+INITIAL_CONDITION initial
+  FLOW_CONDITION initial
+  TRANSPORT_CONDITION initial
+  REGION all
+END
+
+BOUNDARY_CONDITION west_face
+  FLOW_CONDITION west_face
+  TRANSPORT_CONDITION boundary
+  REGION west_face
+END
+
+BOUNDARY_CONDITION strip_face
+  FLOW_CONDITION strip_face
+  TRANSPORT_CONDITION inlet
+  REGION strip_face
+END
+
+
+BOUNDARY_CONDITION east_face
+  FLOW_CONDITION east_face
+  TRANSPORT_CONDITION outlet
+  REGION east_face
+END
+
+#BOUNDARY_CONDITION north_face
+#  FLOW_CONDITION north_face
+#  TRANSPORT_CONDITION boundary
+#  REGION north_face
+#END
+
+#BOUNDARY_CONDITION south_face
+#  FLOW_CONDITION south_face
+#  TRANSPORT_CONDITION boundary
+#  REGION south_face
+#END
+
+#=========================== stratigraphy couplers ============================
+STRATA
+  REGION all
+  MATERIAL plate
+END
+
+END_SUBSURFACE

@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/opnmbfls_mcd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/opnmbfls_mcd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -159,10 +159,10 @@
 #endif
 #endif
       
-      integer :: i, ic, imb, l_sufx, ierr
+      integer :: i, ic, imb, isub, l_sufx, ierr
 
       character*2 suffix
-      character*36 :: strl36
+      character*256 :: strFilePath
       character*2048 :: strbuffer      
       character*72, allocatable :: tec_variables(:)
       integer :: nvarsimcd, ilun, nlun
@@ -175,6 +175,8 @@
         return
       end if
 
+      isub = 0
+
       b_rewind_valid = .false.
 
       if (b_enable_output .and. b_output_trans_binary) then
@@ -183,214 +185,32 @@
         tec_variables = ''
         call memory_monitor(sizeof(tec_variables),'tec_variables',.false.)
       end if
-
-!c     write(*,'(/a)') 'enter routine opnmbfls_mcd ...'
- 
  
 !c  mass balance - reactive transport - Multicomponent Diffusion Option
 
       if (flux_out) then
 
-        !imcd_first = 203
-        imcd_first = lun_get()
+        imcd_first(isub) = lun_get()
         nlun = n+2
         do ilun = 1, nlun
-          call lun_set(imcd_first+ilun)
+          call lun_set(imcd_first(isub)+ilun)
         end do
 
         if (i_append_sim < 1) then
           write(ifls,'(//72a/a/72a)')    &
-     &       ('*',i=1,72),        &
-     &    'mass balance - reactive transport- Multicomponent Diffusion',    &
-     &       ('*',i=1,72)
+               ('*',i=1,72),             &
+               'mass balance - reactive transport- Multicomponent Diffusion',&
+               ('*',i=1,72)
         end if
 
 !c  total system mass for components
 
-        imcd = imcd_first
+        imcd(isub) = imcd_first(isub)
         
-!c disable creating masmcd file as code for masmcd output is missing in mbal_mcd
-
-!        if (b_enable_output .and. b_output_trans_binary) then
-!          allocate(imcd_mpi(imcd_first:imcd_first+n+2), stat = ierr)
-!          call checkerr(ierr,'imcd_mpi',ilog)
-!          imcd_mpi = 0
-!
-!          allocate(offset_imcd(imcd_first:imcd_first+n+2), stat = ierr)
-!          call checkerr(ierr,'offset_imcd',ilog)
-!          offset_imcd = 0
-!
-!          allocate(offset_imcd_ijk(imcd_first:imcd_first+n+2), stat = ierr)
-!          call checkerr(ierr,'offset_imcd_ijk',ilog)
-!          offset_imcd_ijk = 0
-!        end if
-!
-!        if (b_enable_output) then
-!          if (b_output_trans_binary) then
-!#ifndef PETSC
-!            if (imcd_mpi(imcd) < 10) then
-!              imcd_mpi(imcd) = lun_get()
-!            end if
-!#endif
-!            call binary_file_open(PETSC_COMM_SELF,             &
-!                         imcd_mpi(imcd), prefix(:l_prfx)//'_o.masmcd', &
-!                         .true.)
-!          else
-!            open(imcd,file=prefix(:l_prfx)//'_o.masmcd',               &
-!                      status='unknown',form='formatted')
-!          end if
-!
-!!c  version information
-!          if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-!            call writeversion2file(imcd, "#")
-!          end if
-!
-!          if (b_output_trans_binary) then
-!            nvarsimcd = nc
-!            tec_variables(1) = "time"
-!            do ic = 1,nc-1
-!              tec_variables(ic+1) = trim(namec(ic))
-!            end do
-!            strbuffer = "system mass - aqueous phase"
-!
-!            offset_imcd(imcd) = 0
-!            call tecplot_binary_write_header(PETSC_COMM_SELF,          &
-!                         imcd_mpi(imcd), "#!TDV102",'dataset '//       &
-!                         prefix(:l_prfx),offset_imcd(imcd),.true.,     &
-!                         .true.)
-!
-!            call tecplot_binary_write_variable(PETSC_COMM_SELF,        &
-!                         imcd_mpi(imcd), nvarsimcd,                    &
-!                         tec_variables(1:nvarsimcd),                   &
-!                         offset_imcd(imcd),.true.,.true.)
-!
-!            call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,        &
-!                         imcd_mpi(imcd),trim(strbuffer),               &
-!                         offset_imcd(imcd), 1, 1, 1, .true.,.true.,    &
-!                         b_output_multizone)
-!            offset_imcd_ijk(imcd) = offset_imcd(imcd) - 5*4
-!
-!            call tecplot_binary_write_section(PETSC_COMM_SELF,         &
-!                         imcd_mpi(imcd),nvarsimcd,0,offset_imcd(imcd), &
-!                         .true.,.true.,b_output_multizone)
-!          else
-!            write(imcd,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-!
-!            strbuffer = 'variables = "time"'
-!            do ic = 1,nc-1
-!              strbuffer = trim(strbuffer)//', "'//trim(namec(ic))//'"'
-!            end do
-!
-!            write(imcd,'(a)') trim(strbuffer)
-!            write(imcd,'(2a)')                                         &
-!                  'zone t = "system mass - aqueous phase", f=point'
-!          end if
-!
-!          write(ifls,'(/a/72a/)') 'system mass - aqueous phase',       &
-!     &                            ('-',i=1,72)
-!          write(ifls,'(a/)') prefix(:l_prfx)//'_o.masmcd'
-!
-!          write(ifls,'(2a)')  'column   entry                           ',&
-!     &                        'unit'
-!          write(ifls,'(2a)')  '1        time                            ',&
-!     &                         time_unit
-!          do ic = 1,nc-1
-!            if (ic.lt.9) then
-!              write(ifls,'(i1,8x,a30,2x,a)') ic+1,namec(ic),'moles'
-!            else
-!              write(ifls,'(i2,7x,a30,2x,a)') ic+1,namec(ic),'moles'
-!            end if
-!          end do
-!        end if
-
 !c  total system mass for selected species
 
         if (nmb.gt.0) then
-
-          imcd = imcd + 1
-          
-!c disable creating mssmcd file as code for mssmcd output is missing in mbal_mcd
-          
-!          !Missing results in this file. DSU, 2014-10-09
-!          if (b_enable_output) then
-!            if (b_output_trans_binary) then
-!#ifndef PETSC
-!              if (imcd_mpi(imcd) < 10) then
-!                imcd_mpi(imcd) = lun_get()
-!              end if
-!#endif
-!              call binary_file_open(PETSC_COMM_SELF,           &
-!                          imcd_mpi(imcd), prefix(:l_prfx)//'_o.mssmcd',&
-!                          .true.)
-!            else
-!              open(imcd,file=prefix(:l_prfx)//'_o.mssmcd',             &
-!                        status='unknown',form='formatted')
-!            end if
-!
-!!c  version information
-!            if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-!              call writeversion2file(imcd, "#")
-!            end if
-!
-!            if (b_output_trans_binary) then
-!              nvarsimcd = nmb+1
-!              tec_variables(1) = "time"
-!              do imb = 1,nmb
-!                tec_variables(imb+1) = trim(namemb(imb))
-!              end do
-!              strbuffer = "system mass - selected species"
-!
-!              offset_imcd(imcd) = 0
-!              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-!                           imcd_mpi(imcd), "#!TDV102",'dataset '//     &
-!                           prefix(:l_prfx),offset_imcd(imcd),.true.,   &
-!                           .true.)
-!
-!              call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-!                           imcd_mpi(imcd), nvarsimcd,                  &
-!                           tec_variables(1:nvarsimcd),                 &
-!                           offset_imcd(imcd),.true.,.true.)
-!
-!              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-!                           imcd_mpi(imcd),trim(strbuffer),             &
-!                           offset_imcd(imcd), 1, 1, 1, .true.,.true.,  &
-!                           b_output_multizone)
-!              offset_imcd_ijk(imcd) = offset_imcd(imcd) - 5*4
-!
-!              call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-!                           imcd_mpi(imcd),nvarsimcd,0,                 &
-!                           offset_imcd(imcd),.true.,.true.,            &
-!                           b_output_multizone)
-!            else
-!              write(imcd,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-!
-!              strbuffer = 'variables = "time"'
-!              do imb = 1,nmb
-!                strbuffer = trim(strbuffer)//', "'//trim(namemb(imb))//'"'
-!              end do
-!
-!              write(imcd,'(a)') trim(strbuffer)
-!              write(imcd,'(2a)')                                       &
-!                    'zone t = "system mass - selected species", f=point'
-!            end if
-!
-!            write(ifls,'(/a/72a/)') 'system mass - selected species',  &
-!     &                              ('-',i=1,72)
-!            write(ifls,'(a/)') prefix(:l_prfx)//'_o.mssmcd'
-!
-!            write(ifls,'(2a)')'column   entry                           ',    &
-!     &                        'unit'
-!            write(ifls,'(2a)')'1        time                            ',    &
-!     &                         time_unit
-!            do imb = 1,nmb
-!              if (imb.lt.9) then
-!                write(ifls,'(i1,8x,a30,2x,a)') imb+1,namemb(imb),'moles'
-!              else
-!                write(ifls,'(i2,7x,a30,2x,a)') imb+1,namemb(imb),'moles'
-!              end if
-!            end do
-!          end if
-
+          imcd(isub) = imcd(isub) + 1
         end if
 
 !c  contributions to mass balance - aqueous phase
@@ -413,34 +233,28 @@
               "outflux migration [mol/d]",                             &
               "outflux [mol/d]",                                       &
               "change in storage [mol/d]",                             &
-              "source/sink from root uptake [mol/d]",                  &
-              "total influx diffusion [mol/elapsed time]",             &
-              "total influx migration [mol/elapsed time]",             &
-              "total influx [mol/elapsed time]",                       &
-              "total outflux diffusion [mol/elapsed time]",            &
-              "total outflux migration [mol/elapsed time]",            &
-              "total outflux [mol/elapsed time]",                      &
-              "total change in storage [mol/elapsed time]",            &
-              "total source/sink from root uptake [mol/elapsed time]"] 
+              "source/sink from passive solute uptake [mol/d]",        &
+              "accumulative influx diffusion [mol]",                   &
+              "accumulative influx migration [mol]",                   &
+              "accumulative influx [mol]",                             &
+              "accumulative outflux diffusion [mol]",                  &
+              "accumulative outflux migration [mol]",                  &
+              "accumulative outflux [mol]",                            &
+              "accumulative change in storage [mol]",                  &
+              "accumulative source/sink from passive solute uptake [mol]"] 
         end if
 
         do ic = 1,n
 
-          imcd = imcd+1
+          imcd(isub) = imcd(isub) + 1 
           
           if (b_enable_output) then
 
             !rewind(icnv)           !Deprecated, use internal convert instead. DSU
             if(ic.lt.10) then
-              !write(icnv,'(i1)') ic
-              !rewind(icnv)
-              !read(icnv,'(a2)') suffix
               write(suffix,'(i1)') ic
               l_sufx = 1
             elseif (ic.ge.10) then
-              !write(icnv,'(i2)') ic
-              !rewind(icnv)
-              !read(icnv,'(a2)') suffix
               write(suffix,'(i2)') ic
               l_sufx = 2
             end if
@@ -448,31 +262,31 @@
 !c  open file
             if (b_output_trans_binary) then
 #ifndef PETSC
-              if (imcd_mpi(imcd) < 10) then
-                imcd_mpi(imcd) = lun_get()
+              if (imcd_mpi(imcd(isub)) < 10) then
+                imcd_mpi(imcd(isub)) = lun_get()
               end if
 #endif
               call binary_file_open(PETSC_COMM_SELF,                   &
-                           imcd_mpi(imcd), prefix(:l_prfx)//'_'//      &
-                           suffix(:l_sufx)//'.mcd',.true.)
+                          imcd_mpi(imcd(isub)), prefix(:l_prfx)//'_'// &
+                          suffix(:l_sufx)//'.mcd',.true.)
             else 
               b_rewind_valid = check_rewind_status(prefix(:l_prfx)//   &
                                      '_'//suffix(:l_sufx)//'.mcd')
               if (b_rewind_valid .and. i_append_sim > 0) then
-                open(imcd,file=prefix(:l_prfx)//'_'//                  &
-                        suffix(:l_sufx)//'.mcd',status='unknown',      &
-                        form='formatted',position='rewind')
+                open(imcd(isub),file=prefix(:l_prfx)//'_'//            &
+                     suffix(:l_sufx)//'.mcd',status='unknown',         &
+                     form='formatted',position='rewind')
               else
-                open(imcd,file=prefix(:l_prfx)//'_'//                  &
-                        suffix(:l_sufx)//'.mcd',status='unknown',      &
-                        form='formatted')
+                open(imcd(isub),file=prefix(:l_prfx)//'_'//            &
+                     suffix(:l_sufx)//'.mcd',status='unknown',         &
+                     form='formatted')
               end if
             end if
           
 !c  version information
             if (i_append_sim < 1 .or. .not.b_rewind_valid) then
               if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-                call writeversion2file(imcd, "#")
+                call writeversion2file(imcd(isub), "#")
               end if
             end if
             
@@ -480,32 +294,33 @@
               write(strbuffer,'(3a)') "mass balance for component ",   &
                     namec(ic)(:l_namec(ic))," - reactive transport"              
               
-              offset_imcd(imcd) = 0  
-              call tecplot_binary_write_header(PETSC_COMM_SELF,        &
-                           imcd_mpi(imcd), "#!TDV102",'dataset '//     &
-                           prefix(:l_prfx),offset_imcd(imcd),.true.,   &
+              offset_imcd(imcd(isub)) = 0  
+              call tecplot_binary_write_header(PETSC_COMM_SELF,            &
+                           imcd_mpi(imcd(isub)), "#!TDV102",'dataset '//   &
+                           prefix(:l_prfx),offset_imcd(imcd(isub)),.true., &
                            .true.)  
               
               call tecplot_binary_write_variable(PETSC_COMM_SELF,      &
-                           imcd_mpi(imcd), nvarsimcd,                  &
+                           imcd_mpi(imcd(isub)), nvarsimcd,            &
                            tec_variables(1:nvarsimcd),                 &
-                           offset_imcd(imcd),.true.,.true.)               
+                           offset_imcd(imcd(isub)),.true.,.true.)               
               
-              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,      &
-                           imcd_mpi(imcd),trim(strbuffer),             &
-                           offset_imcd(imcd), 1, 1, 1, .true.,.true.,  &
+              call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
+                           imcd_mpi(imcd(isub)),trim(strbuffer),           &
+                           offset_imcd(imcd(isub)), 1, 1, 1, .true.,.true.,&
                            b_output_multizone)
-              offset_imcd_ijk(imcd) = offset_imcd(imcd) - 5*4
+              offset_imcd_ijk(imcd(isub)) = offset_imcd(imcd(isub)) - 5*4
               
               call tecplot_binary_write_section(PETSC_COMM_SELF,       &
-                           imcd_mpi(imcd),nvarsimcd,0,                 &
-                           offset_imcd(imcd),.true.,.true.,            &
+                           imcd_mpi(imcd(isub)),nvarsimcd,0,           &
+                           offset_imcd(imcd(isub)),.true.,.true.,      &
                            b_output_multizone) 
             else
               if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-                write(imcd,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+                write(imcd(isub),'(3a)') 'title = "dataset ',          &
+                      prefix(:l_prfx),'"'
 
-                write(imcd,'(33a)') 'variables = "time [',             &
+                write(imcd(isub),'(33a)') 'variables = "time [',       &
                        time_unit(:l_time_unit),']", ',                 &
                       '"influx diffusion [mol/d]", ',                  &
                       '"influx migration [mol/d]", ',                  &
@@ -514,18 +329,18 @@
                       '"outflux migration [mol/d]", ',                 &
                       '"outflux [mol/d]", ',                           &
                       '"change in storage [mol/d]", ',                 &
-                      '"source/sink from root uptake [mol/d]", ',      &
-                      '"total influx diffusion [mol/elapsed time]", ', &
-                      '"total influx migration [mol/elapsed time]", ', &
-                      '"total influx [mol/elapsed time]", ',           &
-                      '"total outflux diffusion [mol/elapsed time]", ',&
-                      '"total outflux migration [mol/elapsed time]", ',&
-                      '"total outflux [mol/elapsed time]", ',          &
-                      '"total change in storage [mol/elapsed time]",', &
-                      '"total source/sink from root uptake',           &
-                      ' [mol/elapsed time]"'
+                      '"source/sink from passive solute uptake [mol/d]", ',&
+                      '"accumulative influx diffusion [mol]", ',       &
+                      '"accumulative influx migration [mol]", ',       &
+                      '"accumulative influx [mol]", ',                 &
+                      '"accumulative outflux diffusion [mol]", ',      &
+                      '"accumulative outflux migration [mol]", ',      &
+                      '"accumulative outflux [mol]", ',                &
+                      '"accumulative change in storage [mol]",',       &
+                      '"accumulative source/sink from passive solute uptake', &
+                      ' [mol]"'
 
-                write(imcd,'(4a)')                                     &
+                write(imcd(isub),'(4a)')                               &
                       'zone t = "mass balance for component ',         &
                       namec(ic)(:l_namec(ic)),' - ',                   &
                       ' reactive transport", f=point'
@@ -533,15 +348,14 @@
             end if
 
 !c  write data to file information file
-            strl36 = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mcd'
-            write(ifls,'(2a)') strl36,namec(ic)
+            strFilePath = prefix(:l_prfx)//'_'//suffix(:l_sufx)//'.mcd'
+            write(ifls,'(a,1x,a)') trim(strFilePath),namec(ic)
           end if
         end do
 
-
 !c  pointer to last mass balance file for reactive transport
 
-        imcd_last = imcd
+        imcd_last(isub) = imcd(isub)
 
       end if
 

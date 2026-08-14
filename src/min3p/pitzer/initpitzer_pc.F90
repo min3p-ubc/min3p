@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/pitzer/initpitzer_pc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/pitzer/initpitzer_pc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -134,6 +134,7 @@ if (ispitzerdens) then
   read(iunit,*) ndim
   do i=1,ndim 
     read(iunit,*) name,molw,molv
+    call makelowercase(name)
     do j=1,nc
       if (name==namec(j)) then
          ndim_valid = ndim_valid + 1
@@ -163,7 +164,14 @@ if (ispitzerdens) then
       read(iunit,*) ndim
       do i=1,ndim 
         read(iunit,'(a)') strbuffer 
+        
+        if (len_trim(strbuffer) == 0) then
+          cycle 
+        end if        
+        
         read(strbuffer,*) name,molw,molv
+        call makelowercase(name)
+
         do j=1,nc
           if (name==namec(j)) then
              write(idbs_bk,'(a)') trim(strbuffer)

@@ -1,0 +1,841 @@
+! bemidji
+! variably saturated flow and reactive transport
+! 2D case with methanogenesis and oxidation
+!
+! Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'Test Example - 2D case with methanogenesis'
+.true.                        ;varsat_flow
+.true.                        ;steady_flow
+.false.                       ;fully_saturated
+.true.                        ;reactive_transport
+
+'parallel solver configuration file'
+'solver.cfg'
+!'restart'
+
+'backup frequency'
+25
+
+!'output sparse matrix data set and rhs'
+
+'done'
+
+!
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'min3p-database20'
+!'/global/home/smolins/min3p-database/min3p-database20'
+!'/global/home/smolins/min3p-database/min3p-database10'
+!'d:\min3p\min3p-database\min3p-database10'
+!'~/min3p-database/min3p-database10'
+
+'components'
+11                  	;number of components (nc-1)
+'hco3-'		;component names
+'h+1'
+'n2(aq)'
+'o2(aq)'
+'ch4(aq)'
+'c7h8'
+'ca+2'
+'c4h10'
+'ar(aq)'
+'fe+2'
+'mn+2'
+
+'secondary aqueous species'
+15			;number of secondary aqueous species
+'oh-'			;names of secondary aqueous species
+'h2co3aq'
+'co3-2'
+'caoh+'
+'cahco3+'
+'caco3aq'
+'feoh+'
+'feoh3-1'
+'feoh2aq'
+'fehco3+'
+'feco3aq'
+'mnco3aq'
+'mnhco3+'
+'mnoh+'
+'mn(oh)3-1'
+
+'gases'
+7			;number of gases
+'co2(g)'    'hco3-'	;names of gases
+'n2(g)'     'n2(aq)'
+'o2(g)'     'o2(aq)'
+'ch4(g)'    'ch4(aq)'
+'c7h8(g)'   'c7h8'
+'c4h10(g)'  'c4h10'
+'ar(g)'     'ar'    
+
+'intra-aqueous kinetic reactions'
+5                             ;number of intra-aqueous kinetic reactions
+'c7h8-o2m'                    ;names of intra-aqueous kinetic reactions
+'c7h8-ch4m'
+'c4h10-o2m'
+'ch4-o2m'
+'c4h10-ch4m'
+
+'scaling for intra-aqueous kinetic reactions'
+5.0d-8               ;'c7h8-o2m'
+3.75d-10             ;'c7h8-ch4-3'
+5.0d-9               ;'c4h10-o2m'
+5.0d-8               ;'ch4-o2m'
+1.0d-10              ;'c4h10-ch4-3'
+
+'minerals'
+13			      ;number of minerals
+'c7h8(r)'		      ;mineral names
+'c4h10(r)'
+'residual(r)'
+'calcite'
+'siderite(c)'
+'rhodochrosit'
+'feooh-c7h8m'
+'feooh-c4h10m'
+'mno2-c7h8m'
+'mno2-c4h10m'
+'ch4-sourcez'
+'co2-sourcez'
+'ebullition'
+
+'combine mineralogical parameters'
+'c7h8(r)'
+'c4h10(r)'
+'residual(r)'
+'calcite'
+'siderite(c)'
+'rhodochrosit'
+'feooh-c7h8m'
+'feooh-c7h8m'
+'mno2-c7h8m'
+'mno2-c7h8m'
+'ch4-sourcez'
+'co2-sourcez'
+'ebullition'
+
+'done'
+
+!
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+1                             ;number of discretization intervals in x
+175                           ;number of control volumes in x
+-75 100.0                     ;xmin,xmax
+1                             ;number of discretization intervals in y
+1                             ;number of control volumes in y
+0. 1.0                        ;ymin,ymax
+3                             ;number of discretization intervals in z
+9                             ;number of control volumes in z
+423.5 426.55                  ;zmin,zmax
+4                             ;number of control volumes in z
+426.55 427.0                  ;zmin,zmax
+16                            ;number of control volumes in z
+427.0 432.5                   ;zmin,zmax
+
+'done'
+
+!
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'years'                      ;time unit
+0.00d+0                      ;time at start of solution
+28.00d+0                     ;final solution time
+1.00d+0                      ;maximum time step
+1.00d-10                     ;minimum time step
+
+'done'
+
+!
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'newton iteration settings'
+1.d-4                         ;factor for numerical differentiation
+1.d-6                         ;convergence tolerance
+
+'maximum ionic strength'
+1.0d0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5d0                         ;min. activity for h2o
+
+'done'
+
+!
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - variably saturated flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'hydraulic head'              ;input unit
+
+'solver settings'
+0                             ;level_vs, incomplete factorization level
+100                           ;msolvit_vs, max. number of solver iterations
+0                             ;idetail_vs, solver information level
+1.0d-7                        ;restol_vs, solver residual tolerance
+1.0d-7                        ;deltol_vs, solver update tolerance
+
+'done'
+
+!
+! Data Block 7: control parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'control parameters - reactive transport'
+
+!'dense block matrices'
+
+'mass balance'
+
+'spatial weighting'
+'upstream'                    ;spatial weighting
+
+'activity update settings'
+'no update'                 ;type of activity update
+
+'tortuosity correction'
+'millington'
+
+'user specified underrelaxation factor'
+0.7d0
+
+'newton iteration settings'
+1.d-4                         ;increment h for numerical differentiation
+15                            ;anticipated number of Newton iterations
+45                            ;max. number of Newton iterations
+0.8d0                         ;anticipated update in log cycles
+1.0d0                         ;maximum update in log cycles
+1.d-6                         ;convergence tolerance (global system)
+
+'solver settings'
+2                             ;incomplete factorization level
+100                           ;max. number of solver iterations
+0                             ;solver information level
+1.d-9                         ;solver residual tolerance
+1.d-9                         ;solver update tolerance
+
+'skipped time steps in log file'
+0
+
+'gas advection'
+
+!'enable gravity for gas phase'
+
+'done'
+
+!
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'output of spatial data'
+12                                        ;number of output times (spatial data)
+1.00d-1   1.00d+0   1.25d+0   6.00d+0     ;specified output times (spatial data)
+8.0d+0    10.0d+0   15.0d+0   18.0d+0
+21.0d+0   24.0d+0   26.0d+0   28.0d+0
+
+'output of transient data'
+6                             ;number of output locations (transient data)
+1                            ;timesteps between output (transient data)
+88     263  438  2207              ;control volume numbers (transient data)
+2551  2732
+
+'done'
+
+!
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+2                             ;number of property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'sand'
+0.38                          ;porosity
+
+'extent of zone'
+-75.0 100.0  0.0 1.0  423.5 432.5
+
+'end of zone'
+
+'number and name of zone'
+2
+'silty sand'
+0.30                          ;porosity
+
+'extent of zone'
+-75.0  0.0  0.0 1.0  426.55 427.0
+
+'end of zone'
+
+'read oil saturation field from file'
+
+'done'
+!
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------------------------------------
+'sand'
+
+'hydraulic conductivity in x-direction'
+1.0d-4	                     ;K_xx
+
+'hydraulic conductivity in y-direction'
+1.0d-4                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+3.0d-5                       ;K_zz
+
+'specific storage coefficient'
+1.0d-5
+
+'soil hydraulic function parameters'
+0.05                          ;residual saturation
+3.00                          ;van genuchten - alpha
+2.00                          ;van genuchten - n
+0.5                           ;expn
+0.0                           ;air entry pressure
+
+'end of zone'
+
+'silty sand'
+
+'hydraulic conductivity in x-direction'
+1.0d-6	                     ;K_xx
+
+'hydraulic conductivity in y-direction'
+1.0d-6                       ;K_yy
+
+'hydraulic conductivity in z-direction'
+3.0d-7                       ;K_zz
+
+'specific storage coefficient'
+1.0d-5
+
+'soil hydraulic function parameters'
+0.10                          ;residual saturation
+4.50                          ;van genuchten - alpha
+1.20                          ;van genuchten - n
+0.5                           ;expn
+0.0                           ;air entry pressure
+
+'end of zone'
+
+'done'
+!
+! Data Block 11: physical parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'physical parameters - reactive transport'
+
+'diffusion coefficients'
+0.0d+0                         ;aqueous phase
+1.8d-5                         ;gaseous phase
+
+'dusty gas model'
+1.649d-5                       ;co2-n2
+1.635d-5                       ;co2-o2
+1.705d-5                       ;co2-ch4
+1.0d-5                       ;co2-c7h8
+1.0d-5                       ;co2-c4h10
+1.525d-5                       ;co2-ar
+2.083d-5                       ;n2-o2
+2.137d-5                       ;n2-ch4
+1.0d-5                       ;n2-c7h8
+1.0d-5                       ;n2-c4h10
+1.954d-5                       ;n2-ar
+2.263d-5                       ;o2-ch4
+1.0d-5                       ;o2-c7h8
+1.0d-5                       ;o2-c4h10
+1.928d-5                       ;o2-ar
+1.0d-5                       ;ch4-c7h8
+1.0d-5                       ;ch4-c4h10
+2.045d-5                       ;ch4-ar
+1.0d-5                       ;c7h8-c4h10
+1.0d-5                       ;c7h8-ar
+1.0d-5                       ;c4h10-ar
+1.46d-5                        ;co2x
+1.75d-5                        ;n2
+2.04d-5                        ;o2
+1.20d-5                        ;ch4
+6.8d-6                         ;c7h8
+7.5d-6                         ;c4h10
+2.22d-5                        ;ar
+
+'update density'
+
+'linear viscosity'
+1.46d-5                        ;co2x
+1.75d-5                        ;n2
+2.04d-5                        ;o2
+1.09d-5                        ;ch4
+6.8d-6                         ;c7h8
+7.5d-6                         ;c4h10
+2.22d-5                        ;ar
+
+'lennard-jones'
+3.941d0   195.2d0    ;co2
+3.798d0    71.4d0    ;n2
+3.467d0   106.7d0    ;o2
+3.758d0   148.6d0    ;ch4
+5.698d0   494.1d0    ;c7h8
+4.687d0   531.4d0    ;c4h10
+3.542d0    93.3d0    ;ar
+
+! ---------------------------------------------------------------------------
+'sand'
+
+'longitudinal dispersivity'
+0.0d0
+
+'transverse vertical dispersivity'
+0.0d0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'silty sand'
+
+'longitudinal dispersivity'
+0.0d0
+
+'transverse vertical dispersivity'
+0.0d0
+
+'end of zone'
+
+'done'
+!
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+!1                              ;number of zones
+'read initial condition from file'
+! ---------------------------------------------------------------------------
+!'number and name of zone'
+!1
+!'zone 1'
+
+!'initial condition'
+!426.00                         ;hydraulic head
+
+!'extent of zone'
+!-50.0 100.0  0.0 1.0  423.5 432.5
+
+!'end of zone'
+
+'done'
+!
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+5                             ;number of zones
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'high recharge'
+
+'boundary type'
+'second'  6.3d-9            ;flux m/s
+
+'extent of zone'
+-75.0 5.369129  0.0 1.0 430.25 430.25
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'step 1'
+
+'boundary type'
+'second'  5.0d-9            ;flux m/s
+
+'extent of zone'
+5.369129 10.40269 0.0 1.0 430.625 430.625
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'step 2'
+
+'boundary type'
+'second'  5.0d-9            ;flux m/s
+
+'extent of zone'
+10.40269 15.43625 0.0 1.0 431.750 431.750
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'low recharge'
+
+'boundary type'
+'second'  5.0d-9            ;flux m/s
+
+'extent of zone'
+15.43625 100.0  0.0 1.0  432.5 432.5
+
+'end of zone'
+
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'lower boundary'
+
+'boundary type'
+'first' 423.3d0              ;hydraulic head
+
+'extent of zone'
+-75.0 100.0  0.0 1.0  423.5 423.5
+
+'end of zone'
+
+'done'
+!
+! Data Block 15: initial conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+3                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'background chemistry'
+
+'concentration input'
+6.640d-05      'free'         ;co3-2
+8.0            'ph'           ;h+1
+0.78084d+0     'pn2'          ;n2(aq)
+0.20946d+0     'po2'          ;o2(aq)
+1.74500d-6     'pch4'         ;ch4(aq)
+1.000d-20      'free'         ;c7h8
+2.000d-03      'free'         ;ca+2
+1.000d-20      'free'         ;c4h10
+0.13090218d-4  'fixed'        ;ar(g)
+8.300d-07      'free'         ;fe+2
+4.500d-07      'free'         ;mn+2
+
+'guess for ph'
+8.0
+
+'mineral input'
+1.00d-20   .false.  'constant'  ;c7h8(r)
+1.00d-10   1.25d-6  0.00d0  
+1.00d-20   .false.  'constant'  ;c4h10(r)
+1.00d-10   4.0d-5   0.00d0  
+1.00d-20   .false.  'constant'  ;residual(r)
+1.00d-10   1.0d-20   0.00d0  
+1.00d-02   .false.  'constant'  ;calcite
+1.00d-10   1.0d-9    0.00d0
+1.00d-20   .false.  'constant'  ;siderite(c)
+1.00d-10   5.0d-20   0.00d0     
+1.00d-20   .false.  'constant'  ;rhodochrosit
+1.00d-10   1.0d-20   0.00d0 
+2.50d-04   .false.  'twothird'  ;feooh-c7h8m
+1.00d-10   7.0d-12   0.00d0
+2.50d-04   .false.  'twothird'  ;feooh-c4h10m
+1.00d-10   7.0d-12   0.00d0 
+5.00d-05   .false.  'twothird'  ;mno2-c7h8m
+1.00d-10   7.0d-12   0.00d0
+5.00d-05   .false.  'twothird'  ;mno2-c4h10m
+1.00d-10   7.0d-12   0.00d0
+0.00d0    .false.   'constant'  ;phim, minequil, update_type  - ch4-source
+1.00d-10   1.0d-100  0.00d0     ;phimin, area, supsatm
+0.00d0    .false.   'constant'  ;phim, minequil, update_type  - co2-source
+1.00d-10   1.0d-100  0.00d0     ;phimin, area, supsatm
+0.00d0    .false.   'constant'  ;phim, minequil, update_type  - ebullition
+1.00d-10   1.0d-100  0.00d0     ;phimin, area, supsatm
+
+'extent of zone'
+-75.0 100.0  0.0 1.0  430.0 432.5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'water table'
+
+'concentration input'
+6.640d-05      'free'         ;co3-2
+8.0            'ph'           ;h+1
+0.78084d+0     'pn2'          ;n2(aq)
+0.20946d+0     'po2'          ;o2(aq)
+1.74500d-6     'pch4'         ;ch4(aq)
+1.000d-20      'free'         ;c7h8
+2.000d-03      'free'         ;ca+2
+1.000d-20      'free'         ;c4h10
+0.13090218d-4  'fixed'        ;ar(g)
+8.300d-07      'free'         ;fe+2
+4.500d-07      'free'         ;mn+2
+
+'guess for ph'
+8.0
+
+'mineral input'
+1.00d-20   .false.  'constant'  ;c7h8(r)
+1.00d-10   1.25d-6    0.00d0  
+1.00d-20   .false.  'constant'  ;c4h10(r)
+1.00d-10   4.0d-5   0.00d0  
+1.00d-20   .false.  'constant'  ;residual(r)
+1.00d-10   1.0d-20   0.00d0  
+1.00d-02   .false.  'constant'  ;calcite
+1.00d-10   1.0d-9    0.00d0
+1.00d-20   .false.  'constant'  ;siderite(c)
+1.00d-10   5.0d-20   0.00d0     
+1.00d-20   .false.  'constant'  ;rhodochrosit
+1.00d-10   1.0d-20   0.00d0 
+2.50d-04   .false.  'twothird'  ;feooh-c7h8m
+1.00d-10   7.0d-12   0.00d0
+2.50d-04   .false.  'twothird'  ;feooh-c4h10m
+1.00d-10   7.0d-12   0.00d0 
+5.00d-05   .false.  'twothird'  ;mno2-c7h8m
+1.00d-10   7.0d-12   0.00d0
+5.00d-05   .false.  'twothird'  ;mno2-c4h10m
+1.00d-10   7.0d-12   0.00d0
+0.00d0    .false.   'constant'  ;phim, minequil, update_type  - ch4-source
+1.00d-10   1.0d-100  0.00d0     ;phimin, area, supsatm
+0.00d0    .false.   'constant'  ;phim, minequil, update_type  - co2-source
+1.00d-10   1.0d-100  0.00d0     ;phimin, area, supsatm
+0.00d0    .false.   'constant'  ;phim, minequil, update_type  - ebullition
+1.00d-10   1.0d-100  0.00d0     ;phimin, area, supsatm
+
+'extent of zone'
+-75.0 100.0  0.0 1.0  423.50 430.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'ebullition'
+
+'concentration input'
+6.640d-05      'free'         ;co3-2
+8.0            'ph'           ;h+1
+0.78084d+0     'pn2'          ;n2(aq)
+0.20946d+0     'po2'          ;o2(aq)
+1.74500d-6     'pch4'         ;ch4(aq)
+1.000d-20      'free'         ;c7h8
+2.000d-03      'free'         ;ca+2
+1.000d-20      'free'         ;c4h10
+0.13090218d-4  'fixed'        ;ar(g)
+8.300d-07      'free'         ;fe+2
+4.500d-07      'free'         ;mn+2
+
+'guess for ph'
+8.0
+
+'mineral input'
+1.00d-20   .false.  'constant'  ;c7h8(r)
+1.00d-10   1.25d-6    0.00d0  
+1.00d-20   .false.  'constant'  ;c4h10(r)
+1.00d-10   4.0d-5   0.00d0  
+1.00d-20   .false.  'constant'  ;residual(r)
+1.00d-10   1.0d-20   0.00d0  
+1.00d-02   .false.  'constant'  ;calcite
+1.00d-10   1.0d-9    0.00d0
+1.00d-20   .false.  'constant'  ;siderite(c)
+1.00d-10   5.0d-20   0.00d0     
+1.00d-20   .false.  'constant'  ;rhodochrosit
+1.00d-10   1.0d-20   0.00d0 
+2.50d-04   .false.  'twothird'  ;feooh-c7h8m
+1.00d-10   7.0d-12   0.00d0
+2.50d-04   .false.  'twothird'  ;feooh-c4h10m
+1.00d-10   7.0d-12   0.00d0 
+5.00d-05   .false.  'twothird'  ;mno2-c7h8m
+1.00d-10   7.0d-12   0.00d0
+5.00d-05   .false.  'twothird'  ;mno2-c4h10m
+1.00d-10   7.0d-12   0.00d0
+1.00d0    .false.   'constant'  ;phim, minequil, update_type  - ch4-source
+1.00d-10   8.36d-9    0.00d0     ;phimin, area, supsatm
+1.00d0    .false.   'constant'  ;phim, minequil, update_type  - co2-source
+1.00d-10   8.36d-10   0.00d0     ;phimin, area, supsatm
+0.10d0    .false.   'constant'  ;phim, minequil, update_type  - ebullition
+1.00d-10   5.5d-9    0.00d0     ;phimin, area, supsatm
+
+'extent of zone'
+-60.0 50.0  0.0 1.0  423.5 423.65
+
+'end of zone'
+
+'overwrite mineral distribution'
+3			!number of minerals to overwrite
+1 2 3                   !which mineral?
+
+'done'
+
+!
+! Data Block 16: boundary conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - reactive transport'
+5                             ;number of zones
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'upper boundary left - rt'
+
+'boundary type'
+'first'
+
+'concentration input'
+6.640d-05      'free'         ;co3-2
+7.0            'ph'           ;h+1
+0.78084d+0     'pn2'          ;n2(aq)
+0.20946d+0     'po2'          ;o2(aq)
+1.74500d-6     'pch4'         ;ch4(aq)
+1.000d-20      'free'         ;c7h8
+2.000d-03      'free'         ;ca+2
+1.000d-20      'free'         ;c4h10
+0.13090218d-4  'fixed'        ;ar(g)
+8.300d-07      'free'         ;fe+2
+4.500d-07      'free'         ;mn+2
+
+'guess for ph'
+7.0
+
+'extent of zone'
+-75.0 5.369129  0.0 1.0  430.0 432.5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'upper boundary step 1 - rt'
+
+'boundary type'
+'first'
+
+'concentration input'
+6.640d-05      'free'         ;co3-2
+7.0            'ph'           ;h+1
+0.78084d+0     'pn2'          ;n2(aq)
+0.20946d+0     'po2'          ;o2(aq)
+1.74500d-6     'pch4'         ;ch4(aq)
+1.000d-20      'free'         ;c7h8
+2.000d-03      'free'         ;ca+2
+1.000d-20      'free'         ;c4h10
+0.13090218d-4  'fixed'        ;ar(g)
+8.300d-07      'free'         ;fe+2
+4.500d-07      'free'         ;mn+2
+
+'guess for ph'
+7.0
+
+'extent of zone'
+5.369129 10.40269  0.0 1.0  430.375 432.5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'upper boundary step 2 - rt'
+
+'boundary type'
+'first'
+
+'concentration input'
+6.640d-05      'free'         ;co3-2
+7.0            'ph'           ;h+1
+0.78084d+0     'pn2'          ;n2(aq)
+0.20946d+0     'po2'          ;o2(aq)
+1.74500d-6     'pch4'         ;ch4(aq)
+1.000d-20      'free'         ;c7h8
+2.000d-03      'free'         ;ca+2
+1.000d-20      'free'         ;c4h10
+0.13090218d-4  'fixed'        ;ar(g)
+8.300d-07      'free'         ;fe+2
+4.500d-07      'free'         ;mn+2
+
+'guess for ph'
+7.0
+
+'extent of zone'
+10.40269 15.43625  0.0 1.0  431.5 432.5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+4
+'upper boundary right - rt'
+
+'boundary type'
+'first'
+
+'concentration input'
+6.640d-05      'free'         ;co3-2
+7.0            'ph'           ;h+1
+0.78084d+0     'pn2'          ;n2(aq)
+0.20946d+0     'po2'          ;o2(aq)
+1.74500d-6     'pch4'         ;ch4(aq)
+1.000d-20      'free'         ;c7h8
+2.000d-03      'free'         ;ca+2
+1.000d-20      'free'         ;c4h10
+0.13090218d-4  'fixed'        ;ar(g)
+8.300d-07      'free'         ;fe+2
+4.500d-07      'free'         ;mn+2
+
+'guess for ph'
+7.0
+
+'extent of zone'
+15.43625 100.0  0.0 1.0  432.5 432.5
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+5
+'lower boundary - rt'
+
+'boundary type'
+'second'
+
+'extent of zone'
+-75.0 100.0  0.0 1.0  423.5 423.5     ;extent of zone
+
+'end of zone'
+
+'done'

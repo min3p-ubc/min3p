@@ -1,0 +1,581 @@
+#!MC 900
+$!VarSet |LFDSFN1| = '"ar n2 ch4 vs bemidji.plt"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "co3-2" "n2(aq)" "h+1" "ca+2" "ch4(aq)" "ar(aq)" "co2(g)" "n2(g)" "ch4(g)" "ar(g)" "p_t_o_t" "h_w" "p_w" "s_w" "theta_a" "s_a" "theta_g" "q_root" "pH" "ionic strength" "C-Alk [eq/L]" "NC-Alk [eq/L]" "Alk [eq/L]" "C-Alk [mg/L CaCO_3]" "NC-Alk [mg/L CACO_3]" "Alk [mg/L CaCO_3]" "temperature" "K_xx" "K_yy" "K_zz" "o2(g)" "dep_Ar" "dep_N2" "d_421"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = YES
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 8.55
+    Y2 = 11.05
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 0.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = XY
+$!FRAMENAME  = 'Frame 001' 
+$!DELETEXYMAPS 
+$!ACTIVEXYMAPS  =  [1-2]
+$!GLOBALXY 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+$!XYMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 12
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = YELLOW
+    ISFILLED = YES
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+  INDICES
+    {
+    JRANGE
+      {
+      SKIP = 2
+      }
+    }
+$!XYMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 37
+    YAXISVAR = 12
+    XAXIS = 2
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = BLACK
+    ISFILLED = YES
+    FILLCOLOR = WHITE
+    SIZE = 1.75
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!XYAXIS 
+  XDETAIL 1
+    {
+    AXISPOSITION = 19.38
+    RANGEMIN = 0
+    RANGEMAX = 150.015
+    GRSPACING = 50
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+$!XYAXIS 
+  XDETAIL 2
+    {
+    SHOWAXIS = NO
+    RANGEMIN = -30
+    RANGEMAX = 120
+    GRSPACING = 50
+    }
+$!XYAXIS 
+  YDETAIL 1
+    {
+    AUTOGRID = NO
+    RANGEMIN = 0
+    RANGEMAX = 1
+    GRSPACING = 0.25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Pressure (atm)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 8
+      }
+    }
+$!XYAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      Y1 = 19.384
+      }
+    }
+  DEPXTOYRATIO = 1
+$!XYLAYERS 
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'CH_4' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 79.7747871464
+    Y = 72.7001510574
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'A: CH_4' 
+### Frame Number 2 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 2.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = XY
+$!FRAMENAME  = 'Frame 001' 
+$!DELETEXYMAPS 
+$!ACTIVEXYMAPS  =  [1-2]
+$!GLOBALXY 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+$!XYMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 13
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = BLACK
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+  INDICES
+    {
+    JRANGE
+      {
+      SKIP = 2
+      }
+    }
+$!XYMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 37
+    YAXISVAR = 35
+    XAXIS = 2
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = BLACK
+    ISFILLED = YES
+    FILLCOLOR = WHITE
+    SIZE = 1.75
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!XYAXIS 
+  XDETAIL 1
+    {
+    AXISPOSITION = 19.38
+    RANGEMIN = 0
+    RANGEMAX = 150.015
+    GRSPACING = 50
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+$!XYAXIS 
+  XDETAIL 2
+    {
+    SHOWAXIS = NO
+    RANGEMIN = -30
+    RANGEMAX = 120
+    GRSPACING = 50
+    }
+$!XYAXIS 
+  YDETAIL 1
+    {
+    AUTOGRID = NO
+    RANGEMIN = -0.25
+    RANGEMAX = 1
+    GRSPACING = 0.25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depletion' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 8
+      }
+    }
+$!XYAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      Y1 = 19.384
+      }
+    }
+  DEPXTOYRATIO = 1
+$!XYLAYERS 
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'CH_4' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 79.7747871464
+    Y = 72.7001510574
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'B: Ar' 
+### Frame Number 3 ###
+$!CREATENEWFRAME 
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 0.125
+    Y = 4.125
+    }
+  WIDTH = 8.25
+  HEIGHT = 2
+$!FRAMEMODE  = XY
+$!FRAMENAME  = 'Frame 001' 
+$!DELETEXYMAPS 
+$!ACTIVEXYMAPS  =  [1-2]
+$!GLOBALXY 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+$!XYMAP  [1]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 11
+    }
+  LINES
+    {
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+  INDICES
+    {
+    JRANGE
+      {
+      SKIP = 2
+      }
+    }
+$!XYMAP  [2]
+  NAME = '&DV&' 
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 37
+    YAXISVAR = 36
+    XAXIS = 2
+    }
+  LINES
+    {
+    SHOW = NO
+    COLOR = BLACK
+    }
+  SYMBOLS
+    {
+    COLOR = BLACK
+    ISFILLED = YES
+    FILLCOLOR = WHITE
+    SIZE = 1.75
+    }
+  BARCHARTS
+    {
+    COLOR = YELLOW
+    FILLCOLOR = YELLOW
+    }
+  ERRORBARS
+    {
+    COLOR = YELLOW
+    }
+$!XYAXIS 
+  XDETAIL 1
+    {
+    AXISPOSITION = 19.38
+    RANGEMIN = 0
+    RANGEMAX = 150.015
+    GRSPACING = 50
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 2
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Distance (m)' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 10
+      }
+    }
+$!XYAXIS 
+  XDETAIL 2
+    {
+    SHOWAXIS = NO
+    RANGEMIN = -30
+    RANGEMAX = 120
+    GRSPACING = 50
+    }
+$!XYAXIS 
+  YDETAIL 1
+    {
+    AUTOGRID = NO
+    RANGEMIN = -0.25
+    RANGEMAX = 1
+    GRSPACING = 0.25
+    NUMMINORTICKS = 0
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Depletion' 
+      TEXTSHAPE
+        {
+        HEIGHT = 10
+        }
+      OFFSET = 8
+      }
+    }
+$!XYAXIS 
+  GRIDAREA
+    {
+    EXTENTS
+      {
+      Y1 = 19.384
+      }
+    }
+  DEPXTOYRATIO = 1
+$!XYLAYERS 
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 15.75391376
+    Y = 72.7001510574
+    }
+  COLOR = WHITE
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'CH_4' 
+$!ATTACHTEXT 
+  XYPOS
+    {
+    X = 79.7747871464
+    Y = 72.7001510574
+    }
+  TEXTSHAPE
+    {
+    HEIGHT = 28
+    }
+  TEXT = 'C: N_2' 
+$!REMOVEVAR |LFDSFN1|
+$!SETSTYLEBASE CONFIG

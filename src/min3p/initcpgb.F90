@@ -4,7 +4,7 @@
 !> $Revision: 880 $
 !> $Author: dsu $
 !> $Date: 2024-02-19 14:19:39 -0800 (Mon, 19 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initcpgb.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcpgb.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -262,11 +262,14 @@
 
         if (found_subsection) then
           ierrcd = 2
-          read(itmp,*,err=999,end=999) maxibub
-          read(itmp,*,err=999,end=999) maxibubflow
-          read(itmp,*,err=999,end=999) bub_exp
-          read(itmp,*,err=999,end=999) maxsg_update
-          read(itmp,*,err=999,end=999) dsadt_max          
+          read(itmp,*,err=999,end=999) maxibub         !maximum number of inner iterations
+          read(itmp,*,err=999,end=999) maxibubflow     !maximum number of outer iterations
+          read(itmp,*,err=999,end=999) bub_exp         !anticipated number of bubble iteration
+          read(itmp,*,err=999,end=999) bubreact_tol    !convergence tolerance of global RT solutions
+          read(itmp,*,err=999,end=999) bubflow_tol     !convergence tolerance of global flow solutions
+          read(itmp,*,err=999,end=999) maxsg_update    !maximum update of gas saturation(for relaxation scheme)
+          !read(itmp,*,err=999,end=999) dsadt_max      !comment to allow large update in saturation
+          dsadt_max = 1.0d100
 
           if (maxibub < 1 .or. maxibubflow < 1) then
             if (rank == 0 .and. b_enable_output) then
@@ -286,9 +289,9 @@
 
         if (found_subsection) then
           ierrcd = 4
-          read(itmp,*,err=999,end=999) sg_count_max
-          read(itmp,*,err=999,end=999) gas_tol
-          read(itmp,*,err=999,end=999) res_tol
+          read(itmp,*,err=999,end=999) sg_count_max     !maximum newton iterations of bubble solver for each control volume
+          read(itmp,*,err=999,end=999) gas_tol          !convergence tolerance of saturation change, this value can be big
+          read(itmp,*,err=999,end=999) res_tol          !convergence tolerance of total gas partial pressure change, this value should be small
         end if
 
       end if                 !(found_section)

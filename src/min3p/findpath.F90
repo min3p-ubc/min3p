@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/findpath.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/findpath.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -90,12 +90,16 @@
       do while (.not.found) 
         
         read(imdbs,*,err=999,end=998) keyword
+        call makelowercase(keyword)
         backspace(imdbs)
         read(imdbs,*,err=999,end=998) string
+        call makelowercase(string)
 
         if (keyword.eq.'pathway') then
           backspace(imdbs)
           read(imdbs,*,err=999,end=998) keyword, ipath2
+          call makelowercase(keyword)
+          
           if (ipath2.eq.ipath) then
           if (info_debug.gt.1 .and. rank == 0 .and. b_enable_output) then
             write(*,*) 'mineral ', trim(namem(im))

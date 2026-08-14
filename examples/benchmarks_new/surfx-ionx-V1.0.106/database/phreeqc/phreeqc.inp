@@ -1,0 +1,106 @@
+!
+!This input file contains parameters used in database conversion.
+!Current support database conversion from toughreact to min3p
+
+!--------------------------------
+!Block 1: Database settings
+!--------------------------------
+
+!set source database type, required
+source database type
+phreeqc
+!crunchflow
+!toughreact
+
+!set source database path, required
+!for toughreact or crunchflow database, this is a file path
+!for min3p, this is a folder
+source database path
+phreeqc.dat
+
+!--------------------------------
+!Block 2: Conversion settings
+!--------------------------------
+
+!set target database temperature, required
+target database temperature 
+25
+
+!set target master variable, optional
+!can be h2(aq), o2(aq) or 'same as source database'
+!if not provided, use the master variable in the source database
+!note: if the target master variable is the same as the 
+!the master varialbe in the source database, you can comment out 
+!the command or provide same as source database.
+!target database master variable
+!h2(aq)
+
+!--------------------------------
+!Block 3: Output settings
+!--------------------------------
+
+!set target database type, required
+target database type
+min3p
+
+!set targer database path, optional
+!if not provided, use the path of the program
+!for toughreact or crunchflow database, this is a file path
+!for min3p, this is a folder
+target database path
+phreeqc2min3p-phreeqc
+
+!Sort components by ascending lexical order.
+!This is useful when you need to compare the databases converted
+!from different database
+!sort data by lexical order
+
+
+!Export the following species only
+!This is useful when you need to compare the databases converted
+!from different database.
+!
+!export following species only
+!42
+!'h+1' 
+!'so4-2'
+!'zn+2'
+!'fe+2'
+!'cu+2'
+!'ca+2'
+!'mg+2'
+!'k+1'
+!'na+1'
+!'oh-'        
+!'caso4aq'
+!'caoh+'
+!'cuoh+'
+!'cuso4aq'
+!'cuo2-2'
+!'feoh+'
+!'feso4aq'
+!'feoh2aq'
+!'feoh3-1'
+!'fe(oh)4-2' 
+!'kso4-'
+!'koh'
+!'khso4'
+!'mgso4aq'
+!'mg4(oh)4+4'
+!'naso4-'
+!'naoh'       
+!'znso4aq'
+!'hso4-'
+!'h2so4(aq)'
+!'znoh+'
+!'znso4aq'
+!'zn(oh)2aq'
+!'zn(oh)3-'
+!'zn(oh)4-2'
+!'mg-x(na)'
+!'fe-x(na)'
+!'na-x(na)'
+!'k-x(na)'
+!'zn-x(na)'
+!'cu-x(na)'
+!'ca-x(na)'

@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/clsgfls.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/clsgfls.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -173,11 +173,13 @@
       use parm
       use gen
       use chem
+      use biol
       use file_unit, only : lun_free
       use module_binary_mpiio, only : binary_file_close
       use mip_bubble, only : mip_mt_enable
       use nobleGasIngrowth, only : b_use_ngi, ngre_i, ingdbs
-      use biol
+      use mimicMassDisp, only : mimicMassDisp_fileClose
+
 
       implicit none
 #ifdef PETSC
@@ -189,7 +191,7 @@
 #endif
 
 
-      integer :: igb
+      integer :: igb, isub, iunit
 
 !c  close files
    
@@ -274,21 +276,34 @@
       if(rank == 0 .and. b_enable_output) then            !By rank 0
  
         if (mass_balance_vs) then
-          do imvs = imvs_first,imvs_last
-            close(imvs)
-            call lun_free(imvs)
+          do isub = 0, subdomains_n
+            do iunit = imvs_first(isub),imvs_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
           end do
         end if
 
         if (mass_balance_rt) then
           if (root_uptake) then
-            close(iresp)
-            call lun_free(iresp)
+            do isub = 0, subdomains_n
+              close(iarup(isub))
+              call lun_free(iarup(isub))
 
-            close(irup)
-            call lun_free(irup)
+              close(iprup(isub))
+              call lun_free(iprup(isub))
+
+              close(irup(isub))
+              call lun_free(irup(isub))
+            end do
           end if
 
+          do isub = 0, subdomains_n
+            do iunit = imrt_first(isub),imrt_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
+          end do
 
           if (b_dilution_index) then
             close(idix)
@@ -304,24 +319,23 @@
             close(irupcm)
             call lun_free(irupcm)
           end if
-
-          do imrt = imrt_first,imrt_last
-            close(imrt)
-            call lun_free(imrt)
-          end do
         end if
       
         if (flux_out) then
-          do imcd = imcd_first,imcd_last
-            close(imcd)
-            call lun_free(imcd)
+          do isub = 0, subdomains_n
+            do iunit = imcd_first(isub),imcd_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
           end do
         end if
       
         if (energy_balance) then
-          do imheat = imheat_first,imheat_last
-            close(imheat)
-            call lun_free(imheat)
+          do isub = 0, subdomains_n
+            do iunit = imheat_first(isub),imheat_last(isub)
+              close(iunit)
+              call lun_free(iunit)
+            end do
           end do
         end if
       
@@ -495,6 +509,10 @@
             end do          
           end if
         end if
+
+!cdsu mimic advective gas displacement
+        call mimicMassDisp_fileClose
+
       end if
  
       return

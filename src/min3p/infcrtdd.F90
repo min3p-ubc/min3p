@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/infcrtdd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/infcrtdd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -110,17 +110,18 @@
                          idbg, ilog, fully_saturated,                 &
                          variably_saturated, njamxc, nmax,            &
                          tortuosity_corr,half_cells,time,tfinal,      &
-                         cinfrt_da_ic, diff_coff, nc, diff_ic,        &
-                         diff_ic_tensor, type_diff_ic,                &
+                         cinfrt_da_ic, comp_dep_diff_coff, nc,        &
+                         diff_ic, diff_ic_tensor, type_diff_ic,       &
                          assigned_tau,tau,type_tortuosity,marchies,   &
                          harmonic_porosity,delx,dely,delz,av_dens_z,  &
                          ups_heat,gacc,cinfrad,radial_coord, tau_fac, &
-                         sonew)
+                         sonew, type_averaging_De)
 #ifdef OPENMP
       use omp_lib 
 #endif
       use geometry_definition
       use geometry
+      use math_common, only : math_common_harmonic
       use mod_diffcoff, only : diffcoff
       use gen, only :                                                 &
 #ifdef OPENMP
@@ -146,12 +147,13 @@
       integer :: nvxgls, nvxgle, nvxgbl, nvygls, nvygle, nvygbl,       &
                  nvzgls, nvzgle, nvzgbl, ivxgbl, ivygbl, ivzgbl,       &
                  ivxpgbl, ivypgbl, ivzpgbl, ivxngbl, ivyngbl, ivzngbl, &
-                 nvx, nvy, nvz, type_diffu, type_diff_ic,              &
-                 idbg, ilog, nzn, nc, mprop(*), isymm(njamxc),         &
-                 ia(nmax+1), ja(njamxc)
+                 nvx, nvy, nvz, type_diffu, type_diff_ic, idbg, ilog,  &
+                 nzn, nc, isymm(njamxc), ia(nmax+1), ja(njamxc)
+
+      integer :: mprop(*)
 
       logical :: half_cells, fully_saturated, variably_saturated,      &
-                 tortuosity_corr,diff_coff,assigned_tau,               &
+                 tortuosity_corr,comp_dep_diff_coff,assigned_tau,      &
                  harmonic_porosity,av_dens_z,radial_coord
 
       real*8 :: diffu, frozen_diffu, tkel(nmax), diff_ic(nc),          &
@@ -167,7 +169,7 @@
       real*8 :: delx(nvx),dely(nvy),delz(nvz),ups_heat,rpel_av,        &
                 visco_av,gacc     
      
-      character(len=*) :: type_tortuosity
+      character(len=*) :: type_tortuosity, type_averaging_De
 
       real*8 :: value_tau
 
@@ -533,14 +535,18 @@
                 vel(3) = fixed_flow_vel%z
               end if
 
-!cprovi-------------------------------------------------------------------
-!cprovi-------------------------------------------------------------------
-!cprovi Not harmonic average in porosity 
-!cprovi-------------------------------------------------------------------
-!cprovi-------------------------------------------------------------------
-      
-              if (.not.harmonic_porosity) then  
+              ndim = 0
+              if (nvx .gt. 1) ndim = ndim + 1
+              if (nvy .gt. 1) ndim = ndim + 1
+              if (nvz .gt. 1) ndim = ndim + 1
 
+!cdsu-------------------------------------------------------------------
+!cdsu 'pseudo element' based averaging that parameter is averaged at
+!cdsu cell-level. For example, for 2D (V1-V2-V3-VV4) cell, parameter at 
+!cdsu control volume interface V1-V2 is averaged based on all the parameters
+!cdsu at V1,V2,V3 and V4, NOT only V1 and V2.
+!cdsu-------------------------------------------------------------------
+              if (type_averaging_De.eq.'pseudo element') then
 
 !c  average porosity of the element
 !c  note: each node is included in "ndim" number of node
@@ -552,17 +558,27 @@
                    do ipair = 1, npair(idim)
                       ibk = fvpair(idim, ipair, 1)
                       id = fvpair(idim, ipair, 2)
-                      porav = porav                       &
-                           + dmin1( r1, pornew(ibk) )     &
-                           + dmin1( r1, pornew(id) )
+
+                      if (harmonic_porosity) then
+                        porav = porav + r1/max(min(r1,pornew(ibk)),eps) + &
+                                        r1/max(min(r1,pornew(id)),eps)
+                      else
+                        porav = porav + min(r1,pornew(ibk))     &
+                                      + min(r1,pornew(id))
+                      end if
                    end do
                 end do 
 
-                ndim = 0
-                if (nvx .gt. 1) ndim = ndim + 1
-                if (nvy .gt. 1) ndim = ndim + 1
-                if (nvz .gt. 1) ndim = ndim + 1
-                porav = porav / float(ndim) / r2**ndim
+                if (harmonic_porosity) then
+                  if (porav > r0) then
+                    porav = float(ndim) * r2**ndim / porav
+                  else
+                    porav = r0
+                  end if
+
+                else
+                  porav = porav / float(ndim) / r2**ndim
+                end if
             
 !c  average tortuosity of the element
 !c  note: each node is included in "ndim" number of node
@@ -583,11 +599,6 @@
                             + tau(id) * tau_fac(id)
                     end do
                   end do 
-
-                  ndim = 0
-                  if (nvx .gt. 1) ndim = ndim + 1
-                  if (nvy .gt. 1) ndim = ndim + 1
-                  if (nvz .gt. 1) ndim = ndim + 1
                   tauav = tauav / float(ndim) / r2**ndim
                 end if
 
@@ -696,7 +707,7 @@
                 marchieav = marchieav / float(ndim) / r2**ndim 
 
 !c  calculate effective diffusion coefficient
-                if (.not.diff_coff) then
+                if (.not.comp_dep_diff_coff) then
                   if (type_diffu == 0) then
                     diff_eff = diffcoff(diffav,satav,porav,       &
                                         tortuosity_corr,          &
@@ -832,18 +843,8 @@
                 end if  
 !cprovi-----------------------------------------------------------------------
 !cprovi-----------------------------------------------------------------------           
-              else ! Harmonic porosity
+              else ! Harmonic average in De
 
-!c  average porosity of the element
-!c  note: each node is included in "ndim" number of node
-!c        pairs, therefore the average must be divided
-!c        by ndim as well as the number of nodes in the
-!c        element
-!c    changed Nov.09
-                ndim = 0
-                if (nvx .gt. 1) ndim = ndim + 1
-                if (nvy .gt. 1) ndim = ndim + 1
-                if (nvz .gt. 1) ndim = ndim + 1
 !c  calculate average dispersivities for the "pseudo
 !c  dispersion element"
 

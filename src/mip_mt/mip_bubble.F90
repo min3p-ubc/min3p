@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/mip_mt/mip_bubble.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/mip_mt/mip_bubble.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -1583,7 +1583,7 @@ contains
           mip_pg(igas,ivol) = gnew(igas,ivol) * mip_rgasjoule_tempks          
 
           !c total concentration of aqueous and gas phases
-          !c to be checked later
+          !c to be further checked
           !c mip_ct(igas,ivol) = totcnew(ip,ivol)          
 
           !c use concentration of aqueous from MIP
@@ -1627,7 +1627,7 @@ contains
         end do
       end if
 
-!c to be checked later, apply MIP boundary condition, hardwired here
+!c to be further checked, apply MIP boundary condition, hardwired here
 !c control volume 34, apply to third gas component
 !c cvol(34) = 0.004*0.004/rhalf = 1.6d-5 m^3
 !c porosity = 0.40
@@ -1661,7 +1661,7 @@ contains
                               mip_cw(i,ivol)*(1.0d0-mip_sg(ivol))
         end do      
   
-        !c to be checked later
+        !c to be further checked
         !write(*,*) "after  Pg=",mip_pg(:,ivol), "Pgt=",mip_pgt(ivol),    &
         !           "Cw",mip_cw(:,ivol),"CT",mip_ct(:,ivol),              &
         !           "gnew",gnew(:,ivol),"uvsnew",uvsnew(ivol),"sg",mip_sg(ivol)
@@ -1754,7 +1754,7 @@ contains
 #endif
                        gnew, cnew, uvsnew, sgnew, delt, mpropvs,       &
                        mtime, rank, ilog, idbg, ivol2bvs, btypevs,     &
-                       memory_monitor
+                       bcondvs_on, memory_monitor
 
       use phys, only : aentry
       use chem, only : nameg
@@ -2001,7 +2001,7 @@ contains
           
           !c method 3
           !c fast expansion if using this one
-          !c to be checked later, previous use max here.
+          !c to be further checked, previous use max here.
           mip_sg(ivol) = min(1.0d0,mip_xsg(mip_ngas+1,ivol))
           
           !c add to G (Connected) blocks
@@ -2506,7 +2506,7 @@ contains
                     gmass(igas) = gmass(igas) - mip_pg(igas,ivol)*mip_sg(ivol) 
                   end do
                   
-                  if(btypevs(ibvs) == 'first' .or. btypevs(ibvs) == 'seepage') then
+                  if(btypevs(ibvs) == 'first' .or. btypevs(ibvs) == 'seepage' .and. bcondvs_on(ibvs)) then
                     !c bubble collapses and releases the mass to the new invaded block  
                     !c update the concentration for the block where bubble collapses
                     !c change in gaseous phase saturation is ignored
@@ -3417,7 +3417,7 @@ contains
 #ifdef OPENMP
                       i_omp_type_mip_bubble, numofthreads_mip_bubble,  &
 #endif
-                      gnew, cnew, cx, sanew, sgnew, idbg, pornew
+                      gnew, cnew, cxnew, sanew, sgnew, idbg, pornew
 
       implicit none
 

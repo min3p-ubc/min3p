@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mem_nsb.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mem_nsb.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -264,7 +264,7 @@
           call memory_monitor(sizeof(iaic),'iaic',.true.)
       end if
       
-      if (nsites_ion >= 1) then
+      if (nsites_ion > 0) then
           allocate (cec_fraction(nsites_ion), stat = ierr)
           cec_fraction=0.0d0
           cec_fraction(1) = 1.0d0
@@ -396,6 +396,19 @@
           dcsb_surf=0.0d0 
           call checkerr(ierr,'dcsb_surf',ilog) 
           call memory_monitor(sizeof(dcsb_surf),'dcsb_surf',.true.)
+
+!cprovi----------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------
+!cprovi----------------------------------------------------------------------------
+          allocate (dz_surf(max(1,nlayer),nsb_surf), stat = ierr)
+          dz_surf=0.0d0 
+          call checkerr(ierr,'dz_surf',ilog)  
+          call memory_monitor(sizeof(dz_surf),'dz_surf',.true.)
+
+          allocate (charge_surf(max(1,nlayer),nsb_surf), stat = ierr)
+          charge_surf=0.0d0
+          call checkerr(ierr,'charge_surf',ilog) 
+          call memory_monitor(sizeof(charge_surf),'charge_surf',.true.)
 
         
           !******ion-exchange data******

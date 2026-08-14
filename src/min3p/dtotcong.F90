@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/dtotcong.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/dtotcong.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -77,12 +77,11 @@
       implicit none
  
  
-      character*72 :: namec
       integer :: nc, ng, jbl
       real*8 :: drtinc
-      real*8 :: g, ginc, dtotg, xnug
-      integer :: iaga, jaga
-      dimension :: g(*),ginc(*),dtotg(*),xnug(*),iaga(*),jaga(*),namec(*)
+      real*8 :: g(*),ginc(*),dtotg(*),xnug(*)
+      integer :: iaga(*),jaga(*)
+      character*72 :: namec(*)
       
       !local variable
       real*8 :: r0

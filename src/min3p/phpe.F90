@@ -4,7 +4,7 @@
 !> $Revision: 221 $
 !> $Author: dsu $
 !> $Date: 2014-08-05 14:29:49 -0700 (Tue, 05 Aug 2014) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/phpe.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/phpe.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -68,11 +68,10 @@
 
       implicit none
       
-      real*8 :: c, gammac, ph, pe, eh, tempkel
-      
-      integer :: ic
+      real*8 :: c(*), gammac(*)
+      real*8 :: ph, pe, eh, tempkel
 
-      dimension c(*), gammac(*)
+      integer :: ic
 
 !c  initialize the value, for some compiler, if ph or pe is never calculated in the following
 !c  steps, it will return NaN. DSU, 2013-10-17

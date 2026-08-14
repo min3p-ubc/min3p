@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/driver_pc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/driver_pc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -106,7 +106,7 @@
 !c                                - new time level [moles/l air]
 !c           cmnew(nm,nn)       = mineral concentrations
 !c                                - new time level [moles/l bulk]
-!c           cx(nx,nn)          = concentrations of secondary aqueous
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients for aqueous
 !c                                species
@@ -383,6 +383,7 @@ Program driver_pc
 #ifdef PETSC
      use solver_dd, only : solver_dd_snes_create_flow_heat,            &
                            solver_dd_snes_create_react,                &
+                           solver_dd_get_node_rank,                    &
                            solver_dd_release_flow,                     &
                            solver_dd_release_heat,                     &
                            solver_dd_release_react
@@ -596,7 +597,7 @@ Program driver_pc
 !c  open problem specific input file, generic output file
 !c  and scratch file for temporary data storage
       call opngfls
-      
+    
 !c  initialize global control parameters
       call initcpgs
       
@@ -634,7 +635,7 @@ Program driver_pc
 !c  or initialize equilibrium or reaction path simulation
 !c  Parallelized, OpenMP, MPI
       call initprob
-      
+
 !c  initialize iteration parameters
       ittot_glob = 0 
       ittot_vs  = 0
@@ -755,7 +756,7 @@ Program driver_pc
                 igbi  = igbi_mpi(igb)
                 igbb  = igbb_mpi(igb)
                 igbs  = igbs_mpi(igb)
-                igbv  = igbv_mpi(igb)
+                igbv  = igbv_mpi(igb)                
                 igbd  = igbd_mpi(igb)
                 igbx  = igbx_mpi(igb)
                 igbis = igbis_mpi(igb)
@@ -771,32 +772,33 @@ Program driver_pc
                 conc_ngre_loc(:) = conc_ngre(:,ivol)
               end if
 
-              call tprfrtlc(totcnew(1,ivol),cnew(1,ivol),cx(1,ivol),  &
-                         gamma(1,ivol),gamma(nc+1,ivol),cmnew(1,ivol),&
-                         gnew(1,ivol),cec_g(ivol),distcoff_rt(1,ivol),&
-                         area(1,ivol),phi(1,ivol),phiold(1,ivol),     &
-                         sionnew(ivol),tkel(ivol),                    &
-                         hhead(ivol),xg(ivol),yg(ivol),zg(ivol),      &
-                         time_io,delt,sanew(ivol),                    &
-                         pornew(ivol),igbt,igbc,igbm,igbg,igbgr,igbi, &
-                         igbb,igbs,igbv,igbd,igbx,igbis,igbac,igbre,  &
-                         offset_igbt(igb),offset_igbc(igb),           &
-                         offset_igbm(igb),offset_igbg(igb),           &
-                         offset_igbgr(igb),offset_igbi(igb),          &
-                         offset_igbb(igb),offset_igbs(igb),           &
-                         offset_igbv(igb),offset_igbd(igb),           &
-                         offset_igbx(igb),offset_igbis(igb),          &
-                         offset_igbac(igb),offset_igbre(igb),         &
-                         offset_igbt_ijk(igb),offset_igbc_ijk(igb),   &
-                         offset_igbm_ijk(igb),offset_igbg_ijk(igb),   &
-                         offset_igbgr_ijk(igb),offset_igbi_ijk(igb),  &
-                         offset_igbb_ijk(igb),offset_igbs_ijk(igb),   &
-                         offset_igbv_ijk(igb),offset_igbd_ijk(igb),   &
-                         offset_igbx_ijk(igb),offset_igbis_ijk(igb),  &
-                         offset_igbac_ijk(igb),offset_igbre_ijk(igb), &
-                         prefix,l_prfx,tec_header,                    &
-                         ivol,tid,0,1,zone_name,l_zone_name,          &
-                         update_porosity,mtime,i_append_sim,          &
+              call tprfrtlc(totcnew(:,ivol),cnew(:,ivol),cxnew(:,ivol),&
+                         gamma(:,ivol),gamma(nc+1,ivol),               &
+                         actvset(:,ivol),cmnew(:,ivol),gnew(:,ivol),   &
+                         cec_g(ivol),distcoff_rt(:,ivol),              &
+                         area(:,ivol),phi(:,ivol),phiold(:,ivol),      &
+                         sionnew(ivol),tkel(ivol),hhead(ivol),         &
+                         xg(ivol),yg(ivol),zg(ivol),                   &
+                         time_io,delt,sanew(ivol),pornew(ivol),        &
+                         igbt,igbc,igbm,igbg,igbgr,igbi,igbb,igbs,     &
+                         igbv,igbd,igbx,igbis,igbac,igbre,             &
+                         offset_igbt(igb),offset_igbc(igb),            &
+                         offset_igbm(igb),offset_igbg(igb),            &
+                         offset_igbgr(igb),offset_igbi(igb),           &
+                         offset_igbb(igb),offset_igbs(igb),            &
+                         offset_igbv(igb),offset_igbd(igb),            &
+                         offset_igbx(igb),offset_igbis(igb),           &
+                         offset_igbac(igb),offset_igbre(igb),          &
+                         offset_igbt_ijk(igb),offset_igbc_ijk(igb),    &
+                         offset_igbm_ijk(igb),offset_igbg_ijk(igb),    &
+                         offset_igbgr_ijk(igb),offset_igbi_ijk(igb),   &
+                         offset_igbb_ijk(igb),offset_igbs_ijk(igb),    &
+                         offset_igbv_ijk(igb),offset_igbd_ijk(igb),    &
+                         offset_igbx_ijk(igb),offset_igbis_ijk(igb),   &
+                         offset_igbac_ijk(igb),offset_igbre_ijk(igb),  &
+                         prefix,l_prfx,tec_header,                     &
+                         ivol,tid,0,1,zone_name,l_zone_name,           &
+                         update_porosity,mtime,i_append_sim,           &
                          mtime_append)
             end if
           end do
@@ -840,6 +842,17 @@ Program driver_pc
         end if
 #endif
       end if
+
+#ifdef PETSC
+      !c get node ownership
+      flag_non_interlaced = .false.
+      if (i_solver_type_flow >= 2) then
+        if (heat_transport .and. decoupled_type_vs_heat <= 1) then
+          flag_non_interlaced = .true.
+        end if
+        call solver_dd_get_node_rank()
+      end if
+#endif
 
       if (varsat_flow) then
 !c  initialize iteration parameters for variably saturated flow
@@ -1038,13 +1051,13 @@ Program driver_pc
       if(rank == 0) then
         write(ilog,'(72a)')('-',i=1,72)
         write(ilog,'(/a//)')                                           &
-        '         ***************** normal exit *****************'
+        '     ***************** normal exit ******************'
       end if
       
       if(b_enable_output .and. b_enable_output_gen) then
         write(igen,'(72a)')('-',i=1,72)
         write(igen,'(/a//)')                                           &
-        '         ***************** normal exit ******************'
+        '     ***************** normal exit ******************'
       end if
 
 

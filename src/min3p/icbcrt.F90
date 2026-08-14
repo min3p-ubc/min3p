@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/icbcrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/icbcrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -61,7 +61,7 @@
 !c                                - old time level [moles/l bulk]]    * +
 !c           cmnew(nm,nn)       = mineral concentrations
 !c                                - new time level [moles/l bulk]     * +
-!c           cx(nx,nn)          = concentrations of secondary aqueous * +
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous * +
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of aqueous    * +
 !c                                species (global)
@@ -271,7 +271,8 @@
       !concentration of reactive transport from multiple zones.
       logical :: flag_set_aq
       
-      integer :: iaq, ic, ig, im, isb, ix, izn, itid
+      !c local parameters
+      integer :: i, iaq, ic, ig, im, isb, ix, izn, itid
 
       real*8 :: rcvt
 
@@ -288,18 +289,20 @@
 !c  concentrations and activity coefficients of free species
  
         do ic=1,nc
-          c(ic,ivol) = ccnew(ic)
+          cold(ic,ivol) = ccnew(ic)
           cnew(ic,ivol) = ccnew(ic)
           gamma(ic,ivol) = gamma_l(ic)
           if (hmulti_diff) then
             gammaold(ic,ivol) = gamma_l(ic)
           end if
+          actvset(ic,ivol) = actv(ic)
         end do
+
  
 !c  concentrations and activity coefficients of aqueous complexes
  
         do ix=1,nx
-          cx(ix,ivol) = cxc(ix)
+          cxnew(ix,ivol) = cxc(ix)
           gamma(nc+ix,ivol) = gamma_l(nc+ix)
         
           if (hmulti_diff) then
@@ -330,8 +333,8 @@
 !c  compute total concentrations of aqueous primary and secondary
 !c  species times the correction factors
                 
-          call totconcfac(cnew(1,ivol),cx(1,ivol),totcnewf(1,ivol),izn)
-          call totconcfac(c(1,ivol),cxold(1,ivol),totcoldf(1,ivol),izn)
+          call totconcfac(cnew(:,ivol),cxnew(:,ivol),totcnewf(:,ivol),izn)
+          call totconcfac(cold(:,ivol),cxold(:,ivol),totcoldf(:,ivol),izn)
 
         end if
 
@@ -450,7 +453,7 @@
 !cmx----------------------------------------------------------------------
         if (.not.cec_field .and. nsites_ion > 1) then
             do isb=1, nsites_ion
-                cec_fraction_g(isb,ivol) = cec_fraction(isb)
+              cec_fraction_g(isb,ivol) = cec_fraction(isb)
             end do
         end if
       end if

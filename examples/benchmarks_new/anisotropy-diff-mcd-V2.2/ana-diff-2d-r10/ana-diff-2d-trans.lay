@@ -1,0 +1,1450 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"ana-diff-2d/tracer-1.gbt" "ana-diff-2d/tracer-2.gbt" "ana-diff-2d/tracer-3.gbt" "ana-diff-2d/tracer-4.gbt" "ana-diff-2d/tracer-5.gbt" "ana-diff-2d/tracer-6.gbt" "ana-diff-2d/tracer-7.gbt" "ana-diff-2d-min3p/ana-diff-sg/ana-diff_1.gbt" "ana-diff-2d-min3p/ana-diff-sg/ana-diff_2.gbt" "ana-diff-2d-min3p/ana-diff-sg/ana-diff_3.gbt" "ana-diff-2d-min3p/ana-diff-sg/ana-diff_4.gbt" "ana-diff-2d-min3p/ana-diff-sg/ana-diff_5.gbt" "ana-diff-2d-min3p/ana-diff-sg/ana-diff_6.gbt" "ana-diff-2d-min3p/ana-diff-sg/ana-diff_7.gbt" "ana-diff-2d-min3p/ana-diff-usg/ana-diff_1.gbt" "ana-diff-2d-min3p/ana-diff-usg/ana-diff_2.gbt" "ana-diff-2d-min3p/ana-diff-usg/ana-diff_3.gbt" "ana-diff-2d-min3p/ana-diff-usg/ana-diff_4.gbt" "ana-diff-2d-min3p/ana-diff-usg/ana-diff_5.gbt" "ana-diff-2d-min3p/ana-diff-usg/ana-diff_6.gbt" "ana-diff-2d-min3p/ana-diff-usg/ana-diff_7.gbt"'
+$!VarSet |LFDSVL1| = '"time" "tracer"'
+$!SetStyleBase Factory
+$!GlobalPaper 
+  PaperSizeInfo
+    {
+    Letter
+      {
+      Width = 8.5
+      Height = 11
+      LeftHardClipOffset = 0.125
+      RightHardClipOffset = 0.125
+      TopHardClipOffset = 0.125
+      BottomHardClipOffset = 0.125
+      }
+    }
+$!Page 
+  Name = 'Untitled'
+  PaperAttributes
+    {
+    BackgroundColor = White
+    IsTransparent = Yes
+    OrientPortrait = No
+    ShowGrid = Yes
+    ShowRuler = No
+    ShowPaper = No
+    PaperSize = Letter
+    RulerSpacing = OneInch
+    PaperGridSpacing = HalfInch
+    RegionInWorkArea
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!ReadDataSet  '|LFDSFN1|'
+  InitialPlotType = XYLine
+  IncludeText = No
+  IncludeGeom = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL1|'
+$!RemoveVar |LFDSVL1|
+$!RemoveVar |LFDSFN1|
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 0.25
+    }
+  Width = 9
+  Height = 4
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [1-3,8-10,15-17]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    Show = Yes
+    TextShape
+      {
+      Height = 4
+      }
+    Box
+      {
+      BoxType = None
+      }
+    XYPos
+      {
+      X = 96.271
+      Y = 94.434
+      }
+    }
+$!LineMap  [1]
+  Name = 'obs 1 - ana'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Black
+    LineThickness = 0.8
+    }
+  Symbols
+    {
+    Show = No
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = 'obs 2 - ana'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom1
+    LineThickness = 0.8
+    }
+  Symbols
+    {
+    Show = No
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = 'obs 3 - ana'
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom2
+    LineThickness = 0.8
+    }
+  Symbols
+    {
+    Show = No
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = 'obs 4 - ana'
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom1
+    }
+  Symbols
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [5]
+  Name = 'obs 5 - ana'
+  Assign
+    {
+    Zone = 5
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom3
+    }
+  Symbols
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [6]
+  Name = 'obs 6 - ana'
+  Assign
+    {
+    Zone = 6
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Purple
+    }
+  Symbols
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [7]
+  Name = 'obs 7 - ana'
+  Assign
+    {
+    Zone = 7
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [8]
+  Name = 'obs 1 - sg'
+  Assign
+    {
+    Zone = 8
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Green
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Del
+      }
+    Color = Black
+    FillColor = Green
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [9]
+  Name = 'obs 2 - sg'
+  Assign
+    {
+    Zone = 9
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Blue
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Del
+      }
+    Color = Custom1
+    FillColor = Blue
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [10]
+  Name = 'obs 3 - sg'
+  Assign
+    {
+    Zone = 10
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Custom1
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Del
+      }
+    Color = Custom2
+    FillColor = Custom1
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [11]
+  Name = 'obs 4 - sg'
+  Assign
+    {
+    Zone = 11
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom3
+    }
+  Symbols
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [12]
+  Name = 'obs 5 - sg'
+  Assign
+    {
+    Zone = 12
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Purple
+    }
+  Symbols
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [13]
+  Name = 'obs 6 - sg'
+  Assign
+    {
+    Zone = 13
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [14]
+  Name = 'obs 7 - sg'
+  Assign
+    {
+    Zone = 14
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [15]
+  Name = 'obs 1 - usg'
+  Assign
+    {
+    Zone = 15
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Blue
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Grad
+      }
+    Color = Black
+    FillColor = Blue
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [16]
+  Name = 'obs 2 - usg'
+  Assign
+    {
+    Zone = 16
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Custom1
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Grad
+      }
+    Color = Custom1
+    FillColor = Custom1
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [17]
+  Name = 'obs 3 - usg'
+  Assign
+    {
+    Zone = 17
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Custom3
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Grad
+      }
+    Color = Custom2
+    FillColor = Custom3
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [18]
+  Name = 'obs 4 - usg'
+  Assign
+    {
+    Zone = 18
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Purple
+    }
+  Symbols
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [19]
+  Name = 'obs 5 - usg'
+  Assign
+    {
+    Zone = 19
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [20]
+  Name = 'obs 6 - usg'
+  Assign
+    {
+    Zone = 20
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [21]
+  Name = 'obs 7 - usg'
+  Assign
+    {
+    Zone = 21
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+$!XYLineAxis 
+  XDetail 1
+    {
+    RangeMin = 0
+    RangeMax = 1.000099999999999989
+    GRSpacing = 0.2
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 4
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 4.6
+        }
+      }
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    RangeMin = 9.999999682655225389E-21
+    RangeMax = 1.000099999999999989
+    GRSpacing = 0.2
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 4
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 4.6
+        }
+      }
+    }
+$!LinePlotLayers 
+  ShowSymbols = Yes
+$!AttachText 
+  AnchorPos
+    {
+    X = 13.30010114145352
+    Y = 94.53836150845251
+    }
+  TextShape
+    {
+    IsBold = No
+    }
+  Text = 'anisotropy = 10'
+### Frame Number 2 ###
+$!CreateNewFrame 
+$!FrameLayout 
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 4.25
+    }
+  Width = 9
+  Height = 4
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = XYLine
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0
+$!DeleteLineMaps 
+$!ActiveLineMaps  =  [4-6,11-13,18-20]
+$!GlobalLinePlot 
+  DataLabels
+    {
+    DistanceSkip = 5
+    }
+  Legend
+    {
+    Show = Yes
+    TextShape
+      {
+      Height = 4
+      }
+    Box
+      {
+      BoxType = None
+      }
+    XYPos
+      {
+      X = 96.618
+      Y = 81.43
+      }
+    }
+$!LineMap  [1]
+  Name = 'obs 1 - ana'
+  Assign
+    {
+    Zone = 1
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [2]
+  Name = 'obs 2 - ana'
+  Assign
+    {
+    Zone = 2
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [3]
+  Name = 'obs 3 - ana'
+  Assign
+    {
+    Zone = 3
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [4]
+  Name = 'obs 4 - ana'
+  Assign
+    {
+    Zone = 4
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Black
+    LineThickness = 0.8
+    }
+  Symbols
+    {
+    Show = No
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [5]
+  Name = 'obs 5 - ana'
+  Assign
+    {
+    Zone = 5
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom1
+    LineThickness = 0.8
+    }
+  Symbols
+    {
+    Show = No
+    Color = Custom3
+    FillColor = Custom3
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [6]
+  Name = 'obs 6 - ana'
+  Assign
+    {
+    Zone = 6
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom2
+    LineThickness = 0.8
+    }
+  Symbols
+    {
+    Show = No
+    Color = Purple
+    FillColor = Purple
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [7]
+  Name = 'obs 7 - ana'
+  Assign
+    {
+    Zone = 7
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Red
+    }
+  Symbols
+    {
+    Color = Red
+    FillColor = Red
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [8]
+  Name = 'obs 1 - sg'
+  Assign
+    {
+    Zone = 8
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [9]
+  Name = 'obs 2 - sg'
+  Assign
+    {
+    Zone = 9
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [10]
+  Name = 'obs 3 - sg'
+  Assign
+    {
+    Zone = 10
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom1
+    }
+  Symbols
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [11]
+  Name = 'obs 4 - sg'
+  Assign
+    {
+    Zone = 11
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Custom3
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Del
+      }
+    Color = Black
+    FillColor = Custom3
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [12]
+  Name = 'obs 5 - sg'
+  Assign
+    {
+    Zone = 12
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Purple
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Del
+      }
+    Color = Custom1
+    FillColor = Purple
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [13]
+  Name = 'obs 6 - sg'
+  Assign
+    {
+    Zone = 13
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Red
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Del
+      }
+    Color = Custom2
+    FillColor = Red
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [14]
+  Name = 'obs 7 - sg'
+  Assign
+    {
+    Zone = 14
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Green
+    }
+  Symbols
+    {
+    Color = Green
+    FillColor = Green
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [15]
+  Name = 'obs 1 - usg'
+  Assign
+    {
+    Zone = 15
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!LineMap  [16]
+  Name = 'obs 2 - usg'
+  Assign
+    {
+    Zone = 16
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom1
+    }
+  Symbols
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  BarCharts
+    {
+    Color = Custom1
+    FillColor = Custom1
+    }
+  ErrorBars
+    {
+    Color = Custom1
+    }
+$!LineMap  [17]
+  Name = 'obs 3 - usg'
+  Assign
+    {
+    Zone = 17
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Custom3
+    }
+  Symbols
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  BarCharts
+    {
+    Color = Custom3
+    FillColor = Custom3
+    }
+  ErrorBars
+    {
+    Color = Custom3
+    }
+$!LineMap  [18]
+  Name = 'obs 4 - usg'
+  Assign
+    {
+    Zone = 18
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Purple
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Grad
+      }
+    Color = Black
+    FillColor = Purple
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Purple
+    FillColor = Purple
+    }
+  ErrorBars
+    {
+    Color = Purple
+    }
+$!LineMap  [19]
+  Name = 'obs 5 - usg'
+  Assign
+    {
+    Zone = 19
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Red
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Grad
+      }
+    Color = Custom1
+    FillColor = Red
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Red
+    FillColor = Red
+    }
+  ErrorBars
+    {
+    Color = Red
+    }
+$!LineMap  [20]
+  Name = 'obs 6 - usg'
+  Assign
+    {
+    Zone = 20
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Show = No
+    Color = Green
+    }
+  Symbols
+    {
+    SymbolShape
+      {
+      GeomShape = Grad
+      }
+    Color = Custom2
+    FillColor = Green
+    Size = 1
+    LineThickness = 0.4
+    Skipping = 4
+    }
+  BarCharts
+    {
+    Color = Green
+    FillColor = Green
+    }
+  ErrorBars
+    {
+    Color = Green
+    }
+$!LineMap  [21]
+  Name = 'obs 7 - usg'
+  Assign
+    {
+    Zone = 21
+    XAxisVar = 1
+    YAxisVar = 2
+    }
+  Lines
+    {
+    Color = Blue
+    }
+  Symbols
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  BarCharts
+    {
+    Color = Blue
+    FillColor = Blue
+    }
+  ErrorBars
+    {
+    Color = Blue
+    }
+$!XYLineAxis 
+  DepXToYRatio = 1
+$!XYLineAxis 
+  XDetail 1
+    {
+    RangeMin = 1.0000000000000000364E-10
+    RangeMax = 1.000099999999999989
+    GRSpacing = 0.2
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 4
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 4.6
+        }
+      }
+    }
+$!XYLineAxis 
+  YDetail 1
+    {
+    CoordScale = Log
+    RangeMin = 9.999999682655225389E-21
+    RangeMax = 0.14235104927718639223
+    GRSpacing = 0.02
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 4
+        }
+      }
+    Title
+      {
+      TextShape
+        {
+        Height = 4.6
+        }
+      }
+    }
+$!LinePlotLayers 
+  ShowSymbols = Yes
+$!AttachText 
+  AnchorPos
+    {
+    X = 13.30010114145352
+    Y = 94.53836150845251
+    }
+  TextShape
+    {
+    IsBold = No
+    }
+  Text = 'anisotropy = 10'
+$!FrameControl ActivateByNumber
+  Frame = 2
+$!SetStyleBase Config

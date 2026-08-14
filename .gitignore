@@ -1,4 +1,5 @@
 .DS_Store
+complex.dbs.bak
 *.vsidx
 *.exe
 *.o
@@ -15,6 +16,7 @@ src/project/visualstudio_omp/.vs/*
 min3p/src/project/visualstudio_omp/MIN3P_THCm.u2d
 src/project/visualstudio/x64/*
 src/project/visualstudio_omp/x64/*
+src/project/archisimple/x64/*
 updates.txt
 min3p_env/
 
@@ -22,3 +24,13 @@ min3p_env/
 src/version/Resource.rc
 
 src/version/RepoParams.h
+src/project/archisimple/archisimple.vcxproj.filters
+src/project/archisimple/archisimple.vcxproj.user
+src/project/archisimple/x64/Debug/archisimple.Build.CppClean.log
+src/project/archisimple/x64/Debug/archisimple.lib.recipe
+src/project/archisimple/x64/Debug/archisimple.log
+src/project/archisimple/x64/Debug/archisimple.vcxproj.FileListAbsolute.txt
+src/project/archisimple/x64/Release/archisimple.Build.CppClean.log
+src/project/archisimple/x64/Release/archisimple.lib.recipe
+src/project/archisimple/x64/Release/archisimple.log
+src/project/archisimple/x64/Release/archisimple.vcxproj.FileListAbsolute.txt

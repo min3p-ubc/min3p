@@ -1,0 +1,161 @@
+TITLE
+! surface complexation - example problem by Crunchflow
+END
+ 
+DATABASE
+datacom_mingliang_simple_new.dbs
+END
+
+RUNTIME
+time_units      hours
+timestep_max    0.02 
+timestep_init   1.e-17
+debye-huckel    true
+lag_activity    true
+graphics        tecplot
+database_sweep  false
+hindmarsh       true
+time_tolerance  0.01
+correction_max  10.0
+gimrt           true
+master_variable H+
+speciate_only   false
+!!restart         pre1_FMC2.rst
+screen_output   100
+END
+
+OUTPUT
+time_units    hours
+spatial_profile  1.e-17 1.0  2.0 5.0 20.0   
+time_series_at_node      MingliangEffluent2.out  100 1  1
+time_series_print        all            
+time_series_interval     10
+!!MakeMovie              true
+END
+
+
+POROSITY
+!!macroporosity
+fix_porosity       0.25
+porosity_update    false
+END
+
+TEMPERATURE
+set_temperature      25.0
+END
+
+
+PRIMARY_SPECIES
+H+
+Cs+
+Na+
+K+
+Ca++
+Cl-
+END
+
+SECONDARY_SPECIES
+OH-
+CaOH+
+!CsCl(aq)
+END
+
+ION_EXCHANGE
+!exchange X- on Quartz
+!exchange X- on Montmor-MX80
+exchange FES-
+exchange II-
+exchange PS-
+convention Gaines-Thomas
+END
+
+
+!MINERALS  
+!Montmor-MX80 
+!Calcite
+!Gypsum -rate -3
+!Quartz
+!K-Feldspar
+!END
+
+!GASES
+!CO2(g)
+!END
+
+DISCRETIZATION 
+distance_units  meters
+xzones          1  0.08  99  0.16  1  0.08
+END
+ 
+Condition infiltration_solution
+!!Infiltration solution 
+units           molar
+pH               7.60
+Cs+              2.02e-2
+Na+              1.6e-3
+K+               2.4e-1
+Ca++             1.0e-4
+Cl-             2.6e-1 charge
+FES-   -cec          0.0
+II-   -cec          0.0
+PS-   -cec 	0.0
+SoildDensity     0.0
+END
+
+Condition initial_condition
+units            molar
+pH               7.60
+Cs+              1.0e-4
+Na+              2.4e-1
+K+               1.6e-3
+Ca++             2.6e-2
+Cl-             2.936994e-1 charge
+!!Exchanger  -cec in eq/gram_mineral
+FES-   -cec  1.833E-08    
+II-    -cec  1.466E-06    
+PS-    -cec  5.846E-06
+SolidDensity   2500.0  !  1875.0/(1-0.25)
+END
+
+Condition initial_condition_right
+units            molar
+pH               7.60
+Cs+              1.0e-4
+Na+              2.4e-1
+K+               1.6e-3
+Ca++             2.6e-2
+Cl-             2.936994e-1 charge
+!!Exchanger  -cec in eq/gram_mineral
+FES-   -cec  7.330E-07   
+II-    -cec  1.4660E-06     
+PS-    -cec  5.1310E-06
+SolidDensity   2500.0  !  1875.0/(1-0.25)
+END
+
+INITIAL_CONDITIONS
+initial_condition   1-50
+initial_condition_right 51-101
+END
+
+BOUNDARY_CONDITIONS
+X_begin   infiltration_solution   Flux
+X_end     initial_condition       Flux
+END
+
+TRANSPORT
+!distance_units   meters
+!time_units       second
+fix_diffusion     0.0      !1.00e-9
+dispersivity   0.0          !0.01
+END
+
+FLOW
+distance_units  meters
+time_units  seconds
+constant_flow  8.7500E-05   !2.3e-9
+!! m/s (Darcy velocity)
+END
+
+ 
+ 
+

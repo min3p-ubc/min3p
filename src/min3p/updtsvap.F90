@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updtsvap.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updtsvap.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -140,7 +140,7 @@
 !c           ionstr    = compute ionic strength
 !c ----------------------------------------------------------------------
  
-      subroutine updtsvap (c,cx,gammac,gammax,strion,tid)
+      subroutine updtsvap (c,cx,gammac,gammax,strion,actvt,tid)
  
       use parm
       use chem
@@ -148,7 +148,9 @@
 
       implicit none
       
-      real*8 :: c,cx,gammac,gammax,strion
+      real*8 :: c(*), cx(*), gammac(*), gammax(*), actvt(*)
+
+      real*8 :: strion
 
       integer :: tid 
       
@@ -157,8 +159,6 @@
       real*8, external :: acoff
 
       external secspec, ionstr
-
-      dimension c(*),cx(*),gammac(*),gammax(*)
 
 !c  activity coefficients for free species
       if (update_activity(tid).eq.'double_update') then
@@ -177,9 +177,7 @@
  !c           write(ilog,*) ' in updatesvap c(nc)=',nc,c(1:nc)
 
             if (component_type(ic).eq.'aqueous') then
-!cmx            gammac(ic) = acoff(c,cx,strion,chargec(ic),dhac(ic),      &
-!cmx     &                         dhbc(ic),dhad(tid),dhbd(tid),adav,bdav,&
-!cmx     &                         acth2omin,nc,nx,namec(ic),namec)
+
               gammac(ic) = acoff(c,cx,strion,chargec(ic),dhac(ic),   &
                                  dhbc(ic),dhad(tid),dhbd(tid),adav,bdav,&
                                  acth2omin,nc,nx,namec(ic),namec,ic,    &
@@ -208,7 +206,7 @@
 
       do ic = 1,nc-1
         if (ctype(ic).eq.'fixed') then
-          c(ic) = actv(ic)/gammac(ic) 
+          c(ic) = actvt(ic)/gammac(ic) 
         end if
       end do
 
@@ -219,24 +217,24 @@
         do ir=1,nr
           ic = nopu+ir
           call secspec(c,c(ic),eqr(ir,tid),gammac,gammac(ic),xnur,    &
-                       iarc,jarc,nc,ir)
+                       iarc,jarc,ir)
         end do
       end if
 
 !c  compute concentrations of aqueous complexes
- 
+
       do ix = 1,nx
         call secspec(c,cx(ix),eqx(ix,tid),gammac,gammax(ix),xnux,     &
-                     iax,jax,nc,ix)
+                     iax,jax,ix)
       end do
- 
-!c  update ionic strength
- 
+
+!c  update ionic strength again after updating concentrations of free species and secondary aqueous species
+
       call ionstr(c,cx,strion,chargec,chargex,nc-1,nx,namec)
- 
+
 !c  make sure new ionic strength is not larger than maximum
 !c  allowed ionic strength to avoid convergence problems
- 
+
       strion = dmin1(strion,sionmax)
 
       return

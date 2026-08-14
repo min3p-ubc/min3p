@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/updtrootdensity.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/updtrootdensity.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -277,7 +277,7 @@
               !write(*,*) 'updtrootdensity : RSD(',ivol,')=', RSD_coupled(ivol)
             enddo
             
-            !c DSU: to be checked later, why put rld(nngl)=0 here? 
+            !c DSU: to be further checked, why put rld(nngl)=0 here? 
             !c rld(nngl)=0 ! Au coin du domaine on met RSD = 0 sinon on a une valeur garbage de 1
           endif  ! flag 1D/2D
                     
@@ -350,7 +350,7 @@
 !cdsu
       subroutine updtrootdensity_ext
 
-        use biol, only : irld, rld
+        use biol, only : irld, rld, rld_update_skip
         use gen, only : ilog, rank, nngbl, nngl, discretization_type,  &
                         node_idx_g2lg, node_idx_lg2g,                  &
                         usg_mesh_ordering, node_idx_g2g_invord
@@ -401,6 +401,19 @@
         ! 1.000000E-01
         ! ...
         !
+
+        if (rld_update_skip > 0) then
+          do iskip = 1, rld_update_skip
+            do while (.true.)
+              read(irld,*,err=998,end=998) strbuffer
+              call makelowercase(strbuffer)
+              if (index(strbuffer,'zone') > 0) then
+                exit
+              end if
+            end do
+          end do
+        end if
+        rld_update_skip = 0
 
         do while (.true.)
           read(irld,*,err=998,end=998) strbuffer

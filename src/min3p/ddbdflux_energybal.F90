@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/ddbdflux_energybal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/ddbdflux_energybal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -56,7 +56,7 @@
 !c
 !c           integer*4:
 !c           ----------
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           iavs(nn+1)         = row pointer array for avs           + -
 !c           igen               = unit number, generic output file    + -
@@ -174,7 +174,7 @@
       ibvs = 0
       
       ibvs = ivol2bvs(ivol)
-      if (ibvs == 0) then
+      if (ibvs == 0 .or. .not.bcondvs_on(ibvs)) then
         return    
       end if
       

@@ -4,7 +4,7 @@
 !> $Revision: 786 $
 !> $Author: dsu $
 !> $Date: 2021-01-06 21:41:32 -0800 (Wed, 06 Jan 2021) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/infevap.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/infevap.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -121,11 +121,13 @@
       implicit none
 
       integer :: nvx, nvy, nvz, ia(nmax+1), ja(njamxc),               &
-                 isymm(njamxc), idbg, ilog, nzn, mprop(*)
+                 isymm(njamxc), idbg, ilog, nzn
+                 
+      integer :: mprop(*)
 
       logical :: half_cells, fully_saturated, variably_saturated,     &
-                 diff_coff, harmonic_porosity, av_dens_z,             &
-                 radial_coord, isenhfactor, split_divdensv
+                 comp_dep_diff_coff, av_dens_z,radial_coord,          &
+                 isenhfactor, split_divdensv
 
       real*8 ::  pornew(nmax),tempnew(nmax),ddensvdpa(nmax),          &
                  ddensvdt(nmax),dsurftensdt(nmax),density(nmax),      &

@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/outputdd_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/outputdd_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -124,7 +124,7 @@
 !c
 !c local:    real*8:
 !c           ------- 
-!c           fhead              = freshwater head
+!c           fhead              = equivalent freshwater head
 !c           qroot              = root water uptake for current
 !c                                control volume
 !c           theta_a            = aqueous phase content
@@ -211,7 +211,8 @@
       checkerr
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, eps=1.0d-300,       &
-              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5
+              r1000=1.0d3, rkelvin=273.15d0, zero=1.0d-5,              &
+              rverysmall = 1.0d-30
 
       real*8, allocatable  :: ddens_dvi(:), totc(:), s_ice(:), s_water(:)
 
@@ -355,35 +356,7 @@
           ixmf = lun_get()
           open(ixmf,file=prefix(:l_prfx)//'_domain.xmf',               &
                status='unknown', form='formatted')
-
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_mesh,     &
-                    "domain","vertices_rank","Scalar","Node",          &
-                    num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_mesh,     &
-                    "domain","cells_rank","Scalar","Cell",             &
-                    num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_mesh,     &
-                    "domain","vertices_lg2g","Scalar","Node",          &
-                    num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,strfilename_mesh,     &
-                    "domain","cells_lg2g","Scalar","Cell",             &
-                    num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_mesh,   &
-                      "domain","vertices_matid","Scalar","Node",       &
-                      num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,strfilename_mesh,   &
-                      "domain","cells_matid","Scalar","Cell",          &
-                      num_cells_gbl,1)
-          end if
+          call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
           call hdf5_usg_write_xmf_finalize(ixmf)
           close(ixmf)
           call lun_free(ixmf)
@@ -433,34 +406,7 @@
 
           !c open corresponding xmf file for mesh and domain decomposition
           if (rank == 0) then
-            call hdf5_usg_write_xmf_initialize(ixmf)
-            call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,        &
-                      cell_type,num_cells_gbl,num_nodes_gbl,           &
-                      num_nodes_per_cell)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_rank",       &
-                      "Scalar","Node",num_nodes_gbl,1)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_rank",          &
-                      "Scalar","Cell",num_cells_gbl,1)
-
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_lg2g",       &
-                      "Scalar","Node",num_nodes_gbl,1)
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_lg2g",          &
-                      "Scalar","Cell",num_cells_gbl,1)
-
-            if (b_use_node_matids) then
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_matid",    &
-                        "Scalar","Node",num_nodes_gbl,1)
-            end if
-            if (b_use_cell_matids) then
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_matid",       &
-                        "Scalar","Cell",num_cells_gbl,1)
-            end if
+            call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
           end if
 
           !c create a group for the mesh data set
@@ -525,7 +471,7 @@
 !cprovi Store the concentration vector for aqueous species
 !cprovi--------------------------------------------------------
             cpz_loc(1:nc)=r0 ! cnew(1:nc,inode)
-            cpz_loc(nc+1:nc+nx)= r0 ! cx(1:nx,inode)
+            cpz_loc(nc+1:nc+nx)= r0 ! cxnew(1:nx,inode)
 !cprovi--------------------------------------------------------
 !cprovi Compute the increment for dissolution/precipitation
 !cprovi--------------------------------------------------------
@@ -814,34 +760,7 @@
 
         !c open corresponding xmf file for mesh and domain decomposition
         if (rank == 0) then
-          call hdf5_usg_write_xmf_initialize(ixmf)
-          call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                    cell_type,num_cells_gbl,num_nodes_gbl,             &
-                    num_nodes_per_cell)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_rank",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_rank",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","vertices_lg2g",         &
-                    "Scalar","Node",num_nodes_gbl,1)
-          call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                    strfilename_mesh,"domain","cells_lg2g",            &
-                    "Scalar","Cell",num_cells_gbl,1)
-
-          if (b_use_node_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","vertices_matid",      &
-                      "Scalar","Node",num_nodes_gbl,1)
-          end if
-          if (b_use_cell_matids) then
-            call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                      strfilename_mesh,"domain","cells_matid",         &
-                      "Scalar","Cell",num_cells_gbl,1)
-          end if
+          call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
         end if
 
         !c create a group for the mesh data set
@@ -961,7 +880,9 @@
 
           phead_vols(inode) = uvsnew(inode)/(density(inode) * gacc)
 
-          fhead_vols(inode) = phead_vols(inode) + zg(inode)
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+          fhead_vols(inode) = zg(inode) + phead_vols(inode)*(density(inode)/ref_dens)
 
           theta_a_vols(inode) = pornew(inode) * sanew(inode)
 
@@ -1224,7 +1145,11 @@
               !c total root water uptake
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1258,7 +1183,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1284,7 +1213,11 @@
             if (b_output_binary) then
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1303,7 +1236,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1443,7 +1380,10 @@
 
 !c  calculate pressure and freshwater heads
           phead_vols(inode) = uvsnew(inode)/(density(inode) * gacc)
-          fhead_vols(inode) = phead_vols(inode) * density(inode)/ref_dens + zg(inode)
+
+!c  calculate equivalent freshwater head
+!c  ref: https://books.gw-project.org/variable-density-groundwater-flow/chapter/equivalent-freshwater-head/
+          fhead_vols(inode) = zg(inode) + phead_vols(inode)*(density(inode)/ref_dens)
 
           theta_a_vols(inode) = pornew(inode) * sanew(inode)
           theta_n_vols(inode) = pornew(inode) * snnew(inode)
@@ -1739,7 +1679,11 @@
             if (b_output_binary) then
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1771,7 +1715,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1796,7 +1744,11 @@
             if (b_output_binary) then
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if
@@ -1815,7 +1767,11 @@
               write(igsp,'(a)') "LOOKUP_TABLE default"
               do inode = 1, num_nodes
                 if (root_uptake) then
-                  transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  if (rld(inode) > rverysmall) then
+                    transp = cvol(inode)*rootwat(sanew,inode,rsum_vprop)
+                  else
+                    transp = r0
+                  end if
                 else
                   transp = r0
                 end if

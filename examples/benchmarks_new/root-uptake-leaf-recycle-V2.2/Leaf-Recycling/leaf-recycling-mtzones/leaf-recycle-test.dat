@@ -1,0 +1,1148 @@
+!
+!Leaf recycle test
+!mini (5 m) root extent
+!
+!solid ca-oxalate consumption rate set to consumption via Streptomyces achromogenes 
+!
+!
+!
+!Cl present as tracer for solute uptake
+!No change to decomposition rxn rate
+!
+!Data Block 1: global control parameters
+! ---------------------------------------------------------------------------
+!
+'global control parameters'
+'plot-scale model - initial'
+
+.true.                        ;varsat_flow
+.false.                       ;steady_flow
+.false.                       ;fully_saturated
+.true.                        ;reactive_transport
+.true.	                      ;root_uptake
+
+!'output sparse matrix data set and rhs at timestep'
+!146
+
+'done'
+
+!
+! Data Block 2: geochemical system
+! ---------------------------------------------------------------------------
+!
+'geochemical system'
+
+'use new database format'
+
+'database directory'
+'./databaseRR2'
+
+'define input units'
+'mol/l'
+
+'define temperature'
+25
+
+'components'
+13                            ;number of components (nc-1)
+'h+1'                         ;component names
+'co3-2'
+'ca+2'
+'o2(aq)'
+'al+3'
+'h4sio4'
+'na+1'
+'CaOxalate_aq'
+'cl-1'
+'fe+2'
+'fe+3'
+'oxalate-2B'
+'ch3cooh(aq)'
+
+'redox couples'
+0                             ;number of redox couples (nr)
+
+
+'secondary aqueous species'
+16                            ;number of secondary aqueous species
+'oh-'                         ;names of secondary aqueous species
+'caco3aq'
+'cahco3+'
+'caoh+'
+'h2co3aq'
+'hco3-'
+'al(oh)2+'
+'al(oh)3aq'
+'al(oh)4-'
+'aloh+2'
+'feoh+'
+'feoh3-1'
+'fehco3+'
+'feco3aq'
+'feoh2aq'
+'feoh+2'
+!'fecl+2'
+!'fecl+'
+!'fecl2+'
+!'fecl3aq'
+!'feoh2+'
+!'feoh3aq'
+!'feoh4-'
+!'fe2(oh)2+4'
+!'fe3(oh)4+5'
+!'al13(oh)32+7'
+!'al2(oh)2+4'
+!'al2Sio2(oh)6aq'
+!'al3(oh)4+5'
+!'alh3sio4+2'
+!'alsio(oh)6-'
+!'h2sio4-2'
+!'h3sio4-'
+
+'gases'
+2                              ;number of gases
+'o2(g)'                        ;names of gases
+'co2(g)'
+
+'minerals'
+6                              ;number of minerals
+'calcite'                      ;minerals names
+'CaOxalate_s'                  !irriversible precipitation for straight caox oxidation
+'Ca_feldspar-pH'
+'kaolinite'
+'hematite'
+'CaOxalate_ox'
+
+
+'combine mineralogical parameters'
+'calcite'                      ;minerals names
+'CaOxalate_ox'                  !irriversible precipitation for straight caox oxidation
+'Ca_feldspar-pH'
+!'Ca_feld_Al'
+'kaolinite'
+'hematite'
+'CaOxalate_ox'
+
+
+'excluded minerals'
+2                              ;number of excluded minerals (nmx)
+'aragonite'                    ;minerals names
+'vaterite'
+!'Ca-oxalate'
+
+
+
+'intra-aqueous kinetic reactions'
+1                                    ;number of intra-aqueous kinetic reactions
+'oxalate_rxn'				    	 ;oxalate oxidation
+!'oxalateO2'                         ;oxalate(aq) oxidation 
+
+
+'scaling for intra-aqueous kinetic reactions'
+5.40E-9	              		    	!from Bravo et al, 2014. Consumption rate by Streptomyces achromogenes (mol/sec)
+!3.78E-8                            !input rate for Ca-ox falling from tree
+                          
+'done'
+
+
+! Data Block 3: spatial discretization
+! ---------------------------------------------------------------------------
+!
+'spatial discretization'
+1                             ;number of discretization intervals in x
+1                             ;number of control volumes in x
+0.0 1.0                       ;xmin,xmax
+1                             ;number of discretization intervals in y
+6                             ;number of control volumes in y
+0.0 5.0                       ;ymin,ymax
+1                             ;number of discretization intervals in z
+4                            ;number of control volumes in z
+0 3.0                         ;zmin,zmax
+
+'done'
+
+! Data Block 4: time step control - global system
+! ---------------------------------------------------------------------------
+!
+'time step control - global system'
+'years'                        ;time unit
+0.0d0                          ;time at start of solution
+50.0                           ;final solution time
+1.0d0                          ;maximum time step
+1.0d-20                        ;minimum time step
+
+'done'
+
+!
+! Data Block 5: control parameters - local geochemistry
+! ---------------------------------------------------------------------------
+!
+'control parameters - local geochemistry'
+
+'activity update settings'
+'time_lagged'
+
+'newton iteration settings'
+1.E-4                         ;factor for numerical differentiation
+1.E-6                         ;convergence tolerance
+
+'define minimum reaction rate'
+0.E0
+
+'maximum ionic strength'
+2.E0                         ;max. ionic strength
+
+'minimum activity for h2o'
+0.5E0                         ;min. activity for h2o
+
+'output time unit'
+'days'                       ;time unit (local chemistry)
+
+
+'done'
+
+! Data Block 6: control parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'control parameters - water flow'
+
+'mass balance'
+
+'input units for boundary and initial conditions'
+'hydraulic head'              ;input unit
+
+'upstream weighting'
+
+!'compute underrelaxation factor'
+!0.1                          ;max. allowed update
+
+'newton iteration settings'
+1.0d-6                        ;increment for numerical differentiation
+100                           ;max. number of newton iterations
+1.0d-8                        ;convergence tolerance
+0.02                          ;sw_star
+
+'solver settings'
+0                             ;incomplete factorization level
+500                           ;max. number of solver iterations
+1                             ;solver information level
+1.0d-9                        ;solver residual tolerance
+1.0d-9                        ;solver update tolerance
+
+'done'
+
+!
+! Data Block 7: control parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+
+'control parameters - reactive transport'
+'redox reactions'
+.true.
+
+'mass balance'
+
+'spatial weighting'
+'upstream'
+
+'activity update settings'
+'time_lagged'
+
+'tortuosity correction'
+'millington'
+
+'gas tortuosity correction'
+'millington'
+
+'user-specified underrelaxation factor'
+1.0
+
+'newton iteration settings'
+1.0d-6                        ;increment h for numerical differentiation
+12                            ;anticipated number of Newton iterations
+15                            ;max. number of Newton iterations
+0.5                           ;anticipated update in log cycles
+1.0                           ;maximum update in log cycles
+1.0d-8                        ;convergence tolerance (global system)
+
+'solver settings'
+0                             ;incomplete factorization level
+500                           ;max. number of solver iterations
+1                             ;information level
+1.0d-9                        ;solver residual tolerance
+1.0d-9                        ;solver update tolerance
+
+
+'done'
+
+! Data Block 8: output control
+! ---------------------------------------------------------------------------
+!
+'output control'
+
+'output in terms of depth'
+
+'output of spatial data'
+5                             ;number of output times (spatial data)
+10.0 20.0 30.0 40.0
+50.0                          ;specified output times (spatial data)
+
+'output of transient data'
+4                             ;number of output locations (transient data)
+1                             ;timesteps between output (transient data)
+3 4 10 18                     ;control volume numbers for transient data
+
+'done'
+
+! Data Block 9: physical parameters - porous medium
+! ---------------------------------------------------------------------------
+!
+'physical parameters - porous medium'
+3                             ;number of material property zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'soil'
+0.43                      ;porosity
+
+'extent of zone'
+0.0 1.0  0.0 5.0  0.0 0.5  
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'soil2'
+0.43                      ;porosity
+
+'extent of zone'
+0.0 1.0  0.0 5.0  0.5 2.5  
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+3
+'soil3'
+0.43                      ;porosity
+
+'extent of zone'
+0.0 1.0  0.0 5.0  2.5 3.0  
+
+'end of zone'
+
+'done'
+
+! Data Block 10: physical parameters - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'physical parameters - variably saturated flow'
+
+! ---------------------------------------------------------------------------
+'soil'
+
+'hydraulic conductivity in z-direction'
+2.89d-6                      ;K_zz
+
+'hydraulic conductivity in y-direction'   !will need to change
+1.0E-5                       ;K_yy
+
+'specific storage coefficient'
+1d-5
+
+'soil hydraulic function parameters'
+0.15                        ;residual saturation
+1.20                        ;van genuchten - alpha
+1.38                        ;van genuchten - n
+0.5                         ;expn
+0.0                         ;air entry pressure
+0.0                         ;psidry (air-dry pressure head)
+
+! ---------------------------------------------------------------------------
+'soil2'
+
+'hydraulic conductivity in z-direction'
+2.89d-6                      ;K_zz
+
+'hydraulic conductivity in y-direction'   !will need to change
+1.0E-5                       ;K_yy
+
+'specific storage coefficient'
+1d-5
+
+'soil hydraulic function parameters'
+0.15                        ;residual saturation
+1.20                        ;van genuchten - alpha
+1.38                        ;van genuchten - n
+0.5                         ;expn
+0.0                         ;air entry pressure
+0.0                         ;psidry (air-dry pressure head)
+
+! ---------------------------------------------------------------------------
+'soil3'
+
+'hydraulic conductivity in z-direction'
+2.89d-6                      ;K_zz
+
+'hydraulic conductivity in y-direction'   !will need to change
+1.0E-5                       ;K_yy
+
+'specific storage coefficient'
+1d-5
+
+'soil hydraulic function parameters'
+0.15                        ;residual saturation
+1.20                        ;van genuchten - alpha
+1.38                        ;van genuchten - n
+0.5                         ;expn
+0.0                         ;air entry pressure
+0.0                         ;psidry (air-dry pressure head)
+'done'
+
+! Data Block 11: physical parameters - reactive transport
+! ---------------------------------------------------------------------------
+!
+'physical parameters - reactive transport'
+
+'diffusion coefficients'
+1.0d-9                      ;free diffusion coefficient in water !reasonable estimate in this context
+1.65d-5                     ;free diffusion coefficient in air !Molins and Mayer, 2007
+
+! ---------------------------------------------------------------------------
+'soil'
+
+'longitudinal dispersivity'
+0.0                         ;vertical dispersivity
+
+'transverse vertical dispersivity' !
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'soil2'
+
+'longitudinal dispersivity'
+0.0                         ;vertical dispersivity
+
+'transverse vertical dispersivity' !
+0.0
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'soil3'
+
+'longitudinal dispersivity'
+0.0                         ;vertical dispersivity
+
+'transverse vertical dispersivity' !
+0.0
+
+'end of zone'
+
+'done'
+
+! Data Block 12: initial condition - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'initial condition - variably saturated flow'
+
+!'read initial condition from file'
+
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+1
+'soil profile'
+
+'initial condition'
+0.0                          ;hydraulic head
+
+'extent of zone'
+0.0 1.0  0.0 5.0  0.0 3.0  
+
+'end of zone'
+
+'done'
+
+! Data Block 13: boundary conditions - variably saturated flow
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - variably saturated flow'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+1
+'top'
+
+'boundary type'
+'second' 4.75647d-08                       ;flux condition (m/s)
+
+'extent of zone'
+0.0 1.0  0.0 5.0  3.0 3.0  
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'number and name of zone'
+2
+'bottom'
+
+'boundary type'
+'first' 0.0d0                         ;head 
+
+'extent of zone'
+0.0 1.0  0.0 5.0  0.0 0.0  
+
+'end of zone'
+
+'done'
+
+
+! Data Block 15: initial condition - reactive transport
+! ---------------------------------------------------------------------------
+!
+'initial condition - reactive transport'
+2                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+1
+'upper soil'
+
+'concentration input'
+5.1         'ph'              ;range of 4.3-6 tropical ferrallitic soil (Cailleau et al. 2004)
+!                             !Cailleau 2005 recorded values 5.59-7.03. Pons et al 2018 pH = 5.1
+3.43d-4     'pco2'            ;co3-2 !as inflow 
+5.3694E-08     'free'         ;ca+2 !rain + dust inputs *from Yobue et al 2005 and Stoorveogel et al 1997 units mol/l s
+0.21        'po2'             ;o2(aq) ! as inflow
+4.0d-6      'free'            ;al+3 !steady state value to calculate
+4.0d-6      'free'            ;h4sio4 !steady state value to calculate
+0.001       'free'            ;na+1 ! 
+1.0d-10     'free'            ;Caoxalate-aq ! low placeholder value
+1.0E-10	    'free'			  ;cl for tracer
+1d-8	    'free'			  ;Fe+2 guess
+1d-8	    'free'			  ;Fe+3 guess
+1.0d-10     'free'            ;Caoxalate-2B ! low placeholder value
+1.0d-10    'free'             ;ch3cooh(aq)
+
+'mineral input'
+1.0d-10    .false.  'constant' ;phim, minequil, update_type  - calcite
+1.0d-10    1.0d-7    0.0       ;phimin, area, supsatm, 
+0.0        .false.  'constant' ;phim, minequil, update_type  - CaOxalate_s 
+1.0d-10    3.78d-9    0.0       ;phimin, area, supsatm 
+0.001       .false.  'constant' ;phim, minequil, update_type  - Ca_feldspar !pH dependent. reactive SA (m^2/dm^3 oligoclase from Xue et al 2001)bc rate constant specified in database
+1.0d-10      0.001    0.0       ;phimin, area, supsatm,
+0.42       .false.  'constant' ;phim, minequil, update_type  - kaolinite from IBSRAM proc no.4
+1.0d-10    4.0d-9    0.0       ;phimin, area, supsatm,
+0.05      .false.  'constant' ;phim, minequil, update_type  - hematite from  IBSRAM proc no.4
+1.0d-10    4.0d-9    0.0       ;phimin, area, supsatm,
+0.0        .false.  'constant' ;phim, minequil, update_type  - CaOxalate_ox 
+1.0d-10    3.78d-9    0.0       ;phimin, area, supsatm 
+
+'extent of zone'
+0.0 1.0  0.0 5.0  2.4 3.0  
+
+'end of zone'
+
+'number and name of zone'
+2
+'B horizon'
+
+'concentration input'
+5.1         'ph'              ;range of 4.3-6 tropical ferrallitic soil (Cailleau et al. 2004)
+!                             !Cailleau 2005 recorded values 5.59-7.03. Pons et al 2018 pH = 5.1
+3.43d-4     'pco2'            ;co3-2 !as inflow 
+5.3694E-08     'free'           ;ca+2 !rain + dust inputs *from Yobue et al 2005 and Stoorveogel et al 1997 units mol/l s
+0.21        'po2'             ;o2(aq) ! as inflow
+4.0d-6      'free'            ;al+3 !steady state value to calculate
+4.0d-6      'free'            ;h4sio4 !steady state value to calculate
+0.001       'free'            ;na+1 ! 
+1.0d-10     'free'            ;Caoxalate-aq ! low placeholder value
+1.0E-10	    'free'			  ;cl for tracer
+1d-8	    'free'			  ;Fe+2 guess
+1d-8	    'free'			  ;Fe+3 guess
+1.0d-10     'free'            ;Caoxalate-2B ! low placeholder value
+1.0d-10     'free'          ;ch3cooh(aq)
+
+'mineral input'
+1.0d-10    .false.  'constant' ;phim, minequil, update_type  - calcite
+1.0d-10    1.0d-7    0.0       ;phimin, area, supsatm, 
+0.0        .false.  'constant' ;phim, minequil, update_type  - CaOxalate_s 
+1.0d-10    3.78d-9    0.0       ;phimin, area, supsatm 
+0.11       .false.  'constant' ;phim, minequil, update_type  - Ca_feldspar !pH dependent. reactive SA (m^2/dm^3 oligoclase from Xue et al 2001) bc rate constant specified in database
+1.0d-10     0.025    0.0       ;phimin, area, supsatm,
+0.42       .false.  'constant' ;phim, minequil, update_type  - kaolinite from IBSRAM proc no.4
+1.0d-10    4.0d-9    0.0       ;phimin, area, supsatm,
+0.05      .false.  'constant' ;phim, minequil, update_type  - hematite from  IBSRAM proc no.4
+1.0d-10    4.0d-9    0.0       ;phimin, area, supsatm,
+0.0        .false.  'constant' ;phim, minequil, update_type  - CaOxalate_ox 
+1.0d-10    3.78d-9    0.0       ;phimin, area, supsatm 
+
+'extent of zone'
+0.0 1.0  0.0 5.0  0.0 2.4  
+
+'end of zone'
+
+'done'
+
+! Data Block 16: boundary conditions - reactive transport
+! ---------------------------------------------------------------------------
+!
+'boundary conditions - reactive transport'
+1                             ;number of zones
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+1
+'top boundary'
+
+'boundary type'
+'mixed'
+
+'concentration input'
+5.16      'ph'              ;h+1 !pH wet deposition Cote D'Ivoire from Yobue et al. 2005
+3.43d-4   'pco2'            ;co3-2 !as inflow
+1.8874E-05 'free'            ;ca+2 !rain + dust + non-Iroko plant matter +other weathering (0% GW in pool) units mol/l
+0.21      'po2'             ;o2(aq) ! as inflow
+4.0d-6    'free'            ;al+3 !steady state value to calculate
+4.0d-6    'free'            ;h4sio4 !steady state value to calculate
+1.0d-7    'free'            ;na+1 ! low value, as rain
+1.0E-10   'free'           ;CaOxalate_aq ! 
+1E-100    'free'			;cl for tracer
+1E-100    'free'            ;fe2+
+1E-100    'free'            ;fe3+
+1.0d-10   'free'            ;oxalate-2B ! low placeholder value
+1.0d-10    'free'          ;ch3cooh(aq)
+
+'extent of zone'
+0.0 1.0  0.0 5.0  3.0  3.0  
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+2
+'Groundwater Signature'
+
+'boundary type'
+'third'
+
+'concentration input'
+7.1       'ph'                 ;h+1 !pH groundwater Yao et al. (2013)7.1
+2.14d-3   'free'               ;co3-2 !as inflow
+1.0d-10   'free'               ;ca+2 !no gw ca GW signature UN report 1988 and Yao et al 2013 units mol/l
+1.0d-7    'free'               ;o2(aq) ! as inflow
+1.0d-3    'free'               ;al+3 !Yao et al 2013
+2.0d-7    'free'               ;h4sio4 !steady state value to calculate
+1.0d-3    'free'               ;na+1 From Yao et al 2013
+1.0d-10   'free'               ;oxalate-2 ! 
+1E-10    'free'			   ;cl for tracer
+3.5E-10    'free'             ;fe2+ Yao et al 2013
+1E-10    'free'               ;fe3+
+1.0d-10   'free'               ;oxalate-2B ! low placeholder value
+1.0d-10    'free'          ;ch3cooh(aq)
+
+'extent of zone'
+0.0 1.0  0.0 1.0  0.0  0.0  
+
+'end of zone'
+
+!'update boundary conditions'
+!0                            ;number of target read times
+
+
+! Data Block 17: plant transpiration and passive/rejective uptake
+! ---------------------------------------------------------------------------
+!
+'plant transpiration and passive/rejective uptake'
+! ---------------------------------------------------------------------------
+!NB :If none of these options is activated, the root length densities considered are those 
+!NB :specified in the 'root water uptake' section. In the 'update-internal' option, ivol 
+!NB :refers to the control volume ID. 
+
+!'update - internal'		; 1D - rld(ivol)=exp(a+b*sqrt(z(ivol))+c*time+d*sqrt(z(ivol))*time)
+!-12.48 1.725 0.0017 0.0003961	; a, b, c, d parameters of the model for 'update - internal'
+!'update - coupled - AS'	; 1D/2D (automatic detection)
+!'update - coupled - RT'	; 2D
+
+!If seed < 0, use srand((unsigned) time(null))
+!If seed >= 0, use srand((unsigned) seed)
+!Default (without keyword 'random generator seed - *'), seed = -1
+!
+'random generator seed - AS'
+123456
+
+'transpiration global parameters'
+2.0                         ;rew_0
+-2.0                        ;p1
+0.1                         ;f_i
+
+'correction method for water stress'
+1						!method for calc alpha
+
+
+!
+!Test addition for leaf recyling 
+!Add new data block or keep in data block 17?
+
+!Define uptake component to be tracked:
+
+'recycle components and minerals'
+4
+'ca+2' 'CaOxalate_ox'   !ca+2 is recycled as CaOxalate_ox
+'ca+2' 'calcite'        !ca+2 is recycled as calcite
+'al+3' 'kaolinite'      !al+3 is recycled as kaolinite
+'ca+2' 'kaolinite'      !no recycle happens as kaolinite has no ca+2
+
+!If overlap in return zone is allowed, the same return zone 
+!can accept mineral return from solute uptake/respiration from different regions.  
+'allow overlap in return zones'
+
+!Define mineral recycle and return times:
+!time1: start time of solute uptake for recycle as mineral in current cycle
+!time2: start time of mineral return in current cycle
+!time3: end time of mineral return in current cycle
+!solute uptake before time1 or after time3 are not considered in the recycle.
+!Between time1 and time2 (stage1), only solute uptake is considered. 
+!Between time2 and time3 (stage2), the total solute uptake in stage1 and 
+!solute uptake in stage2 are returned as mineral 
+!
+!format of 'recycle and return times'
+!ntimes: number of cycles
+!time1, time2, time3
+!time1, time2, time3
+!...
+!time1, time2, time3
+
+'recycle and return times'
+52
+0  0.9  1
+1  1.9  2
+2  2.9  3
+3  3.9  4
+4  4.9  5
+5  5.9  6
+6  6.9  7
+7  7.9  8
+8  8.9  9
+9  9.9  10
+10  10.9  11
+11  11.9  12
+12  12.9  13
+13  13.9  14
+14  14.9  15
+15  15.9  16
+16  16.9  17
+17  17.9  18
+18  18.9  19
+19  19.9  20
+20  20.9  21
+21  21.9  22
+22  22.9  23
+23  23.9  24
+24  24.9  25
+25  25.9  26
+26  26.9  27
+27  27.9  28
+28  28.9  29
+29  29.9  30
+30  30.9  31
+31  31.9  32
+32  32.9  33
+33  33.9  34
+34  34.9  35
+35  35.9  36
+36  36.9  37
+37  37.9  38
+38  38.9  39
+39  39.9  40
+40  40.9  41
+41  41.9  42
+42  42.9  43
+43  43.9  44
+44  44.9  45
+45  45.9  46
+46  46.9  47
+47  47.9  48
+48  48.9  49
+49  49.9  50
+50  50.9  51
+51  51.9  52
+
+'done'
+
+! Data Block 10: physical parameters - root uptake
+! ---------------------------------------------------------------------------
+!
+'physical parameters - root uptake'
+
+! ---------------------------------------------------------------------------
+'read root length density from file'
+
+'update root length density from file'
+4                   ;number of times to update root density
+10                  ;first time to update root density
+20                  ;second time to update root density
+30                  ;third time to update root density
+40                  ;fourth time to update root density
+
+! ---------------------------------------------------------------------------
+'soil'
+
+'root water uptake'
+160.0                      ;water pressure wilting point
+1.0                        ;water pressure field capacity
+10.0                       ;water pressure optimal value (used in Feddes and VG)
+1                          ;root length density
+
+'passive solute uptake'
+1
+
+'root respiration and exudation of aqueous phase'
+-1.0d-10   	!h+1              respiration rate mol/m^2 s     
+-5.0d-11   	!co3-2
+0.0			!ca+2
+5.0d-11	    !o2(aq)
+0.0			!al+3
+0.0			!h4sio4
+0.0			!na+1
+0.0			!CaOxalate_aq
+0.0  		!cl-1
+0.0			!fe+2
+0.0			!fe+3
+0.0			!oxalate-2B
+-1.0d-7     !ch3cooh(aq)
+
+'return component to mineral coefficients'
+0.8    !'ca+2' 'CaOxalate_ox', 90% ca+2 is recycled as CaOxalate_ox
+0.2    !'ca+2' 'calcite'       10% ca+2 is recycled as calcite
+1.0    !'al+3' 'kaolinite'     100% al+3 is recycled as kaolinite
+0.1    !'ca+2' 'kaolinite'     no recycle happens as kaolinite has no ca+2
+
+!Define mineral return zone at specified times:
+!time1: start time of solute uptake for recycle as mineral in current cycle
+!time2: start time of mineral return in current cycle
+!time3: end time of mineral return in current cycle
+!solute uptake before time1 or after time3 are not considered in the recycle.
+!Between time1 and time2 (stage1), only solute uptake is considered. 
+!Between time2 and time3 (stage2), the total solute uptake in stage1 and 
+!solute uptake in stage2 are returned as mineral 
+!
+!format 1: mineral return in box zone
+!xmin, xmax, ymin, ymax, zmin, zmax
+!xmin, xmax, ymin, ymax, zmin, zmax
+!...
+!xmin, xmax, ymin, ymax, zmin, zmax 
+
+!format 2: mineral return in cylinder zone
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+!...
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+
+!'return zones: box'
+!0.0  1.0  0.0  1.0  0.0 1.0
+!0.0  3.0  0.0  2.0  0.0 1.0
+!0.0  5.0  0.0  3.0  0.0 1.0
+
+
+'return zones: cylinder'
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'soil2'
+
+'root water uptake'
+160.0                      ;water pressure wilting point
+1.0                        ;water pressure field capacity
+10.0                       ;water pressure optimal value (used in Feddes and VG)
+1                          ;root length density
+
+'passive solute uptake'
+1
+
+'root respiration and exudation of aqueous phase'
+-1.0d-10   	!h+1              respiration rate mol/m^2 s     
+-5.0d-11   	!co3-2
+0.0			!ca+2
+5.0d-11	    !o2(aq)
+0.0			!al+3
+0.0			!h4sio4
+0.0			!na+1
+0.0			!CaOxalate_aq
+0.0  		!cl-1
+0.0			!fe+2
+0.0			!fe+3
+0.0			!oxalate-2B
+-1.0d-7     !ch3cooh(aq)
+
+'return component to mineral coefficients'
+0.6    !'ca+2' 'CaOxalate_ox', 90% ca+2 is recycled as CaOxalate_ox
+0.4    !'ca+2' 'calcite'       10% ca+2 is recycled as calcite
+1.0    !'al+3' 'kaolinite'     100% al+3 is recycled as kaolinite
+0.1    !'ca+2' 'kaolinite'     no recycle happens as kaolinite has no ca+2
+
+!Define mineral return zone at specified times:
+!time1: start time of solute uptake for recycle as mineral in current cycle
+!time2: start time of mineral return in current cycle
+!time3: end time of mineral return in current cycle
+!solute uptake before time1 or after time3 are not considered in the recycle.
+!Between time1 and time2 (stage1), only solute uptake is considered. 
+!Between time2 and time3 (stage2), the total solute uptake in stage1 and 
+!solute uptake in stage2 are returned as mineral 
+!
+!format 1: mineral return in box zone
+!xmin, xmax, ymin, ymax, zmin, zmax
+!xmin, xmax, ymin, ymax, zmin, zmax
+!...
+!xmin, xmax, ymin, ymax, zmin, zmax 
+
+!format 2: mineral return in cylinder zone
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+!...
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+
+!'return zones: box'
+!0.0  1.0  0.0  1.0  0.0 1.0
+!0.0  3.0  0.0  2.0  0.0 1.0
+!0.0  5.0  0.0  3.0  0.0 1.0
+
+
+'return zones: cylinder'
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+'soil3'
+
+'root water uptake'
+160.0                      ;water pressure wilting point
+1.0                        ;water pressure field capacity
+10.0                       ;water pressure optimal value (used in Feddes and VG)
+1                          ;root length density
+
+'passive solute uptake'
+1
+
+'root respiration and exudation of aqueous phase'
+-1.0d-10   	!h+1              respiration rate mol/m^2 s     
+-5.0d-11   	!co3-2
+0.0			!ca+2
+5.0d-11	    !o2(aq)
+0.0			!al+3
+0.0			!h4sio4
+0.0			!na+1
+0.0			!CaOxalate_aq
+0.0  		!cl-1
+0.0			!fe+2
+0.0			!fe+3
+0.0			!oxalate-2B
+-1.0d-7     !ch3cooh(aq)
+
+'return component to mineral coefficients'
+0.5    !'ca+2' 'CaOxalate_ox', 90% ca+2 is recycled as CaOxalate_ox
+0.5    !'ca+2' 'calcite'       10% ca+2 is recycled as calcite
+1.0    !'al+3' 'kaolinite'     100% al+3 is recycled as kaolinite
+0.1    !'ca+2' 'kaolinite'     no recycle happens as kaolinite has no ca+2
+
+!Define mineral return zone at specified times:
+!time1: start time of solute uptake for recycle as mineral in current cycle
+!time2: start time of mineral return in current cycle
+!time3: end time of mineral return in current cycle
+!solute uptake before time1 or after time3 are not considered in the recycle.
+!Between time1 and time2 (stage1), only solute uptake is considered. 
+!Between time2 and time3 (stage2), the total solute uptake in stage1 and 
+!solute uptake in stage2 are returned as mineral 
+!
+!format 1: mineral return in box zone
+!xmin, xmax, ymin, ymax, zmin, zmax
+!xmin, xmax, ymin, ymax, zmin, zmax
+!...
+!xmin, xmax, ymin, ymax, zmin, zmax 
+
+!format 2: mineral return in cylinder zone
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+!...
+!xcenter, ycenter, zmin, zmax, radius_min, radius_max
+
+!'return zones: box'
+!0.0  1.0  0.0  1.0  0.0 1.0
+!0.0  3.0  0.0  2.0  0.0 1.0
+!0.0  5.0  0.0  3.0  0.0 1.0
+
+
+'return zones: cylinder'
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1  0  1
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  1.5  0  2
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+0  2.5  0  2  0  3
+
+'end of zone'
+'done'
+
+

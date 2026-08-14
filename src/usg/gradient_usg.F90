@@ -4,7 +4,7 @@
 !> $Revision: 877 $
 !> $Author: dsu $
 !> $Date: 2024-02-08 21:51:08 -0800 (Thu, 08 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/gradient_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/gradient_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -3507,7 +3507,7 @@ module gradient_usg
     ncell = janumcell(i1)
 
     if (grad_method == grad_method_cgg) then
-      call gradient_mcd_cell_green_gauss(i1,ivol,jvol,cnew,cx,         &
+      call gradient_mcd_cell_green_gauss(i1,ivol,jvol,cnew,cxnew,         &
                                          gradient_totc, gradient_elec)
     else if (grad_method <= grad_method_ls) then
       if (b_grad_interpolate_cell) then
@@ -3522,18 +3522,18 @@ module gradient_usg
             if(grad_method == grad_method_gg) then
               if (cell_projection == projection_xyz) then
                 call gradient_conc_green_gauss_tetra(      &
-                     kvol,n,cnew,cx,                       &
+                     kvol,n,cnew,cxnew,                    &
                      grad_kvol(1:n,idvol,icell),           &
                      grad_e_kvol(1:n,idvol,icell))
               else
                 call gradient_conc_green_gauss_tri(        &
-                     kvol,n,cnew,cx,                       &
+                     kvol,n,cnew,cxnew,                    &
                      grad_kvol(1:n,idvol,icell),           &
                      grad_e_kvol(1:n,idvol,icell))
               end if
             else if(grad_method == grad_method_ls) then
               call gradient_conc_least_square_cvol(        &
-                   kvol,n,cnew,cx,                         &
+                   kvol,n,cnew,cxnew,                      &
                    grad_kvol(1:n,idvol,icell),             &
                    grad_e_kvol(1:n,idvol,icell))
             end if
@@ -3543,30 +3543,30 @@ module gradient_usg
         if(grad_method == grad_method_gg) then
           if (cell_projection == projection_xyz) then
             call gradient_conc_green_gauss_tetra(          &
-                 ivol,n,cnew,cx,                           &
+                 ivol,n,cnew,cxnew,                        &
                  grad_ivol(1:n),                           &
                  grad_e_ivol(1:n))
             call gradient_conc_green_gauss_tetra(          &
-                 jvol,n,cnew,cx,                           &
+                 jvol,n,cnew,cxnew,                        &
                  grad_jvol(1:n),                           &
                  grad_e_jvol(1:n))
           else
             call gradient_conc_green_gauss_tri(            &
-                 ivol,n,cnew,cx,                           &
+                 ivol,n,cnew,cxnew,                        &
                  grad_ivol(1:n),                           &
                  grad_e_ivol(1:n))
             call gradient_conc_green_gauss_tri(            &
-                 jvol,n,cnew,cx,                           &
+                 jvol,n,cnew,cxnew,                        &
                  grad_jvol(1:n),                           &
                  grad_e_jvol(1:n))
           end if
         else if(grad_method == grad_method_ls) then
           call gradient_conc_least_square_cvol(            &
-               ivol,n,cnew,cx,                             &
+               ivol,n,cnew,cxnew,                          &
                grad_ivol(1:n),                             &
                grad_e_ivol(1:n))
           call gradient_conc_least_square_cvol(            &
-               jvol,n,cnew,cx,                             &
+               jvol,n,cnew,cxnew,                          &
                grad_jvol(1:n),                             &
                grad_e_jvol(1:n))
         end if
@@ -3574,8 +3574,8 @@ module gradient_usg
     else
       do icell = 1, ncell
         call gradient_conc_hls_cvol(n,ivol,jvol,           &
-                 jacell(icell,i1),cnew,cx,                 &
-                 grad_hls_loc(:,:,icell),                 &
+                 jacell(icell,i1),cnew,cxnew,              &
+                 grad_hls_loc(:,:,icell),                  &
                  grad_e_hls_loc(:,:,icell))
       end do
     end if
@@ -3613,7 +3613,7 @@ module gradient_usg
     ncell = janumcell(i1)
 
     if (grad_method == grad_method_cgg) then
-      call gradient_mcd_cell_green_gauss(i1,ivol,jvol,cnew,cx,         &
+      call gradient_mcd_cell_green_gauss(i1,ivol,jvol,cnew,cxnew,      &
                                          gradient_totc, gradient_elec, &
                                          cinc(:,tid),cxinc(:,tid))
     else if (grad_method <= grad_method_ls) then
@@ -3629,20 +3629,20 @@ module gradient_usg
             if(grad_method == grad_method_gg) then
               if (cell_projection == projection_xyz) then
                 call gradient_conc_green_gauss_tetra(      &
-                     kvol,n,cnew,cx,                       &
+                     kvol,n,cnew,cxnew,                    &
                      ivol,cinc(:,tid),cxinc(:,tid),        &
                      grad_kvol(1:n,idvol,icell),           &
                      grad_e_kvol(1:n,idvol,icell))
               else
                 call gradient_conc_green_gauss_tri(        &
-                     kvol,n,cnew,cx,                       &
+                     kvol,n,cnew,cxnew,                    &
                      ivol,cinc(:,tid),cxinc(:,tid),        &
                      grad_kvol(1:n,idvol,icell),           &
                      grad_e_kvol(1:n,idvol,icell))
               end if
             else if(grad_method == grad_method_ls) then
               call gradient_conc_least_square_cvol(        &
-                   kvol,n,cnew,cx,                         &
+                   kvol,n,cnew,cxnew,                      &
                    ivol,cinc(:,tid),cxinc(:,tid),          &
                    grad_kvol(1:n,idvol,icell),             &
                    grad_e_kvol(1:n,idvol,icell))
@@ -3653,35 +3653,35 @@ module gradient_usg
         if(grad_method == grad_method_gg) then
           if (cell_projection == projection_xyz) then
             call gradient_conc_green_gauss_tetra(          &
-                 ivol,n,cnew,cx,                           &
+                 ivol,n,cnew,cxnew,                        &
                  ivol,cinc(:,tid),cxinc(:,tid),            &
                  grad_ivol(1:n),                           &
                  grad_e_ivol(1:n))
             call gradient_conc_green_gauss_tetra(          &
-                 jvol,n,cnew,cx,                           &
+                 jvol,n,cnew,cxnew,                        &
                  ivol,cinc(:,tid),cxinc(:,tid),            &
                  grad_jvol(1:n),                           &
                  grad_e_jvol(1:n))
           else
             call gradient_conc_green_gauss_tri(            &
-                 ivol,n,cnew,cx,                           &
+                 ivol,n,cnew,cxnew,                        &
                  ivol,cinc(:,tid),cxinc(:,tid),            &
                  grad_ivol(1:n),                           &
                  grad_e_ivol(1:n))
             call gradient_conc_green_gauss_tri(            &
-                 jvol,n,cnew,cx,                           &
+                 jvol,n,cnew,cxnew,                        &
                  ivol,cinc(:,tid),cxinc(:,tid),            &
                  grad_jvol(1:n),                           &
                  grad_e_jvol(1:n))
           end if
         else if(grad_method == grad_method_ls) then
           call gradient_conc_least_square_cvol(            &
-               ivol,n,cnew,cx,                             &
+               ivol,n,cnew,cxnew,                          &
                ivol,cinc(:,tid),cxinc(:,tid),              &
                grad_ivol(1:n),                             &
                grad_e_ivol(1:n))
           call gradient_conc_least_square_cvol(            &
-               jvol,n,cnew,cx,                             &
+               jvol,n,cnew,cxnew,                          &
                ivol,cinc(:,tid),cxinc(:,tid),              &
                grad_jvol(1:n),                             &
                grad_e_jvol(1:n))
@@ -3690,7 +3690,7 @@ module gradient_usg
     else
       do icell = 1, ncell
         call gradient_conc_hls_cvol(n,ivol,jvol,           &
-                 jacell(icell,i1),cnew,cx,                 &
+                 jacell(icell,i1),cnew,cxnew,              &
                  grad_hls_loc(:,:,icell),                  &
                  grad_e_hls_loc(:,:,icell),                &
                  cinc(:,tid),cxinc(:,tid))
@@ -3799,7 +3799,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, itri, icell, jnode, iflag
     real*8 :: inc, val, totvol, rv
-    type(point) :: grad
+    type(point) :: grad, grad_dvols(num_edge_dvols)
 
     gradient = vector_zero
 
@@ -3886,7 +3886,14 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
-      gradient(:,:) = gradient(:,:)/totvol
+      grad_dvols = vector_zero
+      do i = 1, janumcell(jtemp)
+        grad_dvols(:) = grad_dvols(:) + gradient(:,i)
+      end do
+      
+      do i = 1, janumcell(jtemp)
+        gradient(:,i) = grad_dvols(:)/totvol
+      end do
     end if
 
   end subroutine gradient_cell_green_gauss_val1d
@@ -3909,7 +3916,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, k2, itri, icell, jnode, iflag
     real*8 :: dvals(n), totvol, rv
-    type(point) :: grad(n)
+    type(point) :: grad(n), grad_dvols(n,num_edge_dvols)
 
     gradient = vector_zero
 
@@ -4020,8 +4027,13 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
+      grad_dvols = vector_zero
       do i = 1, janumcell(jtemp)
-        gradient(:,:,i) = gradient(:,:,i)/totvol
+        grad_dvols(:,:) = grad_dvols(:,:) + gradient(:,:,i)
+      end do
+
+      do i = 1, janumcell(jtemp)
+        gradient(:,:,i) = grad_dvols(:,:)/totvol
       end do
     end if
 
@@ -4045,7 +4057,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, itri, icell, jnode, iflag
     real*8 :: val, totvol, rv, rho_g_h, delta_p
-    type(point) :: grad
+    type(point) :: grad, grad_dvols(num_edge_dvols)
     real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0
 
     gradient = vector_zero
@@ -4131,7 +4143,14 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
-      gradient(:,:) = gradient(:,:)/totvol
+      grad_dvols = vector_zero
+      do i = 1, janumcell(jtemp)
+        grad_dvols(:) = grad_dvols(:) + gradient(:,i)
+      end do
+
+      do i = 1, janumcell(jtemp)
+        gradient(:,i) = grad_dvols(:)/totvol
+      end do
     end if
 
   end subroutine gradient_dd_cell_green_gauss
@@ -4157,7 +4176,7 @@ module gradient_usg
     !c local variables
     integer :: i, j, k, k2, itri, icell, jnode, iflag
     real*8 :: dvals(n), totvol, rv
-    type(point) :: grad_totc(n), grad_elec(n)
+    type(point) :: grad_totc(n), grad_elec(n), grad_dvols(n,num_edge_dvols)
     real*8, parameter :: r0 = 0.0d0, rhalf = 0.5d0
 
     external :: totdyvisc, elecmigration
@@ -4316,9 +4335,20 @@ module gradient_usg
     end do
 
     if (b_cell_based_grad_itpl) then
+      grad_dvols = vector_zero
       do i = 1, janumcell(jtemp)
-        gradient_totc(:,:,i) = gradient_totc(:,:,i)/totvol
-        gradient_elec(:,:,i) = gradient_elec(:,:,i)/totvol
+        grad_dvols(:,:) = grad_dvols(:,:) + gradient_totc(:,:,i)
+      end do
+      do i = 1, janumcell(jtemp)
+        gradient_totc(:,:,i) = grad_dvols(:,:)/totvol
+      end do
+
+      grad_dvols = vector_zero
+      do i = 1, janumcell(jtemp)
+        grad_dvols(:,:) = grad_dvols(:,:) + gradient_elec(:,:,i)
+      end do
+      do i = 1, janumcell(jtemp)
+        gradient_elec(:,:,i) = grad_dvols(:,:)/totvol
       end do
     end if
 

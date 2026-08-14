@@ -1,0 +1,725 @@
+'fe+3'
+4  'fe+2'    1.000  'o2(aq)'     .250  'h+1'    1.000  'h2o'    -.500
+'equilibrium'    -8.4725    23.4570
+
+
+!
+!
+'no2-1'
+2  'no3-1'    1.000  'o2(aq)'    -.500
+'equilibrium'    14.4390   -23.1540
+
+
+!
+!
+'nh4+1'
+4  'no3-1'    1.000  'h2o'    1.000  'h+1'    2.000  'o2(aq)'   -2.000
+'equilibrium'    52.9590   -80.6011
+
+
+!
+!
+'h3aso4'
+2  'h3aso3'    1.000  'o2(aq)'     .500
+'equilibrium'   -23.5650    36.8990
+
+
+!
+!
+'sb(oh)3'
+4  'sb(oh)6-'    1.000  'o2(aq)'    -.500  'h+1'    1.000  'h2o'   -2.000
+'equilibrium'    17.2299      .0000
+
+
+!
+!
+'u+3'
+4  'uo2+2'    1.000  'o2(aq)'    -.750  'h+1'    1.000  'h2o'    -.500
+'equilibrium'    64.0935   -90.3410
+
+
+!
+!
+'u+4'
+4  'uo2+2'    1.000  'o2(aq)'    -.500  'h+1'    2.000  'h2o'   -1.000
+'equilibrium'    33.7930   -32.4840
+
+
+!
+!
+'uo2+1'
+4  'uo2+2'    1.000  'o2(aq)'    -.250  'h+1'   -1.000  'h2o'     .500
+'equilibrium'    18.7195   -30.1570
+
+
+!
+!
+'mn+3'
+4  'mn+2'    1.000  'o2(aq)'     .250  'h+1'    1.000  'h2o'    -.500
+'equilibrium'     4.0025    59.2170
+
+
+!
+!
+'cu+1'
+5  'cu+2'    1.000  'o2(aq)'    -.250  'cu+2'    1.000  'h+1'   -1.000  'h2o'     .500
+'equilibrium'    18.7845   -35.1070
+
+
+!
+!
+'v+2'
+4  'vo2+1'    1.000  'o2(aq)'    -.750  'h+1'    1.000  'h2o'    -.500
+'equilibrium'    46.1335   -65.0410
+
+
+!
+!
+'v+3'
+4  'vo2+1'    1.000  'o2(aq)'    -.500  'h+1'    2.000  'h2o'   -1.000
+'equilibrium'    20.3990   -22.6840
+
+
+!
+!
+'vo+2'
+4  'vo2+1'    1.000  'o2(aq)'    -.250  'h+1'    1.000  'h2o'    -.500
+'equilibrium'     4.5745    -4.1370
+
+
+!
+!
+'hs-1'
+3  'so4-2'    1.000  'h+1'    1.000  'o2(aq)'   -2.000
+'equilibrium'   138.3760  -207.5161
+
+
+!
+!
+'tl+1'
+5  'tl(oh)3'    1.000  'o2(aq)'    -.500  'h+1'    1.000  'tl+1'   -1.000  'h2o'   -2.000
+'equilibrium'    -5.0088      .0000
+
+
+!
+!
+'hse-1'
+2  'hseo3-1'    1.000  'o2(aq)'   -1.500
+'equilibrium'    93.6470  -122.5721
+
+
+!
+!
+'seo4-2'
+3  'hseo3-1'    1.000  'o2(aq)'     .500  'h+1'   -1.000
+'equilibrium'    -6.6900    18.8190
+
+
+!
+!
+'hg2+2'
+4  'hg(oh)2'    1.000  'h+1'    2.000  'o2(aq)'    -.500  'h2o'   -3.000
+'equilibrium'      .0220    -3.3240
+
+
+!
+!
+'cr+2'
+4  'cr(oh)2+'    1.000  'h2o'   -1.500  'h+1'    1.000  'o2(aq)'    -.250
+'equilibrium'    18.5575   -39.8170
+
+
+!
+!
+'cro4-2'
+4  'cr(oh)2+'    1.000  'h+1'   -3.000  'o2(aq)'     .750  'h2o'     .500
+'equilibrium'     2.8625    -2.6290
+
+
+!
+!
+'ch2o-o2'
+4  'ch2o'   -1.000  'o2(aq)'   -1.000  'co3-2'    1.000  'h+1'    2.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'ch2o' 0.0001 1.0
+'o2(aq)' 1.d-10 2.0
+'ch2o' 1.d-10 2.0
+'o2(aq)' 3.125d-6 1.0
+
+
+!
+!
+'c6h6-o2'
+4  'c6h6'   -1.000  'o2(aq)'   -7.500  'co3-2'    6.000  'h+1'   12.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6 1.0
+'c6h6' 0.0001 1.0
+'o2(aq)' 1.d-10 2.0
+'c6h6' 1.d-10 2.0
+
+
+!
+!
+'ch2o-no3'
+6  'ch2o'   -1.000  'no3-1'    -.800  'co3-2'    1.000  'n2(aq)'     .400  'h+1'    1.200  'h2o'     .400
+'irreversible'
+
+'hyperbolic T^a' 4
+'no3-1' 8.064d-6 1.0
+'ch2o' 0.0001064 1.0
+'no3-1' 1.d-10 2.0
+'ch2o' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 6.25d-6 1.0
+
+
+!
+!
+'c6h6-no3'
+5  'c6h6'   -1.000  'no3-1'   -6.000  'co3-2'    6.000  'n2(aq)'    3.000  'h+1'    6.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'no3-1' 8.064d-6 1.0
+'c6h6' 0.0001064 1.0
+'no3-1' 1.d-10 2.0
+'c6h6' 1.d-10 2.0
+
+'inhibition C^c' 0
+
+
+!
+!
+'ch2o-so4'
+5  'ch2o'   -1.000  'so4-2'    -.500  'co3-2'    1.000  'hs-1'     .500  'h+1'    1.500
+'irreversible'
+
+'hyperbolic T^a' 4
+'so4-2' 0.0016 1.0
+'ch2o' 0.0001064 1.0
+'so4-2' 1.d-10 2.0
+'ch2o' 1.d-10 2.0
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-5 1.0
+'no3-1' 1.6d-5 1.0
+
+
+!
+!
+'c6h6-so4'
+6  'c6h6'   -1.000  'so4-2'   -3.750  'h2o'   -3.000  'co3-2'    6.000  'hs-1'    3.750  'h+1'    8.250
+'irreversible'
+
+'hyperbolic T^a' 4
+'so4-2' 0.0016 1.0
+'c6h6' 0.0001064 1.0
+'so4-2' 1.d-10 2.0
+'c6h6' 1.d-10 2.0
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-5 1.0
+'no3-1' 1.6d-5 1.0
+
+
+!
+!
+'c6h6-so4-2'
+6  'c6h6'   -1.000  'so4-2'   -3.750  'h2o'   -3.000  'co3-2'    6.000  'hs-1'    3.750  'h+1'    8.250
+'irreversible'
+
+'hyperbolic T^a' 4
+'so4-2' 0.0016 1.0
+'c6h6' 0.0001064 1.0
+'so4-2' 1.d-10 2.0
+'c6h6' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-5 1.0
+
+
+!
+!
+'ch2o-ch4'
+5  'ch2o'   -1.000  'h2o'    -.500  'co3-2'     .500  'ch4(aq)'     .500  'h+1'    1.000
+'irreversible'
+
+'hyperbolic T^a' 2
+'ch2o' 0.001 1.0
+'ch2o' 1.d-10 2.0
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-5 1.0
+'no3-1' 1.6d-5 1.0
+
+
+!
+!
+'ch2o-ch4-2'
+5  'ch2o'   -1.000  'h2o'    -.500  'co3-2'     .500  'ch4(aq)'     .500  'h+1'    1.000
+'irreversible'
+
+'hyperbolic T^a' 2
+'ch2o' 0.001 1.0
+'ch2o' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-5 1.0
+
+
+!
+!
+'c6h6-ch4-2'
+5  'c6h6'   -1.000  'h2o'   -6.750  'co3-2'    2.250  'ch4(aq)'    3.750  'h+1'    4.500
+'irreversible'
+
+'hyperbolic T^a' 2
+'c6h6' 0.001 1.0
+'c6h6' 1.d-10 2.0
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-5 1.0
+'no3-1' 1.6d-5 1.0
+
+
+!
+!
+'c6h6-ch4-3'
+5  'c6h6'   -1.000  'h2o'   -6.750  'co3-2'    2.250  'ch4(aq)'    3.750  'h+1'    4.500
+'irreversible'
+
+'hyperbolic T^a' 2
+'c6h6' 0.001 1.0
+'c6h6' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-5 1.0
+
+
+!
+!
+'c6h6-ch4'
+5  'c6h6'   -1.000  'h2o'   -6.750  'co3-2'    2.250  'ch4(aq)'    3.750  'h+1'    4.500
+'irreversible'
+
+'hyperbolic T^a' 2
+'c6h6' 0.001 1.0
+'c6h6' 1.d-10 2.0
+
+'inhibition phi^m' 1
+'feooh-c6h6' 1.d-8 1.0
+
+
+!
+!
+'ch4-o2'
+5  'ch4(aq)'   -1.000  'o2(aq)'   -2.000  'co3-2'    1.000  'h+1'    2.000  'h2o'    1.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6 1.0
+'ch4(aq)' 1.d-5 1.0
+'o2(aq)' 1.d-10 2.0
+'ch4(aq)' 1.d-10 2.0
+
+
+!
+!
+'ch4-hs'
+4  'hs-1'   -1.000  'o2(aq)'   -2.000  'so4-2'    1.000  'h+1'    1.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6 1.0
+'hs-1' 1.d-5 1.0
+'o2(aq)' 1.d-10 2.0
+'hs-1' 1.d-10 2.0
+
+
+!
+!
+'ch4-no3'
+6  'ch4(aq)'   -1.000  'no3-1'   -1.600  'co3-2'    1.000  'n2(aq)'     .800  'h+1'     .400  'h2o'    1.800
+'irreversible'
+
+'hyperbolic T^a' 4
+'no3-1' 8.064d-6 1.0
+'ch4(aq)' 1.d-5 1.0
+'no3-1' 1.d-10 2.0
+'ch4(aq)' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 6.25d-6 1.0
+
+
+!
+!
+'ch4-so4'
+6  'ch4(aq)'   -1.000  'so4-2'   -1.000  'h2o'    1.000  'co3-2'    1.000  'hs-1'    1.000  'h+1'    1.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'so4-2' 0.0016 1.0
+'ch4(aq)' 1.d-5 1.0
+'so4-2' 1.d-10 2.0
+'ch4(aq)' 1.d-10 2.0
+
+'inhibition T^a' 2
+'o2(aq)' 3.125d-5 1.0
+'no3-1' 1.6d-5 1.0
+
+
+!
+!
+'ch4-so4-2'
+6  'ch4(aq)'   -1.000  'so4-2'   -1.000  'h2o'    1.000  'co3-2'    1.000  'hs-1'    1.000  'h+1'    1.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'so4-2' 0.0016 1.0
+'ch4(aq)' 1.d-5 1.0
+'so4-2' 1.d-10 2.0
+'ch4(aq)' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-5 1.0
+
+
+!
+!
+'fe+2-o2'
+5  'fe+3'    1.000  'fe+2'   -1.000  'o2(aq)'    -.250  'h+1'   -1.000  'h2o'     .500
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6 1.0
+'fe+2' 1.d-5 1.0
+'o2(aq)' 1.d-10 2.0
+'fe+2' 1.d-10 2.0
+
+'inhibition T^a' 2
+'c6h6' 1.d-7 1.0
+'ch4(aq)' 1.d-7 1.0
+
+
+!
+!
+'fe+2-o2-2'
+5  'fe+3'    1.000  'fe+2'   -1.000  'o2(aq)'    -.250  'h+1'   -1.000  'h2o'     .500
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 3.125d-6 1.0
+'fe+2' 1.d-5 1.0
+'o2(aq)' 1.d-10 2.0
+'fe+2' 1.d-10 2.0
+
+'inhibition T^a' 2
+'ch2o' 1.d-7 1.0
+'ch4(aq)' 1.d-7 1.0
+
+
+!
+!
+'fe+3-c6h6'
+6  'fe+3'  -30.000  'c6h6'   -1.000  'h2o'  -18.000  'fe+2'   30.000  'co3-2'    6.000  'h+1'   42.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'c6h6' 0.0001 1.0
+'fe+3' 1.d-6 1.0
+'c6h6' 1.d-10 2.0
+'fe+3' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-6 1.0
+
+
+!
+!
+'fe+3-ch2o'
+6  'fe+3'   -4.000  'ch2o'   -1.000  'h2o'   -2.000  'fe+2'    4.000  'co3-2'    1.000  'h+1'    6.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'ch2o' 0.0001 1.0
+'fe+3' 1.d-6 1.0
+'ch2o' 1.d-10 2.0
+'fe+3' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-6 1.0
+
+
+!
+!
+'fe+3-ch4'
+6  'fe+3'   -1.000  'ch4(aq)'    -.125  'h2o'    -.375  'fe+2'    1.000  'co3-2'     .125  'h+1'    1.250
+'irreversible'
+
+'hyperbolic T^a' 4
+'ch4(aq)' 1.d-5 1.0
+'fe+3' 1.d-6 1.0
+'ch4(aq)' 1.d-10 2.0
+'fe+3' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 3.125d-6 1.0
+
+
+!
+!
+'pce-mno4'
+7  'c2cl4'    -.750  'mno4-1'   -1.000  'h2o'   -2.500  'co3-2'    1.500  'cl-1'    3.000  'h+1'    5.000  'mno2(aq)'    1.000
+'irreversible'
+
+'fractional T^a' 2
+'c2cl4' 1.0
+'mno4-1' 1.0
+
+'hyperbolic T^a' 2
+'c2cl4' 5.d-6 1.0
+'c2cl4' 1.d-6 1.0
+
+
+!
+!
+'pce-mno4-2'
+7  'c2cl4'    -.750  'mno4-1'   -1.000  'h2o'   -2.500  'co3-2'    1.500  'cl-1'    3.000  'h+1'    5.000  'mno2(aq)'    1.000
+'irreversible'
+
+'fractional T^a' 2
+'c2cl4' 1.0
+'mno4-1' 1.0
+
+'hyperbolic T^a' 2
+'c2cl4' 1.d-20 2.0
+'mno4-1' 1.d-20 2.0
+
+
+!
+!
+'h2o-mno4'
+5  'mno4-1'   -1.000  'h+1'   -1.000  'o2(aq)'     .750  'h2o'     .500  'mno2(aq)'    1.000
+'irreversible'
+
+'fractional T^a' 1
+'mno4-1' 1.0
+
+
+!
+!
+'ch2o-o2-ct'
+4  'ch2o'   -1.000  'o2(aq)'   -1.000  'co3-2'    1.000  'h+1'    2.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'o2(aq)' 5.01d-5 1.0
+'ch2o' 1.d-5 1.0
+'o2(aq)' 1.d-10 2.0
+'ch2o' 1.d-10 2.0
+
+
+!
+!
+'ch2o-no3-ct'
+6  'ch2o'   -2.500  'no3-1'   -2.000  'co3-2'    2.500  'n2(aq)'    1.000  'h+1'    3.000  'h2o'    1.000
+'irreversible'
+
+'hyperbolic T^a' 4
+'no3-1' 2.51d-5 1.0
+'ch2o' 1.d-5 1.0
+'no3-1' 1.d-10 2.0
+'ch2o' 1.d-10 2.0
+
+'inhibition T^a' 1
+'o2(aq)' 5.d-8 1.0
+
+
+!
+!
+'52cro4-fe+2'
+6  'cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  'cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 0.5
+
+'fractional C^c' 1
+'h+1' 0.5
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation_master' 1
+2 'cro4-2' '53cro4-2'
+0.9993 
+
+
+!
+!
+'53cro4-fe+2'
+6  '53cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  '53cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 0.5
+
+'fractional C^c' 1
+'h+1' 0.5
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation' '52cro4-fe+2'
+
+!
+!
+'52cro4-fe+2b'
+6  'cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  'cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation_master' 1
+2 'cro4-2' '53cro4-2'
+0.9988 
+
+
+!
+!
+'53cro4-fe+2b'
+6  '53cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  '53cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation' '52cro4-fe+2b'
+
+!
+!
+'52cro4-fe+2c'
+6  'cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  'cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation_master' 1
+2 'cro4-2' '53cro4-2'
+0.9985 
+
+
+!
+!
+'53cro4-fe+2c'
+6  '53cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  '53cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation' '52cro4-fe+2c'
+
+!
+!
+'52cro4-fe+2d'
+6  'cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  'cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation_master' 1
+2 'cro4-2' '53cro4-2'
+0.9985 
+
+
+!
+!
+'53cro4-fe+2d'
+6  '53cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  '53cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation' '52cro4-fe+2d'
+
+!
+!
+'52cro4-fe+2e'
+6  'cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  'cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation_master' 1
+2 'cro4-2' '53cro4-2'
+0.9991 
+
+
+!
+!
+'53cro4-fe+2e'
+6  '53cro4-2'   -1.000  'fe+2'   -3.000  'h+1'   -6.000  '53cr(oh)2+'    1.000  'fe+3'    3.000  'h2o'    2.000
+'irreversible'
+
+'fractional T^a' 2
+'fe+2' 1.0
+'cro4-2' 1.0
+
+'hyperbolic T^a' 2
+'cro4-2' 1.d-10 2.0
+'fe+2'   1.d-10 2.0
+
+'isotopic fractionation' '52cro4-fe+2e'
+!
+!

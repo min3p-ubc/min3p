@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/opnplfls.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/opnplfls.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -252,18 +252,6 @@
       end if
 
 !c  assign unit numbers
-
-      !ilbt = 40        !total aqueous component concentrations
-      !ilbc = 41        !species concentrations
-      !ilbm = 42        !master variables
-      !ilbg = 43        !partial gas pressures
-      !ilbgr = 50       !degassing rates
-      !ilbi = 44        !intra-aqueous kinetic reactions
-      !ilbb = 45        !sorbed species concentrations
-      !ilbs = 46        !mineral saturation indices
-      !ilbv = 47        !mineral volume fractions
-      !ilbd = 48        !mineral dissolution-precipitation rates
-      !ilbx = 49        !saturation indices (excluded minerals)
       
       ilbt = lun_get()        !total aqueous component concentrations
       ilbc = lun_get()        !species concentrations
@@ -277,6 +265,10 @@
       ilbd = lun_get()        !mineral dissolution-precipitation rates
       ilbx = lun_get()        !saturation indices (excluded minerals)
       ilbac = lun_get()       !species concentrations
+
+      if (iso_output) then
+        ilbis = lun_get()     !activity coefficients
+      end if
 
 !cdsu concentration of radioelement related to noble gas ingrowth
       if (b_use_ngi .and. ngre_i > 0) then
@@ -441,20 +433,20 @@
       if (rank == 0) then
           
       write(ifls,'(/a/72a)')                                          &
-     &      'Master variables',                                       &
-     &      ('-',i=1,72)
+            'Master variables',                                       &
+            ('-',i=1,72)
                                                                        
       write(ifls,'(/a/)') prefix(:l_prfx)//'_'//                      &
-     &                    suffix(:l_sufx)//'.lbm'
+                          suffix(:l_sufx)//'.lbm'
                                                                        
       write(ifls,'(2a)')  'column   entry                           ',&
-     &                    'unit'                                       
+                          'unit'                                       
       if (ph_sweep) then                                               
         write(ifls,'(a)')                                             &
-     &  '1        pH                              -'                   
+        '1        pH                              -'                   
       else                                                             
         write(ifls,'(2a)')                                            &
-     &  '1        time                            ',time_unit_lc       
+        '1        time                            ',time_unit_lc       
       end if                                                           
       if ((ph_output).and.(pe_output)) then                            
         write(ifls,'(a,30x,a)')  '2        pH','-'                     
@@ -462,45 +454,48 @@
         write(ifls,'(a,30x,a)')  '4        Eh','-'                     
         write(ifls,'(a,18x,a)')  '5        ionic strength','-'         
         write(ifls,'(a,12x,a)')  '6        carbonate alkalinity',     &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,8x,a)')   '7        non-carbonate alkalinity', &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,22x,a)')  '8        alkalinity','eq/L'          
         write(ifls,'(a,12x,a)')  '9        carbonate alkalinity',     &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,8x,a)')   '10       non-carbonate alkalinity', &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,22x,a)')  '11       alkalinity','mg/L CaCO3'    
-        write(ifls,'(a,21x,a)')  '12       temperature','C'            
+        write(ifls,'(a,21x,a)')  '12       temperature','C'
+        write(ifls,'(a,18x,a)')  '13       charge balance','%'
       elseif ((.not.ph_output).and.(pe_output)) then                   
         write(ifls,'(a,30x,a)')  '2        pe','-'                     
         write(ifls,'(a,30x,a)')  '3        Eh','-'                     
         write(ifls,'(a,18x,a)')  '4        ionic strength','-'         
         write(ifls,'(a,12x,a)')  '5        carbonate alkalinity',     &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,8x,a)')   '6        non-carbonate alkalinity', &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,22x,a)')  '7        alkalinity','eq/L'          
         write(ifls,'(a,12x,a)')  '8        carbonate alkalinity',     &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,8x,a)')   '90       non-carbonate alkalinity', &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,22x,a)')  '10       alkalinity','mg/L CaCO3'    
-        write(ifls,'(a,21x,a)')  '11       temperature','C'            
+        write(ifls,'(a,21x,a)')  '11       temperature','C'
+        write(ifls,'(a,18x,a)')  '12       charge balance','%'
       elseif ((ph_output).and.(.not.pe_output)) then                   
         write(ifls,'(a,30x,a)')  '2        pH','-'                     
         write(ifls,'(a,18x,a)')  '3        ionic strength','-'         
         write(ifls,'(a,12x,a)')  '4        carbonate alkalinity',     &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,8x,a)')   '5        non-carbonate alkalinity', &
-     &                           'eq/L'                                
+                                 'eq/L'                                
         write(ifls,'(a,22x,a)')  '6        alkalinity','eq/L'          
         write(ifls,'(a,12x,a)')  '7        carbonate alkalinity',     &
-     &                           'mg/L CaCO3'                          
+                                 'mg/L CaCO3'                          
         write(ifls,'(a,8x,a)')   '8        non-carbonate alkalinity', &
-     &                           'mg/L CaCO3'
+                                 'mg/L CaCO3'
         write(ifls,'(a,22x,a)')  '9        alkalinity','mg/L CaCO3'
         write(ifls,'(a,21x,a)')  '10       temperature','C'
+        write(ifls,'(a,18x,a)')  '11       charge balance','%'
       end if
       
       end if
@@ -586,10 +581,10 @@
             do ig = 1,ng                                                 
               if (ig.lt.9) then                                          
                 write(ifls,'(i1,8x,a30,2x,a)') ig+1,nameg(ig),         &
-     &                                        'mol L^-1 d^-1'            
+     &                                        'moles/l h2o/day'            
               else                                                       
                 write(ifls,'(i2,7x,a30,2x,a)') ig+1,nameg(ig),         &
-     &                                        'mol L^-1 d^-1'
+     &                                        'moles/l h2o/day'
               end if
             end do
           
@@ -600,14 +595,15 @@
       end if         !(ng.gt.0)
  
 !c  oxidation-reduction rates
+!c  note: file unit ilbi is shared with intro-aqueous kinetic reaction
 !c ----------------------------------------------------------------------
 
       if (naq.eq.0.and.(nr.gt.0).and.(.not.redox_equil)) then
 
         if (b_output_trans_binary) then
-          call binary_file_open(PETSC_COMM_SELF,               &
+          call binary_file_open(PETSC_COMM_SELF,                       &
                        ilbi, prefix(:l_prfx)//'_'//                    &
-                       suffix(:l_sufx)//'.lbi', .true.)
+                       suffix(:l_sufx)//'.lbr', .true.)
         else 
           open(ilbi,file=prefix(:l_prfx)//'_'//                        &
                          suffix(:l_sufx)//'.lbr',                      &
@@ -842,7 +838,7 @@
 !c  mineral volume fractions
 !c ----------------------------------------------------------------------
         if (b_output_trans_binary) then
-          call binary_file_open(PETSC_COMM_SELF,               &
+          call binary_file_open(PETSC_COMM_SELF,                       &
                        ilbv, prefix(:l_prfx)//'_'//                    &
                        suffix(:l_sufx)//'.lbv', .true.)
         else 

@@ -1,0 +1,154 @@
+TITLE
+
+ biodegradation of toluene - uniform flow
+
+UNITS
+
+        -time                   day
+
+        -horizontal_grid        meters
+
+        -vertical_grid          meters
+
+        -head                   meters
+
+        -hydraulic_conductivity m/day
+
+        -specific_storage       1/m
+
+        -dispersivity           m
+
+        -well_diameter          meters
+
+        -well_flow_rate         gpm
+
+SOLUTION_METHOD
+
+        -direct_solver       true
+
+        -space_differencing     0
+
+        -time_differencing      1.
+
+FLOW_ONLY       false
+
+STEADY_FLOW true
+
+GRID
+
+        -uniform x
+
+                0.00000      10.0    41
+
+        -uniform y
+
+                0.00000      10.0    2
+
+        -uniform z
+
+                0.00000      1.0     2
+
+        -print_orientation XY
+
+FLUID_PROPERTIES
+
+        -compressibility        0.0             #1/Pa
+
+        -density                1000.           #kg/m^3
+
+        -viscosity              0.001           #Pa-s
+
+        -diffusivity            0.0             #m^2/s
+
+MEDIA
+
+        -zone   0 0 0 10  10 1
+
+                -porosity               0.3
+
+                -long_dispersivity      0.1
+
+                -trans_dispersivity     0.01
+
+                -Kx                     1
+
+                -Ky                     1
+
+                -Kz                     1       # m/d
+
+                -storage                0
+
+SPECIFIED_VALUE_BC
+
+        -zone   0 0 0 0 10  1
+
+                -head           3.00
+
+                -associated_solution    1
+
+        -zone   10 0 0 10 10 1
+
+                -head           0.0
+
+                -associated_solution    2
+
+WELL Breakthough
+
+                10. 0.
+
+                -diameter 0.05
+
+                -pumping_rate 0.
+
+                -elevation 0. 1.0
+
+FREE_SURFACE_BC false
+
+HEAD_IC
+
+        -zone   0. 0. 0. 10. 10. 1.
+
+                -head   1.
+
+CHEMISTRY_IC
+
+        -zone   0. 0. 0. 10. 10. 1.
+
+                -solution               2
+
+                -kinetics               1
+
+TIME_CONTROL
+
+        -delta_time     0.25     day
+
+        -end_time         10     day
+
+PRINT_INITIAL
+
+        -velocities             true
+
+        -xyz_head               true
+
+        -HDF_heads              true
+
+PRINT_FREQUENCY
+
+        -hdf_chemistry          10       day
+
+        -xyz_chemistry          5        day
+
+        -bc_flow_rates          10       day
+
+        -xyz_components         10       day
+
+        -xyz_head               10       day
+
+        -xyz_velocity           10       day
+
+        -xyz_wells              0.25     day
+
+        -save_final_heads       true
+
+END
+

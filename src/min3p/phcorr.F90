@@ -4,7 +4,7 @@
 !> $Revision: 533 $
 !> $Author: dsu $
 !> $Date: 2017-10-16 11:50:08 -0700 (Mon, 16 Oct 2017) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/phcorr.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/phcorr.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -95,11 +95,10 @@
 #endif 
       implicit none
       
-      real*8 :: cnew, cold, tempkel
+      real*8 :: cnew(*), cold(*)
+      real*8 :: tempkel
       integer :: ilog, tid
       
-      dimension cnew(*),cold(*)
-
       real*8, parameter :: r2 = 2.0d0, r4 = 4.0d0, r10 = 10.0d0
       
       integer :: ic
@@ -114,7 +113,7 @@
           if (specified_ph) then
             totco(ic,tid) = totco(ic,tid)/ehfac/tempkel
             actv(ic) = r10**(-86.0180) * r10**(r4*totco(ic,tid))      &
-     &               * r10**(r4*ph_fixed)                              
+                     * r10**(r4*ph_fixed)                              
             cnew(ic) = actv(ic)                                        
             cold(ic) = actv(ic)                                        
             ctype(ic) = 'fixed'                                        
@@ -132,7 +131,7 @@
         elseif (ctype(ic).eq.'pe'.and.namec(ic).eq.'o2(aq)') then      
           if (specified_ph) then                                       
             actv(ic) = r10**(-86.0180) * r10**(r4*totco(ic,tid))      &
-     &               * r10**(r4*ph_fixed)                              
+                     * r10**(r4*ph_fixed)                              
             cnew(ic) = actv(ic)                                        
             cold(ic) = actv(ic)                                        
             ctype(ic) = 'fixed'                                        
@@ -150,7 +149,7 @@
         elseif (ctype(ic).eq.'pco2'.and.namec(ic).eq.'co3-2') then     
           if (specified_ph) then                                       
             actv(ic) = r10**(-18.16d0) * totco(ic,tid)                &
-     &               * r10**(r2*ph_fixed)        
+                     * r10**(r2*ph_fixed)        
             cnew(ic) = actv(ic)
             cold(ic) = actv(ic)
             ctype(ic) = 'fixed'

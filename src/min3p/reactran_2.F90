@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/reactran_2.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/reactran_2.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -173,15 +173,15 @@
                       end if
                     end do   !i1
                   else
-                    satm(im,tid) = satindex(cnew(1,ivol),eqm(im,tid),  &
-                                      gamma(1,ivol),xnum,iam,jam,im)
+                    satm(im,tid) = satindex(cnew(:,ivol),eqm(im,tid),  &
+                                      gamma(:,ivol),xnum,iam,jam,im)
                   end if
                 end if
               end if
             end do
 
-            call updtsvmp(cmnew(1,ivol),cmold(1,ivol),phi(1,ivol),     &
-                          area(1,ivol),ratemdp(1,ivol),satm(1,tid),    &
+            call updtsvmp(cmnew(:,ivol),cmold(:,ivol),phi(:,ivol),     &
+                          area(:,ivol),ratemdp(:,ivol),satm(1,tid),    &
                           delt,ivol,tid)
           end if
         end if

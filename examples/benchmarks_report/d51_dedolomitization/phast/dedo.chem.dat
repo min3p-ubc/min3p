@@ -1,0 +1,90 @@
+TITLE  uniform flow field - dedolomitization
+
+
+
+SOLUTION 1  inflow solution
+
+        units   mol/l
+
+        pH         3.0
+
+        Ca         4.152e-3
+
+        Cl         2.401e-4
+
+        Na         9.906e-5
+
+        Mg         7.124e-5
+
+        C(4)       5.503e-5
+
+        S(6)       4.836e-3   charge
+
+
+
+SOLUTION 2  initial solution
+
+        units   mol/l
+
+        pH         7.966
+
+        Ca         1.188e-3
+
+        Mg         8.848e-4
+
+        Na         1e-4
+
+        S(6)       8.502e-4
+
+        C(4)       1.113e-3
+
+        Cl         1.442e-3   charge
+
+END
+
+
+
+USE solution 2
+
+
+
+EQUILIBRIUM_PHASES 2
+
+    Calcite         0.0        0.0
+
+    Dolomite        0.0     10.303
+
+
+
+SAVE solution 2
+
+
+
+END
+
+
+
+SELECTED_OUTPUT
+
+        -file dedo.sel
+
+        -reset false
+
+USER_PUNCH
+
+-headings Ca Mg C(4) S(6) Calcite Dolomite SI_calcite SI_dolomite
+
+10 PUNCH TOT("Ca"), TOT("Mg"), TOT("C(4)"), TOT("S(6)")
+
+20 vf_calcite = EQUI("Calcite")*0.3/1000*100.0894/2.71
+
+30 vf_dolomite = EQUI("Dolomite")*0.3/1000*184.410/2.85
+
+40 PUNCH vf_calcite vf_dolomite
+
+50 PUNCH SI("Calcite") SI("Dolomite")
+
+
+
+END
+

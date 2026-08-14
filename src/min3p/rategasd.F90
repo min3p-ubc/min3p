@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/rategasd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/rategasd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -77,7 +77,8 @@
  
       implicit none
       
-      real*8 :: g, tkel, phead, sg_loc
+      real*8 :: g(*)
+      real*8 :: tkel, phead, sg_loc
 
       integer :: tid
       
@@ -87,8 +88,6 @@
       
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
 
-      dimension g(*)
-      
 !c  initialize array for degassing rates
 
       do ig = 1,ng

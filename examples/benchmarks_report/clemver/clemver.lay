@@ -1,0 +1,337 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"clemver_4.gsp"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "h_w" "p_w" "s_w" "theta_w" "s_g" "theta_g" "q_root"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 9
+  HEIGHT = 8
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 4
+  LABELS
+    {
+    SHOW = YES
+    GENERATEAUTOLABELS = NO
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 0.931730717421
+    RANGEMAX = 1.49519219995
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0.649999976158
+      CMAX = 1.77692294121
+      }
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.684925698546
+    Y = 1.04844082509
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 1.06882611994
+    Y = 0.396098439837
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 1.76350307293
+    Y = 0.938700984583
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 2.34849419124
+    Y = 1.01186087826
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 2.34240053376
+    Y = 1.40814363565
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.605708151274
+    Y = 1.43862692469
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.715393985958
+    Y = 1.63371997448
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.751955930852
+    Y = 1.76784644622
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.441179399249
+    Y = 1.7556531306
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.489928659109
+    Y = 1.86539297111
+    Z = 0
+    }
+$!CONTOURLABELS ADD
+  CONTOURGROUP = 1
+  XYZPOS
+    {
+    X = 0.404617454355
+    Y = 1.93855286479
+    Z = 0
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+11
+0.7
+0.8
+0.9
+1
+1.1
+1.2
+1.3
+1.4
+1.5
+1.6
+1.7
+$!GLOBALCONTOUR  2
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALSCATTER 
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 95
+      }
+    }
+  REFSCATSYMBOL
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = BOTHLINESANDFLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    LINETHICKNESS = 0.1
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 3.0003000000000002
+    GRSPACING = 0.5
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = 0
+    RANGEMAX = 2.7380515555555558
+    GRSPACING = 0.5
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 0.931730717421
+  ISOVALUE2 = 1.21346145868
+  ISOVALUE3 = 1.49519219995
+  MARCHINGCUBEALGORITHM = CLASSICPLUS
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+$!SETSTYLEBASE CONFIG

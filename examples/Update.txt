@@ -1,0 +1,12 @@
+1. Fix mineral molecular weight in the database (Jan 2nd, 2024): 
+Current Used (Benchchmarks V2.5.1.875 and before): Na-Jarosite (484.6978) K-Jarosite (500.81) (Reference: GWB/PHREEQC MinteqV4)
+Previous Used (Benchchmarks V2.5.1.875 and after): Jarositena (478.6978) jarositek (494.8100)
+
+2. Update database format from fixed format to free format, with space as the default delimiter (Aug 10th, 2026): 
+Previous version use some of fixed reading format where two or more parameters could be put together without delimiter. This database should be used together with MIN3P-HPC V2.18 and newer version.
+
+3. Update alkalinity factor in comp.dbs based on wateq4f.dat database (Aug 10th, 2026):
+Some of the alkalinity factors in previous database are not correct compared to PHREEQC database.
+
+4. Update format in complex.dbs. The alkalinity factor input in this database is removed since it is now calculated based on alkalinity factor of primary species(Aug 10th, 2026):
+Previous version use specified alkalinity factor which is not required. This database should be used together with MIN3P-HPC V2.18 and newer version. 

@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mbaldd.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mbaldd.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -58,7 +58,7 @@
 !c
 !c           integer*4:
 !c           ----------
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           iavs(nn+1)         = row pointer array for avs           + -
 !c           imvs               = unit number, mass balance -         + *
@@ -185,7 +185,7 @@
 #endif
       
       integer :: i1, i2, icon, ibvs, ivol, istart, iend, jvol, irecord,&
-                 itmsb, ierr, izn
+                 itmsb, ierr, isub, isub_bit, izn
       real*8 :: absbalance, culrelbalvs, area_ivol, relbalance,        &
                 totvsstor, totinflux, totoutflux, totvsflux, vsstor,   &
                 qroot_tot_act, totwflux_atm, tothflux_atm,             &
@@ -211,7 +211,7 @@
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r2 = 2.0d0,         &
                            r3 = 3.0d0, r100 = 100.0d0
-      real*8, parameter :: rhalf = 0.5d0, rsmall = 1.0d-100
+      real*8, parameter :: rhalf = 0.5d0, rverysmall = 1.0d-30
       
       integer :: nvarsimvs
       
@@ -231,13 +231,18 @@
 !c  compute total system mass
 !c  Parallelized, OpenMP, DSU
 
-      call msysdd
+      call msysdd      
 
+!c  loop over subdomains
+      do isub = 0, subdomains_n
+
+        isub_bit =merge(mod(isub - 1, 30) + 1, 0, isub /= 0)
+      
 !c  for transient conditions -> compute changes in storage 
 
-      if (transient_flow) then
-        totvsstor = r0
-        if (variably_saturated) then
+        if (transient_flow) then
+          totvsstor = r0
+          if (variably_saturated) then
 #ifdef OPENMP
     !$omp parallel                                                    &
     !$omp if (nngl > numofloops_thred_mbaldd_1)                       &
@@ -249,70 +254,74 @@
     !$omp reduction(+:totvsstor)
     !$omp do schedule(static)
 #endif 
-          do ivol = 1,nngl  
+            do ivol = 1,nngl  
 #ifdef PETSC
-            if(node_idx_lg2l(ivol) < 0) then
+              if(node_idx_lg2l(ivol) < 0) then
                 cycle
-            end if
+              end if
 #endif
 
-            if (ispitzerdens) then 
-              if (heat_transport) then
-                densoldc_ivol = densold_pitzer(ivol)
-                densnewc_ivol = density_pitzer(ivol)
-              else
-                !c density_pitzer is not avaialbe without heat transport
-                !c use the following formula which is same as non-pitzer density
-                densoldc_ivol = drho_dc*tds_old(ivol)
-                densnewc_ivol = drho_dc*tds_new(ivol)
+              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+                cycle
               end if
-            else
-              densoldc_ivol = r0
-              densnewc_ivol = r0
-            end if
 
-            if (heat_transport .or. temp_field) then
-              tempnew_ivol = tempnew(ivol)
-              tempold_ivol = tempold(ivol)
-            else
-              tempnew_ivol = r0
-              tempold_ivol = r0
-            end if
+              if (ispitzerdens) then 
+                if (heat_transport) then
+                  densoldc_ivol = densold_pitzer(ivol)
+                  densnewc_ivol = density_pitzer(ivol)
+                else
+                  !c density_pitzer is not avaialbe without heat transport
+                  !c use the following formula which is same as non-pitzer density
+                  densoldc_ivol = drho_dc*tds_old(ivol)
+                  densnewc_ivol = drho_dc*tds_new(ivol)
+                end if
+              else
+                densoldc_ivol = r0
+                densnewc_ivol = r0
+              end if
 
-            !cdsu something is wrong here, storddfs is for fully saturated flow
-            !cdsu should use stordd instead
-            !cdsu 2019-11-29, Danyang SU
-            !cdsu old code
-            !vsstor = cvol(ivol)*storddfs(delt,delt, ...               &
+              if (heat_transport .or. temp_field) then
+                tempnew_ivol = tempnew(ivol)
+                tempold_ivol = tempold(ivol)
+              else
+                tempnew_ivol = r0
+                tempold_ivol = r0
+              end if
 
-            !cdsu new code
-            vsstor = cvol(ivol)*                                       &
-                     stordd(delt,delt,pornew(ivol),porold(ivol),       &
-                            sanew(ivol),saold(ivol),                   &
-                            density(ivol),densold(ivol),               &
-                            densnewc_ivol,densoldc_ivol,               &
-                            tds_new(ivol),tds_old(ivol),               &
-                            tempnew_ivol,tempold_ivol,drho_dc,drho_dt, &
-                            uvsnew(ivol),uvsold(ivol),stor(ivol),      &
-                            ispitzerdens,new_stor_deri,                &
-                            coupled_porpress,coupled_drhodt)
-      
-            if (evaporation) then
-              vsstor = vsstor + cvol(ivol)*storevap(delt,r1,           &
-                                       r1,sgnew(ivol),sgold(ivol),     &
-                                       densvnew(ivol),densvold(ivol),  &
-                                       pornew(ivol),porold(ivol),r1)
-            end if   
+              !cdsu something is wrong here, storddfs is for fully saturated flow
+              !cdsu should use stordd instead
+              !cdsu 2019-11-29, Danyang SU
+              !cdsu old code
+              !vsstor = cvol(ivol)*storddfs(delt,delt, ...               &
 
-            totvsstor = totvsstor + vsstor
+              !cdsu new code
+              vsstor = cvol(ivol)*                                       &
+                       stordd(delt,delt,pornew(ivol),porold(ivol),       &
+                              sanew(ivol),saold(ivol),                   &
+                              density(ivol),densold(ivol),               &
+                              densnewc_ivol,densoldc_ivol,               &
+                              tds_new(ivol),tds_old(ivol),               &
+                              tempnew_ivol,tempold_ivol,drho_dc,drho_dt, &
+                              uvsnew(ivol),uvsold(ivol),stor(ivol),      &
+                              ispitzerdens,new_stor_deri,                &
+                              coupled_porpress,coupled_drhodt)
+
+              if (evaporation) then
+                vsstor = vsstor + cvol(ivol)*storevap(delt,r1,           &
+                                         r1,sgnew(ivol),sgold(ivol),     &
+                                         densvnew(ivol),densvold(ivol),  &
+                                         pornew(ivol),porold(ivol),r1)
+              end if   
+
+              totvsstor = totvsstor + vsstor
          
-          end do
+            end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
           
-        else if (fully_saturated) then
+          else if (fully_saturated) then
             
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -324,113 +333,117 @@
     !$omp reduction(+:totvsstor)
     !$omp do schedule(static)
 #endif
-          do ivol = 1,nngl 
+            do ivol = 1,nngl 
 #ifdef PETSC 
-            if(node_idx_lg2l(ivol) < 0) then
+              if(node_idx_lg2l(ivol) < 0) then
                 cycle
-            end if
+              end if
 #endif
 
-            if (ispitzerdens) then 
-              if (heat_transport) then
-                densoldc_ivol = densold_pitzer(ivol)
-                densnewc_ivol = density_pitzer(ivol)
-              else
-                !c density_pitzer is not avaialbe without heat transport
-                !c use the following formula which is same as non-pitzer density
-                densoldc_ivol = drho_dc*tds_old(ivol)
-                densnewc_ivol = drho_dc*tds_new(ivol)
+              if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+                cycle
               end if
-            else
-              densoldc_ivol = r0
-              densnewc_ivol = r0
-            end if
-            
-            if (heat_transport .or. temp_field) then
-              tempnew_ivol = tempnew(ivol)
-              tempold_ivol = tempold(ivol)
-            else
-              tempnew_ivol = r0
-              tempold_ivol = r0
-            end if
 
-            if (heat_transport) then
-              if (isstorflow) then
-                if (isboussinesq) then
-                  vsstor = cvol(ivol)*storddfs(delt,delt,              &
-                                      pornew(ivol),porold(ivol),       &
-                                      sanew(ivol),saold(ivol),r1,r1,   &
-                                      r0,r0,r0,r0,r0,r0,r0,r0,r0,r0,r0,&
-                                      new_stor_deri,coupled_porpress,  &
-                                      .false.,.true.,.false.,          &
-                                      r0,r0,r0,r0)
-         
+              if (ispitzerdens) then 
+                if (heat_transport) then
+                  densoldc_ivol = densold_pitzer(ivol)
+                  densnewc_ivol = density_pitzer(ivol)
                 else
-                  vsstor = cvol(ivol)*storddfs(delt,delt,              &
-                                pornew(ivol),porold(ivol),             &
-                                sanew(ivol),saold(ivol),               &
-                                density(ivol),densold(ivol),           &
-                                densnewc_ivol,densoldc_ivol,           &
-                                tds_new(ivol),tds_old(ivol),           &
-                                tempnew_ivol,tempold_ivol,             &
-                                drho_dc,drho_dt,                       &
-                                uvsnew(ivol),uvsold(ivol),stor(ivol),  &
-                                new_stor_deri,coupled_porpress,        &
-                                coupled_drhodt,ispitzerdens,           &
-                                nonlindens_heat,r0,r0,r0,r0)
-
-                  if (evaporation) then
-                    vsstor = vsstor + cvol(ivol)*storevap(delt,r1, &
-                                         r1,sgnew(ivol),sgold(ivol), &
-                                         densvnew(ivol),densvold(ivol), &
-                                         pornew(ivol),porold(ivol),r1)
-                  end if
+                  !c density_pitzer is not avaialbe without heat transport
+                  !c use the following formula which is same as non-pitzer density
+                  densoldc_ivol = drho_dc*tds_old(ivol)
+                  densnewc_ivol = drho_dc*tds_new(ivol)
                 end if
               else
-                vsstor = r0
+                densoldc_ivol = r0
+                densnewc_ivol = r0
               end if
-            else
-              vsstor = cvol(ivol)*storddfs(delt,delt,                 &
-                                pornew(ivol),porold(ivol),            &
-                                sanew(ivol),saold(ivol),              &
-                                density(ivol),densold(ivol),          &
-                                densnewc_ivol,densoldc_ivol,          &
-                                tds_new(ivol),tds_old(ivol),          &
-                                r0,r0,drho_dc,r0,                     &
-                                uvsnew(ivol),uvsold(ivol),stor(ivol), &
-                                new_stor_deri,coupled_porpress,       &
-                                .false.,ispitzerdens,                 &
-                                nonlindens_heat,r0,r0,r0,r0)
-            end if
+            
+              if (heat_transport .or. temp_field) then
+                tempnew_ivol = tempnew(ivol)
+                tempold_ivol = tempold(ivol)
+              else
+                tempnew_ivol = r0
+                tempold_ivol = r0
+              end if
 
-            totvsstor = totvsstor + vsstor
+              if (heat_transport) then
+                if (isstorflow) then
+                  if (isboussinesq) then
+                    vsstor = cvol(ivol)*storddfs(delt,delt,              &
+                                        pornew(ivol),porold(ivol),       &
+                                        sanew(ivol),saold(ivol),r1,r1,   &
+                                        r0,r0,r0,r0,r0,r0,r0,r0,r0,r0,r0,&
+                                        new_stor_deri,coupled_porpress,  &
+                                        .false.,.true.,.false.,          &
+                                        r0,r0,r0,r0)
+
+                  else
+                    vsstor = cvol(ivol)*storddfs(delt,delt,              &
+                                  pornew(ivol),porold(ivol),             &
+                                  sanew(ivol),saold(ivol),               &
+                                  density(ivol),densold(ivol),           &
+                                  densnewc_ivol,densoldc_ivol,           &
+                                  tds_new(ivol),tds_old(ivol),           &
+                                  tempnew_ivol,tempold_ivol,             &
+                                  drho_dc,drho_dt,                       &
+                                  uvsnew(ivol),uvsold(ivol),stor(ivol),  &
+                                  new_stor_deri,coupled_porpress,        &
+                                  coupled_drhodt,ispitzerdens,           &
+                                  nonlindens_heat,r0,r0,r0,r0)
+  
+                    if (evaporation) then
+                      vsstor = vsstor + cvol(ivol)*storevap(delt,r1, &
+                                           r1,sgnew(ivol),sgold(ivol), &
+                                           densvnew(ivol),densvold(ivol), &
+                                           pornew(ivol),porold(ivol),r1)
+                    end if
+                  end if
+                else
+                  vsstor = r0
+                end if
+              else
+                vsstor = cvol(ivol)*storddfs(delt,delt,                 &
+                                  pornew(ivol),porold(ivol),            &
+                                  sanew(ivol),saold(ivol),              &
+                                  density(ivol),densold(ivol),          &
+                                  densnewc_ivol,densoldc_ivol,          &
+                                  tds_new(ivol),tds_old(ivol),          &
+                                  r0,r0,drho_dc,r0,                     &
+                                  uvsnew(ivol),uvsold(ivol),stor(ivol), &
+                                  new_stor_deri,coupled_porpress,       &
+                                  .false.,ispitzerdens,                 &
+                                  nonlindens_heat,r0,r0,r0,r0)
+              end if
+
+              totvsstor = totvsstor + vsstor
          
-          end do
+            end do
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
 #endif
           
 #ifdef PETSC     
-        call MPI_Allreduce(totvsstor, totvsstor_gbl,1,MPI_REAL8,MPI_SUM, &
-                           Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        totvsstor = totvsstor_gbl
+            call MPI_Allreduce(totvsstor, totvsstor_gbl,1,MPI_REAL8,MPI_SUM, &
+                               Petsc_Comm_World,ierrcode)
+            CHKERRQ(ierrcode)
+            totvsstor = totvsstor_gbl
 #endif
 
-        end if !variably_saturated
-      end if !transient_flow
+          end if !variably_saturated
+        end if !transient_flow
 
 !c  compute fluxes across boundary
 
-      totinflux = r0               !initialize total in- and outflux
-      totoutflux = r0
-      qroot_tot_act = r0 
+        totinflux = r0               !initialize total in- and outflux
+        totoutflux = r0
+        qroot_tot_act = r0 
       
-      if (ntmsb > 0) then
-        tmsb_influx = r0
-        tmsb_outflux = r0
-      end if
+        if (ntmsb > 0 .and. isub == 0) then
+          tmsb_influx = r0
+          tmsb_outflux = r0
+        end if
  
 #ifdef OPENMP
     !$omp parallel                                                    &
@@ -451,62 +464,230 @@
     !$omp tmsb_influx, tmsb_outflux)
     !$omp do schedule(static)
 #endif
-      do ibvs = 1,nbvs             !loop over boundary control volumes
+        do ibvs = 1,nbvs             !loop over boundary control volumes
           
-        ivol = iabvs(ibvs)         !pointer to control volume
-        if (ivol < 0) then
-          cycle  
-        end if
-
-        if (compute_ice_sheet_loading) then
-          if (.not. b_iabvs_ice(ibvs)) then
-            cycle
+          ivol = jabvs(ibvs)         !pointer to control volume
+          if (ivol <= 0) then
+            cycle  
           end if
-        end if
+
+          if (compute_ice_sheet_loading) then
+            if (.not. b_jabvs_ice(ibvs)) then
+              cycle
+            end if
+          end if
 
 #ifdef PETSC
-        if(node_idx_lg2l(ivol) < 0) then
+          if(node_idx_lg2l(ivol) < 0) then
             cycle
-        end if
+          end if
 #endif
 
-        totvsflux = r0             !initialize total flux
+          if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+            cycle
+          end if
+
+          totvsflux = r0             !initialize total flux
 
 !c  fluxes at first type control volumes or zero pressure seepage 
 !c  control volumes
 
-        if ((btypevs(ibvs).eq.'first').or.               & !first type (Dirichlet) 
-            ((btypevs(ibvs).eq.'seepage' .or.            &
-              btypevs(ibvs).eq.'seepage-second').and.    & !first type (seepage)
-              ibits(seepage_bits(ibvs),0,1).eq.1)) then
+          if ((btypevs(ibvs).eq.'first').or.               & !first type (Dirichlet) 
+              ((btypevs(ibvs).eq.'seepage' .or.            &
+                btypevs(ibvs).eq.'seepage-second').and.    & !first type (seepage)
+                ibits(seepage_bits(ibvs),0,1).eq.1)) then
 
-          istart = iavs(ivol)       !pointer - start of row
-          iend = iavs(ivol+1)-1     !pointer - end of row
-          icon = 0                  !counter (connections)
+            istart = iavs(ivol)       !pointer - start of row
+            iend = iavs(ivol+1)-1     !pointer - end of row
+            icon = 0                  !counter (connections)
 
 
-          do i1=istart,iend         !loop over connected control volumes
+            do i1=istart,iend         !loop over connected control volumes
 
 #ifdef USG
-            if (discretization_type > 0) then
-              ncell = janumcell(i1)
-            end if
+              if (discretization_type > 0) then
+                ncell = janumcell(i1)
+              end if
 #endif
 
+              jvol = javs(i1)         !column pointer
 
-            jvol = javs(i1)         !column pointer
+              if (jvol.ne.ivol) then
 
-            if (jvol.ne.ivol) then
+                icon = icon+1          !counter (row entries)
 
-              icon = icon+1          !counter (row entries)
+                del_p(icon) = uvsnew(jvol) - uvsnew(ivol)
+                del_z(icon) = zg(jvol) - zg(ivol)
+  
+                if (del_z(icon) .ne. r0) then
+                  rho_av_loc = rhalf * (density(ivol) + density(jvol))
+  
+                  if (av_dens_z) then
+                    del_p(icon) = rho_av_loc*(uvsnew(jvol)/density(jvol)-&
+                                              uvsnew(ivol)/density(ivol))
+                  end if
 
+!c  convert del_z to total elevation potential wrt fluid pressure
+!c  and calculate difference in total pressure potential
 
+                  del_z(icon) = del_z(icon) * rho_av_loc * gacc
+                  del_p(icon) = del_p(icon) + del_z(icon)
+                end if
+
+!c  assign coefficients for upstream weighting of density and viscosity
+!c  required for mass flux calculation
+ 
+                if (.not.is_cell_based_relp) then
+                  if (upstream) then
+                    if (del_p(icon) .gt. r0) then
+                      dcoef(icon) = relperm(jvol) * density(jvol)/viscosity(jvol)
+                    else
+                      dcoef(icon) = relperm(ivol) * density(ivol)/viscosity(ivol)
+                    end if
+                  else
+                    dcoef(icon) = (relperm(ivol)+relperm(jvol))*rhalf*   &
+                                   (density(ivol)+density(jvol))/        &
+                                   (viscosity(ivol)+viscosity(jvol))
+                  end if
+                end if
+
+#ifdef USG
+                if (discretization_type > 0 .and. is_cell_based_relp) then
+                  !c apply relative permeability later for cell based permeability
+                  dcoef(icon) = (density(ivol)+density(jvol))/           &
+                                (viscosity(ivol)+viscosity(jvol))
+                end if
+#endif
+
+!c  compute fluxes between current control volume and adjacent 
+!c  control volumes
+                if (b_use_fixed_flow_vel) then
+                            
+                  if (b_use_zero_flow_vel) then
+                    vsflux(icon) = r0
+                  else
+                    !c TBD
+                  end if
+              
+                else
+#ifdef USG
+!c calculate gradient for jvol
+                  if (discretization_type > 0) then
+!c calculate gradient at the middle of edge and along the control volume face,
+!c this part can be further improved for better representation for a boundary volume
+                    grad_ddflow_mids = vector_zero
+                    flux_ddflow_hls_corr = r0
+
+                    if (b_use_cross_diffusion_flow) then
+                      call gradient_cross_diff_dd(i1,ivol,jvol,              &
+                           grad_ddflow_locs,grad_ddflow_mids,grad_weights,   &
+                           flux_ddflow_hls_corr,grad_ddflow_hls_loc)
+                    end if
+
+!cdsu calculate influence coefficient for variable saturated flow
+                    call usg_face_utility_cinfvs(ivol,jvol,i1,cinfvs_usg_loc,    &
+                                                 cinfvs_usg_cross_loc)
+
+                    relps_loc = 0.0d0
+                    if (is_cell_based_relp) then
+                      nrelp = ncell
+                      do icell = 1, ncell
+                        i2 = jacell(icell,i1)
+                        if (i2 >0) then
+                          relps_loc(icell) = relperm(i2)
+                        end if
+                      end do
+                    else
+                      nrelp = 2
+                      relps_loc(1:2) = 1.0d0
+                    end if
+
+                    vsflux(icon) = -fluxdd_usg(del_p(icon),num_edge_dvols,ncell,       &
+                                       grad_ddflow_mids(1:num_edge_dvols,1:ncell),     &
+                                       flux_ddflow_hls_corr(1:num_edge_dvols,1:ncell), &
+                                       cinfvs_usg_loc(1:num_edge_dvols,1:ncell),       &
+                                       cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell), &
+                                       is_cell_based_relp,nrelp,                       &
+                                       relps_loc(1:nrelp)*dcoef(icon))
+                  else
+#endif
+                    vsflux(icon) = - fluxdd(del_p(icon),cinfvs_a(i1), dcoef(icon))
+#ifdef USG
+                  end if
+#endif
+                end if
+
+                totvsflux = totvsflux + vsflux(icon)
+
+              end if                  !(ivol.eq.jvol)
+            end do                    !loop over connected control volumes
+
+!c  mass fluxes at second type control volumes
+
+          elseif ((btypevs(ibvs).eq.'second').or. &
+                  (btypevs(ibvs).eq.'seepage-second' .and. &
+                  ibits(seepage_bits(ibvs),1,1).eq.1) .or. &
+                  (btypevs(ibvs).eq.'free-drainage').or.&
+                  (btypevs(ibvs).eq.'point')) then
+
+            if (flow_verification) then
+              totvsflux = bcondvs(ibvs) * ref_dens
+            else
+              totvsflux = bcondvs(ibvs) * ssdens(ivol)
+            end if
+          
+          elseif (btypevs(ibvs)=='atmospheric'.and.     &
+                  evaporation) then
+     
+             area_ivol = bcondvs(ibvs)
+             call jacbevap(ivol,' ',totwflux_atm,tothflux_atm) 
+             totvsflux = totwflux_atm*area_ivol
+           
+          end if                      !boundary type
+
+!c  sum up total inflow and outflow
+
+          if (totvsflux>r0) then   
+            totinflux = totinflux + totvsflux
+          else
+            totoutflux = totoutflux - totvsflux
+          end if
+        
+!c  sum up total mass through specified boundary
+          if (ntmsb > 0 .and. isub == 0) then
+            do itmsb = 1, ntmsb
+              if (btest(mproptmsb(ivol),itmsb-1)) then
+                if (totvsflux > r0) then
+                  tmsb_influx(itmsb) = tmsb_influx(itmsb) + totvsflux
+                else
+                  tmsb_outflux(itmsb) = tmsb_outflux(itmsb) - totvsflux
+                end if
+              end if
+            end do
+          end if
+
+        end do                        !loop over boundary control volumes
+#ifdef OPENMP
+    !$omp end do
+    !$omp end parallel
+#endif
+
+!c  loop over internal boundaries for subdomains, 
+!c  should exclude physical boundaries since they are already considered 
+        if (isub > 0) then
+          do ibvs = 1, 2
+            i1 = subdomains_bdface_conn(ibvs,isub)
+            if (i1 > 0) then
+              ivol = subdomains_bdface(1,ibvs,isub)
+              jvol = subdomains_bdface(2,ibvs,isub)
+
+              icon = 1
               del_p(icon) = uvsnew(jvol) - uvsnew(ivol)
               del_z(icon) = zg(jvol) - zg(ivol)
-
+  
               if (del_z(icon) .ne. r0) then
                 rho_av_loc = rhalf * (density(ivol) + density(jvol))
-
+  
                 if (av_dens_z) then
                   del_p(icon) = rho_av_loc*(uvsnew(jvol)/density(jvol)-&
                                             uvsnew(ivol)/density(ivol))
@@ -546,116 +727,16 @@
 
 !c  compute fluxes between current control volume and adjacent 
 !c  control volumes
-              if (b_use_fixed_flow_vel) then
-                            
-                if (b_use_zero_flow_vel) then
-                  vsflux(icon) = r0
-                else
-                  !c TBD
-                end if
-              
+              vsflux(icon) = - fluxdd(del_p(icon),cinfvs_a(i1), dcoef(icon))
+
+              if (vsflux(icon).gt.r0) then   
+                totinflux = totinflux + vsflux(icon)
               else
-#ifdef USG
-!c calculate gradient for jvol
-                if (discretization_type > 0) then
-!c calculate gradient at the middle of edge and along the control volume face,
-!c this part can be further improved for better representation for a boundary volume
-                  grad_ddflow_mids = vector_zero
-                  flux_ddflow_hls_corr = r0
-
-                  if (b_use_cross_diffusion_flow) then
-                    call gradient_cross_diff_dd(i1,ivol,jvol,              &
-                         grad_ddflow_locs,grad_ddflow_mids,grad_weights,   &
-                         flux_ddflow_hls_corr,grad_ddflow_hls_loc)
-                  end if
-
-!cdsu calculate influence coefficient for variable saturated flow
-                  call usg_face_utility_cinfvs(ivol,jvol,i1,cinfvs_usg_loc,    &
-                                               cinfvs_usg_cross_loc)
-
-                  relps_loc = 0.0d0
-                  if (is_cell_based_relp) then
-                    nrelp = ncell
-                    do icell = 1, ncell
-                      i2 = jacell(icell,i1)
-                      if (i2 >0) then
-                        relps_loc(icell) = relperm(i2)
-                      end if
-                    end do
-                  else
-                    nrelp = 2
-                    relps_loc(1:2) = 1.0d0
-                  end if
-
-                  vsflux(icon) = -fluxdd_usg(del_p(icon),num_edge_dvols,ncell,       &
-                                     grad_ddflow_mids(1:num_edge_dvols,1:ncell),     &
-                                     flux_ddflow_hls_corr(1:num_edge_dvols,1:ncell), &
-                                     cinfvs_usg_loc(1:num_edge_dvols,1:ncell),       &
-                                     cinfvs_usg_cross_loc(1:num_edge_dvols,1:ncell), &
-                                     is_cell_based_relp,nrelp,                       &
-                                     relps_loc(1:nrelp)*dcoef(icon))
-                else
-#endif
-                  vsflux(icon) = - fluxdd(del_p(icon),cinfvs_a(i1), dcoef(icon))
-#ifdef USG
-                end if
-#endif
-              end if
-
-              totvsflux = totvsflux + vsflux(icon)
-
-            end if                  !(ivol.eq.jvol)
-          end do                    !loop over connected control volumes
-
-!c  mass fluxes at second type control volumes
-
-        elseif ((btypevs(ibvs).eq.'second').or. &
-                (btypevs(ibvs).eq.'seepage-second' .and. &
-                ibits(seepage_bits(ibvs),1,1).eq.1) .or. &
-                (btypevs(ibvs).eq.'free-drainage').or.&
-                (btypevs(ibvs).eq.'point')) then
-
-          if (flow_verification) then
-            totvsflux = bcondvs(ibvs) * ref_dens
-          else
-            totvsflux = bcondvs(ibvs) * ssdens(ivol)
-          end if
-          
-        elseif (btypevs(ibvs)=='atmospheric'.and.     &
-                evaporation) then
-     
-           area_ivol = bcondvs(ibvs)
-           call jacbevap(ivol,' ',totwflux_atm,tothflux_atm) 
-           totvsflux = totwflux_atm*area_ivol
-           
-        end if                      !boundary type
-
-!c  sum up total inflow and outflow
-
-        if (totvsflux>r0) then   
-          totinflux = totinflux + totvsflux
-        else
-          totoutflux = totoutflux - totvsflux
-        end if
-        
-!c  sum up total mass through specified boundary
-        if (ntmsb > 0) then
-          do itmsb = 1, ntmsb
-            if (btest(mproptmsb(ivol),itmsb-1)) then
-              if (totvsflux > r0) then
-                tmsb_influx(itmsb) = tmsb_influx(itmsb) + totvsflux
-              else
-                tmsb_outflux(itmsb) = tmsb_outflux(itmsb) - totvsflux
+                totoutflux = totoutflux - vsflux(icon)
               end if
             end if
           end do
         end if
-
-      end do                        !loop over boundary control volumes
-#ifdef OPENMP
-    !$omp end do
-    !$omp end parallel
-#endif
 
 #ifdef PETSC     
         call MPI_Allreduce(totinflux,totinflux_gbl,1,MPI_REAL8,        &
@@ -668,7 +749,7 @@
         CHKERRQ(ierrcode)
         totoutflux = totoutflux_gbl
         
-        if (ntmsb > 0) then
+        if (ntmsb > 0 .and. isub == 0) then
           call MPI_Allreduce(tmsb_influx,tmsb_influx_gbl,ntmsb,        &
                    MPI_REAL8,MPI_SUM,Petsc_Comm_World,ierrcode)
           CHKERRQ(ierrcode)
@@ -683,9 +764,9 @@
 
 !c  compute contributions from root water uptake
 
-      if (root_uptake) then
+        if (root_uptake) then
 
-        qroot_tot_act = r0  !CBF
+          qroot_tot_act = r0  !CBF
        
 !DSU - Fix bug in the parallel code modified in root_uptake
 #ifdef OPENMP
@@ -697,30 +778,35 @@
     !$omp reduction(+:qroot_tot_act)
     !$omp do schedule(static)
 #endif
-        do ivol = 1,nngl
+          do ivol = 1,nngl
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
+            if(node_idx_lg2l(ivol) < 0) then
               cycle
-          end if
+            end if
 #endif
-
-          qroot_tot_act = qroot_tot_act + cvol(ivol)*                  &
-                          rootwat(sanew,ivol,rsum_vprop)
-
-          if (soilhydrfunc_field) then
-            if (h1dry_vol(ivol).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*              &
-                              evapo(sanew,ivol)
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
             end if
-          else
-            izn = mpropvs(ivol)
-            if (h1dry(izn).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*              &
-                              evapo(sanew,ivol)
-            end if
-          end if
 
-        end do
+            if (rld(ivol) > rverysmall) then
+              qroot_tot_act = qroot_tot_act + cvol(ivol)*                  &
+                              rootwat(sanew,ivol,rsum_vprop)
+            end if
+
+            if (soilhydrfunc_field) then
+              if (h1dry_vol(ivol).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*              &
+                                evapo(sanew,ivol)
+              end if
+            else
+              izn = mpropvs(ivol)
+              if (h1dry(izn).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*              &
+                                evapo(sanew,ivol)
+              end if
+            end if
+
+          end do
 
 #ifdef OPENMP
     !$omp end do
@@ -728,16 +814,16 @@
 #endif
 
 #ifdef PETSC
-        call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,MPI_REAL8,&
-                           MPI_SUM,Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
-        qroot_tot_act = qroot_tot_act_gbl
+          call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,MPI_REAL8,&
+                             MPI_SUM,Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
+          qroot_tot_act = qroot_tot_act_gbl
 #endif
 
 #ifdef ARCHISIMPLE
-      else if (pure_evap) then !FG if no root uptake, check for phys evap (according to simple formalism)
+        else if (pure_evap) then !FG if no root uptake, check for phys evap (according to simple formalism)
 
-        qroot_tot_act = r0  !CBF
+          qroot_tot_act = r0  !CBF
 
 !FG 07-2017 added open MP for this new loop. But it's not correctly modified :(
 !DSU - Fix bug in the parallel code modified in root_uptake
@@ -750,25 +836,29 @@
     !$omp reduction(+:qroot_tot_act)
     !$omp do schedule(static)
 #endif
-        do ivol = 1,nngl ! detect in which control volumes (zone-based) evaporation can occur!CBF
+          do ivol = 1,nngl ! detect in which control volumes (zone-based) evaporation can occur!CBF
                          !FG nngl used instead of nn (old version)
 #ifdef PETSC
-          if(node_idx_lg2l(ivol) < 0) then
+            if(node_idx_lg2l(ivol) < 0) then
               cycle
-          end if
+            end if
 #endif
-          if (soilhydrfunc_field) then
-            if (h1dry_vol(ivol).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)  !CBF
+            if (.not.btest(subdomains_bits(ceiling(max(isub,1)/30.0),ivol),isub_bit)) then
+              cycle
             end if
-          else
-            izn = mpropvs(ivol)
-            if (h1dry(izn).gt.r0) then
-              qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)  !CBF
-            end if
-          end if
 
-        end do!CBF
+            if (soilhydrfunc_field) then
+              if (h1dry_vol(ivol).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)  !CBF
+              end if
+            else
+              izn = mpropvs(ivol)
+              if (h1dry(izn).gt.r0) then
+                qroot_tot_act = qroot_tot_act + cvol(ivol)*evapo(sanew,ivol)  !CBF
+              end if
+            end if
+
+          end do!CBF
 #ifdef OPENMP
     !$omp end do
     !$omp end parallel
@@ -776,53 +866,54 @@
 
 
 #ifdef PETSC
-        call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,MPI_REAL8,&
-                           MPI_SUM,Petsc_Comm_World,ierrcode)
-        CHKERRQ(ierrcode)
+          call MPI_Allreduce(qroot_tot_act,qroot_tot_act_gbl,1,MPI_REAL8,&
+                             MPI_SUM,Petsc_Comm_World,ierrcode)
+          CHKERRQ(ierrcode)
 
-        qroot_tot_act = qroot_tot_act_gbl
+          qroot_tot_act = qroot_tot_act_gbl
 #endif
 
 #endif
-      end if ! root_uptake
+        end if ! root_uptake
  
 !c  write total contributions to file   
 
-      imvs = imvs+1
+        imvs(isub) = imvs(isub)+1
     
-      if(rank == 0 .and. b_enable_output .and.                         &
-         .not.(skip_time.gt.0.and.nskip_time.lt.skip_time)) then
-        if (b_output_trans_binary) then
-          nvarsimvs = 5
-          realbuffer_gb(1:nvarsimvs) = (/time_io,totinflux,totoutflux, &
-                                   totvsstor,qroot_tot_act/)
-          call binary_write_data(imvs_mpi(imvs), 1,            &
-                       (/mtime/),offset_imvs_ijk(imvs),.true.)       
-          call binary_write_data(imvs_mpi(imvs), nvarsimvs,    &
-                       realbuffer_gb,offset_imvs(imvs),.true.) 
+        if(rank == 0 .and. b_enable_output .and.                         &
+           .not.(skip_time.gt.0.and.nskip_time.lt.skip_time)) then
+          if (b_output_trans_binary) then
+            nvarsimvs = 5
+            realbuffer_gb(1:nvarsimvs) = (/time_io,totinflux,totoutflux, &
+                                     totvsstor,qroot_tot_act/)
+            call binary_write_data(imvs_mpi(imvs(isub)), 1,            &
+                         (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)       
+            call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,    &
+                         realbuffer_gb,offset_imvs(imvs(isub)),.true.) 
 
-          offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
+            offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) + nvarsimvs*nfloatbit
 
-        else
-          if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imvs,irecord)
-          end if
+          else
+            if (mtime == mtime_append .and. i_append_sim >= 1) then
+              call reposition_file(imvs(isub),irecord)
+            end if
 
-          if (i_append_sim < 1 .or.                                    &
-             (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imvs,ascii_fmt) time_io,totinflux,totoutflux,        &
-                                     totvsstor,qroot_tot_act
+            if (i_append_sim < 1 .or.                                    &
+               (mtime >= mtime_append .and. i_append_sim >= 1)) then
+              write(imvs(isub),ascii_fmt) time_io,totinflux,totoutflux,  &
+                                          totvsstor,qroot_tot_act
+            end if
           end if
         end if
-      end if
+
 !c  compute absolute and relative mass balance error 
 !c      write(idbg,*) 'new totinflux', totinflux
 !c      write(idbg,*) 'new totouflux', totoutflux
 !c      write(idbg,*) 'new totvsstor', totvsstor
       rdummy1 = (totinflux-totoutflux-totvsstor-qroot_tot_act)
       rdummy2 = abs(totinflux) + abs(totoutflux)
-      if (rdummy2 < rsmall) then
-        if(rdummy1 < rsmall) then
+      if (rdummy2 < rverysmall) then
+        if(rdummy1 < rverysmall) then
           relbalance_vs = 0.0d0
         else
           relbalance_vs = 1.0d100
@@ -832,58 +923,58 @@
       end if
 
       absbalance = rdummy1*delt
-      relbalance = absbalance/totvsmass*r100
+      relbalance = absbalance/totvsmass(isub)*r100
 
       absbalance_vs = absbalance
  
 !c  compute accumulative absolute and relative mass balance error 
 
-      culabsbalvs = culabsbalvs + absbalance
-      culrelbalvs = culabsbalvs/totvsmass*r100
+      culabsbalvs(isub) = culabsbalvs(isub) + absbalance
+      culrelbalvs = culabsbalvs(isub)/totvsmass(isub)*r100
 
-      imvs = imvs+1
+      imvs(isub) = imvs(isub)+1
     
       if(rank == 0 .and. b_enable_output .and.                         &
          .not.(skip_time.gt.0.and.nskip_time.lt.skip_time)) then
         if (b_output_trans_binary) then
           nvarsimvs = 5
           realbuffer_gb(1:nvarsimvs) = (/time_io,absbalance,relbalance,&
-                                     culabsbalvs,culrelbalvs/)
-          call binary_write_data(imvs_mpi(imvs), 1,            &
-                       (/mtime/),offset_imvs_ijk(imvs),.true.)       
-          call binary_write_data(imvs_mpi(imvs), nvarsimvs,    &
-                       realbuffer_gb,offset_imvs(imvs),.true.) 
+                                     culabsbalvs(isub),culrelbalvs/)
+          call binary_write_data(imvs_mpi(imvs(isub)), 1,              &
+                       (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)       
+          call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,      &
+                       realbuffer_gb,offset_imvs(imvs(isub)),.true.) 
 
-          offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
+          offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) + nvarsimvs*nfloatbit
 
         else
           !c read accumulative absolute mass balance error at the restart point
           !c For legacy mode, previous mass balance is read at restart point but
           !c will not output until the second restart point is reached
           if (mtime == mtime_append .and. i_append_sim >= 1) then
-            call reposition_file(imvs,irecord)
+            call reposition_file(imvs(isub),irecord)
             if (irecord > 0) then
               !c locate to the restart time and get previous results
-              call reposition_file(imvs,irecord,time_io_rs)
-              read(imvs,*,end=10,err=10) rdummy1,rdummy2,rdummy3,rdummy4
-              call reposition_file(imvs,irecord)
+              call reposition_file(imvs(isub),irecord,time_io_rs)
+              read(imvs(isub),*,end=10,err=10) rdummy1,rdummy2,rdummy3,rdummy4
+              call reposition_file(imvs(isub),irecord)
 
-              culabsbalvs = culabsbalvs + rdummy4
-              culrelbalvs = culabsbalvs/totvsmass*r100
+              culabsbalvs(isub) = culabsbalvs(isub) + rdummy4
+              culrelbalvs = culabsbalvs(isub)/totvsmass(isub)*r100
             end if
 10          continue
           end if
 
           if (i_append_sim < 1 .or.                                    &
              (mtime >= mtime_append .and. i_append_sim >= 1)) then
-            write(imvs,ascii_fmt) time_io,absbalance,relbalance,       &
-                                       culabsbalvs,culrelbalvs
+            write(imvs(isub),ascii_fmt) time_io,absbalance,relbalance, &
+                                        culabsbalvs(isub),culrelbalvs
           end if
         end if
       end if
 
 !c  write total mass through specified boundary
-      if (ntmsb > 0) then
+      if (ntmsb > 0 .and. isub == 0) then
 
         !c allocate memory since ntmsb is not available in mem_vs
         if (.not. allocated(tmsb_influx_accu)) then
@@ -900,7 +991,7 @@
         end if
 
         do itmsb = 1, ntmsb
-          imvs = imvs + 1
+          imvs(isub) = imvs(isub) + 1
           if (rank == 0 .and. b_enable_output .and.                    &
               .not.((skip_time.gt.0).and.(nskip_time.lt.skip_time))) then
 
@@ -915,22 +1006,23 @@
                          tmsb_influx(itmsb),tmsb_outflux(itmsb),       &
                          tmsb_influx_accu(itmsb),                      &
                          tmsb_outflux_accu(itmsb)/)
-              call binary_write_data(imvs_mpi(imvs), 1,                &
-                           (/mtime/),offset_imvs_ijk(imvs),.true.)
-              call binary_write_data(imvs_mpi(imvs), nvarsimvs,        &
-                           realbuffer_gb,offset_imvs(imvs),.true.)
+              call binary_write_data(imvs_mpi(imvs(isub)), 1,          &
+                           (/mtime/),offset_imvs_ijk(imvs(isub)),.true.)
+              call binary_write_data(imvs_mpi(imvs(isub)), nvarsimvs,  &
+                           realbuffer_gb,offset_imvs(imvs(isub)),.true.)
 
-              offset_imvs(imvs) = offset_imvs(imvs) + nvarsimvs*nfloatbit
+              offset_imvs(imvs(isub)) = offset_imvs(imvs(isub)) +      &
+                                        nvarsimvs*nfloatbit
 
             else
               if (mtime == mtime_append .and. i_append_sim >= 1) then
-                call reposition_file(imvs,irecord)
+                call reposition_file(imvs(isub),irecord)
                 if (irecord > 0) then
                   !c locate to the restart time and get previous results
-                  call reposition_file(imvs,irecord,time_io_rs)
-                  read(imvs,*,end=20,err=20) rdummy1,rdummy2,rdummy3,  &
-                                             rdummy4,rdummy5
-                  call reposition_file(imvs,irecord)
+                  call reposition_file(imvs(isub),irecord,time_io_rs)
+                  read(imvs(isub),*,end=20,err=20) rdummy1,rdummy2,    &
+                       rdummy3,rdummy4,rdummy5
+                  call reposition_file(imvs(isub),irecord)
 
                   tmsb_influx_accu(itmsb) = tmsb_influx_accu(itmsb) +  &
                                             rdummy4
@@ -942,7 +1034,7 @@
 
               if (i_append_sim < 1 .or.                                &
                  (mtime >= mtime_append .and. i_append_sim >= 1)) then
-                write(imvs,ascii_fmt) time_io,                         &
+                write(imvs(isub),ascii_fmt) time_io,                   &
                       tmsb_influx(itmsb),tmsb_outflux(itmsb),          &
                       tmsb_influx_accu(itmsb),tmsb_outflux_accu(itmsb)
               end if
@@ -950,6 +1042,8 @@
           end if
         end do
       end if
+
+      end do      !subdomains
       
       return
       end 

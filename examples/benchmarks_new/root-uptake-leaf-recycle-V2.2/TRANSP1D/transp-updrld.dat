@@ -1,0 +1,729 @@
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'transpiration 1D couplage rld'
+
+
+
+.true.                        ;varsat_flow
+
+.false.                       ;steady_flow
+
+.false.                       ;fully_saturated
+
+.false.                       ;reactive_transport
+
+.true.	                      ;root_uptake
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+1                             ;number of discretization intervals in x
+
+1                           ;number of control volumes in x
+
+0 1                        ;xmin,xmax
+
+1                             ;number of discretization intervals in y
+
+1                           ;number of control volumes in y
+
+0 1                        ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+500                           ;number of control volumes in z
+
+0 1                        ;zmin,zmax
+
+
+
+'done'
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'days'                        ;time unit
+
+0.0E0                           ;time at start of solution
+
+50.0E0                       ;final solution time
+
+1.0E0                         ;maximum time step
+
+1.0E-10                        ;minimum time step
+
+
+
+'done'
+
+
+
+! Data Block 6: control parameters - water flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - water flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'upstream weighting'
+
+
+
+'compute underrelaxation factor'
+
+10.0                         ;max. allowed update
+
+
+
+
+
+
+
+'newton iteration settings'
+
+1.0E-4                        ;increment for numerical differentiation
+
+100                            ;max. number of newton iterations ! CBF REMOVED 100.0
+
+1.0E-6                        ;convergence tolerance
+
+0.1                           ;sw_star
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level ! CBF REMOVED 0.0
+
+100                           ;max. number of solver iterations ! CBF REMOVED 100.0
+
+1                             ;solver information level ! CBF REMOVED 1.0
+
+1.0E-7                        ;solver residual tolerance
+
+1.0E-7                        ;solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+4                            ;number of output times (spatial data)
+
+1.0E0  4.0E0  7.0E0  50.0E0                       ;specified output times (spatial data)
+
+'output of transient data'
+
+0                             ;number of output locations (transient data)
+
+0
+
+
+
+'skipped time steps in log file'
+
+0
+
+
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+2                             ;number of material property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'A'
+
+0.54                      ;porosity
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 0.5  
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'B'
+
+0.45                      ;porosity
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.5 1.0  
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 10: physical parameters - variably saturated flow !CBF : water flow parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow' ! CBF 'water flow parameters'
+
+
+
+! ---------------------------------------------------------------------------
+
+ 'dual permeability off'
+
+
+
+'A'
+
+
+
+'hydraulic conductivity in z-direction'
+
+1.0E-5                      ;K_zz
+
+
+
+'specific storage coefficient'
+
+0.0E0
+
+
+
+'soil hydraulic function parameters'
+
+0.15                        ;residual saturation (thetar/total poro)
+
+1.0                        ;van genuchten - alpha
+
+1.56                         ;van genuchten - n
+
+0.5                          ;expn
+
+0.0                           ;air entry pressure
+
+0.0                        ;psidry (air-dry pressure head)
+
+'end of zone'
+
+
+
+'B'
+
+
+
+'hydraulic conductivity in z-direction'
+
+2.0E-5                      ;K_zz
+
+
+
+'specific storage coefficient'
+
+0.0E0
+
+
+
+'soil hydraulic function parameters'
+
+0.165                        ;residual saturation (thetar/total poro)
+
+1.0                        ;van genuchten - alpha
+
+1.6                         ;van genuchten - n
+
+0.5                          ;expn
+
+0.0                           ;air entry pressure
+
+0.0                        ;psidry (air-dry pressure head)
+
+'end of zone'
+
+
+
+'done'
+
+
+
+
+
+!'root water uptake'
+
+!0.0 0.0 0.0 0.1 2.0 -2.0 1.0 0.1 ! CBF
+
+
+
+! Data Block 12: initial condition - water flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+! CBF 'initial condition - water flow'
+
+'read initial condition from file'
+
+
+
+'done'
+
+
+
+
+
+! Data Block 13: boundary conditions - water flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+! CBF 'boundary conditions - water flow'
+
+'boundary conditions - variably saturated flow'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'Top'
+
+
+
+'boundary type'
+
+'second' 1.0E-7                          ;flux conditions
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  1.0 1.0  
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'bottom'
+
+
+
+'boundary type'
+
+'first' -10.0E0                          ;hydraulic head
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 0.0  
+
+'end of zone'
+
+
+
+'transient boundary conditions'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'/media/blitz/DATAPART1/MIN3P' ! CBF ADD FOR USE
+
+!'C:\MIN3P\databases'
+
+
+
+'define input units'
+
+'g/l'
+
+
+
+'define temperature'
+
+25
+
+
+
+'components'
+
+1                            ;number of components (nc-1)
+
+'h+1'                         ;component names
+
+
+
+'redox couples'
+
+0                             ;number of redox couples (nr)
+
+
+
+
+
+'secondary aqueous species'
+
+1                             ;number of secondary aqueous species
+
+'oh-'                         ;names of secondary aqueous species
+
+
+
+'gases'
+
+0                              ;number of gases
+
+
+
+'minerals'
+
+0                              ;number of minerals
+
+
+
+'excluded minerals'
+
+0                              ;number of excluded minerals (nmx)
+
+
+
+'intra-aqueous kinetic reactions'
+
+0                              ;number of intra-aqueous kinetic reactions
+
+
+
+'scaling for intra-aqueous kinetic reactions'
+
+
+
+'define sorption type'
+
+'NONE'
+
+
+
+'linear sorption'
+
+0
+
+
+
+'done'
+
+
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+0.0                       ;free diffusion coefficient in water
+
+0.0                       ;free diffusion coefficient in air
+
+
+
+! ---------------------------------------------------------------------------
+
+'A'
+
+
+
+'transverse vertical dispersivity'
+
+0.0                         ;vertical dispersivity
+
+
+
+'transverse horizontal dispersivity'
+
+0.0                         ;horizontal dispersivity
+
+
+
+'longitudinal dispersivity'
+
+0.0                         ;longitudinal dispersivity
+
+
+
+'end of zone'
+
+'B'
+
+
+
+'transverse vertical dispersivity'
+
+0.0                         ;vertical dispersivity
+
+
+
+'transverse horizontal dispersivity'
+
+0.0                         ;horizontal dispersivity
+
+
+
+'longitudinal dispersivity'
+
+0.0                         ;longitudinal dispersivity
+
+
+
+'end of zone'
+
+'done'
+
+
+
+
+
+! Data Block 17: plant transpiration and passive/rejective uptake
+
+! ---------------------------------------------------------------------------
+
+!
+
+'plant transpiration and passive/rejective uptake'
+
+! ---------------------------------------------------------------------------
+
+!NB :If none of these options is activated, the root length densities considered are those 
+
+!NB :specified in the 'root water uptake' section. In the 'update-internal' option, ivol 
+
+!NB :refers to the control volume ID. 
+
+!'read root length density from file'; 1D
+
+!'update - internal'		; 1D - rld(ivol)=exp(a+b*sqrt(z(ivol))+c*time+d*sqrt(z(ivol))*time)
+
+!-12.48 1.725 0.0017 0.0003961	; a, b, c, d parameters of the model for 'update - internal'
+
+'update - coupled - AS'	; 1D/2D (automatic detection)
+
+!'update - coupled - RT'	; 2D
+
+
+
+!If seed < 0, use srand((unsigned) time(null))
+
+!If seed >= 0, use srand((unsigned) seed)
+
+!Default (without keyword 'random generator seed - *'), seed = -1
+
+!
+
+'random generator seed - AS'
+
+123456
+
+
+
+!'random generator seed - RT'
+
+!654321
+
+
+
+'transpiration global parameters'
+
+2.0                         ;rew_0
+
+-2.0                        ;p1
+
+0.1                          ;f_i
+
+'correction method for water stress'
+
+1
+
+
+
+'done'
+
+
+
+! Data Block 18: physical parameters - root uptake
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - root uptake'
+
+
+
+'A'
+
+
+
+'root water uptake'
+
+160.0                       ;water pressure wilting point
+
+1.0                         ;water pressure field capacity
+
+10.0                        ;water pressure optimal value (used in Feddes and VG)
+
+0.1                         ;root length density
+
+
+
+'passive solute uptake'
+
+1.0
+
+'end of zone'
+
+
+
+'B'
+
+
+
+'root water uptake'
+
+160.0                        ;water pressure wilting point
+
+1.0                          ;water pressure field capacity
+
+10.0                        ;water pressure optimal value (used in Feddes and VG)
+
+0.2                          ;root length density
+
+
+
+'passive solute uptake'
+
+1.0
+
+'end of zone'
+
+
+
+'done'

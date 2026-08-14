@@ -1,0 +1,71 @@
+!**********************************************************************
+!CDR Template File
+!
+!Author:
+!  Danyang Su
+!
+!Description:
+!  This script processes MIN3P simulation results to extract and calculate
+!  CDR (Carbon Dioxide Removal) related data using Python, then exports 
+!  the results to an Excel file.
+!
+!  The input file follows a structured format organized into groups:
+!  1. Each group begins with the line group: [name] and ends with end group
+!  2. Lines starting with '!' are treated as comments.
+!
+!  Within each group:
+!  The first line specifies the number of output columns,
+!  Subsequent lines define each variable with:
+!  1. A description
+!  2. The output variable name (for Excel)
+!  3. The MIN3P result file extension
+!  4. The corresponding variable name in MIN3P result file
+!
+!  The script supports basic mathematical operations for unit conversions 
+!  and data adjustments. For example:
+!  1. To convert CO₂ values from mol/m² to tn/Ha, multiply by a coefficient of 0.44
+!  2. Some results require sign inversion for correct interpretation.
+!**********************************************************************
+
+'group: co2'             ;keyword for CDR output section
+15                       ;number of output columns
+'v1=v1*(-0.44)'          'Autotrophic soil respiration [tn CO2/Ha]'    'o.arup'    'co3-2 accumulative solute uptake [mol]'
+'v2=v2*0.44'             'Heterotrophic soil respiration [tn CO2/Ha]'  '10.mmac'   'accumulative source/sink from ch2o-o2-td [mol]'
+'v3=v3*0.44'             'UAN hydrolisis [tn CO2/Ha]'                  '10.mmac'   'accumulative source/sink from uan-fertilizer-n [mol]'
+'v4=v4*0.44'             'Urea hydrolisis (PO4) [tn CO2/Ha]'           '10.mmac'   'accumulative source/sink from urea-phosphate [mol]'
+'v5=v5*0.44'             'CO2 in calcite (in) [tn CO2/Ha]'             '10.mmac'   'accumulative source/sink from calcite [mol]'
+'v6=v6*0.44'             'CO2 inflow [tn CO2/Ha]'                      '10.mac'    'accumulative mass influx [mol]'
+'v7=v7*0.44'             'CO2 outflux [tn CO2/Ha]'                     '10.mac'    'accumulative mass outflux (gas phase) [mol]'
+'v8=v8*0.44'             'CO2 export [tn CO2/Ha]'                      '10.mac'    'accumulative mass outflux [mol]'
+'v9=v9*0.44'             'CO2 change storage (aqueous) [tn CO2/Ha]'    '10.mac'    'accumulative change in storage [mol]'
+'v10=v10*0.44'           'CO2 change storage (gas) [tn CO2/Ha]'        '10.mac'    'accumulative change in storage (gas phase) [mol]'
+'v11=v1+v2+v3+v4+v5+v6'  'CO2 source [tn CO2/Ha]'                      ''          ''
+'v12=v7+v8'              'CO2 sink [tn CO2/Ha]'                        ''          ''
+'v13=v9+v10'             'CO2 change storage [tn CO2/Ha]'              ''          ''
+'v14=v11-v12-v13'        'CO2 error balance [tn CO2/Ha]'               ''          ''
+'v15=v14/v11*100.0'      'CO2 error balance [%]'                       ''          ''
+'end group'
+
+'group: ca'              ;keyword for CDR output section
+9                        ;number of output columns
+'v1=v1'                  'Weathered [mol/m2]'                          '1.mmac'    'accumulative source from all minerals [mol]'
+'v2=max(v2,0.0)'         'Calcite diss. [mol/m2]'                      '1.mmac'    'accumulative source/sink from calcite [mol]'    ;> 0
+'v3=max(-v3,0.0)'        'Calcite prec. [mol/m2]'                      '1.mmac'    'accumulative source/sink from calcite [mol]'    ;< 0
+'v4=v4'                  'Turnover [mol/m2]'                           '1.mmac'    'accumulative source/sink from turnover-26-12-2024 [mol]'
+'v5=v5*(-1.0)'           'Exchanged [mol/m2]'                          '1.mmac'    'accumulative source/sink from ion-exchange-ca [mol]'
+'v6=v6'                  'Root uptake [mol/m2]'                        'o.rup'     'ca+2 accumulative solute uptake [mol]'
+'v7=v7'                  'Influx [mol/m2]'                             '1.mac'     'accumulative mass influx [mol]'
+'v8=v8'                  'Exported [mol/m2]'                           '1.mac'     'accumulative mass outflux [mol]'
+'v9=v9'                  'Change storage (aq) [mol/m2]'                '1.mac'     'accumulative change in storage [mol]'
+'end group'
+
+'group: mg'              ;keyword for CDR output section
+7                        ;number of output columns
+'v1=v1'                  'Weathered [mol/m2]'                          '2.mmac'    'accumulative source from all minerals [mol]'
+'v2=v2'                  'Turnover [mol/m2]'                           '2.mmac'    'accumulative source/sink from turnover-26-12-2024 [mol]'
+'v3=v3'                  'Exchanged [mol/m2]'                          '2.mmac'    'accumulative source/sink from ion-exchange-ca [mol]'
+'v4=v4'                  'Root uptake [mol/m2]'                        'o.rup'     'mg+2 accumulative solute uptake [mol]'
+'v5=v5'                  'Influx [mol/m2]'                             '2.mac'     'accumulative mass influx [mol]'
+'v6=v6'                  'Exported [mol/m2]'                           '2.mac'     'accumulative mass outflux [mol]'
+'v7=v7'                  'Change storage (aq) [mol/m2]'                '2.mac'     'accumulative change in storage [mol]'
+'end group'

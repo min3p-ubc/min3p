@@ -4,7 +4,7 @@
 !> $Revision: 726 $
 !> $Author: dsu $
 !> $Date: 2019-08-07 11:30:33 -0700 (Wed, 07 Aug 2019) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/rateint_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/rateint_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -35,7 +35,7 @@
 !c                                kinetic reactions [mol/(l h2o*day)
 !c           c(nc)              = concentrations of components as     + -
 !c                                species in solution
-!c           cx(nx)             = concentrations of aqueous           + -
+!c           cxnew(nx)          = concentrations of aqueous           + -
 !c                                complexes
 !c           gammac(nc)         = activity coefficients of components + -
 !c                                as species in solution
@@ -214,8 +214,8 @@
 #endif 
       implicit none
       
-      real*8 :: rate,totc,c,cx,gammac,gammax,phim, scalfacaq,          &
-                saqvol, porvol
+      real*8 :: rate, scalfacaq, saqvol, porvol
+      real*8 :: totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
       
       integer :: iaq, tid
       
@@ -224,8 +224,6 @@
                  istart2, istop2, istart3, istop3, ibottom, itop,      &
                  itemp, iaqhst, iaqe, info_debug, next
       real*8 :: sumic, alphar, alphartot, alphartop, prodrc, term_bordeaux
-
-      dimension totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
 
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
       
@@ -520,7 +518,8 @@
      
 !c  modify reaction product for irreversible reactions - log K control
 
-      elseif (rtype_aq(iaq).eq.'irreversible - log K control') then
+      elseif (rtype_aq(iaq).eq.'irreversible - log K control' .or.     &
+              rtype_aq(iaq).eq.'irreversible - log k control') then
 
          prodrc = dmax1(r0,(prodrc * (dg_limaq(iaq) - sataq(iaq,tid))))
 

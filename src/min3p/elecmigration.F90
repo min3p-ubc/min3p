@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/elecmigration.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/elecmigration.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -136,8 +136,7 @@
                                           diff_cof_ix_jvol(ix))
           end if          
         end do
-      else if (type_averaging_De.eq.'arithmetic' .or.                  &
-               type_averaging_De.eq.'arithmetic De') then
+      else if (type_averaging_De.eq.'arithmetic') then
         do ic=1,nc          ! loop over free species 
           diff_cof_ic(ic) = rhalf*(diff_cof_ic_ivol(ic)+               &
                                    diff_cof_ic_jvol(ic))

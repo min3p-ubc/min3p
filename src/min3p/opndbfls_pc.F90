@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/opndbfls_pc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/opndbfls_pc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -85,7 +85,7 @@
       use gen
       use file_unit, only : lun_get
       use chem, only : issit
-      use nobleGasIngrowth, only : ingdbs
+      use nobleGasIngrowth, only : ingdbs, b_use_ngi
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -125,7 +125,8 @@
       if (full_path) then
 
         if(rank == 0 .and. b_enable_output) then    
-          write(*,'(1x,a,1x,a)') "database:", trim(dbs_dir)
+          write(*,'(a,1x,a)') "database:", trim(dbs_dir)
+          write(ilog,'(a,1x,a)') "database:", trim(dbs_dir)
         end if 
       
         !>Note: In Linux, the path separator is /. In Windows, it is either / or \. 
@@ -150,11 +151,13 @@
           strfile = dbs_dir(:l_dbs_dir)//'/redoxe.dbs'
           open(irdbs,file=strfile,status='unknown',err=999)
         end if
+
         strfile = dbs_dir(:l_dbs_dir)//'/gases.dbs'
         open(igdbs,file=strfile,status='unknown',err=999)
 
         strfile = dbs_dir(:l_dbs_dir)//'/sorption.dbs'
         open(isdbs,file=strfile,status='unknown',err=999)
+        
         if (issit) then
           strfile = dbs_dir(:l_dbs_dir)//'/sit.dbs'
           open(isitdbs,file=strfile,status='unknown',err=999)
@@ -223,6 +226,10 @@
           elseif (redox_master.eq.'h2(aq)') then
             strfile = drive//':/min3p/database/'//                    &
                       dbs_dir(:l_dbs_dir)//'/redoxh2.dbs'
+            open(irdbs,file=strfile,status='unknown',err=999)
+          elseif (redox_master.eq.'e-1') then
+            strfile = drive//':/min3p/database/'//                    &
+                      dbs_dir(:l_dbs_dir)//'/redoxe.dbs'
             open(irdbs,file=strfile,status='unknown',err=999)
           end if     
           strfile = drive//':/min3p/database/'//dbs_dir(:l_dbs_dir)// &

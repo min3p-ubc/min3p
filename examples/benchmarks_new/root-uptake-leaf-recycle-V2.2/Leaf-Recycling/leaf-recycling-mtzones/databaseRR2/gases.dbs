@@ -1,0 +1,107 @@
+Cl-Benz(g)       -8.0000   0.5763                                 112.5600  ! added 13.12.2005, data from EPi-Suite ----------------- organic vapours ----------------------- !
+      1   Cl-Benz        1.000                                              ! average from EPI-Suite: 3.7695E-03 atm m3/mol, deltaH not available
+cf113(g)         -8.6448   2.5409                                 187.3762  ! added Jan 20, 2001
+      1   cf113          1.000                                              ! from Mette Broholm, caution: value in Pa!
+cfc11(g)         -8.6479   1.9560                                 137.4     ! added Feb 28, 2001
+      1   cfc11          1.000                                              ! from Mette, Patrick
+pce(g)           -8.6428   1.2016                                 165.8340  !added Jan 12, 00
+      1   pce            1.000
+tce(g)           -8.6464   0.932                                  131.51    !added Aug 21, 00
+      1   tce            1.000
+cis-dce(g)       -8.3293   0.8680                                  96.94328 !added Jun 27, 2007, data from Reisinger & Grathwohl (1996)
+      1   cis-1,2-dce    1.000
+trans-dce(g)     -8.3102   0.8248                                  96.94328 !added Jun 27, 2007, data from Reisinger & Grathwohl (1996)
+      1   trans-1,2dce   1.000
+cis-13C(g)       -8.3293   0.8680                                  97.94328 !added Jul 09, 2007, data from Reisinger & Grathwohl (1996)
+      1   cis-dce-13C    1.000
+trans-13C(g)     -8.3102   0.8248                                  97.94328 !added Jul 09, 2007, data from Reisinger & Grathwohl (1996)
+      1   trans-dce13C   1.000
+vc(g)            -6.5296   1.9399                                  62.49852 !added Jun 27, 2007, data from Reisinger & Grathwohl (1996)
+      1   vc             1.000
+ethen(g)         -8.6428   1.2016                                  28.05376 !added Jun 27, 2007, numbers are actually housenumbers!
+      1   wrong          1.000
+mtbe(g)          -8.6483  -0.1346                                  88.1504  !added Jan 12, 00 ; other entry:  0.3054 
+      1   mtbe           1.000
+pentan(g)        -8.6468   2.9797                                  72.1510  !added Jan 12, 00
+      1   pentan         1.000
+hexan(g)         -8.6492   3.2249                                  86.1771  ! added Jan 20, 2001
+      1   hexan          1.000                                              ! from Mette Broholm, caution: value in Pa!
+oktan(g)         -8.6471   3.4714                                 114.2320  !added Feb 28, 01
+      1   oktan          1.000
+decan(g)         -8.6443   3.6850                                 142.2847  ! added Jan 20, 2001
+      1   decan          1.000                                              ! from Mette Broholm, caution: value in Pa!
+dodecan(g)       -8.6442   3.8611                                 170.3384  ! added Jan 20, 2001
+      1   dodecan        1.000                                              ! from Mette Broholm, caution: value in Pa!
+3-m-penta(g)     -8.6492   3.2250                                  86.1771  ! added Jan 20, 2001
+      1   3-m-pentan     1.000                                              ! from Mette Broholm, caution: value in Pa!
+iso-oktan(g)     -8.6471   3.4807                                 114.2320  !added Jan 12, 00
+      1   iso-oktan      1.000
+cyclo-pen(g)     -8.6481   2.2695                                  70.1344  ! added Mar 21, 2001
+      1   cyclo-pent     1.000                                              ! from Mette Broholm, caution: value in Pa!
+cyclo-hex(g)     -8.6456   2.2942                                  84.16128 ! added Jan 31, 2001
+      1   cyclo-hex      1.000                                              ! from Mette Broholm, caution: value in Pa!
+mch(g)           -8.6529   2.6342                                  98.1900  !05.02.2002, corrected twice
+      1   mch            1.000
+mcp(g)           -8.6456   2.5589                                  84.16128 ! added Jan 20, 2001
+      1   mcp            1.000                                              ! from Mette Broholm, caution: value in Pa!
+c6h6(g)          -7.5810   0.6415                                  78.1136  !added July 21, 99
+      1   c6h6           1.000
+toluol(g)        -7.1566   0.6787                                  92.1410  !added Jan 12, 00
+      1   toluol         1.000
+ethyl-ben(g)     -9.0489   0.893                                  106.17    !added Aug 21, 00
+      1   ethyl-benz     1.000
+m-xylen(g)       -9.1256   0.8036                                 106.1674  ! added Jan 19, 2001
+      1   m-xylen        1.000                                              ! from Mette Broholm, caution: value in Pa!
+1,2,4-tmb(g)     -9.0474   0.8358                                 120.1943  ! added Jan 20, 2001
+      1   1,2,4-tmb      1.000                                              ! from Mette Broholm, caution: value in Pa!
+1,3,5-tmb(g)     -9.0474   0.9201                                 120.1950  !added Jan 12, 00
+      1   1,3,5-tmb      1.000
+n2(g)            -2.6422   3.1841                                  28.0000  ! added 04.11.2005 Uli Maier, ------------ changed species with unclear delta H -------- vermutlich ähnlich wie für O2 **** welches richtig?? ****
+      1   n2(aq)         1.000
+n2o(g)           -4.0000   2.8069                                  44.0000  ! added 12.04.2006 Uli Maier, aus EPISuite, deltaH ist Phantasie
+      1   n2o(aq)        1.000
+ch4(g)           -8.6475   2.8550                                  16.0432  ! changed 15.05.2001 Uli Maier  **** delta H richtig?? ****
+      1   ch4(aq)        1.000
+hcn(g)             .0000    7.8546                                 27.0257  !added 1/01 calculated from Kjeldsen (Wat. Air Soil Pol, 1998)
+      2   cn-            1.000 h+1            1.000
+h2(g)              .0000  -43.0090                                  2.0160  !added 9/99 ------ atmospheric and other gases ------------ !
+      2   h2o            1.000 o2(aq)        -0.500
+nh3(g)             .0000  -11.0078                                 17.0300  !added 9/99
+      2   nh4+1          1.000 h+1           -1.000
+h2s(g)             .0000   7.9889                                  34.0800  !added 9/99
+      2   hs-1           1.000 h+1            1.000
+c6h6(g)           0.0000   0.7484                                  78.1136  !added July 21, 99
+      1   c6h6           1.000 
+ch2o(g)           0.0000   0.7500                                  30.0209  !added May 17, 01
+      1   ch2o           1.000 
+ch3cooh(g)         .0000  -2.8842                                  60.0520  !added 9/99
+      1   ch3cooh(aq)    1.000
+ch4(g)             .0000   2.8894                                  16.0432  !modified 9/99
+      1   ch4(aq)        1.000
+co2(g)            -.5300   18.1600                                 41.0100
+      3   co3-2          1.000 h+1            2.000 h2o           -1.000
+o2(g)            -2.7945   2.8980                                  31.9988
+      1   o2(aq)         1.000
+hg(g)            28.1920  -13.6337                                200.5900  ! ----------------- mercury species ----------------------- !
+      4   hg2+2           .500 o2(aq)         -.250 h+1           -1.000 h2o             .500
+hg2(g)           53.0440  -28.0460                                401.1800
+      4   hg2+2          1.000 o2(aq)         -.500 h+1           -2.000 h2o            1.000
+hg(ch3)2(g)     419.9123 -270.3480                                230.6594
+      4   hg(oh)2        1.000 co3-2          2.000 o2(aq)        -4.000 h+1            4.000
+hgbr(g)          34.0040  -16.7900                                280.4940
+      2   hg2+2           .500 br-1           1.000
+hgcl(g)          40.0980  -20.5000                                236.0430
+      2   hg2+2           .500 cl-1           1.000
+hgf(g)           60.9160  -32.7200                                219.5884
+      2   hg2+2           .500 f-1            1.000
+hgi(g)           25.2640  -11.1500                                327.4945
+      2   hg2+2           .500 i-1            1.000
+hgbr2(g)        -14.3500   18.4700                                360.3980
+      4   hg(oh)2        1.000 br-1           2.000 h+1            2.000 h2o           -2.000
+hgf2(g)            .0000    -.3800                                238.5868
+      4   hg(oh)2        1.000 f-1            2.000 h+1            2.000 h2o           -2.000
+hgi2(g)         -28.6300   27.2800                                454.3990
+      4   hg(oh)2        1.000 i-1            2.000 h+1            2.000 h2o           -2.000
+NemA(g)            .0000   -6.5314                                396.7600
+      1   Nematicide-A   1.000
+end

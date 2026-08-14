@@ -4,7 +4,7 @@
 !> $Revision: 473 $
 !> $Author: dsu $
 !> $Date: 2017-05-31 22:02:12 -0700 (Wed, 31 May 2017) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/hydrostatic_pitzerdens_usg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/hydrostatic_pitzerdens_usg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 

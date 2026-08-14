@@ -4,7 +4,7 @@
 !> $Revision: 609 $
 !> $Author: dsu $
 !> $Date: 2018-09-14 11:47:55 -0700 (Fri, 14 Sep 2018) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/dtotconc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/dtotconc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -90,13 +90,13 @@
 
       implicit none
       
-      real*8 :: c, cx, drtinc
+      real*8 :: drtinc
       
       integer :: jbl, tid
 
       integer :: izn
       
-      dimension c(*),cx(*)
+      real*8 :: c(*),cx(*)
       
       integer :: i, ibl, ix, istart, istop
      

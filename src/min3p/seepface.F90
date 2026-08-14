@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/seepface.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/seepface.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -42,7 +42,7 @@
 !c
 !c           integer*4:
 !c           ---------- 
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           javs(njavs)        = connectivity list                   + - 
 !c           nn                 = total number of control volumes     + -
@@ -180,7 +180,7 @@
       do ibvs = 1,nbvs             !loop over boundary control volumes
 
         if (compute_ice_sheet_loading) then
-          if (.not. b_iabvs_ice(ibvs)) then
+          if (.not. b_jabvs_ice(ibvs)) then
             cycle
           end if
         end if
@@ -190,8 +190,8 @@
         if (btypevs(ibvs).eq.'seepage' .or. &
             btypevs(ibvs).eq.'seepage-second') then  
           
-          ivol = iabvs(ibvs)         !pointer to control volume
-          if (ivol < 0) then
+          ivol = jabvs(ibvs)         !pointer to control volume
+          if (ivol <= 0 .or. .not.bcondvs_on(ibvs)) then
             cycle  
           end if
           

@@ -1,0 +1,17522 @@
+! c2b.dat
+
+! variably saturated flow and reactive transport
+
+! C-cycling benchmark - level C2b
+
+!
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'C-cycling benchmark - level C2b'
+
+.true.                        ;varsat_flow
+
+.false.                       ;steady_flow
+
+.false.                       ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'database directory'
+
+'..\database-benchmark'
+
+
+
+'components'
+
+2                            ;number of components (nc-1)
+
+'co3-2'                      ;component names
+
+'h+1'
+
+
+
+'secondary aqueous species'
+
+3                             ;number of secondary aqueous species
+
+'oh-'                         ;names of secondary aqueous species
+
+'hco3-'
+
+'h2co3aq'
+
+
+
+'gases'
+
+1                             ;number of gases
+
+'co2(g)'                      ;names of gases
+
+
+
+'minerals'
+
+1                             ;number of minerals
+
+'soilresp'                    ;mineral names
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+1                             ;number of discretization intervals in x
+
+1                             ;number of control volumes in x
+
+0. 1.0                        ;xmin,xmax
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in y
+
+0. 1.0                        ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+101                           ;number of control volumes in z
+
+0.0 1.0                       ;zmin,zmax
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'days'                        ;time unit
+
+0.0                           ;time at start of solution
+
+365.0d0                       ;final solution time
+
+0.025d0                       ;maximum time step
+
+1.d-15                        ;minimum time step
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for numerical differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+1.0d0                         ;max. ionic strength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'days'                       ;time unit (local chemistry)
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'pressure head'              ;input unit
+
+
+
+'compute underrelaxation factor'
+
+1.0                           ;max. allowed update
+
+
+
+'newton iteration settings'
+
+1.0d-6                        ;increment for numerical differentiation
+
+80                            ;max. number of newton iterations
+
+1.0d-4                        ;convergence tolerance
+
+0.3                           ;sw_star
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+0                             ;solver information level
+
+1.0d-7                        ;solver residual tolerance
+
+1.0d-7                        ;solver update tolerance
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'
+
+
+
+'activity update settings'
+
+'time_lagged'
+
+
+
+'tortuosity correction'
+
+'millington'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;increment h for numerical differentiation
+
+12                            ;anticipated number of Newton iterations
+
+60                            ;max. number of Newton iterations
+
+2.0d0                         ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.d-6                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+0                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+1                             ;information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+4                               ;number of output times (spatial data)
+
+20.0d0 50.0d0 100.0d0 365.0d0   ;specified output times (spatial data)
+
+
+
+'output in terms of depth'
+
+
+
+'output of transient data'
+
+6                             ;number of output locations (transient data)
+
+1                             ;timesteps between output (transient data)
+
+98 95 91 76                   ;control volume numbers for transient data
+
+51 1
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium  (done)
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+1                             ;number of material property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'soil'
+
+0.45                         ;porosity
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 10: physical parameters - variably saturated flow (done)
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+
+
+! ---------------------------------------------------------------------------
+
+'soil'
+
+
+
+'hydraulic conductivity in z-direction'
+
+2.894d-6                      ;K_zz - corresponds to 25 cm/day = 25/(100*86400)
+
+
+
+'specific storage coefficient'
+
+1.0d-5
+
+
+
+'soil hydraulic function parameters'
+
+0.17778                       ;residual saturation = 0.08/0.45
+
+1.0                           ;van genuchten - alpha in units m-1 (originally given in cm-1, i.e. 0.01 cm-1)
+
+1.4                           ;van genuchten - n
+
+0.5                           ;expn
+
+0.0                           ;air entry pressure
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 11: physical parameters - reactive transport (done)
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+2.315d-9                      ;free diffusion coefficient in water (originally given in cm2/day, i.e. 2 cm2/day)
+
+2.315d-5                      ;free diffusion coefficient in air (originally given in cm2/day, i.e. 20000 cm2/day)
+
+
+
+! ---------------------------------------------------------------------------
+
+'soil'
+
+
+
+'longitudinal dispersivity'
+
+0.1                          ;longitudinal dispersivity (originally given in cm, i.e. 10 cm)
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'zone 1'
+
+
+
+'initial condition'
+
+-1.5                          ;pressure head
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 0.0  0.0 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'second' 3.72222E-08     ;flux
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  1.0 1.0   ;extent of zone
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'free-drainage'  1.0     ;flux
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 0.0
+
+
+
+'end of zone'
+
+
+
+'transient boundary conditions'
+
+
+
+'done'
+
+
+
+!
+
+! Data Block 15: initial condition - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'deep soil'
+
+
+
+'concentration input'
+
+1.87d-3        'free'           ;co3-2
+
+3.74d-3        'free'           ;h+1
+
+
+
+'mineral input'
+
+1.0d-10   .false.  'constant'   ;phim, minequil, update_type  - soilresp
+
+1.0d-10   5.787d-10  0.00d0     ;phimin, scalfac, supsatm
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 0.0  0.0 0.7
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'shallow soil'
+
+
+
+'concentration input'
+
+1.87d-3         'free'           ;co3-2
+
+3.74d-3         'free'           ;h+1
+
+
+
+'mineral input'
+
+1.0d-1   .false.  'constant'    ;phim, minequil, update_type  - soilresp
+
+1.d-10   5.787d-10    0.00d0    ;phimin, scalfac, supsatm
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 0.0  0.7 1.0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport (done)
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'inflow boundary'
+
+
+
+'boundary type'
+
+'mixed-evap'
+
+
+
+'concentration input'
+
+1.87d-3         'free'           ;co3-2
+
+3.74d-3         'free'           ;h+1
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  1.0 1.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'outflow boundary'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+'extent of zone'
+
+0.0 1.0  0.0 1.0  0.0 0.0
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+!'update boundary conditions'
+
+364                                ;number of target read times
+
+1.00                               ;target read times
+
+2.00
+
+3.00
+
+4.00
+
+5.00
+
+6.00
+
+7.00
+
+8.00
+
+9.00
+
+10.00
+
+11.00
+
+12.00
+
+13.00
+
+14.00
+
+15.00
+
+16.00
+
+17.00
+
+18.00
+
+19.00
+
+20.00
+
+21.00
+
+22.00
+
+23.00
+
+24.00
+
+25.00
+
+26.00
+
+27.00
+
+28.00
+
+29.00
+
+30.00
+
+31.00
+
+32.00
+
+33.00
+
+34.00
+
+35.00
+
+36.00
+
+37.00
+
+38.00
+
+39.00
+
+40.00
+
+41.00
+
+42.00
+
+43.00
+
+44.00
+
+45.00
+
+46.00
+
+47.00
+
+48.00
+
+49.00
+
+50.00
+
+51.00
+
+52.00
+
+53.00
+
+54.00
+
+55.00
+
+56.00
+
+57.00
+
+58.00
+
+59.00
+
+60.00
+
+61.00
+
+62.00
+
+63.00
+
+64.00
+
+65.00
+
+66.00
+
+67.00
+
+68.00
+
+69.00
+
+70.00
+
+71.00
+
+72.00
+
+73.00
+
+74.00
+
+75.00
+
+76.00
+
+77.00
+
+78.00
+
+79.00
+
+80.00
+
+81.00
+
+82.00
+
+83.00
+
+84.00
+
+85.00
+
+86.00
+
+87.00
+
+88.00
+
+89.00
+
+90.00
+
+91.00
+
+92.00
+
+93.00
+
+94.00
+
+95.00
+
+96.00
+
+97.00
+
+98.00
+
+99.00
+
+100.00
+
+101.00
+
+102.00
+
+103.00
+
+104.00
+
+105.00
+
+106.00
+
+107.00
+
+108.00
+
+109.00
+
+110.00
+
+111.00
+
+112.00
+
+113.00
+
+114.00
+
+115.00
+
+116.00
+
+117.00
+
+118.00
+
+119.00
+
+120.00
+
+121.00
+
+122.00
+
+123.00
+
+124.00
+
+125.00
+
+126.00
+
+127.00
+
+128.00
+
+129.00
+
+130.00
+
+131.00
+
+132.00
+
+133.00
+
+134.00
+
+135.00
+
+136.00
+
+137.00
+
+138.00
+
+139.00
+
+140.00
+
+141.00
+
+142.00
+
+143.00
+
+144.00
+
+145.00
+
+146.00
+
+147.00
+
+148.00
+
+149.00
+
+150.00
+
+151.00
+
+152.00
+
+153.00
+
+154.00
+
+155.00
+
+156.00
+
+157.00
+
+158.00
+
+159.00
+
+160.00
+
+161.00
+
+162.00
+
+163.00
+
+164.00
+
+165.00
+
+166.00
+
+167.00
+
+168.00
+
+169.00
+
+170.00
+
+171.00
+
+172.00
+
+173.00
+
+174.00
+
+175.00
+
+176.00
+
+177.00
+
+178.00
+
+179.00
+
+180.00
+
+181.00
+
+182.00
+
+183.00
+
+184.00
+
+185.00
+
+186.00
+
+187.00
+
+188.00
+
+189.00
+
+190.00
+
+191.00
+
+192.00
+
+193.00
+
+194.00
+
+195.00
+
+196.00
+
+197.00
+
+198.00
+
+199.00
+
+200.00
+
+201.00
+
+202.00
+
+203.00
+
+204.00
+
+205.00
+
+206.00
+
+208.00
+
+209.00
+
+210.00
+
+211.00
+
+212.00
+
+213.00
+
+214.00
+
+215.00
+
+216.00
+
+217.00
+
+218.00
+
+219.00
+
+220.00
+
+221.00
+
+222.00
+
+223.00
+
+224.00
+
+225.00
+
+226.00
+
+227.00
+
+228.00
+
+229.00
+
+230.00
+
+231.00
+
+232.00
+
+233.00
+
+234.00
+
+235.00
+
+236.00
+
+237.00
+
+238.00
+
+239.00
+
+240.00
+
+241.00
+
+242.00
+
+243.00
+
+244.00
+
+245.00
+
+246.00
+
+247.00
+
+248.00
+
+249.00
+
+250.00
+
+251.00
+
+252.00
+
+253.00
+
+254.00
+
+255.00
+
+256.00
+
+257.00
+
+258.00
+
+259.00
+
+260.00
+
+261.00
+
+262.00
+
+263.00
+
+264.00
+
+265.00
+
+266.00
+
+267.00
+
+268.00
+
+269.00
+
+270.00
+
+271.00
+
+272.00
+
+273.00
+
+274.00
+
+275.00
+
+276.00
+
+277.00
+
+278.00
+
+279.00
+
+280.00
+
+281.00
+
+282.00
+
+283.00
+
+284.00
+
+285.00
+
+286.00
+
+287.00
+
+288.00
+
+289.00
+
+290.00
+
+291.00
+
+292.00
+
+293.00
+
+294.00
+
+295.00
+
+296.00
+
+297.00
+
+298.00
+
+299.00
+
+300.00
+
+301.00
+
+302.00
+
+303.00
+
+304.00
+
+305.00
+
+306.00
+
+307.00
+
+308.00
+
+309.00
+
+310.00
+
+311.00
+
+312.00
+
+313.00
+
+314.00
+
+315.00
+
+316.00
+
+317.00
+
+318.00
+
+319.00
+
+320.00
+
+321.00
+
+322.00
+
+323.00
+
+324.00
+
+325.00
+
+326.00
+
+327.00
+
+328.00
+
+329.00
+
+330.00
+
+331.00
+
+332.00
+
+333.00
+
+334.00
+
+335.00
+
+336.00
+
+337.00
+
+338.00
+
+339.00
+
+340.00
+
+341.00
+
+342.00
+
+343.00
+
+344.00
+
+345.00
+
+346.00
+
+347.00
+
+348.00
+
+349.00
+
+350.00
+
+351.00
+
+352.00
+
+353.00
+
+354.00
+
+355.00
+
+356.00
+
+357.00
+
+358.00
+
+359.00
+
+360.00
+
+361.00
+
+362.00
+
+363.00
+
+364.00
+
+
+
+!		
+
+! target read time		1
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+1		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.00000E-10	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		2
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+2		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.00000E+00	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		3
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+3		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.04384E+00	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		4
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+4		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.03313E+00	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		5
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+5		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.04018E+00	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		6
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+6		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.00000E-10	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		7
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+7		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.07178E+00	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		8
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+8		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.03123E+00	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		9
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+9		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.00000E+00	'free'	;co3-2
+
+2.00000E+00	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		10
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+10		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.0284395	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		11
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+11		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.006344538	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		12
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+12		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		13
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+13		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.030702806	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		14
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+14		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.013536065	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		15
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+15		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.355723746	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		16
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+16		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+2.507042254	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		17
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+17		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.116049383	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		18
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+18		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.00642494	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		19
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+19		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		20
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+20		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		21
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+21		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.08299532	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		22
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+22		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		23
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+23		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.088056206	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		24
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+24		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		25
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+25		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		26
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+26		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.073186959	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		27
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+27		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.034320639	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		28
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+28		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		29
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+29		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		30
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+30		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.203248961	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		31
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+31		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.102099042	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		32
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+32		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.025289707	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		33
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+33		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		34
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+34		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		35
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+35		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		36
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+36		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+2.437681159	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		37
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+37		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.081257783	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		38
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+38		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.062114537	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		39
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+39		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+2.314136126	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		40
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+40		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.042188739	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		41
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+41		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		42
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+42		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		43
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+43		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		44
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+44		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		45
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+45		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		46
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+46		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		47
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+47		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		48
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+48		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		49
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+49		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		50
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+50		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		51
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+51		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		52
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+52		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		53
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+53		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		54
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+54		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.093439364	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		55
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+55		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.509749304	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		56
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+56		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.062591401	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		57
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+57		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.032154341	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		58
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+58		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		59
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+59		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		60
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+60		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		61
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+61		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		62
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+62		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		63
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+63		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		64
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+64		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		65
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+65		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.033507223	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		66
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+66		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.148128342	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		67
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+67		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		68
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+68		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.15430132	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		69
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+69		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.420618557	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		70
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+70		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		71
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+71		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.078773585	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		72
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+72		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.621566633	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		73
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+73		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		74
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+74		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		75
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+75		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		76
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+76		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		77
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+77		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		78
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+78		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.636661211	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		79
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+79		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+2.558441558	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		80
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+80		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.187179973	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		81
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+81		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+3.237012987	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		82
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+82		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		83
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+83		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		84
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+84		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		85
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+85		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		86
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+86		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		87
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+87		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		88
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+88		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		89
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+89		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		90
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+90		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		91
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+91		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		92
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+92		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		93
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+93		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+2.511583012	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		94
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+94		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		95
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+95		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.054008507	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		96
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+96		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		97
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+97		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.121165644	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		98
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+98		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.65337763	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		99
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+99		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		100
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+100		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		101
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+101		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		102
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+102		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		103
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+103		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		104
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+104		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		105
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+105		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		106
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+106		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		107
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+107		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		108
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+108		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		109
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+109		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		110
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+110		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		111
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+111		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		112
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+112		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.349192101	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		113
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+113		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		114
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+114		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		115
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+115		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		116
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+116		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		117
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+117		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		118
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+118		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		119
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+119		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		120
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+120		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		121
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+121		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		122
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+122		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		123
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+123		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		124
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+124		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		125
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+125		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		126
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+126		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		127
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+127		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.040091915	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		128
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+128		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		129
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+129		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		130
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+130		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		131
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+131		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		132
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+132		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		133
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+133		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		134
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+134		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		135
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+135		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		136
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+136		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		137
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+137		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		138
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+138		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		139
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+139		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		140
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+140		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		141
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+141		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		142
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+142		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		143
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+143		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		144
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+144		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		145
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+145		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		146
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+146		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		147
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+147		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+4.143646409	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		148
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+148		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		149
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+149		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		150
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+150		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.160903757	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		151
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+151		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		152
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+152		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		153
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+153		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.28921358	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		154
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+154		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.525867937	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		155
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+155		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		156
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+156		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		157
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+157		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		158
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+158		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		159
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+159		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		160
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+160		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		161
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+161		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.268498943	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		162
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+162		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.43879056	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		163
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+163		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		164
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+164		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		165
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+165		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		166
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+166		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		167
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+167		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		168
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+168		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		169
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+169		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+13.84615385	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		170
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+170		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		171
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+171		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.480592237	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		172
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+172		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		173
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+173		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		174
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+174		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.507077435	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		175
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+175		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		176
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+176		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		177
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+177		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+6.172839506	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		178
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+178		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		179
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+179		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+3.820375335	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		180
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+180		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		181
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+181		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		182
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+182		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		183
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+183		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.866666667	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		184
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+184		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		185
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+185		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+
+
+1.204930404	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		186
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+186		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		187
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+187		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		188
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+188		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.100618691	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		189
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+189		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.098636992	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		190
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+190		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.224445646	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		191
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+191		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.711568938	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		192
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+192		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		193
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+193		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.355123675	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		194
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+194		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		195
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+195		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		196
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+196		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		197
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+197		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		198
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+198		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.094464442	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		199
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+199		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		200
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+200		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		201
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+201		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.127607593	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		202
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+202		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.144920115	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		203
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+203		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.368051808	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		204
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+204		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		205
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+205		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		206
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+206		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		207
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+207		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		208
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+208		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		209
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+209		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		210
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+210		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		211
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+211		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		212
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+212		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		213
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+213		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		214
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+214		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		215
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+215		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		216
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+216		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		217
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+217		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		218
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+218		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		219
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+219		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.276822132	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		220
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+220		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		221
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+221		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		222
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+222		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.287553648	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		223
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+223		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		224
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+224		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.564722617	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		225
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+225		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.035444273	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		226
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+226		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		227
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+227		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		228
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+228		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		229
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+229		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		230
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+230		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.061491894	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		231
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+231		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.217458946	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		232
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+232		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+3.341772152	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		233
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+233		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		234
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+234		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		235
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+235		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		236
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+236		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.711156742	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		237
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+237		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.058334498	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		238
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+238		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		239
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+239		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.050878311	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		240
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+240		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		241
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+241		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		242
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+242		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.086956522	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		243
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+243		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		244
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+244		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		245
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+245		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		246
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+246		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		247
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+247		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		248
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+248		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		249
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+249		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		250
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+250		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		251
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+251		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		252
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+252		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		253
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+253		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		254
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+254		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.084229391	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		255
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+255		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		256
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+256		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.288659794	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		257
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+257		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		258
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+258		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		259
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+259		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		260
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+260		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		261
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+261		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.680244399	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		262
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+262		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		263
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+263		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		264
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+264		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		265
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+265		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.034677369	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		266
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+266		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.056691581	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		267
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+267		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.131411822	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		268
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+268		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		269
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+269		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		270
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+270		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		271
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+271		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+2.269879518	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		272
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+272		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.828150573	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		273
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+273		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		274
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+274		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+3.639175258	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		275
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+275		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		276
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+276		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		277
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+277		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		278
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+278		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		279
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+279		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		280
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+280		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		281
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+281		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		282
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+282		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		283
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+283		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		284
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+284		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		285
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+285		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		286
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+286		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		287
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+287		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		288
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+288		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.077586207	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		289
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+289		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		290
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+290		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.023373555	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		291
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+291		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+15.08695652	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		292
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+292		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		293
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+293		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.011912952	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		294
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+294		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		295
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+295		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		296
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+296		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		297
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+297		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		298
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+298		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		299
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+299		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		300
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+300		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.099796334	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		301
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+301		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		302
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+302		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.406047516	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		303
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+303		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		304
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+304		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		305
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+305		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.037628278	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		306
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+306		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.122293739	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		307
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+307		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		308
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+308		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		309
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+309		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		310
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+310		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.04575	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		311
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+311		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.011682243	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		312
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+312		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		313
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+313		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		314
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+314		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.046475839	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		315
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+315		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		316
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+316		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.030319149	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		317
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+317		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.060655738	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		318
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+318		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		319
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+319		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		320
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+320		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		321
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+321		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.021948659	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		322
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+322		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.004110972	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		323
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+323		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.012702703	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		324
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+324		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		325
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+325		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.007677543	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		326
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+326		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.147976879	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		327
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+327		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		328
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+328		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		329
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+329		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		330
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+330		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.021238651	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		331
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+331		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+2.350649351	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		332
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+332		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.035209867	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		333
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+333		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+3.605263158	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		334
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+334		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		335
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+335		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		336
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+336		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		337
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+337		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		338
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+338		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.234234234	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		339
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+339		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		340
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+340		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		341
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+341		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		342
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+342		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		343
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+343		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		344
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+344		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		345
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+345		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		346
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+346		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		347
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+347		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		348
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+348		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		349
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+349		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		350
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+350		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.035691922	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		351
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+351		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.008859457	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		352
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+352		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.301507538	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		353
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+353		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		354
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+354		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		355
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+355		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		356
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+356		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.022804861	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		357
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+357		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		358
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+358		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.014299394	'free'	;co3-2
+
+2	        'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		359
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+359		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		360
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+360		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1E-10	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		361
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+361		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.02031115	'free'	;co3-2
+
+2	        'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		362
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+362		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.014539354	'free'	;co3-2
+
+2	        'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		363
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+363		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1	'free'	;co3-2
+
+2	'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+		
+
+!		
+
+! target read time		364
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'start of target read time input'		
+
+364		
+
+!		
+
+! zone 1		
+
+! ---------------------------------------------------------------------------		
+
+!		
+
+'number and name of zone'		
+
+1		
+
+'inflow boundary'		
+
+		
+
+'concentration input'		
+
+1.98019802	'free'	;co3-2
+
+2	        'free'	;h+1
+
+		
+
+'end of zone'		
+
+		
+
+'end of target read time input'		
+
+
+
+
+
+'done'
+

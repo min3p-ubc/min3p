@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/icesheet/comp_bc_ice_sheet.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/icesheet/comp_bc_ice_sheet.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -66,13 +66,13 @@ implicit none
 !cprovi-----------------------------------------------------------------
       !nbvs=nbvs0
       !nbrt=nbrt0
-      !iabvs=iabvs0
+      !jabvs=jabvs0
       !jabrt=jabrt0
       bcondrt_a=bcondrt_a0
 
       if (ice_sheet_type == 0) then
         if(nbvs>0) then
-          call get_new_bc_(ice_sheet,iabvs,nbvs,b_iabvs_ice,xg,zg,nngl,&
+          call get_new_bc_(ice_sheet,jabvs,nbvs,b_jabvs_ice,xg,zg,nngl,&
                            time_io,iserror)
         end if
       else if (ice_sheet_type == 1) then
@@ -88,7 +88,7 @@ implicit none
           call updtbcice
         end if
         if(nbvs>0) then
-          call usg_ice_get_new_bc(nbvs,iabvs,b_iabvs_ice)
+          call usg_ice_get_new_bc(nbvs,jabvs,b_jabvs_ice)
           iserror = .false.
         end if  
 #endif
@@ -167,8 +167,16 @@ implicit none
             end if
 
             if (ice_sheet_type == 0) then
-              call modify_for_permafrost_ (ice_sheet,bcondheat(ibheat),&
-                              xg(ivol),zg(ivol),time_io,iserror)
+              if (discretization_type == 0) then
+                call modify_for_permafrost_ (ice_sheet,bcondheat(ibheat),&
+                                xg(ivol),zg(ivol),time_io,iserror)
+#ifdef USG
+              else if (discretization_type > 0) then 
+                call modify_for_permafrost_ (ice_sheet,bcondheat(ibheat),&
+                                xg(ivol),zg(ivol),time_io,iserror,       &
+                                zg_depth(ivol))
+#endif
+              end if
             else if (ice_sheet_type == 1) then
 #ifdef USG              
               call usg_ice_modify_permafrost_temp(ivol,bcondheat(ibheat))
@@ -223,14 +231,14 @@ implicit none
 #endif
       do ibvs = 1,nbvs
 
-        ivol=iabvs(ibvs)
+        ivol=jabvs(ibvs)
           
         if (ivol < 0) then
           cycle
         end if
 
 !c  assign pointer and 
-        if (b_iabvs_ice(ibvs)) then
+        if (b_jabvs_ice(ibvs) .and. bcondvs_on(ibvs)) then
          
           btypezn=btypevs(ibvs)
 

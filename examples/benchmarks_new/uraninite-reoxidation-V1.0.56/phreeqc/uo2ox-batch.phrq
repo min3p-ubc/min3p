@@ -1,0 +1,35 @@
+DATABASE C:\Users\umayer\Dropbox\Research Papers\CompGeosci-SpecIss\uraninite-reoxidation\phreeqc\uo2ox_dbs.txt
+
+Solution 1 bench_initial
+units mol/L
+C 1.558e-04 
+Lactate 1.e-20 
+Acetate 1.e-20
+Sulfate 0.02 as Sulfate-2
+S 1.e-23
+Feii 1.e-23
+Fe(3) 1.e-8 Hematite
+Uranyl 0.000090 
+Ca 0.0004
+Mg 0.004
+U(4) 1.e-23
+Na 0.0522
+Cl 8.2e-04
+pH 7.2
+
+Solution 2 bench_inject
+units mol/L
+C 1.558e-04 
+Lac 0.03 
+Acetate 1.e-20
+Sulfate 0.02 as Sulfate-2
+S 1.e-23
+Feii 1.0e-23
+Fe(3) 1.0e-8 Hematite
+Uranyl 1.0e-23
+Ca 0.0004
+Mg 0.004
+U(4) 1.e-23
+Na 0.08235
+Cl 8.2e-04
+pH 7.2

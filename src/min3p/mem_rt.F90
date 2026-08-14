@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/mem_rt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/mem_rt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -181,17 +181,17 @@
 !c                                - non-aqueous components [moles]
 !c           cculabsbal(n)      = accumulative absolute mass balance  * +
 !c                                error for dissolved species
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cculrelbal(n)      = accumulative relative mass balance  * +
 !c                                error for dissolved species [%]
 !c           gculabsbal(ng)     = accumulative absolute mass balance  * +
 !c                                error for gaseous species
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           gculrelbal(ng)     = accumulative relative mass balance  * +
 !c                                error for gaseous species [%]
 !c           cmculabsbal(nm)    = accumulative absolute mass balance  * +
 !c                                error for minerals
-!c                                [moles/elapsed time]
+!c                                [moles]
 !c           cmculrelbal(nm)    = accumulative relative mass balance  * +
 !c                                error for minerals [%]
 !c           sbdiff(n)          = source-sink term due to phase       * +
@@ -199,16 +199,16 @@
 !c           rateaqtot(naq)     = total rate of intra-aqueous kinetic * +
 !c                                reaction in solution domain
 !c                                [moles/day]
-!c           contaqtot(naq)     = contribution of intra-aqueous       * +
-!c                                kinetic reactions to mass balance
-!c                                [moles/elapsed time]
-!c           contmintot(nm)     = contribution of dissolution-        * +
-!c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
-!c           totdpdiffp(ndr*nm) = individual contribution of parallel * +
-!c                                reaction pathways of dissolution-
-!c                                precipitation reactions to mass
-!c                                balance [moles/elapsed time]
+!c           accuaqtot(naq)     = accumulative contribution of        * +
+!c                                intra-aqueous kinetic reactions to 
+!c                                mass balance[moles]
+!c           accudpdiff(nm)     = accumulative contribution of        * +
+!c                                dissolution-precipitation reactions 
+!c                                to mass balance [moles]
+!c           accudpdiffp(ndr*nm) = accumulative individual             * +
+!c                                contribution of parallel reaction 
+!c                                pathways of dissolution-precipitation 
+!c                                reactions to mass balance [moles]
 !c           totcfluxin(nc)     = total mass gain due to inflow in    * +
 !c                                auqueous phase in terms of total
 !c                                aqueous component concentrations
@@ -351,15 +351,20 @@
 !c  allocate memory for reactive transport simulation
 
 !c  main variables - reactive transport
-      allocate (c(nc,nngl), stat = ierr)
-      c=0.0d0
-      call checkerr(ierr,'c',ilog)
-      call memory_monitor(sizeof(c),'c',.true.)
+      allocate (cold(nc,nngl), stat = ierr)
+      cold=0.0d0
+      call checkerr(ierr,'cold',ilog)
+      call memory_monitor(sizeof(cold),'cold',.true.)
 
       allocate (cnew(nc,nngl), stat = ierr)
       cnew=0.0d0
       call checkerr(ierr,'cnew',ilog)
       call memory_monitor(sizeof(cnew),'cnew',.true.)
+
+      allocate (actvset(nc,nngl), stat = ierr)
+      actvset=0.0d0
+      call checkerr(ierr,'actvset',ilog)
+      call memory_monitor(sizeof(actvset),'actvset',.true.)
 
       allocate (cec_g(nngl), stat = ierr)
       cec_g=0.0d0
@@ -506,35 +511,21 @@
       call checkerr(ierr,'cmold',ilog)
       call memory_monitor(sizeof(cmold),'cmold',.true.)
 
-
-      if (nm.gt.0) then  
-        allocate (cmnew(nm,nngl), stat = ierr)
-        cmnew=0.0d0
-        call checkerr(ierr,'cmnew',ilog)
-        call memory_monitor(sizeof(cmnew),'cmnew',.true.)
-      else
-        allocate (cmnew(1,nngl), stat = ierr)
-        cmnew=0.0d0
-        call checkerr(ierr,'cmnew',ilog)
-        call memory_monitor(sizeof(cmnew),'cmnew',.true.)
-      end if
+      allocate (cmnew(nm,nngl), stat = ierr)
+      cmnew=0.0d0
+      call checkerr(ierr,'cmnew',ilog)
+      call memory_monitor(sizeof(cmnew),'cmnew',.true.)
 
       allocate (gold(ng,nngl), stat = ierr)
       gold=0.0d0
       call checkerr(ierr,'gold',ilog)
       call memory_monitor(sizeof(gold),'gold',.true.)
 
-      if (ng.gt.0) then 
-        allocate (gnew(ng,nngl), stat = ierr)
-        gnew=0.0d0
-        call checkerr(ierr,'gnew',ilog)
-        call memory_monitor(sizeof(gnew),'gnew',.true.)
-      else
-        allocate (gnew(1,nngl), stat = ierr)
-        gnew=0.0d0
-        call checkerr(ierr,'gnew',ilog)
-        call memory_monitor(sizeof(gnew),'gnew',.true.)
-      end if
+      allocate (gnew(ng,nngl), stat = ierr)
+      gnew=0.0d0
+      call checkerr(ierr,'gnew',ilog)
+      call memory_monitor(sizeof(gnew),'gnew',.true.)
+
 
       allocate (gmfrac(ng,nngl), stat = ierr)
       gmfrac=0.0d0
@@ -553,10 +544,10 @@
       
 
       if (nx.gt.0) then
-        allocate (cx(nx,nngl), stat = ierr)
-        cx=0.0d0
-        call checkerr(ierr,'cx',ilog)
-        call memory_monitor(sizeof(cx),'cx',.true.)
+        allocate (cxnew(nx,nngl), stat = ierr)
+        cxnew=0.0d0
+        call checkerr(ierr,'cxnew',ilog)
+        call memory_monitor(sizeof(cxnew),'cxnew',.true.)
     
         if (hmulti_diff) then
           allocate (cxold(nx,nngl), stat = ierr)
@@ -566,10 +557,10 @@
         end if
     
       else
-        allocate (cx(1,nngl), stat = ierr)
-        cx=0.0d0
-        call checkerr(ierr,'cx',ilog)
-        call memory_monitor(sizeof(cx),'cx',.true.)
+        allocate (cxnew(1,nngl), stat = ierr)
+        cxnew=0.0d0
+        call checkerr(ierr,'cxnew',ilog)
+        call memory_monitor(sizeof(cxnew),'cxnew',.true.)
     
         if (hmulti_diff) then
           allocate (cxold(1,nngl), stat = ierr)
@@ -934,13 +925,6 @@
       call checkerr(ierr,'cfluxout_mig',ilog)
       call memory_monitor(sizeof(cfluxout_mig),'cfluxout_mig',.true.)
 
-      !c root respiration and uptake
-      allocate (totrootdiff(n), stat = ierr)
-      totrootdiff=0.0d0
-      call checkerr(ierr,'totrootdiff',ilog)
-      call memory_monitor(sizeof(totrootdiff),'totrootdiff',.true.)
-
-
       allocate (gfluxtbdy(ng), stat = ierr)
       gfluxtbdy=0.0d0
       call checkerr(ierr,'gfluxtbdy',ilog)
@@ -1002,10 +986,10 @@
       call checkerr(ierr,'amass_gbl',ilog)
       call memory_monitor(sizeof(amass_gbl),'amass_gbl',.true.)
 
-      allocate (tmass(n), stat = ierr)
-      tmass=0.0d0
-      call checkerr(ierr,'tmass',ilog)
-      call memory_monitor(sizeof(tmass),'tmass',.true.)
+      !allocate (tmass(n), stat = ierr)
+      !tmass=0.0d0
+      !call checkerr(ierr,'tmass',ilog)
+      !call memory_monitor(sizeof(tmass),'tmass',.true.)
       
       allocate (tmass_gbl(n), stat = ierr)
       tmass_gbl=0.0d0
@@ -1021,7 +1005,6 @@
       cmass_gbl=0.0d0
       call checkerr(ierr,'cmass_gbl',ilog)
       call memory_monitor(sizeof(cmass_gbl),'cmass_gbl',.true.)
-
 
       allocate (gmass(ng), stat = ierr)
       gmass=0.0d0
@@ -1049,29 +1032,25 @@
       !    call checkerr(ierr,'csbmass',ilog)
       !end if
       
-      if(nsb_ion > 0) then
-          allocate (csbmass_ion(nsb_ion), stat = ierr)
-          csbmass_ion=0.0d0
-          call checkerr(ierr,'csbmass_ion',ilog)
-          call memory_monitor(sizeof(csbmass_ion),'csbmass_ion',.true.)
+      allocate (csbmass_ion(nsb_ion), stat = ierr)
+      csbmass_ion=0.0d0
+      call checkerr(ierr,'csbmass_ion',ilog)
+      call memory_monitor(sizeof(csbmass_ion),'csbmass_ion',.true.)
           
-          allocate (csbmass_ion_gbl(nsb_ion), stat = ierr)
-          csbmass_ion_gbl=0.0d0
-          call checkerr(ierr,'csbmass_ion_gbl',ilog)
-          call memory_monitor(sizeof(csbmass_ion_gbl),'csbmass_ion_gbl',.true.)
-      end if
+      allocate (csbmass_ion_gbl(nsb_ion), stat = ierr)
+      csbmass_ion_gbl=0.0d0
+      call checkerr(ierr,'csbmass_ion_gbl',ilog)
+      call memory_monitor(sizeof(csbmass_ion_gbl),'csbmass_ion_gbl',.true.)
       
-      if(nsb_surf > 0) then
-          allocate (csbmass_surf(nsb_surf), stat = ierr)
-          csbmass_surf=0.0d0
-          call checkerr(ierr,'csbmass_surf',ilog)
-          call memory_monitor(sizeof(csbmass_surf),'csbmass_surf',.true.)
+      allocate (csbmass_surf(nsb_surf), stat = ierr)
+      csbmass_surf=0.0d0
+      call checkerr(ierr,'csbmass_surf',ilog)
+      call memory_monitor(sizeof(csbmass_surf),'csbmass_surf',.true.)
           
-          allocate (csbmass_surf_gbl(nsb_surf), stat = ierr)
-          csbmass_surf_gbl=0.0d0
-          call checkerr(ierr,'csbmass_surf_gbl',ilog)
-          call memory_monitor(sizeof(csbmass_surf_gbl),'csbmass_surf_gbl',.true.)
-      end if
+      allocate (csbmass_surf_gbl(nsb_surf), stat = ierr)
+      csbmass_surf_gbl=0.0d0
+      call checkerr(ierr,'csbmass_surf_gbl',ilog)
+      call memory_monitor(sizeof(csbmass_surf_gbl),'csbmass_surf_gbl',.true.)
 
       allocate (csbmass_c(nsites), stat = ierr)
       csbmass_c=0.0d0
@@ -1083,10 +1062,10 @@
       call checkerr(ierr,'csbmass_c_gbl',ilog)
       call memory_monitor(sizeof(csbmass_c_gbl),'csbmass_c_gbl',.true.)
 
-      allocate (cculabsbal(n), stat = ierr)
-      cculabsbal=0.0d0
-      call checkerr(ierr,'cculabsbal',ilog)
-      call memory_monitor(sizeof(cculabsbal),'cculabsbal',.true.)
+      !allocate (cculabsbal(n), stat = ierr)
+      !cculabsbal=0.0d0
+      !call checkerr(ierr,'cculabsbal',ilog)
+      !call memory_monitor(sizeof(cculabsbal),'cculabsbal',.true.)
 
       allocate (cculrelbal(n), stat = ierr)
       cculrelbal=0.0d0
@@ -1124,94 +1103,90 @@
       call checkerr(ierr,'rateaqtot',ilog)
       call memory_monitor(sizeof(rateaqtot),'rateaqtot',.true.)
 
-      allocate (contaqtot(naq), stat = ierr)
-      contaqtot=0.0d0
-      call checkerr(ierr,'contaqtot',ilog)
-      call memory_monitor(sizeof(contaqtot),'contaqtot',.true.)
+      !allocate (accuaqtot(naq), stat = ierr)
+      !accuaqtot=0.0d0
+      !call checkerr(ierr,'accuaqtot',ilog)
+      !call memory_monitor(sizeof(accuaqtot),'accuaqtot',.true.)
 
-      allocate (contmintot(nm), stat = ierr)
-      contmintot=0.0d0
-      call checkerr(ierr,'contmintot',ilog)
-      call memory_monitor(sizeof(contmintot),'contmintot',.true.)
+      !allocate (accudpdiff(nm), stat = ierr)
+      !accudpdiff=0.0d0
+      !call checkerr(ierr,'accudpdiff',ilog)
+      !call memory_monitor(sizeof(accudpdiff),'accudpdiff',.true.)
       
-#ifdef PETSC
-      allocate (contmintot_mpi(nm), stat = ierr)
-      contmintot_mpi=0.0d0
-      call checkerr(ierr,'contmintot_mpi',ilog)
-      call memory_monitor(sizeof(contmintot_mpi),'contmintot_mpi',.true.)
-#endif
+      !allocate (totcfluxin(nc), stat = ierr)
+      !totcfluxin=0.0d0
+      !call checkerr(ierr,'totcfluxin',ilog)
+      !call memory_monitor(sizeof(totcfluxin),'totcfluxin',.true.)
+
+      !allocate (totcfluxout(nc), stat = ierr)
+      !totcfluxout=0.0d0
+      !call checkerr(ierr,'totcfluxout',ilog)
+      !call memory_monitor(sizeof(totcfluxout),'totcfluxout',.true.)
+
+      !allocate (totcstordiff(nc), stat = ierr)
+      !totcstordiff=0.0d0
+      !call checkerr(ierr,'totcstordiff',ilog)
+      !call memory_monitor(sizeof(totcstordiff),'totcstordiff',.true.)
+
+      !allocate (totordiff(nc), stat = ierr)
+      !totordiff=0.0d0
+      !call checkerr(ierr,'totordiff',ilog)
+      !call memory_monitor(sizeof(totordiff),'totordiff',.true.)
+
+      !allocate (totintradiff(nc), stat = ierr)
+      !totintradiff=0.0d0
+      !call checkerr(ierr,'totintradiff',ilog)
+      !call memory_monitor(sizeof(totintradiff),'totintradiff',.true.)
+
+      !allocate (totdpdiff(nc), stat = ierr)
+      !totdpdiff=0.0d0
+      !call checkerr(ierr,'totdpdiff',ilog)
+      !call memory_monitor(sizeof(totdpdiff),'totdpdiff',.true.)
+
+      !allocate (totgdegas(nc), stat = ierr)
+      !totgdegas=0.0d0
+      !call checkerr(ierr,'totgdegas',ilog)
+      !call memory_monitor(sizeof(totgdegas),'totgdegas',.true.)
+
+      !allocate (totgdiff(nc), stat = ierr)
+      !totgdiff=0.0d0
+      !call checkerr(ierr,'totgdiff',ilog)
+      !call memory_monitor(sizeof(totgdiff),'totgdiff',.true.)
+
+      !allocate (totrootarup(nc), stat = ierr)
+      !totrootarup=0.0d0
+      !call checkerr(ierr,'totrootarup',ilog)
+      !call memory_monitor(sizeof(totrootarup),'totrootarup',.true.)
+
+      !allocate (totrootprup(nc), stat = ierr)
+      !totrootprup=0.0d0
+      !call checkerr(ierr,'totrootprup',ilog)
+      !call memory_monitor(sizeof(totrootprup),'totrootprup',.true.)
+
+      !allocate (totrootrup(nc), stat = ierr)
+      !totrootrup=0.0d0
+      !call checkerr(ierr,'totrootrup',ilog)
+      !call memory_monitor(sizeof(totrootrup),'totrootrup',.true.)
+
+      !allocate (totcfluxin_diff(nc), stat = ierr)     !MCD
+      !totcfluxin_diff=0.0d0
+      !call checkerr(ierr,'totcfluxin_diff',ilog)
+      !call memory_monitor(sizeof(totcfluxin_diff),'totcfluxin_diff',.true.)
       
-
-      allocate (totcfluxin(nc), stat = ierr)
-      totcfluxin=0.0d0
-      call checkerr(ierr,'totcfluxin',ilog)
-      call memory_monitor(sizeof(totcfluxin),'totcfluxin',.true.)
-
-      allocate (totcfluxin_diff(nc), stat = ierr)     !MCD
-      totcfluxin_diff=0.0d0
-      call checkerr(ierr,'totcfluxin_diff',ilog)
-      call memory_monitor(sizeof(totcfluxin_diff),'totcfluxin_diff',.true.)
+      !allocate (totcfluxin_mig(nc), stat = ierr)      !MCD
+      !totcfluxin_mig=0.0d0
+      !call checkerr(ierr,'totcfluxin_mig',ilog)
+      !call memory_monitor(sizeof(totcfluxin_mig),'totcfluxin_mig',.true.)
       
-      allocate (totcfluxin_mig(nc), stat = ierr)      !MCD
-      totcfluxin_mig=0.0d0
-      call checkerr(ierr,'totcfluxin_mig',ilog)
-      call memory_monitor(sizeof(totcfluxin_mig),'totcfluxin_mig',.true.)
+      !allocate (totcfluxout_diff(nc), stat = ierr)       !MCD
+      !totcfluxout_diff=0.0d0
+      !call checkerr(ierr,'totcfluxout_diff',ilog)
+      !call memory_monitor(sizeof(totcfluxout_diff),'totcfluxout_diff',.true.)
       
-      allocate (totcfluxout(nc), stat = ierr)
-      totcfluxout=0.0d0
-      call checkerr(ierr,'totcfluxout',ilog)
-      call memory_monitor(sizeof(totcfluxout),'totcfluxout',.true.)
-
-      allocate (totcfluxout_diff(nc), stat = ierr)       !MCD
-      totcfluxout_diff=0.0d0
-      call checkerr(ierr,'totcfluxout_diff',ilog)
-      call memory_monitor(sizeof(totcfluxout_diff),'totcfluxout_diff',.true.)
-      
-      allocate (totcfluxout_mig(nc), stat = ierr)        !MCD
-      totcfluxout_mig=0.0d0
-      call checkerr(ierr,'totcfluxout_mig',ilog)
-      call memory_monitor(sizeof(totcfluxout_mig),'totcfluxout_mig',.true.)
-
-
-      allocate (totcstordiff(nc), stat = ierr)
-      totcstordiff=0.0d0
-      call checkerr(ierr,'totcstordiff',ilog)
-      call memory_monitor(sizeof(totcstordiff),'totcstordiff',.true.)
-
-      allocate (totordiff(nc), stat = ierr)
-      totordiff=0.0d0
-      call checkerr(ierr,'totordiff',ilog)
-      call memory_monitor(sizeof(totordiff),'totordiff',.true.)
-
-      allocate (totintradiff(nc), stat = ierr)
-      totintradiff=0.0d0
-      call checkerr(ierr,'totintradiff',ilog)
-      call memory_monitor(sizeof(totintradiff),'totintradiff',.true.)
-
-      allocate (totdpdiff(nc), stat = ierr)
-      totdpdiff=0.0d0
-      call checkerr(ierr,'totdpdiff',ilog)
-      call memory_monitor(sizeof(totdpdiff),'totdpdiff',.true.)
-
-      allocate (totgdegas(nc), stat = ierr)
-      totgdegas=0.0d0
-      call checkerr(ierr,'totgdegas',ilog)
-      call memory_monitor(sizeof(totgdegas),'totgdegas',.true.)
-
-      allocate (totgdiff(nc), stat = ierr)
-      totgdiff=0.0d0
-      call checkerr(ierr,'totgdiff',ilog)
-      call memory_monitor(sizeof(totgdiff),'totgdiff',.true.)
-
-      allocate (totrootresp(nc), stat = ierr)
-      totrootresp=0.0d0
-      call checkerr(ierr,'totrootresp',ilog)
-      call memory_monitor(sizeof(totrootresp),'totrootresp',.true.)
-
-      allocate (totrootuptake(nc), stat = ierr)
-      totrootuptake=0.0d0
-      call checkerr(ierr,'totrootuptake',ilog)
-      call memory_monitor(sizeof(totrootuptake),'totrootuptake',.true.)
+      !allocate (totcfluxout_mig(nc), stat = ierr)        !MCD
+      !totcfluxout_mig=0.0d0
+      !call checkerr(ierr,'totcfluxout_mig',ilog)
+      !call memory_monitor(sizeof(totcfluxout_mig),'totcfluxout_mig',.true.)
       
 !c    gas phase density, molar density, viscosity
 
@@ -1289,49 +1264,45 @@
       call checkerr(ierr,'totgij',ilog)
       call memory_monitor(sizeof(totgij),'totgij',.true.)
       
-
-      
-
-      allocate (totgfluxin(nc), stat = ierr)
-      totgfluxin=0.0d0
-      call checkerr(ierr,'totcfluxin',ilog)
-      call memory_monitor(sizeof(totgfluxin),'totgfluxin',.true.)
-
-      allocate (totgfluxout(nc), stat = ierr)
-      totgfluxout=0.0d0
-      call checkerr(ierr,'totgfluxout',ilog)
-      call memory_monitor(sizeof(totgfluxout),'totgfluxout',.true.)
-      
-      allocate (totgafluxin(nc), stat = ierr)
-      totgafluxin = 0.0d0
-      call checkerr(ierr,'totgafluxin',ilog)
-      call memory_monitor(sizeof(totgafluxin),'totgafluxin',.true.)
-
-      allocate (totgafluxout(nc), stat = ierr)
-      totgafluxout = 0.0d0
-      call checkerr(ierr,'totgfluxout',ilog)
-      call memory_monitor(sizeof(totgafluxout),'totgafluxout',.true.)
-
-      allocate (totgstordiff(nc), stat = ierr)
-      totgstordiff=0.0d0
-      call checkerr(ierr,'totgstordiff',ilog)
-      call memory_monitor(sizeof(totgstordiff),'totgstordiff',.true.)
-
-      allocate (totsbdiff(nc), stat = ierr)
-      totsbdiff=0.0d0
-      call checkerr(ierr,'totsbdiff',ilog)
-      call memory_monitor(sizeof(totsbdiff),'totsbdiff',.true.)
-
-
       allocate (dpdiffp(maxndr*nm), stat = ierr)
       dpdiffp=0.0d0
       call checkerr(ierr,'dpdiffp',ilog)
       call memory_monitor(sizeof(dpdiffp),'dpdiffp',.true.)
 
-      allocate (totdpdiffp(maxndr*nm), stat = ierr)
-      totdpdiffp=0.0d0
-      call checkerr(ierr,'totdpdiffp',ilog)
-      call memory_monitor(sizeof(totdpdiffp),'totdpdiffp',.true.)
+      !allocate (accudpdiffp(maxndr*nm), stat = ierr)
+      !accudpdiffp=0.0d0
+      !call checkerr(ierr,'accudpdiffp',ilog)
+      !call memory_monitor(sizeof(accudpdiffp),'accudpdiffp',.true.)
+
+      !allocate (totgfluxin(nc), stat = ierr)
+      !totgfluxin=0.0d0
+      !call checkerr(ierr,'totcfluxin',ilog)
+      !call memory_monitor(sizeof(totgfluxin),'totgfluxin',.true.)
+
+      !allocate (totgfluxout(nc), stat = ierr)
+      !totgfluxout=0.0d0
+      !call checkerr(ierr,'totgfluxout',ilog)
+      !call memory_monitor(sizeof(totgfluxout),'totgfluxout',.true.)
+      
+      !allocate (totgafluxin(nc), stat = ierr)
+      !totgafluxin = 0.0d0
+      !call checkerr(ierr,'totgafluxin',ilog)
+      !call memory_monitor(sizeof(totgafluxin),'totgafluxin',.true.)
+
+      !allocate (totgafluxout(nc), stat = ierr)
+      !totgafluxout = 0.0d0
+      !call checkerr(ierr,'totgfluxout',ilog)
+      !call memory_monitor(sizeof(totgafluxout),'totgafluxout',.true.)
+
+      !allocate (totgstordiff(nc), stat = ierr)
+      !totgstordiff=0.0d0
+      !call checkerr(ierr,'totgstordiff',ilog)
+      !call memory_monitor(sizeof(totgstordiff),'totgstordiff',.true.)
+
+      !allocate (totsbdiff(nc), stat = ierr)
+      !totsbdiff=0.0d0
+      !call checkerr(ierr,'totsbdiff',ilog)
+      !call memory_monitor(sizeof(totsbdiff),'totsbdiff',.true.)
       
 !c_bubbles variables for bubble problem
 
@@ -1375,14 +1346,7 @@
       scalfac_aq_ivol=0.0d0
       call checkerr(ierr,'scalfac_aq_ivol',ilog)
       call memory_monitor(sizeof(scalfac_aq_ivol),'scalfac_aq_ivol',.true.)
-      
-#ifdef PETSC
-      allocate (totdpdiffp_mpi(maxndr*nm), stat = ierr)
-      totdpdiffp_mpi=0.0d0
-      call checkerr(ierr,'totdpdiffp_mpi',ilog)
-      call memory_monitor(sizeof(totdpdiffp_mpi),'totdpdiffp_mpi',.true.)
-#endif
-      
+           
       allocate (mpireduce_n(n), stat = ierr)
       mpireduce_n=0.0d0
       call checkerr(ierr,'mpireduce_n',ilog)
@@ -1409,10 +1373,22 @@
       call checkerr(ierr,'ngidiff',ilog)
       call memory_monitor(sizeof(ngidiff),'ngidiff',.true.)
 
-      allocate (totngidiff(n), stat = ierr)
-      totngidiff=0.0d0
-      call checkerr(ierr,'totngidiff',ilog)
-      call memory_monitor(sizeof(totngidiff),'totngidiff',.true.)
-     
+      !allocate (totngidiff(n), stat = ierr)
+      !totngidiff=0.0d0
+      !call checkerr(ierr,'totngidiff',ilog)
+      !call memory_monitor(sizeof(totngidiff),'totngidiff',.true.)
+
+      !c mass balance of source sink of each component from mineral phases
+      !c we use nc here since h2o is also part of reaction, though not exported
+      allocate (dpdiff_m2c(nm,nc), stat = ierr)
+      dpdiff_m2c=0.0d0
+      call checkerr(ierr,'dpdiff_m2c',ilog)
+      call memory_monitor(sizeof(dpdiff_m2c),'dpdiff_m2c',.true.)
+
+      allocate (accu_dpdiff_m2c(nm,nc), stat = ierr)
+      accu_dpdiff_m2c=0.0d0
+      call checkerr(ierr,'accu_dpdiff_m2c',ilog)
+      call memory_monitor(sizeof(accu_dpdiff_m2c),'accu_dpdiff_m2c',.true.)
+
       return
       end

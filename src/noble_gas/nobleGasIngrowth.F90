@@ -4,7 +4,7 @@
 !> $Revision: 873 $
 !> $Author: dsu $
 !> $Date: 2023-12-12 11:14:04 -0800 (Tue, 12 Dec 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/noble_gas/nobleGasIngrowth.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/noble_gas/nobleGasIngrowth.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -40,9 +40,9 @@
 
       use chem
       use gen
-	  
-	    implicit none
-	  
+  
+      implicit none
+  
 !cdsu---------------------------------------------------------------
 !cdsu      Noble gas ingrowth related variables
 !cdsu---------------------------------------------------------------
@@ -107,7 +107,7 @@
 
 !c  mass balance related
       real*8, allocatable :: ngidiff(:)                      !global source-sink to aqueous component concentrationsterm due to noble gas introwth
-      real*8, allocatable :: totngidiff(:)                   !total source-sink to aqueous component concentrationsterm due to noble gas introwth
+      real*8, allocatable :: totngidiff(:,:)                 !total source-sink to aqueous component concentrationsterm due to noble gas introwth
 
 !c  data type of radioelement
       type :: typeOfRadioelement
@@ -159,11 +159,11 @@
       type(typeOfNeutronProduct), allocatable :: noble_gas_npre(:)
       type(typeOfIngrowth), allocatable :: noble_gas_ingrowth(:)
 
-	    contains  
+      contains  
 
     !>
-	  !> allocate memory for noble gas ingrowth related variables
-	  !>
+    !> allocate memory for noble gas ingrowth related variables
+    !>
       subroutine mem_ngi
       
       implicit none
@@ -186,12 +186,12 @@
       end if
 
       return
-	  
+  
       end subroutine mem_ngi
 
     !>
-	  !> allocate memory for noble gas ingrowth related variables, elements, radio elements
-	  !>
+    !> allocate memory for noble gas ingrowth related variables, elements, radio elements
+    !>
       subroutine mem_ngi_inirt
       
       implicit none
@@ -275,7 +275,7 @@
       call memory_monitor(sizeof(density_rock_ngi),'density_rock_ngi',.true.)
 
       return
-	  
+ 
       end subroutine mem_ngi_inirt
 
 !>
@@ -629,9 +629,11 @@
 
                     if (index(strbuffer,'neutron capture').eq.2) then
                       read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_nce(i)
+                      call makelowercase(noble_gas_ingrowth(ingi)%name_nu_nce(i))
                     else if (index(strbuffer,'first order decay').eq.2 .or. &
                              index(strbuffer,'spontaneous fission').eq.2) then 
                       read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_re(i)
+                      call makelowercase(noble_gas_ingrowth(ingi)%name_nu_re(i))
                     end if
 
                     read(icnv,'(a)',end=998,err=999) strbuffer
@@ -686,6 +688,7 @@
                         do i2 = 1, num2
                           read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_e(i2),  &
                                                        noble_gas_ingrowth(ingi)%a_nu_e(i2)
+                          call makelowercase(noble_gas_ingrowth(ingi)%name_nu_e(i2))
                         end do
 
                         do i2 = 1, num2
@@ -697,6 +700,8 @@
                                                          noble_gas_ingrowth(ingi)%b_nu_pre(1,i2)
                             read(icnv,*,end=998,err=999) noble_gas_ingrowth(ingi)%name_nu_pre(2,i2), &
                                                          noble_gas_ingrowth(ingi)%b_nu_pre(2,i2)
+                            call makelowercase(noble_gas_ingrowth(ingi)%name_nu_pre(1,i2))
+                            call makelowercase(noble_gas_ingrowth(ingi)%name_nu_pre(2,i2))
                           else
                             if (rank == 0) then
                               write(*,*) 'Error in line: '//trim(strbuffer)
@@ -1729,5 +1734,5 @@
         end do
 
       end function findloc_str_first
-	  
-	end module nobleGasIngrowth
+ 
+    end module nobleGasIngrowth

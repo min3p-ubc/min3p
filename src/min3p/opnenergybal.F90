@@ -4,7 +4,7 @@
 !> $Revision: 826 $
 !> $Author: dsu $
 !> $Date: 2022-03-24 10:10:16 -0700 (Thu, 24 Mar 2022) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/opnenergybal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/opnenergybal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -157,7 +157,7 @@
 #endif
 #endif
       
-      integer :: i, ierr
+      integer :: i, isub, ierr
 
       character*2 suffix
       
@@ -170,11 +170,11 @@
 
       b_rewind_valid = .false.
 
-      !imheat_first  = 55
-      imheat_first  = lun_get()
-      call lun_set(imheat_first+1)
-      call lun_set(imheat_first+2)
-      
+      isub = 0
+
+      imheat_first(isub)  = lun_get()
+      call lun_set(imheat_first(isub)+1)
+      call lun_set(imheat_first(isub)+2)      
 
       if (rank == 0 .and. b_enable_output) then
         write(ifls,'(//72a/a/72a/)')      &
@@ -185,22 +185,22 @@
 
 !c  system energy
 
-      imheat = imheat_first
+      imheat(isub) = imheat_first(isub)
         
       if (rank == 0 .and. b_enable_output .and. b_output_trans_binary) then
-        allocate(imheat_mpi(imheat_first:imheat_first+2), stat = ierr)
+        allocate(imheat_mpi(imheat_first(isub):imheat_first(isub)+2), stat = ierr)
         call checkerr(ierr,'imheat_mpi',ilog)
         imheat_mpi = -1
         call memory_monitor(sizeof(imheat_mpi),'imheat_mpi',.true.)
 
 
-        allocate(offset_imheat(imheat_first:imheat_first+2), stat = ierr)
+        allocate(offset_imheat(imheat_first(isub):imheat_first(isub)+2), stat = ierr)
         call checkerr(ierr,'offset_imheat',ilog)
         offset_imheat = 0
         call memory_monitor(sizeof(offset_imheat),'offset_imheat',.true.)
 
 
-        allocate(offset_imheat_ijk(imheat_first:imheat_first+2), stat = ierr)
+        allocate(offset_imheat_ijk(imheat_first(isub):imheat_first(isub)+2), stat = ierr)
         call checkerr(ierr,'offset_imheat_ijk',ilog)
         offset_imheat_ijk = 0
         call memory_monitor(sizeof(offset_imheat_ijk),'offset_imheat_ijk',.true.)
@@ -210,20 +210,19 @@
       if (rank == 0 .and. b_enable_output) then
         if (b_output_trans_binary) then
 #ifndef PETSC
-          if (imheat_mpi(imheat) < 10) then
-            imheat_mpi(imheat) = lun_get()
+          if (imheat_mpi(imheat(isub)) < 10) then
+            imheat_mpi(imheat(isub)) = lun_get()
           end if
 #endif
-          call binary_file_open(PETSC_COMM_SELF,               &
-                       imheat_mpi(imheat), prefix(:l_prfx)//'_o.ebal', &
-                       .true.)
+          call binary_file_open(PETSC_COMM_SELF,imheat_mpi(imheat(isub)),  &
+                      prefix(:l_prfx)//'_o.ebal',.true.)
         else
           b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.ebal')
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imheat,file=prefix(:l_prfx)//'_o.ebal',status='unknown',&
+            open(imheat(isub),file=prefix(:l_prfx)//'_o.ebal',status='unknown',&
                  form='formatted',position='rewind')
           else
-            open(imheat,file=prefix(:l_prfx)//'_o.ebal',status='unknown',&
+            open(imheat(isub),file=prefix(:l_prfx)//'_o.ebal',status='unknown',&
                  form='formatted')
           end if
         end if
@@ -231,7 +230,7 @@
 !c  version information
         if (i_append_sim < 1 .or. .not.b_rewind_valid) then
           if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-            call writeversion2file(imheat, "#")
+            call writeversion2file(imheat(isub), "#")
           end if
         end if
           
@@ -242,34 +241,34 @@
                         "gas filled volume"]
           strbuffer = "system energy"
           
-          offset_imheat(imheat) = 0  
-          call tecplot_binary_write_header(PETSC_COMM_SELF,            &
-                       imheat_mpi(imheat), "#!TDV102",'dataset '//     &
-                       prefix(:l_prfx),offset_imheat(imheat),.true.,   &
-                       .true.)  
+          offset_imheat(imheat(isub)) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,              &
+                       imheat_mpi(imheat(isub)), "#!TDV102",'dataset '// &
+                       prefix(:l_prfx),offset_imheat(imheat(isub)),      &
+                       .true., .true.)  
           
           call tecplot_binary_write_variable(PETSC_COMM_SELF,          &
-                       imheat_mpi(imheat), nvarsimheat,                &
+                       imheat_mpi(imheat(isub)), nvarsimheat,          &
                        tec_variables(1:nvarsimheat),                   &
-                       offset_imheat(imheat),.true.,.true.)               
+                       offset_imheat(imheat(isub)),.true.,.true.)               
           
           call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
-                       imheat_mpi(imheat),trim(strbuffer),             &
-                       offset_imheat(imheat), 1, 1, 1, .true., .true., &
-                       b_output_multizone)
-          offset_imheat_ijk(imheat) = offset_imheat(imheat) - 5*4
+                       imheat_mpi(imheat(isub)),trim(strbuffer),       &
+                       offset_imheat(imheat(isub)), 1, 1, 1, .true.,   &
+                       .true., b_output_multizone)
+          offset_imheat_ijk(imheat(isub)) = offset_imheat(imheat(isub)) - 5*4
           
           call tecplot_binary_write_section(PETSC_COMM_SELF,           &
-                       imheat_mpi(imheat),nvarsimheat,0,               &
-                       offset_imheat(imheat),.true.,.true.,            &
+                       imheat_mpi(imheat(isub)),nvarsimheat,0,         &
+                       offset_imheat(imheat(isub)),.true.,.true.,      &
                        b_output_multizone)
         else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            write(imheat,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-            write(imheat,'(3a)') 'variables = "time", "energy", ',     &
-                                 '"water filled volume", ',            &
+            write(imheat(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imheat(isub),'(3a)') 'variables = "time", "energy", ', &
+                                 '"water filled volume", ',              &
                                  '"gas filled volume" '
-            write(imheat,'(2a)') 'zone t = "system energy", f=point'
+            write(imheat(isub),'(2a)') 'zone t = "system energy", f=point'
           end if
         end if
       end if
@@ -293,32 +292,31 @@
 
 !c  energy balance contributions
 
-      imheat = imheat + 1
+      imheat(isub) = imheat(isub) + 1
       if (rank == 0 .and. b_enable_output) then
         if (b_output_trans_binary) then  
 #ifndef PETSC
-          if (imheat_mpi(imheat) < 10) then
-            imheat_mpi(imheat) = lun_get()
+          if (imheat_mpi(imheat(isub)) < 10) then
+            imheat_mpi(imheat(isub)) = lun_get()
           end if
 #endif
-          call binary_file_open(PETSC_COMM_SELF,               &
-                       imheat_mpi(imheat), prefix(:l_prfx)//'_o.ebalc',&
-                       .true.)
+          call binary_file_open(PETSC_COMM_SELF,imheat_mpi(imheat(isub)),  &
+                      prefix(:l_prfx)//'_o.ebalc',.true.)
         else
           b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.ebalc')
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imheat,file=prefix(:l_prfx)//'_o.ebalc',status='unknown',&
-                 form='formatted',position='rewind')
+            open(imheat(isub),file=prefix(:l_prfx)//'_o.ebalc',        &
+                 status='unknown',form='formatted',position='rewind')
           else
-            open(imheat,file=prefix(:l_prfx)//'_o.ebalc',status='unknown',&
-                 form='formatted')
+            open(imheat(isub),file=prefix(:l_prfx)//'_o.ebalc',        &
+                 status='unknown',form='formatted')
           end if
         end if
           
 !c  version information
         if (i_append_sim < 1 .or. .not.b_rewind_valid) then
           if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-            call writeversion2file(imheat, "#")
+            call writeversion2file(imheat(isub), "#")
           end if
         end if
           
@@ -328,34 +326,34 @@
                         "inflow","outflow","change in storage"]
           strbuffer = "energy balance"
           
-          offset_imheat(imheat) = 0  
-          call tecplot_binary_write_header(PETSC_COMM_SELF,            &
-                       imheat_mpi(imheat), "#!TDV102",'dataset '//     &
-                       prefix(:l_prfx),offset_imheat(imheat),.true.,   &
-                       .true.)  
+          offset_imheat(imheat(isub)) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,                &
+                       imheat_mpi(imheat(isub)), "#!TDV102",'dataset '//   &
+                       prefix(:l_prfx),offset_imheat(imheat(isub)),        &
+                       .true., .true.)  
           
           call tecplot_binary_write_variable(PETSC_COMM_SELF,          &
-                       imheat_mpi(imheat), nvarsimheat,                &
+                       imheat_mpi(imheat(isub)), nvarsimheat,          &
                        tec_variables(1:nvarsimheat),                   &
-                       offset_imheat(imheat),.true.,.true.)               
+                       offset_imheat(imheat(isub)),.true.,.true.)               
           
-          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
-                       imheat_mpi(imheat),trim(strbuffer),             &
-                       offset_imheat(imheat), 1, 1, 1, .true.,.true.,  &
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,                &
+                       imheat_mpi(imheat(isub)),trim(strbuffer),             &
+                       offset_imheat(imheat(isub)), 1, 1, 1, .true.,.true.,  &
                        b_output_multizone)
-          offset_imheat_ijk(imheat) = offset_imheat(imheat) - 5*4
+          offset_imheat_ijk(imheat(isub)) = offset_imheat(imheat(isub)) - 5*4
           
           call tecplot_binary_write_section(PETSC_COMM_SELF,           &
-                       imheat_mpi(imheat),nvarsimheat,0,               &
-                       offset_imheat(imheat), .true.,.true.,           &
+                       imheat_mpi(imheat(isub)),nvarsimheat,0,         &
+                       offset_imheat(imheat(isub)), .true.,.true.,     &
                        b_output_multizone)
         else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            write(imheat,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-            write(imheat,'(3a)')                                       &
+            write(imheat(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imheat(isub),'(3a)')                                 &
                          'variables = "time", "inflow", "outflow", ',  &
                          '"change in storage", '
-            write(imheat,'(2a)') 'zone t = "energy balance", f=point'
+            write(imheat(isub),'(2a)') 'zone t = "energy balance", f=point'
           end if
         end if
       end if
@@ -381,24 +379,23 @@
 
 !c  energy balance error
 
-      imheat = imheat + 1
+      imheat(isub) = imheat(isub) + 1
       if(rank == 0 .and. b_enable_output) then
         if (b_output_trans_binary) then
 #ifndef PETSC
-          if (imheat_mpi(imheat) < 10) then
-            imheat_mpi(imheat) = lun_get()
+          if (imheat_mpi(imheat(isub)) < 10) then
+            imheat_mpi(imheat(isub)) = lun_get()
           end if
 #endif
-          call binary_file_open(PETSC_COMM_SELF,               &
-                       imheat_mpi(imheat), prefix(:l_prfx)//'_o.ebale',&
-                       .true.)
+          call binary_file_open(PETSC_COMM_SELF,imheat_mpi(imheat(isub)),  &
+                      prefix(:l_prfx)//'_o.ebale',.true.)
         else
           b_rewind_valid = check_rewind_status(prefix(:l_prfx)//'_o.ebale')
           if (b_rewind_valid .and. i_append_sim > 0) then
-            open(imheat,file=prefix(:l_prfx)//'_o.ebale',              &
+            open(imheat(isub),file=prefix(:l_prfx)//'_o.ebale',            &
                  status='unknown',form='formatted',position='rewind')
           else
-            open(imheat,file=prefix(:l_prfx)//'_o.ebale',              &
+            open(imheat(isub),file=prefix(:l_prfx)//'_o.ebale',            &
                  status='unknown',form='formatted')
           end if
         end if
@@ -406,7 +403,7 @@
 !c  version information
         if (i_append_sim < 1 .or. .not.b_rewind_valid) then
           if (b_writeversion_tecplot .and. .not. b_output_trans_binary) then
-            call writeversion2file(imheat, "#")
+            call writeversion2file(imheat(isub), "#")
           end if
         end if
           
@@ -419,36 +416,36 @@
                         "relative cumulative energy balance error"]
           strbuffer = "energy balance error - variably saturated flow"
           
-          offset_imheat(imheat) = 0  
-          call tecplot_binary_write_header(PETSC_COMM_SELF,            &
-                       imheat_mpi(imheat), "#!TDV102",'dataset '//     &
-                       prefix(:l_prfx),offset_imheat(imheat),.true.,   &
+          offset_imheat(imheat(isub)) = 0  
+          call tecplot_binary_write_header(PETSC_COMM_SELF,                &
+                       imheat_mpi(imheat(isub)), "#!TDV102",'dataset '//   &
+                       prefix(:l_prfx),offset_imheat(imheat(isub)),.true., &
                        .true.)  
           
           call tecplot_binary_write_variable(PETSC_COMM_SELF,          &
-                       imheat_mpi(imheat), nvarsimheat,                &
+                       imheat_mpi(imheat(isub)), nvarsimheat,          &
                        tec_variables(1:nvarsimheat),                   &
-                       offset_imheat(imheat),.true.,.true.)               
+                       offset_imheat(imheat(isub)),.true.,.true.)               
           
-          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,          &
-                       imheat_mpi(imheat),trim(strbuffer),             &
-                       offset_imheat(imheat), 1, 1, 1, .true.,.true.,  &
+          call tecplot_binary_write_zoneinfo(PETSC_COMM_SELF,                &
+                       imheat_mpi(imheat(isub)),trim(strbuffer),             &
+                       offset_imheat(imheat(isub)), 1, 1, 1, .true.,.true.,  &
                        b_output_multizone)
-          offset_imheat_ijk(imheat) = offset_imheat(imheat) - 5*4
+          offset_imheat_ijk(imheat(isub)) = offset_imheat(imheat(isub)) - 5*4
           
           call tecplot_binary_write_section(PETSC_COMM_SELF,           &
-                       imheat_mpi(imheat),nvarsimheat,0,               &
-                       offset_imheat(imheat), .true.,.true.,           &
+                       imheat_mpi(imheat(isub)),nvarsimheat,0,         &
+                       offset_imheat(imheat(isub)), .true.,.true.,     &
                        b_output_multizone)
         else
           if (i_append_sim < 1 .or. .not.b_rewind_valid) then
-            write(imheat,'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
-            write(imheat,'(5a)') 'variables = "time", ',                 &
-                         '"absolute energy balance error", ',            &
-                         '"relative energy balance error", ',            &
-                         '"absolute cumulative energy balance error", ', &
+            write(imheat(isub),'(3a)') 'title = "dataset ',prefix(:l_prfx),'"'
+            write(imheat(isub),'(5a)') 'variables = "time", ',               &
+                         '"absolute energy balance error", ',                &
+                         '"relative energy balance error", ',                &
+                         '"absolute cumulative energy balance error", ',     &
                          '"relative cumulative energy balance error" '
-            write(imheat,'(2a)') 'zone t = "energy balance error - ',    &
+            write(imheat(isub),'(2a)') 'zone t = "energy balance error - ',  &
                                    ' variably saturated flow", f=point'
           end if
         end if
@@ -477,7 +474,7 @@
         
       end if
 
-      imheat_last = imheat
+      imheat_last(isub) = imheat(isub)
 
       return
       

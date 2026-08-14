@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readcomp.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readcomp.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -84,7 +84,7 @@
       use gen, only : rank, igen, b_enable_output, b_enable_output_gen,&
                       idbs_bk, use_dbs_bk
       use file_utility, only : makelowercase, replacecharacter,        &
-                               readnextline
+                               readnextline, startWithEntireName
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif 
@@ -95,13 +95,21 @@
       
       integer :: i, ic, iend, info_debug
       
-      real*8 :: charge, dha, dhb, gfw, alkfac, sec_per_days
+      real*8 :: charge, dha, dhb, gfw, alkfac
+      real*8, parameter :: sec_per_days = 8.64d4
 
       character*1024 :: strbuffer
       character*72 name
       character*1, parameter :: strspace = ' '
       logical done
       real*8 null
+
+!c  initialize temporary variables
+      charge = 0.0d0
+      dha = 0.0d0
+      dhb = 0.0d0
+      gfw = 0.0d0
+      alkfac = 0.0d0
  
 !c  loop over components specified for simulation
  
@@ -117,61 +125,73 @@
  
 !c  read component name and component specific data 
 
-        if (space_delimiter_dbs) then                 !merged space delimiters
+          if (space_delimiter_dbs) then                 !merged space delimiters
             
-          read(icdbs,'(a)',end=998,err=999) strbuffer
-          !c make lower case and replace tab and quote with space
-          call makelowercase(strbuffer)
-          call replacecharacter(strbuffer, achar(9), strspace)
-          call replacecharacter(strbuffer, "'", strspace)
-          call replacecharacter(strbuffer, '"', strspace)
-          strbuffer = trim(adjustl(strbuffer))
-          iend = index(strbuffer,strspace)
-          if (iend <= 1) then
-            goto 999
-          end if
-          name = strbuffer(1:iend-1)
-          strbuffer = trim(adjustl(strbuffer(iend:)))
+            read(icdbs,'(a)',end=998,err=999) strbuffer
+
+            call makelowercase(strbuffer)
+          
+            if (index(adjustl(strbuffer),'!') .eq. 1 .or. &
+                index(adjustl(strbuffer),'end') .eq. 1 .or. &
+                len_trim(adjustl(strbuffer)) .eq. 0) then
+              cycle
+            end if
+
+            !c make lower case and replace tab and quote with space
+            call replacecharacter(strbuffer, achar(9), strspace)
+            call replacecharacter(strbuffer, "'", strspace)
+            call replacecharacter(strbuffer, '"', strspace)
+            strbuffer = trim(adjustl(strbuffer))
+            iend = index(strbuffer,strspace)
+            if (iend <= 1) then
+              goto 999
+            end if
+            name = strbuffer(1:iend-1)
+            strbuffer = trim(adjustl(strbuffer(iend:)))
             
-          if (.not.multi_diff) then 
-            if (compute_alkalinity) then
-              read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw,alkfac
-            else
-              read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw
-            end if !  compute_alkalinity
-          end if !  .not.multi_diff 
+            if (.not.multi_diff) then 
+              if (compute_alkalinity) then
+                read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw,alkfac
+              else
+                read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw
+              end if !  compute_alkalinity
+            end if !  .not.multi_diff 
 
 ! prc Reading diffusion coefficients from the "comp.dbs" database for each component
 
-          if (multi_diff) then
-            if (compute_alkalinity) then
-              read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw,alkfac,diffcoff1
-            else      
-              read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw,null,diffcoff1
-            end if !    compute_alkalinity
-          end if !  multi_diff
-        else                                        !fixed format
-          if (.not.multi_diff) then 
-            if (compute_alkalinity) then
-              read(icdbs,110,end=998,err=999) name,charge,dha,dhb,gfw,alkfac
-            else
-              read(icdbs,100,end=998,err=999) name,charge,dha,dhb,gfw
-            end if !  compute_alkalinity
-          end if !  .not.multi_diff 
+            if (multi_diff) then
+              if (compute_alkalinity) then
+                read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw,alkfac,diffcoff1
+              else    
+                read(strbuffer,*,end=998,err=999) charge,dha,dhb,gfw,null,diffcoff1
+              end if !    compute_alkalinity
+            end if !  multi_diff
+          else                                        !fixed format
+            if (.not.multi_diff) then 
+              if (compute_alkalinity) then
+                read(icdbs,110,end=998,err=999) name,charge,dha,dhb,gfw,alkfac
+                call makelowercase(name)
+              else
+                read(icdbs,100,end=998,err=999) name,charge,dha,dhb,gfw
+                call makelowercase(name)
+              end if !  compute_alkalinity
+            end if !  .not.multi_diff 
 
 ! prc Reading diffusion coefficients from the "comp.dbs" database for each component
 !cdsu It's a bit weird to read diffusion coefficient from database.
 !cdsu In the new version, the multicomponent diffusion coefficient 
 !cdsu can be rewritten in the input file
 
-          if (multi_diff) then
-            if (compute_alkalinity) then
-              read(icdbs,130,end=998,err=999) name,charge,dha,dhb,gfw,alkfac,diffcoff1
-            else      
-              read(icdbs,120,end=998,err=999) name,charge,dha,dhb,gfw,null,diffcoff1
-            end if !    compute_alkalinity
-          end if !  multi_diff        
-        end if
+            if (multi_diff) then
+              if (compute_alkalinity) then
+                read(icdbs,130,end=998,err=999) name,charge,dha,dhb,gfw,alkfac,diffcoff1
+                call makelowercase(name)
+              else      
+                read(icdbs,120,end=998,err=999) name,charge,dha,dhb,gfw,null,diffcoff1
+                call makelowercase(name)
+              end if !    compute_alkalinity
+            end if !  multi_diff        
+          end if
  
  
 !c  look for match, as long end of file is not reached or 
@@ -180,6 +200,20 @@
 !c  component is found --> assign permanent storage
  
           if (name.eq.namec(ic)) then
+
+            if (rank == 0 .and. b_enable_output_gen) then
+              if (ic == 1) then
+                write(igen,'(72a)') ('-',i=1,72)
+                write(igen,'(a)') 'component database entries read:'
+              end if
+              write(igen,'(a,6(a,1pe15.6e3))')                         &
+                    trim(name), ' charge ', charge,                    &
+                    ' dha ',dha, ' dhb ',dhb, ' gfw ', gfw,            &
+                    ' alkfac ', alkfac, ' diff_coeff ',diffcoff1
+              if (ic == nc) then
+                write(igen,'(72a)') ('-',i=1,72)
+              end if
+            end if
  
             done = .true.
  
@@ -195,7 +229,6 @@
 ! prc (components) and conversion of time units for computation in days
 ! prc ----------------------------------------------------------------------------
  
-            sec_per_days = 8.64d4
             
             if (multi_diff) then
               if (b_enable_output .and. b_enable_output_gen) then
@@ -215,8 +248,7 @@
  
             if (rank == 0) then  
               write(ilog,'(72a)') ('-',i=1,72)
-              write(ilog,'(a,a72,a)')'component ',namec(ic),           & 
-     &                            ' not in database'
+              write(ilog,'(a,a72,a)')'component ',namec(ic), ' not in database'
               write(ilog,'(72a)') ('-',i=1,72)
             end if
 #ifdef PETSC
@@ -241,10 +273,12 @@
           write(idbs_bk, '(a)') '<------ comp.dbs: start of components ------>'
           do ic = 1,nc
             rewind(icdbs)
+
             do while(.true.)
               if (readnextline(icdbs,strbuffer,lowercase=.false.,      &
                   original=.true.)) then
-                if (index(adjustl(strbuffer),trim(namec(ic))) == 1) then
+
+                if (startWithEntireName(strbuffer,namec(ic),flagQuote=.false.)) then
                   write(idbs_bk,'(a)') trim(strbuffer)
                   exit
                 end if

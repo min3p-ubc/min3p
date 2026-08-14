@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/welcome_pc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/welcome_pc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -57,7 +57,7 @@
       use file_utility, only : replacecharacter
       use Version, only : MajorVersionNumber, MinorVersionNumber,       &
                           PatchVersionNumber, GlobalRevisionNumber,      &
-                          BuildDate
+                          BuildTime
       use solver, only : solver_get_args
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_barrier
@@ -93,7 +93,7 @@
       if(rank == 0) then
         write(*,3) trim(MajorVersionNumber), trim(MinorVersionNumber),     &
                    trim(PatchVersionNumber), trim(GlobalRevisionNumber),   &
-                   BuildDate(1:10)
+                   BuildTime(1:10)
       end if
 
 !2       format (/,'    ------------------------------------------------'   &

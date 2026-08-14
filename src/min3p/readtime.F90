@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/readtime.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/readtime.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -60,6 +60,7 @@
       subroutine readtime (nin,nout,ilog,itsrc,found)
       
       use gen, only : rank, b_enable_output
+      use file_utility, only : makelowercase
 #ifdef PETSC      
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif
@@ -85,6 +86,7 @@
  
 100   continue
       read(nin,*,end=400,err=999) dummy1
+      call makelowercase(dummy1)
       if (dummy1.eq.'start of target read time input') then
         read(nin,*,err=999) itsrc_temp
         if (itsrc_temp.eq.itsrc) then
@@ -94,8 +96,10 @@
         end if
 200     continue
         read(nin,*,end=500,err=999) dummy1
+        call makelowercase(dummy1)
         backspace(nin) 
         read(nin,'(a)',err=999) dummy2
+        call makelowercase(dummy2)
         if (dummy2(1:1).ne.'!') then
           write(nout,'(a)') dummy2
         end if

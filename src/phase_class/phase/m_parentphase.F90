@@ -4,7 +4,7 @@
 !> $Revision: 786 $
 !> $Author: dsu $
 !> $Date: 2021-01-06 21:41:32 -0800 (Wed, 06 Jan 2021) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/phase_class/phase/m_parentphase.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/phase_class/phase/m_parentphase.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -467,7 +467,7 @@ real*8, intent(in), dimension(numprop)                :: prop       ! Values of 
 
 character(len=*), intent(out)                         :: msg        ! Error message 
 
-logical, intent(out)                                  :: iserror    ! iserror=true, then there was an error
+logical, intent(inout)                                :: iserror    ! iserror=true, then there was an error
 
 !-------------------------------------------------------------------------
 !
@@ -536,6 +536,9 @@ end if
 !%-----------------------------------------------------------
 !20 continue
 call check_pointer_ (namesp,1,.false.)
+
+!cdsu  iserror is not passed by reference but not used in the current code
+
 if (iserror) goto 10
 !%----------------------------------------------------------- 
 return

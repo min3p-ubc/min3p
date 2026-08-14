@@ -4,7 +4,7 @@
 !> $Revision: 878 $
 !> $Author: dsu $
 !> $Date: 2024-02-14 20:08:49 -0800 (Wed, 14 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/file_utility.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/file_utility.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -227,12 +227,14 @@ module file_utility
 
         do while(bflag)
 
-          read(iunit, "(a)", iostat = istat) strbuffer
+          read(iunit, "(a)", iostat = istat, end=998) strbuffer
+
           strbuffer_bk = strbuffer
       
           if (istat > 0) then             !Error in reading  
             if (rank == 0 .and. b_enable_output) then
-              write(ilog, *) "Error in reading file."
+              write(*, *) "Error in reading file, unit: ",iunit
+              write(ilog, *) "Error in reading file, unit: ",iunit
             end if
             bflag = .false. 
             exit            
@@ -282,6 +284,11 @@ module file_utility
 
           end if
 
+          cycle
+
+998       continue
+          bflag = .false.
+
         end do
 
 #ifdef PGI
@@ -302,6 +309,35 @@ module file_utility
         end if
     
     end function readnextline
+
+    !> check if the beginning of a string starts with the specified name.
+    !> this is used to check component name. entire name should be matched, NOT part.
+    function startWithEntireName(str,str2,flagQuote) result(matched)
+
+        implicit none
+
+        character(len=*), intent(inout) :: str
+        character(len=*), intent(in) :: str2
+        logical, intent(in) :: flagQuote
+        logical :: matched
+
+        call makelowercase(str)
+
+        matched = .false.
+
+        if (flagQuote) then
+          if (index(adjustl(str),achar(34)//trim(adjustl(str2))//achar(34)) == 1) then        !separated by space with double quote
+            matched = .true.
+          else if (index(adjustl(str),achar(39)//trim(adjustl(str2))//achar(39)) == 1) then   !separated by space with single quote
+            matched = .true.
+          end if
+        else
+          if (index(adjustl(str),trim(adjustl(str2))//achar(32)) == 1) then    !separated by space
+            matched = .true.
+          end if
+        end if
+
+    end function startWithEntireName
     
     !> replace character in string
     subroutine replacecharacter(str, stra, strb)
@@ -445,7 +481,7 @@ module file_utility
       real*8 :: rdummy, rdummy_old, time_lot
       character(len=256) :: strdummy
       logical :: bflag1, bflag2, bflag3, bflag4
-      real*8, parameter :: r0 = 0.0d0, rsmall = 1.0d-4
+      real*8, parameter :: r0 = 0.0d0, rsmall = 1.0d-4, rtiny = 1.0d-10
 
       rewind(iunit,err=20)
 
@@ -493,8 +529,13 @@ module file_utility
           rdummy_old = rdummy
           read(iunit,*,err=10,end=10) rdummy
           irecord = irecord + 1
-          if (rdummy >= time_lot) then
+          !if (rdummy >= time_lot) then
+          if (rdummy - time_lot >= rtiny) then
             backspace(iunit,err=10)
+            if (irecord > 1) then
+              backspace(iunit,err=10)
+            end if
+
             bflag4 = .false.
             exit
           end if

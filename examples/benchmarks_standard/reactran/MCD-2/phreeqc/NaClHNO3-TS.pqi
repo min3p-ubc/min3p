@@ -1,0 +1,63 @@
+DATABASE C:\Program Files (x86)\USGS\Phreeqc Interactive 2.17.4799\database\phreeqc.dat
+#database phreeqc.dat # contains Dw's since version 2.17
+SOLUTION 0
+    temp      25
+    pH        4 charge
+    pe        4
+    redox     pe
+    units     mmol/kgw
+    density   1
+    N(5)      0.1
+    Na        0.1
+    Cl        0.1
+    -water    1 # kg
+END
+SOLUTION 1-100
+    temp      25
+    pH        6
+    pe        4
+    redox     pe
+    units     mmol/kgw
+    density   1
+    N(5)      0.001
+    Na        0.1
+    Cl        0.1
+    -water    1 # kg
+END
+SELECTED_OUTPUT
+    -file                 NaClHNO3-TS.out
+    -reset                false
+    -distance             true
+    -time                 true
+    -charge_balance       true
+    -totals               Cl  Na  N(5)
+    -molalities           H+
+
+PRINT
+    -echo_input            false
+    -eh                    false
+    -equilibrium_phases    false
+    -exchange              false
+    -gas_phase             false
+    -headings              false
+    -inverse               false
+    -kinetics              false
+    -other                 false
+    -saturation_indices    false
+    -solid_solutions       false
+    -species               false
+    -surface               false
+    -totals                false
+    -user_print            false
+    -warnings              100
+TRANSPORT
+    -cells                 100
+    -time_step             8640000 1 # seconds
+    -flow_direction        diffusion_only
+    -boundary_conditions   constant flux
+    -lengths               100*0.01
+    -warnings              false
+    -multi_d               true 1e-009 1 0 1
+END
+
+

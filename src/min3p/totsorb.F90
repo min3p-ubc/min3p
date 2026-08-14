@@ -4,7 +4,7 @@
 !> $Revision: 268 $
 !> $Author: dsu $
 !> $Date: 2015-01-09 17:00:41 -0800 (Fri, 09 Jan 2015) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/totsorb.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/totsorb.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -125,15 +125,12 @@
                                                                        
       implicit none
                                                                        
-      character*72 namec                                               
+      character*72 :: namec(*)                                               
       real*8 :: rhobulk 
-      real*8 :: csb_ion, csb_surf, chargesb_ion,                       &
-                totcsb_ion, totcsb_surf, xnusb_ion, xnusb_surf     
-      integer :: iasb_ion,iasb_surf,jasb_ion,jasb_surf,nc,nsb_ion,     &
-                 nsb_surf
-      dimension csb_ion(*),csb_surf(*),chargesb_ion(*),                &
-                totcsb_ion(*),totcsb_surf(*),xnusb_ion(*),xnusb_surf(*), &
-                iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*),namec(*)
+      real*8 :: csb_ion(*), csb_surf(*), chargesb_ion(*),                       &
+                totcsb_ion(*), totcsb_surf(*), xnusb_ion(*), xnusb_surf(*)
+      integer :: iasb_ion(*),iasb_surf(*),jasb_ion(*),jasb_surf(*)
+      integer :: nc,nsb_ion,nsb_surf
       
       !local variables
       real*8 :: r0, r100

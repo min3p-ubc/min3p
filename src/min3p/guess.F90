@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/guess.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/guess.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -98,7 +98,7 @@
 
       implicit none
       
-      real*8 :: cnew, cold, tempkel
+      real*8 ::  tempkel
       
       integer :: ilog
       
@@ -108,7 +108,7 @@
 
       external phcorr
 
-      dimension cnew(*),cold(*)
+      real*8 :: cnew(*),cold(*)
 
       real*8, parameter :: r_100 = 1.d-2, r10 = 10.0d0
       
@@ -131,6 +131,15 @@
           cold(ic) = r_100*totco(ic,tid) 
           cnew(ic) = cold(ic)
         end if
+
+!cprovi-----------------------------------------------------------------------------
+!cprovi If the component is an electrostatic term, then initialize it with 1
+!cprovi-----------------------------------------------------------------------------
+        if (elect_correction.and.component_type(ic)=='electro') then
+          cnew(ic) = 1.0d0
+          cold(ic) = 1.0d0
+        end if
+
 
 !c  assign fixed free species activities and concentrations
 

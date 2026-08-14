@@ -1,0 +1,2093 @@
+!
+
+! Column 1
+
+! 
+
+! Data Block 1: global control parameters
+
+! ---------------------------------------------------------------------------
+
+!
+
+'global control parameters'
+
+'waybrant - column 1'
+
+.true.                        ;varsat_flow   
+
+.false.                       ;steady_flow 
+
+.true.                        ;fully_saturated
+
+.true.                        ;reactive_transport
+
+
+
+'done'
+
+
+
+! Data Block 2: geochemical system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'geochemical system'
+
+
+
+'use new database format'
+
+
+
+'compute alkalinity'
+
+
+
+'define temperature'
+
+25.0
+
+
+
+'database directory'
+
+'database'
+
+'disable space delimiter in database'
+
+
+
+'define input units'
+
+'mg/l'
+
+
+
+'components'
+
+18                            ;number of components (nc-1)
+
+'ca+2'
+
+'fe+2'
+
+'so4-2'
+
+'34so4-2'
+
+'h+1'
+
+'co3-2'
+
+'hs-1'
+
+'34hs-1'
+
+'ar(aq)'
+
+'zn+2'
+
+'ni+2'
+
+'mn+2'
+
+'na+1'
+
+'k+1'
+
+'mg+2'
+
+'br-1'
+
+'cl-1'
+
+'o2(aq)'
+
+
+
+'secondary aqueous species'
+
+92                           ;number of secondary aqueous species
+
+'khso4(aq)'
+
+'kh34so4(aq)'
+
+'h2so4(aq)'
+
+'h234so4(aq)'
+
+'h2(aq)'
+
+'oh-'
+
+'mgoh+'
+
+'mgco3aq'
+
+'mghco3+'
+
+'mgso4aq'
+
+'mg34so4aq'
+
+'caoh+'
+
+'cahco3+'
+
+'caco3aq'
+
+'caso4aq'
+
+'ca34so4aq'
+
+'cahso4+'
+
+'cah34so4+'
+
+'naco3-'
+
+'nahco3aq'
+
+'naso4-'
+
+'na34so4-'
+
+'kso4-'
+
+'k34so4-'
+
+'feoh+'
+
+'feoh3-1'
+
+'feso4aq'
+
+'fe34so4aq'
+
+'fehso4+'
+
+'feh34so4+'
+
+'fehco3+'
+
+'feco3aq'
+
+'feoh2aq'
+
+'fe(hs)2aq'
+
+'fe(h34s)2aq'
+
+'fe(hs)3-'
+
+'fe(h34s)3-'
+
+'fecl+'
+
+'mncl+'
+
+'mncl2aq'
+
+'mncl3-'
+
+'mnoh+'
+
+'mn(oh)3-1'
+
+'mno4-'
+
+'mno4-2'
+
+'mnco3aq'
+
+'mnso4aq'
+
+'mn34so4aq'
+
+'mnhco3+'
+
+'zncl+'
+
+'zncl2aq'
+
+'zncl3-'
+
+'zncl4-2'
+
+'znoh+'
+
+'zn(oh)2aq'
+
+'zn(oh)3-'
+
+'zn(oh)4-2'
+
+'znohclaq'
+
+'zn(hs)2aq'
+
+'zn(h34s)2aq'
+
+'zn(hs)3-'
+
+'zn(h34s)3-'
+
+'znso4aq'
+
+'zn34so4aq'
+
+'zn(so4)2-2'
+
+'zn(34so4)2-2'
+
+'znbr+'
+
+'znbr2aq'
+
+'znhco3+'
+
+'znco3aq'
+
+'zn(co3)2-2'
+
+'nibr+'
+
+'nicl+'
+
+'nioh+'
+
+'ni(oh)2aq'
+
+'ni(oh)3-'
+
+'niso4aq'
+
+'ni34so4aq'
+
+'nicl2aq'
+
+'nihco3+'
+
+'nico3aq'
+
+'ni(co3)2-2'
+
+'ni(so4)2-2'
+
+'ni(34so4)2-2'
+
+'hco3-'
+
+'h2co3aq'
+
+'hso4-'
+
+'h34so4-'
+
+'h2saq'
+
+'h234saq'
+
+'s-2'
+
+'34s-2'
+
+
+
+
+
+'minerals'
+
+14				;number of minerals (nm)
+
+'ch2o-h2s-m'
+
+'ch2o-34h2s-m'
+
+'calcite'
+
+'siderite(d)'
+
+'gypsum_iso'
+
+'34gypsum_iso'
+
+'mackinaw_iso'
+
+'34mackin_iso'
+
+'miller_iso'
+
+'34miller_iso'
+
+'sphaler_iso'
+
+'34sphale_iso'
+
+'rhodochrosit'
+
+'dolomite'
+
+
+
+'combine mineralogical parameters'
+
+'ch2o-h2s-m'
+
+'ch2o-h2s-m'
+
+'calcite'
+
+'siderite(d)'
+
+'gypsum_iso'
+
+'34gypsum_iso'
+
+'mackinaw_iso'
+
+'34mackin_iso'
+
+'miller_iso'
+
+'34miller_iso'
+
+'sphaler_iso'
+
+'34sphale_iso'
+
+'rhodochrosit'
+
+'dolomite'
+
+
+
+
+
+'excluded minerals'
+
+6
+
+'pyrite'
+
+'fesppt'
+
+'wurtzite'
+
+'sulfur'
+
+'zns(a)'
+
+'melanterite'
+
+
+
+'done'
+
+
+
+! Data Block 3: spatial discretization
+
+! ---------------------------------------------------------------------------
+
+!
+
+'spatial discretization'
+
+1                             ;number of discretization intervals in x
+
+41                            ;number of control volumes in x
+
+0. 0.40                       ;xmin,xmax
+
+1                             ;number of discretization intervals in y
+
+1                             ;number of control volumes in y
+
+0. 0.05                       ;ymin,ymax
+
+1                             ;number of discretization intervals in z
+
+1                             ;number of control volumes in z
+
+0. 0.05                       ;zmin,zmax
+
+
+
+'done'
+
+
+
+! Data Block 4: time step control - global system
+
+! ---------------------------------------------------------------------------
+
+!
+
+'time step control - global system'
+
+'days'                        ;time unit
+
+0.0                           ;time at start of solution
+
+429.0d0                       ;final solution time
+
+0.5                             ;maximum time step
+
+1.d-8                         ;minimum time step
+
+
+
+'done'
+
+
+
+! Data Block 5: control parameters - local geochemistry
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - local geochemistry'
+
+
+
+'newton iteration settings'
+
+1.d-4                         ;factor for num. differentiation
+
+1.d-6                         ;convergence tolerance
+
+
+
+'maximum ionic strength'
+
+4.d0                          ;max. ionic stength
+
+
+
+'minimum activity for h2o'
+
+0.5d0                         ;min. activity for h2o
+
+
+
+'output time unit'
+
+'days'                        ;time unit (local chemistry)
+
+
+
+'done'
+
+
+
+! Data Block 6: control parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - variably saturated flow'
+
+
+
+'mass balance'
+
+
+
+'input units for boundary and initial conditions'
+
+'hydraulic head'              ;input unit
+
+
+
+'solver settings'
+
+0                             ;level_vs, incomplete factorization level
+
+1000                          ;msolvit_vs, max. number of solver iterations
+
+0                             ;idetail_vs, solver information level
+
+1.0d-7                        ;restol_vs, solver residual tolerance
+
+1.0d-7                        ;deltol_vs, solver update tolerance
+
+
+
+'done'
+
+
+
+! Data Block 7: control parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'control parameters - reactive transport'
+
+
+
+'mass balance'
+
+
+
+'spatial weighting'
+
+'upstream'                    ;spatial weighting
+
+
+
+'activity update settings'
+
+'time_lagged'                 ;type of activity update
+
+
+
+'tortuosity correction'
+
+'millington'
+
+
+
+'newton iteration settings'
+
+1.d-6                         ;increment h for numerical differentiation
+
+12                            ;anticipted number of Newton iterations
+
+20                            ;max. number of Newton iterations
+
+1.0d0                         ;anticipated update in log cycles
+
+3.0d0                         ;maximum update in log cycles
+
+1.d-9                         ;convergence tolerance (global system)
+
+
+
+'solver settings'
+
+1                             ;incomplete factorization level
+
+100                           ;max. number of solver iterations
+
+1                             ;solver information level
+
+1.d-9                         ;solver residual tolerance
+
+1.d-9                         ;solver update tolerance
+
+
+
+
+
+'update porosity'
+
+
+
+'done'
+
+
+
+! Data Block 8: output control
+
+! ---------------------------------------------------------------------------
+
+!
+
+'output control'
+
+
+
+'output of spatial data'
+
+7                             ;number of output times (spatial data)
+
+100 150 200 300		       ;specified output times (spatial data) 
+
+350 400 429
+
+
+
+'output of transient data'
+
+3                           ;number of output locations (transient data)
+
+1                             ;time steps between output (transient data)
+
+1 10 41                       ;control volume number for transient data
+
+
+
+'isotope output'
+
+2                               ;number of isotope component sets for output
+
+2 'so4-2' '34so4-2'             ;number of components in set, master isotope, other isotopes, 
+
+4.5005d-2                       ;and ratios of standard
+
+2 'hs-1'  '34hs-1'                 
+
+4.5005d-2	                ;4.5005d-2 value from accepted ratio of 34S/32S in Canon Diablo troilite (CDT)
+
+
+
+'done'
+
+
+
+! Data Block 9: physical parameters - porous medium
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - porous medium'
+
+3                             ;number of property zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+0.53                         ;porosity
+
+
+
+'extent of zone'
+
+0.0 0.05  0.0 0.05  0.0  0.05
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'reactive'
+
+0.53                         ;porosity
+
+
+
+'extent of zone'
+
+0.05 0.385  0.0 0.05  0.0  0.05
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'top'
+
+0.53                         ;porosity
+
+
+
+'extent of zone'
+
+0.385  0.40  0.0 0.05  0.0  0.05
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 10: physical parameters - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - variably saturated flow'
+
+
+
+! ---------------------------------------------------------------------------
+
+'bottom'                  ;name of zone
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.20d-5                       ;K_xx
+
+
+
+'specific storage coefficient'
+
+0.0                           ;S_s
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'reactive'                  ;name of zone
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.20d-5                       ;K_xx
+
+
+
+'specific storage coefficient'
+
+0.0                           ;S_s
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'top'                  ;name of zone
+
+
+
+'hydraulic conductivity in x-direction'
+
+1.20d-5                       ;K_xx
+
+
+
+'specific storage coefficient'
+
+0.0                           ;S_s
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 11: physical parameters - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'physical parameters - reactive transport'
+
+
+
+'diffusion coefficients'
+
+1.0d-9                        ;aqueous phase
+
+0.0d0                         ;gaseous phase
+
+
+
+!
+
+! ---------------------------------------------------------------------------
+
+'bottom'                      ;name of zone
+
+
+
+'longitudinal dispersivity'
+
+0.019d0
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'reactive'                    ;name of zone
+
+
+
+'longitudinal dispersivity'
+
+0.019d0
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'top'                 	      ;name of zone
+
+
+
+'longitudinal dispersivity'
+
+0.019d0
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 12: initial condition - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - variably saturated flow'
+
+1                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'zone 1'
+
+
+
+'initial condition'
+
+1.0
+
+
+
+'extent of zone'
+
+0.0 0.40  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 13: boundary conditions - variably saturated flow
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - variably saturated flow'
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'boundary type'
+
+'second' 1.1d-7              ;flux [m/s]
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'top'
+
+
+
+'boundary type'
+
+'first' 1.0              ;hydraulic head
+
+
+
+'extent of zone'
+
+0.40 0.40  0.0 0.05  0.0 0.05
+
+
+
+'end of zone'
+
+
+
+'transient boundary conditions'
+
+
+
+'done'
+
+
+
+! Data Block 15: initial condition - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'initial condition - reactive transport'
+
+3                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+425	'free'	'ca+2'
+
+1.0d-10	'free'	'fe+2'
+
+965.316	'free'	'so4-2'    
+
+44.423   'free'  '34so4-2'  
+
+7.8	'ph'	'h+1'
+
+22.4    'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)
+
+1.0d-10	'free'	'zn+2'
+
+1.0d-10	'free'	'ni+2'
+
+1.0d-10	'free'	'mn+2'
+
+3.6	'free'	'na+1'
+
+1.0d-10	'free'	'k+1'
+
+1.0d-10	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+1.0d-10	'free'	'cl-1'
+
+0.00 	'eh'	'o2(aq)'
+
+
+
+'mineral input'		       ;bottom
+
+1.00d-10  .false.   'constant' ;ch2o-h2s-m
+
+1.00d-10  6.9d-9     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;34ch2o-h2s-m
+
+1.00d-10  6.9d-9     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;calcite
+
+1.00d-10  4.0d-8     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;siderite
+
+1.00d-10  4.0d-8     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;gypsum
+
+0.50d-10  4.0d-9     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34gypsum
+
+0.50d-10  4.0d-9     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;mackinawite
+
+0.50d-10  1.16d-11    0.00d0   ;
+
+0.50d-10  .false.   'constant' ;34mackinawite
+
+0.50d-10  1.16d-11    0.00d0   ;
+
+0.50d-10  .false.   'constant' ;millerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34millerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;sphalerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34sphalerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+1.00d-10  .false.   'constant' ;rhodochrosit
+
+1.00d-10  1.16d-8    0.00d0    ;
+
+1.00d-10  .false.   'constant' ;dolomite
+
+1.00d-10  1.16d-8    0.00d0    ;
+
+
+
+
+
+'extent of zone'
+
+0.0 0.05  0.0 0.05  0.00 0.05
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'reactive'
+
+
+
+'concentration input'
+
+425	'free'	'ca+2'
+
+1.0d-10	'free'	'fe+2'
+
+965.316	'free'	'so4-2'    
+
+44.423	'free'  '34so4-2'  
+
+7.8	'ph'	'h+1'
+
+22.4    'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)
+
+1.0d-10	'free'	'zn+2'
+
+1.0d-10	'free'	'ni+2'
+
+1.0d-10	'free'	'mn+2'
+
+3.6	'free'	'na+1'
+
+1.0d-10	'free'	'k+1'
+
+1.0d-10	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+1.0d-10	'free'	'cl-1'
+
+0.00 	'eh'	'o2(aq)'
+
+
+
+'mineral input'		       ;reactive
+
+1.00d-1   .false.   'constant' ;ch2o-h2s-m
+
+1.00d-10  6.9d-9     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;34ch2o-h2s-m
+
+1.00d-10  6.9d-9     0.00d0 
+
+3.1d-3    .false.   'constant' ;calcite
+
+1.00d-10  4.0d-8     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;siderite
+
+1.00d-10  4.0d-8     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;gypsum
+
+0.50d-10  4.0d-9     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34gypsum
+
+0.50d-10  4.0d-9     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;mackinawite
+
+0.50d-10  1.16d-11    0.00d0   ;
+
+0.50d-10  .false.   'constant' ;34mackinawite
+
+0.50d-10  1.16d-11    0.00d0   ;
+
+0.50d-10  .false.   'constant' ;millerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34millerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;sphalerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34sphalerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+1.00d-10  .false.   'constant' ;rhodochrosit
+
+1.00d-10  1.16d-8    0.00d0    ;
+
+1.00d-10  .false.   'constant' ;dolomite
+
+1.00d-10  1.16d-8    0.00d0    ;
+
+
+
+
+
+'extent of zone'
+
+0.05 0.385  0.0 0.05  0.00 0.05
+
+
+
+'end of zone'
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+3
+
+'top'
+
+
+
+'concentration input'
+
+425	'free'	'ca+2'
+
+1.0d-10	'free'	'fe+2'
+
+965.316	'free'	'so4-2'    
+
+44.423	'free'  '34so4-2'  
+
+7.8	'ph'	'h+1'
+
+22.4    'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)
+
+1.0d-10	'free'	'zn+2'
+
+1.0d-10	'free'	'ni+2'
+
+1.0d-10	'free'	'mn+2'
+
+3.6	'free'	'na+1'
+
+1.0d-10	'free'	'k+1'
+
+1.0d-10	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+1.0d-10	'free'	'cl-1'
+
+0.00 	'eh'	'o2(aq)'
+
+
+
+'mineral input'		       ;top
+
+1.00d-10  .false.   'constant' ;ch2o-h2s-m
+
+1.00d-10  6.9d-9     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;34ch2o-h2s-m
+
+1.00d-10  6.9d-9     0.00d0 
+
+1.00d-10  .false.   'constant' ;calcite
+
+1.00d-10  4.0d-8     0.00d0    ;
+
+1.00d-10  .false.   'constant' ;siderite
+
+1.00d-10  4.0d-8     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;gypsum
+
+0.50d-10  4.0d-9     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34gypsum
+
+0.50d-10  4.0d-9     0.00d0    ;
+
+0.50d-10  .false.   'constant' ;mackinawite
+
+0.50d-10  1.16d-11    0.00d0   ;
+
+0.50d-10  .false.   'constant' ;34mackinawite
+
+0.50d-10  1.16d-11    0.00d0   ;
+
+0.50d-10  .false.   'constant' ;millerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34millerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;sphalerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+0.50d-10  .false.   'constant' ;34sphalerite
+
+0.50d-10  1.16d-12   0.00d0    ;
+
+1.00d-10  .false.   'constant' ;rhodochrosit
+
+1.00d-10  1.16d-8    0.00d0    ;
+
+1.00d-10  .false.   'constant' ;dolomite
+
+1.00d-10  1.16d-8    0.00d0    ;
+
+
+
+'extent of zone'
+
+0.385 0.40  0.0 0.05  0.00 0.05
+
+
+
+'end of zone'
+
+
+
+'done'
+
+
+
+! Data Block 16: boundary conditions - reactive transport
+
+! ---------------------------------------------------------------------------
+
+!
+
+'boundary conditions - reactive transport'     
+
+2                             ;number of zones
+
+
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'boundary type'
+
+'third'
+
+
+
+'concentration input'
+
+425	'free'	'ca+2'
+
+1.0d-10	'free'	'fe+2'
+
+965.316	'free'	'so4-2'   
+
+44.423	'free'  '34so4-2' 
+
+7.8	'ph'	'h+1'
+
+22.4    'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)
+
+1.0d-10	'free'	'zn+2'
+
+1.0d-10	'free'	'ni+2'
+
+1.0d-10	'free'	'mn+2'
+
+3.6	'free'	'na+1'
+
+1.0d-10	'free'	'k+1'
+
+1.0d-10	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+1.0d-10	'free'	'cl-1'
+
+10.00 	'eh'	'o2(aq)'
+
+
+
+'extent of zone'
+
+0.0 0.0  0.0 0.05  0.00	0.05
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+'number and name of zone'
+
+2
+
+'top'
+
+
+
+'boundary type'
+
+'second'
+
+
+
+'extent of zone'
+
+0.40 0.40  0.0  0.05  0.0   0.05
+
+
+
+'end of zone'
+
+! ---------------------------------------------------------------------------
+
+
+
+! ---------------------------------------------------------------------------
+
+'update boundary conditions'
+
+8                                ;number of target read times
+
+95.9                             ;target read times
+
+135.0
+
+163.6
+
+205.6
+
+254.6
+
+298.1
+
+344.6
+
+395.6
+
+
+
+!
+
+! Feed 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+1
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+506	'free'	'ca+2'
+
+694.5	'free'	'fe+2'
+
+3067.986 'free'	'so4-2'   
+
+141.186	'free'  '34so4-2' 
+
+6.40	'ph'	'h+1'
+
+88.62   'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)
+
+0.72	'free'	'zn+2'
+
+0.94	'free'	'ni+2'
+
+9.75	'free'	'mn+2'
+
+46.8	'free'	'na+1'
+
+27.4	'free'	'k+1'
+
+242	'free'	'mg+2'
+
+26	'free'	'br-1'
+
+14.19	'free'	'cl-1'
+
+16 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+!
+
+! feed 2
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+2
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+99	'free'	'ca+2'
+
+1181.0	'free'	'fe+2'
+
+3721.725	'free'	'so4-2'     
+
+171.271	'free'	'34so4-2'  
+
+5.85	'ph'	'h+1'
+
+32.88   'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)'
+
+0.95	'free'	'zn+2'
+
+1.40	'free'	'ni+2'
+
+12.87	'free'	'mn+2'
+
+50.0	'free'	'na+1'
+
+31.7	'free'	'k+1'
+
+320	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+4.82	'free'	'cl-1'
+
+74 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+!
+
+! feed 3
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+3
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+92	'free'	'ca+2'
+
+875.7	'free'	'fe+2'
+
+3302.104  'free'	'so4-2'    
+
+152.006   'free'	'34so4-2'  
+
+6.41	'ph'	'h+1'
+
+27.0    'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)'
+
+0.58	'free'	'zn+2'
+
+1.31	'free'	'ni+2'
+
+12.75	'free'	'mn+2'
+
+48.8	'free'	'na+1'
+
+32.3	'free'	'k+1'
+
+317	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+8.16	'free'	'cl-1'
+
+142 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+!
+
+! feed 4
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+4
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+83	'free'	'ca+2'
+
+956.3	'free'	'fe+2'
+
+3498.077	'free'	'so4-2'    
+
+160.979	'free'	'34so4-2'  
+
+6.46	'ph'	'h+1'
+
+20.40   'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)'
+
+0.97	'free'	'zn+2'
+
+12.28	'free'	'ni+2'
+
+19.80	'free'	'mn+2'
+
+48.8	'free'	'na+1'
+
+29.2	'free'	'k+1'
+
+288	'free'	'mg+2'
+
+1.0d-10 'free'	'br-1'
+
+7.71	'free'	'cl-1'
+
+179 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+!
+
+! feed 5
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+5
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+205	'free'	'ca+2'
+
+443.7	'free'	'fe+2'
+
+1911.518 'free'	'so4-2'   
+
+87.967	'free'	'34so4-2' 
+
+6.60	'ph'	'h+1'
+
+15.54   'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)'
+
+1.22	'free'	'zn+2'
+
+2.34	'free'	'ni+2'
+
+14.12	'free'	'mn+2'
+
+19.8	'free'	'na+1'
+
+11.8	'free'	'k+1'
+
+121	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+0.91	'free'	'cl-1'
+
+2 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+!
+
+! feed 6
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+6
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+214	'free'	'ca+2'
+
+379.4	'free'	'fe+2'
+
+1551.197	'free'	'so4-2'    
+
+71.385	'free'	'34so4-2'  
+
+6.16	'ph'	'h+1'
+
+6.72    'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)'
+
+0.85	'free'	'zn+2'
+
+1.60	'free'	'ni+2'
+
+8.96	'free'	'mn+2'
+
+14.1	'free'	'na+1'
+
+7.9	'free'	'k+1'
+
+83	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+15.43	'free'	'cl-1'
+
+23 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+!
+
+! target read time 7
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+7
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+220	'free'	'ca+2'
+
+333.8	'free'	'fe+2'
+
+1292.969        'free'	'so4-2'   
+
+59.686	'free'	'34so4-2' 
+
+6.61	'ph'	'h+1'
+
+16.68   'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'hs-1'
+
+50.4	'fixed'	'ar(aq)'
+
+0.57	'free'	'zn+2'
+
+3.36	'free'	'ni+2'
+
+8.62	'free'	'mn+2'
+
+13.0	'free'	'na+1'
+
+7.2	'free'	'k+1'
+
+77	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+17.55	'free'	'cl-1'
+
+307 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+!
+
+! feed 8
+
+! ---------------------------------------------------------------------------
+
+!
+
+'start of target read time input'
+
+8
+
+!
+
+! zone 1
+
+! ---------------------------------------------------------------------------
+
+!
+
+'number and name of zone'
+
+1
+
+'bottom'
+
+
+
+'concentration input'
+
+220	'free'	'ca+2'
+
+316.3	'free'	'fe+2'
+
+1338.062	'free'	'so4-2'   
+
+61.577	'free'	'34so4-2' 
+
+6.43	'ph'	'h+1'
+
+14.28   'free'	'co3-2'
+
+1.0d-10 'free'	'hs-1'
+
+1.0d-10 'free'	'34hs-1'
+
+50.4	'fixed'	'ar(aq)'
+
+0.57	'free'	'zn+2'
+
+3.36	'free'	'ni+2'
+
+8.62	'free'	'mn+2'
+
+13.0	'free'	'na+1'
+
+7.2	'free'	'k+1'
+
+77	'free'	'mg+2'
+
+1.0d-10	'free'	'br-1'
+
+14.43	'free'	'cl-1'
+
+180 	'eh'	'o2(aq)'
+
+
+
+'end of zone'
+
+
+
+'end of target read time input'
+
+
+
+
+
+'done'

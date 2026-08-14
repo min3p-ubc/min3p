@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initppvs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initppvs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -242,7 +242,8 @@
       use writeversion
       use file_unit, only : lun_get, lun_free
       use file_utility, only : findnextline, readnextline,             &
-                               read_vtk_data_from_file
+                               read_vtk_data_from_file,                &
+                               rewind_first_record
       use geometry
 
       use biol
@@ -590,7 +591,7 @@
               .not.read_spatial_master_proc .or.                       &
               is_cell_based_perm_cond) then
             open(ihyc,file=prefix(:l_prfx)//'.hyc.vtk',                &
-                 status='unknown', form='formatted')
+                 status='old', form='formatted')
           else
             call lun_free(ihyc)
             ihyc = 0
@@ -847,7 +848,7 @@
               .not.read_spatial_master_proc .or.                       &
               is_cell_based_perm_cond) then
             open(ihyc,file=prefix(:l_prfx)//'.hyc.vtk',                &
-                status='unknown', form='formatted')
+                status='old', form='formatted')
           else
             call lun_free(ihyc)
             ihyc = 0
@@ -995,7 +996,7 @@
           if ((read_spatial_master_proc .and. rank == 0) .or.          &
               .not.read_spatial_master_proc) then
             open(istor,file=prefix(:l_prfx)//'.spstor.vtk',            &
-                 status='unknown',form='formatted')
+                 status='old',form='formatted')
           else
             call lun_free(istor)
             istor = 0
@@ -1159,7 +1160,7 @@
             if ((read_spatial_master_proc .and. rank == 0) .or.        &
                 .not.read_spatial_master_proc) then
               open(ishfp,file=prefix(:l_prfx)//'.shfp.vtk',            &
-                   status='unknown',form='formatted')
+                   status='old',form='formatted')
             else
               call lun_free(ishfp)
               ishfp = 0
@@ -1743,7 +1744,7 @@
           if (.not. is_cell_based_perm_cond) then
             do ivol = 1, nngl
               izn = mpropvs(ivol)
-              depth = elevmax-zg(ivol)
+              depth = zg_depth(ivol)
               k_depth_ratio(ivol) = 10**(k_depth_parms(1,izn)*         &
                                     exp(-k_depth_parms(2,izn)*depth)-  &
                                          k_depth_parms(3,izn))
@@ -1764,6 +1765,10 @@
           isoi =  lun_get()
           ierrcd = 51
           open(isoi,file=prefix(:l_prfx)//'.soi', err=997, status='old')
+
+          !cdsu skip comment line and rewind to the first record
+          call rewind_first_record(isoi)
+
           read(isoi,*,err=998,end=998) time_soi,pet,canopy_int,        &
                                        solar_ratio,scale_tree_growth
           pe_soil = pet*toparea*sec_per_days             !FG August 2021 - converted in m3/s here now, and not in evap and rootwat functions
@@ -1828,34 +1833,7 @@
 
             !c open corresponding xmf file for mesh and domain decomposition
             if (rank == 0) then
-              call hdf5_usg_write_xmf_initialize(ixmf)
-              call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,      &
-                        cell_type,num_cells_gbl,num_nodes_gbl,         &
-                        num_nodes_per_cell)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_rank",     &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_rank",        &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","vertices_lg2g",     &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                  &
-                        strfilename_mesh,"domain","cells_lg2g",        &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              if (b_use_node_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                &
-                          strfilename_mesh,"domain","vertices_matid",  &
-                          "Scalar","Node",num_nodes_gbl,1)
-              end if
-              if (b_use_cell_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                &
-                          strfilename_mesh,"domain","cells_matid",     &
-                          "Scalar","Cell",num_cells_gbl,1)
-              end if
+              call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
             end if
 
             !c create a group for the mesh data set

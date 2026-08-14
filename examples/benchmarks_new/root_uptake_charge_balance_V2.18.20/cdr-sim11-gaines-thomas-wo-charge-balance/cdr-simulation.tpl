@@ -1,0 +1,10 @@
+ptf @
+epidote_1       @epidote_1@    
+chlorite_1  	@chlorite_1@  
+actinolite_1	@actinolite_1@
+titanite_1	@titanite_1@
+resp_het        @resp_het@
+epidote_2  	@epidote_2@  
+chlorite_2  	@chlorite_2@  
+actinolite_2	@actinolite_2@
+titanite_2	@titanite_2@

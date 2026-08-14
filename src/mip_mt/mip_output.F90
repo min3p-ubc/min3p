@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/mip_mt/mip_output.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/mip_mt/mip_output.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -162,7 +162,7 @@ contains
         ivol_l = ivol_l + 1
         
 !c  assign depth coordinate in terms of depth or elevation
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
         
         if (b_output_binary) then
             
@@ -382,7 +382,7 @@ contains
         ivol_l = ivol_l + 1
         
 !c  assign depth coordinate in terms of depth or elevation
-        zout = zoutput(depth_output,zg(ivol),elevmax)
+        zout = zoutput(depth_output,zg(ivol),zg_depth(ivol))
         
         if (b_output_binary) then
             

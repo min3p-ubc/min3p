@@ -4,7 +4,7 @@
 !> $Revision: 598 $
 !> $Author: mxie $
 !> $Date: 2018-07-24 09:15:37 -0700 (Tue, 24 Jul 2018) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/acoff.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/acoff.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -104,11 +104,13 @@
 
       intrinsic dabs,dsqrt
  
-      character*72 name,namec
-      real*8 :: c, cx, strion, charge, dha, dhb, dhad,dhbd,adav,bdav,  &
-                acth2omin,asit,bsit,coepsil,etemp 
-      integer :: nc,nx, icx, istart, iend,jtemp,iasit,jasit
-      dimension c(*),cx(*),namec(*),coepsil(*),iasit(*),jasit(*)
+      character*72 name
+      real*8 :: strion, charge, dha, dhb, dhad,dhbd,adav,bdav,  &
+                acth2omin,asit,bsit,etemp 
+      integer :: nc,nx, icx, istart, iend,jtemp
+      real*8 :: c(*),cx(*),coepsil(*)
+      integer :: iasit(*),jasit(*)
+      character*72 :: namec(*)
  
       !local variables
       real*8 :: tiny, rtenth, r0, r1, r10, c1, rstrion, sumc, dtemp

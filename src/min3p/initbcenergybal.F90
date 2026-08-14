@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initbcenergybal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initbcenergybal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -60,7 +60,7 @@
 !           igen               = unit number, generic output file    + -
 !           ilog               = unit number, log book               + -
 !           itmp               = unit number, temporary storage      + -
-!           iabvs(nbvs)        = pointer to boundary control volumes * +
+!           jabvs(nbvs)        = pointer to boundary control volumes * +
 !                                for variably saturated flow            
 !           iwork(:)           = integer work array                  * *
 !           l_prfx             = length of prefix of I/O files       + -
@@ -846,7 +846,7 @@
               bcondheat(nbheat) = bcond
 
               do ibvs = 1,nbvs
-                ivolvs = iabvs(ibvs)
+                ivolvs = jabvs(ibvs)
                 if (ivolvs < 0) then
                   cycle
                 end if

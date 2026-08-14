@@ -4,7 +4,7 @@
 !> $Revision: 880 $
 !> $Author: dsu $
 !> $Date: 2024-02-19 14:19:39 -0800 (Mon, 19 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/solvsg.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/solvsg.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -56,7 +56,7 @@
 !c          gas_pressure            = gas pressure for each gas assuming all
 !c                                  gas is in aqueous phase                    - *
 !c          d_gas_pressure        = derivative of gas_pressure                - *
-!c          sum_gas_pressure        = sum of the gas pressure, equal to the total 
+!c          sum_gas_pressure      = sum of the gas pressure, equal to the total 
 !c                                  gas pressure                                - *
 !c          sum_d_gas_pressure    = total of the derivative of the gas pressure
 !c                                  for newton calculation                    - *
@@ -89,7 +89,7 @@
     
     logical :: converged,sgsolve_failed
     
-    integer :: ig, sg_count
+    integer :: i, ig, sg_count
     real (type_r8) :: sg_old
     real (type_r8) :: sg_new
     real (type_r8) :: sg_update
@@ -97,6 +97,7 @@
     real (type_r8) :: d_gas_pressure
     real (type_r8) :: sum_gas_pressure        
     real (type_r8) :: sum_d_gas_pressure
+    real (type_r8) :: d_sg
     
     real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, r100=100d0
     
@@ -132,7 +133,6 @@
 
         sum_gas_pressure = sum_gas_pressure + gas_pressure
         sum_d_gas_pressure = sum_d_gas_pressure + d_gas_pressure
-
       end do 
 !c
 !c calculate new value for Sg
@@ -148,10 +148,41 @@
 
       sg_new = r1-sanew(ivol)
       sg_update = sg_new - sg_old
-
+     
       if ((dabs(sg_update).lt.gas_tol).and.                            &
           (dabs(sum_gas_pressure).lt.res_tol)) then
         converged = .true.
+
+        !c minor modification to make sure the sum_gas_pressure is no less than zero
+        !c this is required because sanew is adjusted after bubble solver iteration, may cause inconsistency.
+        if (sum_gas_pressure < r0) then
+          if (sum_d_gas_pressure < r0) then 
+            d_sg = abs(sanew(ivol)-saold(ivol))*1.0d-6
+          else
+            d_sg = -abs(sanew(ivol)-saold(ivol))*1.0d-6
+          end if
+
+          do i = 1, sg_count_max
+            sum_gas_pressure = -tot_press
+            sg_new = sg_new - d_sg
+            do ig=1,ng
+              gas_pressure = tot_gas(ig,ivol)/((1-sg_new)*k_henry(ig,ivol) + &
+                             sg_new/rgasatm/tkel(ivol))
+              sum_gas_pressure = sum_gas_pressure + gas_pressure    
+            end do 
+
+            if (sum_gas_pressure >= r0) then
+              sanew(ivol) = r1-sg_new 
+              exit               
+            end if
+          end do
+          if (sum_gas_pressure < r0) then
+            sanew(ivol) = r1-sg_new
+          end if
+        else
+          sanew(ivol) = r1 - sg_old
+          sg_new = sg_old
+        end if
       end if
 
       sg_count=sg_count+1
@@ -175,7 +206,6 @@
                 'sum_gas_pressure',sum_gas_pressure,'tolerance',res_tol
           write (*,*) 'reduce timestep'
         end if
-        !pause
       end if
 
     end do

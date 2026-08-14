@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/dgm/rateh2o.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/dgm/rateh2o.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -37,7 +37,7 @@
 !c           cnew(nc,nn)        = concentrations of free species      + -
 !c                                - new time level [moles/l water]
 !c           cvol(nn)           = nodal volumes                       + -
-!c           cx(nx,nn)          = concentrations of secondary aqueous + -
+!c           cxnew(nx,nn)       = concentrations of secondary aqueous + -
 !c                                species [moles/l water]
 !c           gamma(nc+nx,nn)    = activity coefficients of aqueous
 !c                                species [-]
@@ -114,11 +114,11 @@
                        redox_equil, rateor, scalfac_aq_ivol
       
 #ifdef OPENMP
-      use gen, only : cnew, cvol, cx, gamma, idbg, nngl, phi, pornew,  &
-                      qwater, ratemdp, sanew, totcnew,                 &
+      use gen, only : cnew, cvol, cxnew, gamma, idbg, nngl, phi, pornew,  &
+                      qwater, ratemdp, sanew, totcnew,                    &
                       numofthreads_global, numofloops_thred_rateh2o_1
 #else
-      use gen, only : cnew, cvol, cx, gamma, idbg, nngl, phi, pornew,  &
+      use gen, only : cnew, cvol, cxnew, gamma, idbg, nngl, phi, pornew,  &
                       qwater, ratemdp, sanew, totcnew
 #endif
 
@@ -171,7 +171,7 @@
 !c  total source/sink terms towards water concentration
 !c  due to mineral dissolution precipitation reactions
  
-          call totmin_w(ratemdp(1,ivol),totmdp_w)
+          call totmin_w(ratemdp(:,ivol),totmdp_w)
 
 !c  scale total source-sink term due to dissolution/precipitation 
 !c  reactions
@@ -196,9 +196,9 @@
 !c  overall oxidation-reduction rates for redox couples
 
           do ir = 1,nr
-            call rateredx(cnew(1,ivol),cx(1,ivol),gamma(1,ivol),       &
-     &                    gamma(nc+1,ivol),rateor(ir,tid),             &
-     &                    totcnew(1,ivol),ir,tid)
+            call rateredx(cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),    &
+                          gamma(nc+1,ivol),rateor(ir,tid),             &
+                          totcnew(:,ivol),ir,tid)
           end do
 
 !c  total source/sink terms towards water concentration
@@ -209,8 +209,8 @@
 !c  scale total source-sink term due to oxidation/reduction reactions
 
           totor_w = cvol(ivol) * bulkconc(totor_w,                     &
-     &                                    sanew(ivol),                 &
-     &                                    pornew(ivol))
+                                          sanew(ivol),                 &
+                                          pornew(ivol))
 
         end if
 
@@ -231,14 +231,14 @@
 
           do iaq = 1,naq
             if (new_database) then
-              call rateint_new(rateaq(iaq,tid),totcnew(1,ivol),        &
-                               cnew(1,ivol),cx(1,ivol),gamma(1,ivol),  &
-                               gamma(nc+1,ivol),phi(1,ivol),iaq,       &
-                               scalfac_aq_ivol(iaq,ivol),              &
+              call rateint_new(rateaq(iaq,tid),totcnew(:,ivol),           &
+                               cnew(:,ivol),cxnew(:,ivol),gamma(:,ivol),  &
+                               gamma(nc+1,ivol),phi(:,ivol),iaq,          &
+                               scalfac_aq_ivol(iaq,ivol),                 &
                                sanew(ivol),pornew(ivol),tid)                               
             else                                                          
-              call rateint(rateaq(iaq,tid),totcnew(1,ivol),            &
-                           cnew(1,ivol),gamma(1,ivol),phi(1,ivol),iaq, &
+              call rateint(rateaq(iaq,tid),totcnew(:,ivol),            &
+                           cnew(:,ivol),gamma(:,ivol),phi(:,ivol),iaq, &
                            scalfac_aq_ivol(iaq,ivol),tid)          
             end if
           end do

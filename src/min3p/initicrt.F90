@@ -4,7 +4,7 @@
 !> $Revision: 875 $
 !> $Author: dsu $
 !> $Date: 2024-01-21 12:55:48 -0800 (Sun, 21 Jan 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initicrt.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initicrt.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -198,7 +198,7 @@
       use nobleGasIngrowth
       use mip_bubble, only : mip_mt_enable, mip_brt_num, mip_brt_idx
       use file_unit, only : lun_get, lun_free
-      use file_utility, only : read_vtk_data_from_file
+      use file_utility, only : read_vtk_data_from_file, rewind_first_record
 #ifdef OPENMP
       use omp_lib 
 #endif
@@ -279,7 +279,7 @@
       character*72 :: subsection
       character*1 :: cdummy
       
-      integer, parameter :: nread = 4
+      integer, parameter :: i0 = 0, nread = 4
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0, tiny = 1.0d-6,      &
                            rsmall = 1.0d-10
 
@@ -410,6 +410,7 @@
 !c  read number of zones for initial condition
       ierrcd = 1
       read(itmp,*,err=999,end=999) niz
+      nzn_inirt = niz
       if (b_enable_output .and. b_enable_output_gen) then
         write(igen,'(/a,i10)')  &
      &  'number of zones for initial condition           = ',niz
@@ -1032,10 +1033,10 @@
           l_zone_name = len_trim(zone_name)
 
 !c  compute initial condition
-          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),      &
-                     cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,  &
-                     prefix,l_prfx,zone_name,l_zone_name,             &
-                     mtime,i_append_sim,mtime_append)
+          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv, &
+                       cgc,swc,sac,porc,igen,ilog,tid,idbg,           &
+                       tec_header,prefix,l_prfx,zone_name,l_zone_name,&
+                       mtime,i_append_sim,mtime_append,.true.)
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain
@@ -1201,10 +1202,11 @@
           !call rtrvpprm(swc,sac,porc,porz(1),section_header)
 
 !c  compute initial condition
-          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),       &
-                     cgc,swc,sac,porc,igen,ilog,tid,idbg,tec_header,   &
-                     prefix,l_prfx,zone_name,l_zone_name,              &
-                     mtime,i_append_sim,mtime_append)
+          call gcreact(ccnew,ccold,cxc,gamma_l(1),gamma_l(nc+1),actv,  &
+                       cgc,swc,sac,porc,igen,ilog,tid,idbg,            &
+                       tec_header,prefix,l_prfx,zone_name,l_zone_name, &
+                       mtime,i_append_sim,mtime_append,.true.)
+
 
 !c  determine minimum total aqueous component concentrations and maximum
 !c  secondary aqueous species concentration in solution domain
@@ -1691,34 +1693,7 @@
 
             !c open corresponding xmf file for mesh and domain decomposition
             if (rank == 0) then
-              call hdf5_usg_write_xmf_initialize(ixmf)
-              call hdf5_usg_write_xmf_mesh(ixmf,strfilename_mesh,          &
-                        cell_type,num_cells_gbl,num_nodes_gbl,             &
-                        num_nodes_per_cell)
-              call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                        strfilename_mesh,"domain","vertices_rank",         &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                        strfilename_mesh,"domain","cells_rank",            &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                        strfilename_mesh,"domain","vertices_lg2g",         &
-                        "Scalar","Node",num_nodes_gbl,1)
-              call hdf5_usg_write_xmf_attribute(ixmf,                      &
-                        strfilename_mesh,"domain","cells_lg2g",            &
-                        "Scalar","Cell",num_cells_gbl,1)
-
-              if (b_use_node_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                          strfilename_mesh,"domain","vertices_matid",      &
-                          "Scalar","Node",num_nodes_gbl,1)
-              end if
-              if (b_use_cell_matids) then
-                call hdf5_usg_write_xmf_attribute(ixmf,                    &
-                          strfilename_mesh,"domain","cells_matid",         &
-                          "Scalar","Cell",num_cells_gbl,1)
-              end if
+              call hdf5_usg_write_xmf_mesh_all(ixmf,strfilename_mesh)
             end if
 
             !c create a group for the mesh data set
@@ -2828,7 +2803,7 @@
         call lun_free(igsv)
         
         do ivol =1,nngl
-          call distmp(cmnew(1,ivol),phi(1,ivol),area(1,ivol),tid)
+          call distmp(cmnew(:,ivol),phi(:,ivol),area(:,ivol),tid)
         end do
         
       end if

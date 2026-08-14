@@ -1,0 +1,7 @@
+#!MC 1000
+$!ALTERDATA 
+  EQUATION = '{Cation Equ} = ({H+}+{Na+})' 
+$!ALTERDATA 
+  EQUATION = '{Anion Equ} = ({Cl-}+{NO3-})' 
+$!ALTERDATA 
+  EQUATION = '{CBE CRUNCH} =100* ({Cation Equ}-{Anion Equ})/({Cation Equ}+{Anion Equ})' 

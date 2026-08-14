@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/usg/math_common.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/usg/math_common.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -131,6 +131,11 @@ module math_common
     module procedure math_common_zero_vecs2
   end interface
 
+  interface math_common_linear
+    module procedure math_common_linear_scalar
+    module procedure math_common_linear_vector
+  end interface math_common_linear
+
   contains
 
   !>
@@ -222,7 +227,7 @@ module math_common
   !>
   !> linear interpolation for general purpose
   !>
-  function math_common_linear(t1,t2,v1,v2,t_in) result(v_out)
+  function math_common_linear_scalar(t1,t2,v1,v2,t_in) result(v_out)
 
     implicit none
 
@@ -235,7 +240,27 @@ module math_common
       v_out = (t_in-t1)/(t2-t1)*(v2-v1)+v1
     end if
 
-  end function math_common_linear
+  end function math_common_linear_scalar
+
+    !>
+  !> linear interpolation for general purpose
+  !>
+  function math_common_linear_vector(t1,t2,n,v1,v2,t_in) result(v_out)
+
+    implicit none
+
+    real*8, intent(in) :: t1, t2, t_in
+    integer, intent(in) :: n
+    real*8, intent(in) :: v1(n), v2(n)
+    real*8 :: v_out(n)
+
+    if (t1 == t2) then
+      v_out(1:n) = (v1(1:n)+v2(1:n))*0.5d0
+    else
+      v_out(1:n) = (v2(1:n)-v1(1:n))*((t_in-t1)/(t2-t1))+v1(1:n)
+    end if
+
+  end function math_common_linear_vector
 
   !>
   !> harmonic mean for general purpose
@@ -1605,5 +1630,105 @@ module math_common
     end if
 
   end function
+
+  !>
+  !> solve cubic equation using Cardano's method, NOT recommended
+  !> Cardano's method is elegant and provides an analytical solution, 
+  !> but it is prone to numerical errors due to subtractive cancellation, 
+  !> sensitivity to coefficients, and floating-point limitations. 
+  !>
+  subroutine math_common_solve_cubic(b, c, d, x1, x2, x3, num_real_roots, num_positive_roots)
+    implicit none
+    real(8), intent(in) :: b, c, d
+    real(8), intent(out) :: x1, x2, x3
+    integer, intent(out) :: num_real_roots, num_positive_roots
+    real(8) :: p, q, delta, Q_term, R_term, theta, sqrt_delta
+    real(8) :: y1, y2, y3, temp1, temp2
+    complex(8) :: S, T, omega, omega2
+
+    real(8), parameter :: pi = 3.141592653589793d0
+
+    !c initialize number of positive roots to zero
+    num_positive_roots = 0
+
+    ! Step 1: Reduce to depressed cubic form y^3 + p*y + q = 0
+    p = c - (b**2)/3.0d0
+    q = d - (b*c)/3.0d0 + (2.0d0*b**3)/27.0d0
+
+    ! Step 2: Calculate discriminant
+    delta = (q**2)/4.0d0 + (p**3)/27.0d0
+
+    if (delta > 0.0d0) then
+        ! Case 1: One real root and two complex roots
+        num_real_roots = 1
+        sqrt_delta = sqrt(delta)
+        temp1 = -q/2.0d0 + sqrt_delta
+        temp2 = -q/2.0d0 - sqrt_delta
+        y1 = sign(1.0d0, temp1) * abs(temp1)**(1.0d0/3.0d0) + &
+             sign(1.0d0, temp2) * abs(temp2)**(1.0d0/3.0d0)
+        x1 = y1 - b/3.0d0
+        x2 = 0.0d0
+        x3 = 0.0d0
+
+        if (x1 > 0.0d0) then
+          if (abs(x1**3+b*x1**2+c*x1+d) < 1.0e-15) then
+            num_positive_roots = num_positive_roots + 1
+          end if
+        end if
+    else if (delta == 0.0d0) then
+        ! Case 2: All roots are real, and at least two are equal
+        num_real_roots = 3
+        y1 = 2.0d0 * (-q/2.0d0)**(1.0d0/3.0d0)
+        y2 = -(-q/2.0d0)**(1.0d0/3.0d0)
+        y3 = y2
+        x1 = y1 - b/3.0d0
+        x2 = y2 - b/3.0d0
+        x3 = y3 - b/3.0d0
+
+        if (x1 > 0.0d0) then
+          if (abs(x1**3+b*x1**2+c*x1+d) < 1.0e-15) then
+            num_positive_roots = num_positive_roots + 1
+          end if
+        end if
+        if (x2 > 0.0d0) then
+          if (abs(x2**3+b*x2**2+c*x2+d) < 1.0e-15) then
+            num_positive_roots = num_positive_roots + 1
+          end if
+        end if
+        if (x3 > 0.0d0) then
+          if (abs(x3**3+b*x3**2+c*x3+d) < 1.0e-15) then
+            num_positive_roots = num_positive_roots + 1
+          end if
+        end if
+
+    else
+        ! Case 3: All roots are real and distinct
+        num_real_roots = 3
+        theta = acos((3.0d0 * q) / (2.0d0 * p * sqrt(-p/3.0d0)))
+        y1 = 2.0d0 * sqrt(-p/3.0d0) * cos(theta/3.0d0)
+        y2 = 2.0d0 * sqrt(-p/3.0d0) * cos((theta + 2.0d0*pi)/3.0d0)
+        y3 = 2.0d0 * sqrt(-p/3.0d0) * cos((theta + 4.0d0*pi)/3.0d0)
+        x1 = y1 - b/3.0d0
+        x2 = y2 - b/3.0d0
+        x3 = y3 - b/3.0d0
+
+        if (x1 > 0.0d0) then
+          if (abs(x1**3+b*x1**2+c*x1+d) < 1.0e-15) then
+            num_positive_roots = num_positive_roots + 1
+          end if
+        end if
+        if (x2 > 0.0d0) then
+          if (abs(x2**3+b*x2**2+c*x2+d) < 1.0e-15) then
+            num_positive_roots = num_positive_roots + 1
+          end if
+        end if
+        if (x3 > 0.0d0) then
+          if (abs(x3**3+b*x3**2+c*x3+d) < 1.0e-15) then
+            num_positive_roots = num_positive_roots + 1
+          end if
+        end if
+    end if
+
+  end subroutine math_common_solve_cubic
 
 end module math_common

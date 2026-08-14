@@ -1,0 +1,13 @@
+#PBS -S /bin/bash
+#PBS -N clement-openmp
+cd $PBS_O_WORKDIR
+export OMP_NUM_THREADS=$PBS_NUM_PPN
+export KMP_STACKSIZE=128m
+
+module load use.umayer
+module load GCC/5.4/0
+module load LIS/2.0.18/MPICH/3.3/GCC/5.4/openmp
+
+../../min3p-hpc-omp basin-2d
+
+#use 'Bqsub 0.5 1 20 bash openmp-job.pbs' to run the job for 0.5 hour using 1 node, with 20 processors per node

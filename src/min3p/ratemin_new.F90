@@ -4,7 +4,7 @@
 !> $Revision: 869 $
 !> $Author: dsu $
 !> $Date: 2023-08-18 09:44:21 -0700 (Fri, 18 Aug 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/ratemin_new.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/ratemin_new.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -258,17 +258,16 @@
                  itemp, info_debug, ireac, istart, istop, istart2,     &
                  istop2, istart3, istop3, itop, ibottom, next, ix, im3 
       
-      real*8 :: totc, c, cx, gammac, gammax, sw, ratem, phim, phimold      
+      real*8 :: totc(*),c(*),cx(*),gammac(*),gammax(*),phim(*)
+      real*8 :: sw, ratem, phimold      
       real*8 :: aream, rootdens, r1_iap_k, prodrc, prodrcinc, conc_m
       real*8 :: alphar, alphartot, alphartop, gammatemp, sumic, sumix
       real*8 :: salinity, sar
       real*8 :: a, b
       logical :: summed_species
 
-      dimension c(*),cx(*),gammac(*),gammax(*),totc(*),phim(*)
-
       real*8, parameter :: r0 = 0.0d0, r1 = 1.0d0
-      real, parameter  :: pi = 3.141592653589793d0
+      real*8, parameter :: pi = 3.141592653589793d0
       
       external :: raoult
 
@@ -304,53 +303,53 @@
 !c_isotope
 !c calculate the saturation index for isotopes     
 !c need to total isotopes to get accurate activity for the component  
-      if (.not.far_from_equil(im)) then
-        if (isofrac(im)) then
-          satm(im,tid) = eqm(im,tid)**(-r1)          
-          ireac = iamd(im)            
-          istart = iam(im)
-          istop = iam(im+1)-1 
-                    
-          do i1 = istart, istop ! loop through components in mineral
-            icount = 0
-            ic = jam(i1)
-            next = 0
-            do i = 1, nifrm(im)  ! loop through isotope sets
-                istart2 = next + iamdiso(im)
-                icur = iamdiso2(im) + i - 1
-                istop2 = iamdiso(im) + jamdiso2(icur) - 1
-                next = jamdiso2(icur)
-                gammatemp = r0
-                !loop through isotope compents in set
-                do i2 = istart2, istop2 
-                  ii = jamdiso(i2)
-                  !check to see if component is an isotope
-                  if (ii.eq.ic) then 
-                    icount = icount + 1
-                    !if so sum the isotope activities
-                    do i3 = istart2, istop2 
-                        ic2 = jamdiso(i3)
-                        gammatemp = gammatemp + c(ic2)
-                    end do 
-                    gammatemp = gammac(ic)*gammatemp
-                    satm(im,tid) = satm(im,tid) *(gammatemp**xnum(i1))
-                  end if
-                end do
-            end do  !i2
+      if (isofrac(im).and.(.not.far_from_equil(im))) then
+        satm(im,tid) = eqm(im,tid)**(-r1)    
+
+        ireac = iamd(im)            
+        istart = iam(im)
+        istop = iam(im+1)-1 
+                  
+        do i1 = istart, istop ! loop through components in mineral
+          icount = 0
+          ic = jam(i1)
+          next = 0
+          do i = 1, nifrm(im)  ! loop through isotope sets
+            istart2 = next + iamdiso(im)
+            icur = iamdiso2(im) + i - 1
+            istop2 = iamdiso(im) + jamdiso2(icur) - 1
+            next = jamdiso2(icur)
+            gammatemp = r0
+            !loop through isotope compents in set
+            do i2 = istart2, istop2 
+              ii = jamdiso(i2)
+              !check to see if component is an isotope
+              if (ii.eq.ic) then 
+                icount = icount + 1
+                !if so sum the isotope activities
+                do i3 = istart2, istop2 
+                    ic2 = jamdiso(i3)
+                    gammatemp = gammatemp + c(ic2)
+                end do 
+                gammatemp = gammac(ic)*gammatemp
+                satm(im,tid) = satm(im,tid) *(gammatemp**xnum(i1))
+              end if
+            end do
+          end do  !i2
           !if not calculate the saturaton index the normal way  
-            if (icount.eq.0) then    
-              satm(im,tid) = satm(im,tid) * (gammac(ic)*c(ic))**xnum(i1)
-            end if
-          end do   !i1    
-        else 
-          satm(im,tid) = eqm(im,tid)**(-r1)          
-          istart = iam(im)
-          istop = iam(im+1)-1
-          do i1 = istart,istop
-            ic = jam(i1)
+          if (icount.eq.0) then    
             satm(im,tid) = satm(im,tid) * (gammac(ic)*c(ic))**xnum(i1)
-          end do
-        end if
+          end if
+        end do   !i1    
+      else if (.not.far_from_equil(im)) then
+        satm(im,tid) = eqm(im,tid)**(-r1)  
+                
+        istart = iam(im)
+        istop = iam(im+1)-1
+        do i1 = istart,istop
+          ic = jam(i1)
+          satm(im,tid) = satm(im,tid) * (gammac(ic)*c(ic))**xnum(i1)
+        end do
       end if
 
 !c  compute total dissolution/precipitation rate for surface controlled
@@ -820,6 +819,11 @@
 
             ratemp(ireac,tid) = aream * prodrc
 
+!c  saturation correction
+            if (b_rate_satcorr .and. satcorr_flag(im))then
+              ratemp(ireac,tid)  = ratemp(ireac,tid) * satcorr_curve(sw)
+            end if
+
 !c  sum up parallel reaction rates for surface controlled
 !c  dissolution/precipitation reactions
 
@@ -971,12 +975,17 @@
             ratemp(ireac,tid) = - aream * diffm(ireac,tid)/xnud(ireac)*&
                                   prodrc
 
+!c  saturation correction
+            if (b_rate_satcorr .and. satcorr_flag(im))then
+              ratemp(ireac,tid)  = ratemp(ireac,tid) * satcorr_curve(sw)
+            end if
+
 !c  sum up parallel rates
 
             ratem = ratem + ratemp(ireac,tid)
 
-          end do  
- 
+          end do
+          
 !c  set reaction rate to zero for all other conditions
  
         else
@@ -986,11 +995,6 @@
         end if          !(reaction_type(im))
 
       end if            !(rate_control(im))
-
-!c  saturation correction
-      if (b_rate_satcorr .and. satcorr_flag(im))then
-        ratem  = ratem * satcorr_curve(sw)
-      end if
 
       return
     end   

@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initcpgs.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcpgs.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -116,6 +116,7 @@
       ierrcd = 0
       drive = 'u'
       density_dependence = .false.
+      ascii_fmt_comma = .false.
 
 !c  read numerical data and write to temporary file   
    
@@ -283,12 +284,14 @@
         call findstrg(subsection,itmp,found_subsection)
         if (found_subsection) then
           i_append_sim = 1
+          mtime_append = 1
         end if
 
         subsection = 'append results in legacy mode'
         call findstrg(subsection,itmp,found_subsection)
         if (found_subsection) then
           i_append_sim = 2
+          mtime_append = 1
         end if
 
         subsection = 'append results after specified time steps'
@@ -398,14 +401,26 @@
       end if
 
 !c  ascii output data format
+      subsection = 'use comma as data delimiter'
+      call findstrg(subsection,itmp,found_subsection)
+      if (found_subsection) then
+        ascii_fmt_comma = .true.
+      end if
+
       subsection = 'use double precision'  
       call findstrg(subsection,itmp,found_subsection)
       if (found_subsection) then
-        ascii_fmt = '(1000(1pe25.17e3))'
-        ascii_fmt_iir = '(2(i10,1x),1000(1pe25.17e3))'
+        if (ascii_fmt_comma) then
+          ascii_fmt = '(1000(1pe25.17e3,","))'
+        else
+          ascii_fmt = '(1000(1pe25.17e3))'
+        end if
       else
-        ascii_fmt = '(1000(1pe15.6e3))'
-        ascii_fmt_iir = '(2(i10,1x),1000(1pe15.6e3))'
+        if (ascii_fmt_comma) then
+          ascii_fmt = '(1000(1pe15.6e3,","))'
+        else
+          ascii_fmt = '(1000(1pe15.6e3))'
+        end if
       end if
 
 !c  maximum memory avaiable for master node per CPU
@@ -414,13 +429,13 @@
       if (found_subsection) then
         ierrcd = 6
         read(itmp,*,err=999,end=999) mem_input, mem_unit
-        if (mem_unit == 'MB') then
+        if (mem_unit == 'MB' .or. mem_unit == 'mb') then
           !c default, do nothing
-        else if (mem_unit == 'GB') then
+        else if (mem_unit == 'GB' .or. mem_unit == 'gb') then
           mem_input = mem_input*1.0d3
-        else if (mem_unit == 'TB') then
+        else if (mem_unit == 'TB' .or. mem_unit == 'tb') then
           mem_input = mem_input*1.0d6
-        else if (mem_unit == 'PB') then
+        else if (mem_unit == 'PB' .or. mem_unit == 'pb') then
           mem_input = mem_input*1.0d9
         else
           if (rank == 0) then

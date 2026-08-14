@@ -4,7 +4,7 @@
 !> $Revision: 850 $
 !> $Author: dsu $
 !> $Date: 2023-01-27 08:58:23 -0800 (Fri, 27 Jan 2023) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/jacbvs_energybal.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/jacbvs_energybal.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -43,7 +43,7 @@
 !c           integer*4:
 !c           ----------
 !c           iavs(nn+1)         = row pointer array for avs           + -
-!c           iabvs(nbvs)        = pointer to boundary control volumes + -
+!c           jabvs(nbvs)        = pointer to boundary control volumes + -
 !c                                for variably saturated flow
 !c           nn                 = total number of control volumes     + -
 !c           nbvs               = number of specified boundary        + -
@@ -160,13 +160,13 @@
 #endif
       do ibvs = 1,nbvs
           
-        ivol = iabvs(ibvs)
-        if (ivol < 0) then
+        ivol = jabvs(ibvs)
+        if (ivol <= 0 .or. .not.bcondvs_on(ibvs)) then
           cycle  
         end if
         
         if (compute_ice_sheet_loading) then
-          if (.not. b_iabvs_ice(ibvs)) then
+          if (.not. b_jabvs_ice(ibvs)) then
             cycle
           end if
         end if

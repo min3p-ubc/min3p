@@ -4,7 +4,7 @@
 !> $Revision: 879 $
 !> $Author: dsu $
 !> $Date: 2024-02-17 10:15:21 -0800 (Sat, 17 Feb 2024) $
-!> $URL: https://min3psvn.ubc.ca/svn/min3p_thcm/branches/dsu_new_add_2024Jan/src/min3p/initcplc.F90 $
+!> $URL: https://github.com/min3p-ubc/min3p/blob/main/src/min3p/initcplc.F90 $
 !---------------------------------------------------------------------
 !********************************************************************!
 
@@ -222,6 +222,20 @@
         if (found_subsection) then
           ierrcd = 3
           read(itmp,*,err=999,end=999) update_activity_lc
+        end if
+
+        if (update_activity_lc.eq.'no_update'.or.                &
+            update_activity_lc.eq.'no update'.or.                &
+            update_activity_lc.eq.'no-update') then
+          update_activity_lc = 'no_update'
+        elseif (update_activity_lc.eq.'double_update'.or.        &
+                update_activity_lc.eq.'double update'.or.        &
+                update_activity_lc.eq.'double-update') then
+          update_activity_lc = 'double_update'
+        elseif (update_activity_lc.eq.'time_lagged'.or.          &
+                update_activity_lc.eq.'time lagged'.or.          &
+                update_activity_lc.eq.'time-lagged') then
+          update_activity_lc = 'time_lagged'
         end if
 
 !c  read minimum activity for h2o
